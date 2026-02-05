@@ -1,0 +1,58 @@
+# Unit 4: Climate Change {.unnumbered}
+
+## Driving Question
+
+> **How is Earth's climate changing, and what are the consequences?**
+
+## Unit Overview
+
+In this unit, we investigate Earth's climate system, the evidence for climate change, and the interconnected feedbacks that amplify or moderate climate shifts.
+
+## What You'll Learn
+
+- Moon phases, eclipses, tides, and seasonal cycles
+- How Earth's systems interact through feedback loops
+- Energy flow patterns that drive climate
+- The carbon cycle and human impacts
+
+## Phenomenon
+
+Global average temperatures have risen approximately 1.1°C since the pre-industrial era, with accelerating impacts on ice sheets, sea levels, and extreme weather. What's driving these changes?
+
+```{python}
+#| label: fig-temp-anomaly
+#| fig-cap: "Global temperature anomaly from 1880 to present"
+#| code-fold: true
+
+import plotly.express as px
+import pandas as pd
+import numpy as np
+
+# Simulated global temperature data
+np.random.seed(42)
+years = list(range(1880, 2026))
+baseline_trend = [(y - 1880) * 0.007 for y in years]
+acceleration = [0.00005 * (y - 1950)**2 if y > 1950 else 0 for y in years]
+noise = np.random.normal(0, 0.1, len(years))
+temps = [b + a + n - 0.2 for b, a, n in zip(baseline_trend, acceleration, noise)]
+
+df = pd.DataFrame({
+    'Year': years,
+    'Temperature Anomaly (°C)': temps
+})
+
+fig = px.bar(df, x='Year', y='Temperature Anomaly (°C)',
+             color='Temperature Anomaly (°C)',
+             color_continuous_scale=['blue', 'white', 'red'],
+             range_color=[-0.5, 1.5],
+             title='Global Temperature Anomaly (1880-2025)')
+fig.add_hline(y=0, line_dash='dash', line_color='black')
+fig.update_layout(height=450)
+fig
+```
+
+::: {.callout-note}
+## Standards Alignment
+This unit addresses NGSS standards: HS-ESS2-2, HS-ESS2-4, HS-ESS2-6, HS-ESS3-5, HS-ESS3-6
+:::
+:::

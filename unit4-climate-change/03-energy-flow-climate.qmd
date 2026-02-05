@@ -1,0 +1,345 @@
+# Energy Flow and Climate Patterns
+
+## Essential Question
+
+> How does energy flow through Earth's climate system create weather and climate patterns?
+
+## Earth's Energy Budget
+
+Earth receives energy from the Sun and radiates energy back to space. The balance determines our planet's temperature.
+
+```{python}
+#| label: fig-energy-budget
+#| fig-cap: "Earth's energy budget showing incoming and outgoing energy"
+#| code-fold: true
+
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import matplotlib.patches as FancyArrowPatch
+
+fig, ax = plt.subplots(figsize=(14, 10))
+ax.set_xlim(0, 14)
+ax.set_ylim(0, 12)
+ax.axis('off')
+
+# Space
+ax.add_patch(mpatches.Rectangle((0, 9), 14, 3, facecolor='#1a1a2e'))
+ax.text(7, 11, 'SPACE', ha='center', fontsize=14, color='white', fontweight='bold')
+
+# Atmosphere
+ax.add_patch(mpatches.Rectangle((0, 4), 14, 5, facecolor='#87CEEB', alpha=0.5))
+ax.text(7, 6.5, 'ATMOSPHERE', ha='center', fontsize=12, fontweight='bold')
+
+# Surface
+ax.add_patch(mpatches.Rectangle((0, 0), 14, 4, facecolor='#228B22'))
+ax.add_patch(mpatches.Rectangle((8, 0), 6, 4, facecolor='#1E90FF'))
+ax.text(4, 2, 'LAND', ha='center', fontsize=12, fontweight='bold')
+ax.text(11, 2, 'OCEAN', ha='center', fontsize=12, fontweight='bold', color='white')
+
+# Incoming solar (left side)
+ax.annotate('', xy=(3, 9), xytext=(3, 11.5), 
+            arrowprops=dict(arrowstyle='->', color='#FFD700', lw=4))
+ax.text(3, 11.7, 'Incoming Solar\n340 W/m²', ha='center', fontsize=10, color='#FFD700')
+
+# Reflected by atmosphere
+ax.annotate('', xy=(1.5, 11.5), xytext=(1.5, 7),
+            arrowprops=dict(arrowstyle='->', color='yellow', lw=2))
+ax.text(0.5, 8, 'Reflected by\nclouds/atmosphere\n~79 W/m²', ha='center', fontsize=8)
+
+# Reflected by surface
+ax.annotate('', xy=(5, 11.5), xytext=(5, 4),
+            arrowprops=dict(arrowstyle='->', color='yellow', lw=2))
+ax.text(5.5, 6, 'Reflected by\nsurface\n~23 W/m²', ha='center', fontsize=8)
+
+# Absorbed by surface
+ax.annotate('', xy=(7, 4), xytext=(7, 9),
+            arrowprops=dict(arrowstyle='->', color='orange', lw=3))
+ax.text(7.5, 6.5, 'Absorbed by\nsurface\n~163 W/m²', ha='center', fontsize=9)
+
+# Absorbed by atmosphere
+ax.annotate('', xy=(4, 6), xytext=(4, 9),
+            arrowprops=dict(arrowstyle='->', color='orange', lw=2))
+ax.text(4, 7.8, 'Absorbed by\natmosphere\n~75 W/m²', ha='center', fontsize=8)
+
+# Outgoing radiation (right side)
+# Surface radiation
+ax.annotate('', xy=(10, 9), xytext=(10, 4),
+            arrowprops=dict(arrowstyle='->', color='red', lw=3))
+ax.text(10.5, 5.5, 'Surface\nradiation\n~398 W/m²', ha='center', fontsize=9)
+
+# Greenhouse effect - absorbed and re-emitted
+ax.annotate('', xy=(11.5, 4), xytext=(11.5, 7),
+            arrowprops=dict(arrowstyle='->', color='#FF6347', lw=2))
+ax.text(12.5, 5.5, 'Back\nradiation\n~340 W/m²', ha='center', fontsize=8)
+
+# To space
+ax.annotate('', xy=(12, 11.5), xytext=(12, 9),
+            arrowprops=dict(arrowstyle='->', color='darkred', lw=3))
+ax.text(13, 10, 'Outgoing\n~239 W/m²', ha='center', fontsize=9, color='darkred')
+
+# Latent/sensible heat
+ax.annotate('', xy=(9, 6), xytext=(9, 4),
+            arrowprops=dict(arrowstyle='->', color='purple', lw=2))
+ax.text(8.5, 5, 'Latent &\nSensible\nHeat', ha='center', fontsize=8, color='purple')
+
+ax.set_title("Earth's Energy Budget", fontsize=16, fontweight='bold', y=1.02)
+
+plt.tight_layout()
+plt.show()
+```
+
+## The Greenhouse Effect
+
+Greenhouse gases trap heat in the atmosphere, keeping Earth warm enough for life.
+
+```{python}
+#| label: fig-greenhouse-gases
+#| fig-cap: "Contribution of different greenhouse gases to warming"
+#| code-fold: true
+
+import plotly.express as px
+import pandas as pd
+
+gases = pd.DataFrame({
+    'Gas': ['Water Vapor', 'Carbon Dioxide', 'Methane', 'Nitrous Oxide', 'Ozone', 'CFCs'],
+    'Contribution (%)': [36, 20, 6, 3, 3, 2],
+    'Human Caused': ['Indirect', 'Yes', 'Yes', 'Yes', 'Partial', 'Yes'],
+    'Lifetime (years)': ['Days', '100-300', '12', '120', 'Weeks', '100+']
+})
+
+fig = px.pie(gases, values='Contribution (%)', names='Gas',
+             title='Greenhouse Gas Contributions to Warming',
+             color_discrete_sequence=['#3b82f6', '#ef4444', '#f97316', '#a855f7', '#22c55e', '#64748b'],
+             hover_data=['Human Caused', 'Lifetime (years)'])
+fig.update_traces(textposition='inside', textinfo='percent+label')
+fig.update_layout(height=450)
+fig.show()
+```
+
+## Interactive: Greenhouse Effect Model
+
+```{ojs}
+//| echo: false
+
+viewof co2Level = Inputs.range([280, 800], {
+  value: 420,
+  step: 10,
+  label: "CO₂ Concentration (ppm)"
+})
+
+viewof ch4Level = Inputs.range([700, 3000], {
+  value: 1900,
+  step: 50,
+  label: "Methane (ppb)"
+})
+
+viewof albedoValue = Inputs.range([0.2, 0.4], {
+  value: 0.30,
+  step: 0.01,
+  label: "Planetary Albedo"
+})
+
+// Calculate temperature (simplified radiative model)
+solarConstant = 1361
+absorbed = solarConstant/4 * (1 - albedoValue)
+stefanBoltzmann = 5.67e-8
+
+// Greenhouse factor (simplified)
+ghFactor = 1 + 0.3 * Math.log(co2Level/280) + 0.1 * Math.log(ch4Level/700)
+
+effectiveTemp = Math.pow(absorbed / stefanBoltzmann, 0.25) - 273.15
+surfaceTemp = effectiveTemp + 33 * ghFactor
+
+preindustrialTemp = 14
+tempAnomaly = surfaceTemp - preindustrialTemp
+```
+
+```{ojs}
+//| echo: false
+
+html`
+<div class="interactive-container">
+  <h3>Greenhouse Effect Model</h3>
+  
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 15px 0;">
+    <div style="background: #fef2f2; padding: 15px; border-radius: 8px; text-align: center;">
+      <div style="font-size: 32px; font-weight: bold; color: #dc2626;">${surfaceTemp.toFixed(1)}°C</div>
+      <div>Global Mean Temperature</div>
+    </div>
+    <div style="background: ${tempAnomaly > 0 ? '#fef2f2' : '#f0fdf4'}; padding: 15px; border-radius: 8px; text-align: center;">
+      <div style="font-size: 32px; font-weight: bold; color: ${tempAnomaly > 0 ? '#dc2626' : '#16a34a'};">
+        ${tempAnomaly > 0 ? '+' : ''}${tempAnomaly.toFixed(2)}°C
+      </div>
+      <div>Anomaly from Pre-industrial</div>
+    </div>
+    <div style="background: #eff6ff; padding: 15px; border-radius: 8px; text-align: center;">
+      <div style="font-size: 32px; font-weight: bold; color: #2563eb;">${ghFactor.toFixed(2)}</div>
+      <div>Greenhouse Factor</div>
+    </div>
+  </div>
+  
+  <div style="background: #f8fafc; padding: 15px; border-radius: 8px;">
+    <strong>Analysis:</strong>
+    <ul style="margin: 10px 0;">
+      <li>Pre-industrial CO₂: 280 ppm → Current: ${co2Level} ppm (${((co2Level/280 - 1) * 100).toFixed(0)}% increase)</li>
+      <li>Without greenhouse effect, Earth would be ${(-effectiveTemp).toFixed(0)}°C (frozen!)</li>
+      <li>${tempAnomaly > 1.5 ? "⚠️ Exceeds Paris Agreement 1.5°C target!" : 
+           tempAnomaly > 1 ? "⚠️ Approaching dangerous warming levels" :
+           "Within relatively safe warming range"}</li>
+    </ul>
+  </div>
+</div>
+`
+```
+
+## Global Circulation Patterns
+
+Uneven heating of Earth creates global wind and ocean circulation patterns.
+
+```{python}
+#| label: fig-circulation
+#| fig-cap: "Global atmospheric circulation cells"
+#| code-fold: true
+
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import numpy as np
+
+fig, ax = plt.subplots(figsize=(14, 8))
+ax.set_xlim(-180, 180)
+ax.set_ylim(-90, 90)
+
+# Background
+ax.set_facecolor('#1E90FF')
+
+# Continents (simplified)
+ax.add_patch(mpatches.Rectangle((-130, 15), 60, 60, facecolor='#228B22', alpha=0.7))  # North America
+ax.add_patch(mpatches.Rectangle((-80, -60), 40, 70, facecolor='#228B22', alpha=0.7))   # South America
+ax.add_patch(mpatches.Rectangle((-20, -35), 60, 80, facecolor='#228B22', alpha=0.7))   # Africa
+ax.add_patch(mpatches.Rectangle((40, 10), 100, 60, facecolor='#228B22', alpha=0.7))    # Asia
+ax.add_patch(mpatches.Rectangle((110, -45), 50, 35, facecolor='#228B22', alpha=0.7))   # Australia
+
+# Circulation cells
+cells = [
+    (0, 30, 'Hadley Cell', '#ff6b6b'),
+    (30, 60, 'Ferrel Cell', '#4ecdc4'),
+    (60, 90, 'Polar Cell', '#45b7d1'),
+    (0, -30, 'Hadley Cell', '#ff6b6b'),
+    (-30, -60, 'Ferrel Cell', '#4ecdc4'),
+    (-60, -90, 'Polar Cell', '#45b7d1')
+]
+
+for y1, y2, name, color in cells:
+    # Draw cell
+    y_mid = (y1 + y2) / 2
+    for x in [-120, 0, 120]:
+        # Rising air
+        if 'Hadley' in name:
+            ax.annotate('', xy=(x-20, max(y1, y2)), xytext=(x-20, min(y1, y2)),
+                       arrowprops=dict(arrowstyle='->', color=color, lw=2))
+            ax.annotate('', xy=(x+20, min(y1, y2)), xytext=(x+20, max(y1, y2)),
+                       arrowprops=dict(arrowstyle='->', color=color, lw=2))
+        
+    ax.text(0, y_mid, name, ha='center', va='center', fontsize=10, 
+            fontweight='bold', color='white',
+            bbox=dict(boxstyle='round', facecolor=color, alpha=0.8))
+
+# Wind belts
+winds = [
+    (5, 'Trade Winds (NE)', '←'),
+    (-5, 'Trade Winds (SE)', '←'),
+    (45, 'Westerlies', '→'),
+    (-45, 'Westerlies', '→'),
+    (75, 'Polar Easterlies', '←'),
+    (-75, 'Polar Easterlies', '←')
+]
+
+for lat, name, direction in winds:
+    ax.text(160, lat, f'{direction} {name}', fontsize=9, va='center', color='yellow')
+
+# Latitude labels
+for lat in [-60, -30, 0, 30, 60]:
+    ax.axhline(y=lat, color='white', linestyle='--', alpha=0.3)
+    ax.text(-175, lat, f'{abs(lat)}°{"N" if lat > 0 else "S" if lat < 0 else ""}', 
+            fontsize=9, color='white', va='center')
+
+ax.text(0, 0, 'EQUATOR', ha='center', fontsize=10, color='white', fontweight='bold')
+
+ax.set_xlabel('Longitude', fontsize=12)
+ax.set_ylabel('Latitude', fontsize=12)
+ax.set_title('Global Atmospheric Circulation', fontsize=14, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
+```
+
+## Ocean Currents
+
+Ocean currents redistribute heat around the globe, moderating climate.
+
+```{python}
+#| label: fig-thermohaline
+#| fig-cap: "The global thermohaline circulation (ocean conveyor belt)"
+#| code-fold: true
+
+import plotly.graph_objects as go
+
+fig = go.Figure()
+
+# Warm surface currents (red)
+warm_lats = [0, 20, 40, 55, 60, 55, 40, 30, 0, -30, -50, -60, -50, -30, 0]
+warm_lons = [-80, -60, -40, -20, 0, 20, 40, 60, 80, 100, 120, 150, 180, -150, -120]
+
+fig.add_trace(go.Scattergeo(
+    lat=warm_lats,
+    lon=warm_lons,
+    mode='lines',
+    line=dict(width=4, color='red'),
+    name='Warm Surface Current'
+))
+
+# Cold deep currents (blue)
+cold_lats = [60, 40, 20, 0, -20, -40, -60, -50, -30, 0, 20, 40]
+cold_lons = [0, -20, -40, -60, -80, -100, -120, -150, 180, 150, 120, 90]
+
+fig.add_trace(go.Scattergeo(
+    lat=cold_lats,
+    lon=cold_lons,
+    mode='lines',
+    line=dict(width=4, color='blue'),
+    name='Cold Deep Current'
+))
+
+# Sinking regions
+fig.add_trace(go.Scattergeo(
+    lat=[65, -65],
+    lon=[-30, 0],
+    mode='markers+text',
+    marker=dict(size=15, color='darkblue', symbol='arrow-down'),
+    text=['North Atlantic\nDeep Water', 'Antarctic\nBottom Water'],
+    textposition='bottom center',
+    name='Sinking Zones'
+))
+
+fig.update_geos(
+    projection_type='natural earth',
+    showland=True, landcolor='lightgray',
+    showocean=True, oceancolor='lightblue'
+)
+
+fig.update_layout(
+    title='Global Thermohaline Circulation',
+    height=500
+)
+fig.show()
+```
+
+## Check Your Understanding
+
+::: {.callout-note}
+## Questions
+1. Why doesn't all of the Sun's energy reach Earth's surface?
+2. Explain how the greenhouse effect keeps Earth warm enough for life.
+3. What causes global wind patterns like the trade winds and westerlies?
+4. How do ocean currents affect climate in coastal regions?
+:::

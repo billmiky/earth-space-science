@@ -1,0 +1,324 @@
+# Earth System Feedbacks
+
+## Essential Question
+
+> How do feedback loops amplify or moderate changes in Earth's climate system?
+
+## What Are Feedback Loops?
+
+A **feedback loop** occurs when a change in one part of a system causes changes that either amplify (positive feedback) or reduce (negative feedback) the original change.
+
+```{python}
+#| label: fig-feedback-types
+#| fig-cap: "Positive vs negative feedback loops"
+#| code-fold: true
+
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+
+# Positive Feedback
+ax1.set_xlim(0, 10)
+ax1.set_ylim(0, 10)
+ax1.axis('off')
+ax1.set_title('POSITIVE FEEDBACK\n(Amplifying)', fontsize=14, fontweight='bold', color='red')
+
+# Boxes
+boxes1 = [
+    (5, 8, 'Temperature\nIncreases', '#ffcccc'),
+    (8, 5, 'Ice/Snow\nMelts', '#ccccff'),
+    (5, 2, 'Less Sunlight\nReflected', '#ffffcc'),
+    (2, 5, 'More Heat\nAbsorbed', '#ffcccc')
+]
+
+for x, y, text, color in boxes1:
+    ax1.add_patch(mpatches.FancyBboxPatch((x-1.2, y-0.8), 2.4, 1.6, 
+                  boxstyle="round,pad=0.1", facecolor=color, edgecolor='red', linewidth=2))
+    ax1.text(x, y, text, ha='center', va='center', fontsize=9)
+
+# Arrows (circular)
+arrow_style = dict(arrowstyle='->', color='red', lw=2)
+ax1.annotate('', xy=(7.5, 6.5), xytext=(6, 7.5), arrowprops=arrow_style)
+ax1.annotate('', xy=(6.5, 2.5), xytext=(7.5, 4), arrowprops=arrow_style)
+ax1.annotate('', xy=(2.5, 4), xytext=(4, 2.5), arrowprops=arrow_style)
+ax1.annotate('', xy=(4, 7.5), xytext=(2.5, 6), arrowprops=arrow_style)
+
+ax1.text(5, 5, '🔄\nRUNAWAY\nEFFECT', ha='center', va='center', fontsize=10, fontweight='bold', color='red')
+
+# Negative Feedback
+ax2.set_xlim(0, 10)
+ax2.set_ylim(0, 10)
+ax2.axis('off')
+ax2.set_title('NEGATIVE FEEDBACK\n(Stabilizing)', fontsize=14, fontweight='bold', color='green')
+
+boxes2 = [
+    (5, 8, 'Temperature\nIncreases', '#ffcccc'),
+    (8, 5, 'More\nEvaporation', '#ccccff'),
+    (5, 2, 'More Clouds\nForm', '#e0e0e0'),
+    (2, 5, 'More Sunlight\nReflected', '#ccffcc')
+]
+
+for x, y, text, color in boxes2:
+    ax2.add_patch(mpatches.FancyBboxPatch((x-1.2, y-0.8), 2.4, 1.6, 
+                  boxstyle="round,pad=0.1", facecolor=color, edgecolor='green', linewidth=2))
+    ax2.text(x, y, text, ha='center', va='center', fontsize=9)
+
+# Arrows
+arrow_style2 = dict(arrowstyle='->', color='green', lw=2)
+ax2.annotate('', xy=(7.5, 6.5), xytext=(6, 7.5), arrowprops=arrow_style2)
+ax2.annotate('', xy=(6.5, 2.5), xytext=(7.5, 4), arrowprops=arrow_style2)
+ax2.annotate('', xy=(2.5, 4), xytext=(4, 2.5), arrowprops=arrow_style2)
+ax2.annotate('', xy=(4, 7.5), xytext=(2.5, 6), arrowprops=arrow_style2)
+
+ax2.text(5, 5, '⚖️\nSTABLE\nSYSTEM', ha='center', va='center', fontsize=10, fontweight='bold', color='green')
+ax2.text(3, 6.5, 'COOLING', ha='center', fontsize=9, color='blue', fontweight='bold')
+
+plt.tight_layout()
+plt.show()
+```
+
+## Major Climate Feedbacks
+
+```{python}
+#| label: fig-climate-feedbacks
+#| fig-cap: "Major climate feedback mechanisms and their effects"
+#| code-fold: true
+
+import plotly.graph_objects as go
+
+feedbacks = ['Ice-Albedo', 'Water Vapor', 'Cloud (Low)', 'Cloud (High)', 
+             'Permafrost/Methane', 'Vegetation', 'Ocean CO₂ Uptake', 'Weathering']
+             
+feedback_type = ['Positive', 'Positive', 'Negative', 'Positive', 
+                 'Positive', 'Mixed', 'Negative', 'Negative']
+                 
+strength = [2.5, 3.0, -1.5, 1.0, 2.0, 0.5, -1.0, -0.5]
+timescale = ['Decades', 'Days', 'Days', 'Days', 'Decades-Centuries', 
+             'Years-Decades', 'Decades-Centuries', 'Millennia']
+
+colors = ['#ef4444' if s > 0 else '#22c55e' for s in strength]
+
+fig = go.Figure()
+
+fig.add_trace(go.Bar(
+    x=feedbacks,
+    y=strength,
+    marker_color=colors,
+    text=[f"{s:+.1f}" for s in strength],
+    textposition='outside',
+    hovertemplate='<b>%{x}</b><br>Strength: %{y:+.1f}<br>Timescale: %{customdata}',
+    customdata=timescale
+))
+
+fig.add_hline(y=0, line_dash='dash', line_color='black')
+
+fig.update_layout(
+    title='Climate Feedback Mechanisms',
+    yaxis_title='Feedback Strength (W/m² per °C)',
+    height=500,
+    annotations=[
+        dict(x=0.5, y=1.1, xref='paper', yref='paper', showarrow=False,
+             text='Red = Amplifying (Positive) | Green = Stabilizing (Negative)',
+             font=dict(size=12))
+    ]
+)
+fig.show()
+```
+
+## Interactive: Ice-Albedo Feedback
+
+The **ice-albedo feedback** is one of the most powerful climate feedbacks. As ice melts, darker ocean or land is exposed, which absorbs more heat.
+
+```{ojs}
+//| echo: false
+
+viewof iceExtent = Inputs.range([0, 100], {
+  value: 70,
+  step: 5,
+  label: "Ice/Snow Cover (%)"
+})
+
+viewof solarInput = Inputs.range([200, 400], {
+  value: 340,
+  step: 10,
+  label: "Solar Energy Input (W/m²)"
+})
+
+// Albedo calculation
+iceAlbedo = 0.85  // Ice reflects 85%
+oceanAlbedo = 0.06  // Ocean reflects only 6%
+avgAlbedo = (iceExtent/100 * iceAlbedo + (100-iceExtent)/100 * oceanAlbedo)
+
+energyReflected = solarInput * avgAlbedo
+energyAbsorbed = solarInput * (1 - avgAlbedo)
+
+// Temperature effect (simplified)
+baseTemp = -10
+tempChange = (energyAbsorbed - 200) * 0.1
+currentTemp = baseTemp + tempChange
+
+meltRate = currentTemp > 0 ? currentTemp * 2 : 0
+```
+
+```{ojs}
+//| echo: false
+
+html`
+<div class="interactive-container">
+  <h3>Ice-Albedo Feedback Simulator</h3>
+  
+  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px 0;">
+    <div style="background: #e0f2fe; padding: 12px; border-radius: 8px; text-align: center;">
+      <div style="font-size: 24px; font-weight: bold;">${(avgAlbedo * 100).toFixed(0)}%</div>
+      <div style="font-size: 12px;">Average Albedo</div>
+    </div>
+    <div style="background: #fef3c7; padding: 12px; border-radius: 8px; text-align: center;">
+      <div style="font-size: 24px; font-weight: bold;">${energyReflected.toFixed(0)}</div>
+      <div style="font-size: 12px;">Energy Reflected (W/m²)</div>
+    </div>
+    <div style="background: #fee2e2; padding: 12px; border-radius: 8px; text-align: center;">
+      <div style="font-size: 24px; font-weight: bold;">${energyAbsorbed.toFixed(0)}</div>
+      <div style="font-size: 12px;">Energy Absorbed (W/m²)</div>
+    </div>
+    <div style="background: ${currentTemp > 0 ? '#fecaca' : '#bfdbfe'}; padding: 12px; border-radius: 8px; text-align: center;">
+      <div style="font-size: 24px; font-weight: bold;">${currentTemp.toFixed(1)}°C</div>
+      <div style="font-size: 12px;">Surface Temperature</div>
+    </div>
+  </div>
+  
+  <svg width="100%" height="120" style="display: block;">
+    <!-- Ice -->
+    <rect x="0" y="60" width="${iceExtent}%" height="60" fill="white" stroke="#ccc"/>
+    <text x="${iceExtent/2}%" y="95" text-anchor="middle" font-size="12">Ice (${iceExtent}%)</text>
+    
+    <!-- Ocean -->
+    <rect x="${iceExtent}%" y="60" width="${100-iceExtent}%" height="60" fill="#1E90FF"/>
+    <text x="${iceExtent + (100-iceExtent)/2}%" y="95" text-anchor="middle" font-size="12" fill="white">Ocean (${100-iceExtent}%)</text>
+    
+    <!-- Sun rays -->
+    <line x1="50%" y1="0" x2="30%" y2="55" stroke="orange" stroke-width="3" marker-end="url(#arrowhead)"/>
+    <line x1="50%" y1="0" x2="70%" y2="55" stroke="orange" stroke-width="3"/>
+    
+    <!-- Reflected rays -->
+    <line x1="30%" y1="55" x2="15%" y2="10" stroke="yellow" stroke-width="${avgAlbedo * 3}" opacity="0.7"/>
+  </svg>
+  
+  <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin-top: 15px;">
+    <strong>Feedback Analysis:</strong>
+    ${currentTemp > 0 ? 
+      `<p style="color: #dc2626;">⚠️ Temperature above freezing! Ice melting at ~${meltRate.toFixed(1)}% per year. 
+       As ice melts → albedo decreases → more absorption → more warming → MORE MELTING (positive feedback loop!)</p>` :
+      `<p style="color: #2563eb;">❄️ Temperature below freezing. Ice stable or growing. 
+       High albedo reflects solar energy, keeping surface cool.</p>`
+    }
+  </div>
+</div>
+`
+```
+
+## Water Vapor Feedback
+
+Water vapor is the most abundant greenhouse gas and creates a powerful positive feedback.
+
+```{python}
+#| label: fig-water-vapor
+#| fig-cap: "Water vapor feedback mechanism"
+#| code-fold: true
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+
+# Clausius-Clapeyron relationship
+temps = np.linspace(-20, 40, 100)
+saturation_vapor = 6.11 * np.exp(17.27 * temps / (temps + 237.3))  # hPa
+
+ax1.plot(temps, saturation_vapor, 'b-', linewidth=3)
+ax1.fill_between(temps, saturation_vapor, alpha=0.3)
+ax1.set_xlabel('Temperature (°C)', fontsize=12)
+ax1.set_ylabel('Saturation Vapor Pressure (hPa)', fontsize=12)
+ax1.set_title('Clausius-Clapeyron Relationship', fontsize=14, fontweight='bold')
+ax1.grid(True, alpha=0.3)
+
+# Annotate
+ax1.annotate('~7% more water vapor\nper 1°C warming', xy=(20, 23), xytext=(5, 40),
+             arrowprops=dict(arrowstyle='->', color='red'),
+             fontsize=10, color='red')
+
+# Feedback loop diagram
+ax2.set_xlim(0, 10)
+ax2.set_ylim(0, 10)
+ax2.axis('off')
+ax2.set_title('Water Vapor Positive Feedback', fontsize=14, fontweight='bold')
+
+steps = [
+    (5, 9, '1. CO₂ increases', '#ffcccc'),
+    (8.5, 7, '2. Temperature rises', '#ffddcc'),
+    (8.5, 4, '3. More evaporation', '#cce5ff'),
+    (5, 2, '4. More water vapor\n(greenhouse gas)', '#ccffcc'),
+    (1.5, 4, '5. Enhanced\ngreenhouse effect', '#ffffcc'),
+    (1.5, 7, '6. More warming', '#ffcccc')
+]
+
+for x, y, text, color in steps:
+    ax2.add_patch(mpatches.FancyBboxPatch((x-1.3, y-0.7), 2.6, 1.4, 
+                  boxstyle="round,pad=0.1", facecolor=color, edgecolor='black', linewidth=1))
+    ax2.text(x, y, text, ha='center', va='center', fontsize=8)
+
+# Arrows
+for i in range(5):
+    ax2.annotate('', xy=(steps[(i+1)%6][0], steps[(i+1)%6][1]), 
+                 xytext=(steps[i][0], steps[i][1]),
+                 arrowprops=dict(arrowstyle='->', color='red', lw=1.5,
+                                connectionstyle='arc3,rad=0.2'))
+
+ax2.text(5, 5.5, '🔄 AMPLIFYING\nLOOP', ha='center', va='center', 
+         fontsize=11, fontweight='bold', color='red')
+
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-important}
+## Key Concept
+Water vapor feedback approximately **doubles** the warming effect of CO₂ alone. For every 1°C of warming from CO₂, water vapor adds another ~1°C of warming.
+:::
+
+## Permafrost Feedback
+
+Frozen Arctic soils contain enormous amounts of carbon that could be released as they thaw.
+
+```{python}
+#| label: fig-permafrost
+#| fig-cap: "Carbon stored in permafrost compared to other reservoirs"
+#| code-fold: true
+
+import plotly.express as px
+import pandas as pd
+
+carbon = pd.DataFrame({
+    'Reservoir': ['Permafrost', 'Atmosphere', 'All Plants', 'All Soil (non-permafrost)', 
+                  'Fossil Fuel Reserves', 'Ocean Surface'],
+    'Carbon (Gt)': [1500, 850, 550, 1500, 4000, 900],
+    'Stability': ['Vulnerable', 'Active', 'Somewhat stable', 'Stable', 'Stable', 'Active']
+})
+
+fig = px.bar(carbon, x='Reservoir', y='Carbon (Gt)', color='Stability',
+             title='Carbon Reservoirs: Permafrost Threat',
+             color_discrete_map={'Vulnerable': '#ef4444', 'Active': '#f59e0b', 
+                                'Somewhat stable': '#84cc16', 'Stable': '#22c55e'})
+fig.update_layout(height=450)
+fig.show()
+```
+
+## Check Your Understanding
+
+::: {.callout-note}
+## Questions
+1. Explain the difference between positive and negative feedback loops.
+2. Why is the ice-albedo feedback considered a "tipping point" risk?
+3. How does water vapor amplify the warming effect of CO₂?
+4. What could happen if large amounts of permafrost thaw?
+:::

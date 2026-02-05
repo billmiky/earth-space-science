@@ -1,0 +1,428 @@
+# Moon Phases, Eclipses, and Tides
+
+## Essential Question
+
+> How do the motions of Earth, Moon, and Sun create predictable patterns we observe?
+
+## Moon Phases
+
+The Moon's appearance changes throughout its 29.5-day cycle as we see different portions of its illuminated half.
+
+```{python}
+#| label: fig-moon-phases
+#| fig-cap: "The eight major phases of the Moon"
+#| code-fold: true
+
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import numpy as np
+
+fig, axes = plt.subplots(2, 4, figsize=(14, 7))
+axes = axes.flatten()
+
+phases = [
+    ('New Moon', 0),
+    ('Waxing Crescent', 0.125),
+    ('First Quarter', 0.25),
+    ('Waxing Gibbous', 0.375),
+    ('Full Moon', 0.5),
+    ('Waning Gibbous', 0.625),
+    ('Third Quarter', 0.75),
+    ('Waning Crescent', 0.875)
+]
+
+for ax, (name, phase) in zip(axes, phases):
+    ax.set_xlim(-1.5, 1.5)
+    ax.set_ylim(-1.5, 1.5)
+    ax.set_aspect('equal')
+    ax.axis('off')
+    
+    # Draw moon outline
+    circle = plt.Circle((0, 0), 1, fill=False, color='gray', linewidth=2)
+    ax.add_patch(circle)
+    
+    # Draw illuminated portion
+    theta = np.linspace(-np.pi/2, np.pi/2, 100)
+    
+    if phase == 0:  # New Moon
+        ax.add_patch(plt.Circle((0, 0), 1, color='#1a1a2e'))
+    elif phase == 0.5:  # Full Moon
+        ax.add_patch(plt.Circle((0, 0), 1, color='#f5f5dc'))
+    elif phase < 0.5:  # Waxing
+        ax.add_patch(plt.Circle((0, 0), 1, color='#1a1a2e'))
+        illumination = (phase * 4 - 1) if phase > 0.25 else -(1 - phase * 4)
+        x_edge = illumination * np.cos(theta)
+        x_right = np.cos(theta)
+        y = np.sin(theta)
+        ax.fill(np.concatenate([x_right, x_edge[::-1]]), 
+                np.concatenate([y, y[::-1]]), color='#f5f5dc')
+    else:  # Waning
+        ax.add_patch(plt.Circle((0, 0), 1, color='#f5f5dc'))
+        illumination = ((phase - 0.5) * 4 - 1) if phase > 0.75 else -(1 - (phase - 0.5) * 4)
+        x_edge = illumination * np.cos(theta)
+        x_right = np.cos(theta)
+        y = np.sin(theta)
+        ax.fill(np.concatenate([x_right, x_edge[::-1]]), 
+                np.concatenate([y, y[::-1]]), color='#1a1a2e')
+    
+    ax.set_title(name, fontsize=11, fontweight='bold')
+
+plt.suptitle('Phases of the Moon', fontsize=16, fontweight='bold', y=1.02)
+plt.tight_layout()
+plt.show()
+```
+
+## Interactive: Moon Phase Simulator
+
+```{ojs}
+//| echo: false
+
+viewof dayOfCycle = Inputs.range([0, 29.5], {
+  value: 0,
+  step: 0.5,
+  label: "Day of Lunar Cycle"
+})
+
+phase = dayOfCycle / 29.5
+phaseName = phase < 0.03 ? "New Moon" :
+            phase < 0.22 ? "Waxing Crescent" :
+            phase < 0.28 ? "First Quarter" :
+            phase < 0.47 ? "Waxing Gibbous" :
+            phase < 0.53 ? "Full Moon" :
+            phase < 0.72 ? "Waning Gibbous" :
+            phase < 0.78 ? "Third Quarter" :
+            phase < 0.97 ? "Waning Crescent" : "New Moon"
+
+illumination = phase < 0.5 ? phase * 2 * 100 : (1 - phase) * 2 * 100
+
+moonrise = phase < 0.5 ? 
+           `${Math.floor(6 + phase * 24)}:${Math.floor((phase * 24 % 1) * 60).toString().padStart(2, '0')}` :
+           `${Math.floor(18 + (phase - 0.5) * 24) % 24}:${Math.floor(((phase - 0.5) * 24 % 1) * 60).toString().padStart(2, '0')}`
+```
+
+```{ojs}
+//| echo: false
+
+html`
+<div class="interactive-container" style="text-align: center;">
+  <h3>${phaseName}</h3>
+  
+  <svg width="200" height="200" style="display: block; margin: 0 auto;">
+    <circle cx="100" cy="100" r="80" fill="#1a1a2e" stroke="gray" stroke-width="2"/>
+    ${phase === 0 ? '' : phase < 0.5 ?
+      `<path d="M 100 20 A 80 80 0 0 1 100 180 A ${80 * Math.abs(1 - phase * 4)} 80 0 ${phase > 0.25 ? 1 : 0} ${phase > 0.25 ? 1 : 0} 100 20" fill="#f5f5dc"/>` :
+      `<path d="M 100 20 A 80 80 0 0 0 100 180 A ${80 * Math.abs(1 - (phase - 0.5) * 4)} 80 0 ${phase > 0.75 ? 0 : 1} ${phase > 0.75 ? 0 : 1} 100 20" fill="#f5f5dc"/>`
+    }
+  </svg>
+  
+  <table style="margin: 15px auto; text-align: left;">
+    <tr><td><strong>Day of Cycle:</strong></td><td>${dayOfCycle.toFixed(1)} / 29.5</td></tr>
+    <tr><td><strong>Illumination:</strong></td><td>${illumination.toFixed(0)}%</td></tr>
+    <tr><td><strong>Approximate Moonrise:</strong></td><td>${moonrise}</td></tr>
+  </table>
+</div>
+`
+```
+
+## Eclipses
+
+**Eclipses** occur when the Sun, Earth, and Moon align precisely.
+
+```{python}
+#| label: fig-eclipses
+#| fig-cap: "Solar and lunar eclipse configurations"
+#| code-fold: true
+
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 8))
+
+# Solar Eclipse
+ax1.set_xlim(0, 14)
+ax1.set_ylim(0, 4)
+ax1.axis('off')
+ax1.set_title('Solar Eclipse (Moon between Sun and Earth)', fontsize=14, fontweight='bold')
+
+# Sun
+sun = mpatches.Circle((2, 2), 1.2, color='#FFD700', ec='orange', linewidth=2)
+ax1.add_patch(sun)
+ax1.text(2, 2, 'SUN', ha='center', va='center', fontsize=10, fontweight='bold')
+
+# Moon
+moon = mpatches.Circle((6, 2), 0.3, color='#555555', ec='black', linewidth=1)
+ax1.add_patch(moon)
+ax1.text(6, 2.7, 'Moon', ha='center', fontsize=9)
+
+# Earth
+earth = mpatches.Circle((10, 2), 0.5, color='#4169E1', ec='darkblue', linewidth=1)
+ax1.add_patch(earth)
+ax1.text(10, 2, 'EARTH', ha='center', va='center', fontsize=8, fontweight='bold', color='white')
+
+# Shadow cone
+ax1.fill([6.3, 12, 12, 6.3], [2.3, 3, 1, 1.7], color='gray', alpha=0.3)
+ax1.text(8, 0.5, 'Moon\'s shadow falls on Earth', ha='center', fontsize=10, style='italic')
+
+# Lunar Eclipse
+ax2.set_xlim(0, 14)
+ax2.set_ylim(0, 4)
+ax2.axis('off')
+ax2.set_title('Lunar Eclipse (Earth between Sun and Moon)', fontsize=14, fontweight='bold')
+
+# Sun
+sun2 = mpatches.Circle((2, 2), 1.2, color='#FFD700', ec='orange', linewidth=2)
+ax2.add_patch(sun2)
+ax2.text(2, 2, 'SUN', ha='center', va='center', fontsize=10, fontweight='bold')
+
+# Earth
+earth2 = mpatches.Circle((6, 2), 0.5, color='#4169E1', ec='darkblue', linewidth=1)
+ax2.add_patch(earth2)
+ax2.text(6, 2, 'EARTH', ha='center', va='center', fontsize=8, fontweight='bold', color='white')
+
+# Moon (in shadow - reddish)
+moon2 = mpatches.Circle((10, 2), 0.3, color='#8B0000', ec='black', linewidth=1)
+ax2.add_patch(moon2)
+ax2.text(10, 2.7, 'Moon\n(Blood Moon)', ha='center', fontsize=9)
+
+# Shadow cone
+ax2.fill([6.5, 12, 12, 6.5], [2.4, 2.8, 1.2, 1.6], color='gray', alpha=0.4)
+ax2.text(8, 0.5, 'Earth\'s shadow falls on Moon', ha='center', fontsize=10, style='italic')
+
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-note}
+## Why Don't We Have Eclipses Every Month?
+The Moon's orbit is tilted about 5° relative to Earth's orbit around the Sun. Eclipses only occur when the Moon crosses the plane of Earth's orbit (at "nodes") during a new or full moon.
+:::
+
+## Tides
+
+Tides are caused by the gravitational pull of the Moon and Sun on Earth's oceans.
+
+```{python}
+#| label: fig-tides
+#| fig-cap: "Spring and neap tides throughout the lunar cycle"
+#| code-fold: true
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 8))
+
+# Tidal cycle over one month
+days = np.linspace(0, 29.5, 300)
+# Spring tides at new moon (0) and full moon (14.75)
+# Neap tides at quarters (7.375 and 22.125)
+spring_neap = np.cos(2 * np.pi * days / 14.75)  # Envelope
+daily_tide = np.cos(2 * np.pi * days / 0.517)   # ~12.4 hour cycle
+
+tide_height = 1 + 0.4 * spring_neap + 0.8 * daily_tide * (1 + 0.3 * spring_neap)
+
+ax1.plot(days, tide_height, 'b-', linewidth=1)
+ax1.fill_between(days, 0, tide_height, alpha=0.3)
+
+# Mark moon phases
+phases_days = [0, 7.375, 14.75, 22.125, 29.5]
+phases_names = ['New Moon\n(Spring Tide)', 'First Quarter\n(Neap Tide)', 
+                'Full Moon\n(Spring Tide)', 'Third Quarter\n(Neap Tide)', 'New Moon']
+for d, name in zip(phases_days, phases_names):
+    ax1.axvline(x=d, color='gray', linestyle='--', alpha=0.5)
+    ax1.text(d, 2.5, name, ha='center', fontsize=8, rotation=0)
+
+ax1.set_xlabel('Day of Lunar Cycle', fontsize=12)
+ax1.set_ylabel('Relative Tide Height', fontsize=12)
+ax1.set_title('Tidal Patterns Over One Lunar Month', fontsize=14, fontweight='bold')
+ax1.set_xlim(0, 29.5)
+ax1.grid(True, alpha=0.3)
+
+# Spring vs Neap tide diagram
+ax2.set_xlim(0, 14)
+ax2.set_ylim(0, 6)
+ax2.axis('off')
+
+# Spring tide (left)
+ax2.text(3.5, 5.5, 'SPRING TIDE', ha='center', fontsize=12, fontweight='bold')
+ax2.text(3.5, 5, '(New or Full Moon)', ha='center', fontsize=10)
+
+# Sun, Earth, Moon aligned
+ax2.add_patch(mpatches.Circle((1, 3), 0.6, color='#FFD700'))
+ax2.text(1, 3, 'Sun', ha='center', va='center', fontsize=8)
+ax2.add_patch(mpatches.Circle((3.5, 3), 0.4, color='#4169E1'))
+ax2.text(3.5, 3, 'E', ha='center', va='center', fontsize=10, color='white')
+ax2.add_patch(mpatches.Circle((5.5, 3), 0.2, color='gray'))
+ax2.text(5.5, 3.5, 'Moon', ha='center', fontsize=8)
+
+# Tidal bulges (exaggerated)
+ax2.add_patch(mpatches.Ellipse((3.5, 3), 1.6, 0.6, color='lightblue', alpha=0.5))
+ax2.text(3.5, 1.5, 'Combined pull = Higher tides', ha='center', fontsize=9)
+
+# Neap tide (right)
+ax2.text(10.5, 5.5, 'NEAP TIDE', ha='center', fontsize=12, fontweight='bold')
+ax2.text(10.5, 5, '(First or Third Quarter)', ha='center', fontsize=10)
+
+# Sun, Earth, Moon at right angle
+ax2.add_patch(mpatches.Circle((8, 3), 0.6, color='#FFD700'))
+ax2.text(8, 3, 'Sun', ha='center', va='center', fontsize=8)
+ax2.add_patch(mpatches.Circle((10.5, 3), 0.4, color='#4169E1'))
+ax2.text(10.5, 3, 'E', ha='center', va='center', fontsize=10, color='white')
+ax2.add_patch(mpatches.Circle((10.5, 5), 0.2, color='gray'))
+ax2.text(11, 5, 'Moon', ha='left', fontsize=8)
+
+# Tidal bulges (smaller)
+ax2.add_patch(mpatches.Ellipse((10.5, 3), 1.2, 0.5, color='lightblue', alpha=0.5))
+ax2.text(10.5, 1.5, 'Pulls partially cancel = Lower tides', ha='center', fontsize=9)
+
+plt.tight_layout()
+plt.show()
+```
+
+## Interactive: Tide Predictor
+
+```{ojs}
+//| echo: false
+
+viewof lunarDay = Inputs.range([0, 29.5], {
+  value: 0,
+  step: 0.5,
+  label: "Day of Lunar Cycle"
+})
+
+viewof hourOfDay = Inputs.range([0, 24], {
+  value: 12,
+  step: 0.5,
+  label: "Hour of Day"
+})
+
+// Calculate tide
+springNeapFactor = Math.cos(2 * Math.PI * lunarDay / 14.75)
+dailyTide = Math.cos(2 * Math.PI * hourOfDay / 12.4)
+tideHeight = (1 + 0.4 * springNeapFactor + 0.8 * dailyTide * (1 + 0.3 * springNeapFactor)).toFixed(2)
+
+tideType = springNeapFactor > 0.5 ? "Spring Tide (higher highs, lower lows)" :
+           springNeapFactor < -0.5 ? "Neap Tide (moderate range)" :
+           "Transitional"
+
+currentTide = dailyTide > 0.3 ? "High Tide" :
+              dailyTide < -0.3 ? "Low Tide" :
+              dailyTide > 0 ? "Falling Tide" : "Rising Tide"
+```
+
+```{ojs}
+//| echo: false
+
+html`
+<div class="interactive-container">
+  <h3>Tide Conditions</h3>
+  
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin: 15px 0;">
+    <div style="background: #e0f2fe; padding: 15px; border-radius: 8px; text-align: center;">
+      <div style="font-size: 28px; font-weight: bold; color: #0369a1;">${tideHeight}m</div>
+      <div>Relative Height</div>
+    </div>
+    <div style="background: #dbeafe; padding: 15px; border-radius: 8px; text-align: center;">
+      <div style="font-size: 18px; font-weight: bold;">${currentTide}</div>
+      <div>Current Status</div>
+    </div>
+    <div style="background: #e0e7ff; padding: 15px; border-radius: 8px; text-align: center;">
+      <div style="font-size: 14px; font-weight: bold;">${tideType}</div>
+      <div>Tide Type</div>
+    </div>
+  </div>
+  
+  <svg width="100%" height="100" style="display: block;">
+    <rect x="0" y="0" width="100%" height="100" fill="#87CEEB"/>
+    <rect x="0" y="${100 - tideHeight * 30}" width="100%" height="${tideHeight * 30}" fill="#1E90FF"/>
+    <rect x="0" y="80" width="100%" height="20" fill="#C2B280"/>
+  </svg>
+  
+  <p style="text-align: center; font-size: 12px; color: #666; margin-top: 10px;">
+    Tides cycle approximately every 12 hours and 25 minutes due to the Moon's orbit.
+  </p>
+</div>
+`
+```
+
+## Seasons
+
+Earth's seasons are caused by the 23.5° tilt of Earth's axis, not by distance from the Sun.
+
+```{python}
+#| label: fig-seasons
+#| fig-cap: "Earth's axial tilt creates the seasons"
+#| code-fold: true
+
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import numpy as np
+
+fig, ax = plt.subplots(figsize=(14, 8))
+ax.set_xlim(-3, 3)
+ax.set_ylim(-2.5, 2.5)
+ax.set_aspect('equal')
+ax.axis('off')
+
+# Sun in center
+sun = mpatches.Circle((0, 0), 0.4, color='#FFD700', ec='orange', linewidth=2)
+ax.add_patch(sun)
+ax.text(0, 0, 'SUN', ha='center', va='center', fontsize=10, fontweight='bold')
+
+# Earth's orbit
+orbit = mpatches.Circle((0, 0), 2, fill=False, color='gray', linestyle='--', linewidth=1)
+ax.add_patch(orbit)
+
+# Earth at four positions
+positions = [
+    (2, 0, 'Summer Solstice\n(June 21)', 23.5, 'Northern Hemisphere\ntilted toward Sun'),
+    (0, 2, 'Fall Equinox\n(Sept 22)', 23.5, 'Equal day/night\nworldwide'),
+    (-2, 0, 'Winter Solstice\n(Dec 21)', 23.5, 'Northern Hemisphere\ntilted away from Sun'),
+    (0, -2, 'Spring Equinox\n(March 20)', 23.5, 'Equal day/night\nworldwide')
+]
+
+for x, y, label, tilt, desc in positions:
+    # Earth
+    earth = mpatches.Circle((x, y), 0.25, color='#4169E1', ec='darkblue', linewidth=1)
+    ax.add_patch(earth)
+    
+    # Axis (tilted)
+    if x == 2:  # Summer - tilted toward sun
+        ax.plot([x-0.15, x+0.15], [y-0.3, y+0.3], 'k-', linewidth=2)
+    elif x == -2:  # Winter - tilted away
+        ax.plot([x+0.15, x-0.15], [y-0.3, y+0.3], 'k-', linewidth=2)
+    else:  # Equinoxes - tilted sideways
+        ax.plot([x, x], [y-0.35, y+0.35], 'k-', linewidth=2)
+    
+    # Labels
+    offset = 0.6 if abs(x) > abs(y) else 0.5
+    label_x = x + (offset if x > 0 else -offset if x < 0 else 0)
+    label_y = y + (offset if y > 0 else -offset if y < 0 else 0.5)
+    ax.text(label_x, label_y, label, ha='center', va='center', fontsize=10, fontweight='bold')
+    
+    desc_y = y + (1.2 if y > 0 else -1.2 if y < 0 else 0)
+    desc_x = x + (1 if x > 0 else -1 if x < 0 else 0)
+    ax.text(desc_x, desc_y, desc, ha='center', va='center', fontsize=8, style='italic')
+
+ax.set_title("Earth's Seasons (Northern Hemisphere Perspective)", fontsize=14, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
+```
+
+## Simulation: Moon Phases and Eclipses
+
+<iframe src="https://phet.colorado.edu/sims/html/gravity-and-orbits/latest/gravity-and-orbits_all.html" 
+        width="100%" 
+        height="600" 
+        allowfullscreen>
+</iframe>
+
+## Check Your Understanding
+
+::: {.callout-note}
+## Questions
+1. Why do we always see the same side of the Moon from Earth?
+2. Explain why solar eclipses are rarer than lunar eclipses for any given location.
+3. What causes spring tides to be higher than neap tides?
+4. Why is it summer in Australia when it's winter in New York?
+:::
