@@ -1,0 +1,651 @@
+---
+title: "Unit 4: Climate Feedbacks 5E"
+subtitle: "What is causing global temperatures to rise, and why is the Arctic warming at almost 4 times the rate as the rest of the globe?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+.engage-box { background: #e3f2fd; border-left: 5px solid #2196F3; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.explore-box { background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.explain-box { background: #e8f5e9; border-left: 5px solid #4caf50; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.elaborate-box { background: #f3e5f5; border-left: 5px solid #9c27b0; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.evaluate-box { background: #ffebee; border-left: 5px solid #f44336; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.check-understanding { background-color: #d1ecf1; border-left: 5px solid #17a2b8; padding: 15px; margin: 15px 0; }
+.key-idea { background-color: #d4edda; border-left: 5px solid #28a745; padding: 15px; margin: 15px 0; }
+.lab-activity { background: #fafafa; border: 2px solid #333; padding: 20px; margin: 20px 0; border-radius: 10px; }
+.quiz-section { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 20px; margin: 20px 0; border-radius: 10px; }
+.feedback-loop { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0; }
+.pe-badge { display: inline-block; background: #673ab7; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin: 5px; }
+</style>
+```
+
+<span class="pe-badge">HS-ESS2-2</span> <span class="pe-badge">HS-ESS2-4</span> <span class="pe-badge">HS-ESS2-6</span>
+
+# Investigative Phenomenon
+
+::: {.engage-box}
+## 🌡️ Arctic Amplification
+
+**The globe is warming, and the average temperature of the Arctic is increasing at almost 4 times the rate as the rest of the globe.**
+
+### Driving Questions:
+- If the Sun isn't causing warming, then what is?
+- What do greenhouse gases have to do with climate change?
+- How are humans causing climate change?
+- What is the relationship between ice sheets and warming?
+:::
+
+# Engage: Arctic vs Global Warming
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+
+arcticData = [
+  {year: 1980, global: 0.26, arctic: 0.4},
+  {year: 1985, global: 0.12, arctic: 0.3},
+  {year: 1990, global: 0.45, arctic: 0.8},
+  {year: 1995, global: 0.45, arctic: 0.9},
+  {year: 2000, global: 0.42, arctic: 1.0},
+  {year: 2005, global: 0.69, arctic: 1.5},
+  {year: 2010, global: 0.72, arctic: 1.8},
+  {year: 2015, global: 0.90, arctic: 2.5},
+  {year: 2020, global: 1.02, arctic: 3.2},
+  {year: 2024, global: 1.29, arctic: 4.1}
+]
+
+Plot.plot({
+  title: "Temperature Change: Arctic vs Global Average",
+  subtitle: "Anomaly relative to 1951-1980 baseline (°C)",
+  width: 700,
+  height: 400,
+  y: {label: "Temperature Anomaly (°C)", domain: [0, 4.5]},
+  x: {label: "Year"},
+  color: {legend: true},
+  marks: [
+    Plot.line(arcticData, {x: "year", y: "arctic", stroke: "#3498db", strokeWidth: 3}),
+    Plot.line(arcticData, {x: "year", y: "global", stroke: "#e74c3c", strokeWidth: 3}),
+    Plot.dot(arcticData, {x: "year", y: "arctic", fill: "#3498db", r: 5}),
+    Plot.dot(arcticData, {x: "year", y: "global", fill: "#e74c3c", r: 5}),
+    Plot.text([{x: 2010, y: 2.3}], {x: "x", y: "y", text: d => "Arctic", fill: "#3498db", fontSize: 14, fontWeight: "bold"}),
+    Plot.text([{x: 2010, y: 0.5}], {x: "x", y: "y", text: d => "Global", fill: "#e74c3c", fontSize: 14, fontWeight: "bold"})
+  ]
+})
+```
+
+::: {.check-understanding}
+### 🤔 Initial Questions
+1. How much faster is the Arctic warming compared to the global average?
+2. What might explain why the Arctic is warming so much faster?
+3. What changes might be happening in the Arctic that could amplify warming?
+:::
+
+# Explore Part 1: The Greenhouse Effect
+
+## PhET Greenhouse Effect Simulation
+
+Explore how greenhouse gases trap heat in Earth's atmosphere:
+
+```{=html}
+<div style="text-align: center; margin: 20px 0;">
+  <iframe src="https://phet.colorado.edu/sims/html/greenhouse-effect/latest/greenhouse-effect_en.html" 
+          width="800" height="600" allowfullscreen style="border: 2px solid #ccc; border-radius: 10px;"></iframe>
+  <p style="margin-top: 10px; font-size: 12px; color: #666;">
+    Can't see the simulation? <a href="https://phet.colorado.edu/sims/html/greenhouse-effect/latest/greenhouse-effect_en.html" target="_blank">Open in new tab</a>
+  </p>
+</div>
+```
+
+::: {.explore-box}
+### 🔬 Simulation Investigation Tasks
+
+**Task 1: Explore the Greenhouse Effect**
+1. Start with "Waves" mode to see how infrared radiation interacts with greenhouse gases
+2. Compare Earth's temperature with NO greenhouse gases vs. with greenhouse gases
+3. Record the equilibrium temperature for each scenario
+
+**Task 2: Compare Different Atmospheres**
+1. Try the Ice Age atmosphere setting
+2. Try the 1750 (pre-industrial) setting
+3. Try the "Today" setting
+4. Record how temperature changes with different CO₂ levels
+
+**Task 3: Photon Absorption**
+1. Switch to "Photons" mode
+2. Observe what happens when infrared photons encounter CO₂ molecules
+3. Explain why more CO₂ = more warming
+:::
+
+## CO₂ and Temperature: The Evidence
+
+### Ice Core Data: 800,000 Years of CO₂ and Temperature
+
+```{ojs}
+//| echo: false
+// Ice core CO2 and temperature data
+iceCoreData = [
+  {kya: 800, co2: 190, temp: -8},
+  {kya: 700, co2: 210, temp: -6},
+  {kya: 600, co2: 240, temp: -4},
+  {kya: 500, co2: 200, temp: -7},
+  {kya: 400, co2: 180, temp: -9},
+  {kya: 350, co2: 200, temp: -6},
+  {kya: 300, co2: 240, temp: -3},
+  {kya: 250, co2: 200, temp: -7},
+  {kya: 200, co2: 190, temp: -8},
+  {kya: 150, co2: 220, temp: -5},
+  {kya: 130, co2: 280, temp: 2},
+  {kya: 100, co2: 230, temp: -4},
+  {kya: 50, co2: 200, temp: -6},
+  {kya: 20, co2: 180, temp: -9},
+  {kya: 10, co2: 260, temp: -1},
+  {kya: 0.2, co2: 280, temp: 0},
+  {kya: 0, co2: 420, temp: 1.2}
+]
+```
+
+```{ojs}
+//| echo: false
+viewof showModern = Inputs.toggle({label: "Show modern CO₂ level (420 ppm)", value: false})
+```
+
+```{ojs}
+//| echo: false
+displayData = showModern ? iceCoreData : iceCoreData.filter(d => d.kya > 0.1)
+
+Plot.plot({
+  title: "CO₂ Concentration Over 800,000 Years",
+  subtitle: "Data from Antarctic ice cores",
+  width: 750,
+  height: 350,
+  x: {label: "Thousands of Years Ago", reverse: true, domain: [800, 0]},
+  y: {label: "CO₂ (ppm)", domain: [150, showModern ? 450 : 320]},
+  marks: [
+    Plot.ruleY([280], {stroke: "#999", strokeDasharray: "4,4"}),
+    Plot.line(displayData, {x: "kya", y: "co2", stroke: "#27ae60", strokeWidth: 2}),
+    Plot.dot(displayData.filter(d => d.kya === 0), {x: "kya", y: "co2", fill: "#e74c3c", r: 10}),
+    Plot.text([{x: 400, y: 295}], {x: "x", y: "y", text: d => "Pre-industrial maximum: 280 ppm", fill: "#999", fontSize: 11}),
+    showModern ? Plot.text([{x: 50, y: 420}], {x: "x", y: "y", text: d => "TODAY: 420 ppm", fill: "#e74c3c", fontSize: 12, fontWeight: "bold"}) : null
+  ].filter(d => d !== null)
+})
+```
+
+::: {.check-understanding}
+### ✅ Data Analysis
+1. What is the highest CO₂ level in the past 800,000 years (before humans)?
+2. What is today's CO₂ level?
+3. How does today's CO₂ compare to the natural range?
+4. What pattern do you notice between CO₂ and temperature in the ice core record?
+:::
+
+# Explore Part 2: The Albedo Effect
+
+## What is Albedo?
+
+**Albedo** is the measure of how much light a surface reflects. It ranges from 0 (absorbs all light) to 1 (reflects all light).
+
+```{ojs}
+//| echo: false
+albedoData = [
+  {surface: "Fresh Snow", albedo: 0.85, color: "#ffffff"},
+  {surface: "Sea Ice", albedo: 0.60, color: "#b3e5fc"},
+  {surface: "Old Snow", albedo: 0.45, color: "#e0e0e0"},
+  {surface: "Desert Sand", albedo: 0.40, color: "#fdd835"},
+  {surface: "Grassland", albedo: 0.25, color: "#81c784"},
+  {surface: "Forest", albedo: 0.15, color: "#2e7d32"},
+  {surface: "Ocean Water", albedo: 0.06, color: "#1565c0"},
+  {surface: "Asphalt", albedo: 0.04, color: "#37474f"}
+]
+
+Plot.plot({
+  title: "Albedo of Different Surfaces",
+  subtitle: "Higher albedo = more reflection = less heating",
+  width: 700,
+  height: 400,
+  x: {label: "Albedo (reflection coefficient)", domain: [0, 1]},
+  y: {label: "Surface Type", domain: albedoData.map(d => d.surface)},
+  marks: [
+    Plot.barX(albedoData, {x: "albedo", y: "surface", fill: "color", sort: {y: "-x"}}),
+    Plot.text(albedoData, {x: "albedo", y: "surface", text: d => (d.albedo * 100).toFixed(0) + "%", dx: 25, fontSize: 12})
+  ]
+})
+```
+
+## Interactive: Ice-Albedo Feedback Simulation
+
+```{ojs}
+//| echo: false
+viewof iceExtent = Inputs.range([0, 100], {
+  step: 5,
+  value: 50,
+  label: "Arctic Ice Coverage (%):"
+})
+```
+
+```{ojs}
+//| echo: false
+// Calculate absorbed energy based on ice extent
+avgAlbedo = (iceExtent / 100 * 0.6) + ((100 - iceExtent) / 100 * 0.06)
+absorbedEnergy = ((1 - avgAlbedo) * 100).toFixed(1)
+reflectedEnergy = (avgAlbedo * 100).toFixed(1)
+
+html`
+<div style="display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0;">
+  <div style="flex: 1; min-width: 300px;">
+    <svg width="350" height="250" style="background: linear-gradient(180deg, #87CEEB 0%, #1565c0 100%); border-radius: 10px;">
+      <!-- Ice -->
+      <rect x="0" y="150" width="${iceExtent * 3.5}" height="100" fill="#e3f2fd" opacity="0.9"/>
+      <!-- Ocean -->
+      <rect x="${iceExtent * 3.5}" y="150" width="${(100 - iceExtent) * 3.5}" height="100" fill="#0d47a1"/>
+      <!-- Sun rays -->
+      <line x1="175" y1="20" x2="100" y2="140" stroke="yellow" stroke-width="3" marker-end="url(#arrow)"/>
+      <line x1="175" y1="20" x2="250" y2="140" stroke="yellow" stroke-width="3"/>
+      <!-- Reflected rays from ice -->
+      <line x1="100" y1="140" x2="50" y2="60" stroke="yellow" stroke-width="2" stroke-dasharray="5,5" opacity="${iceExtent/100}"/>
+      <!-- Labels -->
+      <text x="50" y="200" fill="white" font-size="12">Ice: ${iceExtent}%</text>
+      <text x="250" y="200" fill="white" font-size="12">Ocean: ${100-iceExtent}%</text>
+    </svg>
+  </div>
+  <div style="flex: 1; min-width: 250px; padding: 20px; background: #f5f5f5; border-radius: 10px;">
+    <h4 style="margin-top: 0;">Energy Balance</h4>
+    <p><strong>Average Albedo:</strong> ${(avgAlbedo * 100).toFixed(1)}%</p>
+    <p><strong>Energy Reflected:</strong> ${reflectedEnergy}%</p>
+    <p><strong>Energy Absorbed:</strong> ${absorbedEnergy}%</p>
+    <div style="margin-top: 15px; padding: 10px; background: ${iceExtent < 30 ? '#ffcdd2' : iceExtent > 70 ? '#c8e6c9' : '#fff9c4'}; border-radius: 5px;">
+      <strong>Effect:</strong> ${iceExtent < 30 ? '🔥 High absorption → More warming → More ice melts' : iceExtent > 70 ? '❄️ High reflection → Less warming → Ice preserved' : '⚖️ Moderate balance'}
+    </div>
+  </div>
+</div>
+`
+```
+
+::: {.lab-activity}
+## 🔬 Lab Activity: Albedo Investigation
+
+### Materials:
+- Two identical containers with lids
+- Black paper and white paper
+- Two thermometers
+- Heat lamp or sunny window
+- Timer
+
+### Procedure:
+
+1. **Setup:**
+   - Line one container with black paper (low albedo)
+   - Line the other with white paper (high albedo)
+   - Place a thermometer in each container
+
+2. **Data Collection:**
+   - Record starting temperatures
+   - Place both containers under heat lamp or in direct sunlight
+   - Record temperatures every 2 minutes for 20 minutes
+
+3. **Data Table:**
+
+| Time (min) | Black Container (°C) | White Container (°C) | Difference (°C) |
+|------------|---------------------|---------------------|-----------------|
+| 0 | | | |
+| 2 | | | |
+| 4 | | | |
+| 6 | | | |
+| 8 | | | |
+| 10 | | | |
+| 12 | | | |
+| 14 | | | |
+| 16 | | | |
+| 18 | | | |
+| 20 | | | |
+
+4. **Analysis Questions:**
+   - Which container heated up faster? Why?
+   - How does this relate to ice-covered vs. ice-free Arctic?
+   - Predict what happens as Arctic ice melts.
+:::
+
+# Explain: Feedback Loops in the Climate System
+
+::: {.explain-box}
+## 🔄 Understanding Climate Feedbacks
+
+A **feedback loop** occurs when the output of a system affects its input, creating a cycle.
+
+### Positive Feedback (Amplifying)
+Makes changes BIGGER - the system amplifies itself
+
+### Negative Feedback (Stabilizing)  
+Makes changes SMALLER - the system stabilizes itself
+:::
+
+## Interactive Feedback Loop Diagram
+
+```{ojs}
+//| echo: false
+viewof feedbackType = Inputs.radio(["Ice-Albedo Feedback", "Water Vapor Feedback", "Permafrost Feedback"], {
+  label: "Select feedback loop:",
+  value: "Ice-Albedo Feedback"
+})
+```
+
+```{ojs}
+//| echo: false
+feedbackInfo = {
+  if (feedbackType === "Ice-Albedo Feedback") {
+    return {
+      steps: [
+        "1. Temperature increases",
+        "2. Ice and snow melt",
+        "3. Darker ocean/land exposed",
+        "4. More solar radiation absorbed",
+        "5. Temperature increases MORE"
+      ],
+      color: "#3498db",
+      icon: "🧊"
+    }
+  } else if (feedbackType === "Water Vapor Feedback") {
+    return {
+      steps: [
+        "1. Temperature increases",
+        "2. More water evaporates",
+        "3. Water vapor is a greenhouse gas",
+        "4. More heat trapped in atmosphere",
+        "5. Temperature increases MORE"
+      ],
+      color: "#9b59b6",
+      icon: "💨"
+    }
+  } else {
+    return {
+      steps: [
+        "1. Temperature increases",
+        "2. Permafrost thaws",
+        "3. Trapped methane/CO₂ released",
+        "4. More greenhouse gases in atmosphere",
+        "5. Temperature increases MORE"
+      ],
+      color: "#e67e22",
+      icon: "🏔️"
+    }
+  }
+}
+
+html`
+<div style="background: linear-gradient(135deg, ${feedbackInfo.color}22, ${feedbackInfo.color}44); padding: 25px; border-radius: 15px; border-left: 5px solid ${feedbackInfo.color};">
+  <h3 style="margin-top: 0;">${feedbackInfo.icon} ${feedbackType}</h3>
+  <div style="display: flex; flex-direction: column; gap: 10px;">
+    ${feedbackInfo.steps.map((step, i) => `
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 30px; height: 30px; background: ${feedbackInfo.color}; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">${i+1}</div>
+        <div style="flex: 1; padding: 10px; background: white; border-radius: 5px;">${step.substring(3)}</div>
+        ${i < feedbackInfo.steps.length - 1 ? '<div style="font-size: 20px;">↓</div>' : '<div style="font-size: 20px;">🔄</div>'}
+      </div>
+    `).join('')}
+  </div>
+  <p style="margin-top: 15px; font-style: italic;"><strong>Type:</strong> Positive (amplifying) feedback - makes warming worse!</p>
+</div>
+`
+```
+
+::: {.feedback-loop}
+## 🌍 Why the Arctic Warms 4x Faster
+
+The **Ice-Albedo Feedback** explains Arctic amplification:
+
+1. **Arctic has lots of ice** (high albedo ~60%)
+2. **Global warming melts some ice**
+3. **Dark ocean exposed** (low albedo ~6%)
+4. **Ocean absorbs 10x more energy** than ice did
+5. **Local temperature rises dramatically**
+6. **More ice melts** → cycle continues
+
+This is why the Arctic is the "canary in the coal mine" for climate change!
+:::
+
+## Arctic Sea Ice Decline
+
+```{ojs}
+//| echo: false
+seaIceData = [
+  {year: 1980, extent: 7.8},
+  {year: 1985, extent: 7.5},
+  {year: 1990, extent: 7.4},
+  {year: 1995, extent: 7.1},
+  {year: 2000, extent: 6.8},
+  {year: 2005, extent: 6.2},
+  {year: 2007, extent: 4.3},
+  {year: 2010, extent: 5.0},
+  {year: 2012, extent: 3.6},
+  {year: 2015, extent: 4.6},
+  {year: 2020, extent: 3.9},
+  {year: 2024, extent: 4.2}
+]
+
+Plot.plot({
+  title: "September Arctic Sea Ice Extent",
+  subtitle: "Million square kilometers",
+  width: 700,
+  height: 400,
+  x: {label: "Year"},
+  y: {label: "Sea Ice Extent (million km²)", domain: [0, 9]},
+  marks: [
+    Plot.areaY(seaIceData, {x: "year", y: "extent", fill: "#81d4fa", fillOpacity: 0.5}),
+    Plot.line(seaIceData, {x: "year", y: "extent", stroke: "#0277bd", strokeWidth: 3}),
+    Plot.dot(seaIceData, {x: "year", y: "extent", fill: "#01579b", r: 5}),
+    Plot.dot(seaIceData.filter(d => d.year === 2012), {x: "year", y: "extent", fill: "#e74c3c", r: 8}),
+    Plot.text(seaIceData.filter(d => d.year === 2012), {x: "year", y: "extent", text: d => "Record Low: 2012", dy: -15, fill: "#e74c3c", fontSize: 11}),
+    Plot.linearRegressionY(seaIceData, {x: "year", y: "extent", stroke: "#e74c3c", strokeDasharray: "5,5"})
+  ]
+})
+```
+
+::: {.check-understanding}
+### ✅ Check Your Understanding
+
+1. What type of feedback is the ice-albedo feedback? (positive or negative)
+2. Why does exposing dark ocean water lead to more warming?
+3. Calculate: If ice (albedo 0.6) is replaced by ocean (albedo 0.06), how much more energy is absorbed?
+4. How does the ice-albedo feedback help explain why the Arctic warms faster than the rest of the planet?
+:::
+
+# Elaborate: CO₂ and Human Activity
+
+## Where Does the CO₂ Come From?
+
+```{ojs}
+//| echo: false
+co2SourcesData = [
+  {source: "Electricity & Heat", emissions: 25, color: "#e74c3c"},
+  {source: "Transportation", emissions: 16, color: "#3498db"},
+  {source: "Manufacturing", emissions: 21, color: "#f39c12"},
+  {source: "Agriculture & Land Use", emissions: 24, color: "#27ae60"},
+  {source: "Buildings", emissions: 6, color: "#9b59b6"},
+  {source: "Other Energy", emissions: 8, color: "#95a5a6"}
+]
+
+Plot.plot({
+  title: "Global Greenhouse Gas Emissions by Sector",
+  width: 600,
+  height: 400,
+  x: {label: "Percentage of Global Emissions"},
+  y: {label: "Sector", domain: co2SourcesData.map(d => d.source)},
+  marks: [
+    Plot.barX(co2SourcesData, {x: "emissions", y: "source", fill: "color", sort: {y: "-x"}}),
+    Plot.text(co2SourcesData, {x: "emissions", y: "source", text: d => d.emissions + "%", dx: 20, fontSize: 12, fontWeight: "bold"})
+  ]
+})
+```
+
+## CO₂ Growth Over Time
+
+```{ojs}
+//| echo: false
+co2GrowthData = [
+  {year: 1750, co2: 280, source: "Pre-industrial"},
+  {year: 1800, co2: 283, source: "Historical"},
+  {year: 1850, co2: 288, source: "Historical"},
+  {year: 1900, co2: 296, source: "Historical"},
+  {year: 1950, co2: 311, source: "Historical"},
+  {year: 1960, co2: 317, source: "Mauna Loa"},
+  {year: 1970, co2: 326, source: "Mauna Loa"},
+  {year: 1980, co2: 339, source: "Mauna Loa"},
+  {year: 1990, co2: 354, source: "Mauna Loa"},
+  {year: 2000, co2: 369, source: "Mauna Loa"},
+  {year: 2010, co2: 390, source: "Mauna Loa"},
+  {year: 2020, co2: 414, source: "Mauna Loa"},
+  {year: 2024, co2: 422, source: "Mauna Loa"}
+]
+
+Plot.plot({
+  title: "Atmospheric CO₂ Concentration (1750-2024)",
+  subtitle: "Parts per million (ppm)",
+  width: 700,
+  height: 400,
+  x: {label: "Year"},
+  y: {label: "CO₂ (ppm)", domain: [270, 440]},
+  marks: [
+    Plot.ruleY([280], {stroke: "#27ae60", strokeDasharray: "5,5"}),
+    Plot.text([{x: 1800, y: 275}], {x: "x", y: "y", text: d => "Pre-industrial level: 280 ppm", fill: "#27ae60", fontSize: 10}),
+    Plot.ruleY([350], {stroke: "#f39c12", strokeDasharray: "5,5"}),
+    Plot.text([{x: 1800, y: 345}], {x: "x", y: "y", text: d => "\"Safe\" level: 350 ppm", fill: "#f39c12", fontSize: 10}),
+    Plot.line(co2GrowthData, {x: "year", y: "co2", stroke: "#e74c3c", strokeWidth: 3}),
+    Plot.dot(co2GrowthData, {x: "year", y: "co2", fill: "#c0392b", r: 4})
+  ]
+})
+```
+
+::: {.key-idea}
+### 💡 Key Ideas: Climate Feedbacks
+
+1. **The greenhouse effect** explains why increasing CO₂ leads to global warming
+2. **Albedo** is the tendency of a surface to reflect or absorb radiation
+3. **Ice has high albedo** (~60%) compared to seawater (~6%)
+4. **As ice melts, more radiation is absorbed**, causing more warming → positive feedback
+5. **Arctic amplification** (4x faster warming) is explained by ice-albedo feedback
+6. **Multiple feedback loops** (ice-albedo, water vapor, permafrost) amplify climate change
+7. **Human activities** have dramatically increased CO₂ levels beyond natural ranges
+:::
+
+# Evaluate: Modeling Climate Feedbacks
+
+::: {.evaluate-box}
+## 📊 Performance Task Check-In
+
+Using what you've learned, you can now explain:
+
+1. **Why scientists are confident humans are causing climate change:**
+   - CO₂ levels are far beyond natural range (420 ppm vs. max 280 ppm)
+   - The timing matches industrialization
+   - Natural factors (Milankovitch cycles, solar output) can't explain current warming
+
+2. **Why the Arctic is warming so fast:**
+   - Ice-albedo feedback amplifies warming
+   - As ice melts, dark ocean absorbs more energy
+   - This creates a self-reinforcing cycle
+
+3. **How feedbacks make climate change worse:**
+   - Ice-albedo: melting ice → more absorption → more melting
+   - Water vapor: warming → more evaporation → more greenhouse effect
+   - Permafrost: warming → methane release → more warming
+:::
+
+## Create Your Feedback Diagram
+
+::: {.lab-activity}
+### 📝 Activity: Draw Your Own Feedback Loop
+
+Create a diagram showing how multiple feedback loops interact:
+
+1. Start with "Human emissions increase CO₂"
+2. Show how this leads to warming
+3. Include ice-albedo feedback
+4. Include water vapor feedback
+5. Show how they connect and amplify each other
+6. Indicate which parts are observed data vs. projected consequences
+
+**Guiding Questions:**
+- Where do humans enter this system?
+- Which parts of the cycle have we already observed?
+- What might happen if Arctic ice disappears entirely in summer?
+- Are there any potential negative (stabilizing) feedbacks?
+:::
+
+---
+
+::: {.quiz-section}
+## 📝 Climate Feedbacks Quiz
+
+**Question 1:** What is the primary greenhouse gas that humans have increased in the atmosphere?
+- A) Oxygen
+- B) Nitrogen
+- C) Carbon dioxide
+- D) Argon
+
+**Question 2:** What is albedo?
+- A) The amount of CO₂ in the atmosphere
+- B) The measure of how much light a surface reflects
+- C) The temperature of the ocean
+- D) The speed of ice melting
+
+**Question 3:** Which surface has the HIGHEST albedo?
+- A) Fresh snow
+- B) Ocean water
+- C) Forest
+- D) Desert sand
+
+**Question 4:** The ice-albedo feedback is an example of:
+- A) Negative feedback that stabilizes climate
+- B) Positive feedback that amplifies warming
+- C) No feedback effect
+- D) A cooling mechanism
+
+**Question 5:** Why is the Arctic warming almost 4 times faster than the global average?
+- A) The Sun is closer to the Arctic
+- B) Ice-albedo feedback amplifies warming there
+- C) There are more people in the Arctic
+- D) Volcanic activity in the Arctic
+
+**Question 6:** Current atmospheric CO₂ levels are approximately:
+- A) 280 ppm (pre-industrial level)
+- B) 350 ppm
+- C) 420 ppm
+- D) 1000 ppm
+
+**Question 7:** In the greenhouse effect, what type of radiation do greenhouse gases absorb?
+- A) Visible light from the Sun
+- B) Ultraviolet radiation
+- C) Infrared radiation from Earth's surface
+- D) X-rays
+
+**Question 8:** The permafrost feedback involves the release of which gases?
+- A) Oxygen and nitrogen
+- B) Methane and carbon dioxide
+- C) Ozone and CFCs
+- D) Hydrogen and helium
+
+**Question 9:** If Arctic sea ice (albedo 0.60) is replaced by open ocean (albedo 0.06), what happens to energy absorption?
+- A) Stays the same
+- B) Decreases slightly
+- C) Increases dramatically (10x more absorbed)
+- D) Decreases dramatically
+
+**Question 10:** Which statement best explains why scientists are confident humans are causing current climate change?
+- A) It's just a guess
+- B) Temperatures have changed before naturally
+- C) CO₂ levels are far beyond natural range and match timing of industrialization
+- D) The Sun has gotten brighter
+
+*Answers: 1-C, 2-B, 3-A, 4-B, 5-B, 6-C, 7-C, 8-B, 9-C, 10-C*
+:::

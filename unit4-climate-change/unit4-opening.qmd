@@ -1,0 +1,331 @@
+---
+title: "Unit 4: Climate Change - Unit Opening"
+subtitle: "How do natural factors contribute to changes in Earth's temperature?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+.anchor-box {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  padding: 25px;
+  border-radius: 15px;
+  margin: 20px 0;
+}
+.question-box {
+  background-color: #fff3cd;
+  border-left: 5px solid #ffc107;
+  padding: 15px;
+  margin: 15px 0;
+}
+.check-understanding {
+  background-color: #d1ecf1;
+  border-left: 5px solid #17a2b8;
+  padding: 15px;
+  margin: 15px 0;
+}
+.key-idea {
+  background-color: #d4edda;
+  border-left: 5px solid #28a745;
+  padding: 15px;
+  margin: 15px 0;
+}
+.quiz-section {
+  background-color: #f8d7da;
+  border-left: 5px solid #dc3545;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 10px;
+}
+</style>
+```
+
+# Anchor Phenomenon
+
+::: {.anchor-box}
+## 🌍 Earth's Temperature Is Rising
+
+**Earth's temperature is rising, reversing the cooling trend that occurred over the past 2,000 years, putting millions of people in harm's way, yet the public is not convinced of the risks.**
+
+### Essential Questions:
+- How do natural factors contribute to changes in Earth's temperature?
+- What are 99.9% of climate scientists seeing in historical climate data that makes them so sure humans are the cause of climate change today?
+- Why does it matter?
+:::
+
+# The Reality of Climate Change
+
+## Global Temperature Trends
+
+Let's examine how Earth's temperature has changed over time using real data.
+
+```{ojs}
+//| echo: false
+// Interactive Global Temperature Anomaly Visualization
+Plot = require("@observablehq/plot")
+
+// Temperature anomaly data (NASA GISTEMP simplified)
+tempData = [
+  {year: 1880, anomaly: -0.16}, {year: 1890, anomaly: -0.33},
+  {year: 1900, anomaly: -0.08}, {year: 1910, anomaly: -0.42},
+  {year: 1920, anomaly: -0.25}, {year: 1930, anomaly: -0.14},
+  {year: 1940, anomaly: 0.12}, {year: 1950, anomaly: -0.17},
+  {year: 1960, anomaly: -0.01}, {year: 1970, anomaly: -0.01},
+  {year: 1980, anomaly: 0.26}, {year: 1990, anomaly: 0.45},
+  {year: 2000, anomaly: 0.42}, {year: 2010, anomaly: 0.72},
+  {year: 2020, anomaly: 1.02}, {year: 2024, anomaly: 1.29}
+]
+```
+
+```{ojs}
+//| echo: false
+viewof yearRange = Inputs.range([1880, 2024], {
+  step: 10,
+  value: 2024,
+  label: "Explore data up to year:"
+})
+```
+
+```{ojs}
+//| echo: false
+filteredData = tempData.filter(d => d.year <= yearRange)
+
+Plot.plot({
+  title: "Global Temperature Anomaly (°C relative to 1951-1980 average)",
+  width: 700,
+  height: 400,
+  y: {label: "Temperature Anomaly (°C)", domain: [-0.6, 1.5]},
+  x: {label: "Year"},
+  marks: [
+    Plot.ruleY([0], {stroke: "#ccc", strokeDasharray: "4,4"}),
+    Plot.line(filteredData, {x: "year", y: "anomaly", stroke: "steelblue", strokeWidth: 2}),
+    Plot.dot(filteredData, {x: "year", y: "anomaly", fill: d => d.anomaly > 0 ? "red" : "blue", r: 5}),
+    Plot.text(filteredData.slice(-1), {x: "year", y: "anomaly", text: d => `${d.anomaly}°C`, dy: -15, fontSize: 14, fontWeight: "bold"})
+  ]
+})
+```
+
+::: {.check-understanding}
+### ✅ Check Your Understanding
+1. What pattern do you observe in the temperature data?
+2. Around what year did temperatures begin consistently rising above the baseline?
+3. How much warmer is Earth today compared to the 1880s?
+:::
+
+## NASA Climate Vital Signs Widget
+
+Explore real-time climate data from NASA:
+
+```{=html}
+<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 20px 0;">
+  <iframe src="https://climate.nasa.gov/system/internal_resources/details/original/1318_co2-mm-gl-widget.html" 
+          height="316" width="300" frameborder="0" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"></iframe>
+  <iframe src="https://climate.nasa.gov/system/internal_resources/details/original/2264_SeaLevel-widget.html" 
+          height="316" width="300" frameborder="0" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"></iframe>
+</div>
+```
+
+## Climate Displacement Data
+
+Millions of people have already been displaced due to climate-related events.
+
+```{ojs}
+//| echo: false
+displacementData = [
+  {year: 2018, displaced: 17.2, type: "Weather-related"},
+  {year: 2019, displaced: 24.9, type: "Weather-related"},
+  {year: 2020, displaced: 30.0, type: "Weather-related"},
+  {year: 2021, displaced: 23.7, type: "Weather-related"},
+  {year: 2022, displaced: 32.6, type: "Weather-related"},
+  {year: 2023, displaced: 26.4, type: "Weather-related"}
+]
+
+Plot.plot({
+  title: "People Displaced by Weather-Related Disasters (Millions)",
+  width: 600,
+  height: 350,
+  x: {label: "Year", tickFormat: d => d.toString()},
+  y: {label: "People Displaced (Millions)", domain: [0, 40]},
+  marks: [
+    Plot.barY(displacementData, {x: "year", y: "displaced", fill: "#e74c3c"}),
+    Plot.text(displacementData, {x: "year", y: "displaced", text: d => d.displaced + "M", dy: -10, fontSize: 11})
+  ]
+})
+```
+
+# Scientific Consensus
+
+## What Do Scientists Say?
+
+```{ojs}
+//| echo: false
+consensusData = [
+  {group: "Climate Scientists", agree: 99.9, disagree: 0.1},
+  {group: "General Public (US)", agree: 57, disagree: 43}
+]
+```
+
+```{=html}
+<div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin: 30px 0;">
+  <div style="text-align: center; padding: 30px; background: #27ae60; color: white; border-radius: 15px; width: 200px;">
+    <div style="font-size: 48px; font-weight: bold;">99.9%</div>
+    <div style="font-size: 14px; margin-top: 10px;">of climate scientists agree humans are causing climate change</div>
+  </div>
+  <div style="text-align: center; padding: 30px; background: #e74c3c; color: white; border-radius: 15px; width: 200px;">
+    <div style="font-size: 48px; font-weight: bold;">57%</div>
+    <div style="font-size: 14px; margin-top: 10px;">of the US public believes humans are the primary cause</div>
+  </div>
+</div>
+```
+
+::: {.question-box}
+### 🤔 Driving Question
+Why is there such a large gap between scientific consensus and public perception? What evidence convinces scientists that humans are causing climate change?
+:::
+
+# The 2,000-Year Cooling Trend
+
+## Interactive: Long-Term Temperature Record
+
+Before recent warming, Earth had been gradually cooling for about 2,000 years.
+
+```{ojs}
+//| echo: false
+// Simplified 2000-year temperature reconstruction
+longTermData = [
+  {year: 0, temp: 0.1}, {year: 200, temp: 0.05},
+  {year: 400, temp: -0.1}, {year: 600, temp: -0.15},
+  {year: 800, temp: -0.05}, {year: 1000, temp: 0.05},
+  {year: 1200, temp: -0.1}, {year: 1400, temp: -0.3},
+  {year: 1600, temp: -0.4}, {year: 1700, temp: -0.35},
+  {year: 1800, temp: -0.3}, {year: 1850, temp: -0.25},
+  {year: 1900, temp: -0.2}, {year: 1950, temp: -0.05},
+  {year: 1980, temp: 0.15}, {year: 2000, temp: 0.4},
+  {year: 2020, temp: 1.0}
+]
+
+Plot.plot({
+  title: "2,000 Years of Global Temperature Change",
+  subtitle: "Temperature anomaly relative to 1961-1990 average",
+  width: 700,
+  height: 400,
+  x: {label: "Year (CE)", domain: [0, 2025]},
+  y: {label: "Temperature Anomaly (°C)", domain: [-0.6, 1.2]},
+  marks: [
+    Plot.ruleY([0], {stroke: "#999", strokeDasharray: "4,4"}),
+    Plot.areaY(longTermData.filter(d => d.year <= 1850), {x: "year", y: "temp", fill: "#3498db", fillOpacity: 0.3}),
+    Plot.areaY(longTermData.filter(d => d.year >= 1850), {x: "year", y: "temp", fill: "#e74c3c", fillOpacity: 0.3}),
+    Plot.line(longTermData, {x: "year", y: "temp", stroke: "#2c3e50", strokeWidth: 2}),
+    Plot.text([{x: 900, y: -0.45, text: "Natural Cooling Trend"}], {x: "x", y: "y", text: "text", fill: "#3498db", fontSize: 12}),
+    Plot.text([{x: 1950, y: 0.7, text: "Industrial Era Warming"}], {x: "x", y: "y", text: "text", fill: "#e74c3c", fontSize: 12})
+  ]
+})
+```
+
+::: {.key-idea}
+### 💡 Key Ideas from the Unit Opening
+- Over the past 2,000 years, Earth had been cooling, until about 200 years ago
+- Millions of people have been displaced because of weather-related incidents
+- The scientific consensus is that humans are causing climate change and that it is a big deal
+- The public is less certain that humans are causing climate change
+:::
+
+# Student Questions
+
+Based on what you've observed, what questions do you have?
+
+::: {.question-box}
+### Questions to Investigate in This Unit:
+1. Why was Earth's temperature cooling before but is rising now?
+2. Why are people being displaced by climate factors?
+3. Why are scientists sure that humans are causing climate change?
+4. Has the climate ever changed before, and if so, how did it impact populations?
+5. How will climate change affect people now and in the future?
+6. Why are scientists so sure that climate change is a big deal?
+:::
+
+# Performance Task Preview
+
+::: {.anchor-box}
+## 📋 Your Mission
+
+Throughout this unit, you will analyze and interpret data related to changes in climate in the past in order to:
+
+1. **Understand** how we are so confident humans are the cause of current climate change
+2. **Communicate** this information to educate others in your community about the risks
+3. **Predict** how climate factors will be affected in the future
+4. **Explain** how populations will be impacted
+
+By the end of this unit, you will create a communication piece for someone in your community that explains:
+- Why scientists are certain humans are causing climate change
+- How climate factors will be affected
+- How populations will be impacted
+:::
+
+# Initial Ideas Activity
+
+## What natural factors might cause climate change?
+
+```{=html}
+<div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;">
+  <h4>Brainstorm: Natural Climate Factors</h4>
+  <p>Before we investigate, record your initial ideas about what natural factors could have caused changes in climate in the past:</p>
+  <ul>
+    <li>Changes in the Sun's energy output</li>
+    <li>Volcanic eruptions</li>
+    <li>Changes in Earth's orbit</li>
+    <li>Ocean current changes</li>
+    <li>What else?</li>
+  </ul>
+</div>
+```
+
+---
+
+::: {.quiz-section}
+## 📝 Unit Opening Quiz
+
+**Question 1:** Based on the temperature data, approximately how much has global temperature increased since 1880?
+- A) 0.5°C
+- B) 1.0°C
+- C) 1.5°C
+- D) 2.0°C
+
+**Question 2:** What percentage of climate scientists agree that humans are causing climate change?
+- A) About 57%
+- B) About 75%
+- C) About 90%
+- D) About 99.9%
+
+**Question 3:** Before approximately 200 years ago, Earth's temperature had been:
+- A) Rapidly warming
+- B) Staying constant
+- C) Gradually cooling
+- D) Fluctuating wildly
+
+**Question 4:** Why is the gap between scientific consensus and public perception important to address?
+- A) It doesn't matter what the public thinks
+- B) Scientists might be wrong
+- C) Public support is needed for climate action
+- D) The public knows more than scientists
+
+**Question 5:** What is the anchor phenomenon for this unit?
+- A) Ice ages occur every 100,000 years
+- B) The Sun's output varies over time
+- C) Earth's temperature is rising, reversing a 2,000-year cooling trend
+- D) Volcanoes cause climate change
+
+*Answers: 1-C, 2-D, 3-C, 4-C, 5-C*
+:::

@@ -1,0 +1,193 @@
+---
+title: "Unit 4: Seasons (Optional 3E)"
+subtitle: "How does the annual cycle of Earth around the Sun create seasonal temperature variations?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+.engage-box { background: #e8f4fd; border-left: 5px solid #2196F3; padding: 15px; margin: 15px 0; }
+.explore-box { background: #fff8e1; border-left: 5px solid #ff9800; padding: 15px; margin: 15px 0; }
+.explain-box { background: #e8f5e9; border-left: 5px solid #4caf50; padding: 15px; margin: 15px 0; }
+.check-understanding { background-color: #d1ecf1; border-left: 5px solid #17a2b8; padding: 15px; margin: 15px 0; }
+.quiz-section { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 20px; margin: 20px 0; border-radius: 10px; }
+</style>
+```
+
+# Engage: Why Do We Have Seasons?
+
+::: {.engage-box}
+### 🤔 Initial Question
+Many people believe seasons are caused by Earth being closer to or farther from the Sun. Is this correct?
+
+**Fact:** Earth is actually closest to the Sun (perihelion) in early January during Northern Hemisphere winter!
+:::
+
+## Interactive: Earth's Orbit Distance
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+
+orbitData = [
+  {month: "Jan", distance: 147.1, season: "Winter (NH)"},
+  {month: "Feb", distance: 147.8, season: "Winter"},
+  {month: "Mar", distance: 148.9, season: "Spring"},
+  {month: "Apr", distance: 150.0, season: "Spring"},
+  {month: "May", distance: 151.0, season: "Spring"},
+  {month: "Jun", distance: 151.8, season: "Summer"},
+  {month: "Jul", distance: 152.1, season: "Summer (NH)"},
+  {month: "Aug", distance: 151.5, season: "Summer"},
+  {month: "Sep", distance: 150.5, season: "Fall"},
+  {month: "Oct", distance: 149.3, season: "Fall"},
+  {month: "Nov", distance: 148.1, season: "Fall"},
+  {month: "Dec", distance: 147.3, season: "Winter"}
+]
+
+Plot.plot({
+  title: "Earth-Sun Distance Throughout the Year",
+  subtitle: "Distance in millions of kilometers",
+  width: 650,
+  height: 350,
+  x: {label: "Month", domain: orbitData.map(d => d.month)},
+  y: {label: "Distance (million km)", domain: [146, 153]},
+  marks: [
+    Plot.line(orbitData, {x: "month", y: "distance", stroke: "#e67e22", strokeWidth: 3}),
+    Plot.dot(orbitData, {x: "month", y: "distance", fill: "#e67e22", r: 6}),
+    Plot.text([{month: "Jan", distance: 147.1}], {x: "month", y: "distance", text: d => "Closest!", dy: -15, fill: "red", fontWeight: "bold"}),
+    Plot.text([{month: "Jul", distance: 152.1}], {x: "month", y: "distance", text: d => "Farthest!", dy: -15, fill: "blue", fontWeight: "bold"})
+  ]
+})
+```
+
+# Explore: Axial Tilt and Sunlight
+
+## PhET Simulation: Seasons
+
+Explore how Earth's axial tilt creates seasons:
+
+```{=html}
+<div style="text-align: center; margin: 20px 0;">
+  <p><strong>Note:</strong> If the simulation doesn't load, <a href="https://phet.colorado.edu/sims/html/seasons/latest/seasons_en.html" target="_blank">click here to open it in a new tab</a>.</p>
+  <iframe src="https://phet.colorado.edu/sims/html/seasons/latest/seasons_en.html" 
+          width="800" height="600" allowfullscreen style="border: 2px solid #ccc; border-radius: 10px;"></iframe>
+</div>
+```
+
+::: {.explore-box}
+### 🔬 Exploration Tasks
+1. Observe how the angle of sunlight changes throughout the year at different latitudes
+2. Compare day length at 45°N during summer vs. winter solstice
+3. Notice how the Sun's rays are more direct in summer and more spread out in winter
+:::
+
+## Interactive: Sunlight Angle Simulator
+
+```{ojs}
+//| echo: false
+viewof sunAngle = Inputs.range([0, 90], {
+  step: 5,
+  value: 45,
+  label: "Sun Angle (degrees from horizon):"
+})
+```
+
+```{ojs}
+//| echo: false
+// Calculate how sunlight spreads based on angle
+spreadFactor = 1 / Math.sin(sunAngle * Math.PI / 180)
+intensityPercent = (Math.sin(sunAngle * Math.PI / 180) * 100).toFixed(1)
+
+html`<div style="display: flex; gap: 30px; align-items: center; margin: 20px 0;">
+  <div style="flex: 1;">
+    <svg width="300" height="200">
+      <!-- Ground -->
+      <rect x="0" y="150" width="300" height="50" fill="#8B4513"/>
+      <!-- Sun rays -->
+      <line x1="50" y1="${150 - 100 * Math.tan(sunAngle * Math.PI / 180)}" x2="50" y2="150" stroke="yellow" stroke-width="3"/>
+      <line x1="100" y1="${150 - 100 * Math.tan(sunAngle * Math.PI / 180)}" x2="100" y2="150" stroke="yellow" stroke-width="3"/>
+      <line x1="150" y1="${150 - 100 * Math.tan(sunAngle * Math.PI / 180)}" x2="150" y2="150" stroke="yellow" stroke-width="3"/>
+      <!-- Angle arc -->
+      <path d="M 50 150 L 50 100 A 50 50 0 0 1 ${50 + 50 * Math.cos((90-sunAngle) * Math.PI / 180)} ${150 - 50 * Math.sin((90-sunAngle) * Math.PI / 180)}" fill="none" stroke="red" stroke-width="2"/>
+      <text x="70" y="130" fill="red" font-size="14">${sunAngle}°</text>
+    </svg>
+  </div>
+  <div style="flex: 1; padding: 20px; background: #f5f5f5; border-radius: 10px;">
+    <h4>Energy Intensity</h4>
+    <p><strong>Relative intensity:</strong> ${intensityPercent}%</p>
+    <p><strong>Energy spread factor:</strong> ${spreadFactor.toFixed(2)}x</p>
+    <div style="background: linear-gradient(to right, #ffeb3b ${intensityPercent}%, #ccc ${intensityPercent}%); height: 30px; border-radius: 5px;"></div>
+    <p style="font-size: 12px; margin-top: 10px;">Higher sun angles = more concentrated energy = warmer temperatures</p>
+  </div>
+</div>`
+```
+
+# Explain: The Science of Seasons
+
+::: {.explain-box}
+### 🌍 Key Concepts
+
+**Seasons are caused by Earth's 23.5° axial tilt, NOT distance from the Sun.**
+
+1. **Summer:** Your hemisphere is tilted TOWARD the Sun
+   - Sun appears higher in the sky
+   - Sunlight hits more directly (concentrated energy)
+   - Longer days = more heating time
+
+2. **Winter:** Your hemisphere is tilted AWAY from the Sun
+   - Sun appears lower in the sky
+   - Sunlight hits at an angle (spread out energy)
+   - Shorter days = less heating time
+:::
+
+## Connection to Climate Change
+
+Understanding seasons helps us understand climate change because:
+
+- **Milankovitch Cycles** involve changes to Earth's tilt over thousands of years
+- These orbital changes have driven glacial-interglacial cycles
+- We'll explore this in detail in the next lesson!
+
+::: {.check-understanding}
+### ✅ Check Your Understanding
+1. Why is it WARMER in summer even though Earth is FARTHER from the Sun?
+2. How does the angle of sunlight affect heating?
+3. Why do the Northern and Southern hemispheres have opposite seasons?
+:::
+
+---
+
+::: {.quiz-section}
+## 📝 Seasons Quiz
+
+**Question 1:** Earth is closest to the Sun during which month?
+- A) July
+- B) January
+- C) March
+- D) September
+
+**Question 2:** What primarily causes Earth's seasons?
+- A) Distance from the Sun
+- B) Earth's axial tilt of 23.5°
+- C) Changes in the Sun's output
+- D) Ocean currents
+
+**Question 3:** During Northern Hemisphere summer, the North Pole is:
+- A) Tilted away from the Sun
+- B) Tilted toward the Sun
+- C) Not tilted at all
+- D) Experiencing 24 hours of darkness
+
+*Answers: 1-B, 2-B, 3-B*
+:::

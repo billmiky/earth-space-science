@@ -1,0 +1,808 @@
+---
+title: "Unit 4: Climate Change - Unit Closing"
+subtitle: "How do natural factors contribute to changes in Earth's temperature? Why are scientists so sure humans are causing climate change today?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+.anchor-box {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  padding: 25px;
+  border-radius: 15px;
+  margin: 20px 0;
+}
+.summary-box {
+  background: #f8f9fa;
+  border: 2px solid #dee2e6;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 15px 0;
+}
+.evidence-card {
+  background: white;
+  border-left: 5px solid #28a745;
+  padding: 15px;
+  margin: 10px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.performance-task {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 25px;
+  border-radius: 15px;
+  margin: 20px 0;
+}
+.rubric-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+.rubric-table th, .rubric-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+.rubric-table th {
+  background: #2196F3;
+  color: white;
+}
+.rubric-table tr:nth-child(even) {
+  background: #f8f9fa;
+}
+.key-idea { background-color: #d4edda; border-left: 5px solid #28a745; padding: 15px; margin: 15px 0; }
+.reflection-box { background: #fff3cd; border-left: 5px solid #ffc107; padding: 20px; margin: 15px 0; }
+.quiz-section { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 20px; margin: 20px 0; border-radius: 10px; }
+.pe-badge { display: inline-block; background: #673ab7; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin: 5px; }
+.lab-activity { background: #fafafa; border: 2px solid #333; padding: 20px; margin: 20px 0; border-radius: 10px; }
+.check-understanding { background-color: #d1ecf1; border-left: 5px solid #17a2b8; padding: 15px; margin: 15px 0; }
+</style>
+```
+
+<span class="pe-badge">HS-ESS3-1</span> <span class="pe-badge">HS-ESS3-5</span>
+
+# Returning to the Anchor Phenomenon
+
+::: {.anchor-box}
+## 🌍 Our Anchor Phenomenon Revisited
+
+**Earth's temperature is rising, reversing the cooling trend that occurred over the past 2,000 years, putting millions of people in harm's way, yet the public is not convinced of the risks.**
+
+### You Can Now Explain:
+✅ How natural factors have contributed to climate change in the past  
+✅ Why those natural factors cannot explain current warming  
+✅ What evidence convinces 99.9% of climate scientists that humans are the cause  
+✅ Why this matters for human populations  
+:::
+
+# Synthesizing Your Learning
+
+## The Complete Climate Story
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+
+// Complete timeline visualization
+completeTimeline = [
+  {era: "Natural Past", period: "800,000 - 200 years ago", driver: "Milankovitch Cycles", co2_range: "180-280 ppm", temp_range: "-8°C to +2°C", outcome: "Glacial-interglacial cycles"},
+  {era: "Pre-Industrial", period: "1750-1850", driver: "Natural baseline", co2_range: "~280 ppm", temp_range: "Baseline (0°C)", outcome: "Stable climate"},
+  {era: "Industrial Era", period: "1850-present", driver: "Human emissions", co2_range: "280→422 ppm", temp_range: "0°C → +1.2°C", outcome: "Rapid warming"}
+]
+```
+
+### Interactive Evidence Summary Dashboard
+
+```{ojs}
+//| echo: false
+viewof evidenceView = Inputs.radio([
+  "CO₂ Evidence", 
+  "Temperature Evidence", 
+  "Attribution Evidence",
+  "Impact Evidence"
+], {
+  label: "Select evidence category:",
+  value: "CO₂ Evidence"
+})
+```
+
+```{ojs}
+//| echo: false
+{
+  if (evidenceView === "CO₂ Evidence") {
+    return html`
+    <div style="background: #e8f5e9; padding: 20px; border-radius: 10px; margin: 15px 0;">
+      <h3>🔬 CO₂ Evidence</h3>
+      <div class="evidence-card">
+        <h4>Ice Core Records</h4>
+        <p>For 800,000 years, CO₂ never exceeded <strong>280 ppm</strong></p>
+        <p>Today's level: <strong>422 ppm</strong> (50% higher than any point in 800,000 years)</p>
+      </div>
+      <div class="evidence-card">
+        <h4>Rate of Change</h4>
+        <p>Natural CO₂ changes: ~100 ppm over thousands of years</p>
+        <p>Current change: ~140 ppm in just 170 years (<strong>100x faster</strong>)</p>
+      </div>
+      <div class="evidence-card">
+        <h4>Isotopic Fingerprint</h4>
+        <p>Carbon isotope ratios prove the CO₂ is from fossil fuels (depleted in C-13)</p>
+        <p>This is like a "chemical fingerprint" pointing directly to human sources</p>
+      </div>
+    </div>`;
+  } else if (evidenceView === "Temperature Evidence") {
+    return html`
+    <div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin: 15px 0;">
+      <h3>🌡️ Temperature Evidence</h3>
+      <div class="evidence-card">
+        <h4>The 2,000-Year Cooling Trend</h4>
+        <p>Earth was gradually cooling due to Milankovitch cycles</p>
+        <p>This trend <strong>abruptly reversed</strong> ~150 years ago</p>
+      </div>
+      <div class="evidence-card">
+        <h4>Current Warming Rate</h4>
+        <p>Warming <strong>10x faster</strong> than any natural warming in past 65 million years</p>
+        <p>This eliminates all natural explanations</p>
+      </div>
+      <div class="evidence-card">
+        <h4>Pattern Matches Predictions</h4>
+        <p>Warming pattern (nights warming faster, stratosphere cooling) matches greenhouse effect predictions exactly</p>
+        <p>This is the "signature" of greenhouse warming</p>
+      </div>
+    </div>`;
+  } else if (evidenceView === "Attribution Evidence") {
+    return html`
+    <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin: 15px 0;">
+      <h3>🔍 Attribution Evidence</h3>
+      <div class="evidence-card">
+        <h4>Solar Output ❌ Ruled Out</h4>
+        <p>Sun's output has been <strong>flat or slightly declining</strong> since 1980</p>
+        <p>If Sun caused warming, stratosphere would warm too (it's cooling)</p>
+      </div>
+      <div class="evidence-card">
+        <h4>Milankovitch Cycles ❌ Ruled Out</h4>
+        <p>Current orbital configuration predicts gradual <strong>COOLING</strong></p>
+        <p>Yet Earth is warming rapidly — the opposite direction</p>
+      </div>
+      <div class="evidence-card">
+        <h4>Volcanic Activity ❌ Ruled Out</h4>
+        <p>Major eruptions cause temporary <strong>COOLING</strong>, not warming</p>
+        <p>No increase in volcanic activity that could explain warming</p>
+      </div>
+      <div class="evidence-card">
+        <h4>Human Emissions ✅ Only Explanation</h4>
+        <p>Timing matches industrialization perfectly</p>
+        <p>Amount of warming matches physics predictions for CO₂ increase</p>
+        <p>Isotopic fingerprint confirms fossil fuel source</p>
+      </div>
+    </div>`;
+  } else {
+    return html`
+    <div style="background: #fce4ec; padding: 20px; border-radius: 10px; margin: 15px 0;">
+      <h3>⚠️ Impact Evidence</h3>
+      <div class="evidence-card">
+        <h4>Already Happening Now</h4>
+        <ul>
+          <li>Arctic warming <strong>4x faster</strong> than global average</li>
+          <li>Sea level rising <strong>3.7mm/year</strong> and accelerating</li>
+          <li>Extreme weather events increasing in frequency and intensity</li>
+          <li>Ice sheets losing mass at accelerating rates</li>
+        </ul>
+      </div>
+      <div class="evidence-card">
+        <h4>Historical Precedent</h4>
+        <p>Younger Dryas shows climate can change <strong>rapidly</strong> with devastating effects</p>
+        <p>AMOC is weakening now, similar to conditions before past collapses</p>
+      </div>
+      <div class="evidence-card">
+        <h4>Future Projections</h4>
+        <ul>
+          <li><strong>100+ million people</strong> at risk from sea level rise</li>
+          <li>Food and water security threatened globally</li>
+          <li>Ecosystem collapse accelerating</li>
+          <li>Economic damages in the trillions</li>
+        </ul>
+      </div>
+    </div>`;
+  }
+}
+```
+
+## Why Scientists Are Certain: The Complete Picture
+
+::: {.summary-box}
+### The Scientific Consensus Explained
+
+**Multiple independent lines of evidence ALL point to the same conclusion:**
+
+| Evidence Type | What It Shows | Natural Explanation? |
+|--------------|---------------|---------------------|
+| Ice cores (CO₂) | CO₂ at 800,000-year high | ❌ No natural source |
+| Carbon isotopes | Fossil fuel fingerprint | ❌ Proves human origin |
+| Warming pattern | Matches greenhouse effect | ❌ Rules out solar |
+| Timing | Matches industrialization | ❌ Rules out natural cycles |
+| Rate of change | 100x faster than natural | ❌ Rules out all natural causes |
+| Climate models | Predictions match observations | ✅ Only works with human emissions |
+
+**This is why 99.9% of climate scientists agree:** The evidence is overwhelming and consistent across dozens of independent data sources and methods. There is no alternative explanation that fits all the evidence.
+:::
+
+## Interactive: Build Your Argument
+
+```{ojs}
+//| echo: false
+viewof claimToAddress = Inputs.select([
+  "\"The climate has always changed naturally\"",
+  "\"It's just the Sun getting stronger\"",
+  "\"CO₂ is plant food - more is better\"",
+  "\"Scientists are just guessing\"",
+  "\"It's not warming that fast\""
+], {
+  label: "Select a common claim to address:"
+})
+```
+
+```{ojs}
+//| echo: false
+{
+  const responses = {
+    "\"The climate has always changed naturally\"": {
+      acknowledge: "True! Climate has changed naturally in the past.",
+      counter: "But natural changes were driven by Milankovitch cycles (taking thousands of years) or events like volcanic eruptions. Current warming is 100x faster than any natural change in 65 million years.",
+      evidence: "Ice cores show CO₂ never exceeded 280 ppm in 800,000 years. Today it's 422 ppm. Current orbital cycles actually predict COOLING, not warming.",
+      conclusion: "Natural factors cannot explain current warming — only human emissions fit all the evidence."
+    },
+    "\"It's just the Sun getting stronger\"": {
+      acknowledge: "The Sun does vary in output slightly.",
+      counter: "But solar output has been flat or slightly DECLINING since 1980, while temperatures have risen dramatically.",
+      evidence: "If the Sun caused warming, the stratosphere would warm too. Instead, the stratosphere is COOLING while the surface warms — the exact signature of greenhouse gas warming, not solar warming.",
+      conclusion: "Solar changes are ruled out by multiple lines of evidence."
+    },
+    "\"CO₂ is plant food - more is better\"": {
+      acknowledge: "Plants do use CO₂ for photosynthesis.",
+      counter: "But the rate of CO₂ increase is far faster than ecosystems can adapt. Also, climate change brings droughts, floods, and heat waves that harm agriculture.",
+      evidence: "Crop yields are already declining in many regions due to heat stress. Ocean acidification (from CO₂ absorption) is destroying marine ecosystems.",
+      conclusion: "The negative effects of rapid CO₂ increase far outweigh any fertilization benefits."
+    },
+    "\"Scientists are just guessing\"": {
+      acknowledge: "Science does involve uncertainty.",
+      counter: "But 99.9% of climate scientists agree based on multiple independent lines of evidence. This isn't guessing — it's the same scientific method that brought us medicine, smartphones, and space travel.",
+      evidence: "Ice cores, isotope analysis, temperature records, ocean measurements, and climate models all independently point to the same conclusion. Predictions made 30+ years ago have proven accurate.",
+      conclusion: "The scientific consensus is based on overwhelming evidence, not guesswork."
+    },
+    "\"It's not warming that fast\"": {
+      acknowledge: "1.2°C might not sound like much.",
+      counter: "But global averages hide regional extremes. The Arctic has warmed 4°C+. The difference between an ice age and today is only about 5°C globally.",
+      evidence: "We're already seeing increased extreme weather, melting ice sheets, rising seas, and ecosystem disruption. The Younger Dryas showed that even 'small' global changes can have catastrophic regional effects.",
+      conclusion: "Small global changes translate to major regional impacts that affect billions of people."
+    }
+  };
+  
+  const response = responses[claimToAddress];
+  
+  return html`
+  <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 15px 0;">
+    <h3>💬 Responding to: ${claimToAddress}</h3>
+    
+    <div style="margin: 15px 0; padding: 15px; background: #e8f5e9; border-radius: 8px;">
+      <h4>✅ Acknowledge:</h4>
+      <p>${response.acknowledge}</p>
+    </div>
+    
+    <div style="margin: 15px 0; padding: 15px; background: #fff3e0; border-radius: 8px;">
+      <h4>🔄 Counter:</h4>
+      <p>${response.counter}</p>
+    </div>
+    
+    <div style="margin: 15px 0; padding: 15px; background: #e3f2fd; border-radius: 8px;">
+      <h4>📊 Evidence:</h4>
+      <p>${response.evidence}</p>
+    </div>
+    
+    <div style="margin: 15px 0; padding: 15px; background: #f3e5f5; border-radius: 8px;">
+      <h4>🎯 Conclusion:</h4>
+      <p><strong>${response.conclusion}</strong></p>
+    </div>
+  </div>`;
+}
+```
+
+# Performance Task
+
+::: {.performance-task}
+## 📋 Your Mission: Climate Communication
+
+### The Challenge:
+Create a communication piece for someone in your community that:
+
+1. **Explains** why scientists are certain that humans are causing climate change
+2. **Uses evidence** from multiple sources we've studied
+3. **Addresses** at least one common misconception
+4. **Predicts** how climate factors will be affected
+5. **Explains** why it matters (human impacts)
+
+### Format Options:
+Choose ONE of the following:
+
+- 📝 **Written article or blog post** (800-1200 words)
+- 📊 **Infographic or poster** (visual with explanatory text)
+- 🎬 **Video presentation** (3-5 minutes)
+- 📱 **Social media campaign** (series of 5-7 posts with graphics)
+- 🎙️ **Podcast episode** (5-8 minutes)
+- ✉️ **Letter to a local official** (with supporting evidence)
+- 🎭 **Presentation for a community group** (with slides)
+:::
+
+## Performance Task Rubric
+
+```{=html}
+<table class="rubric-table">
+  <tr>
+    <th>Criteria</th>
+    <th>Exemplary (4)</th>
+    <th>Proficient (3)</th>
+    <th>Developing (2)</th>
+    <th>Beginning (1)</th>
+  </tr>
+  <tr>
+    <td><strong>Scientific Accuracy</strong><br>(HS-ESS3-5)</td>
+    <td>All claims are scientifically accurate with specific data cited from unit materials</td>
+    <td>Claims are accurate with some specific data cited</td>
+    <td>Some claims are accurate but lack supporting data</td>
+    <td>Contains scientific inaccuracies or unsupported claims</td>
+  </tr>
+  <tr>
+    <td><strong>Evidence Usage</strong><br>(HS-ESS3-5)</td>
+    <td>Uses 4+ types of evidence (CO₂, temperature, attribution, impacts) effectively integrated</td>
+    <td>Uses 3 types of evidence effectively</td>
+    <td>Uses 2 types of evidence</td>
+    <td>Uses 1 or no types of evidence</td>
+  </tr>
+  <tr>
+    <td><strong>Addresses Natural Factors</strong><br>(HS-ESS2-4)</td>
+    <td>Thoroughly explains why Milankovitch cycles, solar changes, and volcanic activity cannot explain current warming</td>
+    <td>Explains why most natural factors cannot explain current warming</td>
+    <td>Mentions natural factors but explanation is incomplete</td>
+    <td>Does not address natural factors</td>
+  </tr>
+  <tr>
+    <td><strong>Human Impacts</strong><br>(HS-ESS3-1)</td>
+    <td>Clearly explains current AND future impacts with specific examples and data</td>
+    <td>Explains current and future impacts with some examples</td>
+    <td>Mentions impacts but lacks specific examples</td>
+    <td>Does not adequately address human impacts</td>
+  </tr>
+  <tr>
+    <td><strong>Addresses Misconceptions</strong></td>
+    <td>Effectively addresses misconception using acknowledge-counter-evidence-conclude structure</td>
+    <td>Addresses misconception with evidence</td>
+    <td>Mentions misconception but response is weak</td>
+    <td>Does not address any misconceptions</td>
+  </tr>
+  <tr>
+    <td><strong>Communication Quality</strong></td>
+    <td>Clear, engaging, well-organized, and perfectly appropriate for intended audience</td>
+    <td>Clear and mostly appropriate for audience</td>
+    <td>Somewhat clear but may not suit audience well</td>
+    <td>Unclear, disorganized, or inappropriate for audience</td>
+  </tr>
+</table>
+```
+
+::: {.lab-activity}
+## 📝 Performance Task Planning Sheet
+
+**Step 1: Define Your Audience**
+
+Who are you trying to reach? (Be specific!)
+
+| Audience Option | Their Likely Prior Knowledge | Their Likely Concerns |
+|----------------|------------------------------|----------------------|
+| Family member (skeptical) | May have heard climate myths | Cost of action, political concerns |
+| Younger sibling/cousin | Basic science knowledge | Future impacts on their life |
+| Local business owner | Practical focus | Economic impacts |
+| School board member | Education-focused | How to teach this topic |
+| City council member | Policy-focused | Local impacts, what they can do |
+
+**My chosen audience:** _______________________________________________
+
+**Step 2: Identify Their Questions/Concerns**
+
+What might they already believe or wonder about climate change?
+
+1. _______________________________________________
+2. _______________________________________________
+3. _______________________________________________
+
+**Step 3: Select Your Evidence**
+
+| Evidence Type | Specific Data Point from Unit | How I'll Present It |
+|--------------|------------------------------|---------------------|
+| CO₂ evidence | | |
+| Temperature evidence | | |
+| Attribution evidence | | |
+| Impact evidence | | |
+| Historical evidence (AMOC/Younger Dryas) | | |
+
+**Step 4: Choose a Misconception to Address**
+
+Which misconception is your audience most likely to hold?
+
+- [ ] "The climate has always changed naturally"
+- [ ] "It's just the Sun"
+- [ ] "Scientists aren't sure"
+- [ ] "It's not that serious"
+- [ ] Other: _______________________
+
+**How will you address it?**
+
+- **Acknowledge:** _______________________________________________
+- **Counter:** _______________________________________________
+- **Evidence:** _______________________________________________
+- **Conclude:** _______________________________________________
+
+**Step 5: Plan Your Call to Action**
+
+What do you want your audience to understand or do after engaging with your piece?
+
+_______________________________________________
+
+**Step 6: Choose Your Format**
+
+Format selected: _______________________________________________
+
+Why this format works for your audience: _______________________________________________
+:::
+
+# Unit Summary
+
+::: {.key-idea}
+### 💡 Complete Unit Key Ideas
+
+**From Earth-Sun Dynamics (HS-ESS2-4):**
+- Milankovitch cycles (eccentricity, obliquity, precession) drive glacial-interglacial cycles
+- These cycles operate on 23,000 to 100,000 year timescales
+- Summer radiation at 65°N controls ice sheet growth/retreat
+- **Current orbital configuration predicts gradual COOLING — yet Earth is warming**
+
+**From Climate Feedbacks (HS-ESS2-2, HS-ESS2-4, HS-ESS2-6):**
+- The greenhouse effect traps heat via absorption of infrared radiation
+- CO₂ is now 422 ppm (50% higher than any point in 800,000 years)
+- Ice-albedo feedback amplifies warming (positive feedback loop)
+- Arctic warms 4x faster due to ice-albedo feedback
+- Multiple feedback loops (ice-albedo, water vapor, permafrost) accelerate change
+
+**From The Past and The Future (HS-ESS2-4, HS-ESS3-1, HS-ESS3-5):**
+- AMOC is driven by cold, salty water sinking in the North Atlantic
+- Freshwater from melting ice weakens AMOC
+- The Younger Dryas (~12,900 years ago) shows AMOC can shut down rapidly
+- AMOC shutdown caused ~10°C cooling in decades, devastating human populations
+- AMOC is currently showing signs of weakening
+- Millions are already affected; hundreds of millions at future risk
+
+**The Bottom Line:**
+- ✅ Climate change is definitely caused by human activity
+- ✅ Natural factors cannot explain current warming
+- ✅ Increasing temperatures will affect sea ice, sea level, weather patterns, food, and water
+- ✅ Climate change will affect billions through disasters, displacement, and resource shortages
+- ✅ Understanding the past helps us prepare for and potentially prevent future disasters
+:::
+
+# Final Reflection
+
+::: {.reflection-box}
+### 🤔 Unit Reflection Questions
+
+**Looking Back at Your Learning:**
+
+1. At the beginning of this unit, what did you think caused climate change? How has your understanding evolved?
+
+2. What was the most surprising or compelling piece of evidence you encountered?
+
+3. Which concept was most challenging to understand? How did you work through it?
+
+**Connecting the Concepts:**
+
+4. How do Milankovitch cycles, the greenhouse effect, and AMOC all connect in the climate system?
+
+5. Why is the Younger Dryas relevant to understanding potential future climate risks?
+
+6. How does understanding natural climate change actually STRENGTHEN the case that current warming is human-caused?
+
+**Looking Forward:**
+
+7. How might climate change affect your community in your lifetime?
+
+8. What role can individuals, communities, and governments play in addressing climate change?
+
+9. How will you use what you've learned to communicate about climate change with others?
+
+**Returning to the Anchor Phenomenon:**
+
+10. Can you now fully explain why 99.9% of climate scientists are certain about human-caused climate change?
+
+11. Why do you think there's a gap between scientific consensus and public perception?
+
+12. What responsibility do scientifically-informed citizens have in bridging that gap?
+:::
+
+# Interactive Unit Review
+
+## Comprehensive Topic Review
+
+```{ojs}
+//| echo: false
+viewof reviewTopic = Inputs.select([
+  "Milankovitch Cycles",
+  "Greenhouse Effect & CO₂",
+  "Climate Feedbacks",
+  "AMOC & Ocean Circulation",
+  "Younger Dryas & Past Climate",
+  "Current & Future Impacts",
+  "Evidence & Attribution"
+], {
+  label: "Select a topic to review:"
+})
+```
+
+```{ojs}
+//| echo: false
+{
+  const topics = {
+    "Milankovitch Cycles": {
+      emoji: "🌍",
+      keyPoints: [
+        "Eccentricity: Shape of Earth's orbit changes (~100,000 year cycle)",
+        "Obliquity: Axial tilt varies 22.1°-24.5° (~41,000 year cycle)",
+        "Precession: Axis wobbles like a top (~23,000 year cycle)",
+        "These cycles control summer radiation at 65°N latitude",
+        "Low summer radiation → ice sheets grow → ice age",
+        "Current configuration predicts COOLING, not warming"
+      ],
+      question: "If Milankovitch cycles cause ice ages, why can't they explain current warming?",
+      answer: "Current orbital parameters predict gradual cooling, not warming. The warming we're experiencing is going in the OPPOSITE direction of what Milankovitch cycles would cause, and it's happening 100x faster than orbital changes could produce."
+    },
+    "Greenhouse Effect & CO₂": {
+      emoji: "🏭",
+      keyPoints: [
+        "Greenhouse gases absorb infrared (heat) radiation from Earth's surface",
+        "This trapped heat warms the lower atmosphere",
+        "CO₂ has increased from 280 ppm (pre-industrial) to 422 ppm (today)",
+        "This is 50% higher than any level in 800,000 years",
+        "Rate of increase is 100x faster than any natural change",
+        "Carbon isotopes prove the source is fossil fuels"
+      ],
+      question: "How do we know the extra CO₂ comes from fossil fuels and not natural sources?",
+      answer: "Fossil fuels are depleted in the carbon-13 isotope. As atmospheric CO₂ has increased, the ratio of C-13 has decreased — a chemical 'fingerprint' that proves fossil fuel origin. Also, O₂ is decreasing as CO₂ increases, showing combustion is the source."
+    },
+    "Climate Feedbacks": {
+      emoji: "🔄",
+      keyPoints: [
+        "Positive feedback: amplifies initial change (makes it bigger)",
+        "Negative feedback: reduces initial change (stabilizes)",
+        "Ice-albedo feedback: melting ice → less reflection → more warming → more melting",
+        "Water vapor feedback: warming → more evaporation → more greenhouse effect",
+        "Permafrost feedback: warming → permafrost thaws → releases methane/CO₂",
+        "These feedbacks explain why Arctic warms 4x faster than global average"
+      ],
+      question: "Why is ice-albedo feedback so powerful in the Arctic?",
+      answer: "Ice reflects ~60% of sunlight while ocean water absorbs ~94%. When ice melts and exposes dark ocean, that area absorbs 10x more energy. This causes rapid local warming, which melts more ice, creating an accelerating cycle."
+    },
+    "AMOC & Ocean Circulation": {
+      emoji: "🌊",
+      keyPoints: [
+        "AMOC = Atlantic Meridional Overturning Circulation",
+        "Driven by cold, salty water sinking in North Atlantic",
+        "Transports heat from tropics to Northern Europe",
+        "Freshwater from melting ice reduces salinity",
+        "Less salty water doesn't sink as well → AMOC weakens",
+        "Current observations show AMOC is weakening"
+      ],
+      question: "Why would a weakening AMOC cause Europe to cool even as the globe warms?",
+      answer: "AMOC brings warm tropical water to Northern Europe. Without this heat transport, Europe would be much colder (similar to Canada at the same latitude). A weakened AMOC means less heat reaches Europe, causing regional cooling despite global warming."
+    },
+    "Younger Dryas & Past Climate": {
+      emoji: "🧊",
+      keyPoints: [
+        "Occurred 12,900-11,700 years ago (lasted ~1,200 years)",
+        "Temperatures dropped ~10°C in Greenland within decades",
+        "Triggered by massive freshwater release from Lake Agassiz",
+        "Freshwater shut down AMOC → stopped heat transport north",
+        "Caused population decline, delayed agricultural revolution",
+        "Shows climate can change rapidly with devastating effects"
+      ],
+      question: "What can the Younger Dryas teach us about future climate risks?",
+      answer: "It proves that climate can shift rapidly (within decades) when tipping points are crossed. Similar conditions are developing now: ice sheets are melting, adding freshwater to the North Atlantic, and AMOC is weakening. This could trigger rapid, unexpected changes."
+    },
+    "Current & Future Impacts": {
+      emoji: "⚠️",
+      keyPoints: [
+        "Arctic sea ice declining ~13% per decade",
+        "Sea level rising 3.7mm/year and accelerating",
+        "Extreme weather events becoming more frequent/intense",
+        "100+ million people at risk from sea level rise",
+        "Food and water security threatened globally",
+        "Ecosystems shifting and collapsing"
+      ],
+      question: "Why should we care if global temperature rises 'only' 1.5°C or 2°C?",
+      answer: "Global averages hide regional extremes. The Arctic has already warmed 4°C+. The difference between an ice age and today is only ~5°C globally. Even 'small' global changes mean devastating regional impacts: more extreme heat waves, stronger hurricanes, accelerated ice melt, and ecosystem collapse."
+    },
+    "Evidence & Attribution": {
+      emoji: "🔬",
+      keyPoints: [
+        "99.9% of climate scientists agree humans are causing warming",
+        "Solar output has been flat/declining since 1980 → rules out Sun",
+        "Stratosphere cooling while surface warms → proves greenhouse effect",
+        "Milankovitch cycles predict cooling → rules out orbital changes",
+        "Rate 100x faster than natural → rules out natural variability",
+        "Only human emissions explain ALL observations"
+      ],
+      question: "What makes scientists so confident it's human-caused?",
+      answer: "Multiple independent lines of evidence all point to the same conclusion. Every proposed natural cause has been tested and ruled out. The pattern of warming (nights faster than days, stratosphere cooling, Arctic amplification) matches greenhouse gas predictions exactly. The CO₂ increase has a fossil fuel isotopic fingerprint. Only human emissions fit all the evidence."
+    }
+  };
+  
+  const topic = topics[reviewTopic];
+  
+  return html`
+  <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 15px 0;">
+    <h3>${topic.emoji} ${reviewTopic}</h3>
+    <h4>Key Points:</h4>
+    <ul>
+      ${topic.keyPoints.map(p => `<li>${p}</li>`).join('')}
+    </ul>
+    <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 15px;">
+      <h4>🤔 Review Question:</h4>
+      <p><strong>${topic.question}</strong></p>
+      <details>
+        <summary style="cursor: pointer; color: #1565c0; font-weight: bold;">Click to reveal answer</summary>
+        <p style="margin-top: 10px; padding: 10px; background: white; border-radius: 5px;">${topic.answer}</p>
+      </details>
+    </div>
+  </div>`;
+}
+```
+
+---
+
+::: {.quiz-section}
+## 📝 Unit Closing Assessment
+
+### Part A: Multiple Choice
+
+**Question 1:** What is the main reason scientists are confident that current warming is NOT caused by changes in Earth's orbit (Milankovitch cycles)?
+- A) Earth's orbit hasn't changed
+- B) Current orbital configuration predicts cooling, not warming
+- C) Milankovitch cycles were disproven
+- D) Orbital changes only affect the Southern Hemisphere
+
+**Question 2:** Current atmospheric CO₂ levels are approximately:
+- A) 280 ppm (same as pre-industrial)
+- B) 350 ppm
+- C) 422 ppm
+- D) 600 ppm
+
+**Question 3:** How do scientists know that the increased CO₂ comes from fossil fuels?
+- A) They can see smoke from factories
+- B) Carbon isotope ratios show a fossil fuel fingerprint
+- C) They counted all the power plants in the world
+- D) It's an educated guess
+
+**Question 4:** Why is the Arctic warming almost 4 times faster than the global average?
+- A) The Arctic is closer to the Sun
+- B) Ice-albedo feedback amplifies warming there
+- C) There are more volcanoes in the Arctic
+- D) The Arctic has more CO₂
+
+**Question 5:** What caused the Younger Dryas rapid cooling event ~12,900 years ago?
+- A) A massive volcanic eruption
+- B) Decreased solar output
+- C) Freshwater from melting ice shutting down AMOC
+- D) An asteroid impact
+
+**Question 6:** How long did the Younger Dryas cold period last?
+- A) About 100 years
+- B) About 1,200 years
+- C) About 10,000 years
+- D) About 100,000 years
+
+**Question 7:** Which evidence rules out solar changes as the cause of current warming?
+- A) The Sun doesn't affect Earth's climate
+- B) Solar output has been flat/declining since 1980, and the stratosphere is cooling
+- C) Solar output has increased dramatically
+- D) Scientists haven't studied solar output
+
+**Question 8:** What percentage of climate scientists agree that humans are causing current climate change?
+- A) About 50%
+- B) About 75%
+- C) About 90%
+- D) About 99.9%
+
+**Question 9:** If AMOC significantly weakens, what would likely happen to Northwestern Europe?
+- A) It would warm dramatically
+- B) It would experience significant cooling despite global warming
+- C) Nothing would change
+- D) It would experience more earthquakes
+
+**Question 10:** Why is the rate of current warming important evidence for human causation?
+- A) Fast warming is always natural
+- B) Current warming is 100x faster than natural changes, ruling out natural causes
+- C) Warming rate doesn't matter
+- D) Natural warming is always faster than human-caused warming
+
+**Question 11:** What drives the sinking of water that powers AMOC?
+- A) Wind pushing water down
+- B) Cold, salty water being denser than warm, fresh water
+- C) The Moon's gravitational pull
+- D) Underwater volcanoes
+
+**Question 12:** Which statement best explains why understanding past climate change strengthens the case for human causation of current warming?
+- A) Past climate was always stable
+- B) By understanding natural causes, scientists can show they don't explain current warming
+- C) Past climate changes prove current warming is natural too
+- D) Past climate is irrelevant to understanding current climate
+
+### Part B: Short Answer
+
+**Question 13:** Explain why the fact that Earth was cooling for 2,000 years before recent warming is important evidence for human causation. (3-4 sentences)
+
+**Question 14:** Describe the ice-albedo feedback loop and explain why it causes the Arctic to warm faster than the rest of the planet. (4-5 sentences)
+
+**Question 15:** A classmate says "The climate has always changed, so current warming is natural." Using evidence from this unit, construct a response that addresses this claim. (5-6 sentences)
+
+---
+
+### Answer Key
+
+**Multiple Choice:**
+1-B, 2-C, 3-B, 4-B, 5-C, 6-B, 7-B, 8-D, 9-B, 10-B, 11-B, 12-B
+
+**Short Answer Rubric:**
+
+**Question 13** (4 points):
+- States that Milankovitch cycles predicted continued cooling (1 pt)
+- Explains that warming reversed this natural trend (1 pt)  
+- Concludes this rules out natural orbital causes (1 pt)
+- Uses specific timeframes or data (1 pt)
+
+**Question 14** (5 points):
+- Correctly defines albedo (1 pt)
+- Explains ice has high albedo, ocean has low albedo (1 pt)
+- Describes the feedback loop mechanism (1 pt)
+- Explains why this amplifies warming in the Arctic specifically (1 pt)
+- Uses specific numbers (e.g., 60% vs 6% albedo) (1 pt)
+
+**Question 15** (6 points):
+- Acknowledges that climate has changed naturally (1 pt)
+- Explains natural causes (Milankovitch cycles) and their timescales (1 pt)
+- States current warming is 100x faster than natural (1 pt)
+- Provides additional evidence (CO₂ levels, isotopes, solar data) (1 pt)
+- Explains why natural factors are ruled out (1 pt)
+- Concludes that only human emissions explain observations (1 pt)
+:::
+
+---
+
+## Congratulations! 🎉
+
+You have completed **Unit 4: Climate Change**. You now have the scientific knowledge to:
+
+- ✅ Explain how natural factors have influenced Earth's climate over hundreds of thousands of years
+- ✅ Describe why those same natural factors cannot explain current warming
+- ✅ Present multiple lines of evidence that demonstrate human causation
+- ✅ Explain climate feedback mechanisms and why they matter
+- ✅ Connect past climate events to potential future risks
+- ✅ Communicate effectively about climate science to others
+
+**Your voice matters.** Use your knowledge to help bridge the gap between scientific consensus and public understanding. The future depends on informed citizens who can evaluate evidence and make decisions based on science.
