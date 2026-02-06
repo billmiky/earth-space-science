@@ -30,7 +30,7 @@ execute:
 </style>
 ```
 
-<span class="pe-badge">HS-ESS2-4</span> <span class="pe-badge">Time: 5 Days</span>
+<span class="pe-badge">HS-ESS2-4</span>
 
 # Investigative Phenomenon
 
@@ -39,45 +39,24 @@ execute:
 **The amount of radiation received at 65°N has gone up and down over the last 750,000 years and repeats a pattern about every 100,000 years.**
 
 ### Driving Questions:
-- How do we know that natural cycles aren't causing climate change today?
-- How has the Earth's position with respect to the Sun changed over time?
-- How does the Earth's changing position with respect to the Sun affect temperatures on Earth?
+- How does the Sun contribute to climate change?
+- What was the planet's orbit like in the past and what is it like now?
+- Has the Earth always had the same tilt, or does it change?
+- Can these factors explain climate change in the past?
+- What's their impact on the current climate?
 :::
 
-# Engage: Solar Radiation Patterns
+# Engage: Temperature Patterns Over 400,000 Years
 
-## Solar Radiation at 65°N
+## Ice Core Temperature Record
 
-Connecting to our earlier questions about how Earth's temperature has varied in the past, let's analyze the total amount of energy from solar radiation reaching Earth at 65°N over the last 750,000 years.
+Let's examine temperature data from Antarctic ice cores spanning 400,000 years.
 
 ```{ojs}
 //| echo: false
 Plot = require("@observablehq/plot")
 
-// Extended Radiation Data (750k years)
-radiationData = [
-  {kya: 740, radiation: 460}, {kya: 720, radiation: 490},
-  {kya: 700, radiation: 470}, {kya: 680, radiation: 440},
-  {kya: 660, radiation: 500}, {kya: 640, radiation: 470},
-  {kya: 620, radiation: 450}, {kya: 600, radiation: 480},
-  {kya: 580, radiation: 510}, {kya: 560, radiation: 470},
-  {kya: 540, radiation: 450}, {kya: 520, radiation: 490},
-  {kya: 500, radiation: 460}, {kya: 480, radiation: 520},
-  {kya: 460, radiation: 530}, {kya: 440, radiation: 480},
-  {kya: 420, radiation: 460}, {kya: 400, radiation: 460}, 
-  {kya: 380, radiation: 490}, {kya: 360, radiation: 470}, 
-  {kya: 340, radiation: 440}, {kya: 320, radiation: 500}, 
-  {kya: 300, radiation: 470}, {kya: 280, radiation: 450}, 
-  {kya: 260, radiation: 480}, {kya: 240, radiation: 510}, 
-  {kya: 220, radiation: 470}, {kya: 200, radiation: 450}, 
-  {kya: 180, radiation: 490}, {kya: 160, radiation: 460}, 
-  {kya: 140, radiation: 520}, {kya: 120, radiation: 530}, 
-  {kya: 100, radiation: 480}, {kya: 80, radiation: 460}, 
-  {kya: 60, radiation: 440}, {kya: 40, radiation: 470}, 
-  {kya: 20, radiation: 450}, {kya: 0, radiation: 480}
-]
-
-// Vostok ice core data (kept for reference/comparison later)
+// Simplified Vostok ice core data (temperature anomaly)
 iceCoreTempData = [
   {kya: 400, temp: -8}, {kya: 380, temp: -4}, {kya: 360, temp: -6},
   {kya: 340, temp: -8}, {kya: 320, temp: -3}, {kya: 300, temp: -6},
@@ -92,46 +71,44 @@ iceCoreTempData = [
 
 ```{ojs}
 //| echo: false
-viewof timeRange = Inputs.range([0, 750], {
+viewof timeRange = Inputs.range([0, 400], {
   step: 50,
-  value: 750,
+  value: 400,
   label: "View last ___ thousand years:"
 })
 ```
 
 ```{ojs}
 //| echo: false
-filteredRadData = radiationData.filter(d => d.kya <= timeRange)
+filteredIceData = iceCoreTempData.filter(d => d.kya <= timeRange)
 
 Plot.plot({
-  title: "Summer Radiation at 65°N Over the Past " + timeRange + ",000 Years",
-  subtitle: "Solar Radiation (Watts/m²)",
+  title: "Antarctic Temperature Over the Past " + timeRange + ",000 Years",
+  subtitle: "Temperature anomaly relative to present (°C)",
   width: 750,
   height: 400,
-  x: {label: "Thousands of Years Ago (kya)", reverse: true},
-  y: {label: "Radiation (W/m²)", domain: [420, 550]},
+  x: {label: "Thousands of Years Ago", reverse: true},
+  y: {label: "Temperature Anomaly (°C)", domain: [-10, 4]},
   marks: [
-    Plot.ruleY([480], {stroke: "#999", strokeDasharray: "4,4"}),
-    Plot.areaY(filteredRadData, {x: "kya", y: "radiation", y2: 480, fill: d => d.radiation > 480 ? "#e74c3c" : "#3498db", fillOpacity: 0.4}),
-    Plot.line(filteredRadData, {x: "kya", y: "radiation", stroke: "#2c3e50", strokeWidth: 2}),
-    Plot.dot(filteredRadData.filter(d => d.radiation > 520), {x: "kya", y: "radiation", fill: "red", r: 5}),
-    Plot.text(filteredRadData.filter(d => d.radiation > 520), {x: "kya", y: "radiation", text: d => "Peak", dy: -10, fontSize: 10})
+    Plot.ruleY([0], {stroke: "#999", strokeDasharray: "4,4"}),
+    Plot.areaY(filteredIceData, {x: "kya", y: "temp", fill: d => d.temp > -2 ? "#e74c3c" : "#3498db", fillOpacity: 0.4}),
+    Plot.line(filteredIceData, {x: "kya", y: "temp", stroke: "#2c3e50", strokeWidth: 2}),
+    Plot.dot(filteredIceData.filter(d => d.temp > 0), {x: "kya", y: "temp", fill: "red", r: 8}),
+    Plot.text(filteredIceData.filter(d => d.temp > 0), {x: "kya", y: "temp", text: d => "Interglacial", dy: -15, fontSize: 10})
   ]
 })
 ```
 
 ::: {.check-understanding}
 ### ✅ Initial Observations
-1. What pattern do you notice in the radiation data over the last 750,000 years?
-2. Approximately how often does the radiation intensity peak?
-3. How might this repeating pattern relate to the temperature cycles we've discussed previously?
+1. What pattern do you notice in the temperature data?
+2. Approximately how often do the warm periods (interglacials) occur?
+3. What might be causing these regular cycles?
 :::
 
-# Explore: Earth's Orbital Cycles
+# Explore: Milankovitch Cycles
 
 ## The Three Orbital Cycles
-
-How does Earth's position affect the amount of radiation reaching Earth's surface? Students use models of Earth's eccentricity, tilt, and direction of tilt cycles to collect empirical evidence in order to determine whether there is a causal relationship between orbital cycles and the amount of solar radiation reaching Earth at 65° N over the last 750,000 years.
 
 Serbian scientist Milutin Milankovitch proposed that variations in Earth's orbit cause long-term climate cycles. Let's explore each one.
 
@@ -464,23 +441,52 @@ viewof precessionAngle = Inputs.range([0, 360], {
 | Obliquity | ~41,000 yrs | 23.5° | 22.1° - 24.5° | Changes seasonal contrast |
 | Precession | ~23,000 yrs | N/A | 360° rotation | Changes timing of seasons |
 
-**Part 2: Analyzing the Data**
+**Part 2: Combining the Cycles**
 
-Review the Radiation Graph from the Engage section. 
+The graph below shows how these cycles combine to affect radiation at 65°N:
 
-1. Which orbital cycle (Eccentricity, Obliquity, or Precession) has a period that most closely matches the major 100,000-year pattern in the radiation data?
-2. How might the other two cycles affect the smaller "wiggles" in the data?
+```{ojs}
+//| echo: false
+// Combined Milankovitch cycles effect on 65°N radiation
+radiationData = [
+  {kya: 400, radiation: 460}, {kya: 380, radiation: 490},
+  {kya: 360, radiation: 470}, {kya: 340, radiation: 440},
+  {kya: 320, radiation: 500}, {kya: 300, radiation: 470},
+  {kya: 280, radiation: 450}, {kya: 260, radiation: 480},
+  {kya: 240, radiation: 510}, {kya: 220, radiation: 470},
+  {kya: 200, radiation: 450}, {kya: 180, radiation: 490},
+  {kya: 160, radiation: 460}, {kya: 140, radiation: 520},
+  {kya: 120, radiation: 530}, {kya: 100, radiation: 480},
+  {kya: 80, radiation: 460}, {kya: 60, radiation: 440},
+  {kya: 40, radiation: 470}, {kya: 20, radiation: 450},
+  {kya: 0, radiation: 480}
+]
 
-**Part 3: Making a Claim**
+Plot.plot({
+  title: "Summer Radiation at 65°N Over 400,000 Years",
+  subtitle: "Watts per square meter",
+  width: 700,
+  height: 350,
+  x: {label: "Thousands of Years Ago", reverse: true},
+  y: {label: "Radiation (W/m²)", domain: [420, 550]},
+  marks: [
+    Plot.areaY(radiationData, {x: "kya", y: "radiation", y2: 480, fill: d => d.radiation > 480 ? "#e74c3c" : "#3498db", fillOpacity: 0.4}),
+    Plot.line(radiationData, {x: "kya", y: "radiation", stroke: "#2c3e50", strokeWidth: 2}),
+    Plot.ruleY([480], {stroke: "#999", strokeDasharray: "4,4"})
+  ]
+})
+```
 
-Based on your observations of the orbital models and the radiation data:
-1. Construct a claim about whether Earth's orbital cycles cause the variations in solar radiation reaching Earth.
-2. Support your claim with evidence from the models and the graph.
+**Part 3: Correlation Analysis**
+
+Compare the radiation graph above with the temperature graph from the Engage section. Answer:
+
+1. Do high radiation periods correlate with warm periods (interglacials)?
+2. What is the approximate lag time between radiation changes and temperature changes?
+3. Why might there be a delay in temperature response?
 :::
 
-# Explain: Connecting Orbit to Climate 
-
-Did changes in Earth's position cause the patterns of radiation reaching Earth's surface and glacial-interglacial cycles?
+# Explain: How Milankovitch Cycles Drive Ice Ages
 
 ::: {.explain-box}
 ## 🌍 The Mechanism
@@ -505,14 +511,11 @@ Higher albedo → More cooling → More ice growth
 ```{ojs}
 //| echo: false
 // Combined visualization
-combinedData = iceCoreTempData.map(d => {
-  const rad = radiationData.find(r => r.kya === d.kya);
-  return {
-    kya: d.kya,
-    temp: d.temp,
-    radiation: rad ? rad.radiation : 480
-  };
-})
+combinedData = iceCoreTempData.map((d, i) => ({
+  kya: d.kya,
+  temp: d.temp,
+  radiation: radiationData[i]?.radiation || 480
+}))
 
 Plot.plot({
   title: "Temperature vs. Summer Radiation at 65°N",
@@ -523,11 +526,7 @@ Plot.plot({
   marks: [
     Plot.line(combinedData, {x: "kya", y: "temp", stroke: "#e74c3c", strokeWidth: 2}),
     Plot.dot(combinedData.filter(d => d.temp > -2), {x: "kya", y: "temp", fill: "#e74c3c", r: 6}),
-    Plot.text([{x: 350, y: 2}], {x: "x", y: "y", text: d => "Temperature", fill: "#e74c3c", fontSize: 12}),
-    
-    // Add radiation trend for comparison (scaled to fit)
-    Plot.line(combinedData, {x: "kya", y: d => (d.radiation - 480) / 10 - 6, stroke: "#3498db", strokeWidth: 1, strokeDasharray: "4,2"}),
-    Plot.text([{x: 350, y: -5}], {x: "x", y: "y", text: d => "Radiation (scaled)", fill: "#3498db", fontSize: 10})
+    Plot.text([{x: 350, y: 2}], {x: "x", y: "y", text: d => "Temperature", fill: "#e74c3c", fontSize: 12})
   ]
 })
 ```
@@ -542,15 +541,11 @@ Plot.plot({
 5. **Current orbital parameters suggest Earth should be cooling**, yet global temperatures are increasing
 :::
 
-# Elaborate: Solar Activity vs. Glacial Cycles
-
-How well does activity from the Sun correlate with glacial-interglacial cycles?
+# Elaborate: What About the Sun's Output?
 
 ## Solar Radiation Data
 
-Some claim changes in the Sun's output (Solar Activity) are causing climate changes. We know orbital cycles cause the Ice Ages, but what about the Sun itself? And what about the warming we see today?
-
-Let's examine the evidence for the Sun's role in recent history:
+Some claim changes in the Sun's output are causing current warming. Let's examine the evidence:
 
 ```{ojs}
 //| echo: false
@@ -586,9 +581,7 @@ Plot.plot({
 3. Can changes in solar output explain recent warming? Why or why not?
 :::
 
-# Evaluate: Are Orbital Factors Causing Warming Today?
-
-How do we know that orbital factors are not causing climate change today?
+# Evaluate: Current Orbital Position
 
 ::: {.evaluate-box}
 ## 📊 Putting It Together

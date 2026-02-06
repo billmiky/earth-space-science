@@ -4,12 +4,122 @@
 
 > How can individuals, communities, and nations reduce their environmental impact?
 
-## Coming Soon
+## Current U.S. Air Quality (Live)
 
-This chapter will cover:
-- Carbon footprints
-- High-impact actions
-- Policy tools
-- Climate success stories
+Use this live bubble map to explore current particulate pollution (PM2.5) readings across the United States. Larger, darker circles indicate higher concentrations.
 
-*Full content will be added soon.*
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+topojson = require("topojson-client@3")
+```
+
+```{ojs}
+//| echo: false
+viewof maxPoints = Inputs.range([50, 500], {
+	step: 50,
+	value: 200,
+	label: "Number of stations to display"
+})
+```
+
+```{ojs}
+//| echo: false
+async function safeFetchJson(url) {
+	try {
+		const response = await fetch(url)
+		if (!response.ok) throw new Error(`HTTP ${response.status}`)
+		return await response.json()
+	} catch (error) {
+		return {__error: error.message}
+	}
+}
+
+us = await safeFetchJson("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json")
+states = us?.objects?.states ? topojson.feature(us, us.objects.states) : null
+
+apiUrl = "https://api.openaq.org/v2/latest?country=US&parameter=pm25&limit=500"
+proxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`
+
+aq = {
+  const data = await safeFetchJson(apiUrl);
+  if (!data.__error) return data;
+  return await safeFetchJson(proxyUrl);
+}
+
+fallbackPoints = [
+	{location: "Seattle", city: "Seattle", value: 8, unit: "µg/m³", latitude: 47.61, longitude: -122.33, updated: "sample"},
+	{location: "San Francisco", city: "San Francisco", value: 10, unit: "µg/m³", latitude: 37.77, longitude: -122.42, updated: "sample"},
+	{location: "Los Angeles", city: "Los Angeles", value: 18, unit: "µg/m³", latitude: 34.05, longitude: -118.24, updated: "sample"},
+	{location: "Phoenix", city: "Phoenix", value: 15, unit: "µg/m³", latitude: 33.45, longitude: -112.07, updated: "sample"},
+	{location: "Denver", city: "Denver", value: 9, unit: "µg/m³", latitude: 39.74, longitude: -104.99, updated: "sample"},
+	{location: "Dallas", city: "Dallas", value: 14, unit: "µg/m³", latitude: 32.78, longitude: -96.80, updated: "sample"},
+	{location: "Chicago", city: "Chicago", value: 12, unit: "µg/m³", latitude: 41.88, longitude: -87.63, updated: "sample"},
+	{location: "Atlanta", city: "Atlanta", value: 11, unit: "µg/m³", latitude: 33.75, longitude: -84.39, updated: "sample"},
+	{location: "Miami", city: "Miami", value: 7, unit: "µg/m³", latitude: 25.76, longitude: -80.19, updated: "sample"},
+	{location: "New York", city: "New York", value: 13, unit: "µg/m³", latitude: 40.71, longitude: -74.01, updated: "sample"},
+	{location: "Boston", city: "Boston", value: 9, unit: "µg/m³", latitude: 42.36, longitude: -71.06, updated: "sample"},
+	{location: "Minneapolis", city: "Minneapolis", value: 8, unit: "µg/m³", latitude: 44.98, longitude: -93.26, updated: "sample"}
+]
+
+livePoints = (aq.results || [])
+	.map(d => {
+		const m = (d.measurements || []).find(x => x.parameter === "pm25")
+		const c = d.coordinates || {}
+		if (!m || c.latitude == null || c.longitude == null) return null
+		return {
+			location: d.location,
+			city: d.city,
+			value: m.value,
+			unit: m.unit,
+			latitude: c.latitude,
+			longitude: c.longitude,
+			updated: m.lastUpdated
+		}
+	})
+	.filter(Boolean)
+
+usingFallback = livePoints.length === 0
+points = (usingFallback ? fallbackPoints : livePoints).slice(0, maxPoints)
+
+errorMsg = us.__error
+
+errorMsg
+	? html`<div style="padding: 12px; border-left: 4px solid #f44336; background: #ffebee;">
+			<strong>Map unavailable:</strong> ${errorMsg}.<br />
+			The base map could not be loaded.
+		</div>`
+	: Plot.plot({
+			title: "Live U.S. PM2.5 Air Quality (OpenAQ)",
+			subtitle: usingFallback
+				? "Live data blocked — showing sample PM2.5 values"
+				: "Bubble size and color indicate PM2.5 concentration (µg/m³)",
+			width: 900,
+			height: 550,
+			projection: "albers-usa",
+			color: {scheme: "YlOrRd", legend: true},
+			r: {range: [2, 16]},
+			marks: [
+				Plot.geo(states, {fill: "#f5f5f5", stroke: "#999", strokeWidth: 0.5}),
+				Plot.dot(points, {
+					x: "longitude",
+					y: "latitude",
+					r: "value",
+					fill: "value",
+					fillOpacity: 0.7,
+					stroke: "white",
+					strokeWidth: 0.5,
+					tip: true,
+					title: d => `${d.city || ""} ${d.location}\nPM2.5: ${d.value} ${d.unit}\nUpdated: ${d.updated}`
+				})
+			]
+		})
+```
+
+::: {.check-understanding}
+### ✅ Quick Analysis
+1. Where are the highest PM2.5 readings clustered today?
+2. Which regions show lower PM2.5 values?
+3. What local factors might explain these patterns?
+:::

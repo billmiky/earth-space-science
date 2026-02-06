@@ -1009,34 +1009,34 @@
   {
     "objectID": "unit6-sustainable-future/02-human-impact-mitigation.html",
     "href": "unit6-sustainable-future/02-human-impact-mitigation.html",
-    "title": "20  Human Impact and Mitigation",
+    "title": "23  Human Impact and Mitigation",
     "section": "",
-    "text": "20.1 Essential Question",
+    "text": "23.1 Essential Question",
     "crumbs": [
       "Unit 6: Solutions for a Sustainable Future",
-      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Human Impact and Mitigation</span>"
+      "<span class='chapter-number'>23</span>  <span class='chapter-title'>Human Impact and Mitigation</span>"
     ]
   },
   {
     "objectID": "unit6-sustainable-future/02-human-impact-mitigation.html#essential-question",
     "href": "unit6-sustainable-future/02-human-impact-mitigation.html#essential-question",
-    "title": "20  Human Impact and Mitigation",
+    "title": "23  Human Impact and Mitigation",
     "section": "",
     "text": "How can individuals, communities, and nations reduce their environmental impact?",
     "crumbs": [
       "Unit 6: Solutions for a Sustainable Future",
-      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Human Impact and Mitigation</span>"
+      "<span class='chapter-number'>23</span>  <span class='chapter-title'>Human Impact and Mitigation</span>"
     ]
   },
   {
     "objectID": "unit6-sustainable-future/02-human-impact-mitigation.html#coming-soon",
     "href": "unit6-sustainable-future/02-human-impact-mitigation.html#coming-soon",
-    "title": "20  Human Impact and Mitigation",
-    "section": "20.2 Coming Soon",
-    "text": "20.2 Coming Soon\nThis chapter will cover: - Carbon footprints - High-impact actions - Policy tools - Climate success stories\nFull content will be added soon.",
+    "title": "23  Human Impact and Mitigation",
+    "section": "23.2 Coming Soon",
+    "text": "23.2 Coming Soon\nThis chapter will cover: - Carbon footprints - High-impact actions - Policy tools - Climate success stories\nFull content will be added soon.",
     "crumbs": [
       "Unit 6: Solutions for a Sustainable Future",
-      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Human Impact and Mitigation</span>"
+      "<span class='chapter-number'>23</span>  <span class='chapter-title'>Human Impact and Mitigation</span>"
     ]
   },
   {
@@ -2211,6 +2211,17 @@
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>19</span>  <span class='chapter-title'>Unit 4: Climate Change - Unit Closing</span>"
+    ]
+  },
+  {
+    "objectID": "unit6-sustainable-future/02-human-impact-mitigation.html#current-u.s.-air-quality-live",
+    "href": "unit6-sustainable-future/02-human-impact-mitigation.html#current-u.s.-air-quality-live",
+    "title": "23  Human Impact and Mitigation",
+    "section": "23.2 Current U.S. Air Quality (Live)",
+    "text": "23.2 Current U.S. Air Quality (Live)\nUse this live bubble map to explore current particulate pollution (PM2.5) readings across the United States. Larger, darker circles indicate higher concentrations.\n\n\nCode\nPlot = require(\"@observablehq/plot\")\nd3 = require(\"d3@7\")\ntopojson = require(\"topojson-client@3\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCode\nviewof maxPoints = Inputs.range([50, 500], {\n    step: 50,\n    value: 200,\n    label: \"Number of stations to display\"\n})\n\n\n\n\n\n\n\n\n\nCode\nasync function safeFetchJson(url) {\n    try {\n        const response = await fetch(url)\n        if (!response.ok) throw new Error(`HTTP ${response.status}`)\n        return await response.json()\n    } catch (error) {\n        return {__error: error.message}\n    }\n}\n\nus = await safeFetchJson(\"https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json\")\nstates = us?.objects?.states ? topojson.feature(us, us.objects.states) : null\n\napiUrl = \"https://api.openaq.org/v2/latest?country=US&parameter=pm25&limit=500\"\nproxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`\n\naq = {\n  const data = await safeFetchJson(apiUrl);\n  if (!data.__error) return data;\n  return await safeFetchJson(proxyUrl);\n}\n\nfallbackPoints = [\n    {location: \"Seattle\", city: \"Seattle\", value: 8, unit: \"µg/m³\", latitude: 47.61, longitude: -122.33, updated: \"sample\"},\n    {location: \"San Francisco\", city: \"San Francisco\", value: 10, unit: \"µg/m³\", latitude: 37.77, longitude: -122.42, updated: \"sample\"},\n    {location: \"Los Angeles\", city: \"Los Angeles\", value: 18, unit: \"µg/m³\", latitude: 34.05, longitude: -118.24, updated: \"sample\"},\n    {location: \"Phoenix\", city: \"Phoenix\", value: 15, unit: \"µg/m³\", latitude: 33.45, longitude: -112.07, updated: \"sample\"},\n    {location: \"Denver\", city: \"Denver\", value: 9, unit: \"µg/m³\", latitude: 39.74, longitude: -104.99, updated: \"sample\"},\n    {location: \"Dallas\", city: \"Dallas\", value: 14, unit: \"µg/m³\", latitude: 32.78, longitude: -96.80, updated: \"sample\"},\n    {location: \"Chicago\", city: \"Chicago\", value: 12, unit: \"µg/m³\", latitude: 41.88, longitude: -87.63, updated: \"sample\"},\n    {location: \"Atlanta\", city: \"Atlanta\", value: 11, unit: \"µg/m³\", latitude: 33.75, longitude: -84.39, updated: \"sample\"},\n    {location: \"Miami\", city: \"Miami\", value: 7, unit: \"µg/m³\", latitude: 25.76, longitude: -80.19, updated: \"sample\"},\n    {location: \"New York\", city: \"New York\", value: 13, unit: \"µg/m³\", latitude: 40.71, longitude: -74.01, updated: \"sample\"},\n    {location: \"Boston\", city: \"Boston\", value: 9, unit: \"µg/m³\", latitude: 42.36, longitude: -71.06, updated: \"sample\"},\n    {location: \"Minneapolis\", city: \"Minneapolis\", value: 8, unit: \"µg/m³\", latitude: 44.98, longitude: -93.26, updated: \"sample\"}\n]\n\nlivePoints = (aq.results || [])\n    .map(d =&gt; {\n        const m = (d.measurements || []).find(x =&gt; x.parameter === \"pm25\")\n        const c = d.coordinates || {}\n        if (!m || c.latitude == null || c.longitude == null) return null\n        return {\n            location: d.location,\n            city: d.city,\n            value: m.value,\n            unit: m.unit,\n            latitude: c.latitude,\n            longitude: c.longitude,\n            updated: m.lastUpdated\n        }\n    })\n    .filter(Boolean)\n\nusingFallback = livePoints.length === 0\npoints = (usingFallback ? fallbackPoints : livePoints).slice(0, maxPoints)\n\nerrorMsg = us.__error\n\nerrorMsg\n    ? html`&lt;div style=\"padding: 12px; border-left: 4px solid #f44336; background: #ffebee;\"&gt;\n            &lt;strong&gt;Map unavailable:&lt;/strong&gt; ${errorMsg}.&lt;br /&gt;\n            The base map could not be loaded.\n        &lt;/div&gt;`\n    : Plot.plot({\n            title: \"Live U.S. PM2.5 Air Quality (OpenAQ)\",\n            subtitle: usingFallback\n                ? \"Live data blocked — showing sample PM2.5 values\"\n                : \"Bubble size and color indicate PM2.5 concentration (µg/m³)\",\n            width: 900,\n            height: 550,\n            projection: \"albers-usa\",\n            color: {scheme: \"YlOrRd\", legend: true},\n            r: {range: [2, 16]},\n            marks: [\n                Plot.geo(states, {fill: \"#f5f5f5\", stroke: \"#999\", strokeWidth: 0.5}),\n                Plot.dot(points, {\n                    x: \"longitude\",\n                    y: \"latitude\",\n                    r: \"value\",\n                    fill: \"value\",\n                    fillOpacity: 0.7,\n                    stroke: \"white\",\n                    strokeWidth: 0.5,\n                    tip: true,\n                    title: d =&gt; `${d.city || \"\"} ${d.location}\\nPM2.5: ${d.value} ${d.unit}\\nUpdated: ${d.updated}`\n                })\n            ]\n        })\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n23.2.1 ✅ Quick Analysis\n\nWhere are the highest PM2.5 readings clustered today?\nWhich regions show lower PM2.5 values?\nWhat local factors might explain these patterns?",
+    "crumbs": [
+      "Unit 6: Solutions for a Sustainable Future",
+      "<span class='chapter-number'>23</span>  <span class='chapter-title'>Human Impact and Mitigation</span>"
     ]
   }
 ]
