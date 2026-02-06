@@ -17,31 +17,175 @@ execute:
 
 ```{=html}
 <style>
-.engage-box { background: #e3f2fd; border-left: 5px solid #2196F3; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
-.explore-box { background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
-.explain-box { background: #e8f5e9; border-left: 5px solid #4caf50; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
-.elaborate-box { background: #f3e5f5; border-left: 5px solid #9c27b0; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
-.evaluate-box { background: #ffebee; border-left: 5px solid #f44336; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
-.check-understanding { background-color: #d1ecf1; border-left: 5px solid #17a2b8; padding: 15px; margin: 15px 0; }
-.key-idea { background-color: #d4edda; border-left: 5px solid #28a745; padding: 15px; margin: 15px 0; }
-.lab-activity { background: #fafafa; border: 2px solid #333; padding: 20px; margin: 20px 0; border-radius: 10px; }
-.quiz-section { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 20px; margin: 20px 0; border-radius: 10px; }
-.pe-badge { display: inline-block; background: #673ab7; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin: 5px; }
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+  color: white;
+  padding: 25px; 
+  margin: 20px 0; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  border: none;
+}
+.engage-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+
+.explore-box { 
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
+  color: white;
+  padding: 25px; 
+  margin: 20px 0; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+}
+
+.explain-box { 
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
+  color: #1a1a1a;
+  padding: 25px; 
+  margin: 20px 0; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+}
+
+.elaborate-box { 
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); 
+  color: #1a1a1a;
+  padding: 25px; 
+  margin: 20px 0; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);
+}
+
+.evaluate-box { 
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); 
+  color: #1a1a1a;
+  padding: 25px; 
+  margin: 20px 0; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(250, 112, 154, 0.3);
+}
+
+.check-understanding { 
+  background: linear-gradient(to right, #667eea, #764ba2);
+  color: white;
+  padding: 20px; 
+  margin: 20px 0;
+  border-radius: 12px;
+  border-left: 6px solid #fff;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
+  50% { box-shadow: 0 0 30px rgba(102, 126, 234, 0.8); }
+}
+
+.key-idea { 
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 20px; 
+  margin: 20px 0;
+  border-radius: 12px;
+  border-left: 8px solid #ff6b6b;
+  font-size: 1.1em;
+}
+
+.lab-activity { 
+  background: linear-gradient(to bottom, #ffeaa7, #fdcb6e);
+  border: 4px solid #e17055; 
+  padding: 25px; 
+  margin: 25px 0; 
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.quiz-section { 
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  padding: 25px; 
+  margin: 25px 0; 
+  border-radius: 15px;
+  border: 4px dashed #ff6b6b;
+}
+
+.pe-badge { 
+  display: inline-block; 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white; 
+  padding: 8px 16px; 
+  border-radius: 20px; 
+  font-size: 13px; 
+  font-weight: 800;
+  margin: 5px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.big-question {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.5em;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 30px 0 20px 0;
+  text-align: center;
+  animation: slideIn 0.8s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mind-blown {
+  background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+  color: white;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 15px;
+  font-size: 1.3em;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+  animation: bounce 1s ease infinite alternate;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-5px); }
+}
+
+h1 { 
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 2.8em !important;
+  margin-top: 40px !important;
+}
+
+h2 { 
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 700 !important;
+  color: #667eea !important;
+}
 </style>
 ```
 
 <span class="pe-badge">HS-ESS2-4</span> <span class="pe-badge">Time: 5 Days</span>
 
-# Investigative Phenomenon
+<div class="big-question">🌍 MYSTERY: Earth's Climate Cycles 🌍</div>
 
 ::: {.engage-box}
-## 🔬 Phenomenon
-**The amount of radiation received at 65°N has gone up and down over the last 750,000 years and repeats a pattern about every 100,000 years.**
+## 🔬 THE PHENOMENON
 
-### Driving Questions:
-- How do we know that natural cycles aren't causing climate change today?
-- How has the Earth's position with respect to the Sun changed over time?
-- How does the Earth's changing position with respect to the Sun affect temperatures on Earth?
+<div style="font-size: 1.4em; font-weight: 700; text-align: center; margin: 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+⚡ The amount of solar radiation hitting 65°N has been CYCLING UP AND DOWN for 750,000 years — repeating the same pattern every ~100,000 years! ⚡
+</div>
+
+### 🤔 THE BIG QUESTIONS:
+- 🌀 Could **natural cycles** be causing today's climate change?
+- 🛸 How has Earth's **position in space** changed over time?
+- 🔥 What happens to Earth's temperature when our orbit shifts?
 :::
 
 # Engage: Solar Radiation Patterns
@@ -121,23 +265,29 @@ Plot.plot({
 ```
 
 ::: {.check-understanding}
-### ✅ Initial Observations
-1. What pattern do you notice in the radiation data over the last 750,000 years?
-2. Approximately how often does the radiation intensity peak?
-3. How might this repeating pattern relate to the temperature cycles we've discussed previously?
+### 🎯 DETECTIVE MODE: What Do You See?
+1. 🔍 What **repeating pattern** jumps out at you in the last 750,000 years?
+2. ⏰ How often does the radiation **peak**?
+3. 🧊 Could this pattern explain **Ice Ages**?
 :::
+
+<div class="mind-blown">
+🤯 WAIT — this pattern has been repeating for THREE-QUARTERS OF A MILLION YEARS?! Let's find out WHY... 🤯
+</div>
 
 # Explore: Earth's Orbital Cycles
 
-## The Three Orbital Cycles
+## 🎢 The THREE ORBITAL CYCLES
 
-How does Earth's position affect the amount of radiation reaching Earth's surface? Students use models of Earth's eccentricity, tilt, and direction of tilt cycles to collect empirical evidence in order to determine whether there is a causal relationship between orbital cycles and the amount of solar radiation reaching Earth at 65° N over the last 750,000 years.
+**MISSION:** Use these interactive models to gather evidence about Earth's position in space. Could these orbital wobbles and stretches be causing the 100,000-year radiation pattern we just saw?
 
-Serbian scientist Milutin Milankovitch proposed that variations in Earth's orbit cause long-term climate cycles. Let's explore each one.
+<div style="background: linear-gradient(to right, #ff6b6b, #feca57); color: white; padding: 15px; border-radius: 10px; margin: 15px 0; font-weight: 600;">
+💡 <strong>DID YOU KNOW?</strong> In 1941, Serbian scientist Milutin Milankovitch figured out that Earth's "wobbles" in space control Ice Ages. Mind = blown! 🤯
+</div>
 
-### Cycle 1: Eccentricity (~100,000 year cycle)
+### 🔵 Cycle 1: ECCENTRICITY (~100,000 years)
 
-Earth's orbit changes shape from nearly circular to more elliptical.
+**THE STRETCH:** Earth's orbit changes from nearly circular ⭕ to more elliptical 🥚
 
 ```{ojs}
 //| echo: false
@@ -248,9 +398,9 @@ viewof eccentricity = Inputs.range([0, 0.06], {
 }
 ```
 
-### Cycle 2: Obliquity (Axial Tilt) (~41,000 year cycle)
+### 🌐 Cycle 2: OBLIQUITY (Axial Tilt) (~41,000 years)
 
-Earth's axial tilt varies between 22.1° and 24.5°.
+**THE WOBBLE:** Earth doesn't spin perfectly upright! Our axial tilt changes between 22.1° and 24.5° — affecting how extreme our seasons are! 🎿❄️🏖️
 
 ```{ojs}
 //| echo: false
@@ -347,9 +497,9 @@ viewof tiltAngle = Inputs.range([22.1, 24.5], {
 }
 ```
 
-### Cycle 3: Precession (~23,000 year cycle)
+### 🔄 Cycle 3: PRECESSION (~23,000 years)
 
-Earth's axis wobbles like a spinning top, changing which hemisphere is tilted toward the Sun at perihelion.
+**THE SPIN:** Earth's axis wobbles like a spinning top 🌀 — changing which hemisphere points toward the Sun when we're closest! This affects whether Northern or Southern summers are INTENSE.
 
 ```{ojs}
 //| echo: false
@@ -444,16 +594,21 @@ viewof precessionAngle = Inputs.range([0, 360], {
 ```
 
 ::: {.lab-activity}
-## 🔬 Lab Activity: Milankovitch Cycle Investigation
+## 🔬 INVESTIGATION LAB: Crack the Climate Code! 🕵️
 
-### Materials Needed:
-- Graph paper or spreadsheet
-- Colored pencils
-- Calculator
+<div style="text-align: center; font-size: 1.3em; font-weight: 700; margin: 15px 0; color: #e17055;">
+⚡ TIME TO BECOME AN ORBITAL DETECTIVE! ⚡
+</div>
 
-### Procedure:
+### 🎒 Materials:
+- Graph paper or spreadsheet 📊
+- Colored pencils 🎨
+- Calculator 🧮
+- Your detective skills 🔍
 
-**Part 1: Analyzing the Cycles**
+### 📋 Mission Steps:
+
+**STEP 1: Analyze the Cycles** 🌀
 
 1. Use the interactive simulations above to explore each cycle
 2. Record observations in your data table:
@@ -464,28 +619,34 @@ viewof precessionAngle = Inputs.range([0, 360], {
 | Obliquity | ~41,000 yrs | 23.5° | 22.1° - 24.5° | Changes seasonal contrast |
 | Precession | ~23,000 yrs | N/A | 360° rotation | Changes timing of seasons |
 
-**Part 2: Analyzing the Data**
+**STEP 2: Connect to the Data** 📈
 
-Review the Radiation Graph from the Engage section. 
+Go back and review that radiation graph from the beginning!
 
-1. Which orbital cycle (Eccentricity, Obliquity, or Precession) has a period that most closely matches the major 100,000-year pattern in the radiation data?
-2. How might the other two cycles affect the smaller "wiggles" in the data?
+1. 🎯 Which cycle's period **matches** the big 100,000-year pattern?
+2. 🌊 Could the other two cycles explain the smaller "wiggles"?
 
-**Part 3: Making a Claim**
+**STEP 3: Make Your Claim** 🎤
 
-Based on your observations of the orbital models and the radiation data:
-1. Construct a claim about whether Earth's orbital cycles cause the variations in solar radiation reaching Earth.
-2. Support your claim with evidence from the models and the graph.
+<div style="background: white; padding: 15px; border: 3px solid #e17055; border-radius: 10px; margin: 10px 0;">
+📣 <strong>YOUR VERDICT:</strong> Do Earth's orbital cycles CAUSE those radiation changes? Back it up with EVIDENCE from the models and data!
+</div>
 :::
 
 # Explain: Connecting Orbit to Climate 
 
-Did changes in Earth's position cause the patterns of radiation reaching Earth's surface and glacial-interglacial cycles?
+<div class="big-question">🧊 THE MILLION-DOLLAR QUESTION 🧊</div>
+
+<div style="text-align: center; font-size: 1.5em; font-weight: 700; margin: 20px 0; color: #667eea;">
+Did Earth's orbital wobbles ACTUALLY cause Ice Ages? 🤔
+</div>
 
 ::: {.explain-box}
-## 🌍 The Mechanism
+## 🌍 THE SECRET MECHANISM REVEALED
 
-**Key Insight:** It's not total yearly radiation that matters most—it's summer radiation at high northern latitudes (around 65°N).
+<div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 10px; margin: 15px 0;">
+💥 <strong>PLOT TWIST:</strong> It's not about total yearly radiation — it's about **SUMMER** radiation at 65°N (high northern latitudes)!
+</div>
 
 ### Why 65°N Matters:
 1. Most of Earth's land mass is in the Northern Hemisphere
@@ -544,13 +705,13 @@ Plot.plot({
 
 # Elaborate: Solar Activity vs. Glacial Cycles
 
-How well does activity from the Sun correlate with glacial-interglacial cycles?
+<div class="big-question">☀️ BUT WAIT... WHAT ABOUT THE SUN? ☀️</div>
 
-## Solar Radiation Data
+## 🔥 Solar Activity Data
 
-Some claim changes in the Sun's output (Solar Activity) are causing climate changes. We know orbital cycles cause the Ice Ages, but what about the Sun itself? And what about the warming we see today?
-
-Let's examine the evidence for the Sun's role in recent history:
+<div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 12px; margin: 20px 0; font-size: 1.1em;">
+🤔 <strong>NEW THEORY ALERT:</strong> Some people say the Sun itself is getting brighter, causing climate change. We know orbital wobbles caused Ice Ages... but what about the Sun's OUTPUT? Let's investigate! 🕵️
+</div>
 
 ```{ojs}
 //| echo: false
@@ -588,10 +749,14 @@ Plot.plot({
 
 # Evaluate: Are Orbital Factors Causing Warming Today?
 
-How do we know that orbital factors are not causing climate change today?
+<div class="big-question">🚨 THE FINAL VERDICT 🚨</div>
+
+<div style="text-align: center; font-size: 1.4em; font-weight: 700; margin: 20px 0; color: #fa709a;">
+So... are Earth's orbital cycles causing climate change RIGHT NOW? 🌡️
+</div>
 
 ::: {.evaluate-box}
-## 📊 Putting It Together
+## 📊 THE EVIDENCE SAYS...
 
 Based on current orbital parameters:
 
@@ -609,55 +774,195 @@ This sets up our next investigation: **What IS causing the warming?**
 ---
 
 ::: {.quiz-section}
-## 📝 Earth-Sun Dynamics Quiz
+## 🎮 CHALLENGE MODE: Test Your Knowledge! 🏆
 
-**Question 1:** What is the approximate period of the eccentricity cycle?
-- A) 23,000 years
-- B) 41,000 years
-- C) 100,000 years
-- D) 1 million years
+<div style="text-align: center; font-size: 1.3em; font-weight: 700; margin: 15px 0; color: #ff6b6b;">
+🔥 Can you ace this quiz? Let's find out! 🔥
+</div>
 
-**Question 2:** Why is summer radiation at 65°N latitude so important for ice ages?
-- A) It's where most people live
-- B) It's where most land mass is located, and ice sheets need cool summers to persist
-- C) The Sun is closest to Earth at this latitude
-- D) Ocean currents are strongest here
+```{ojs}
+//| echo: false
+quizData = [
+  {
+    question: "What is the approximate period of the eccentricity cycle?",
+    options: ["23,000 years", "41,000 years", "100,000 years", "1 million years"],
+    correct: 2,
+    feedback: {
+      correct: "🎉 YES! The eccentricity cycle takes about 100,000 years, which matches the major Ice Age pattern we saw in the data!",
+      wrong: "❌ Not quite! Remember, the eccentricity cycle is the LONGEST of the three Milankovitch cycles. It takes about 100,000 years!"
+    }
+  },
+  {
+    question: "Why is summer radiation at 65°N latitude so important for ice ages?",
+    options: [
+      "It's where most people live",
+      "It's where most land mass is located, and ice sheets need cool summers to persist",
+      "The Sun is closest to Earth at this latitude",
+      "Ocean currents are strongest here"
+    ],
+    correct: 1,
+    feedback: {
+      correct: "💯 PERFECT! Most land is in the Northern Hemisphere. When summers are cool at 65°N, snow doesn't melt and ice sheets GROW!",
+      wrong: "❌ Think about it: Where is most of Earth's land? And what happens if summer isn't warm enough to melt winter snow?"
+    }
+  },
+  {
+    question: "Earth's current axial tilt is approximately:",
+    options: ["22.1°", "23.5°", "24.5°", "45°"],
+    correct: 1,
+    feedback: {
+      correct: "✅ Spot on! Earth currently tilts at 23.5° — right in the middle of its range!",
+      wrong: "❌ Close! Earth's tilt right now is 23.5°, which is about halfway between the minimum (22.1°) and maximum (24.5°)."
+    }
+  },
+  {
+    question: "According to Milankovitch cycles, what should Earth's climate be doing right now?",
+    options: ["Warming rapidly", "Staying constant", "Cooling gradually", "Experiencing an ice age"],
+    correct: 2,
+    feedback: {
+      correct: "🧠 SMART! Based on orbital cycles alone, Earth should be cooling slightly. But it's warming instead — which means something ELSE is going on!",
+      wrong: "❌ Actually, our orbital parameters suggest we should be cooling gradually. But we're warming instead... 🤔 Something else must be causing it!"
+    }
+  },
+  {
+    question: "What causes the ~100,000 year glacial-interglacial cycle?",
+    options: [
+      "Changes in the Sun's energy output",
+      "Volcanic activity",
+      "Changes in Earth's orbital eccentricity",
+      "Human activity"
+    ],
+    correct: 2,
+    feedback: {
+      correct: "🌟 EXCELLENT! Eccentricity — the shape of Earth's orbit — drives the major 100,000-year cycle!",
+      wrong: "❌ Nope! The 100,000-year cycle matches the eccentricity cycle — when Earth's orbit becomes more or less elliptical!"
+    }
+  },
+  {
+    question: "The precession cycle affects climate by:",
+    options: [
+      "Changing total solar radiation received",
+      "Changing which season occurs at perihelion vs aphelion",
+      "Changing Earth's distance from the Sun",
+      "Changing the Sun's output"
+    ],
+    correct: 1,
+    feedback: {
+      correct: "🎯 NAILED IT! Precession changes WHEN (which season) Earth is closest to the Sun, making some hemispheres' summers more intense!",
+      wrong: "❌ Think about what 'wobble' means — precession changes which SEASON happens when Earth is closest to or farthest from the Sun!"
+    }
+  },
+  {
+    question: "If Earth's axial tilt increased to 24.5°, seasons would become:",
+    options: ["Less extreme", "More extreme", "Unchanged", "Reversed"],
+    correct: 1,
+    feedback: {
+      correct: "💪 YES! Greater tilt = more extreme seasons. Summer gets HOTTER, winter gets COLDER!",
+      wrong: "❌ Remember: Greater tilt means the Northern Hemisphere points MORE toward (or away from) the Sun, making seasons more extreme!"
+    }
+  },
+  {
+    question: "What is the significance of global warming occurring despite Milankovitch cycles predicting cooling?",
+    options: [
+      "Milankovitch cycles are wrong",
+      "Another factor must be causing the warming",
+      "The Sun's output has increased dramatically",
+      "Earth's orbit has changed unexpectedly"
+    ],
+    correct: 1,
+    feedback: {
+      correct: "🔥 GENIUS! You got it! Orbital cycles say we should cool, but we're warming — so something NEW and POWERFUL must be at work!",
+      wrong: "❌ The cycles aren't wrong — they've worked for hundreds of thousands of years! The fact that we're warming ANYWAY means a NEW factor is involved..."
+    }
+  }
+]
+```
 
-**Question 3:** Earth's current axial tilt is approximately:
-- A) 22.1°
-- B) 23.5°
-- C) 24.5°
-- D) 45°
+```{ojs}
+//| echo: false
+viewof answer0 = Inputs.radio(quizData[0].options, {label: `❓ Question 1: ${quizData[0].question}`})
+viewof answer1 = Inputs.radio(quizData[1].options, {label: `❓ Question 2: ${quizData[1].question}`})
+viewof answer2 = Inputs.radio(quizData[2].options, {label: `❓ Question 3: ${quizData[2].question}`})
+viewof answer3 = Inputs.radio(quizData[3].options, {label: `❓ Question 4: ${quizData[3].question}`})
+viewof answer4 = Inputs.radio(quizData[4].options, {label: `❓ Question 5: ${quizData[4].question}`})
+viewof answer5 = Inputs.radio(quizData[5].options, {label: `❓ Question 6: ${quizData[5].question}`})
+viewof answer6 = Inputs.radio(quizData[6].options, {label: `❓ Question 7: ${quizData[6].question}`})
+viewof answer7 = Inputs.radio(quizData[7].options, {label: `❓ Question 8: ${quizData[7].question}`})
+```
 
-**Question 4:** According to Milankovitch cycles, what should Earth's climate be doing right now?
-- A) Warming rapidly
-- B) Staying constant
-- C) Cooling gradually
-- D) Experiencing an ice age
+```{ojs}
+//| echo: false
+mutable showResults = false
+```
 
-**Question 5:** What causes the ~100,000 year glacial-interglacial cycle?
-- A) Changes in the Sun's energy output
-- B) Volcanic activity
-- C) Changes in Earth's orbital eccentricity
-- D) Human activity
+```{ojs}
+//| echo: false
+viewof submitButton = Inputs.button("🎯 Submit Answers & See Your Score!", {
+  reduce: () => {
+    mutable showResults = true;
+    return Date.now();
+  }
+})
+```
 
-**Question 6:** The precession cycle affects climate by:
-- A) Changing total solar radiation received
-- B) Changing which season occurs at perihelion vs aphelion
-- C) Changing Earth's distance from the Sun
-- D) Changing the Sun's output
+```{ojs}
+//| echo: false
+userAnswers = [answer0, answer1, answer2, answer3, answer4, answer5, answer6, answer7]
 
-**Question 7:** If Earth's axial tilt increased to 24.5°, seasons would become:
-- A) Less extreme
-- B) More extreme
-- C) Unchanged
-- D) Reversed
+score = showResults ? userAnswers.reduce((sum, ans, i) => {
+  const answerIndex = quizData[i].options.indexOf(ans);
+  return sum + (answerIndex === quizData[i].correct ? 1 : 0);
+}, 0) : null
 
-**Question 8:** What is the significance of global warming occurring despite Milankovitch cycles predicting cooling?
-- A) Milankovitch cycles are wrong
-- B) Another factor must be causing the warming
-- C) The Sun's output has increased dramatically
-- D) Earth's orbit has changed unexpectedly
+percentage = score !== null ? Math.round((score / quizData.length) * 100) : null
+```
 
-*Answers: 1-C, 2-B, 3-B, 4-C, 5-C, 6-B, 7-B, 8-B*
+```{ojs}
+//| echo: false
+showResults ? html`
+<div>
+  ${quizData.map((q, i) => {
+    const userAnswer = userAnswers[i];
+    const answerIndex = q.options.indexOf(userAnswer);
+    const isCorrect = answerIndex === q.correct;
+    const answered = userAnswer !== undefined;
+    const bgColor = !answered ? "#f5f5f5" : isCorrect ? "#d4edda" : "#ffebee";
+    const borderColor = !answered ? "#ccc" : isCorrect ? "#28a745" : "#dc3545";
+    const icon = !answered ? "⚠️" : isCorrect ? "✅" : "❌";
+    
+    return html`
+      <div style="background: ${bgColor}; border: 3px solid ${borderColor}; padding: 15px; margin: 15px 0; border-radius: 10px;">
+        <strong>${icon} Question ${i + 1}:</strong> ${q.question}<br/>
+        <strong>Your answer:</strong> ${answered ? userAnswer : "Not answered"}<br/>
+        <strong>Correct answer:</strong> ${q.options[q.correct]}<br/>
+        <div style="margin-top: 10px; font-style: italic; color: #333;">
+          ${isCorrect ? q.feedback.correct : q.feedback.wrong}
+        </div>
+      </div>
+    `;
+  })}
+  
+  <div style="background: linear-gradient(135deg, ${percentage >= 80 ? '#43e97b' : percentage >= 60 ? '#feca57' : '#fa709a'} 0%, ${percentage >= 80 ? '#38f9d7' : percentage >= 60 ? '#ff6b6b' : '#fee140'} 100%); color: ${percentage >= 60 ? '#1a1a1a' : 'white'}; padding: 25px; margin: 25px 0; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+    <div style="font-size: 2.5em; font-weight: 800; margin-bottom: 10px;">
+      ${percentage >= 80 ? '🏆' : percentage >= 60 ? '👍' : '📚'}
+    </div>
+    <div style="font-size: 2em; font-weight: 700; margin-bottom: 15px;">
+      Your Score: ${score}/${quizData.length} (${percentage}%)
+    </div>
+    <div style="font-size: 1.3em; font-weight: 600;">
+      ${percentage >= 80 ? 
+        "🌟 ORBITAL EXPERT! You've mastered Earth-Sun dynamics! You're ready to explain Ice Ages to anyone!" : 
+        percentage >= 60 ? 
+        "💪 SOLID WORK! You understand the basics. Review those tricky concepts and you'll be an expert!" : 
+        "🔄 KEEP LEARNING! These concepts are tough. Go back through the chapter, play with the simulations, and try again!"}
+    </div>
+  </div>
+</div>
+` : html`<div style="text-align: center; padding: 20px; color: #666; font-style: italic;">
+  📝 Answer all questions above, then click "Submit Answers" to see how you did!
+</div>`
+```
+
 :::
+
+---
