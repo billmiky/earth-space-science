@@ -17,37 +17,87 @@ execute:
 
 ```{=html}
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
 .anchor-box {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 25px;
+  padding: 30px;
   border-radius: 15px;
-  margin: 20px 0;
+  margin: 25px 0;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+  animation: slideIn 0.8s ease-out;
 }
+
 .question-box {
-  background-color: #fff3cd;
-  border-left: 5px solid #ffc107;
-  padding: 15px;
-  margin: 15px 0;
-}
-.check-understanding {
-  background-color: #d1ecf1;
-  border-left: 5px solid #17a2b8;
-  padding: 15px;
-  margin: 15px 0;
-}
-.key-idea {
-  background-color: #d4edda;
-  border-left: 5px solid #28a745;
-  padding: 15px;
-  margin: 15px 0;
-}
-.quiz-section {
-  background-color: #f8d7da;
-  border-left: 5px solid #dc3545;
+  background: linear-gradient(to right, #ffeaa7, #fdcb6e);
   padding: 20px;
   margin: 20px 0;
-  border-radius: 10px;
+  border-radius: 12px;
+  border-left: 6px solid #e17055;
+  box-shadow: 0 4px 15px rgba(225, 112, 85, 0.3);
+}
+
+.check-understanding {
+  background: linear-gradient(to right, #667eea, #764ba2);
+  color: white;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 12px;
+  border-left: 6px solid #fff;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
+  50% { box-shadow: 0 0 30px rgba(102, 126, 234, 0.8); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.key-idea {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 12px;
+  border-left: 8px solid #ff6b6b;
+  font-size: 1.1em;
+}
+
+.quiz-section {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  padding: 25px;
+  margin: 25px 0;
+  border-radius: 15px;
+  border: 4px dashed #ff6b6b;
+}
+
+h1 {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 2.8em !important;
+  margin-top: 40px !important;
+}
+
+h2 {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 700 !important;
+  color: #667eea !important;
+}
+
+.big-question {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.5em;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 30px 0 20px 0;
+  text-align: center;
+  animation: slideIn 0.8s ease-out;
 }
 </style>
 ```

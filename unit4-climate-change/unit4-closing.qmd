@@ -17,47 +17,71 @@ execute:
 
 ```{=html}
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
 .anchor-box {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-  color: white;
-  padding: 25px;
-  border-radius: 15px;
-  margin: 20px 0;
-}
-.summary-box {
-  background: #f8f9fa;
-  border: 2px solid #dee2e6;
-  padding: 20px;
-  border-radius: 10px;
-  margin: 15px 0;
-}
-.evidence-card {
-  background: white;
-  border-left: 5px solid #28a745;
-  padding: 15px;
-  margin: 10px 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.performance-task {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 25px;
+  padding: 30px;
   border-radius: 15px;
-  margin: 20px 0;
+  margin: 25px 0;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+  animation: slideIn 0.8s ease-out;
 }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.summary-box {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  border: 3px solid #ff6b6b;
+  padding: 25px;
+  border-radius: 12px;
+  margin: 20px 0;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.evidence-card {
+  background: linear-gradient(to right, #a8edea, #fed6e3);
+  border-left: 8px solid #667eea;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+}
+
+.performance-task {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 30px;
+  border-radius: 15px;
+  margin: 25px 0;
+  box-shadow: 0 10px 30px rgba(240, 147, 251, 0.4);
+}
+
 .rubric-table {
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
 }
+
 .rubric-table th, .rubric-table td {
   border: 1px solid #ddd;
-  padding: 12px;
+  padding: 15px;
   text-align: left;
 }
+
 .rubric-table th {
-  background: #2196F3;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 .rubric-table tr:nth-child(even) {
   background: #f8f9fa;
