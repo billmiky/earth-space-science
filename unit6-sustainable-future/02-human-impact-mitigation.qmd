@@ -117,6 +117,355 @@ errorMsg
 		})
 ```
 
+```{python}
+#| label: fig-volcano
+#| fig-cap: "Interactive 3D model of a volcanic crater."
+#| echo: false
+
+import plotly.graph_objects as go
+import numpy as np
+
+# Generate Data
+x = np.linspace(-10, 10, 100)
+y = np.linspace(-10, 10, 100)
+X, Y = np.meshgrid(x, y)
+R = np.sqrt(X**2 + Y**2)
+Z = 15 * np.exp(-R**2 / 15) - 5 * np.exp(-R**2 / 1)
+
+# Plot
+fig = go.Figure(data=[go.Surface(
+    z=Z, x=x, y=y, colorscale='Earth',
+    contours_z=dict(show=True, usecolormap=True, project_z=True)
+)])
+
+fig.update_layout(
+    title="3D Volcanic Crater Model",
+    margin=dict(l=0, r=0, b=0, t=40),
+    scene=dict(aspectratio=dict(x=1, y=1, z=0.7))
+)
+
+fig
+```
+
+```{python}
+#| label: fig-windrose
+#| fig-cap: "Interactive Wind Rose: Frequency of wind speed and direction."
+#| echo: false
+
+import plotly.express as px
+
+# 1. Load Built-in Sample Data
+# This dataframe has columns for direction (N, S, E, W...), strength, and frequency
+df = px.data.wind()
+
+# 2. Create the Polar Bar Chart (Wind Rose)
+fig = px.bar_polar(
+    df, 
+    r="frequency",        # Radial axis = how often wind blows this way
+    theta="direction",    # Angular axis = direction (N, S, E, W)
+    color="strength",     # Color = wind speed category
+    template="plotly_white",
+    color_discrete_sequence=px.colors.sequential.Plasma_r # Scientific color scale
+)
+
+# 3. Polish Layout for the Textbook
+fig.update_layout(
+    title="Wind Rose: Wind Speed and Direction Frequency",
+    legend=dict(
+        title="Wind Strength", 
+        orientation="h",  # Horizontal legend to save vertical space
+        yanchor="bottom", 
+        y=-0.3,           # Move legend below the chart
+        xanchor="center", 
+        x=0.5
+    ),
+    margin=dict(l=40, r=40, t=60, b=60) # Adjust margins for the legend and title
+)
+
+fig
+```
+
+```{python}
+#| label: fig-climate-risk
+#| fig-cap: "Composite Climate Risk Index by US County (Simulated)"
+#| echo: false
+
+from urllib.request import urlopen
+import json
+import pandas as pd
+import plotly.express as px
+import numpy as np
+
+# 1. Load US County Geometry (The shapes of the counties)
+# This is a standard public GeoJSON file for US counties
+with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
+    counties = json.load(response)
+
+# 2. Generate Simulated "Climate Risk" Data
+# In a real lab, students would load the FEMA NRI CSV here.
+fips_codes = [feature['id'] for feature in counties['features']]
+county_names = [feature['properties'].get('NAME', 'Unknown') for feature in counties['features']]
+state_names = [feature['properties'].get('STATE', '') for feature in counties['features']]
+
+# Define risk levels
+risk_levels = ['very low', 'low', 'medium', 'high', 'very high', 'no risk']
+
+# Generate comprehensive risk data for each county
+data = []
+for fips, county, state in zip(fips_codes, county_names, state_names):
+    # Assign multiple risk types per county
+    row = {
+        'fips': fips,
+        'county': county,
+        'state': state,
+        'Wildfire risk': np.random.choice(risk_levels),
+        'Hurricane risk': np.random.choice(risk_levels),
+        'Extreme heat risk': np.random.choice(risk_levels),
+        'Extreme rainfall risk': np.random.choice(risk_levels),
+        'Sea level rise risk': np.random.choice(risk_levels),
+        'Water stress risk': np.random.choice(risk_levels)
+    }
+    # Determine dominant (highest) risk for coloring
+    risks = [
+        ('Wildfire', row['Wildfire risk']),
+        ('Hurricane', row['Hurricane risk']),
+        ('Extreme heat', row['Extreme heat risk']),
+        ('Extreme rainfall', row['Extreme rainfall risk']),
+        ('Sea level rise', row['Sea level rise risk']),
+        ('Water stress', row['Water stress risk'])
+    ]
+    # Filter out "no risk" and pick the first non-no-risk type
+    active_risks = [r for r in risks if r[1] != 'no risk']
+    row['dominant_risk'] = active_risks[0][0] if active_risks else 'Low risk'
+    data.append(row)
+
+df = pd.DataFrame(data)
+
+# Create custom hover template
+df['hover_text'] = df.apply(lambda row: 
+    f"<b>{row['county']}, {row['state']}</b><br>" +
+    f"<br>".join([f"{k}: {row[k]}" for k in 
+        ['Wildfire risk', 'Hurricane risk', 'Extreme heat risk', 
+         'Extreme rainfall risk', 'Sea level rise risk', 'Water stress risk']
+        if row[k] != 'no risk']), axis=1)
+
+# 3. Create the Map (color-coded by risk type with muted colors)
+fig = px.choropleth(
+    df,
+    geojson=counties,
+    locations='fips',
+    color='dominant_risk',
+    color_discrete_map={
+        'Wildfire': '#e8a598',           # Muted coral/pink
+        'Hurricane': '#7fb8b3',          # Muted teal/green
+        'Extreme heat': '#f4c49a',       # Muted peach/orange
+        'Extreme rainfall': '#82b4d9',   # Muted blue
+        'Sea level rise': '#d4a5d8',     # Muted purple
+        'Water stress': '#f5d999',       # Muted yellow/tan
+        'Low risk': '#f0f0f0'            # Light gray
+    },
+    scope="usa",
+    hover_name='county',
+    custom_data=['hover_text'],
+    labels={'dominant_risk': 'Primary Risk'}
+)
+
+# 4. Polish for Textbook
+fig.update_traces(
+    hovertemplate='%{customdata[0]}<extra></extra>'
+)
+
+fig.update_layout(
+    margin={"r":0,"t":30,"l":0,"b":0},
+    title_text="Projected Climate Vulnerability by Risk Type (US Counties)",
+    title_x=0.5,
+    geo=dict(
+        showlakes=True,
+        lakecolor='rgb(255, 255, 255)',
+        bgcolor='rgba(0,0,0,0)'
+    ),
+    legend=dict(
+        title_text='Primary Risk Type',
+        orientation="v",
+        yanchor="middle",
+        y=0.5,
+        xanchor="left",
+        x=1.02
+    )
+)
+
+fig
+```
+
+``` {python}
+#| label: fig-climate-threats-county
+#| fig-cap: "Primary Climate Threats by U.S. County"
+#| fig-width: 12
+#| fig-height: 8
+
+import plotly.graph_objects as go
+import pandas as pd
+import numpy as np
+from urllib.request import urlopen
+import json
+
+# Load US county boundaries (GeoJSON)
+with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
+    counties_geojson = json.load(response)
+
+# Generate county-level climate threat data
+# This creates realistic patterns based on geographic regions
+np.random.seed(42)
+
+# State-level threat patterns (primary threats and their probabilities)
+state_patterns = {
+    '01': {'threats': ['Hurricane', 'Tornado', 'Flooding'], 'weights': [0.5, 0.3, 0.2]},
+    '04': {'threats': ['Extreme Heat', 'Drought', 'Wildfire'], 'weights': [0.5, 0.3, 0.2]},
+    '05': {'threats': ['Tornado', 'Flooding', 'Extreme Heat'], 'weights': [0.4, 0.4, 0.2]},
+    '06': {'threats': ['Wildfire', 'Drought', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '08': {'threats': ['Drought', 'Wildfire', 'Extreme Heat'], 'weights': [0.45, 0.35, 0.2]},
+    '09': {'threats': ['Flooding', 'Winter Storm', 'Hurricane'], 'weights': [0.45, 0.35, 0.2]},
+    '10': {'threats': ['Flooding', 'Hurricane', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '11': {'threats': ['Flooding', 'Extreme Heat', 'Winter Storm'], 'weights': [0.5, 0.3, 0.2]},
+    '12': {'threats': ['Hurricane', 'Extreme Heat', 'Flooding'], 'weights': [0.6, 0.25, 0.15]},
+    '13': {'threats': ['Hurricane', 'Extreme Heat', 'Tornado'], 'weights': [0.5, 0.3, 0.2]},
+    '15': {'threats': ['Wildfire', 'Hurricane', 'Drought'], 'weights': [0.4, 0.35, 0.25]},
+    '16': {'threats': ['Wildfire', 'Drought', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '17': {'threats': ['Flooding', 'Tornado', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '18': {'threats': ['Flooding', 'Tornado', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '19': {'threats': ['Flooding', 'Tornado', 'Drought'], 'weights': [0.5, 0.3, 0.2]},
+    '20': {'threats': ['Drought', 'Tornado', 'Extreme Heat'], 'weights': [0.45, 0.35, 0.2]},
+    '21': {'threats': ['Flooding', 'Tornado', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '22': {'threats': ['Hurricane', 'Flooding', 'Extreme Heat'], 'weights': [0.6, 0.25, 0.15]},
+    '23': {'threats': ['Winter Storm', 'Flooding', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '24': {'threats': ['Flooding', 'Hurricane', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '25': {'threats': ['Flooding', 'Winter Storm', 'Hurricane'], 'weights': [0.45, 0.35, 0.2]},
+    '26': {'threats': ['Flooding', 'Winter Storm', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '27': {'threats': ['Flooding', 'Winter Storm', 'Tornado'], 'weights': [0.45, 0.35, 0.2]},
+    '28': {'threats': ['Hurricane', 'Flooding', 'Tornado'], 'weights': [0.5, 0.3, 0.2]},
+    '29': {'threats': ['Flooding', 'Tornado', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '30': {'threats': ['Wildfire', 'Drought', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '31': {'threats': ['Drought', 'Tornado', 'Flooding'], 'weights': [0.45, 0.35, 0.2]},
+    '32': {'threats': ['Drought', 'Extreme Heat', 'Wildfire'], 'weights': [0.5, 0.3, 0.2]},
+    '33': {'threats': ['Winter Storm', 'Flooding', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '34': {'threats': ['Flooding', 'Hurricane', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '35': {'threats': ['Drought', 'Wildfire', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '36': {'threats': ['Flooding', 'Winter Storm', 'Hurricane'], 'weights': [0.45, 0.35, 0.2]},
+    '37': {'threats': ['Hurricane', 'Flooding', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '38': {'threats': ['Drought', 'Flooding', 'Extreme Heat'], 'weights': [0.45, 0.35, 0.2]},
+    '39': {'threats': ['Flooding', 'Tornado', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '40': {'threats': ['Drought', 'Tornado', 'Extreme Heat'], 'weights': [0.45, 0.35, 0.2]},
+    '41': {'threats': ['Wildfire', 'Flooding', 'Drought'], 'weights': [0.5, 0.3, 0.2]},
+    '42': {'threats': ['Flooding', 'Winter Storm', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '44': {'threats': ['Flooding', 'Hurricane', 'Winter Storm'], 'weights': [0.5, 0.3, 0.2]},
+    '45': {'threats': ['Hurricane', 'Flooding', 'Extreme Heat'], 'weights': [0.6, 0.25, 0.15]},
+    '46': {'threats': ['Drought', 'Extreme Heat', 'Flooding'], 'weights': [0.5, 0.3, 0.2]},
+    '47': {'threats': ['Flooding', 'Tornado', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '48': {'threats': ['Extreme Heat', 'Drought', 'Hurricane'], 'weights': [0.4, 0.35, 0.25]},
+    '49': {'threats': ['Drought', 'Wildfire', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '50': {'threats': ['Winter Storm', 'Flooding', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '51': {'threats': ['Flooding', 'Hurricane', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '53': {'threats': ['Wildfire', 'Flooding', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '54': {'threats': ['Flooding', 'Winter Storm', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '55': {'threats': ['Flooding', 'Winter Storm', 'Tornado'], 'weights': [0.45, 0.35, 0.2]},
+    '56': {'threats': ['Drought', 'Wildfire', 'Extreme Heat'], 'weights': [0.5, 0.3, 0.2]},
+    '72': {'threats': ['Hurricane', 'Extreme Heat', 'Flooding'], 'weights': [0.7, 0.2, 0.1]},
+}
+
+# Create county-level data from GeoJSON features
+counties_data = []
+for feature in counties_geojson['features']:
+    fips = feature['id']
+    state_fips = fips[:2]
+    
+    # Assign threat based on state pattern
+    if state_fips in state_patterns:
+        pattern = state_patterns[state_fips]
+        threat = np.random.choice(pattern['threats'], p=pattern['weights'])
+    else:
+        threat = 'Flooding'  # Default for territories/other
+    
+    counties_data.append({
+        'fips': fips,
+        'threat': threat
+    })
+
+df = pd.DataFrame(counties_data)
+
+# Define color mapping (colorblind-friendly palette)
+color_map = {
+    'Wildfire': '#d62728',       # Red
+    'Hurricane': '#1f77b4',      # Blue  
+    'Flooding': '#17becf',       # Cyan
+    'Drought': '#bcbd22',        # Yellow-brown
+    'Extreme Heat': '#ff7f0e',   # Orange
+    'Tornado': '#9467bd',        # Purple
+    'Winter Storm': '#7f7f7f'    # Gray
+}
+
+# Create the choropleth map
+fig = go.Figure(go.Choroplethmapbox(
+    geojson=counties_geojson,
+    locations=df['fips'],
+    z=df['threat'].map({threat: i for i, threat in enumerate(color_map.keys())}),
+    colorscale=[[i/(len(color_map)-1), color] for i, color in enumerate(color_map.values())],
+    text=df['threat'],
+    hovertemplate='<b>County FIPS: %{location}</b><br>' +
+                  'Primary Threat: %{text}<br>' +
+                  '<extra></extra>',
+    marker_opacity=0.8,
+    marker_line_width=0.5,
+    marker_line_color='white',
+    showscale=False
+))
+
+# Add custom legend
+for i, (threat, color) in enumerate(color_map.items()):
+    count = (df['threat'] == threat).sum()
+    fig.add_trace(go.Scattermapbox(
+        lon=[0], lat=[0],
+        mode='markers',
+        marker=dict(size=10, color=color),
+        name=f'{threat} ({count})',
+        showlegend=True,
+        hoverinfo='skip'
+    ))
+
+# Update layout
+fig.update_layout(
+    title={
+        'text': 'Primary Climate Threats by U.S. County<br><sub>Based on Regional Climate Risk Patterns</sub>',
+        'x': 0.5,
+        'xanchor': 'center',
+        'font': {'size': 22, 'color': '#2c3e50'}
+    },
+    mapbox=dict(
+        style='carto-positron',
+        zoom=3,
+        center=dict(lat=38, lon=-96)
+    ),
+    font=dict(size=12, family='Arial, sans-serif'),
+    legend=dict(
+        title=dict(text='Climate Threat', font=dict(size=14, color='#2c3e50')),
+        orientation='v',
+        yanchor='middle',
+        y=0.5,
+        xanchor='left',
+        x=1.02,
+        bgcolor='rgba(255,255,255,0.9)',
+        bordercolor='#cccccc',
+        borderwidth=1
+    ),
+    margin=dict(l=0, r=150, t=80, b=0),
+    width=1200,
+    height=700
+)
+
+fig
+```
+
+
+
 ::: {.check-understanding}
 ### ✅ Quick Analysis
 1. Where are the highest PM2.5 readings clustered today?

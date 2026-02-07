@@ -1,0 +1,108 @@
+---
+title: "The Story of a Warming World"
+format:
+  html:
+    theme: cosmo
+    page-layout: full
+    filters:
+      - ../_extensions/qmd-lab/closeread/closeread.lua
+    css:
+      - ../styles.css
+      - ../_extensions/qmd-lab/closeread/closeread.css
+    cr-style:
+      narrative-background-color-overlay: "#f0f0f0"
+      section-background-color: "white"
+---
+
+```{python}
+#| label: setup
+#| include: false
+import plotly.graph_objects as go
+import numpy as np
+import pandas as pd
+
+# --- DATA GENERATION (Simulating Real Data for the Textbook) ---
+
+# 1. Simulating the Keeling Curve (CO2)
+years = np.arange(1958, 2025, 0.1)
+trend = 315 + (years - 1958) * 1.6 + (years - 1958)**2 * 0.015 # The rising curve
+seasonal = 3 * np.sin(2 * np.pi * years) # The seasonal "breath" of the forest
+co2_levels = trend + seasonal
+df_co2 = pd.DataFrame({'year': years, 'co2': co2_levels})
+
+# 2. Simulating Temperature Anomalies (Global Warming)
+years_temp = np.arange(1880, 2024)
+# Random noise + exponential growth trend
+anomalies = -0.2 + (np.random.rand(len(years_temp)) - 0.5) * 0.2 + ((years_temp - 1900) / 100)**3
+df_temp = pd.DataFrame({'year': years_temp, 'anomaly': anomalies})
+# Color logic: Blue for cold, Red for hot
+df_temp['color'] = np.where(df_temp['anomaly'] < 0, 'rgb(100, 149, 237)', 'rgb(220, 20, 60)')
+
+# --- FIGURE CONSTRUCTION ---
+
+# Figure 1: The Keeling Curve
+fig_co2 = go.Figure()
+fig_co2.add_trace(go.Scatter(x=df_co2['year'], y=df_co2['co2'], 
+                             mode='lines', name='CO2 ppm', line=dict(color='green', width=2)))
+fig_co2.update_layout(title="Atmospheric CO2 at Mauna Loa", xaxis_title="Year", yaxis_title="CO2 (ppm)",
+                      template="plotly_white", margin=dict(t=50, b=50))
+
+# Figure 2: Temperature Anomalies
+fig_temp = go.Figure()
+fig_temp.add_trace(go.Bar(x=df_temp['year'], y=df_temp['anomaly'], 
+                          marker_color=df_temp['color'], name='Anomaly'))
+fig_temp.update_layout(title="Global Temperature Anomalies (1880-2024)", xaxis_title="Year", yaxis_title="Deviation (°C)",
+                       template="plotly_white", margin=dict(t=50, b=50))
+```
+
+## Part 1: The Invisible Engine
+
+Climate change begins with the atmosphere's chemistry. To understand why the Earth is warming, we must first look at the "Keeling Curve," the most famous graph in Earth Science.
+
+::: {.cr-section}
+
+In 1958, Charles Keeling began measuring CO2 at the Mauna Loa Observatory in Hawaii. @cr-keeling
+
+At the start of the record, CO2 levels were around 315 parts per million (ppm). This was already higher than the pre-industrial average, but the curve was just beginning its climb. @cr-keeling
+
+If you look closely at the line, you see a zig-zag pattern. This is the "breathing of the Earth." @cr-keeling
+
+When the Northern Hemisphere tilts toward the sun (spring/summer), plants bloom and inhale CO2, dropping the levels. In the fall, leaves decay and release it back. @cr-keeling
+
+However, the "breathing" is overwhelmed by a much stronger force. @cr-keeling
+
+As we scroll to the present day, the trend accelerates upward. We have now passed 420 ppm, a level not seen on Earth for millions of years. This vertical ascent is the direct result of burning fossil fuels. @cr-keeling
+
+::: {#cr-keeling}
+```{python}
+#| echo: false
+fig_co2
+```
+:::
+
+:::
+
+## Part 2: The Consequence
+
+Rising CO2 is not just a number; it traps heat. We can see the direct correlation when we look at global temperature anomalies over the last century.
+
+::: {.cr-section}
+
+This chart shows the global temperature deviation from the 20th-century average. @cr-temp
+
+Between 1880 and 1940, years were often cooler than average (shown in blue). The climate fluctuated naturally, but remained relatively stable. @cr-temp
+
+By the 1980s and 1990s, a shift occurs. The blue bars disappear, replaced almost entirely by red. The "greenhouse effect" predicted by physics is now visible in the data. @cr-temp
+
+In the last 20 years, the warming has intensified. @cr-temp
+
+The bars are not just red; they are growing taller. This shows that the rate of warming is increasing, driven by the CO2 accumulation we saw in the previous chart. @cr-temp
+
+::: {#cr-temp}
+```{python}
+#| echo: false
+fig_temp
+```
+:::
+
+:::

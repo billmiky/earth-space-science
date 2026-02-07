@@ -1,0 +1,813 @@
+---
+title: "Unit 5: Hurricanes 5E"
+subtitle: "How do hurricanes form, and why do they only occur at certain times of year?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+  color: white;
+  padding: 25px; 
+  margin: 20px 0; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  border: none;
+}
+.engage-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+
+.explore-box { 
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
+  color: white;
+  padding: 25px; 
+  margin: 20px 0; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+}
+
+.explain-box { 
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
+  color: #1a1a1a;
+  padding: 25px; 
+  margin: 20px 0; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+}
+
+.elaborate-box { 
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); 
+  color: #1a1a1a;
+  padding: 25px; 
+  margin: 20px 0; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);
+}
+
+.evaluate-box { 
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); 
+  color: #1a1a1a;
+  padding: 25px; 
+  margin: 20px 0; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(250, 112, 154, 0.3);
+}
+
+.check-understanding { 
+  background: linear-gradient(to right, #667eea, #764ba2);
+  color: white;
+  padding: 20px; 
+  margin: 20px 0;
+  border-radius: 12px;
+  border-left: 6px solid #fff;
+}
+
+.key-idea { 
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 20px; 
+  margin: 20px 0;
+  border-radius: 12px;
+  border-left: 8px solid #ff6b6b;
+  font-size: 1.1em;
+}
+
+.lab-activity { 
+  background: linear-gradient(to bottom, #ffeaa7, #fdcb6e);
+  border: 4px solid #e17055; 
+  padding: 25px; 
+  margin: 25px 0; 
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.quiz-section { 
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  padding: 25px; 
+  margin: 25px 0; 
+  border-radius: 15px;
+  border: 4px dashed #ff6b6b;
+}
+
+.pe-badge { 
+  display: inline-block; 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white; 
+  padding: 8px 16px; 
+  border-radius: 20px; 
+  font-size: 13px; 
+  font-weight: 800;
+  margin: 5px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.big-question {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.5em;
+  font-weight: 800;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 30px 0 20px 0;
+  text-align: center;
+  animation: slideIn 0.8s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mind-blown {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 15px;
+  font-size: 1.3em;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(231, 76, 60, 0.4);
+}
+
+.student-task {
+  background: #fff3e0;
+  border-left: 5px solid #ff9800;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 0 10px 10px 0;
+}
+
+h1 { 
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 2.8em !important;
+  margin-top: 40px !important;
+}
+
+h2 { 
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 700 !important;
+  color: #e74c3c !important;
+}
+</style>
+```
+
+<span class="pe-badge">HS-ESS2-5</span> <span class="pe-badge">Time: 5–6 Days</span>
+
+<div class="big-question">🌀 Anatomy of a Hurricane 🌀</div>
+
+# Engage: The Investigative Phenomenon
+
+::: {.engage-box}
+## 🌊 The 2005 Atlantic Hurricane Season
+
+<div style="font-size: 1.3em; font-weight: 700; text-align: center; margin: 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+In 2005, hurricanes occurred in the North Atlantic Ocean between June 1 and November 30 — the same seasonal window as every other year. Why?
+</div>
+
+**The Record-Breaking 2005 Season:**
+
+- 🌀 **28 named storms** — the most ever recorded at that time
+- 💪 **15 hurricanes** (7 of them major: Category 3+)
+- 🏚️ **Hurricane Katrina** devastated New Orleans (Category 5 at peak, Cat 3 at landfall)
+- 📊 Used up the entire alphabet of names — had to use Greek letters (Alpha, Beta, Gamma...)
+- 💰 Over **$180 billion** in damages from the full season
+
+### 🤔 Driving Questions:
+- What **energy source** powers hurricanes?
+- Why do hurricanes only form over **warm ocean water**?
+- Why is there a specific **hurricane season** (June–November)?
+- Could **warming oceans** lead to more seasons like 2005?
+:::
+
+::: {.student-task}
+### 📝 Pattern Recognition
+
+Before we investigate, consider:
+
+1. Why do you think hurricanes form over **oceans** but not over **land**?
+2. Why June through November — what's special about those months?
+3. What do you think happens to a hurricane when it hits land? Why?
+:::
+
+# Explore: Sea Surface Temperature & Hurricane Formation
+
+::: {.explore-box}
+## 🔬 Investigation: The Warm Water Connection
+
+Hurricanes need warm ocean water to form. But how warm? And why? Let's explore the data.
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+## Sea Surface Temperatures Through the Year
+
+```{ojs}
+//| echo: false
+// Monthly average SST for tropical North Atlantic (10-20°N, 80-20°W)
+sstData = [
+  {month: "Jan", sst: 25.5, hurricanes: 0},
+  {month: "Feb", sst: 25.0, hurricanes: 0},
+  {month: "Mar", sst: 25.2, hurricanes: 0},
+  {month: "Apr", sst: 26.0, hurricanes: 0},
+  {month: "May", sst: 27.0, hurricanes: 0.2},
+  {month: "Jun", sst: 27.8, hurricanes: 0.6},
+  {month: "Jul", sst: 28.3, hurricanes: 0.8},
+  {month: "Aug", sst: 28.8, hurricanes: 3.2},
+  {month: "Sep", sst: 28.9, hurricanes: 4.5},
+  {month: "Oct", sst: 28.4, hurricanes: 2.8},
+  {month: "Nov", sst: 27.5, hurricanes: 0.8},
+  {month: "Dec", sst: 26.2, hurricanes: 0.1}
+]
+
+Plot.plot({
+  title: "Tropical Atlantic: Sea Surface Temperature vs. Hurricane Activity",
+  subtitle: "What's the connection between water temperature and storm formation?",
+  width: 700,
+  height: 380,
+  x: {label: "Month", domain: sstData.map(d => d.month)},
+  y: {label: "Sea Surface Temperature (°C)", domain: [24, 30]},
+  marks: [
+    Plot.barY(sstData, {x: "month", y: "sst", fill: d => d.sst >= 26.5 ? (d.sst >= 27.5 ? "#e74c3c" : "#f39c12") : "#3498db", dx: -3}),
+    Plot.ruleY([26.5], {stroke: "#e74c3c", strokeWidth: 2, strokeDasharray: "8,4"}),
+    Plot.text([{x: "Mar", y: 26.8}], {x: "x", y: "y", text: d => "← 26.5°C threshold for hurricane formation", fill: "#e74c3c", fontSize: 11, textAnchor: "start"}),
+    Plot.dot(sstData, {x: "month", y: d => 24 + d.hurricanes * 1.2, fill: "#6c5ce7", r: d => Math.max(d.hurricanes * 3, 2)}),
+    Plot.line(sstData, {x: "month", y: d => 24 + d.hurricanes * 1.2, stroke: "#6c5ce7", strokeWidth: 1.5})
+  ]
+})
+```
+
+::: {.student-task}
+### 📝 Analyzing the SST–Hurricane Connection
+
+1. During which months does SST exceed 26.5°C?
+2. During which months do most hurricanes form?
+3. What's the relationship between the two?
+4. Why do you think 26.5°C is the magic number? (We'll find out in the Explain section!)
+:::
+
+## The 2005 Season: Month by Month
+
+```{ojs}
+//| echo: false
+storms2005 = [
+  {name: "Arlene", month: "Jun", category: "TS", peak: 1},
+  {name: "Bret", month: "Jun", category: "TS", peak: 1},
+  {name: "Cindy", month: "Jul", category: 1, peak: 1},
+  {name: "Dennis", month: "Jul", category: 4, peak: 4},
+  {name: "Emily", month: "Jul", category: 5, peak: 5},
+  {name: "Franklin", month: "Jul", category: "TS", peak: 1},
+  {name: "Gert", month: "Jul", category: "TS", peak: 1},
+  {name: "Harvey", month: "Aug", category: "TS", peak: 1},
+  {name: "Irene", month: "Aug", category: 2, peak: 2},
+  {name: "Jose", month: "Aug", category: "TS", peak: 1},
+  {name: "Katrina", month: "Aug", category: 5, peak: 5},
+  {name: "Lee", month: "Aug", category: "TS", peak: 1},
+  {name: "Maria", month: "Sep", category: 3, peak: 3},
+  {name: "Nate", month: "Sep", category: 1, peak: 1},
+  {name: "Ophelia", month: "Sep", category: 1, peak: 1},
+  {name: "Philippe", month: "Sep", category: 1, peak: 1},
+  {name: "Rita", month: "Sep", category: 5, peak: 5},
+  {name: "Stan", month: "Oct", category: 1, peak: 1},
+  {name: "Tammy", month: "Oct", category: "TS", peak: 1},
+  {name: "Vince", month: "Oct", category: 1, peak: 1},
+  {name: "Wilma", month: "Oct", category: 5, peak: 5},
+  {name: "Alpha", month: "Oct", category: "TS", peak: 1},
+  {name: "Beta", month: "Oct", category: 3, peak: 3},
+  {name: "Epsilon", month: "Nov", category: 1, peak: 1}
+]
+
+Plot.plot({
+  title: "2005 Atlantic Hurricane Season — Every Named Storm",
+  subtitle: "Peak intensity (Saffir-Simpson category or TS=Tropical Storm)",
+  width: 700,
+  height: 380,
+  x: {label: "Storm Name"},
+  y: {label: "Peak Category", domain: [0, 6]},
+  color: {legend: true, domain: ["Jun", "Jul", "Aug", "Sep", "Oct", "Nov"], range: ["#3498db", "#2ecc71", "#e74c3c", "#f39c12", "#9b59b6", "#1abc9c"]},
+  marks: [
+    Plot.barY(storms2005, {x: "name", y: "peak", fill: "month", sort: {x: null}}),
+    Plot.ruleY([3], {stroke: "#999", strokeDasharray: "5,5"}),
+    Plot.text([{x: "Katrina", y: 5.5}], {x: "x", y: "y", text: d => "🌀", fontSize: 25}),
+    Plot.text([{x: "Arlene", y: 3.3}], {x: "x", y: "y", text: d => "← Major hurricane threshold (Cat 3+)", fontSize: 10, textAnchor: "start"})
+  ]
+})
+```
+
+::: {.mind-blown}
+🌀 The 2005 season produced FOUR Category 5 hurricanes (Dennis, Emily, Katrina, Rita, Wilma) — the most ever recorded in a single season! 🌀
+:::
+
+# Explain: The Hurricane Engine
+
+::: {.explain-box}
+## ⚡ How Does a Hurricane Work?
+
+A hurricane is essentially a giant **heat engine** — it converts thermal energy from warm ocean water into the kinetic energy of powerful winds. Let's build a model of how this works.
+:::
+
+## Step 1: Warm Water Evaporation
+
+```{ojs}
+//| echo: false
+viewof oceanTemp = Inputs.range([22, 32], {label: "Ocean Surface Temperature (°C)", step: 0.5, value: 28})
+```
+
+```{ojs}
+//| echo: false
+{
+  const width = 750;
+  const height = 500;
+  const svg = d3.create("svg").attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`);
+
+  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#e3f2fd").attr("rx", 10);
+
+  // Ocean
+  const oceanColor = d3.interpolateRdBu(1 - (oceanTemp - 22) / 10);
+  svg.append("rect").attr("x", 0).attr("y", 380).attr("width", width).attr("height", 120).attr("fill", oceanColor).attr("rx", "0 0 10 10");
+  svg.append("text").attr("x", 375).attr("y", 420).attr("text-anchor", "middle").attr("font-size", 16).attr("fill", "white").attr("font-weight", "bold")
+    .text(`Ocean: ${oceanTemp}°C`);
+
+  const canForm = oceanTemp >= 26.5;
+  const intensity = canForm ? Math.min((oceanTemp - 26.5) / 5, 1) : 0;
+
+  if (canForm) {
+    // Evaporation arrows
+    const numArrows = Math.floor(intensity * 8) + 3;
+    for (let i = 0; i < numArrows; i++) {
+      const x = 100 + i * (550 / numArrows);
+      svg.append("line").attr("x1", x).attr("y1", 370).attr("x2", x).attr("y2", 280 - intensity * 50)
+        .attr("stroke", "#e74c3c").attr("stroke-width", 2 + intensity * 2).attr("opacity", 0.5 + intensity * 0.3);
+      svg.append("text").attr("x", x).attr("y", 280 - intensity * 55).attr("text-anchor", "middle").attr("font-size", 14).text("💨");
+    }
+
+    // Central updraft / eye
+    const cx = 375, cy = 200;
+    const eyeR = 20 + intensity * 30;
+
+    // Spiral bands
+    for (let angle = 0; angle < Math.PI * 4; angle += 0.1) {
+      const r = 30 + angle * (15 + intensity * 10);
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle) * 0.6;
+      if (x > 50 && x < 700 && y > 40 && y < 360) {
+        svg.append("circle").attr("cx", x).attr("cy", y).attr("r", 2)
+          .attr("fill", "#6c5ce7").attr("opacity", 0.3 + intensity * 0.3);
+      }
+    }
+
+    // Eye
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", eyeR).attr("fill", "#e3f2fd").attr("stroke", "#6c5ce7").attr("stroke-width", 3);
+    svg.append("text").attr("x", cx).attr("y", cy - 5).attr("text-anchor", "middle").attr("font-size", 12).attr("font-weight", "bold").text("EYE");
+    svg.append("text").attr("x", cx).attr("y", cy + 10).attr("text-anchor", "middle").attr("font-size", 10).text("(calm)");
+
+    // Labels
+    svg.append("text").attr("x", 375).attr("y", 30).attr("text-anchor", "middle").attr("font-size", 18).attr("font-weight", "bold").attr("fill", "#c62828")
+      .text(`🌀 Hurricane CAN form — Intensity: ${(intensity * 100).toFixed(0)}%`);
+
+    // Wind speed estimate
+    const windSpeed = 74 + intensity * 100;
+    svg.append("rect").attr("x", 520).attr("y", 50).attr("width", 200).attr("height", 60).attr("fill", "#fff3e0").attr("rx", 8);
+    svg.append("text").attr("x", 620).attr("y", 75).attr("text-anchor", "middle").attr("font-size", 13).attr("font-weight", "bold").text(`Est. Wind: ${windSpeed.toFixed(0)} mph`);
+    svg.append("text").attr("x", 620).attr("y", 95).attr("text-anchor", "middle").attr("font-size", 11)
+      .text(`Cat ${windSpeed < 96 ? 1 : windSpeed < 111 ? 2 : windSpeed < 130 ? 3 : windSpeed < 157 ? 4 : 5}`);
+
+    // Process labels
+    const steps = [
+      {x: 100, y: 330, text: "① Warm water\nevaporates"},
+      {x: 250, y: 160, text: "② Moist air rises\n& spirals inward"},
+      {x: 500, y: 100, text: "③ Vapor condenses\n→ releases heat"},
+      {x: 600, y: 250, text: "④ Heat fuels more\nrising → stronger winds"}
+    ];
+    steps.forEach(s => {
+      const lines = s.text.split("\n");
+      lines.forEach((line, i) => {
+        svg.append("text").attr("x", s.x).attr("y", s.y + i * 16).attr("font-size", 12).attr("fill", "#2d3436").text(line);
+      });
+    });
+  } else {
+    svg.append("text").attr("x", 375).attr("y", 200).attr("text-anchor", "middle").attr("font-size", 22).attr("font-weight", "bold").attr("fill", "#3498db")
+      .text("❌ Too cold for hurricane formation");
+    svg.append("text").attr("x", 375).attr("y", 230).attr("text-anchor", "middle").attr("font-size", 14).attr("fill", "#636e72")
+      .text(`Need at least 26.5°C — currently ${oceanTemp}°C (${(26.5 - oceanTemp).toFixed(1)}°C too cold)`);
+    svg.append("text").attr("x", 375).attr("y", 260).attr("text-anchor", "middle").attr("font-size", 13)
+      .text("Not enough evaporation to fuel a tropical cyclone");
+  }
+
+  // Evaporation explanation
+  svg.append("rect").attr("x", 50).attr("y", 440).attr("width", 650).attr("height", 50).attr("fill", "rgba(255,255,255,0.8)").attr("rx", 8);
+  svg.append("text").attr("x", 375).attr("y", 465).attr("text-anchor", "middle").attr("font-size", 12).attr("fill", "#2d3436")
+    .text(canForm ? 
+      "✅ Warm water provides massive evaporation → water vapor carries latent heat energy into the atmosphere" :
+      "Increase ocean temperature above 26.5°C to see hurricane formation");
+
+  return svg.node();
+}
+```
+
+::: {.key-idea}
+### 💡 Key Concept: The Hurricane Heat Engine
+
+A hurricane is powered by a **positive feedback loop**:
+
+1. **Warm ocean water** (≥ 26.5°C / 80°F) evaporates rapidly
+2. **Water vapor** rises and carries **latent heat** (hidden energy)
+3. As vapor rises and cools, it **condenses** into clouds, **releasing** latent heat
+4. This released heat **warms the air**, making it rise faster
+5. Faster rising air creates **lower pressure** at the surface
+6. Lower pressure **pulls in more air** (= stronger winds)
+7. Stronger winds cause **more evaporation** → back to step 2
+
+This is why hurricanes **intensify over warm water** and **weaken over land or cool water** — they lose their energy source!
+:::
+
+## The Saffir-Simpson Scale
+
+```{ojs}
+//| echo: false
+safirSimpsonData = [
+  {category: "TD", label: "Trop. Depression", wind: 38, surge: 0, color: "#74b9ff", damage: "Minimal"},
+  {category: "TS", label: "Trop. Storm", wind: 63, surge: 0, color: "#a29bfe", damage: "Minor flooding"},
+  {category: "Cat 1", label: "Category 1", wind: 85, surge: 4, color: "#ffeaa7", damage: "Some damage"},
+  {category: "Cat 2", label: "Category 2", wind: 100, surge: 6, color: "#fdcb6e", damage: "Extensive damage"},
+  {category: "Cat 3", label: "Category 3", wind: 120, surge: 9, color: "#e17055", damage: "Devastating"},
+  {category: "Cat 4", label: "Category 4", wind: 145, surge: 13, color: "#d63031", damage: "Catastrophic"},
+  {category: "Cat 5", label: "Category 5", wind: 170, surge: 18, color: "#6c5ce7", damage: "Total destruction"}
+]
+
+Plot.plot({
+  title: "Saffir-Simpson Hurricane Wind Scale",
+  subtitle: "Maximum sustained wind speed by category",
+  width: 700,
+  height: 350,
+  x: {label: "Category"},
+  y: {label: "Maximum Sustained Wind (mph)", domain: [0, 200]},
+  marks: [
+    Plot.barY(safirSimpsonData, {x: "label", y: "wind", fill: "color", sort: {x: null}}),
+    Plot.ruleY([74], {stroke: "#e74c3c", strokeDasharray: "5,5"}),
+    Plot.text([{x: "Trop. Storm", y: 80}], {x: "x", y: "y", text: d => "← Hurricane threshold (74 mph)", fontSize: 10, fill: "#e74c3c", textAnchor: "start"}),
+    Plot.text(safirSimpsonData, {x: "label", y: d => d.wind + 8, text: "damage", fontSize: 9})
+  ]
+})
+```
+
+# Explain: Why Is There a Hurricane Season?
+
+::: {.explain-box}
+## 📅 The Seasonality Question
+
+Atlantic hurricane season runs **June 1 – November 30**, with peak activity in **August–October**. This isn't random — it's directly tied to ocean temperature cycles.
+:::
+
+## Ocean Temperature Through the Year
+
+The ocean's temperature follows a seasonal cycle, but it **lags behind** the Sun's position because water has a very high **heat capacity** — it takes a long time to heat up and a long time to cool down.
+
+```{ojs}
+//| echo: false
+seasonData = [
+  {month: "Jan", solarInput: 220, sst: 25.5, lag: "Ocean cooling (still losing summer heat)"},
+  {month: "Feb", solarInput: 240, sst: 25.0, lag: "Minimum SST (coldest ocean)"},
+  {month: "Mar", solarInput: 290, sst: 25.2, lag: "Solar input increasing but ocean slow to respond"},
+  {month: "Apr", solarInput: 340, sst: 26.0, lag: "Ocean beginning to warm"},
+  {month: "May", solarInput: 370, sst: 27.0, lag: "Warming accelerating"},
+  {month: "Jun", solarInput: 390, sst: 27.8, lag: "Approaching threshold — season begins"},
+  {month: "Jul", solarInput: 395, sst: 28.3, lag: "Peak solar input (but SST still rising!)"},
+  {month: "Aug", solarInput: 380, sst: 28.8, lag: "Solar input declining but ocean still warming"},
+  {month: "Sep", solarInput: 340, sst: 28.9, lag: "PEAK SST — peak hurricane season!"},
+  {month: "Oct", solarInput: 290, sst: 28.4, lag: "Ocean slowly cooling"},
+  {month: "Nov", solarInput: 240, sst: 27.5, lag: "Below threshold soon — season ending"},
+  {month: "Dec", solarInput: 215, sst: 26.2, lag: "Cooling continues"}
+]
+
+Plot.plot({
+  title: "Solar Input vs. Sea Surface Temperature — The Seasonal Lag",
+  subtitle: "Peak solar input is in June, but peak SST doesn't arrive until September!",
+  width: 700,
+  height: 380,
+  x: {label: "Month", domain: seasonData.map(d => d.month)},
+  y: {label: "Relative Value (normalized)"},
+  color: {legend: true},
+  marks: [
+    Plot.areaY(seasonData, {x: "month", y: d => (d.sst - 24) / 6, fill: "#e74c3c", fillOpacity: 0.15, curve: "catmull-rom"}),
+    Plot.line(seasonData, {x: "month", y: d => (d.sst - 24) / 6, stroke: "#e74c3c", strokeWidth: 3, curve: "catmull-rom"}),
+    Plot.line(seasonData, {x: "month", y: d => (d.solarInput - 200) / 200, stroke: "#f39c12", strokeWidth: 2, strokeDasharray: "5,3", curve: "catmull-rom"}),
+    Plot.ruleY([(26.5 - 24) / 6], {stroke: "#e74c3c", strokeWidth: 1, strokeDasharray: "3,3"}),
+    Plot.text([{x: "Jan", y: 0.5}], {x: "x", y: "y", text: d => "26.5°C threshold", fill: "#e74c3c", fontSize: 10}),
+    Plot.text([{x: "Jul", y: 0.95}], {x: "x", y: "y", text: d => "🌞 Solar Input", fill: "#f39c12", fontSize: 11}),
+    Plot.text([{x: "Oct", y: 0.85}], {x: "x", y: "y", text: d => "🌊 Sea Surface Temp", fill: "#e74c3c", fontSize: 11})
+  ]
+})
+```
+
+::: {.key-idea}
+### 💡 Key Concept: The Seasonal Lag Explains Hurricane Season
+
+- **Peak solar input** occurs around the **summer solstice** (June 21)
+- But **peak ocean temperature** doesn't occur until **September** — a **2–3 month lag**
+- This is because water has **high specific heat capacity** — it absorbs a lot of energy before its temperature rises
+- Hurricane season peaks in **August–September–October** because that's when ocean temperatures are highest
+- The season ends in November as ocean temperatures fall below the 26.5°C threshold
+:::
+
+::: {.student-task}
+### 📝 Seasonal Analysis
+
+1. Why does peak SST occur ~2 months after peak solar input? (Think: specific heat capacity of water)
+2. If ocean waters warm an additional 1°C due to climate change, how might that affect hurricane season? (Start earlier? End later? Both?)
+3. Could a year with unusually warm winter SST lead to earlier hurricane formation?
+:::
+
+# Elaborate: Warming Oceans & Stronger Hurricanes
+
+::: {.elaborate-box}
+## 🌡️ How Climate Change Is Changing Hurricanes
+
+The connection between warmer oceans and hurricanes has major implications for our future. Let's look at the evidence.
+:::
+
+## Atlantic Ocean Warming Trend
+
+```{ojs}
+//| echo: false
+// Annual average tropical Atlantic SST anomalies
+sstTrend = [
+  {year: 1980, anomaly: -0.05}, {year: 1982, anomaly: -0.15}, {year: 1984, anomaly: -0.10},
+  {year: 1986, anomaly: -0.08}, {year: 1988, anomaly: 0.05}, {year: 1990, anomaly: 0.10},
+  {year: 1992, anomaly: -0.05}, {year: 1994, anomaly: 0.02}, {year: 1995, anomaly: 0.20},
+  {year: 1996, anomaly: 0.05}, {year: 1997, anomaly: 0.08}, {year: 1998, anomaly: 0.25},
+  {year: 1999, anomaly: 0.15}, {year: 2000, anomaly: 0.10}, {year: 2001, anomaly: 0.12},
+  {year: 2002, anomaly: 0.18}, {year: 2003, anomaly: 0.22}, {year: 2004, anomaly: 0.28},
+  {year: 2005, anomaly: 0.55}, {year: 2006, anomaly: 0.20}, {year: 2007, anomaly: 0.18},
+  {year: 2008, anomaly: 0.15}, {year: 2009, anomaly: 0.12}, {year: 2010, anomaly: 0.35},
+  {year: 2011, anomaly: 0.15}, {year: 2012, anomaly: 0.25}, {year: 2013, anomaly: 0.10},
+  {year: 2014, anomaly: 0.08}, {year: 2015, anomaly: 0.20}, {year: 2016, anomaly: 0.30},
+  {year: 2017, anomaly: 0.35}, {year: 2018, anomaly: 0.18}, {year: 2019, anomaly: 0.25},
+  {year: 2020, anomaly: 0.45}, {year: 2021, anomaly: 0.22}, {year: 2022, anomaly: 0.18},
+  {year: 2023, anomaly: 0.60}, {year: 2024, anomaly: 0.65}
+]
+
+Plot.plot({
+  title: "Tropical Atlantic SST Anomaly (Departure from 1971–2000 Average)",
+  subtitle: "The ocean is getting warmer — more fuel for hurricanes",
+  width: 700,
+  height: 380,
+  x: {label: "Year"},
+  y: {label: "Temperature Anomaly (°C)", domain: [-0.3, 0.8]},
+  marks: [
+    Plot.barY(sstTrend, {x: "year", y: "anomaly", fill: d => d.anomaly > 0 ? "#e74c3c" : "#3498db"}),
+    Plot.ruleY([0], {stroke: "#2d3436"}),
+    Plot.linearRegressionY(sstTrend, {x: "year", y: "anomaly", stroke: "#c62828", strokeWidth: 2, strokeDasharray: "8,4"}),
+    Plot.text([{x: 2005, y: 0.65}], {x: "x", y: "y", text: d => "2005 ↑", fontSize: 10, fill: "#c62828"}),
+    Plot.text([{x: 2023, y: 0.72}], {x: "x", y: "y", text: d => "2023 ↑", fontSize: 10, fill: "#c62828"})
+  ]
+})
+```
+
+## Rapid Intensification: The Growing Threat
+
+One of the most dangerous trends is **rapid intensification** — when a hurricane's wind speed increases by 35+ mph in just 24 hours. This makes evacuations nearly impossible.
+
+```{ojs}
+//| echo: false
+riData = [
+  {period: "1980–1990", events: 12, pctMajor: 25},
+  {period: "1991–2000", events: 15, pctMajor: 30},
+  {period: "2001–2010", events: 22, pctMajor: 40},
+  {period: "2011–2020", events: 30, pctMajor: 50},
+  {period: "2021–2024*", events: 16, pctMajor: 55}
+]
+
+Plot.plot({
+  title: "Rapid Intensification Events in the Atlantic",
+  subtitle: "Storms are strengthening faster — giving communities less warning time",
+  width: 700,
+  height: 350,
+  x: {label: "Period"},
+  y: {label: "Number of Rapid Intensification Events"},
+  marks: [
+    Plot.barY(riData, {x: "period", y: "events", fill: "#e74c3c"}),
+    Plot.text(riData, {x: "period", y: d => d.events + 2, text: d => `${d.pctMajor}% became\nmajor (Cat 3+)`, fontSize: 10, lineAnchor: "bottom"})
+  ]
+})
+```
+
+::: {.key-idea}
+### 💡 Key Concept: Warmer Oceans → Stronger Hurricanes
+
+Research shows that climate change affects hurricanes in several ways:
+
+| Change | Mechanism | Evidence |
+|--------|-----------|----------|
+| **Stronger peak winds** | More warm water → more evaporation → more latent heat release | Proportion of Cat 4-5 storms increasing |
+| **More rapid intensification** | Deeper warm water layers → sustained energy | RI events up ~150% since 1980s |
+| **More rainfall** | Warmer air holds ~7% more moisture per °C | Hurricane Harvey: 60+ inches in TX |
+| **Longer season** | Warmer water above threshold for more months | Recent storms forming earlier/later |
+| **Higher storm surge** | Sea level rise + stronger storms | Sandy's surge was amplified by ~1 ft of SLR |
+:::
+
+::: {.student-task}
+### 📝 Evidence-Based Reasoning
+
+Using the data above:
+
+1. Calculate the approximate **trend** in SST anomaly from 1980 to 2024. How much has the tropical Atlantic warmed?
+2. If SST continues rising at this rate, what anomaly would you predict for 2050?
+3. How might a longer hurricane season affect **NYC specifically**? Consider: When do nor'easters also form?
+4. Hurricane Sandy (2012) hit NYC as a post-tropical cyclone in late October. Was this timing unusual? What does it suggest about future risks?
+:::
+
+# Explain: Why Hurricanes Weaken Over Land
+
+::: {.explain-box}
+## 🏗️ The Land Problem
+
+Hurricanes weaken dramatically once they make landfall. Understanding why helps explain the fundamental energy source of these storms.
+:::
+
+```{ojs}
+//| echo: false
+{
+  const width = 700;
+  const height = 350;
+  const svg = d3.create("svg").attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`);
+
+  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#f8f9fa").attr("rx", 10);
+  svg.append("text").attr("x", 350).attr("y", 30).attr("text-anchor", "middle").attr("font-size", 18).attr("font-weight", "bold").text("Why Hurricanes Weaken Over Land");
+
+  // Ocean section
+  svg.append("rect").attr("x", 0).attr("y", 250).attr("width", 350).attr("height", 100).attr("fill", "#3498db").attr("opacity", 0.4).attr("rx", "0 0 0 10");
+  svg.append("text").attr("x", 175).attr("y", 280).attr("text-anchor", "middle").attr("font-weight", "bold").text("🌊 OCEAN");
+
+  // Land section  
+  svg.append("rect").attr("x", 350).attr("y", 250).attr("width", 350).attr("height", 100).attr("fill", "#8B7355").attr("opacity", 0.5).attr("rx", "0 0 10 0");
+  svg.append("text").attr("x", 525).attr("y", 280).attr("text-anchor", "middle").attr("font-weight", "bold").text("🏗️ LAND");
+
+  // Hurricane over ocean (strong)
+  svg.append("text").attr("x", 175).attr("y", 150).attr("text-anchor", "middle").attr("font-size", 50).text("🌀");
+  svg.append("text").attr("x", 175).attr("y", 210).attr("text-anchor", "middle").attr("font-size", 13).attr("font-weight", "bold").text("Cat 4 — 145 mph");
+
+  // Arrow
+  svg.append("line").attr("x1", 280).attr("y1", 180).attr("x2", 420).attr("y2", 180)
+    .attr("stroke", "#2d3436").attr("stroke-width", 3).attr("marker-end", "url(#arrowBlack)");
+
+  // Hurricane over land (weak)
+  svg.append("text").attr("x", 525).attr("y", 150).attr("text-anchor", "middle").attr("font-size", 30).attr("opacity", 0.5).text("🌀");
+  svg.append("text").attr("x", 525).attr("y", 210).attr("text-anchor", "middle").attr("font-size", 13).attr("font-weight", "bold").attr("fill", "#636e72").text("Cat 1 — 80 mph");
+
+  // Reasons
+  const reasons = [
+    {x: 350, y: 60, text: "❌ No warm water → no evaporation → no fuel"},
+    {x: 350, y: 85, text: "❌ Increased friction → winds slow down"},
+    {x: 350, y: 110, text: "❌ No moisture supply → rain decreases"}
+  ];
+  reasons.forEach(r => {
+    svg.append("text").attr("x", r.x).attr("y", r.y).attr("text-anchor", "middle").attr("font-size", 12).attr("fill", "#c62828").text(r.text);
+  });
+
+  // Evaporation arrows over ocean
+  for (let x = 80; x < 280; x += 40) {
+    svg.append("line").attr("x1", x).attr("y1", 245).attr("x2", x).attr("y2", 220)
+      .attr("stroke", "#e74c3c").attr("stroke-width", 1.5).attr("opacity", 0.5);
+  }
+  svg.append("text").attr("x", 175).attr("y", 240).attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "#e74c3c").text("Evaporation ↑↑↑");
+
+  const defs = svg.append("defs");
+  defs.append("marker").attr("id", "arrowBlack").attr("viewBox", "0 0 10 10").attr("refX", 5).attr("refY", 5)
+    .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
+    .append("path").attr("d", "M 0 0 L 10 5 L 0 10 z").attr("fill", "#2d3436");
+
+  return svg.node();
+}
+```
+
+::: {.key-idea}
+### 💡 Key Concept: Three Reasons Hurricanes Weaken Over Land
+
+1. **No warm water** = no evaporation = no latent heat = **fuel supply cut off**
+2. **Increased surface friction** from buildings, trees, mountains = **winds slow down**
+3. **No moisture resupply** = precipitation diminishes = **energy release decreases**
+
+This confirms that **warm ocean water is the essential energy source** for hurricanes. Without it, the hurricane engine shuts down within 12–24 hours.
+:::
+
+# Evaluate: Hurricane Science Assessment
+
+::: {.evaluate-box}
+## ✅ Show What You Know
+:::
+
+::: {.quiz-section}
+### 🧠 Check Your Understanding
+
+**Question 1:** A hurricane is fundamentally powered by:
+
+```{ojs}
+//| echo: false
+viewof q1_hurr = Inputs.radio(
+  ["Wind blowing over the ocean surface",
+   "The Coriolis effect spinning the storm",
+   "Latent heat released when water vapor condenses",
+   "Cold fronts colliding with warm fronts"],
+  {label: "Select the best answer:"}
+)
+```
+
+```{ojs}
+//| echo: false
+q1_hurr === "Latent heat released when water vapor condenses" ? 
+  html`<div style="background: #d4edda; padding: 12px; border-radius: 8px; border-left: 4px solid #28a745;">✅ <strong>Correct!</strong> Warm ocean water evaporates, and when that vapor rises and condenses into clouds, it releases latent heat. This heat is the PRIMARY energy source driving the hurricane's circulation.</div>` :
+  q1_hurr ? html`<div style="background: #f8d7da; padding: 12px; border-radius: 8px; border-left: 4px solid #dc3545;">❌ Think about the feedback loop: evaporation → rising → condensation → ??? → more rising</div>` : html``
+```
+
+**Question 2:** Atlantic hurricane season peaks in September (not June) because:
+
+```{ojs}
+//| echo: false
+viewof q2_hurr = Inputs.radio(
+  ["The Sun is closest to Earth in September",
+   "Ocean water has high heat capacity and reaches peak temperature ~2 months after peak solar input",
+   "Wind patterns change in September to allow hurricane formation",
+   "September has the most rain globally"],
+  {label: "Select the best answer:"}
+)
+```
+
+```{ojs}
+//| echo: false
+q2_hurr === "Ocean water has high heat capacity and reaches peak temperature ~2 months after peak solar input" ? 
+  html`<div style="background: #d4edda; padding: 12px; border-radius: 8px; border-left: 4px solid #28a745;">✅ <strong>Excellent!</strong> Water's high specific heat capacity means it absorbs energy slowly. Peak solar input is in June, but ocean temperatures don't peak until August-September. This "thermal lag" is why hurricane season peaks later than summer solstice.</div>` :
+  q2_hurr ? html`<div style="background: #f8d7da; padding: 12px; border-radius: 8px; border-left: 4px solid #dc3545;">❌ Think about the "seasonal lag" graph. When is the Sun's energy highest? When is the ocean warmest? Why the delay?</div>` : html``
+```
+
+**Question 3:** How could a 1°C rise in average ocean temperature affect hurricanes?
+
+```{ojs}
+//| echo: false
+viewof q3_hurr = Inputs.radio(
+  ["It would have no meaningful effect",
+   "All hurricanes would become Category 5",
+   "More available energy could fuel stronger storms, more rapid intensification, and a potentially longer season",
+   "Hurricanes would form over colder water too"],
+  {label: "Select the best answer:"}
+)
+```
+
+```{ojs}
+//| echo: false
+q3_hurr === "More available energy could fuel stronger storms, more rapid intensification, and a potentially longer season" ? 
+  html`<div style="background: #d4edda; padding: 12px; border-radius: 8px; border-left: 4px solid #28a745;">✅ <strong>Correct!</strong> Warmer water means more evaporation (Clausius-Clapeyron), more latent heat available, and the 26.5°C threshold is exceeded for a longer portion of the year. This doesn't mean every storm is stronger, but the potential ceiling is raised and the season could expand.</div>` :
+  q3_hurr ? html`<div style="background: #f8d7da; padding: 12px; border-radius: 8px; border-left: 4px solid #dc3545;">❌ Think about what warmer water means for evaporation rates, available latent heat, and how long SST exceeds 26.5°C each year.</div>` : html``
+```
+:::
+
+::: {.lab-activity}
+### 📝 Culminating Task: Hurricane Energy Model
+
+Create a **detailed diagram + written explanation** that answers:
+
+**"How did the 2005 Atlantic hurricane season produce so many powerful storms, and what role did ocean temperature play?"**
+
+Your model should include:
+
+1. The **energy cycle** of a hurricane (evaporation → condensation → heat release → wind → more evaporation)
+2. Why **26.5°C** is the threshold for formation (relate to evaporation rates and latent heat)
+3. The **seasonal timing** and why September is the peak (thermal lag)
+4. How **2005 SST anomalies** contributed to the record-breaking season
+5. A **claim about the future**: will seasons like 2005 become more common? Use SST trend data as evidence.
+
+Use the vocabulary: *latent heat, evaporation, condensation, specific heat capacity, sea surface temperature, rapid intensification, thermal lag*
+:::
+
+# Summary: Key Takeaways
+
+| Concept | Key Idea |
+|---------|----------|
+| **Energy source** | Latent heat from condensation of evaporated warm ocean water |
+| **26.5°C threshold** | Minimum SST for enough evaporation to fuel a tropical cyclone |
+| **Feedback loop** | Evaporation → condensation → heat release → stronger winds → more evaporation |
+| **Hurricane season** | June–Nov because of thermal lag (SST peaks ~2 months after solar maximum) |
+| **Weakening over land** | No water → no evaporation → no fuel + more friction |
+| **Climate connection** | Warmer SSTs → more available energy → potentially stronger storms & longer seasons |
+| **Rapid intensification** | Increasing trend linked to deeper layers of warm water |
+
+**Next up:** You'll bring everything together to construct an **evidence-based argument** about the future of storms in your region. 📢
