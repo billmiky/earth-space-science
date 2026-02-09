@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# 1. Install Python dependencies
-# Quarto needs 'jupyter' to run python code. 
-# We also add numpy/matplotlib since you are likely using them for climate charts.
+# 1. Install ALL Python dependencies
+# Added: plotly (for charts) and scipy (for math/interpolation)
 echo "Installing Python libraries..."
-python3 -m pip install jupyter numpy matplotlib pandas
+python3 -m pip install jupyter numpy matplotlib pandas plotly scipy
 
 # 2. Download Quarto
 curl -L -o quarto.tar.gz https://github.com/quarto-dev/quarto-cli/releases/download/v1.4.550/quarto-1.4.550-linux-amd64.tar.gz
