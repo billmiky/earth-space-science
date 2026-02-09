@@ -1,0 +1,485 @@
+---
+title: "Unit 1: How the Sun Works"
+subtitle: "Why is the Sun so important to life on Earth? How does it work?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white; padding: 25px; margin: 20px 0; border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); border: none;
+}
+.engage-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+
+.explore-box {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white; padding: 25px; margin: 20px 0; border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+}
+
+.explain-box {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: #1a1a1a; padding: 25px; margin: 20px 0; border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+}
+
+.elaborate-box {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  color: #1a1a1a; padding: 25px; margin: 20px 0; border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);
+}
+
+.evaluate-box {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  color: #1a1a1a; padding: 25px; margin: 20px 0; border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(250, 112, 154, 0.3);
+}
+
+.pe-badge {
+  display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800;
+  margin: 5px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  text-transform: uppercase; letter-spacing: 1px;
+}
+
+.big-question {
+  font-family: 'Space Grotesk', sans-serif; font-size: 2.5em; font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out;
+}
+
+.key-idea {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 20px; margin: 20px 0; border-radius: 12px;
+  border-left: 8px solid #ff6b6b; font-size: 1.1em;
+}
+
+.student-task {
+  background: #fff3e0; border-left: 5px solid #ff9800;
+  padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0;
+}
+
+.mind-blown {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white; padding: 20px; margin: 20px 0; border-radius: 15px;
+  font-size: 1.3em; font-weight: 700; text-align: center;
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+.check-understanding {
+  background: linear-gradient(to right, #667eea, #764ba2);
+  color: white; padding: 20px; margin: 20px 0; border-radius: 12px;
+  border-left: 6px solid #fff;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #667eea !important; }
+</style>
+```
+
+<span class="pe-badge">HS-ESS1-1</span> <span class="pe-badge">Time: 6 Days</span>
+
+<div class="big-question">☀️ How Does Our Sun Work? ☀️</div>
+
+# Engage: How Does the Sun Provide Energy?
+
+::: {.engage-box}
+## ⚡ The Sun's Unbelievable Power
+
+<div style="font-size: 1.3em; font-weight: 700; text-align: center; margin: 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+The energy released by the Sun in ONE SECOND is more energy than the entire world uses in a whole day.
+</div>
+
+Think about that. Every power plant, every car, every phone charger, every factory on Earth — **all running for 24 hours** — uses less energy than what the Sun pumps out in a single second.
+
+### 🤔 How is that possible?
+- What is the Sun made of?
+- What process could possibly release that much energy?
+- How long can the Sun keep doing this?
+- Does the exoplanet in our performance task have a star like this?
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+energyComparison = [
+  {source: "Sun (per second)", energy: 3.8e26, log: 26.58, color: "#f39c12"},
+  {source: "World (per day)", energy: 5.0e17, log: 17.70, color: "#3498db"},
+  {source: "Lightning bolt", energy: 1.0e9, log: 9.0, color: "#9b59b6"},
+  {source: "1 kg of coal", energy: 2.4e7, log: 7.38, color: "#636e72"},
+  {source: "Human body (per day)", energy: 8.7e6, log: 6.94, color: "#e74c3c"}
+]
+
+Plot.plot({
+  title: "Energy Comparison (log scale — each bar is 10× the previous gridline!)",
+  subtitle: "The Sun's output dwarfs everything humans have ever produced",
+  width: 700,
+  height: 350,
+  marginLeft: 150,
+  x: {label: "Energy (log₁₀ Joules)", grid: true},
+  y: {label: null},
+  marks: [
+    Plot.barX(energyComparison, {
+      y: "source",
+      x: "log",
+      fill: "color",
+      sort: {y: "-x"}
+    }),
+    Plot.text(energyComparison, {
+      y: "source",
+      x: "log",
+      text: d => `10^${d.log.toFixed(1)} J`,
+      dx: 5,
+      textAnchor: "start",
+      fontSize: 11,
+      fontWeight: "bold"
+    }),
+    Plot.ruleX([0])
+  ]
+})
+```
+
+::: {.student-task}
+### 📝 Initial Claim
+
+Before we investigate, write your best explanation for **how the Sun is able to release energy on such a massive scale.** What process do you think is responsible? We'll come back to this after gathering evidence.
+:::
+
+# Explore: Investigating Light from the Sun
+
+::: {.explore-box}
+## 🔬 What Can Light Tell Us About the Sun?
+
+We can't visit the Sun or take a sample of it. So how do scientists know what it's made of? The answer: **spectroscopy** — splitting sunlight into its component wavelengths and reading the pattern like a fingerprint.
+:::
+
+## How Spectroscopy Works
+
+When light passes through a gas, certain wavelengths get absorbed. Each element absorbs a **unique pattern** of wavelengths — like a barcode. By matching the Sun's absorption pattern to lab samples, we can figure out the Sun's composition.
+
+```{ojs}
+//| echo: false
+{
+  const width = 700;
+  const height = 340;
+  const svg = d3.create("svg").attr("width", width).attr("height", height);
+  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#1a1a2e").attr("rx", 12);
+
+  svg.append("text").attr("x", width/2).attr("y", 25).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-size", 16).attr("font-weight", "bold")
+    .text("Absorption Spectra — Element Fingerprints");
+
+  const colors = ["#FF0000", "#FF4500", "#FFD700", "#ADFF2F", "#00CED1", "#4169E1", "#8B00FF"];
+  const labels = ["Red", "", "Yellow", "Green", "", "Blue", "Violet"];
+
+  // Continuous spectrum
+  svg.append("text").attr("x", 15).attr("y", 55).attr("fill", "#ccc").attr("font-size", 12).attr("font-weight", "bold").text("Continuous:");
+  const specW = 500;
+  for (let i = 0; i < specW; i++) {
+    const hue = 270 - (i / specW) * 270;
+    svg.append("rect").attr("x", 130 + i).attr("y", 42).attr("width", 1.5).attr("height", 22)
+      .attr("fill", `hsl(${hue}, 100%, 50%)`);
+  }
+
+  // Hydrogen lines
+  const hLines = [0.15, 0.32, 0.52, 0.75];
+  svg.append("text").attr("x", 15).attr("y", 95).attr("fill", "#ccc").attr("font-size", 12).attr("font-weight", "bold").text("Hydrogen:");
+  for (let i = 0; i < specW; i++) {
+    const hue = 270 - (i / specW) * 270;
+    const pos = i / specW;
+    const isLine = hLines.some(l => Math.abs(pos - l) < 0.008);
+    svg.append("rect").attr("x", 130 + i).attr("y", 82).attr("width", 1.5).attr("height", 22)
+      .attr("fill", isLine ? "#1a1a2e" : `hsl(${hue}, 100%, 50%)`);
+  }
+
+  // Helium lines
+  const heLines = [0.12, 0.28, 0.45, 0.58, 0.82];
+  svg.append("text").attr("x", 15).attr("y", 135).attr("fill", "#ccc").attr("font-size", 12).attr("font-weight", "bold").text("Helium:");
+  for (let i = 0; i < specW; i++) {
+    const hue = 270 - (i / specW) * 270;
+    const pos = i / specW;
+    const isLine = heLines.some(l => Math.abs(pos - l) < 0.008);
+    svg.append("rect").attr("x", 130 + i).attr("y", 122).attr("width", 1.5).attr("height", 22)
+      .attr("fill", isLine ? "#1a1a2e" : `hsl(${hue}, 100%, 50%)`);
+  }
+
+  // Sun spectrum (has both H and He lines plus a few more)
+  const sunLines = [...hLines, ...heLines, 0.38, 0.62, 0.7];
+  svg.append("text").attr("x", 15).attr("y", 175).attr("fill", "#f39c12").attr("font-size", 12).attr("font-weight", "bold").text("The Sun:");
+  for (let i = 0; i < specW; i++) {
+    const hue = 270 - (i / specW) * 270;
+    const pos = i / specW;
+    const isLine = sunLines.some(l => Math.abs(pos - l) < 0.008);
+    svg.append("rect").attr("x", 130 + i).attr("y", 162).attr("width", 1.5).attr("height", 22)
+      .attr("fill", isLine ? "#1a1a2e" : `hsl(${hue}, 100%, 50%)`);
+  }
+
+  // Key
+  svg.append("text").attr("x", width/2).attr("y", 210).attr("text-anchor", "middle")
+    .attr("fill", "#ccc").attr("font-size", 12).text("↑ Dark lines = wavelengths absorbed by specific elements");
+
+  // Composition
+  svg.append("text").attr("x", width/2).attr("y", 245).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-size", 14).attr("font-weight", "bold")
+    .text("Sun's Composition (by mass)");
+
+  const comp = [
+    {element: "Hydrogen", pct: 73.46, color: "#3498db"},
+    {element: "Helium", pct: 24.85, color: "#f39c12"},
+    {element: "Oxygen", pct: 0.77, color: "#e74c3c"},
+    {element: "Carbon", pct: 0.29, color: "#636e72"},
+    {element: "Other", pct: 0.63, color: "#9b59b6"}
+  ];
+
+  let xPos = 80;
+  comp.forEach(c => {
+    const barW = (c.pct / 100) * 540;
+    svg.append("rect").attr("x", xPos).attr("y", 260).attr("width", Math.max(barW, 3)).attr("height", 30)
+      .attr("fill", c.color).attr("rx", 3);
+    if (barW > 30) {
+      svg.append("text").attr("x", xPos + barW/2).attr("y", 280).attr("text-anchor", "middle")
+        .attr("fill", "white").attr("font-size", 11).attr("font-weight", "bold")
+        .text(`${c.element} ${c.pct}%`);
+    }
+    xPos += barW;
+  });
+
+  svg.append("text").attr("x", 620 + 20).attr("y", 275).attr("font-size", 10).attr("fill", "#ccc").text("← 1.7% non-H/He");
+
+  return svg.node();
+}
+```
+
+::: {.student-task}
+### 📝 Spectral Analysis
+
+1. Compare the Sun's spectrum to the Hydrogen and Helium lab spectra. Which element's lines appear most prominently in the Sun's spectrum?
+2. The Sun is **73% hydrogen and 25% helium** by mass. Why is this important for understanding how the Sun produces energy?
+3. If an exoplanet's star showed a very different spectral pattern — say, mostly iron and carbon — what might that tell you about its ability to support life?
+:::
+
+# Explain: The Sun's Energy Source
+
+::: {.explain-box}
+## 🧠 Nuclear Fusion: Turning Hydrogen into Energy
+
+The Sun is powered by **nuclear fusion** — smashing hydrogen atoms together to form helium. This process converts a tiny amount of mass directly into enormous amounts of energy, described by Einstein's famous equation $E = mc^2$.
+:::
+
+::: {.key-idea}
+### 💡 Why Fusion Releases So Much Energy
+
+In the Sun's core (15 million °C, 250 billion atmospheres of pressure):
+
+1. **4 hydrogen nuclei** (protons) fuse together
+2. They form **1 helium nucleus** (2 protons + 2 neutrons)
+3. The helium is slightly **less massive** than the 4 original protons
+4. That "missing" mass ($0.7\%$) converts to energy: $E = mc^2$
+5. Even though $0.7\%$ sounds tiny, $c^2$ is enormous ($9 \times 10^{16}$), so the energy output is staggering
+
+**The Sun converts 600 million tons of hydrogen into helium every second** — and has enough fuel to keep going for another **5 billion years.**
+:::
+
+```{ojs}
+//| echo: false
+viewof sunAge = Inputs.range([0, 12], {label: "Sun's age (billion years):", step: 0.5, value: 4.6})
+```
+
+```{ojs}
+//| echo: false
+{
+  const totalH = 100;
+  const burnRate = 6.5; // % per billion years (simplified)
+  const hRemaining = Math.max(0, totalH - sunAge * burnRate);
+  const heCreated = totalH - hRemaining;
+
+  const phase = sunAge < 10 ? "Main Sequence (stable)" :
+                sunAge < 11 ? "Red Giant (expanding!)" :
+                "White Dwarf (cooling)";
+  const phaseColor = sunAge < 10 ? "#f39c12" : sunAge < 11 ? "#e74c3c" : "#bdc3c7";
+
+  const width = 700;
+  const height = 280;
+  const svg = d3.create("svg").attr("width", width).attr("height", height);
+  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#0a0a2e").attr("rx", 12);
+
+  svg.append("text").attr("x", width/2).attr("y", 25).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-size", 16).attr("font-weight", "bold")
+    .text(`The Sun at ${sunAge} Billion Years Old`);
+  svg.append("text").attr("x", width/2).attr("y", 48).attr("text-anchor", "middle")
+    .attr("fill", phaseColor).attr("font-size", 14).attr("font-weight", "bold")
+    .text(`Phase: ${phase}`);
+
+  // Sun size visualization
+  const baseR = 40;
+  const sunR = sunAge < 10 ? baseR : sunAge < 11 ? baseR * 3 : baseR * 0.3;
+  svg.append("circle").attr("cx", 150).attr("cy", 160).attr("r", sunR)
+    .attr("fill", phaseColor).attr("opacity", 0.8);
+  svg.append("text").attr("x", 150).attr("y", 165).attr("text-anchor", "middle")
+    .attr("fill", sunAge < 11 ? "white" : "#333").attr("font-size", sunR > 20 ? 14 : 8)
+    .attr("font-weight", "bold").text("☀️");
+
+  // Fuel gauge
+  svg.append("text").attr("x", 330).attr("y", 85).attr("fill", "white").attr("font-size", 13).attr("font-weight", "bold")
+    .text("Fuel Remaining:");
+  svg.append("rect").attr("x", 330).attr("y", 95).attr("width", 300).attr("height", 30)
+    .attr("fill", "#2c3e50").attr("rx", 6);
+  svg.append("rect").attr("x", 330).attr("y", 95).attr("width", (hRemaining/100)*300).attr("height", 30)
+    .attr("fill", "#3498db").attr("rx", 6);
+  svg.append("text").attr("x", 480).attr("y", 115).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-size", 12).attr("font-weight", "bold")
+    .text(`Hydrogen: ${hRemaining.toFixed(0)}%`);
+
+  svg.append("rect").attr("x", 330).attr("y", 140).attr("width", 300).attr("height", 30)
+    .attr("fill", "#2c3e50").attr("rx", 6);
+  svg.append("rect").attr("x", 330).attr("y", 140).attr("width", (heCreated/100)*300).attr("height", 30)
+    .attr("fill", "#f39c12").attr("rx", 6);
+  svg.append("text").attr("x", 480).attr("y", 160).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-size", 12).attr("font-weight", "bold")
+    .text(`Helium: ${heCreated.toFixed(0)}%`);
+
+  // Timeline marker
+  svg.append("text").attr("x", 330).attr("y", 200).attr("fill", "#ccc").attr("font-size", 12)
+    .text(sunAge <= 4.6 ? "← We are here (4.6 Gyr)" :
+          sunAge <= 10 ? "Future: Sun still stable" :
+          sunAge <= 11 ? "⚠️ Sun expands to engulf Earth!" :
+          "Sun becomes a tiny white dwarf");
+
+  // Key facts
+  svg.append("text").attr("x", 330).attr("y", 235).attr("fill", "#3498db").attr("font-size", 11)
+    .text(`Fusion rate: ~600 million tons H → He per second`);
+  svg.append("text").attr("x", 330).attr("y", 255).attr("fill", "#f39c12").attr("font-size", 11)
+    .text(`Energy output: 3.8 × 10²⁶ watts (stable for billions of years)`);
+
+  return svg.node();
+}
+```
+
+::: {.student-task}
+### 📝 Explore the Sun's Life
+
+Use the slider to explore the Sun's life from birth to death:
+
+1. At what age does the Sun run out of hydrogen fuel?
+2. What happens to the Sun's **size** when it becomes a Red Giant?
+3. The Sun is currently **4.6 billion years old.** How much of its hydrogen has it used so far?
+4. Why is the fact that the Sun has been **stable** for billions of years so important for life on Earth?
+5. If our Sun were twice as massive, it would burn through fuel **8× faster.** What would that mean for life?
+:::
+
+# Elaborate: Scale of Solar Energy
+
+::: {.elaborate-box}
+## 🌍 Using Evidence of Scale to Understand the Sun
+
+The Sun has been releasing energy at a nearly constant rate for **4.6 billion years.** No chemical reaction (like burning coal or gas) could sustain this output — only nuclear fusion explains both the **quantity** and **duration** of the Sun's energy.
+:::
+
+```{ojs}
+//| echo: false
+durationData = [
+  {source: "Chemical (burning coal)", duration: 0.005, energy: 0.001, color: "#636e72"},
+  {source: "Chemical (burning hydrogen)", duration: 0.015, energy: 0.003, color: "#74b9ff"},
+  {source: "Gravitational contraction", duration: 0.03, energy: 0.01, color: "#a29bfe"},
+  {source: "Nuclear fission", duration: 0.1, energy: 0.05, color: "#fdcb6e"},
+  {source: "Nuclear fusion (actual)", duration: 10, energy: 1.0, color: "#f39c12"}
+]
+
+Plot.plot({
+  title: "How Long Could Each Energy Source Power the Sun?",
+  subtitle: "Only fusion explains billions of years of stable output",
+  width: 700,
+  height: 350,
+  marginLeft: 200,
+  x: {label: "Duration (billion years)", type: "log", grid: true},
+  y: {label: null},
+  marks: [
+    Plot.barX(durationData, {
+      y: "source",
+      x: "duration",
+      fill: "color",
+      sort: {y: "x"}
+    }),
+    Plot.text(durationData, {
+      y: "source",
+      x: "duration",
+      text: d => d.duration >= 1 ? `${d.duration} billion yr` : `${(d.duration * 1000).toFixed(0)} million yr`,
+      dx: 5,
+      textAnchor: "start",
+      fontSize: 11,
+      fontWeight: "bold"
+    }),
+    Plot.ruleX([4.6], {stroke: "#e74c3c", strokeWidth: 2, strokeDasharray: "5,5"}),
+    Plot.text([{y: "Nuclear fusion (actual)", x: 4.6}], {
+      y: "y", x: "x", text: d => "← Sun's current age (4.6 Gyr)",
+      dx: 5, dy: -15, fontSize: 10, fill: "#e74c3c", fontWeight: "bold"
+    })
+  ]
+})
+```
+
+<div class="mind-blown">
+☀️ If the Sun ran on coal, it would have burned out in 5,000 years. If it ran on gravitational contraction, it would last 30 million years. Only nuclear fusion — the same process in a hydrogen bomb — explains how the Sun has been shining for 4.6 BILLION years.
+</div>
+
+# Evaluate: Your Model of the Sun
+
+::: {.evaluate-box}
+## ✏️ Revise Your Habitability Model
+
+Now that you understand how the Sun works, update your model from the Opening. Add what you've learned about:
+
+- The Sun's composition (73% hydrogen, 25% helium)
+- Nuclear fusion as the energy source
+- The Sun's stability over billions of years
+- How spectroscopy provides evidence for the Sun's composition
+:::
+
+::: {.student-task}
+### 📝 Model Revision & Prediction
+
+1. **Revise your model** to include the Sun's role in making Earth habitable. What specific features of our Sun matter most?
+
+2. **Make a prediction:** As the Sun ages, the ratio of hydrogen to helium changes. What does this mean for:
+   - The Sun's energy output in the far future?
+   - The Sun's eventual fate?
+   - Life on Earth billions of years from now?
+
+3. **Apply to the Performance Task:** If you were evaluating an exoplanet's star, what properties would you want to know? What would be a "red flag" that the star can't support life?
+:::
+
+::: {.check-understanding}
+### 📋 What You Figured Out
+
+- ☀️ The Sun is **73% hydrogen** and **25% helium** — we know this from spectroscopy
+- ⚛️ The Sun produces energy through **nuclear fusion** ($4H → He + energy$)
+- ⏱️ Only fusion explains both the **quantity** and **duration** of solar energy
+- 🌡️ The Sun has been stable for **4.6 billion years** — critical for life
+- 🔮 The Sun will remain stable for **~5 more billion years** before becoming a red giant
+:::

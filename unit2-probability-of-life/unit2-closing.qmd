@@ -1,0 +1,271 @@
+---
+title: "Unit 2: Closing — The Probability of Life"
+subtitle: "Develop an argument: Does intelligent life exist outside Earth?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 5px; box-shadow: 0 4px 15px rgba(0, 206, 201, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.5em; font-weight: 800; background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #ff6b6b; font-size: 1.1em; }
+.student-task { background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.mind-blown { background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 20px; margin: 20px 0; border-radius: 15px; font-size: 1.3em; font-weight: 700; text-align: center; box-shadow: 0 10px 25px rgba(0, 206, 201, 0.4); }
+.check-understanding { background: linear-gradient(to right, #00cec9, #6c5ce7); color: white; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 6px solid #fff; }
+.claim-box { background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 25px; margin: 15px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 206, 201, 0.3); }
+.evidence-box { background: linear-gradient(135deg, #0984e3 0%, #00b894 100%); color: white; padding: 25px; margin: 15px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(9, 132, 227, 0.3); }
+.reasoning-box { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 25px; margin: 15px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #00cec9 !important; }
+</style>
+```
+
+<span class="pe-badge">HS-ESS1-6</span> <span class="pe-badge">HS-ESS2-7</span> <span class="pe-badge">Performance Task</span> <span class="pe-badge">1–2 Days</span>
+
+<div class="big-question">👽 Are We Alone? Make Your Argument.</div>
+
+# The Performance Task
+
+You have gathered evidence across this entire unit about the conditions necessary for life, the history of our solar system, the origin of the universe, and the threats to life from space. Now it's time to **construct a scientific argument**.
+
+## Your Task
+
+::: {.claim-box}
+### 🎯 The Claim
+
+Using evidence from this unit, **develop an argument** about the probability of intelligent life existing somewhere outside Earth.
+
+You must address TWO questions:
+
+1. **Why did it take 4.5 billion years for intelligent life to emerge on Earth?**
+2. **Is it likely that intelligent life exists elsewhere in the universe?**
+
+Your argument must use the **CER Framework**: Claim → Evidence → Reasoning
+:::
+
+# Evidence Review
+
+Let's review the key evidence from each chapter.
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+## Chapter Evidence Cards
+
+::: {.evidence-box}
+### 🌑 Chapter 1: Stability of the Solar System
+
+**Key Evidence:**
+
+- Earth has only ~128 visible craters vs. 1,000,000+ on the Moon
+- Earth's surface is constantly recycled by plate tectonics, weathering, erosion, and volcanism
+- Water has unique properties (density anomaly, high heat capacity, universal solvent)
+- The rock cycle continuously renews Earth's surface
+- All solar system objects formed ~4.57 billion years ago
+
+**What this means for life:** Earth's active geology creates a continuously renewed surface with liquid water — conditions that support life but also erase the geological record.
+:::
+
+::: {.evidence-box}
+### 🦠 Chapter 2: Coevolution of Earth and Life
+
+**Key Evidence:**
+
+- Life appeared within ~700 million years of Earth's formation
+- Photosynthesis transformed Earth's atmosphere (Great Oxidation Event)
+- Five mass extinctions each wiped out 60–96% of species
+- Each extinction was followed by rapid diversification of survivors
+- Plants colonizing land dramatically altered the atmosphere, soil, and climate
+- CO₂ levels have varied from 7,000 ppm to 300 ppm over 500 million years
+
+**What this means for life:** Life and Earth are a coupled system — life transforms its planet, and the planet shapes the evolution of life. Mass extinctions, while devastating, were necessary for the evolution of complex and intelligent life.
+:::
+
+::: {.evidence-box}
+### 💥 Chapter 3: Origin of the Universe
+
+**Key Evidence:**
+
+- The universe is 13.8 billion years old (redshift, CMB, H/He ratio)
+- There are ~200 billion trillion stars in the observable universe
+- Heavy elements needed for rocky planets and life required multiple generations of stars
+- Our solar system formed 9.2 billion years after the Big Bang
+- The CMB shows the universe was once incredibly hot and dense
+
+**What this means for life:** The universe is vast and old — but it took billions of years to produce the raw materials for life. Time and stellar recycling were prerequisites.
+:::
+
+::: {.evidence-box}
+### ☄️ Chapter 4: Asteroid Orbits
+
+**Key Evidence:**
+
+- Asteroid impacts follow predictable orbital mechanics (Kepler's Laws, Newton's Gravity)
+- The Late Heavy Bombardment sterilized Earth's surface repeatedly
+- The Chicxulub impact killed the dinosaurs but enabled mammal diversification
+- Apophis will pass closer than geostationary satellites in 2029
+- DART mission proved kinetic impact deflection works
+- ~60% of city-killer asteroids remain undiscovered
+
+**What this means for life:** Asteroid impacts are both destroyers and enablers of evolution. A civilization must survive long enough to develop planetary defense.
+:::
+
+# Building Your Argument
+
+## CER Framework
+
+::: {.claim-box}
+### 📋 Step 1: CLAIM
+
+Write a clear, specific claim about the probability of intelligent life existing outside Earth. Your claim should be **arguable** — someone could reasonably disagree with you.
+
+**Example claims (choose one or write your own):**
+
+- "Intelligent life almost certainly exists elsewhere in the universe because..."
+- "Intelligent life is extremely rare, possibly unique to Earth, because..."
+- "Simple life is likely common, but intelligent life is extraordinarily rare because..."
+:::
+
+::: {.evidence-box}
+### 📊 Step 2: EVIDENCE
+
+Cite **at least 4 specific pieces of evidence** from the unit — at least one from each chapter. Use data, numbers, and specific examples.
+
+| Chapter | Evidence | Supports claim because... |
+|---------|----------|--------------------------|
+| Solar System | | |
+| Coevolution | | |
+| Big Bang | | |
+| Asteroids | | |
+:::
+
+::: {.reasoning-box}
+### 🧠 Step 3: REASONING
+
+Explain **how** your evidence supports your claim. Connect the dots between different pieces of evidence. Address these questions:
+
+1. What conditions were necessary for intelligent life on Earth?
+2. How likely are those conditions to occur on other planets?
+3. What are the biggest obstacles to intelligent life evolving?
+4. How does the Fermi Paradox factor into your argument?
+:::
+
+# The Drake Equation
+
+```{ojs}
+//| echo: false
+viewof R_star = Inputs.range([1, 20], {label: "R* — Stars formed per year:", step: 0.5, value: 7})
+```
+
+```{ojs}
+//| echo: false
+viewof f_p = Inputs.range([0.01, 1], {label: "fp — Fraction with planets:", step: 0.01, value: 0.5})
+```
+
+```{ojs}
+//| echo: false
+viewof n_e = Inputs.range([0.01, 5], {label: "ne — Habitable planets per star:", step: 0.01, value: 0.2})
+```
+
+```{ojs}
+//| echo: false
+viewof f_l = Inputs.range([0.001, 1], {label: "fl — Fraction where life starts:", step: 0.001, value: 0.1})
+```
+
+```{ojs}
+//| echo: false
+viewof f_i = Inputs.range([0.001, 1], {label: "fi — Fraction with intelligent life:", step: 0.001, value: 0.01})
+```
+
+```{ojs}
+//| echo: false
+viewof f_c = Inputs.range([0.001, 1], {label: "fc — Fraction that communicate:", step: 0.001, value: 0.1})
+```
+
+```{ojs}
+//| echo: false
+viewof L = Inputs.range([100, 100000], {label: "L — Years civilization lasts:", step: 100, value: 10000})
+```
+
+```{ojs}
+//| echo: false
+{
+  const N = R_star * f_p * n_e * f_l * f_i * f_c * L;
+  
+  const div = d3.create("div")
+    .style("padding", "25px")
+    .style("border-radius", "15px")
+    .style("background", "linear-gradient(135deg, #00cec9, #6c5ce7)")
+    .style("color", "white")
+    .style("text-align", "center");
+
+  div.append("h3").style("margin-top", "0").style("font-family", "Space Grotesk, sans-serif")
+    .text("The Drake Equation");
+  div.append("p").style("font-size", "1.1em")
+    .text("N = R* × fp × ne × fl × fi × fc × L");
+  div.append("h2").style("font-size", "2.5em").style("margin", "15px 0")
+    .text(`N ≈ ${N < 1 ? N.toFixed(4) : N < 100 ? N.toFixed(1) : Math.round(N).toLocaleString()}`);
+  div.append("p").style("font-size", "1.2em").style("font-weight", "bold")
+    .text(N < 1 ? "Less than 1 — we might be alone in the galaxy" :
+          N < 10 ? `About ${Math.round(N)} detectable civilization(s) in our galaxy right now` :
+          N < 1000 ? `About ${Math.round(N)} detectable civilizations in our galaxy` :
+          `${Math.round(N).toLocaleString()} civilizations — the galaxy should be buzzing!`);
+
+  if (N > 1000) {
+    div.append("p").style("font-style", "italic").style("margin-top", "10px")
+      .text("If N is this large... where is everybody? (Fermi Paradox)");
+  }
+
+  return div.node();
+}
+```
+
+::: {.key-idea}
+### 💡 The Drake Equation
+
+The Drake Equation estimates the number of detectable civilizations in the Milky Way. We know the first few factors fairly well ($R^*$, $f_p$), but the later factors ($f_i$, $f_c$, $L$) are almost completely unknown.
+
+**Your job**: Use what you've learned in this unit to make informed estimates for each factor, and defend your choices with evidence.
+:::
+
+# Reflection
+
+::: {.student-task}
+### 📝 Final Reflection
+
+1. How has your thinking about life in the universe changed since the beginning of this unit?
+2. Which piece of evidence was most surprising or changed your perspective the most?
+3. Look back at the questions you wrote on the Driving Question Board at the start. Can you answer them now?
+4. What new questions do you have that we didn't answer in this unit?
+:::
+
+::: {.check-understanding}
+### 📋 Performance Task Checklist
+
+Before submitting, make sure your argument:
+
+- [ ] Makes a clear, specific **claim** about the probability of intelligent life
+- [ ] Uses **at least 4 pieces of evidence** (one from each chapter)
+- [ ] **Explains** how each piece of evidence supports the claim
+- [ ] Addresses the **Fermi Paradox** (if there are so many stars and planets, where is everybody?)
+- [ ] Uses the **Drake Equation** with your estimated values
+- [ ] Considers **counterarguments** — what would someone who disagrees say?
+- [ ] Is written for a **scientific audience** (precise language, specific numbers)
+:::

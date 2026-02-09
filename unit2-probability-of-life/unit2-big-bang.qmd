@@ -1,0 +1,397 @@
+---
+title: "Origin of the Universe"
+subtitle: "How do we know the universe began with a Big Bang?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 206, 201, 0.3); }
+.explore-box { background: linear-gradient(135deg, #0984e3 0%, #00b894 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(9, 132, 227, 0.3); }
+.explain-box { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(253, 203, 110, 0.3); }
+.evaluate-box { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3); }
+.engage-box h2, .explore-box h2, .explain-box h2, .elaborate-box h2, .evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 5px; box-shadow: 0 4px 15px rgba(0, 206, 201, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.5em; font-weight: 800; background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #ff6b6b; font-size: 1.1em; }
+.student-task { background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.mind-blown { background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 20px; margin: 20px 0; border-radius: 15px; font-size: 1.3em; font-weight: 700; text-align: center; box-shadow: 0 10px 25px rgba(0, 206, 201, 0.4); }
+.check-understanding { background: linear-gradient(to right, #00cec9, #6c5ce7); color: white; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 6px solid #fff; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #00cec9 !important; }
+</style>
+```
+
+<span class="pe-badge">HS-ESS1-2</span> <span class="pe-badge">6–7 Days</span>
+
+<div class="big-question">💥 How Did Everything Begin?</div>
+
+# 🔥 Engage — The Light From the Past {.engage-box}
+
+::: {.engage-box}
+## Everything Is Moving Away From Us
+
+When astronomers look at distant galaxies, they notice something strange: the light from every galaxy is **shifted toward the red end of the spectrum**. The farther away a galaxy is, the more its light is redshifted.
+
+This is called the **Doppler Effect** for light — the same reason an ambulance siren sounds lower-pitched as it drives away from you. If a galaxy's light is redshifted, it means that galaxy is **moving away from us**.
+
+And they're **all** moving away. In every direction. The farther away, the faster they go.
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+## The Doppler Effect for Light
+
+```{ojs}
+//| echo: false
+{
+  const svg = d3.create("svg")
+    .attr("width", 700)
+    .attr("height", 220)
+    .attr("viewBox", "0 0 700 220");
+
+  svg.append("text").attr("x", 350).attr("y", 20).attr("text-anchor", "middle")
+    .attr("font-size", 16).attr("font-weight", "bold").text("Doppler Shift for Light");
+
+  // Spectrum bar
+  const gradient = svg.append("defs").append("linearGradient")
+    .attr("id", "spectrum").attr("x1", "0%").attr("x2", "100%");
+  const colors = ["#8B00FF", "#4B0082", "#0000FF", "#00FF00", "#FFFF00", "#FF7F00", "#FF0000"];
+  colors.forEach((c, i) => {
+    gradient.append("stop").attr("offset", `${i / (colors.length - 1) * 100}%`).attr("stop-color", c);
+  });
+
+  svg.append("rect").attr("x", 50).attr("y", 40).attr("width", 600).attr("height", 30)
+    .attr("rx", 5).attr("fill", "url(#spectrum)");
+  svg.append("text").attr("x", 80).attr("y", 85).attr("font-size", 11).attr("font-weight", "bold").attr("fill", "#8B00FF").text("Violet (short λ)");
+  svg.append("text").attr("x", 560).attr("y", 85).attr("font-size", 11).attr("font-weight", "bold").attr("fill", "#FF0000").text("Red (long λ)");
+
+  // Approaching
+  svg.append("rect").attr("x", 50).attr("y", 110).attr("width", 290).attr("height", 90)
+    .attr("rx", 10).attr("fill", "#74b9ff").attr("opacity", 0.2);
+  svg.append("text").attr("x", 195).attr("y", 135).attr("text-anchor", "middle")
+    .attr("font-size", 14).attr("font-weight", "bold").attr("fill", "#0984e3").text("🔵 Blueshift");
+  svg.append("text").attr("x", 195).attr("y", 155).attr("text-anchor", "middle")
+    .attr("font-size", 12).text("Object moving TOWARD us");
+  svg.append("text").attr("x", 195).attr("y", 175).attr("text-anchor", "middle")
+    .attr("font-size", 11).attr("fill", "#636e72").text("Light waves compressed → shorter λ");
+  svg.append("text").attr("x", 195).attr("y", 195).attr("text-anchor", "middle")
+    .attr("font-size", 20).text("← 🌟");
+
+  // Receding
+  svg.append("rect").attr("x", 360).attr("y", 110).attr("width", 290).attr("height", 90)
+    .attr("rx", 10).attr("fill", "#ff7675").attr("opacity", 0.2);
+  svg.append("text").attr("x", 505).attr("y", 135).attr("text-anchor", "middle")
+    .attr("font-size", 14).attr("font-weight", "bold").attr("fill", "#d63031").text("🔴 Redshift");
+  svg.append("text").attr("x", 505).attr("y", 155).attr("text-anchor", "middle")
+    .attr("font-size", 12).text("Object moving AWAY from us");
+  svg.append("text").attr("x", 505).attr("y", 175).attr("text-anchor", "middle")
+    .attr("font-size", 11).attr("fill", "#636e72").text("Light waves stretched → longer λ");
+  svg.append("text").attr("x", 505).attr("y", 195).attr("text-anchor", "middle")
+    .attr("font-size", 20).text("🌟 →");
+
+  return svg.node();
+}
+```
+
+::: {.student-task}
+### 📝 Engage Activity
+
+1. If every galaxy is moving away from us, does that mean we're at the center of the universe? Think carefully before answering.
+2. What would it look like if the universe were **expanding** uniformly — like dots on an inflating balloon?
+3. If galaxies are moving apart now, what were they doing in the past?
+:::
+
+# 🔍 Explore — Hubble's Discovery {.explore-box}
+
+::: {.explore-box}
+## The Universe Is Expanding
+
+In 1929, Edwin Hubble made one of the most important discoveries in science: **the velocity at which a galaxy moves away from us is proportional to its distance.** This is now called **Hubble's Law**.
+
+$$v = H_0 \times d$$
+
+where $v$ is recession velocity, $H_0$ is Hubble's constant (~70 km/s/Mpc), and $d$ is distance.
+:::
+
+```{ojs}
+//| echo: false
+galaxyData = [
+  {name: "LMC", distance: 0.05, velocity: 278, color: "#2ecc71"},
+  {name: "Andromeda", distance: 0.77, velocity: -301, color: "#e74c3c"},
+  {name: "NGC 300", distance: 6.1, velocity: 144, color: "#3498db"},
+  {name: "M81", distance: 11.8, velocity: 300, color: "#9b59b6"},
+  {name: "NGC 4258", distance: 23.5, velocity: 448, color: "#f39c12"},
+  {name: "Virgo Cluster", distance: 54, velocity: 1150, color: "#e17055"},
+  {name: "Coma Cluster", distance: 99, velocity: 6900, color: "#00cec9"},
+  {name: "Abell 2029", distance: 310, velocity: 23000, color: "#d63031"},
+  {name: "CL 0024+17", distance: 1700, velocity: 120000, color: "#636e72"}
+]
+
+Plot.plot({
+  title: "Hubble's Law: Galaxy Distance vs. Recession Velocity",
+  subtitle: "Farther galaxies move away faster — the universe is expanding uniformly",
+  width: 700,
+  height: 400,
+  grid: true,
+  x: {label: "Distance (Mpc)", type: "log"},
+  y: {label: "Recession velocity (km/s)", type: "log"},
+  marks: [
+    Plot.dot(galaxyData.filter(d => d.velocity > 0), {
+      x: "distance",
+      y: "velocity",
+      fill: "color",
+      r: 8,
+      stroke: "white",
+      strokeWidth: 1
+    }),
+    Plot.text(galaxyData.filter(d => d.velocity > 0), {
+      x: "distance",
+      y: "velocity",
+      text: "name",
+      dy: -15,
+      fontSize: 10,
+      fontWeight: "bold"
+    }),
+    // Hubble's law line
+    Plot.line(
+      [{distance: 1, velocity: 70}, {distance: 2000, velocity: 140000}],
+      {x: "distance", y: "velocity", stroke: "#00cec9", strokeWidth: 2, strokeDasharray: "8,4"}
+    )
+  ]
+})
+```
+
+::: {.key-idea}
+### 💡 Hubble's Key Insight
+
+Notice that **Andromeda** has a **negative** velocity — it's actually moving *toward* us! This is because Andromeda is so close that its gravitational attraction to the Milky Way overcomes the expansion. But every galaxy beyond our local group is moving away, and the trend is perfectly linear on a log-log scale.
+
+**Running the movie backwards**: If everything is moving apart now, then in the past everything was closer together. Go far enough back, and everything was in the **same point**. That's the Big Bang.
+:::
+
+# 💡 Explain — Evidence for the Big Bang {.explain-box}
+
+::: {.explain-box}
+## Three Pillars of Evidence
+
+The Big Bang theory isn't just an idea — it's supported by three independent lines of evidence that all point to the same conclusion.
+:::
+
+## Evidence 1: Universal Expansion (Redshift)
+
+✅ Every distant galaxy is redshifted → the universe is expanding → it was once much smaller and denser.
+
+## Evidence 2: Cosmic Microwave Background (CMB)
+
+In 1965, Arno Penzias and Robert Wilson accidentally discovered a faint microwave signal coming from **every direction in the sky**. This is the **afterglow** of the Big Bang — light released when the universe cooled enough for atoms to form, about 380,000 years after the Big Bang.
+
+```{ojs}
+//| echo: false
+{
+  const svg = d3.create("svg")
+    .attr("width", 700)
+    .attr("height", 280)
+    .attr("viewBox", "0 0 700 280");
+
+  svg.append("text").attr("x", 350).attr("y", 25).attr("text-anchor", "middle")
+    .attr("font-size", 16).attr("font-weight", "bold").text("The Cosmic Microwave Background (CMB)");
+
+  // CMB representation (simplified)
+  const cmbColors = ["#0984e3", "#00cec9", "#2ecc71", "#f39c12", "#e74c3c", "#d63031"];
+  for (let i = 0; i < 60; i++) {
+    for (let j = 0; j < 15; j++) {
+      const color = cmbColors[Math.floor(Math.random() * cmbColors.length)];
+      svg.append("rect")
+        .attr("x", 100 + i * 8.5)
+        .attr("y", 40 + j * 8)
+        .attr("width", 8)
+        .attr("height", 7.5)
+        .attr("fill", color)
+        .attr("opacity", 0.5 + Math.random() * 0.5);
+    }
+  }
+  svg.append("rect").attr("x", 100).attr("y", 40).attr("width", 510).attr("height", 120)
+    .attr("fill", "none").attr("stroke", "white").attr("stroke-width", 2).attr("rx", 10);
+
+  svg.append("text").attr("x", 355).attr("y", 110).attr("text-anchor", "middle")
+    .attr("font-size", 14).attr("font-weight", "bold").attr("fill", "white")
+    .attr("stroke", "black").attr("stroke-width", 0.5)
+    .text("CMB: Temperature ≈ 2.725 K everywhere");
+
+  // Temperature info
+  svg.append("text").attr("x", 350).attr("y", 195).attr("text-anchor", "middle")
+    .attr("font-size", 13).text("Tiny variations (±0.0002 K) show where matter was slightly denser");
+  svg.append("text").attr("x", 350).attr("y", 215).attr("text-anchor", "middle")
+    .attr("font-size", 13).text("Those dense spots became galaxy clusters billions of years later");
+  
+  svg.append("rect").attr("x", 150).attr("y", 230).attr("width", 400).attr("height", 35)
+    .attr("rx", 17).attr("fill", "#6c5ce7");
+  svg.append("text").attr("x", 350).attr("y", 253).attr("text-anchor", "middle")
+    .attr("font-size", 13).attr("font-weight", "bold").attr("fill", "white")
+    .text("The CMB is literally the oldest light in the universe");
+
+  return svg.node();
+}
+```
+
+## Evidence 3: Hydrogen & Helium Ratio
+
+The Big Bang model predicts the early universe should have produced about **75% hydrogen and 25% helium** (by mass), with tiny traces of lithium. This is almost exactly what we observe:
+
+```{ojs}
+//| echo: false
+elementData = [
+  {element: "Hydrogen (H)", predicted: 75, observed: 73.9, color: "#74b9ff"},
+  {element: "Helium (He)", predicted: 25, observed: 24.0, color: "#fdcb6e"},
+  {element: "Lithium (Li)", predicted: 0.00001, observed: 0.000006, color: "#ff7675"},
+  {element: "Everything else", predicted: 0, observed: 2.1, color: "#a29bfe"}
+]
+
+Plot.plot({
+  title: "Predicted vs. Observed Element Abundances (% by mass)",
+  subtitle: "Big Bang nucleosynthesis predictions match observations almost perfectly",
+  width: 650,
+  height: 250,
+  marginLeft: 140,
+  x: {label: "Abundance (% by mass)", grid: true, domain: [0, 80]},
+  y: {label: null},
+  color: {legend: true, domain: ["Predicted (Big Bang model)", "Observed"], range: ["#0984e3", "#e17055"]},
+  marks: [
+    Plot.barX(
+      elementData.filter(d => d.predicted > 0.01).flatMap(d => [
+        {element: d.element, value: d.predicted, type: "Predicted (Big Bang model)"},
+        {element: d.element, value: d.observed, type: "Observed"}
+      ]),
+      {x: "value", y: "element", fill: "type", dx: 0, fx: null}
+    )
+  ]
+})
+```
+
+::: {.key-idea}
+### 💡 Three Independent Lines = Strong Theory
+
+| Evidence | What It Shows |
+|----------|---------------|
+| **Redshift** | Universe is expanding → was once smaller |
+| **CMB** | Afterglow of a hot, dense beginning |
+| **H/He ratio** | Element creation matches Big Bang predictions |
+
+All three lines of evidence converge on the same conclusion: the universe began about **13.8 billion years ago** from an incredibly hot, dense state.
+:::
+
+<div class="mind-blown">
+🧠 When you tune an old TV to static, about 1% of that "snow" is actually the Cosmic Microwave Background — the afterglow of the Big Bang. You're literally watching the birth of the universe.
+</div>
+
+# 🔬 Elaborate — From Big Bang to Solar System {.elaborate-box}
+
+::: {.elaborate-box}
+## The Cosmic Timeline
+
+After the Big Bang, it took **billions of years** for the universe to produce the conditions needed for planets and life. Here's the sequence:
+:::
+
+```{ojs}
+//| echo: false
+viewof timeSlider = Inputs.range([0, 13.8], {
+  label: "Time after Big Bang (billion years):",
+  step: 0.1,
+  value: 0
+})
+```
+
+```{ojs}
+//| echo: false
+{
+  const events = [
+    {start: 0, end: 0.0000003, title: "🔥 Big Bang & Inflation", desc: "All matter and energy created. Universe expands from a point. Only H, He, Li form.", color: "#d63031"},
+    {start: 0.0004, end: 0.0004, title: "✨ First Light (CMB)", desc: "Universe cools enough for atoms to form. Photons stream freely — this becomes the CMB.", color: "#fdcb6e"},
+    {start: 0.2, end: 0.5, title: "⭐ First Stars Form", desc: "Gravity pulls H & He together. First generation of massive stars ignite. They fuse heavier elements.", color: "#74b9ff"},
+    {start: 0.5, end: 1.0, title: "🌌 First Galaxies Form", desc: "Stars cluster into early galaxies. Supernovae spread heavy elements into space.", color: "#6c5ce7"},
+    {start: 1.0, end: 9.0, title: "🌟 Stellar Recycling", desc: "Generations of stars live, die, and seed space with carbon, oxygen, iron — the stuff of planets and people.", color: "#00cec9"},
+    {start: 9.2, end: 9.3, title: "☀️ Our Solar System Forms", desc: "A cloud of gas and dust (containing recycled stardust) collapses. Sun ignites. Planets form. Age: 4.6 Gyr ago.", color: "#f39c12"},
+    {start: 9.7, end: 10.0, title: "🦠 First Life on Earth", desc: "Simple bacteria appear within 700 million years of Earth's formation. Life begins!", color: "#2ecc71"},
+    {start: 13.5, end: 13.8, title: "🧠 Humans Arrive", desc: "After 13.8 billion years of cosmic evolution, a species evolves that can understand its own origin.", color: "#e17055"}
+  ];
+
+  const current = events.filter(e => timeSlider >= e.start);
+  const latest = current.length > 0 ? current[current.length - 1] : events[0];
+
+  const div = d3.create("div")
+    .style("padding", "20px")
+    .style("border-radius", "15px")
+    .style("background", `linear-gradient(135deg, ${latest.color}33, ${latest.color}11)`)
+    .style("border-left", `6px solid ${latest.color}`);
+
+  div.append("h3").style("color", latest.color).style("font-family", "Space Grotesk, sans-serif")
+    .text(`${timeSlider.toFixed(1)} billion years after the Big Bang`);
+  div.append("h2").style("margin-top", "5px").text(latest.title);
+  div.append("p").style("font-size", "1.15em").text(latest.desc);
+  
+  if (timeSlider >= 9.2) {
+    div.append("p").style("font-style", "italic").style("color", "#636e72")
+      .text(`That's ${(13.8 - timeSlider).toFixed(1)} billion years ago from today.`);
+  }
+
+  return div.node();
+}
+```
+
+::: {.key-idea}
+### 💡 You Are Made of Stardust
+
+Every atom in your body heavier than helium was forged inside a star that exploded billions of years before our solar system formed. The calcium in your bones, the iron in your blood, the oxygen you breathe — all created by nuclear fusion in stars, then scattered by supernovae, then gathered by gravity into our solar system.
+
+**We are the universe's way of understanding itself.**
+:::
+
+# ✅ Evaluate — Constructing the Argument {.evaluate-box}
+
+::: {.evaluate-box}
+## Putting the Evidence Together
+:::
+
+::: {.check-understanding}
+### 🧪 Evaluate Questions
+
+1. **Explain** Hubble's Law in your own words. What does it tell us about the universe's past?
+
+2. **Compare** the three lines of evidence for the Big Bang. Which do you find most convincing and why?
+
+3. **Construct a timeline** from the Big Bang to the formation of our solar system. At each stage, explain what had to happen before the next stage could begin.
+
+4. **Argue**: Could a universe that produced only hydrogen and helium ever develop life? Why or why not?
+
+5. **Calculate**: If Hubble's constant is 70 km/s/Mpc and a galaxy is 100 Mpc away, how fast is it receding? If a galaxy is receding at 35,000 km/s, how far away is it?
+:::
+
+::: {.student-task}
+### 📝 Model Update
+
+Add to your model of "probability of life in the universe":
+
+- The universe needed **multiple generations of stars** to create the heavy elements necessary for rocky planets and life
+- Our solar system formed 9.2 billion years after the Big Bang — why did it take so long?
+- Does the size and age of the universe make life elsewhere more or less likely?
+:::

@@ -1,0 +1,353 @@
+---
+title: "Performance Task: Natural Hazard Risk Assessment"
+subtitle: "Argue whether your location's benefits outweigh its hazard risks"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(225, 112, 85, 0.3); }
+.explore-box { background: linear-gradient(135deg, #0984e3 0%, #00b894 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(9, 132, 227, 0.3); }
+.explain-box { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(253, 203, 110, 0.3); }
+.evaluate-box { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3); }
+.engage-box h2, .explore-box h2, .explain-box h2, .elaborate-box h2, .evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 5px; box-shadow: 0 4px 15px rgba(225, 112, 85, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.5em; font-weight: 800; background: linear-gradient(135deg, #e17055 0%, #d63031 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #e17055; font-size: 1.1em; }
+.student-task { background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.mind-blown { background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 20px; margin: 20px 0; border-radius: 15px; font-size: 1.3em; font-weight: 700; text-align: center; box-shadow: 0 10px 25px rgba(225, 112, 85, 0.4); }
+.check-understanding { background: linear-gradient(to right, #e17055, #d63031); color: white; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 6px solid #fff; }
+.cer-box { border: 3px solid #e17055; border-radius: 15px; padding: 20px; margin: 15px 0; }
+.claim-box { background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 15px; border-radius: 10px; margin: 10px 0; }
+.evidence-box { background: linear-gradient(135deg, #0984e3 0%, #00b894 100%); color: white; padding: 15px; border-radius: 10px; margin: 10px 0; }
+.reasoning-box { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 15px; border-radius: 10px; margin: 10px 0; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #e17055 !important; }
+</style>
+```
+
+<span class="pe-badge">HS-ESS1-5</span> <span class="pe-badge">HS-ESS2-1</span> <span class="pe-badge">HS-ESS2-3</span> <span class="pe-badge">HS-ESS3-1</span> <span class="pe-badge">Performance Task</span>
+
+<div class="big-question">🌍 Should 3 Million People Be Living Next to Vesuvius?</div>
+
+# The Challenge
+
+Your task is to select a **real location** near a plate boundary and develop a **scientific argument** about whether the natural hazard risks at that location outweigh the benefits — or vice versa.
+
+This is not a question with one right answer. What matters is the quality of your **evidence** and **reasoning**.
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+# 🔍 Evidence Review — What You've Learned
+
+## Chapter 1: Earth's Interior
+
+::: {.cer-box}
+**Key Evidence Available:**
+
+- Earth has a layered structure: crust, mantle, outer core, inner core
+- We know this from **seismic wave analysis** (P-waves and S-waves)
+- The mantle is solid but flows slowly over millions of years
+- Earth's layers formed through **density differentiation** — denser materials sank to the center
+- Processes deep inside Earth ultimately cause surface events
+:::
+
+## Chapter 2: Plate Boundaries & Surface Features
+
+::: {.cer-box}
+**Key Evidence Available:**
+
+- Three types of boundaries: **divergent** (pull apart), **convergent** (push together), **transform** (slide past)
+- **Earthquakes** cluster along plate boundaries — not random
+- **Seafloor spreading** creates new crust at mid-ocean ridges
+- **Subduction zones** produce the most violent volcanic eruptions
+- Evidence for plate motion: magnetic striping, fossil distribution, continent shapes, seafloor ages
+- Some features (like the Adirondacks) exist far from boundaries — remnants of ancient tectonic events
+:::
+
+## Chapter 3: Energy & Matter
+
+::: {.cer-box}
+**Key Evidence Available:**
+
+- Earth's interior produces **47 terawatts** of heat (radioactive decay + primordial heat + core crystallization)
+- **Convection** in the mantle is the engine that drives plate motion
+- The same tectonic processes that cause hazards also create **resources**: fertile soil, minerals, geothermal energy
+- About **500 million people** live near active volcanoes worldwide
+- Risk and benefit are often inseparable at plate boundaries
+:::
+
+# 📊 Interactive Risk Assessment Tool
+
+```{ojs}
+//| echo: false
+viewof selectedLocation = Inputs.select(
+  ["Naples, Italy (Vesuvius)", "Tokyo, Japan", "San Francisco, USA", "Reykjavik, Iceland", "Jakarta, Indonesia", "Santiago, Chile", "Kathmandu, Nepal", "Mexico City, Mexico"],
+  {label: "🗺️ Choose your location:"}
+)
+```
+
+```{ojs}
+//| echo: false
+locationData = ({
+  "Naples, Italy (Vesuvius)": {
+    boundary: "Convergent (African Plate subducting under Eurasian Plate)",
+    population: "3 million in danger zone",
+    hazards: [{name: "Volcanic eruption", risk: 9}, {name: "Earthquake", risk: 7}, {name: "Pyroclastic flows", risk: 10}, {name: "Tsunami", risk: 5}, {name: "Ash fall", risk: 8}],
+    benefits: [{name: "Fertile volcanic soil", value: 9}, {name: "Geothermal energy", value: 6}, {name: "Tourism", value: 8}, {name: "Mineral deposits", value: 5}, {name: "Cultural heritage", value: 10}],
+    history: "79 CE: Vesuvius destroyed Pompeii and Herculaneum, killing ~16,000. Last eruption: 1944. Scientists say it WILL erupt again.",
+    lat: 40.8, lon: 14.3
+  },
+  "Tokyo, Japan": {
+    boundary: "Triple junction (Pacific, Philippine Sea, North American plates)",
+    population: "37 million in metro area",
+    hazards: [{name: "Earthquake (M7-9)", risk: 10}, {name: "Tsunami", risk: 9}, {name: "Volcanic eruption (Mt. Fuji)", risk: 6}, {name: "Ground liquefaction", risk: 8}, {name: "Fire after earthquake", risk: 7}],
+    benefits: [{name: "Geothermal energy", value: 8}, {name: "Hot springs (onsen)", value: 7}, {name: "Mineral resources", value: 6}, {name: "Fertile valleys", value: 7}, {name: "Natural harbors", value: 8}],
+    history: "1923: Great Kanto earthquake killed 140,000. 2011: Tōhoku M9.0 caused Fukushima disaster. 70% chance of M7+ in next 30 years.",
+    lat: 35.7, lon: 139.7
+  },
+  "San Francisco, USA": {
+    boundary: "Transform (Pacific and North American plates — San Andreas Fault)",
+    population: "4.7 million in Bay Area",
+    hazards: [{name: "Earthquake (M6-8)", risk: 9}, {name: "Ground liquefaction", risk: 7}, {name: "Landslides", risk: 6}, {name: "Tsunamis (local)", risk: 4}, {name: "Fire after earthquake", risk: 7}],
+    benefits: [{name: "Natural harbor", value: 9}, {name: "Fertile soil (Central Valley)", value: 8}, {name: "Gold & mineral deposits", value: 6}, {name: "Oil & natural gas", value: 5}, {name: "Unique landscape", value: 7}],
+    history: "1906: M7.9 earthquake + fire destroyed 80% of city, killed 3,000. 1989: Loma Prieta M6.9. 72% chance of M6.7+ before 2043.",
+    lat: 37.8, lon: -122.4
+  },
+  "Reykjavik, Iceland": {
+    boundary: "Divergent (North American and Eurasian plates — Mid-Atlantic Ridge)",
+    population: "230,000 in metro area",
+    hazards: [{name: "Volcanic eruption", risk: 8}, {name: "Earthquake", risk: 5}, {name: "Glacial floods (jökulhlaups)", risk: 6}, {name: "Lava flows", risk: 7}, {name: "Ash disruption", risk: 7}],
+    benefits: [{name: "Geothermal energy (87% heating!)", value: 10}, {name: "100% renewable electricity", value: 10}, {name: "Hot springs & tourism", value: 9}, {name: "Volcanic soil (greenhouses)", value: 6}, {name: "Fish-rich waters", value: 8}],
+    history: "2010: Eyjafjallajökull grounded all European flights. 2021-present: Fagradalsfjall eruptions ongoing. But Iceland has turned geology into prosperity.",
+    lat: 64.1, lon: -21.9
+  },
+  "Jakarta, Indonesia": {
+    boundary: "Convergent (Indo-Australian Plate subducting under Eurasian Plate)",
+    population: "31 million in metro area",
+    hazards: [{name: "Earthquake", risk: 8}, {name: "Volcanic eruption", risk: 8}, {name: "Tsunami", risk: 9}, {name: "Ground subsidence", risk: 9}, {name: "Flooding", risk: 8}],
+    benefits: [{name: "Volcanic soil fertility", value: 9}, {name: "Mineral deposits", value: 8}, {name: "Geothermal potential (27 GW)", value: 7}, {name: "Fisheries", value: 8}, {name: "Biodiversity", value: 9}],
+    history: "2004: Indian Ocean tsunami killed 230,000 (mostly in Indonesia). 127 active volcanoes. Capital being relocated to Borneo due to sinking.",
+    lat: -6.2, lon: 106.8
+  },
+  "Santiago, Chile": {
+    boundary: "Convergent (Nazca Plate subducting under South American Plate)",
+    population: "7 million in metro area",
+    hazards: [{name: "Earthquake (M8-9.5!)", risk: 10}, {name: "Volcanic eruption", risk: 6}, {name: "Tsunami", risk: 7}, {name: "Landslides", risk: 7}, {name: "Liquefaction", risk: 5}],
+    benefits: [{name: "Copper deposits (world #1)", value: 10}, {name: "Fertile valleys (wine)", value: 8}, {name: "Geothermal potential", value: 7}, {name: "Lithium deposits", value: 9}, {name: "Andean meltwater", value: 7}],
+    history: "1960: M9.5 in Chile — largest earthquake EVER recorded. 2010: M8.8 killed 525. Chile has world-class earthquake engineering.",
+    lat: -33.4, lon: -70.6
+  },
+  "Kathmandu, Nepal": {
+    boundary: "Convergent (Indian Plate colliding with Eurasian Plate — Himalayas)",
+    population: "5 million in valley",
+    hazards: [{name: "Earthquake (M7-9)", risk: 10}, {name: "Landslides", risk: 9}, {name: "Avalanches", risk: 7}, {name: "Flooding (glacial lakes)", risk: 7}, {name: "Building collapse", risk: 9}],
+    benefits: [{name: "Hydroelectric potential", value: 8}, {name: "Fertile river valleys", value: 7}, {name: "Tourism (Everest, trekking)", value: 9}, {name: "Mineral deposits", value: 5}, {name: "Cultural heritage", value: 9}],
+    history: "2015: M7.8 earthquake killed 9,000 and destroyed 600,000 buildings. The Himalayas are still rising 1cm/year. Major earthquake expected.",
+    lat: 27.7, lon: 85.3
+  },
+  "Mexico City, Mexico": {
+    boundary: "Convergent (Cocos Plate subducting under North American Plate)",
+    population: "22 million in metro area",
+    hazards: [{name: "Earthquake", risk: 9}, {name: "Ground amplification (lake bed)", risk: 10}, {name: "Volcanic eruption (Popocatépetl)", risk: 7}, {name: "Subsidence/sinking", risk: 8}, {name: "Landslides", risk: 5}],
+    benefits: [{name: "Volcanic soil fertility", value: 8}, {name: "Mineral deposits (silver #1)", value: 9}, {name: "Geothermal energy", value: 6}, {name: "Natural springs", value: 5}, {name: "Cultural heritage", value: 10}],
+    history: "1985: M8.0 killed 10,000+. City built on ancient lake bed amplifies shaking 50x. 2017: M7.1 killed 370. Popocatépetl (30 mi away) erupts regularly.",
+    lat: 19.4, lon: -99.1
+  }
+})
+```
+
+```{ojs}
+//| echo: false
+{
+  const loc = locationData[selectedLocation];
+  const div = d3.create("div");
+  
+  div.append("h3").style("color", "#e17055").style("font-family", "Space Grotesk")
+    .text(`📍 ${selectedLocation}`);
+  div.append("p").html(`<strong>Tectonic setting:</strong> ${loc.boundary}`);
+  div.append("p").html(`<strong>Population at risk:</strong> ${loc.population}`);
+  div.append("div").style("background", "#ffecd2").style("padding", "10px").style("border-radius", "8px")
+    .style("border-left", "4px solid #e17055").style("margin-bottom", "15px")
+    .html(`<strong>📜 Historical context:</strong> ${loc.history}`);
+
+  return div.node();
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const loc = locationData[selectedLocation];
+  const combined = [
+    ...loc.hazards.map(h => ({name: h.name, value: h.risk, type: "⚠️ Hazard Risk"})),
+    ...loc.benefits.map(b => ({name: b.name, value: b.value, type: "✅ Benefit Value"}))
+  ];
+  
+  return Plot.plot({
+    title: `Risk vs. Benefit: ${selectedLocation}`,
+    subtitle: "Compare hazard risks and benefits (scale 1-10)",
+    width: 700,
+    height: 400,
+    marginLeft: 200,
+    color: {
+      domain: ["⚠️ Hazard Risk", "✅ Benefit Value"],
+      range: ["#d63031", "#2ecc71"]
+    },
+    fy: {label: null},
+    x: {label: "Score (1-10)", grid: true, domain: [0, 10]},
+    y: {label: null},
+    marks: [
+      Plot.barX(combined, {
+        x: "value",
+        y: "name",
+        fill: "type",
+        fy: "type",
+        rx: 8,
+        sort: {y: "-x"}
+      }),
+      Plot.text(combined, {
+        x: "value",
+        y: "name",
+        fy: "type",
+        text: d => d.value.toString(),
+        dx: 12,
+        fontSize: 12,
+        fontWeight: "bold"
+      })
+    ]
+  });
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const loc = locationData[selectedLocation];
+  const avgRisk = (loc.hazards.reduce((sum, h) => sum + h.risk, 0) / loc.hazards.length).toFixed(1);
+  const avgBenefit = (loc.benefits.reduce((sum, b) => sum + b.value, 0) / loc.benefits.length).toFixed(1);
+  const ratio = (avgBenefit / avgRisk).toFixed(2);
+  const verdict = ratio > 1.1 ? "Benefits may outweigh risks" : ratio < 0.9 ? "Risks may outweigh benefits" : "Risks and benefits are roughly balanced";
+  const emoji = ratio > 1.1 ? "🟢" : ratio < 0.9 ? "🔴" : "🟡";
+  
+  const div = d3.create("div").style("text-align", "center").style("padding", "20px")
+    .style("background", "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)")
+    .style("border-radius", "15px").style("margin", "15px 0");
+  
+  div.append("h3").style("font-family", "Space Grotesk").style("color", "#d63031")
+    .text("📊 Summary Score");
+  div.append("p").html(`Average Hazard Risk: <strong>${avgRisk}/10</strong> | Average Benefit Value: <strong>${avgBenefit}/10</strong>`);
+  div.append("p").html(`Benefit-to-Risk Ratio: <strong>${ratio}</strong>`);
+  div.append("h4").html(`${emoji} ${verdict}`);
+  div.append("p").style("font-size", "0.9em").style("color", "#636e72")
+    .text("Remember: numbers alone don't tell the whole story. Your argument needs scientific reasoning!");
+  
+  return div.node();
+}
+```
+
+# ✍️ Your CER Argument
+
+## The Framework
+
+Use the **Claim–Evidence–Reasoning** framework to build your argument:
+
+::: {.claim-box}
+### 📌 CLAIM (1-2 sentences)
+Make a clear, debatable statement. Does the hazard risk at your chosen location outweigh the benefits, or do the benefits justify the risk?
+
+**Example format:** "The benefits of living in [location] [do/do not] outweigh the natural hazard risks because..."
+:::
+
+::: {.evidence-box}
+### 📊 EVIDENCE (3-5 specific pieces)
+Use evidence from ALL THREE chapters plus the risk assessment tool:
+
+- **From Chapter 1 (Earth's Interior):** What's happening beneath this location? What tectonic processes cause the hazards?
+- **From Chapter 2 (Plate Boundaries):** What type of boundary? What evidence supports plate motion here?
+- **From Chapter 3 (Energy & Matter):** What energy drives the hazards? What resources does this activity create?
+- **From the Risk Tool:** Specific hazard/benefit scores and historical data
+:::
+
+::: {.reasoning-box}
+### 🧠 REASONING (3-5 sentences)
+Connect your evidence to your claim using scientific principles:
+
+- **How** do the tectonic processes at this boundary create both hazards AND resources?
+- **Why** is the benefit-to-risk ratio what it is for this location?
+- Consider: Can engineering and preparation **change** the risk level? (Think Japan vs. Nepal)
+- Address the **counterargument** — what would someone who disagrees say?
+:::
+
+# 📋 Performance Task Checklist
+
+::: {.student-task}
+### ✅ Make sure your argument includes:
+
+**Understanding of Earth's Interior (Chapter 1)**
+
+- [ ] Identifies what's happening in Earth's layers beneath your location
+- [ ] Connects internal structure to surface hazards
+- [ ] References seismic evidence or density differentiation
+
+**Plate Boundary Knowledge (Chapter 2)**
+
+- [ ] Correctly identifies the plate boundary type
+- [ ] Explains what features and hazards this boundary type produces
+- [ ] Uses evidence for plate motion (not just "plates move")
+
+**Energy & Matter (Chapter 3)**
+
+- [ ] Explains what energy source drives the hazards (mantle convection, radioactive decay)
+- [ ] Connects tectonic activity to resources/benefits
+- [ ] Addresses the risk vs. benefit tradeoff with scientific reasoning
+
+**CER Quality**
+
+- [ ] Clear, debatable claim
+- [ ] At least 3 specific pieces of evidence from different chapters
+- [ ] Reasoning that connects evidence to claim using science
+- [ ] Addresses a counterargument
+- [ ] Uses data from the interactive risk assessment tool
+:::
+
+# 🌍 Revisiting the Anchor Phenomenon
+
+<div class="mind-blown">
+🌋 In 1883, Krakatoa killed 36,000 people and changed global temperatures. Today, Anak Krakatoa ("Child of Krakatoa") is growing in the same spot. In 2018, its flank collapsed and triggered a tsunami that killed 437 people.<br><br>
+The Indonesian government hasn't evacuated the surrounding coast — because 274 million people depend on the volcanic soil, mineral deposits, and fisheries that plate tectonics creates.<br><br>
+<strong>This is the central tension of living on an active planet. Your job is to think scientifically about how we navigate it.</strong>
+</div>
+
+::: {.student-task}
+### 📝 Final Reflection
+
+Look back at the driving question from the unit opening:
+
+> *Why do the most dangerous places on Earth keep attracting people?*
+
+Write a final response (3-5 sentences) that:
+
+1. Answers this question using what you've learned
+2. Connects Earth's interior processes to surface hazards AND resources
+3. Explains how scientific understanding can help people live more safely in dangerous places
+:::

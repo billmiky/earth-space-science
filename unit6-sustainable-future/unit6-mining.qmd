@@ -1,0 +1,717 @@
+---
+title: "Unit 6: Mining"
+subtitle: "How can we get the resources we need without poisoning communities?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box {
+  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+  color: white;
+  padding: 25px;
+  margin: 20px 0;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3);
+  border: none;
+}
+.engage-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+
+.explore-box {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 25px;
+  margin: 20px 0;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+}
+
+.explain-box {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: #1a1a1a;
+  padding: 25px;
+  margin: 20px 0;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+}
+
+.elaborate-box {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  color: #1a1a1a;
+  padding: 25px;
+  margin: 20px 0;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);
+}
+
+.evaluate-box {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  color: #1a1a1a;
+  padding: 25px;
+  margin: 20px 0;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(250, 112, 154, 0.3);
+}
+
+.check-understanding {
+  background: linear-gradient(to right, #6c5ce7, #a29bfe);
+  color: white;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 12px;
+  border-left: 6px solid #fff;
+}
+
+.key-idea {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 12px;
+  border-left: 8px solid #ff6b6b;
+  font-size: 1.1em;
+}
+
+.student-task {
+  background: #fff3e0;
+  border-left: 5px solid #ff9800;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 0 10px 10px 0;
+}
+
+.pe-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 800;
+  margin: 5px;
+  box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.big-question {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.5em;
+  font-weight: 800;
+  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 30px 0 20px 0;
+  text-align: center;
+  animation: slideIn 0.8s ease-out;
+}
+
+.mind-blown {
+  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+  color: white;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 15px;
+  font-size: 1.3em;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(108, 92, 231, 0.4);
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 2.8em !important;
+  margin-top: 40px !important;
+}
+
+h2 {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 700 !important;
+  color: #6c5ce7 !important;
+}
+</style>
+```
+
+<span class="pe-badge">HS-ESS3-2</span> <span class="pe-badge">Time: 7–9 Days</span>
+
+<div class="big-question">⛏️ Mining: The Cost of the Resources We Depend On ⛏️</div>
+
+# Engage: The Investigative Phenomenon
+
+::: {.engage-box}
+## 💔 Coal Country: Where Mining Meets Health
+
+<div style="font-size: 1.3em; font-weight: 700; text-align: center; margin: 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+In the United States, communities near coal mines in Appalachia have significantly higher rates of lung disease, heart disease, and cancer. Why?
+</div>
+
+**The Numbers Tell a Devastating Story:**
+
+- 📉 Life expectancy is **6 years shorter** in Appalachian coal counties
+- 🫁 Lung cancer rates are **81% higher** than the national average
+- ❤️ Heart disease deaths are **79% higher** than average
+- 💰 Poverty rate is **more than double** the national average
+- ⛰️ Over **500 mountaintops** have been removed for mining
+- 🐟 **2,000+ miles** of streams have been buried
+
+### 🤔 Driving Questions
+- How does coal mining cause these health impacts?
+- Why are some communities forced to bear so much of the cost?
+- What solutions could reduce the damage while meeting our resource needs?
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+healthData = [
+  {metric: "Lung Cancer\n(per 100K)", appalachia: 78, national: 43},
+  {metric: "Heart Disease\n(per 100K)", appalachia: 295, national: 165},
+  {metric: "COPD\n(per 100K)", appalachia: 65, national: 41},
+  {metric: "Life Expectancy\n(years)", appalachia: 73, national: 79}
+]
+
+healthLong = healthData.flatMap(d => [
+  {metric: d.metric, group: "Appalachian Coal Counties", value: d.appalachia},
+  {metric: d.metric, group: "US National Average", value: d.national}
+])
+
+Plot.plot({
+  title: "Health Outcomes: Appalachian Coal Counties vs. National Average",
+  subtitle: "The gap is stark — and it's not a coincidence",
+  width: 750,
+  height: 400,
+  marginLeft: 120,
+  color: {
+    domain: ["Appalachian Coal Counties", "US National Average"],
+    range: ["#6c5ce7", "#b2bec3"],
+    legend: true
+  },
+  fx: {label: null},
+  x: {label: null},
+  y: {label: null},
+  marks: [
+    Plot.barY(healthLong, {
+      fx: "metric",
+      x: "group",
+      y: "value",
+      fill: "group"
+    }),
+    Plot.text(healthLong, {
+      fx: "metric",
+      x: "group",
+      y: "value",
+      text: d => `${d.value}`,
+      dy: -10,
+      fontSize: 13,
+      fontWeight: "bold"
+    }),
+    Plot.ruleY([0])
+  ]
+})
+```
+
+::: {.student-task}
+### 📝 Pattern Recognition
+
+1. For each health metric, calculate the **percentage difference** between Appalachian coal counties and the national average.
+2. Which health outcome shows the biggest gap? Why might that be?
+3. Life expectancy is **6 years shorter** in coal country. What does that mean for a 14-year-old living there right now?
+4. The poverty rate in coal counties is 25% vs. 12% nationally. How might poverty and health impacts be connected?
+5. Does correlation (mining areas have worse health) prove causation? What other evidence would you need?
+:::
+
+# Explore 1: How Does Mining Destroy Ecosystems?
+
+::: {.explore-box}
+## 🔬 Mountaintop Removal: Before and After
+
+Mountaintop removal mining is exactly what it sounds like — companies literally blow up the tops of mountains to get to the coal underneath. Then they push the leftover rock and soil into valleys, burying streams and ecosystems.
+:::
+
+## The Process — And Its Ecological Cost
+
+```{ojs}
+//| echo: false
+miningImpacts = [
+  {impact: "Habitat destroyed", extent: 100, recovery: "Decades to centuries", color: "#d63031"},
+  {impact: "Streams buried", extent: 90, recovery: "Permanent", color: "#0984e3"},
+  {impact: "Forest lost", extent: 95, recovery: "200+ years for mature forest", color: "#00b894"},
+  {impact: "Topsoil removed", extent: 100, recovery: "Permanent (soil takes 1000+ years)", color: "#e17055"},
+  {impact: "Species displaced", extent: 85, recovery: "Many species never return", color: "#6c5ce7"}
+]
+
+Plot.plot({
+  title: "Ecological Destruction from Mountaintop Removal Mining",
+  subtitle: "% of ecosystem destroyed in the mining area",
+  width: 750,
+  height: 350,
+  marginLeft: 150,
+  x: {label: "% Destroyed in Mining Area", domain: [0, 100]},
+  y: {label: null},
+  marks: [
+    Plot.barX(miningImpacts, {
+      y: "impact",
+      x: "extent",
+      fill: "color",
+      sort: {y: "-x"}
+    }),
+    Plot.text(miningImpacts, {
+      y: "impact",
+      x: "extent",
+      text: d => `${d.extent}% — Recovery: ${d.recovery}`,
+      dx: 5,
+      textAnchor: "start",
+      fontSize: 10,
+      fontWeight: "bold"
+    }),
+    Plot.ruleX([0])
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+miningMethods = [
+  {method: "Underground\n(room & pillar)", surface: 10, water: 30, air: 40, biodiversity: 20, production: 40},
+  {method: "Underground\n(longwall)", surface: 25, water: 35, air: 35, biodiversity: 30, production: 20},
+  {method: "Surface\n(strip mining)", surface: 90, water: 60, air: 50, biodiversity: 80, production: 30},
+  {method: "Mountaintop\nremoval", surface: 100, water: 95, air: 70, biodiversity: 100, production: 10}
+]
+
+methodsLong = miningMethods.flatMap(d => [
+  {method: d.method, impact: "Surface destruction", value: d.surface},
+  {method: d.method, impact: "Water contamination", value: d.water},
+  {method: d.method, impact: "Air pollution", value: d.air},
+  {method: d.method, impact: "Biodiversity loss", value: d.biodiversity}
+])
+
+Plot.plot({
+  title: "Environmental Impact by Mining Method (severity 0-100)",
+  subtitle: "Not all mining methods are equally destructive",
+  width: 750,
+  height: 400,
+  marginLeft: 120,
+  color: {
+    domain: ["Surface destruction", "Water contamination", "Air pollution", "Biodiversity loss"],
+    range: ["#e17055", "#0984e3", "#636e72", "#00b894"],
+    legend: true
+  },
+  x: {label: "Impact Severity (0-100)"},
+  y: {label: null},
+  marks: [
+    Plot.barX(methodsLong, Plot.stackX({
+      y: "method",
+      x: "value",
+      fill: "impact"
+    })),
+    Plot.ruleX([0])
+  ]
+})
+```
+
+::: {.student-task}
+### 📝 Analyze Mining Methods
+
+1. Which mining method has the **least** total environmental impact? Which has the **most**?
+2. Mountaintop removal only produces ~10% of US coal. Is that worth the damage it causes? Why or why not?
+3. Underground mining has much less surface impact — but it has significant **air and water** impacts. Why?
+4. Create a cost-benefit analysis for mountaintop removal:
+
+| Category | Costs | Benefits |
+|---|---|---|
+| Economic | | |
+| Environmental | | |
+| Health | | |
+| Social/Community | | |
+:::
+
+# Explain: How Does Mining Poison Communities?
+
+::: {.explain-box}
+## 🧠 Tracing the Pathways: From Mine to Body
+
+Mining doesn't just destroy the landscape where it happens. Pollutants travel through air and water to reach communities — sometimes miles away. Let's trace exactly how.
+:::
+
+## Air and Water Pathways
+
+```{ojs}
+//| echo: false
+{
+  const width = 750;
+  const height = 480;
+  const svg = d3.create("svg").attr("width", width).attr("height", height);
+
+  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#f8f9fa").attr("rx", 12);
+  svg.append("text").attr("x", width/2).attr("y", 25).attr("text-anchor", "middle")
+    .attr("font-size", 16).attr("font-weight", "bold").text("How Mining Pollutants Reach Communities");
+
+  // Mining source
+  svg.append("rect").attr("x", 300).attr("y", 40).attr("width", 150).attr("height", 50)
+    .attr("fill", "#6c5ce7").attr("rx", 10);
+  svg.append("text").attr("x", 375).attr("y", 70).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-weight", "bold").attr("font-size", 13).text("⛏️ MINING SITE");
+
+  // AIR pathway (left)
+  svg.append("text").attr("x", 130).attr("y", 110).attr("text-anchor", "middle")
+    .attr("font-size", 14).attr("font-weight", "bold").attr("fill", "#636e72").text("☁️ AIR PATHWAY");
+
+  const airSteps = [
+    {y: 135, text: "Blasting releases silica dust", color: "#e17055"},
+    {y: 175, text: "Crushing creates coal dust", color: "#e17055"},
+    {y: 215, text: "Trucks kick up PM2.5 & PM10", color: "#e17055"},
+    {y: 255, text: "Wind carries particles to towns", color: "#fdcb6e"},
+    {y: 295, text: "People breathe contaminated air", color: "#d63031"},
+    {y: 335, text: "→ Silicosis, lung cancer, COPD", color: "#d63031"},
+    {y: 375, text: "→ Heart disease, early death", color: "#d63031"}
+  ];
+
+  airSteps.forEach((s, i) => {
+    svg.append("rect").attr("x", 15).attr("y", s.y - 14).attr("width", 230).attr("height", 28)
+      .attr("fill", s.color).attr("rx", 6).attr("opacity", 0.15);
+    svg.append("text").attr("x", 130).attr("y", s.y + 4).attr("text-anchor", "middle")
+      .attr("font-size", 11).attr("fill", "#2d3436").text(s.text);
+    if (i < airSteps.length - 1) {
+      svg.append("text").attr("x", 130).attr("y", s.y + 20).attr("text-anchor", "middle")
+        .attr("font-size", 14).attr("fill", s.color).text("↓");
+    }
+  });
+
+  // WATER pathway (right)
+  svg.append("text").attr("x", 620).attr("y", 110).attr("text-anchor", "middle")
+    .attr("font-size", 14).attr("font-weight", "bold").attr("fill", "#0984e3").text("💧 WATER PATHWAY");
+
+  const waterSteps = [
+    {y: 135, text: "Valley fills bury streams", color: "#0984e3"},
+    {y: 175, text: "Mine drainage carries heavy metals", color: "#0984e3"},
+    {y: 215, text: "Slurry ponds leak chemicals", color: "#0984e3"},
+    {y: 255, text: "Contaminants reach groundwater", color: "#74b9ff"},
+    {y: 295, text: "People drink contaminated water", color: "#d63031"},
+    {y: 335, text: "→ Cancer, kidney disease", color: "#d63031"},
+    {y: 375, text: "→ Birth defects, neurological harm", color: "#d63031"}
+  ];
+
+  waterSteps.forEach((s, i) => {
+    svg.append("rect").attr("x", 505).attr("y", s.y - 14).attr("width", 230).attr("height", 28)
+      .attr("fill", s.color).attr("rx", 6).attr("opacity", 0.15);
+    svg.append("text").attr("x", 620).attr("y", s.y + 4).attr("text-anchor", "middle")
+      .attr("font-size", 11).attr("fill", "#2d3436").text(s.text);
+    if (i < waterSteps.length - 1) {
+      svg.append("text").attr("x", 620).attr("y", s.y + 20).attr("text-anchor", "middle")
+        .attr("font-size", 14).attr("fill", s.color).text("↓");
+    }
+  });
+
+  // Connection arrows from mining site
+  svg.append("line").attr("x1", 300).attr("y1", 80).attr("x2", 200).attr("y2", 120)
+    .attr("stroke", "#636e72").attr("stroke-width", 2);
+  svg.append("line").attr("x1", 450).attr("y1", 80).attr("x2", 550).attr("y2", 120)
+    .attr("stroke", "#0984e3").attr("stroke-width", 2);
+
+  // Health impact summary
+  svg.append("rect").attr("x", 260).attr("y", 410).attr("width", 230).attr("height", 50)
+    .attr("fill", "#d63031").attr("rx", 10);
+  svg.append("text").attr("x", 375).attr("y", 432).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-weight", "bold").attr("font-size", 11).text("Communities near MTR sites:");
+  svg.append("text").attr("x", 375).attr("y", 450).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-size", 11).text("+14% cancer | +20% heart disease | +26% birth defects");
+
+  return svg.node();
+}
+```
+
+::: {.key-idea}
+### 💡 Key Concept: Environmental Injustice
+
+The communities most harmed by mining are often the **same communities** that depend on mining for jobs. Appalachian coal country has poverty rates more than double the national average. People can't easily move away, and they often lack the political power to demand better protections.
+
+This is a pattern we've seen in every chapter of this unit: **the people who benefit least from harmful activities often bear the greatest costs.**
+:::
+
+::: {.student-task}
+### 📝 Trace the Pathways
+
+In your notebook, create a diagram showing:
+
+1. At least **two air pathways** from mining activity to a specific health outcome
+2. At least **two water pathways** from mining activity to a specific health outcome
+3. For each pathway, include the **specific pollutant** and the **mechanism** by which it causes harm
+4. How do these pathways combine to create the health disparities you saw in the Engage data?
+:::
+
+# Elaborate: Comparing Solutions
+
+::: {.elaborate-box}
+## 🌱 Two Approaches, One Goal: Reduce Mining's Damage
+
+Scientists, engineers, and policymakers have proposed different solutions to reduce mining's impact on communities. But they have very different strengths and weaknesses. Your job: evaluate them and argue for the best one.
+:::
+
+```{ojs}
+//| echo: false
+viewof solutionView = Inputs.radio(
+  ["Side by side", "Enhanced Reclamation", "Advanced Filtration", "Transition Program", "Strict Regulation"],
+  {label: "View solution details:", value: "Side by side"}
+)
+```
+
+```{ojs}
+//| echo: false
+{
+  const solutions = {
+    "Enhanced Reclamation": {
+      desc: "Restore mined land to functional ecosystems using advanced techniques",
+      cost: 3, effectiveness: 3, speed: 2, jobs: 3, health: 3, ecosystem: 4, color: "#00b894"
+    },
+    "Advanced Filtration": {
+      desc: "Prevent contaminants from entering air and water during active mining",
+      cost: 3, effectiveness: 4, speed: 4, jobs: 4, health: 4, ecosystem: 2, color: "#0984e3"
+    },
+    "Transition Program": {
+      desc: "Transition mining communities to alternative industries (renewables, tourism)",
+      cost: 2, effectiveness: 5, speed: 1, jobs: 3, health: 5, ecosystem: 5, color: "#6c5ce7"
+    },
+    "Strict Regulation": {
+      desc: "Implement and enforce strong environmental and health regulations",
+      cost: 4, effectiveness: 3, speed: 3, jobs: 3, health: 3, ecosystem: 3, color: "#e17055"
+    }
+  };
+
+  const width = 750;
+  const height = solutionView === "Side by side" ? 400 : 300;
+  const svg = d3.create("svg").attr("width", width).attr("height", height);
+
+  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#f8f9fa").attr("rx", 12);
+
+  if (solutionView === "Side by side") {
+    svg.append("text").attr("x", width/2).attr("y", 25).attr("text-anchor", "middle")
+      .attr("font-size", 16).attr("font-weight", "bold").text("Solution Comparison (1=low, 5=high)");
+
+    const criteria = ["cost", "effectiveness", "speed", "jobs", "health", "ecosystem"];
+    const labels = ["Cost-effectiveness", "Emission Reduction", "Speed", "Job Protection", "Health Benefit", "Ecosystem Recovery"];
+    const solNames = Object.keys(solutions);
+
+    labels.forEach((label, i) => {
+      svg.append("text").attr("x", 15).attr("y", 65 + i * 52).attr("font-size", 11).attr("font-weight", "bold").text(label);
+    });
+
+    solNames.forEach((name, si) => {
+      const sol = solutions[name];
+      svg.append("rect").attr("x", 160 + si * 145).attr("y", 32).attr("width", 135).attr("height", 22)
+        .attr("fill", sol.color).attr("rx", 6);
+      svg.append("text").attr("x", 227 + si * 145).attr("y", 47).attr("text-anchor", "middle")
+        .attr("font-size", 10).attr("fill", "white").attr("font-weight", "bold").text(name.split(" ")[0]);
+
+      criteria.forEach((c, ci) => {
+        const val = sol[c];
+        const y = 55 + ci * 52;
+        // Draw 5 dots
+        for (let d = 0; d < 5; d++) {
+          svg.append("circle")
+            .attr("cx", 175 + si * 145 + d * 24)
+            .attr("cy", y + 3)
+            .attr("r", 8)
+            .attr("fill", d < val ? sol.color : "#dfe6e9")
+            .attr("opacity", 0.8);
+        }
+      });
+    });
+  } else {
+    const sol = solutions[solutionView];
+    svg.append("rect").attr("x", 20).attr("y", 15).attr("width", width - 40).attr("height", 50)
+      .attr("fill", sol.color).attr("rx", 12);
+    svg.append("text").attr("x", width/2).attr("y", 38).attr("text-anchor", "middle")
+      .attr("font-size", 16).attr("fill", "white").attr("font-weight", "bold").text(solutionView);
+    svg.append("text").attr("x", width/2).attr("y", 55).attr("text-anchor", "middle")
+      .attr("font-size", 12).attr("fill", "white").text(sol.desc);
+
+    const criteria = [
+      {label: "Cost-effectiveness", value: sol.cost},
+      {label: "Emission Reduction", value: sol.effectiveness},
+      {label: "Implementation Speed", value: sol.speed},
+      {label: "Job Protection", value: sol.jobs},
+      {label: "Health Benefit", value: sol.health},
+      {label: "Ecosystem Recovery", value: sol.ecosystem}
+    ];
+
+    criteria.forEach((c, i) => {
+      const y = 85 + i * 33;
+      svg.append("text").attr("x", 15).attr("y", y + 12).attr("font-size", 12).text(c.label);
+      svg.append("rect").attr("x", 200).attr("y", y).attr("width", 400).attr("height", 20)
+        .attr("fill", "#dfe6e9").attr("rx", 4);
+      svg.append("rect").attr("x", 200).attr("y", y).attr("width", (c.value / 5) * 400).attr("height", 20)
+        .attr("fill", sol.color).attr("rx", 4).attr("opacity", 0.8);
+      svg.append("text").attr("x", 610).attr("y", y + 14).attr("font-size", 13)
+        .attr("font-weight", "bold").text(`${c.value}/5`);
+    });
+  }
+
+  return svg.node();
+}
+```
+
+::: {.student-task}
+### 📝 Evaluate and Argue
+
+Use the interactive comparison above to evaluate the four solutions. Then:
+
+1. **Score each solution** on cost, safety, and reliability (the three required criteria):
+
+| Solution | Cost (1–5) | Safety (1–5) | Reliability (1–5) | TOTAL |
+|---|---|---|---|---|
+| Enhanced Reclamation | | | | |
+| Advanced Filtration | | | | |
+| Transition Program | | | | |
+| Strict Regulation | | | | |
+
+2. **Pick the solution you think is best** and write a 300-word argument that:
+   - States your claim clearly
+   - Provides evidence from the data
+   - Explains your reasoning connecting evidence to claim
+   - Addresses why someone might prefer a different solution — and why your choice is still better
+
+3. **Think about justice:** Which solution does the most to help the communities that have been harmed the most?
+:::
+
+# Evaluate: Combining Solutions for Maximum Impact
+
+::: {.evaluate-box}
+## ⚖️ No Single Solution Is Enough — What's the Best Combination?
+
+Each solution has strengths and weaknesses. The real power comes from **combining** solutions strategically. Use the model below to find the most effective combination.
+:::
+
+```{ojs}
+//| echo: false
+viewof useReclamation = Inputs.toggle({label: "✅ Enhanced Reclamation ($15K–50K/acre)", value: true})
+```
+
+```{ojs}
+//| echo: false
+viewof useFiltration = Inputs.toggle({label: "✅ Advanced Filtration ($5–20M/mine)", value: true})
+```
+
+```{ojs}
+//| echo: false
+viewof useTransition = Inputs.toggle({label: "✅ Economic Transition Program ($50B/10yr)", value: false})
+```
+
+```{ojs}
+//| echo: false
+viewof useRegulation = Inputs.toggle({label: "✅ Strict Regulation ($2–5B/yr)", value: false})
+```
+
+```{ojs}
+//| echo: false
+{
+  let healthReduction = 0;
+  let ecosystemRecovery = 0;
+  let totalCost = 0;
+  let timeline = 0;
+  let jobImpact = 0;
+
+  if (useReclamation) { healthReduction += 20; ecosystemRecovery += 35; totalCost += 2; timeline = Math.max(timeline, 8); jobImpact += 5; }
+  if (useFiltration) { healthReduction += 30; ecosystemRecovery += 10; totalCost += 10; timeline = Math.max(timeline, 2); jobImpact += 2; }
+  if (useTransition) { healthReduction += 45; ecosystemRecovery += 40; totalCost += 50; timeline = Math.max(timeline, 15); jobImpact -= 15; }
+  if (useRegulation) { healthReduction += 20; ecosystemRecovery += 15; totalCost += 3; timeline = Math.max(timeline, 3); jobImpact -= 5; }
+
+  // Synergy bonus
+  const numSelected = [useReclamation, useFiltration, useTransition, useRegulation].filter(Boolean).length;
+  const synergy = numSelected > 1 ? (numSelected - 1) * 8 : 0;
+  healthReduction = Math.min(95, healthReduction + synergy);
+  ecosystemRecovery = Math.min(90, ecosystemRecovery + synergy);
+
+  const livesSaved = Math.round(healthReduction * 3.5); // per 100K affected population
+
+  const width = 750;
+  const height = 320;
+  const svg = d3.create("svg").attr("width", width).attr("height", height);
+
+  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#f8f9fa").attr("rx", 12);
+  svg.append("text").attr("x", width/2).attr("y", 25).attr("text-anchor", "middle")
+    .attr("font-size", 16).attr("font-weight", "bold")
+    .text(`Your Solution Package: ${numSelected} solution${numSelected !== 1 ? "s" : ""} selected`);
+
+  if (synergy > 0) {
+    svg.append("text").attr("x", width/2).attr("y", 48).attr("text-anchor", "middle")
+      .attr("font-size", 12).attr("fill", "#00b894").attr("font-weight", "bold")
+      .text(`✨ Synergy bonus: +${synergy}% effectiveness from combining solutions`);
+  }
+
+  const metrics = [
+    {label: "Health Improvement", value: healthReduction, max: 100, color: "#e17055", suffix: "%"},
+    {label: "Ecosystem Recovery", value: ecosystemRecovery, max: 100, color: "#00b894", suffix: "%"},
+    {label: "Est. Lives Saved/100K", value: livesSaved, max: 350, color: "#6c5ce7", suffix: ""},
+    {label: "Total Cost", value: totalCost, max: 65, color: "#fdcb6e", suffix: "B"},
+    {label: "Implementation Time", value: timeline, max: 20, color: "#0984e3", suffix: " years"},
+    {label: "Job Impact", value: jobImpact, max: 15, color: jobImpact >= 0 ? "#00b894" : "#d63031", suffix: jobImpact >= 0 ? "% growth" : "% loss"}
+  ];
+
+  metrics.forEach((m, i) => {
+    const y = 65 + i * 40;
+    svg.append("text").attr("x", 15).attr("y", y + 15).attr("font-size", 12).text(m.label);
+    svg.append("rect").attr("x", 180).attr("y", y + 2).attr("width", 420).attr("height", 22)
+      .attr("fill", "#dfe6e9").attr("rx", 4);
+    svg.append("rect").attr("x", 180).attr("y", y + 2)
+      .attr("width", Math.abs(m.value / m.max) * 420).attr("height", 22)
+      .attr("fill", m.color).attr("rx", 4).attr("opacity", 0.8);
+    svg.append("text").attr("x", 610).attr("y", y + 18).attr("font-size", 13).attr("font-weight", "bold")
+      .attr("fill", m.color)
+      .text(m.label === "Job Impact" ? `${m.value > 0 ? "+" : ""}${m.value}${m.suffix}` : `${m.value}${m.suffix}`);
+  });
+
+  return svg.node();
+}
+```
+
+::: {.student-task}
+### 📝 Design Your Solution Package
+
+1. Try different combinations. Which combination gives the best health improvement for the lowest cost?
+2. The Transition Program has the biggest long-term benefit but causes short-term job losses. How would you address that trade-off?
+3. Notice the **synergy bonus** — solutions work better together than alone. Why might that be?
+4. Record your recommended combination and its estimated impacts for the Performance Task:
+
+| Your Solutions | Health Improvement | Ecosystem Recovery | Cost | Timeline |
+|---|---|---|---|---|
+| (list them) | | | | |
+:::
+
+<div class="mind-blown">
+⛏️ Mining provides resources our society depends on — but the way we mine today is killing people. The question isn't whether to mine, but HOW to mine responsibly and who should bear the costs.
+</div>
+
+::: {.check-understanding}
+### 📋 Keep Track for Your Performance Task!
+
+Record the estimated impact of each mining solution you evaluated:
+
+- ✅ Enhanced Reclamation — ecosystem recovery potential
+- ✅ Advanced Filtration — health benefit during active mining
+- ✅ Economic Transition Program — long-term community health
+- ✅ Strict Regulation — baseline improvement potential
+- ✅ Your recommended combination and its synergy effects
+:::

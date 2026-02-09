@@ -1,0 +1,238 @@
+---
+title: "Unit 1: Opening — Discovering New Worlds"
+subtitle: "What has made Earth able to sustain life?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white; padding: 25px; margin: 20px 0; border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); border: none;
+}
+.engage-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+
+.pe-badge {
+  display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800;
+  margin: 5px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  text-transform: uppercase; letter-spacing: 1px;
+}
+
+.big-question {
+  font-family: 'Space Grotesk', sans-serif; font-size: 2.5em; font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out;
+}
+
+.key-idea {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 20px; margin: 20px 0; border-radius: 12px;
+  border-left: 8px solid #ff6b6b; font-size: 1.1em;
+}
+
+.student-task {
+  background: #fff3e0; border-left: 5px solid #ff9800;
+  padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0;
+}
+
+.mind-blown {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white; padding: 20px; margin: 20px 0; border-radius: 15px;
+  font-size: 1.3em; font-weight: 700; text-align: center;
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+.check-understanding {
+  background: linear-gradient(to right, #667eea, #764ba2);
+  color: white; padding: 20px; margin: 20px 0; border-radius: 12px;
+  border-left: 6px solid #fff;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #667eea !important; }
+</style>
+```
+
+<span class="pe-badge">HS-ESS1-1</span> <span class="pe-badge">HS-ESS1-3</span> <span class="pe-badge">HS-ESS1-4</span> <span class="pe-badge">Time: 2 Days</span>
+
+<div class="big-question">🌍 Only One Planet Has Life — Why? 🌍</div>
+
+# The Anchor Phenomenon
+
+::: {.engage-box}
+## 🌎 Earth Is Special — But for How Long?
+
+<div style="font-size: 1.3em; font-weight: 700; text-align: center; margin: 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+Out of all the planets in the solar system, only Earth has life. Earth didn't have life for a long time — and now it does. What changed?
+</div>
+
+**The Situation:**
+
+- 🌡️ Earth has been ideal for life for **12,000 years** — but rising temperatures are changing that
+- 🌊 Sea levels are rising, floods and droughts are increasing, and people are being forced from their homes
+- 🦕 Scientists are calling the current species decline the **"Sixth Mass Extinction"**
+- 📈 Human population is still growing — but Earth is becoming less welcoming
+
+### The Big Question
+If Earth becomes too hostile for life, **is there another planet out there that could work?** To answer that, we first need to figure out: **What makes Earth habitable in the first place?**
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+planetData = [
+  {planet: "Mercury", temp: 167, water: "None", atmosphere: "Trace", habitable: "No", distance: 0.39},
+  {planet: "Venus", temp: 464, water: "None", atmosphere: "96% CO₂", habitable: "No", distance: 0.72},
+  {planet: "Earth", temp: 15, water: "Liquid", atmosphere: "N₂ + O₂", habitable: "Yes!", distance: 1.0},
+  {planet: "Mars", temp: -65, water: "Ice only", atmosphere: "Thin CO₂", habitable: "No", distance: 1.52},
+  {planet: "Jupiter", temp: -110, water: "None (gas)", atmosphere: "H₂ + He", habitable: "No", distance: 5.2},
+  {planet: "Saturn", temp: -140, water: "None (gas)", atmosphere: "H₂ + He", habitable: "No", distance: 9.5},
+  {planet: "Uranus", temp: -195, water: "None (ice)", atmosphere: "H₂ + He + CH₄", habitable: "No", distance: 19.2},
+  {planet: "Neptune", temp: -200, water: "None (ice)", atmosphere: "H₂ + He + CH₄", habitable: "No", distance: 30.1}
+]
+
+Plot.plot({
+  title: "Average Surface Temperature of Solar System Planets",
+  subtitle: "Only Earth falls in the range where liquid water can exist (0–100°C)",
+  width: 700,
+  height: 380,
+  marginBottom: 60,
+  x: {label: "Planet", tickRotate: -30},
+  y: {label: "Average Surface Temperature (°C)", grid: true},
+  color: {range: ["#e74c3c", "#2ecc71"]},
+  marks: [
+    Plot.rect([{y1: 0, y2: 100}], {
+      y1: "y1", y2: "y2",
+      fill: "#2ecc71", fillOpacity: 0.1
+    }),
+    Plot.text([{x: "Saturn", y: 50}], {
+      x: "x", y: "y", text: d => "💧 Liquid Water Range",
+      fontSize: 11, fill: "#2ecc71", fontWeight: "bold"
+    }),
+    Plot.barY(planetData, {
+      x: "planet",
+      y: "temp",
+      fill: d => d.habitable === "Yes!" ? "#2ecc71" : "#e74c3c",
+      sort: {x: null}
+    }),
+    Plot.text(planetData, {
+      x: "planet",
+      y: "temp",
+      text: d => `${d.temp}°C`,
+      dy: d => d.temp >= 0 ? -12 : 12,
+      fontSize: 11,
+      fontWeight: "bold"
+    }),
+    Plot.ruleY([0], {stroke: "#333", strokeWidth: 1.5})
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+{
+  const width = 700;
+  const height = 350;
+  const svg = d3.create("svg").attr("width", width).attr("height", height);
+  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#0a0a2e").attr("rx", 12);
+  svg.append("text").attr("x", width/2).attr("y", 25).attr("text-anchor", "middle")
+    .attr("font-size", 16).attr("font-weight", "bold").attr("fill", "white").text("What Makes Earth Habitable?");
+
+  const factors = [
+    {label: "☀️ Right Star", desc: "Stable energy for 4.6 billion years", x: 110, y: 80, color: "#f39c12"},
+    {label: "🪐 Right Orbit", desc: "Not too hot, not too cold", x: 350, y: 80, color: "#3498db"},
+    {label: "💧 Liquid Water", desc: "Covers 71% of Earth's surface", x: 590, y: 80, color: "#2ecc71"},
+    {label: "🌬️ Atmosphere", desc: "Protects from radiation, keeps heat", x: 110, y: 200, color: "#e74c3c"},
+    {label: "🧲 Magnetic Field", desc: "Shields from solar wind", x: 350, y: 200, color: "#9b59b6"},
+    {label: "🌙 The Moon", desc: "Stabilizes Earth's tilt", x: 590, y: 200, color: "#1abc9c"}
+  ];
+
+  factors.forEach(f => {
+    svg.append("rect").attr("x", f.x - 90).attr("y", f.y - 20).attr("width", 180).attr("height", 75)
+      .attr("fill", f.color).attr("rx", 10).attr("opacity", 0.25);
+    svg.append("text").attr("x", f.x).attr("y", f.y + 5).attr("text-anchor", "middle")
+      .attr("fill", "white").attr("font-size", 15).attr("font-weight", "bold").text(f.label);
+    svg.append("text").attr("x", f.x).attr("y", f.y + 30).attr("text-anchor", "middle")
+      .attr("fill", "#ccc").attr("font-size", 11).text(f.desc);
+  });
+
+  // Earth in center
+  svg.append("circle").attr("cx", 350).attr("cy", 305).attr("r", 22).attr("fill", "#2ecc71");
+  svg.append("text").attr("x", 350).attr("y", 310).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-size", 12).attr("font-weight", "bold").text("🌍");
+
+  // Arrows from factors to Earth
+  factors.forEach(f => {
+    svg.append("line").attr("x1", f.x).attr("y1", f.y + 55).attr("x2", 350).attr("y2", 283)
+      .attr("stroke", f.color).attr("stroke-width", 1.5).attr("opacity", 0.5).attr("stroke-dasharray", "4,3");
+  });
+
+  return svg.node();
+}
+```
+
+::: {.student-task}
+### 📝 Your Initial Model
+
+In your notebook, draw a model that explains **why Earth is the only planet in our solar system that has life.** Include:
+
+1. What factors make Earth habitable? (Think about temperature, water, atmosphere, etc.)
+2. Why don't other planets have the same conditions?
+3. What questions do you have about each factor?
+
+You'll revise this model throughout the unit as you learn more!
+:::
+
+# The Performance Task Preview
+
+::: {.key-idea}
+### 🎯 What You'll Do by the End of This Unit
+
+A rise in global average temperatures is making Earth less habitable. Throughout this unit, you'll investigate what makes Earth the only habitable planet in our solar system. After each investigation, you'll revise your model. Then you'll use your model to **analyze real exoplanet data** and write an argument about **which exoplanet is most likely to be habitable.**
+
+You'll need to understand:
+- ☀️ What kind of star can support life (and for how long)?
+- ⭐ How stable does a star need to be?
+- 🪐 What orbital features allow a planet to maintain liquid water?
+:::
+
+<div class="mind-blown">
+🌌 There are more planets in the universe than grains of sand on all of Earth's beaches. Somewhere out there, another "Earth" might exist — and by the end of this unit, you'll know how to find it.
+</div>
+
+::: {.check-understanding}
+### 📋 Driving Question Board
+
+Write at least **3 questions** you have about what makes Earth habitable. These will drive our investigations!
+
+Example questions to get you started:
+- Does the exoplanet have a Sun like ours?
+- Does the planet have the right temperature for liquid water?
+- How do we even find planets around other stars?
+:::

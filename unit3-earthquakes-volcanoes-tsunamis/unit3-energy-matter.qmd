@@ -1,0 +1,463 @@
+---
+title: "Energy & Matter in Earth's Interior"
+subtitle: "What drives plate movement? Where does the heat come from?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(225, 112, 85, 0.3); }
+.explore-box { background: linear-gradient(135deg, #0984e3 0%, #00b894 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(9, 132, 227, 0.3); }
+.explain-box { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(253, 203, 110, 0.3); }
+.evaluate-box { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3); }
+.engage-box h2, .explore-box h2, .explain-box h2, .elaborate-box h2, .evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 5px; box-shadow: 0 4px 15px rgba(225, 112, 85, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.5em; font-weight: 800; background: linear-gradient(135deg, #e17055 0%, #d63031 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #e17055; font-size: 1.1em; }
+.student-task { background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.mind-blown { background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 20px; margin: 20px 0; border-radius: 15px; font-size: 1.3em; font-weight: 700; text-align: center; box-shadow: 0 10px 25px rgba(225, 112, 85, 0.4); }
+.check-understanding { background: linear-gradient(to right, #e17055, #d63031); color: white; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 6px solid #fff; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #e17055 !important; }
+</style>
+```
+
+<span class="pe-badge">HS-ESS2-3</span> <span class="pe-badge">HS-ESS3-1</span> <span class="pe-badge">7–8 Days</span>
+
+<div class="big-question">⚡ What Engine Drives the Plates?</div>
+
+# 🔥 Engage — The Great Rift Valley {.engage-box}
+
+::: {.engage-box}
+## Africa Is Splitting Apart
+
+The **East African Rift Valley** is one of the most dramatic geological features on Earth. Right now, the African continent is being **torn in two** along a 6,000-km crack that runs from the Red Sea through Ethiopia, Kenya, Tanzania, and Mozambique.
+
+In about **10 million years**, East Africa will separate from the rest of the continent, creating a new ocean.
+
+**The question:** What force is powerful enough to rip a continent apart? The answer lies deep beneath our feet.
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+riftData = [
+  {location: "Red Sea (already open)", width: 350, rate: 15, stage: "Ocean forming", color: "#0984e3"},
+  {location: "Afar Triangle (Ethiopia)", width: 50, rate: 20, stage: "Active rifting", color: "#d63031"},
+  {location: "Main Ethiopian Rift", width: 80, rate: 6, stage: "Active rifting", color: "#e17055"},
+  {location: "Kenya Rift (Lake Turkana)", width: 60, rate: 4, stage: "Active rifting", color: "#e17055"},
+  {location: "Tanzania (Lake Tanganyika)", width: 50, rate: 2, stage: "Early rifting", color: "#f39c12"},
+  {location: "Mozambique", width: 30, rate: 1, stage: "Early rifting", color: "#fdcb6e"}
+]
+
+Plot.plot({
+  title: "East African Rift: Spreading Rate (mm/year)",
+  subtitle: "The rift is fastest in the north where it's oldest — the Red Sea is already an ocean!",
+  width: 700,
+  height: 300,
+  marginLeft: 220,
+  x: {label: "Spreading rate (mm/year)", grid: true},
+  y: {label: null},
+  marks: [
+    Plot.barX(riftData, {
+      x: "rate",
+      y: "location",
+      fill: "color",
+      rx: 8
+    }),
+    Plot.text(riftData, {
+      x: "rate",
+      y: "location",
+      text: d => `${d.rate} mm/yr — ${d.stage}`,
+      dx: 15,
+      fontSize: 11,
+      fontWeight: "bold"
+    })
+  ]
+})
+```
+
+::: {.student-task}
+### 📝 Engage Questions
+
+1. What process below Earth's surface could produce enough force to split a continent?
+2. Why is the rift wider and faster in the north than the south?
+3. Where do you think the heat and energy come from?
+:::
+
+# 🔍 Explore — Convection {.explore-box}
+
+::: {.explore-box}
+## The Engine Inside Earth: Convection
+
+When you heat a pot of water on a stove, the water at the bottom gets hot, becomes less dense, and **rises**. At the top, it cools, becomes denser, and **sinks**. This circular flow is called **convection**, and it's the same process that drives plate tectonics.
+:::
+
+## How Convection Works
+
+```{ojs}
+//| echo: false
+{
+  const svg = d3.create("svg")
+    .attr("width", 700)
+    .attr("height", 400)
+    .attr("viewBox", "0 0 700 400");
+
+  svg.append("text").attr("x", 350).attr("y", 25).attr("text-anchor", "middle")
+    .attr("font-size", 18).attr("font-weight", "bold").text("Mantle Convection Drives Plate Tectonics");
+
+  // Mantle
+  svg.append("rect").attr("x", 50).attr("y", 50).attr("width", 600).attr("height", 280)
+    .attr("rx", 5).attr("fill", "#e17055").attr("opacity", 0.2);
+  
+  // Convection cells
+  const drawCell = (cx, cy, r) => {
+    // Rising (hot)
+    svg.append("line").attr("x1", cx).attr("y1", cy + r).attr("x2", cx).attr("y2", cy - r)
+      .attr("stroke", "#d63031").attr("stroke-width", 3).attr("marker-end", "url(#arrowRed)");
+    
+    // Spreading at top
+    svg.append("line").attr("x1", cx).attr("y1", cy - r).attr("x2", cx + r * 0.8).attr("y2", cy - r + 10)
+      .attr("stroke", "#e17055").attr("stroke-width", 2).attr("marker-end", "url(#arrowOrange)");
+    svg.append("line").attr("x1", cx).attr("y1", cy - r).attr("x2", cx - r * 0.8).attr("y2", cy - r + 10)
+      .attr("stroke", "#e17055").attr("stroke-width", 2).attr("marker-end", "url(#arrowOrange)");
+
+    // Sinking (cool)
+    svg.append("line").attr("x1", cx + r * 0.8).attr("y1", cy - r + 20).attr("x2", cx + r * 0.8).attr("y2", cy + r - 10)
+      .attr("stroke", "#0984e3").attr("stroke-width", 3).attr("marker-end", "url(#arrowBlue)");
+    svg.append("line").attr("x1", cx - r * 0.8).attr("y1", cy - r + 20).attr("x2", cx - r * 0.8).attr("y2", cy + r - 10)
+      .attr("stroke", "#0984e3").attr("stroke-width", 3).attr("marker-end", "url(#arrowBlue)");
+  };
+
+  // Arrow markers
+  const defs = svg.append("defs");
+  ["Red", "Blue", "Orange"].forEach((color, i) => {
+    const fills = ["#d63031", "#0984e3", "#e17055"];
+    defs.append("marker").attr("id", `arrow${color}`).attr("viewBox", "0 0 10 10")
+      .attr("refX", 5).attr("refY", 5).attr("markerWidth", 6).attr("markerHeight", 6)
+      .attr("orient", "auto-start-reverse")
+      .append("path").attr("d", "M 0 0 L 10 5 L 0 10 z").attr("fill", fills[i]);
+  });
+
+  drawCell(200, 200, 100);
+  drawCell(500, 200, 100);
+
+  // Labels
+  svg.append("text").attr("x", 200).attr("y", 200).attr("text-anchor", "middle")
+    .attr("font-size", 12).attr("font-weight", "bold").attr("fill", "#d63031").text("🔥 Hot rock");
+  svg.append("text").attr("x", 200).attr("y", 215).attr("text-anchor", "middle")
+    .attr("font-size", 11).attr("fill", "#d63031").text("RISES");
+  svg.append("text").attr("x", 500).attr("y", 200).attr("text-anchor", "middle")
+    .attr("font-size", 12).attr("font-weight", "bold").attr("fill", "#d63031").text("🔥 Hot rock");
+  svg.append("text").attr("x", 500).attr("y", 215).attr("text-anchor", "middle")
+    .attr("font-size", 11).attr("fill", "#d63031").text("RISES");
+
+  // Plate representations on top
+  svg.append("rect").attr("x", 50).attr("y", 50).attr("width", 290).attr("height", 30)
+    .attr("fill", "#636e72").attr("opacity", 0.7);
+  svg.append("rect").attr("x", 360).attr("y", 50).attr("width", 290).attr("height", 30)
+    .attr("fill", "#636e72").attr("opacity", 0.7);
+  svg.append("text").attr("x", 195).attr("y", 70).attr("text-anchor", "middle")
+    .attr("font-size", 11).attr("fill", "white").attr("font-weight", "bold").text("← Plate A");
+  svg.append("text").attr("x", 505).attr("y", 70).attr("text-anchor", "middle")
+    .attr("font-size", 11).attr("fill", "white").attr("font-weight", "bold").text("Plate B →");
+
+  // Divergent boundary
+  svg.append("text").attr("x", 350).attr("y", 55).attr("text-anchor", "middle")
+    .attr("font-size", 20).text("🌋");
+  svg.append("text").attr("x", 350).attr("y", 45).attr("text-anchor", "middle")
+    .attr("font-size", 10).attr("font-weight", "bold").attr("fill", "#d63031").text("Ridge");
+
+  // Core at bottom
+  svg.append("rect").attr("x", 50).attr("y", 330).attr("width", 600).attr("height", 50)
+    .attr("rx", 5).attr("fill", "#f39c12").attr("opacity", 0.4);
+  svg.append("text").attr("x", 350).attr("y", 360).attr("text-anchor", "middle")
+    .attr("font-size", 13).attr("font-weight", "bold").attr("fill", "#f39c12").text("🔥 Hot Core — Heat Source");
+
+  return svg.node();
+}
+```
+
+::: {.key-idea}
+### 💡 Mantle Convection
+
+The mantle isn't liquid — it's **solid rock**. But over millions of years, it flows like a very thick fluid (think: glacial ice or silly putty). This slow convection:
+
+1. **Hot rock rises** from near the core (less dense when hot)
+2. **Spreads laterally** beneath the lithosphere, dragging plates along
+3. **Cools at the surface** and becomes denser
+4. **Sinks back down** at subduction zones
+5. **Repeat** — a convection cycle takes ~100-200 million years
+:::
+
+# 💡 Explain — Earth's Heat Sources {.explain-box}
+
+::: {.explain-box}
+## Where Does All the Heat Come From?
+
+Earth's interior produces about **47 terawatts** of heat (47 × 10¹² watts). That's like 3 million nuclear power plants running continuously. Where does it all come from?
+:::
+
+```{ojs}
+//| echo: false
+heatSources = [
+  {source: "Radioactive decay\n(U, Th, K)", percent: 50, power: 24, color: "#d63031", desc: "Uranium-238, Thorium-232, and Potassium-40 decay, releasing heat"},
+  {source: "Primordial heat\n(leftover from formation)", percent: 40, power: 19, color: "#f39c12", desc: "Heat from gravitational collapse and giant impacts during Earth's formation"},
+  {source: "Core crystallization\n(latent heat)", percent: 10, power: 5, color: "#fdcb6e", desc: "As liquid iron crystallizes onto the solid inner core, it releases heat"}
+]
+
+Plot.plot({
+  title: "Sources of Earth's Internal Heat (~47 TW total)",
+  subtitle: "Radioactive decay and primordial heat keep Earth alive",
+  width: 650,
+  height: 250,
+  marginLeft: 200,
+  x: {label: "Contribution (%)", grid: true, domain: [0, 60]},
+  y: {label: null},
+  marks: [
+    Plot.barX(heatSources, {
+      x: "percent",
+      y: "source",
+      fill: "color",
+      rx: 8
+    }),
+    Plot.text(heatSources, {
+      x: "percent",
+      y: "source",
+      text: d => `${d.percent}% (${d.power} TW)`,
+      dx: 20,
+      fontSize: 12,
+      fontWeight: "bold"
+    })
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+viewof heatSource = Inputs.select(
+  heatSources.map(h => h.source.replace("\n", " ")),
+  {label: "Learn more about:"}
+)
+```
+
+```{ojs}
+//| echo: false
+{
+  const h = heatSources.find(s => s.source.replace("\n", " ") === heatSource);
+  const div = d3.create("div")
+    .style("padding", "15px")
+    .style("border-radius", "12px")
+    .style("background", `${h.color}15`)
+    .style("border-left", `5px solid ${h.color}`);
+  div.append("h4").style("margin-top", "0").style("color", h.color).text(h.source.replace("\n", " "));
+  div.append("p").text(h.desc);
+  div.append("p").html(`<strong>Power output:</strong> ${h.power} terawatts (${h.percent}% of total)`);
+  return div.node();
+}
+```
+
+<div class="mind-blown">
+🧠 Without radioactive decay, Earth's interior would have cooled billions of years ago. Plate tectonics would have stopped. No volcanoes, no earthquakes, no magnetic field, no protection from solar wind. Earth would be a dead world — like Mars. We literally owe our existence to nuclear physics.
+</div>
+
+# 🔬 Elaborate — Resources and Risks {.elaborate-box}
+
+::: {.elaborate-box}
+## The Double-Edged Sword
+
+Plate boundaries and volcanic regions are both **extremely dangerous** and **extremely valuable**. The same processes that cause devastating earthquakes also create the mineral deposits, fertile soils, and geothermal energy that human civilizations depend on.
+:::
+
+## Benefits of Living Near Plate Boundaries
+
+```{ojs}
+//| echo: false
+benefitsData = [
+  {benefit: "Geothermal energy", desc: "Iceland gets 87% of heating from geothermal", value: 9, color: "#d63031"},
+  {benefit: "Fertile volcanic soil", desc: "Java (Indonesia) is one of most productive agricultural regions", value: 8, color: "#2ecc71"},
+  {benefit: "Mineral deposits", desc: "Gold, copper, silver concentrate near volcanic zones", value: 8, color: "#f39c12"},
+  {benefit: "Hot springs & tourism", desc: "Yellowstone, Rotorua (NZ), Blue Lagoon (Iceland)", value: 6, color: "#0984e3"},
+  {benefit: "Diamonds", desc: "Brought to surface by deep volcanic pipes (kimberlites)", value: 5, color: "#a29bfe"},
+  {benefit: "Obsidian & building stone", desc: "Volcanic rock used in construction for millennia", value: 4, color: "#636e72"}
+]
+
+Plot.plot({
+  title: "Benefits of Geological Activity",
+  subtitle: "Tectonic forces create incredible resources — but at a cost",
+  width: 700,
+  height: 300,
+  marginLeft: 200,
+  x: {label: "Economic/Social Value (relative)", grid: true, domain: [0, 10]},
+  y: {label: null},
+  marks: [
+    Plot.barX(benefitsData, {
+      x: "value",
+      y: "benefit",
+      fill: "color",
+      rx: 8,
+      sort: {y: "-x"}
+    }),
+    Plot.text(benefitsData, {
+      x: "value",
+      y: "benefit",
+      text: "desc",
+      dx: 10,
+      textAnchor: "start",
+      fontSize: 10
+    })
+  ]
+})
+```
+
+## Risks vs. Benefits Comparison
+
+```{ojs}
+//| echo: false
+viewof selectedRegion = Inputs.select(
+  ["Indonesia", "Japan", "Iceland", "California", "Italy"],
+  {label: "Explore a region:"}
+)
+```
+
+```{ojs}
+//| echo: false
+{
+  const regions = {
+    "Indonesia": {
+      boundary: "Convergent (subduction)",
+      hazards: ["Explosive volcanoes (Krakatoa, Tambora)", "M8+ earthquakes", "Tsunamis (2004 Indian Ocean)", "Lahars & pyroclastic flows"],
+      benefits: ["Most fertile farmland in SE Asia", "Rich mineral deposits (gold, copper)", "Geothermal potential (27 GW)", "Volcanic island tourism"],
+      pop: "274 million people",
+      verdict: "Extremely high risk AND reward — 17,500 islands on the Ring of Fire"
+    },
+    "Japan": {
+      boundary: "Convergent (triple junction!)",
+      hazards: ["M9 earthquakes (2011 Tōhoku)", "Tsunamis", "Volcanic eruptions (Mt. Fuji)", "Nuclear risk (Fukushima)"],
+      benefits: ["Geothermal energy (23 GW potential)", "Hot springs (onsen culture)", "Rich mineral deposits", "Volcanic soil for agriculture"],
+      pop: "125 million people",
+      verdict: "Most seismically active developed nation — but advanced engineering saves lives"
+    },
+    "Iceland": {
+      boundary: "Divergent (Mid-Atlantic Ridge)",
+      hazards: ["Volcanic eruptions (Eyjafjallajökull 2010)", "Glacial outburst floods (jökulhlaups)", "Lava flows"],
+      benefits: ["87% of heating from geothermal", "100% renewable electricity", "Tourism (Blue Lagoon, geysers)", "Volcanic soil greenhouses"],
+      pop: "380,000 people",
+      verdict: "Best example of humans successfully harnessing tectonic energy"
+    },
+    "California": {
+      boundary: "Transform (San Andreas Fault)",
+      hazards: ["M7-8 earthquakes (1906, 1989, 1994)", "Ground shaking & liquefaction", "Landslides", "Surface rupture"],
+      benefits: ["Gold deposits (Gold Rush!)", "Rich agricultural valleys", "Oil & natural gas", "Mediterranean climate from plate-driven topography"],
+      pop: "39 million people",
+      verdict: "Transform faults create fewer benefits than convergent — risk concentrated in major cities"
+    },
+    "Italy": {
+      boundary: "Convergent (Africa pushing into Europe)",
+      hazards: ["Volcanic eruptions (Vesuvius, Etna, Stromboli)", "M6-7 earthquakes", "Tsunamis", "Landslides"],
+      benefits: ["Volcanic soil for wine regions", "Geothermal energy (Larderello)", "Marble & building stone", "Hot springs & tourism"],
+      pop: "59 million people",
+      verdict: "Vesuvius destroyed Pompeii in 79 CE — and 3 million people live in its shadow today"
+    }
+  };
+
+  const r = regions[selectedRegion];
+  const div = d3.create("div");
+  div.append("h3").style("color", "#e17055").style("font-family", "Space Grotesk").text(`${selectedRegion} — ${r.boundary}`);
+  div.append("p").html(`<strong>Population at risk:</strong> ${r.pop}`);
+  
+  const grid = div.append("div").style("display", "flex").style("gap", "15px").style("flex-wrap", "wrap");
+  
+  const riskCard = grid.append("div").style("flex", "1").style("min-width", "250px")
+    .style("background", "#fff5f5").style("padding", "15px").style("border-radius", "10px")
+    .style("border-left", "4px solid #d63031");
+  riskCard.append("h4").style("margin-top", "0").style("color", "#d63031").text("⚠️ Hazards");
+  const ul1 = riskCard.append("ul");
+  r.hazards.forEach(h => ul1.append("li").text(h));
+
+  const benCard = grid.append("div").style("flex", "1").style("min-width", "250px")
+    .style("background", "#f0fff0").style("padding", "15px").style("border-radius", "10px")
+    .style("border-left", "4px solid #2ecc71");
+  benCard.append("h4").style("margin-top", "0").style("color", "#2ecc71").text("✅ Benefits");
+  const ul2 = benCard.append("ul");
+  r.benefits.forEach(b => ul2.append("li").text(b));
+
+  div.append("div").style("background", "#ffecd2").style("padding", "12px").style("border-radius", "8px")
+    .style("border-left", "4px solid #e17055").style("margin-top", "10px")
+    .html(`<strong>Bottom line:</strong> ${r.verdict}`);
+
+  return div.node();
+}
+```
+
+::: {.key-idea}
+### 💡 Why People Live in Danger Zones
+
+About **500 million people** live within potential exposure range of active volcanoes. Why?
+
+1. **Volcanic soil** is incredibly fertile — ash breaks down into nutrient-rich soil
+2. **Mineral wealth** concentrates near tectonic boundaries
+3. **Geothermal energy** is cheap and abundant
+4. **Historical roots** — civilizations were founded in these areas thousands of years ago
+5. **Short memory** — major eruptions may be centuries apart; people forget
+
+The challenge isn't avoiding plate boundaries — it's learning to **live safely** near them.
+:::
+
+# ✅ Evaluate {.evaluate-box}
+
+::: {.evaluate-box}
+## Connecting Energy, Matter, and Motion
+:::
+
+::: {.check-understanding}
+### 🧪 Evaluate Questions
+
+1. **Model** how convection in the mantle drives plate tectonics. Include:
+   - Heat source
+   - Rising and sinking material
+   - How this creates plate motion at the surface
+   - The role of density in the process
+
+2. **Explain** the three sources of Earth's internal heat. Which is most important and why?
+
+3. **Argue** whether the benefits of living near a plate boundary outweigh the risks. Choose a specific region and use evidence.
+
+4. **Predict** what would happen to Earth's surface processes if:
+   - All radioactive elements decayed completely
+   - The core fully solidified
+   - Mantle convection stopped
+
+5. **Connect** the Great Rift Valley to the convection model. What's happening in the mantle beneath East Africa?
+:::
+
+::: {.student-task}
+### 📝 Final Model Update
+
+Update your model one last time before the performance task:
+
+- Your model should now explain the **complete chain**: Heat source → convection → plate motion → surface features → natural hazards
+- Include all three types of plate boundaries and what happens at each
+- Explain why Krakatoa was so explosive (convergent boundary + subduction + water)
+- How do Earth's internal processes create both **hazards** and **resources**?
+:::

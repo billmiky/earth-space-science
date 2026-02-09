@@ -1,0 +1,411 @@
+---
+title: "Asteroid Orbits & Planetary Defense"
+subtitle: "Will Apophis hit Earth in 2029? How do we protect our planet?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 206, 201, 0.3); }
+.explore-box { background: linear-gradient(135deg, #0984e3 0%, #00b894 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(9, 132, 227, 0.3); }
+.explain-box { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(253, 203, 110, 0.3); }
+.evaluate-box { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3); }
+.engage-box h2, .explore-box h2, .explain-box h2, .elaborate-box h2, .evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 5px; box-shadow: 0 4px 15px rgba(0, 206, 201, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.5em; font-weight: 800; background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #ff6b6b; font-size: 1.1em; }
+.student-task { background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.mind-blown { background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 20px; margin: 20px 0; border-radius: 15px; font-size: 1.3em; font-weight: 700; text-align: center; box-shadow: 0 10px 25px rgba(0, 206, 201, 0.4); }
+.check-understanding { background: linear-gradient(to right, #00cec9, #6c5ce7); color: white; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 6px solid #fff; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #00cec9 !important; }
+</style>
+```
+
+<span class="pe-badge">HS-ESS1-4</span> <span class="pe-badge">5–7 Days</span>
+
+<div class="big-question">☄️ Is Apophis Going to Hit Us?</div>
+
+# 🔥 Engage — The Apophis Scare {.engage-box}
+
+::: {.engage-box}
+## April 13, 2029: A 370-Meter Asteroid Passes Earth
+
+On **Friday, April 13, 2029**, asteroid **99942 Apophis** — named after the Egyptian god of chaos — will fly closer to Earth than many of our communications satellites. It will be visible to the **naked eye** from parts of Asia, Africa, and Europe.
+
+When Apophis was first discovered in 2004, astronomers calculated a **2.7% chance of Earth impact** — the highest ever assigned to a known asteroid. That's 1 in 37. For a rock that could destroy a city the size of New York.
+
+**The good news:** Further observations reduced the impact probability to zero for 2029. But the close flyby could change its orbit in unpredictable ways, and future passes remain a concern.
+
+**The bigger question:** What would we actually DO if an asteroid were heading for Earth?
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+approachData = [
+  {name: "GPS satellites", distance: 20200, type: "Satellite", color: "#74b9ff"},
+  {name: "Geostationary orbit", distance: 35786, type: "Satellite", color: "#0984e3"},
+  {name: "Apophis (2029)", distance: 31000, type: "Asteroid", color: "#d63031"},
+  {name: "Moon", distance: 384400, type: "Moon", color: "#dfe6e9"},
+  {name: "Typical near-Earth asteroid", distance: 500000, type: "Asteroid", color: "#fdcb6e"}
+]
+
+Plot.plot({
+  title: "How Close Will Apophis Get? (km from Earth)",
+  subtitle: "Closer than our geostationary satellites!",
+  width: 700,
+  height: 280,
+  marginLeft: 200,
+  x: {label: "Distance from Earth (km)", type: "log", grid: true},
+  y: {label: null},
+  marks: [
+    Plot.barX(approachData, {
+      x: "distance",
+      y: "name",
+      fill: "color",
+      rx: 8,
+      sort: {y: "x"}
+    }),
+    Plot.text(approachData, {
+      x: "distance",
+      y: "name",
+      text: d => d.distance.toLocaleString() + " km",
+      dx: 30,
+      fontSize: 11,
+      fontWeight: "bold"
+    })
+  ]
+})
+```
+
+::: {.student-task}
+### 📝 Engage Questions
+
+1. How close is Apophis's 2029 flyby compared to the Moon's distance?
+2. If Apophis is 370 meters across and traveling at ~30 km/s, how much energy would an impact release?
+3. Should we be worried about asteroids? How would we know one was coming?
+:::
+
+# 🔍 Explore — Orbits and Gravity {.explore-box}
+
+::: {.explore-box}
+## What Keeps Asteroids (and Planets) in Orbit?
+
+Everything in the solar system — planets, asteroids, comets — follows the same rules of orbital mechanics discovered by Kepler and explained by Newton.
+:::
+
+## Kepler's Laws Applied to Asteroids
+
+```{ojs}
+//| echo: false
+orbitData = [
+  {name: "Mercury", a: 0.387, T: 0.241, type: "Planet", color: "#95a5a6"},
+  {name: "Venus", a: 0.723, T: 0.615, type: "Planet", color: "#f39c12"},
+  {name: "Earth", a: 1.000, T: 1.000, type: "Planet", color: "#2ecc71"},
+  {name: "Mars", a: 1.524, T: 1.881, type: "Planet", color: "#e74c3c"},
+  {name: "Apophis", a: 0.922, T: 0.886, type: "Asteroid", color: "#d63031"},
+  {name: "Bennu", a: 1.126, T: 1.196, type: "Asteroid", color: "#6c5ce7"},
+  {name: "Eros", a: 1.458, T: 1.761, type: "Asteroid", color: "#00cec9"},
+  {name: "Ceres", a: 2.769, T: 4.600, type: "Dwarf planet", color: "#636e72"},
+  {name: "Jupiter", a: 5.203, T: 11.86, type: "Planet", color: "#e17055"}
+]
+
+Plot.plot({
+  title: "Kepler's Third Law: Orbital Period vs. Distance",
+  subtitle: "T² = a³ — asteroids follow the same law as planets",
+  width: 700,
+  height: 400,
+  grid: true,
+  x: {label: "Semi-major axis (AU)", type: "log"},
+  y: {label: "Orbital period (years)", type: "log"},
+  color: {legend: true, domain: ["Planet", "Asteroid", "Dwarf planet"], range: ["#2ecc71", "#d63031", "#636e72"]},
+  marks: [
+    // Kepler's law line
+    Plot.line(
+      Array.from({length: 50}, (_, i) => {
+        const a = 0.3 + i * 0.12;
+        return {a: a, T: Math.pow(a, 1.5)};
+      }),
+      {x: "a", y: "T", stroke: "#00cec9", strokeWidth: 2, strokeDasharray: "8,4"}
+    ),
+    Plot.dot(orbitData, {
+      x: "a",
+      y: "T",
+      fill: "type",
+      r: 8,
+      stroke: "white",
+      strokeWidth: 1
+    }),
+    Plot.text(orbitData, {
+      x: "a",
+      y: "T",
+      text: "name",
+      dy: -12,
+      fontSize: 10,
+      fontWeight: "bold"
+    })
+  ]
+})
+```
+
+## Newton's Law of Universal Gravitation
+
+The force of gravity between any two objects:
+
+$$F = G \frac{m_1 \cdot m_2}{r^2}$$
+
+where $G = 6.674 \times 10^{-11}$ N⋅m²/kg², $m_1$ and $m_2$ are the masses, and $r$ is the distance between them.
+
+```{ojs}
+//| echo: false
+viewof asteroidMass = Inputs.range([1e8, 1e13], {
+  label: "Asteroid mass (kg):",
+  step: 1e8,
+  value: 2.7e10,
+  format: d => d.toExponential(1)
+})
+```
+
+```{ojs}
+//| echo: false
+viewof asteroidDistance = Inputs.range([6371, 400000], {
+  label: "Distance from Earth center (km):",
+  step: 1000,
+  value: 31000
+})
+```
+
+```{ojs}
+//| echo: false
+{
+  const G = 6.674e-11;
+  const earthMass = 5.972e24;
+  const r = asteroidDistance * 1000; // convert km to m
+  const force = G * earthMass * asteroidMass / (r * r);
+  const acceleration = force / asteroidMass;
+  
+  const div = d3.create("div")
+    .style("padding", "20px")
+    .style("background", "linear-gradient(135deg, #ffecd2, #fcb69f)")
+    .style("border-radius", "12px")
+    .style("border-left", "6px solid #e17055");
+
+  div.append("h3").style("margin-top", "0").text("⚡ Gravitational Interaction");
+  div.append("p").html(`<strong>Asteroid mass:</strong> ${asteroidMass.toExponential(2)} kg`);
+  div.append("p").html(`<strong>Distance:</strong> ${asteroidDistance.toLocaleString()} km from Earth's center`);
+  div.append("p").html(`<strong>Gravitational force:</strong> ${force.toExponential(3)} N`);
+  div.append("p").html(`<strong>Acceleration toward Earth:</strong> ${acceleration.toFixed(6)} m/s²`);
+  
+  if (asteroidDistance < 35786) {
+    div.append("p").style("color", "#d63031").style("font-weight", "bold")
+      .text("⚠️ This is closer than geostationary orbit!");
+  }
+  if (asteroidDistance < 6500) {
+    div.append("p").style("color", "#d63031").style("font-weight", "bold")
+      .text("💥 IMPACT — this is at or below Earth's surface!");
+  }
+  
+  return div.node();
+}
+```
+
+::: {.key-idea}
+### 💡 Why Orbits Change
+
+An asteroid's orbit is stable as long as no outside forces act on it significantly. But orbits can change due to:
+
+- **Gravitational perturbations** — close passes by planets bend the orbit
+- **Yarkovsky effect** — sunlight heats one side, creating a tiny thrust
+- **Collisions** — impacts with other asteroids can redirect them
+- **YORP effect** — sunlight changes rotation rate, which changes orbit over time
+
+This is why Apophis's 2029 flyby matters — Earth's gravity will **bend its orbit**, making future predictions harder.
+:::
+
+# 💡 Explain — Orbital Mechanics {.explain-box}
+
+::: {.explain-box}
+## Why Some Asteroids Are Dangerous
+
+Not all asteroids pose a threat. The dangerous ones are **Near-Earth Objects (NEOs)** — asteroids whose orbits bring them within 1.3 AU of the Sun, crossing or approaching Earth's orbit.
+:::
+
+```{ojs}
+//| echo: false
+neoData = [
+  {size: "< 1 m", count: 1000000000, damage: "Burns up in atmosphere", risk: "None", color: "#2ecc71"},
+  {size: "1–10 m", count: 500000000, damage: "Fireball, possible meteorites", risk: "Very Low", color: "#74b9ff"},
+  {size: "10–50 m", count: 10000000, damage: "Chelyabinsk-type airburst", risk: "Low", color: "#fdcb6e"},
+  {size: "50–140 m", count: 25000, damage: "City destroyer", risk: "Medium", color: "#f39c12"},
+  {size: "140 m–1 km", count: 8000, damage: "Regional devastation", risk: "High", color: "#e17055"},
+  {size: "> 1 km", count: 900, damage: "Global catastrophe", risk: "Very High", color: "#d63031"}
+]
+
+Plot.plot({
+  title: "Near-Earth Objects by Size Category",
+  subtitle: "Estimated total population — most small ones are still undiscovered",
+  width: 700,
+  height: 300,
+  marginLeft: 100,
+  x: {label: "Estimated number (log scale)", type: "log", grid: true},
+  y: {label: null},
+  marks: [
+    Plot.barX(neoData, {
+      x: "count",
+      y: "size",
+      fill: "color",
+      rx: 8
+    }),
+    Plot.text(neoData, {
+      x: "count",
+      y: "size",
+      text: d => d.damage,
+      dx: 10,
+      textAnchor: "start",
+      fontSize: 10,
+      fontWeight: "bold"
+    })
+  ]
+})
+```
+
+<div class="mind-blown">
+🧠 We've found about 95% of the "planet killer" asteroids (>1 km) and NONE are on collision course with Earth. But we've found less than 40% of the "city killers" (>140 m). Apophis is 370 m — big enough to devastate a continent.
+</div>
+
+# 🔬 Elaborate — Planetary Defense {.elaborate-box}
+
+::: {.elaborate-box}
+## The DART Mission: Punching an Asteroid
+
+In September 2022, NASA's **DART** (Double Asteroid Redirection Test) spacecraft deliberately crashed into the asteroid moonlet **Dimorphos** at 22,530 km/h. The goal: prove we can change an asteroid's orbit.
+
+**Result: It worked.** DART changed Dimorphos's orbital period by **33 minutes** — far more than the minimum 73 seconds needed for success.
+:::
+
+## Deflection Strategies
+
+```{ojs}
+//| echo: false
+viewof warningYears = Inputs.range([0.1, 30], {
+  label: "Years of warning before impact:",
+  step: 0.1,
+  value: 10
+})
+```
+
+```{ojs}
+//| echo: false
+{
+  const strategies = [
+    {name: "Kinetic Impactor (DART)", minYears: 5, maxYears: 30, effectiveness: "Proven", cost: "Medium", desc: "Crash a spacecraft into the asteroid at high speed. Proven by DART in 2022.", color: "#2ecc71"},
+    {name: "Gravity Tractor", minYears: 10, maxYears: 30, effectiveness: "Theoretical", cost: "High", desc: "Park a massive spacecraft near the asteroid. Its gravity slowly tugs the asteroid off course.", color: "#0984e3"},
+    {name: "Ion Beam Deflection", minYears: 5, maxYears: 20, effectiveness: "Theoretical", cost: "Medium", desc: "Fire ion thrusters at the asteroid surface, pushing it slowly.", color: "#6c5ce7"},
+    {name: "Nuclear Standoff", minYears: 0.5, maxYears: 5, effectiveness: "Last resort", cost: "Very High", desc: "Detonate a nuclear device near (not on!) the asteroid. Radiation vaporizes the surface, creating thrust.", color: "#d63031"},
+    {name: "Paint it white", minYears: 15, maxYears: 30, effectiveness: "Theoretical", cost: "Low", desc: "Change the asteroid's reflectivity to use sunlight pressure (Yarkovsky effect) to nudge its orbit.", color: "#f39c12"}
+  ];
+
+  const viable = strategies.filter(s => warningYears >= s.minYears && warningYears <= s.maxYears);
+  const notViable = strategies.filter(s => warningYears < s.minYears || warningYears > s.maxYears);
+
+  const div = d3.create("div");
+  div.append("h3").style("font-family", "Space Grotesk, sans-serif").style("color", "#00cec9")
+    .text(`With ${warningYears.toFixed(1)} years of warning:`);
+
+  if (viable.length > 0) {
+    div.append("h4").style("color", "#2ecc71").text("✅ Viable Options:");
+    viable.forEach(s => {
+      const card = div.append("div").style("padding", "12px").style("margin", "8px 0")
+        .style("border-radius", "10px").style("border-left", `5px solid ${s.color}`)
+        .style("background", `${s.color}15`);
+      card.append("strong").text(s.name);
+      card.append("span").style("margin-left", "10px").style("font-size", "0.85em")
+        .style("color", "#636e72").text(`[${s.effectiveness}]`);
+      card.append("p").style("margin", "5px 0 0 0").style("font-size", "0.95em").text(s.desc);
+    });
+  }
+
+  if (notViable.length > 0) {
+    div.append("h4").style("color", "#d63031").text("❌ Not enough time for:");
+    notViable.forEach(s => {
+      div.append("div").style("padding", "5px 12px").style("margin", "4px 0")
+        .style("color", "#636e72").style("text-decoration", "line-through")
+        .text(`${s.name} (needs ${s.minYears}–${s.maxYears} years)`);
+    });
+  }
+
+  if (warningYears < 0.5) {
+    div.append("div").style("padding", "15px").style("margin-top", "10px")
+      .style("background", "#d63031").style("color", "white").style("border-radius", "10px")
+      .style("font-weight", "bold").style("text-align", "center")
+      .text("⚠️ With less than 6 months warning, there may be no viable deflection option. Evacuation only.");
+  }
+
+  return div.node();
+}
+```
+
+::: {.key-idea}
+### 💡 The Key Lesson
+
+Planetary defense isn't science fiction — it's active science:
+
+- **Detection** is the most important step. We need to find asteroids **years** before they arrive.
+- **Small nudges early** are better than big pushes late. A 1 cm/s change 10 years out can miss Earth by thousands of kilometers.
+- **DART proved** kinetic impact works. The next step is ESA's **Hera** mission to study the impact site.
+- The biggest risk isn't a known asteroid — it's the ~60% of city-killers we **haven't found yet**.
+:::
+
+# ✅ Evaluate {.evaluate-box}
+
+::: {.evaluate-box}
+## Applying Orbital Mechanics to Real Threats
+:::
+
+::: {.check-understanding}
+### 🧪 Evaluate Questions
+
+1. **Apply Kepler's Third Law**: If an asteroid has a semi-major axis of 1.5 AU, what is its orbital period? How does this compare to Mars?
+
+2. **Use Newton's gravity law**: Why does Apophis's orbit change when it passes close to Earth? What determines how much it changes?
+
+3. **Evaluate** the DART mission. Why was it important to test kinetic impact on a real asteroid rather than just simulating it?
+
+4. **Argue** which planetary defense strategy is best for:
+   - A 100-meter asteroid detected 20 years before impact
+   - A 500-meter asteroid detected 2 years before impact
+   - A 1-km asteroid detected 6 months before impact
+
+5. **Connect to the unit**: How do asteroid impacts connect to the probability of life existing in the universe? Consider both destructive AND constructive effects.
+:::
+
+::: {.student-task}
+### 📝 Model Update
+
+Update your thinking about the probability of life:
+
+- Asteroid impacts are both **threats** and **opportunities** for life
+- The ability of a civilization to **defend itself** from asteroids may be a factor in whether intelligent life survives long enough to be detected
+- How does this connect to the **Fermi Paradox**?
+:::

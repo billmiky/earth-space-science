@@ -4,7 +4,7 @@ subtitle: "What is causing global temperatures to rise, and why is the Arctic wa
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     theme: cosmo
@@ -53,7 +53,8 @@ What is happening to temperatures and Arctic ice today? Use the graph below to c
 
 ```{ojs}
 //| echo: false
-Plot = require("@observablehq/plot")
+// Ensure we are grabbing a version of Plot that supports tooltips
+Plot = require("@observablehq/plot@0.6.13")
 
 arcticData = [
   {year: 1980, global: 0.26, arctic: 0.4},
@@ -74,13 +75,37 @@ Plot.plot({
   width: 700,
   height: 400,
   y: {label: "Temperature Anomaly (°C)", domain: [0, 4.5]},
-  x: {label: "Year"},
+  x: {label: "Year", tickFormat: "d"}, // Format year to avoid commas (e.g. 2,020)
   color: {legend: true},
   marks: [
+    // 1. Add a vertical scanning line that follows the mouse (pointerX)
+    Plot.ruleX(arcticData, Plot.pointerX({x: "year", stroke: "gray", strokeOpacity: 0.5})),
+
+    // ARCTIC LINE & DOTS
     Plot.line(arcticData, {x: "year", y: "arctic", stroke: "#3498db", strokeWidth: 3}),
+    Plot.dot(arcticData, {
+      x: "year", 
+      y: "arctic", 
+      fill: "#3498db", 
+      r: 6,
+      // 2. Enable Tooltip
+      tip: true,
+      // 3. Rename tooltip labels (so it doesn't say 'y: 4.1')
+      channels: {Temp: "arctic", Year: "year"}
+    }),
+
+    // GLOBAL LINE & DOTS
     Plot.line(arcticData, {x: "year", y: "global", stroke: "#e74c3c", strokeWidth: 3}),
-    Plot.dot(arcticData, {x: "year", y: "arctic", fill: "#3498db", r: 5}),
-    Plot.dot(arcticData, {x: "year", y: "global", fill: "#e74c3c", r: 5}),
+    Plot.dot(arcticData, {
+      x: "year", 
+      y: "global", 
+      fill: "#e74c3c", 
+      r: 6,
+      tip: true,
+      channels: {Temp: "global", Year: "year"}
+    }),
+
+    // Text labels (Static)
     Plot.text([{x: 2010, y: 2.3}], {x: "x", y: "y", text: d => "Arctic", fill: "#3498db", fontSize: 14, fontWeight: "bold"}),
     Plot.text([{x: 2010, y: 0.5}], {x: "x", y: "y", text: d => "Global", fill: "#e74c3c", fontSize: 14, fontWeight: "bold"})
   ]
@@ -214,6 +239,111 @@ fig
 # Explore Part 1: The Greenhouse Effect
 
 How do carbon dioxide levels in the air both impact and change as a result of Earth’s systems? Use the simulation to gather evidence about the causal mechanism behind the correlation between atmospheric CO₂ levels and climate factors like temperature.
+
+### Carbon Cycle Model: Pre vs. Post Industrial
+
+Use the sliders below to simulate the flow of carbon. 
+1. Keep **Fossil Fuel Burning** at **0** to see the Pre-Industrial equilibrium.
+2. Increase the burning rate to see how the **Atmosphere** reservoir changes over time.
+
+```{ojs}
+//| echo: false
+
+// --- 1. INTERACTIVE INPUTS ---
+viewof years = Inputs.range([0, 100], {label: "Years Elapsed", step: 1, value: 0});
+viewof human_emissions = Inputs.range([0, 15], {label: "Fossil Fuel Burning (Gt/year)", step: 0.5, value: 0});
+
+// --- 2. THE MATH MODEL ---
+// Initial Stocks (Table 1)
+init_atmos = 560;
+init_ocean = 38000;
+init_bio = 2160;
+init_fossil = 10000;
+
+// Flows (Table 2) - Constant Linear Rates
+// Note: In reality, flows change with concentration, but for this high school model we use the fixed rates provided.
+flow_ocean_to_atmos = 62;
+flow_atmos_to_ocean = 60;
+flow_bio_to_atmos = 107;
+flow_atmos_to_bio = 109;
+
+// Calculate Current State
+current_fossil = init_fossil - (human_emissions * years);
+
+// Net Flux to Atmosphere = (In from Ocean + In from Bio + Human) - (Out to Ocean + Out to Bio)
+yearly_atmos_change = (flow_ocean_to_atmos + flow_bio_to_atmos + human_emissions) - (flow_atmos_to_ocean + flow_atmos_to_bio);
+current_atmos = init_atmos + (yearly_atmos_change * years);
+
+// Net Flux to Ocean (In - Out)
+current_ocean = init_ocean + ((flow_atmos_to_ocean - flow_ocean_to_atmos) * years);
+
+// Net Flux to Bio (In - Out)
+current_bio = init_bio + ((flow_atmos_to_bio - flow_bio_to_atmos) * years);
+
+// --- 3. THE VISUALIZATION (SVG) ---
+htl.html`<svg width="600" height="450" viewBox="0 0 600 450" style="font-family: sans-serif;">
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+    </marker>
+  </defs>
+
+  <text x="300" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">
+    ${human_emissions == 0 ? "Pre-Industrial Equilibrium" : "Post-Industrial Disruption"}
+  </text>
+
+  <g transform="translate(200, 50)">
+    <rect x="0" y="0" width="200" height="80" rx="10" fill="#E3F2FD" stroke="#2196F3" stroke-width="2"/>
+    <text x="100" y="30" text-anchor="middle" font-weight="bold">ATMOSPHERE</text>
+    <text x="100" y="55" text-anchor="middle" font-size="20" fill="#D32F2F" font-weight="bold">
+      ${current_atmos.toFixed(0)} Gt
+    </text>
+  </g>
+
+  <g transform="translate(380, 250)">
+    <rect x="0" y="0" width="180" height="80" rx="10" fill="#E0F7FA" stroke="#00BCD4" stroke-width="2"/>
+    <text x="90" y="30" text-anchor="middle" font-weight="bold">OCEAN</text>
+    <text x="90" y="55" text-anchor="middle" font-size="16">
+      ${current_ocean.toFixed(0)} Gt
+    </text>
+  </g>
+
+  <g transform="translate(40, 250)">
+    <rect x="0" y="0" width="180" height="80" rx="10" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2"/>
+    <text x="90" y="30" text-anchor="middle" font-weight="bold">BIOSPHERE</text>
+    <text x="90" y="55" text-anchor="middle" font-size="16">
+      ${current_bio.toFixed(0)} Gt
+    </text>
+  </g>
+
+  <g transform="translate(200, 370)">
+    <rect x="0" y="0" width="200" height="60" rx="10" fill="#424242" stroke="#000" stroke-width="2"/>
+    <text x="100" y="25" text-anchor="middle" fill="white" font-weight="bold">FOSSIL FUELS</text>
+    <text x="100" y="45" text-anchor="middle" fill="white" font-size="14">
+      ${current_fossil.toFixed(1)} Gt
+    </text>
+  </g>
+
+  <line x1="140" y1="250" x2="220" y2="130" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="150" y="190" font-size="10" fill="#666">107</text>
+  
+  <line x1="240" y1="130" x2="160" y2="250" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="210" y="200" font-size="10" fill="#666">109</text>
+
+  <line x1="440" y1="250" x2="360" y2="130" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="410" y="200" font-size="10" fill="#666">62</text>
+
+  <line x1="380" y1="130" x2="460" y2="250" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="430" y="190" font-size="10" fill="#666">60</text>
+
+  ${human_emissions > 0 ? htl.html`
+    <line x1="300" y1="370" x2="300" y2="140" stroke="#D32F2F" stroke-width="4" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+    <text x="310" y="300" font-size="12" fill="#D32F2F" font-weight="bold">+ ${human_emissions} Gt/yr</text>
+  ` : ""}
+
+</svg>`
+```
 
 ## Modeling the Effect of the Carbon Cycle on Temperature
 

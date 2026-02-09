@@ -1,0 +1,440 @@
+---
+title: "Coevolution of Earth and Life"
+subtitle: "How did life change Earth, and how did Earth change life?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 206, 201, 0.3); }
+.explore-box { background: linear-gradient(135deg, #0984e3 0%, #00b894 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(9, 132, 227, 0.3); }
+.explain-box { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(253, 203, 110, 0.3); }
+.evaluate-box { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3); }
+.engage-box h2, .explore-box h2, .explain-box h2, .elaborate-box h2, .evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 5px; box-shadow: 0 4px 15px rgba(0, 206, 201, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.5em; font-weight: 800; background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #ff6b6b; font-size: 1.1em; }
+.student-task { background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.mind-blown { background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 20px; margin: 20px 0; border-radius: 15px; font-size: 1.3em; font-weight: 700; text-align: center; box-shadow: 0 10px 25px rgba(0, 206, 201, 0.4); }
+.check-understanding { background: linear-gradient(to right, #00cec9, #6c5ce7); color: white; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 6px solid #fff; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #00cec9 !important; }
+</style>
+```
+
+<span class="pe-badge">HS-ESS2-7</span> <span class="pe-badge">7–8 Days</span>
+
+<div class="big-question">🦠🌍 Did Life Create the Earth We Know?</div>
+
+# 🔥 Engage — The Oxygen Mystery {.engage-box}
+
+::: {.engage-box}
+## Earth's Atmosphere Has Changed Dramatically
+
+Today, Earth's atmosphere is about **21% oxygen**. But for the first 2 billion years of Earth's history, there was **almost no free oxygen at all**. Where did all the oxygen come from?
+
+Here's the shocking answer: **Life made it.**
+
+Tiny cyanobacteria (blue-green algae) invented photosynthesis and literally **poisoned** the planet with oxygen — killing off most of the anaerobic life that existed before them. This was the greatest pollution event in Earth's history.
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+oxygenData = [
+  {time: 4.5, o2: 0, era: "Hadean"},
+  {time: 4.0, o2: 0, era: "Early Archean"},
+  {time: 3.5, o2: 0.001, era: "First photosynthesis"},
+  {time: 2.7, o2: 0.01, era: "Cyanobacteria spread"},
+  {time: 2.4, o2: 2, era: "Great Oxidation Event"},
+  {time: 2.0, o2: 3, era: "O₂ rises slowly"},
+  {time: 1.5, o2: 4, era: "Boring Billion"},
+  {time: 1.0, o2: 5, era: "Still low"},
+  {time: 0.8, o2: 8, era: "Neoproterozoic rise"},
+  {time: 0.6, o2: 15, era: "Pre-Cambrian surge"},
+  {time: 0.54, o2: 15, era: "Cambrian Explosion"},
+  {time: 0.4, o2: 21, era: "Land plants appear"},
+  {time: 0.3, o2: 35, era: "Carboniferous peak"},
+  {time: 0.25, o2: 15, era: "Permian extinction"},
+  {time: 0.2, o2: 15, era: "Triassic"},
+  {time: 0.1, o2: 20, era: "Cretaceous"},
+  {time: 0.0, o2: 21, era: "Today"}
+]
+
+Plot.plot({
+  title: "Atmospheric Oxygen Over Earth's History",
+  subtitle: "Life transformed Earth's atmosphere — and mass extinctions crashed it",
+  width: 700,
+  height: 380,
+  marginBottom: 50,
+  x: {label: "Billions of years ago", reverse: true, grid: true},
+  y: {label: "Oxygen (% of atmosphere)", grid: true, domain: [0, 40]},
+  marks: [
+    Plot.areaY(oxygenData, {x: "time", y: "o2", fill: "#74b9ff", fillOpacity: 0.3, curve: "natural"}),
+    Plot.line(oxygenData, {x: "time", y: "o2", stroke: "#0984e3", strokeWidth: 3, curve: "natural"}),
+    Plot.dot(oxygenData, {x: "time", y: "o2", fill: "#0984e3", r: 4}),
+    Plot.ruleY([21], {stroke: "#2ecc71", strokeWidth: 2, strokeDasharray: "8,4"}),
+    Plot.text([{x: 0.15, y: 23}], {x: "x", y: "y", text: d => "Today's level (21%)", fill: "#2ecc71", fontSize: 11, fontWeight: "bold"}),
+    // Great Oxidation Event marker
+    Plot.ruleX([2.4], {stroke: "#e74c3c", strokeWidth: 2, strokeDasharray: "5,3"}),
+    Plot.text([{x: 2.4, y: 37}], {x: "x", y: "y", text: d => "Great Oxidation\nEvent", fill: "#e74c3c", fontSize: 10, fontWeight: "bold", textAnchor: "middle"})
+  ]
+})
+```
+
+::: {.student-task}
+### 📝 Engage Questions
+
+1. What happened to atmospheric oxygen at **2.4 billion years ago**? What caused this change?
+2. Look at the **Carboniferous peak** (~300 Mya) — why might oxygen have been so high then?
+3. Why does oxygen **drop** at each mass extinction?
+:::
+
+# 🔍 Explore 1 — The Fossil Record {.explore-box}
+
+::: {.explore-box}
+## 4 Billion Years of Evolution
+
+Life on Earth has been evolving for at least 3.8 billion years. The fossil record shows us when major groups of organisms first appeared — and when they went extinct.
+:::
+
+```{ojs}
+//| echo: false
+evolutionData = [
+  {event: "First life (prokaryotes)", time: 3800, complexity: 1, type: "Origin", color: "#2ecc71"},
+  {event: "Photosynthesis evolves", time: 3500, complexity: 1.5, type: "Innovation", color: "#00cec9"},
+  {event: "Great Oxidation Event", time: 2400, complexity: 2, type: "Crisis", color: "#e74c3c"},
+  {event: "First eukaryotes", time: 2000, complexity: 3, type: "Origin", color: "#2ecc71"},
+  {event: "First multicellular life", time: 1500, complexity: 4, type: "Origin", color: "#2ecc71"},
+  {event: "Ediacaran fauna", time: 635, complexity: 5, type: "Origin", color: "#2ecc71"},
+  {event: "Cambrian Explosion", time: 540, complexity: 8, type: "Innovation", color: "#00cec9"},
+  {event: "First land plants", time: 470, complexity: 9, type: "Origin", color: "#2ecc71"},
+  {event: "First insects", time: 400, complexity: 9, type: "Origin", color: "#2ecc71"},
+  {event: "First forests", time: 360, complexity: 10, type: "Innovation", color: "#00cec9"},
+  {event: "Permian extinction (96% lost)", time: 252, complexity: 4, type: "Extinction", color: "#d63031"},
+  {event: "First dinosaurs", time: 230, complexity: 7, type: "Origin", color: "#2ecc71"},
+  {event: "First mammals", time: 200, complexity: 8, type: "Origin", color: "#2ecc71"},
+  {event: "First flowering plants", time: 130, complexity: 9, type: "Innovation", color: "#00cec9"},
+  {event: "K-Pg extinction (dinosaurs)", time: 66, complexity: 5, type: "Extinction", color: "#d63031"},
+  {event: "Mammals diversify", time: 55, complexity: 9, type: "Origin", color: "#2ecc71"},
+  {event: "First hominids", time: 6, complexity: 10, type: "Origin", color: "#2ecc71"},
+  {event: "Modern humans", time: 0.3, complexity: 10, type: "Origin", color: "#f39c12"}
+]
+
+Plot.plot({
+  title: "Major Events in the History of Life",
+  subtitle: "Millions of years ago — notice how extinctions are followed by diversification",
+  width: 700,
+  height: 450,
+  marginLeft: 210,
+  x: {label: "Millions of years ago", reverse: true, grid: true},
+  y: {label: null},
+  color: {legend: true, domain: ["Origin", "Innovation", "Crisis", "Extinction"], range: ["#2ecc71", "#00cec9", "#e74c3c", "#d63031"]},
+  marks: [
+    Plot.dot(evolutionData, {
+      x: "time",
+      y: "event",
+      fill: "type",
+      r: 7,
+      stroke: "white",
+      strokeWidth: 1
+    })
+  ]
+})
+```
+
+<div class="mind-blown">
+🧠 The Cambrian Explosion (540 Mya) produced nearly every major animal body plan we see today — in just 20 million years. That's fast in geological time! But it couldn't have happened without oxygen levels rising above ~15% first.
+</div>
+
+# 💡 Explain — Dynamic Feedbacks {.explain-box}
+
+::: {.explain-box}
+## Life and Earth Changed Each Other
+
+Earth and life didn't evolve independently. They are locked in **feedback loops** where changes in one drive changes in the other.
+:::
+
+## The Key Feedback Loops
+
+```{ojs}
+//| echo: false
+{
+  const svg = d3.create("svg")
+    .attr("width", 700)
+    .attr("height", 550)
+    .attr("viewBox", "0 0 700 550");
+
+  svg.append("text").attr("x", 350).attr("y", 25).attr("text-anchor", "middle")
+    .attr("font-size", 18).attr("font-weight", "bold").text("Earth-Life Feedback Loops");
+
+  // Feedback loop 1: Photosynthesis-Oxygen
+  const loop1Y = 80;
+  svg.append("rect").attr("x", 20).attr("y", loop1Y).attr("width", 660).attr("height", 120)
+    .attr("rx", 15).attr("fill", "#00b894").attr("opacity", 0.15);
+  svg.append("text").attr("x", 40).attr("y", loop1Y + 25).attr("font-size", 14).attr("font-weight", "bold").attr("fill", "#00b894")
+    .text("Loop 1: Photosynthesis ↔ Oxygen ↔ Complexity");
+  
+  const loop1Items = [
+    {text: "🦠 Cyanobacteria", x: 110, y: loop1Y + 70},
+    {text: "→ produce O₂ →", x: 260, y: loop1Y + 70},
+    {text: "🌬️ O₂ rises", x: 390, y: loop1Y + 70},
+    {text: "→ enables →", x: 490, y: loop1Y + 70},
+    {text: "🐟 Complex life", x: 610, y: loop1Y + 70}
+  ];
+  loop1Items.forEach(item => {
+    svg.append("text").attr("x", item.x).attr("y", item.y).attr("text-anchor", "middle")
+      .attr("font-size", 13).attr("font-weight", "bold").text(item.text);
+  });
+  svg.append("text").attr("x", 350).attr("y", loop1Y + 100).attr("text-anchor", "middle")
+    .attr("font-size", 11).attr("fill", "#636e72").text("More complex life → more photosynthesis → even more oxygen (positive feedback)");
+
+  // Feedback loop 2: Weathering-CO2
+  const loop2Y = 220;
+  svg.append("rect").attr("x", 20).attr("y", loop2Y).attr("width", 660).attr("height", 120)
+    .attr("rx", 15).attr("fill", "#6c5ce7").attr("opacity", 0.15);
+  svg.append("text").attr("x", 40).attr("y", loop2Y + 25).attr("font-size", 14).attr("font-weight", "bold").attr("fill", "#6c5ce7")
+    .text("Loop 2: Weathering ↔ CO₂ ↔ Climate (Thermostat)");
+  
+  svg.append("text").attr("x", 350).attr("y", loop2Y + 60).attr("text-anchor", "middle")
+    .attr("font-size", 13).text("🌡️ Warmer → faster weathering → more CO₂ removed → cooler");
+  svg.append("text").attr("x", 350).attr("y", loop2Y + 85).attr("text-anchor", "middle")
+    .attr("font-size", 13).text("❄️ Cooler → slower weathering → CO₂ builds up → warmer");
+  svg.append("text").attr("x", 350).attr("y", loop2Y + 110).attr("text-anchor", "middle")
+    .attr("font-size", 11).attr("fill", "#636e72").text("This negative feedback has kept Earth's temperature relatively stable for billions of years");
+
+  // Feedback loop 3: Extinction-Recovery
+  const loop3Y = 360;
+  svg.append("rect").attr("x", 20).attr("y", loop3Y).attr("width", 660).attr("height", 120)
+    .attr("rx", 15).attr("fill", "#e74c3c").attr("opacity", 0.15);
+  svg.append("text").attr("x", 40).attr("y", loop3Y + 25).attr("font-size", 14).attr("font-weight", "bold").attr("fill", "#e74c3c")
+    .text("Loop 3: Extinction → Open Niches → Diversification");
+
+  const loop3Items = [
+    {text: "💥 Mass Extinction", x: 130, y: loop3Y + 70},
+    {text: "→ empty niches →", x: 290, y: loop3Y + 70},
+    {text: "🌱 Survivors diversify", x: 455, y: loop3Y + 70},
+    {text: "→ new species", x: 600, y: loop3Y + 70}
+  ];
+  loop3Items.forEach(item => {
+    svg.append("text").attr("x", item.x).attr("y", item.y).attr("text-anchor", "middle")
+      .attr("font-size", 13).attr("font-weight", "bold").text(item.text);
+  });
+  svg.append("text").attr("x", 350).attr("y", loop3Y + 100).attr("text-anchor", "middle")
+    .attr("font-size", 11).attr("fill", "#636e72").text("Without the K-Pg extinction, mammals (and humans) might never have dominated Earth");
+
+  // Key takeaway
+  svg.append("rect").attr("x", 100).attr("y", 500).attr("width", 500).attr("height", 40)
+    .attr("rx", 20).attr("fill", "#00cec9");
+  svg.append("text").attr("x", 350).attr("y", 525).attr("text-anchor", "middle")
+    .attr("font-size", 14).attr("font-weight", "bold").attr("fill", "white")
+    .text("Life and Earth are a coupled system — each drives the other");
+
+  return svg.node();
+}
+```
+
+::: {.key-idea}
+### 💡 Coevolution = Earth Changed Life AND Life Changed Earth
+
+This isn't a one-way street:
+
+- **Life → Earth**: Photosynthesis created an oxygen atmosphere, organisms built limestone and coal deposits, roots accelerated weathering
+- **Earth → Life**: Plate tectonics created new habitats and barriers, volcanic eruptions caused mass extinctions, climate shifts drove adaptation
+- **Together**: The carbon cycle, oxygen cycle, and nitrogen cycle are all driven by the interaction between geological and biological processes
+:::
+
+# 🔍 Explore 2 — The Five Mass Extinctions {.explore-box}
+
+::: {.explore-box}
+## Destruction Creates Opportunity
+
+Earth has experienced **five major mass extinctions**. Each one wiped out 60–96% of all species. But each extinction was followed by an explosion of new life forms filling the empty ecological niches.
+:::
+
+```{ojs}
+//| echo: false
+extinctions = [
+  {name: "End-Ordovician", time: 445, loss: 86, cause: "Ice age, sea level drop", survivors: "Fish, early land plants", color: "#74b9ff"},
+  {name: "Late Devonian", time: 372, loss: 75, cause: "Ocean oxygen loss", survivors: "Early tetrapods, insects", color: "#0984e3"},
+  {name: "End-Permian\n(The Great Dying)", time: 252, loss: 96, cause: "Massive volcanism, warming", survivors: "A few reptile lineages", color: "#d63031"},
+  {name: "End-Triassic", time: 201, loss: 80, cause: "Volcanism, climate change", survivors: "Dinosaurs take over", color: "#e17055"},
+  {name: "End-Cretaceous\n(K-Pg)", time: 66, loss: 76, cause: "Asteroid impact", survivors: "Mammals, birds", color: "#fdcb6e"}
+]
+
+Plot.plot({
+  title: "The Big Five Mass Extinctions",
+  subtitle: "Percentage of species lost — the End-Permian nearly ended all life",
+  width: 700,
+  height: 300,
+  marginLeft: 160,
+  x: {label: "Species lost (%)", grid: true, domain: [0, 100]},
+  y: {label: null},
+  marks: [
+    Plot.barX(extinctions, {
+      x: "loss",
+      y: "name",
+      fill: "color",
+      rx: 8,
+      sort: {y: "-x"}
+    }),
+    Plot.text(extinctions, {
+      x: "loss",
+      y: "name",
+      text: d => d.loss + "%",
+      dx: 15,
+      fontSize: 14,
+      fontWeight: "bold"
+    })
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+viewof selectedExtinction = Inputs.select(
+  extinctions.map(e => e.name.replace("\n", " ")),
+  {label: "Explore an extinction event:"}
+)
+```
+
+```{ojs}
+//| echo: false
+{
+  const ext = extinctions.find(e => e.name.replace("\n", " ") === selectedExtinction);
+  const div = d3.create("div");
+  div.append("h3").style("color", "#00cec9").style("font-family", "Space Grotesk")
+    .text(`${ext.name.replace("\n", " ")} — ${ext.time} Mya`);
+  div.append("div").style("display", "flex").style("gap", "20px").style("flex-wrap", "wrap");
+  
+  const card1 = div.append("div").style("flex", "1").style("min-width", "200px")
+    .style("background", "#ffe0e0").style("padding", "15px").style("border-radius", "10px");
+  card1.append("h4").style("margin-top", "0").text("💀 What Happened");
+  card1.append("p").text(`${ext.loss}% of species went extinct`);
+  card1.append("p").style("font-weight", "bold").text(`Cause: ${ext.cause}`);
+  
+  const card2 = div.append("div").style("flex", "1").style("min-width", "200px")
+    .style("background", "#e0ffe0").style("padding", "15px").style("border-radius", "10px");
+  card2.append("h4").style("margin-top", "0").text("🌱 What Came Next");
+  card2.append("p").text(`Survivors: ${ext.survivors}`);
+  card2.append("p").style("font-weight", "bold")
+    .text("These survivors diversified to fill empty niches, producing new groups of organisms.");
+  
+  return div.node();
+}
+```
+
+<div class="mind-blown">
+🧠 Without the asteroid that killed the dinosaurs 66 million years ago, mammals would likely still be small, nocturnal creatures hiding from predators. Humans almost certainly would never have evolved. We owe our existence to a catastrophe.
+</div>
+
+# 🔬 Elaborate — Plants as Earth-Changers {.elaborate-box}
+
+::: {.elaborate-box}
+## How Plants Transformed Earth
+
+When plants colonized land (~470 Mya), they didn't just adapt to Earth — they **remade it**. Plants may be the most powerful geological force life has ever produced.
+:::
+
+## What Plants Did to Earth
+
+| Effect | Before Plants | After Plants |
+|--------|---------------|-------------|
+| **Atmosphere** | O₂ ~15% | O₂ rose to 35% (Carboniferous) |
+| **Soil** | Thin, rocky | Deep, organic-rich |
+| **Weathering** | Slow (physical only) | Fast (roots + acid) |
+| **CO₂** | Higher | Lower (plants absorb it) |
+| **Erosion** | Rapid | Slower (roots stabilize) |
+| **Coal/Oil** | None | Massive deposits from dead plants |
+
+```{ojs}
+//| echo: false
+carbonData = [
+  {time: 0.5, co2: 7000, label: "Cambrian (no land plants)"},
+  {time: 0.45, co2: 4500, label: "Ordovician"},
+  {time: 0.4, co2: 3000, label: "First land plants"},
+  {time: 0.35, co2: 2000, label: "Forests spreading"},
+  {time: 0.3, co2: 300, label: "Carboniferous (peak forests)"},
+  {time: 0.25, co2: 2000, label: "Permian extinction"},
+  {time: 0.2, co2: 1500, label: "Triassic"},
+  {time: 0.15, co2: 1200, label: "Jurassic"},
+  {time: 0.1, co2: 1000, label: "Cretaceous"},
+  {time: 0.05, co2: 500, label: "Paleogene"},
+  {time: 0.0, co2: 420, label: "Today"}
+]
+
+Plot.plot({
+  title: "Atmospheric CO₂ Over the Past 500 Million Years (ppm)",
+  subtitle: "Land plants dramatically drew down CO₂ — until mass extinction reversed it",
+  width: 700,
+  height: 350,
+  x: {label: "Billions of years ago", reverse: true, grid: true},
+  y: {label: "CO₂ (ppm)", grid: true},
+  marks: [
+    Plot.areaY(carbonData, {x: "time", y: "co2", fill: "#fdcb6e", fillOpacity: 0.3, curve: "natural"}),
+    Plot.line(carbonData, {x: "time", y: "co2", stroke: "#e17055", strokeWidth: 3, curve: "natural"}),
+    Plot.dot(carbonData, {x: "time", y: "co2", fill: "#e17055", r: 4}),
+    Plot.ruleY([420], {stroke: "#d63031", strokeWidth: 2, strokeDasharray: "5,5"}),
+    Plot.text([{x: 0.35, y: 550}], {x: "x", y: "y", text: d => "Today's CO₂ (420 ppm)", fill: "#d63031", fontSize: 10, fontWeight: "bold"})
+  ]
+})
+```
+
+::: {.key-idea}
+### 💡 The Carboniferous Coal Connection
+
+During the Carboniferous period (~360–300 Mya), vast swamp forests grew and died. The dead trees piled up because **bacteria hadn't yet evolved the ability to decompose wood** (lignin). This buried carbon became coal. By removing so much CO₂, forests cooled Earth into an ice age.
+
+This is the same coal we burn today for electricity — we're releasing 300-million-year-old carbon back into the atmosphere.
+:::
+
+# ✅ Evaluate — Connecting It All {.evaluate-box}
+
+::: {.evaluate-box}
+## Applying Your Understanding
+:::
+
+::: {.check-understanding}
+### 🧪 Evaluate Questions
+
+1. **Explain** how photosynthetic organisms both created and destroyed life on early Earth (the Great Oxidation Event).
+
+2. **Construct a timeline** showing at least 5 ways life changed Earth's atmosphere, oceans, or surface over 4 billion years.
+
+3. **Argue** whether mass extinctions have been "good" or "bad" for the evolution of complex life. Use evidence from at least 2 extinction events.
+
+4. **Compare** the CO₂ levels during the Carboniferous with today. What caused the difference? Why should this concern us?
+
+5. **Predict**: If all photosynthetic organisms died tomorrow, what would happen to Earth's atmosphere within 1,000 years? 10,000 years?
+:::
+
+::: {.student-task}
+### 📝 Model Update
+
+Update your model of "What makes a planet habitable" with these new ideas:
+
+- Life doesn't just **respond** to its environment — it **creates** its environment
+- Mass extinctions are destructive but also necessary for the evolution of complex life
+- Earth's atmosphere, temperature, and surface are all partly products of **biological** processes
+- How does this change your thinking about whether other planets could develop life?
+:::

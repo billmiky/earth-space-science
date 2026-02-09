@@ -1,0 +1,478 @@
+---
+title: "Surface Features & Plate Boundaries"
+subtitle: "Why do earthquakes and volcanoes form patterns on a map?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(225, 112, 85, 0.3); }
+.explore-box { background: linear-gradient(135deg, #0984e3 0%, #00b894 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(9, 132, 227, 0.3); }
+.explain-box { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(253, 203, 110, 0.3); }
+.evaluate-box { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3); }
+.engage-box h2, .explore-box h2, .explain-box h2, .elaborate-box h2, .evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 5px; box-shadow: 0 4px 15px rgba(225, 112, 85, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.5em; font-weight: 800; background: linear-gradient(135deg, #e17055 0%, #d63031 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #e17055; font-size: 1.1em; }
+.student-task { background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.mind-blown { background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 20px; margin: 20px 0; border-radius: 15px; font-size: 1.3em; font-weight: 700; text-align: center; box-shadow: 0 10px 25px rgba(225, 112, 85, 0.4); }
+.check-understanding { background: linear-gradient(to right, #e17055, #d63031); color: white; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 6px solid #fff; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #e17055 !important; }
+</style>
+```
+
+<span class="pe-badge">HS-ESS1-5</span> <span class="pe-badge">HS-ESS2-1</span> <span class="pe-badge">7–8 Days</span>
+
+<div class="big-question">🗺️ Why Do Earthquakes & Volcanoes Form Lines?</div>
+
+# 🔥 Engage — The Pattern on the Map {.engage-box}
+
+::: {.engage-box}
+## Earthquakes Aren't Random
+
+When we plot every major earthquake and volcanic eruption on a world map, an incredible pattern emerges: they don't occur randomly. They form **narrow bands** that wrap around the planet, outlining the edges of about **15 major tectonic plates**.
+
+These patterns are the key to understanding **plate tectonics** — the unifying theory of geology.
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+// Simulated earthquake locations along plate boundaries
+earthquakeLocations = {
+  const quakes = [];
+  // Ring of Fire (Pacific)
+  for (let i = 0; i < 80; i++) {
+    const angle = (i / 80) * Math.PI * 1.5 - Math.PI * 0.75;
+    quakes.push({
+      lon: -170 + 90 * Math.cos(angle) + (Math.random() - 0.5) * 8,
+      lat: 10 + 40 * Math.sin(angle) + (Math.random() - 0.5) * 5,
+      mag: 5 + Math.random() * 3,
+      region: "Ring of Fire"
+    });
+  }
+  // Mid-Atlantic Ridge
+  for (let i = 0; i < 30; i++) {
+    quakes.push({
+      lon: -30 + (Math.random() - 0.5) * 10,
+      lat: -50 + i * 4 + (Math.random() - 0.5) * 3,
+      mag: 4 + Math.random() * 2,
+      region: "Mid-Atlantic Ridge"
+    });
+  }
+  // Alpine-Himalayan Belt
+  for (let i = 0; i < 30; i++) {
+    quakes.push({
+      lon: -10 + i * 5 + (Math.random() - 0.5) * 5,
+      lat: 30 + (Math.random() - 0.5) * 8 + Math.sin(i * 0.3) * 5,
+      mag: 5 + Math.random() * 3,
+      region: "Alpine-Himalayan Belt"
+    });
+  }
+  return quakes;
+}
+
+Plot.plot({
+  title: "Global Earthquake Distribution (Simulated)",
+  subtitle: "Earthquakes cluster along plate boundaries — they're not random!",
+  width: 700,
+  height: 400,
+  projection: {type: "equirectangular"},
+  color: {legend: true, domain: ["Ring of Fire", "Mid-Atlantic Ridge", "Alpine-Himalayan Belt"], range: ["#d63031", "#0984e3", "#f39c12"]},
+  marks: [
+    Plot.geo({type: "Sphere"}, {stroke: "#dfe6e9", fill: "#f0f3f4"}),
+    Plot.dot(earthquakeLocations, {
+      x: "lon",
+      y: "lat",
+      r: d => d.mag * 0.5,
+      fill: "region",
+      fillOpacity: 0.6,
+      stroke: "white",
+      strokeWidth: 0.5
+    })
+  ]
+})
+```
+
+::: {.student-task}
+### 📝 Engage Activity
+
+1. Describe the pattern you see in earthquake locations. Where do they cluster?
+2. What do you think these "lines" of earthquakes represent?
+3. Where on this map would you **least** expect an earthquake? Why?
+:::
+
+# 🔍 Explore 1 — Types of Plate Boundaries {.explore-box}
+
+::: {.explore-box}
+## Three Ways Plates Interact
+
+Tectonic plates move relative to each other in three fundamental ways. The type of interaction determines what geological features and hazards occur.
+:::
+
+```{ojs}
+//| echo: false
+viewof boundaryType = Inputs.select(
+  ["Divergent (pulling apart)", "Convergent (pushing together)", "Transform (sliding past)"],
+  {label: "Select boundary type:"}
+)
+```
+
+```{ojs}
+//| echo: false
+{
+  const info = {
+    "Divergent (pulling apart)": {
+      title: "↔️ Divergent Boundaries",
+      motion: "Plates move APART from each other",
+      features: ["Mid-ocean ridges", "Rift valleys", "New ocean floor", "Volcanic islands (Iceland)"],
+      examples: ["Mid-Atlantic Ridge", "East African Rift", "Iceland"],
+      hazards: ["Mild earthquakes", "Volcanic eruptions (effusive, less explosive)", "Rift formation"],
+      process: "Magma rises to fill the gap as plates separate, creating new oceanic crust. This is called SEAFLOOR SPREADING.",
+      color: "#2ecc71"
+    },
+    "Convergent (pushing together)": {
+      title: "→←  Convergent Boundaries",
+      motion: "Plates move TOWARD each other",
+      features: ["Deep ocean trenches", "Mountain ranges (Himalayas)", "Volcanic arcs (Cascades)", "Subduction zones"],
+      examples: ["Cascadia Subduction Zone", "Himalayas", "Andes Mountains", "Japan Trench"],
+      hazards: ["Powerful earthquakes (M8-9+)", "Explosive volcanic eruptions", "Tsunamis", "Landslides"],
+      process: "When oceanic crust meets continental crust, the denser oceanic plate SUBDUCTS (dives under). This creates deep trenches, explosive volcanoes, and the most powerful earthquakes on Earth.",
+      color: "#d63031"
+    },
+    "Transform (sliding past)": {
+      title: "⇄ Transform Boundaries",
+      motion: "Plates slide PAST each other horizontally",
+      features: ["Linear fault valleys", "Offset streams", "Crushed/deformed rock zones"],
+      examples: ["San Andreas Fault (California)", "Alpine Fault (New Zealand)", "North Anatolian Fault (Turkey)"],
+      hazards: ["Sudden, powerful earthquakes", "Surface rupture", "No volcanism"],
+      process: "Plates grind past each other. Friction locks them in place for years, stress builds, then they suddenly slip — causing earthquakes. NO volcanism because no plate is being consumed.",
+      color: "#6c5ce7"
+    }
+  };
+
+  const b = info[boundaryType];
+  const div = d3.create("div").style("font-size", "1em");
+  
+  div.append("h3").style("color", b.color).style("font-family", "Space Grotesk, sans-serif").text(b.title);
+  div.append("p").style("font-size", "1.2em").style("font-weight", "bold").text(b.motion);
+  div.append("p").style("background", `${b.color}15`).style("padding", "12px").style("border-radius", "8px")
+    .style("border-left", `4px solid ${b.color}`).text(b.process);
+  
+  const grid = div.append("div").style("display", "flex").style("gap", "15px").style("flex-wrap", "wrap");
+  
+  const featCard = grid.append("div").style("flex", "1").style("min-width", "200px")
+    .style("background", "#f8f9fa").style("padding", "15px").style("border-radius", "10px");
+  featCard.append("h4").style("margin-top", "0").style("color", b.color).text("🏔️ Features");
+  const ul1 = featCard.append("ul");
+  b.features.forEach(f => ul1.append("li").text(f));
+
+  const hazCard = grid.append("div").style("flex", "1").style("min-width", "200px")
+    .style("background", "#fff5f5").style("padding", "15px").style("border-radius", "10px");
+  hazCard.append("h4").style("margin-top", "0").style("color", "#d63031").text("⚠️ Hazards");
+  const ul2 = hazCard.append("ul");
+  b.hazards.forEach(h => ul2.append("li").text(h));
+
+  const exCard = grid.append("div").style("flex", "1").style("min-width", "200px")
+    .style("background", "#f0f4ff").style("padding", "15px").style("border-radius", "10px");
+  exCard.append("h4").style("margin-top", "0").style("color", "#0984e3").text("📍 Examples");
+  const ul3 = exCard.append("ul");
+  b.examples.forEach(e => ul3.append("li").text(e));
+
+  return div.node();
+}
+```
+
+# 💡 Explain — Seafloor Spreading {.explain-box}
+
+::: {.explain-box}
+## The Proof That Plates Move
+
+In the 1960s, scientists discovered a pattern in the ocean floor that proved plates move apart at mid-ocean ridges: **magnetic stripes**.
+:::
+
+## Magnetic Striping Evidence
+
+When lava erupts at a mid-ocean ridge and solidifies, iron minerals in the rock align with Earth's magnetic field — like tiny compass needles frozen in place. Since Earth's magnetic field **reverses** every few hundred thousand years, the rock records alternating "stripes" of normal and reversed polarity.
+
+```{ojs}
+//| echo: false
+{
+  const svg = d3.create("svg")
+    .attr("width", 700)
+    .attr("height", 300)
+    .attr("viewBox", "0 0 700 300");
+
+  svg.append("text").attr("x", 350).attr("y", 25).attr("text-anchor", "middle")
+    .attr("font-size", 16).attr("font-weight", "bold").text("Magnetic Striping at a Mid-Ocean Ridge");
+
+  // Ridge center
+  svg.append("line").attr("x1", 350).attr("y1", 50).attr("x2", 350).attr("y2", 230)
+    .attr("stroke", "#d63031").attr("stroke-width", 3).attr("stroke-dasharray", "5,3");
+  svg.append("text").attr("x", 350).attr("y", 250).attr("text-anchor", "middle")
+    .attr("font-size", 12).attr("font-weight", "bold").attr("fill", "#d63031").text("Ridge axis");
+
+  // Stripes (symmetric)
+  const stripeWidth = 30;
+  const stripes = [
+    {offset: 0, color: "#2d3436", label: "Normal", age: "0"},
+    {offset: 1, color: "#dfe6e9", label: "Reversed", age: "0.8"},
+    {offset: 2, color: "#2d3436", label: "Normal", age: "1.8"},
+    {offset: 3, color: "#dfe6e9", label: "Reversed", age: "2.6"},
+    {offset: 4, color: "#2d3436", label: "Normal", age: "3.6"}
+  ];
+
+  stripes.forEach(s => {
+    // Right side
+    svg.append("rect")
+      .attr("x", 352 + s.offset * stripeWidth)
+      .attr("y", 60)
+      .attr("width", stripeWidth - 2)
+      .attr("height", 160)
+      .attr("fill", s.color)
+      .attr("opacity", 0.8);
+    // Left side (mirror)
+    svg.append("rect")
+      .attr("x", 348 - (s.offset + 1) * stripeWidth)
+      .attr("y", 60)
+      .attr("width", stripeWidth - 2)
+      .attr("height", 160)
+      .attr("fill", s.color)
+      .attr("opacity", 0.8);
+  });
+
+  // Age labels
+  svg.append("text").attr("x", 350).attr("y", 280).attr("text-anchor", "middle")
+    .attr("font-size", 11).attr("fill", "#636e72").text("← Older                    Youngest                    Older →");
+
+  // Arrows
+  svg.append("text").attr("x", 250).attr("y", 140).attr("text-anchor", "middle")
+    .attr("font-size", 24).text("⬅");
+  svg.append("text").attr("x", 450).attr("y", 140).attr("text-anchor", "middle")
+    .attr("font-size", 24).text("➡");
+
+  // Legend
+  svg.append("rect").attr("x", 20).attr("y", 60).attr("width", 15).attr("height", 15).attr("fill", "#2d3436");
+  svg.append("text").attr("x", 40).attr("y", 73).attr("font-size", 11).text("Normal polarity");
+  svg.append("rect").attr("x", 20).attr("y", 85).attr("width", 15).attr("height", 15).attr("fill", "#dfe6e9").attr("stroke", "#636e72");
+  svg.append("text").attr("x", 40).attr("y", 98).attr("font-size", 11).text("Reversed polarity");
+
+  return svg.node();
+}
+```
+
+::: {.key-idea}
+### 💡 Why Magnetic Stripes Are Proof
+
+1. The stripes are **perfectly symmetric** on both sides of the ridge
+2. The **same pattern** appears at every mid-ocean ridge worldwide
+3. Rocks get **older** with distance from the ridge (confirmed by dating)
+4. The pattern matches known **magnetic reversal timelines**
+
+This is irrefutable evidence that new ocean floor is being created at ridges and pushed outward — **seafloor spreading**.
+:::
+
+## Seafloor Age Data
+
+```{ojs}
+//| echo: false
+seafloorAge = [
+  {distance: 0, age: 0, direction: "East"},
+  {distance: 50, age: 2, direction: "East"},
+  {distance: 100, age: 5, direction: "East"},
+  {distance: 200, age: 10, direction: "East"},
+  {distance: 500, age: 25, direction: "East"},
+  {distance: 1000, age: 50, direction: "East"},
+  {distance: 2000, age: 100, direction: "East"},
+  {distance: 3500, age: 180, direction: "East"},
+  {distance: 0, age: 0, direction: "West"},
+  {distance: -50, age: 2, direction: "West"},
+  {distance: -100, age: 5, direction: "West"},
+  {distance: -200, age: 10, direction: "West"},
+  {distance: -500, age: 25, direction: "West"},
+  {distance: -1000, age: 50, direction: "West"},
+  {distance: -2000, age: 100, direction: "West"},
+  {distance: -3500, age: 180, direction: "West"}
+]
+
+Plot.plot({
+  title: "Ocean Floor Age vs. Distance from Mid-Atlantic Ridge",
+  subtitle: "Rock age increases symmetrically with distance — proving seafloor spreading",
+  width: 700,
+  height: 350,
+  grid: true,
+  x: {label: "Distance from ridge (km, negative = west)"},
+  y: {label: "Rock age (million years)"},
+  color: {legend: true, domain: ["East", "West"], range: ["#e17055", "#0984e3"]},
+  marks: [
+    Plot.line(seafloorAge.filter(d => d.direction === "East"), {x: "distance", y: "age", stroke: "#e17055", strokeWidth: 3}),
+    Plot.line(seafloorAge.filter(d => d.direction === "West"), {x: "distance", y: "age", stroke: "#0984e3", strokeWidth: 3}),
+    Plot.dot(seafloorAge, {x: "distance", y: "age", fill: "direction", r: 4}),
+    Plot.ruleX([0], {stroke: "#d63031", strokeWidth: 2, strokeDasharray: "5,3"})
+  ]
+})
+```
+
+<div class="mind-blown">
+🧠 The oldest ocean floor is only about 200 million years old — compare that to continental rocks that are up to 4 billion years old! Ocean floor is constantly being created at ridges and destroyed at subduction zones. The entire ocean floor is recycled every ~200 million years.
+</div>
+
+# 🔍 Explore 2 — Continental Drift Evidence {.explore-box}
+
+::: {.explore-box}
+## Wegener's Wild Idea (That Turned Out To Be Right)
+
+In 1912, Alfred Wegener proposed that all continents were once joined in a supercontinent called **Pangaea**. He was ridiculed by other scientists for decades — but he was right.
+:::
+
+## Evidence for Continental Drift
+
+```{ojs}
+//| echo: false
+viewof driftEvidence = Inputs.select(
+  ["Coastline fit", "Fossil distribution", "Rock types match", "Glacial evidence", "All evidence"],
+  {label: "Explore evidence type:"}
+)
+```
+
+```{ojs}
+//| echo: false
+{
+  const evidence = {
+    "Coastline fit": {
+      desc: "The coastlines of South America and Africa fit together like puzzle pieces. When we match the continental shelves (not just the shorelines), the fit is nearly perfect.",
+      strength: "Visual and geometric — continental shelves match within 50 km",
+      counterarg: "Could be coincidence",
+      verdict: "Suggestive but not conclusive alone"
+    },
+    "Fossil distribution": {
+      desc: "Identical fossils of land animals (Lystrosaurus, Cynognathus) and plants (Glossopteris) are found on continents now separated by thousands of kilometers of ocean. These organisms couldn't have swum across.",
+      strength: "Multiple species, same time period, on separate continents",
+      counterarg: "Maybe land bridges existed?",
+      verdict: "Strong evidence — too many species match across too many continents"
+    },
+    "Rock types match": {
+      desc: "Mountain chains and rock formations that end abruptly at one coastline continue on another continent. The Appalachian Mountains (USA) match the Caledonian Mountains (Scotland/Scandinavia).",
+      strength: "Same age, composition, and structure across ocean basins",
+      counterarg: "Similar conditions could produce similar rocks",
+      verdict: "Strong — the match is too precise to be coincidence"
+    },
+    "Glacial evidence": {
+      desc: "300-million-year-old glacial deposits are found in South America, Africa, India, and Australia. These places are now tropical! The scratches on rocks (striations) point away from a common center — which was the South Pole when they were joined.",
+      strength: "Glacial striations point to a single ice center that only works if continents were joined",
+      counterarg: "None convincing",
+      verdict: "Very strong — no alternative explanation works"
+    },
+    "All evidence": {
+      desc: "All four lines of evidence converge on the same conclusion: continents were once joined and have drifted apart. This is now confirmed by GPS measurements showing plates moving 2-10 cm per year.",
+      strength: "Multiple independent lines of evidence + direct GPS measurements",
+      counterarg: "None — plate tectonics is one of the best-supported theories in science",
+      verdict: "The theory of plate tectonics is as well-supported as evolution or gravity"
+    }
+  };
+
+  const e = evidence[driftEvidence];
+  const div = d3.create("div");
+  div.append("h3").style("color", "#e17055").style("font-family", "Space Grotesk").text(driftEvidence);
+  div.append("p").style("font-size", "1.1em").text(e.desc);
+  
+  const grid = div.append("div").style("display", "flex").style("gap", "10px").style("flex-wrap", "wrap");
+  
+  const s1 = grid.append("div").style("flex", "1").style("min-width", "180px")
+    .style("background", "#e8f5e9").style("padding", "12px").style("border-radius", "8px");
+  s1.append("strong").text("✅ Strength: ");
+  s1.append("span").text(e.strength);
+
+  const s2 = grid.append("div").style("flex", "1").style("min-width", "180px")
+    .style("background", "#fff3e0").style("padding", "12px").style("border-radius", "8px");
+  s2.append("strong").text("🤔 Counter: ");
+  s2.append("span").text(e.counterarg);
+
+  div.append("div").style("background", "#ffecd2").style("padding", "12px").style("border-radius", "8px")
+    .style("border-left", "4px solid #e17055").style("margin-top", "10px")
+    .html(`<strong>Verdict:</strong> ${e.verdict}`);
+
+  return div.node();
+}
+```
+
+# 🔬 Elaborate — The Adirondacks & Intraplate Features {.elaborate-box}
+
+::: {.elaborate-box}
+## Not Everything Happens at Plate Boundaries
+
+Most geological activity occurs at plate boundaries — but not all of it. The **Adirondack Mountains** in New York State are far from any plate boundary, yet they're **still rising**.
+:::
+
+## Intraplate Features
+
+| Feature | Location | Plate Boundary? | Explanation |
+|---------|----------|-----------------|-------------|
+| Adirondack Mountains | New York | No — middle of North American Plate | Crustal rebound from ancient orogeny; hot spot beneath |
+| Hawaiian Islands | Pacific Ocean | No — middle of Pacific Plate | Mantle plume (hotspot) beneath moving plate |
+| Yellowstone | Wyoming | No — middle of North American Plate | Mantle plume creating a supervolcano |
+| New Madrid Seismic Zone | Missouri | No — middle of North American Plate | Ancient failed rift — weakness in the crust |
+
+::: {.key-idea}
+### 💡 The Big Picture
+
+Plate tectonics explains ~95% of earthquakes and volcanic eruptions. The other ~5% occur at **intraplate** locations due to:
+
+- **Hotspots/mantle plumes** — columns of hot rock rising from deep in the mantle
+- **Ancient weaknesses** — old rifts or fault zones that can reactivate
+- **Crustal rebound** — the crust still adjusting from ancient tectonic events
+- **Stress transmitted** through the plate from distant boundaries
+:::
+
+# ✅ Evaluate {.evaluate-box}
+
+::: {.evaluate-box}
+## Putting Plate Tectonics Together
+:::
+
+::: {.check-understanding}
+### 🧪 Evaluate Questions
+
+1. **Explain** why earthquakes and volcanoes cluster along narrow bands around the planet.
+
+2. **Compare and contrast** the three types of plate boundaries. For each, describe the motion, features created, and types of hazards.
+
+3. **Evaluate** Wegener's evidence for continental drift. Why was he rejected at first, and what new evidence eventually proved him right?
+
+4. **Explain** how magnetic striping on the ocean floor proves seafloor spreading. Include a diagram.
+
+5. **Apply**: The Cascadia Subduction Zone (Pacific Northwest) is a convergent boundary that hasn't had a major earthquake since 1700. Based on what you know about convergent boundaries, what hazards should people in Seattle and Portland prepare for?
+
+6. **Explain** how the Adirondack Mountains can still be rising even though they're far from any plate boundary.
+:::
+
+::: {.student-task}
+### 📝 Model Update
+
+Update your model from the Unit Opening:
+
+- Add **plate boundaries** to your explanation of why volcanoes and earthquakes occur where they do
+- Explain how **seafloor spreading** at divergent boundaries and **subduction** at convergent boundaries recycle Earth's crust
+- How does this connect to why Krakatoa (Indonesia) was so explosive? (Hint: What type of boundary is Indonesia on?)
+:::

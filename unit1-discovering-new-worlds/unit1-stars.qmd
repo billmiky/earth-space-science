@@ -1,0 +1,361 @@
+---
+title: "Unit 1: Star Life Cycles"
+subtitle: "Does the exoplanet have a star like our Sun? What is our Sun like compared to other stars?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); }
+.engage-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+.explore-box { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3); }
+.explain-box { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: #1a1a1a; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: #1a1a1a; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3); }
+.evaluate-box { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #1a1a1a; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(250, 112, 154, 0.3); }
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 5px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.5em; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #ff6b6b; font-size: 1.1em; }
+.student-task { background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.mind-blown { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; margin: 20px 0; border-radius: 15px; font-size: 1.3em; font-weight: 700; text-align: center; box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4); }
+.check-understanding { background: linear-gradient(to right, #667eea, #764ba2); color: white; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 6px solid #fff; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #667eea !important; }
+</style>
+```
+
+<span class="pe-badge">HS-ESS1-1</span> <span class="pe-badge">HS-ESS1-3</span> <span class="pe-badge">Time: 7 Days</span>
+
+<div class="big-question">⭐ Not All Stars Are Created Equal ⭐</div>
+
+# Engage: What Happens to Stars Over Time?
+
+::: {.engage-box}
+## 💥 A Star Exploded — And the Whole World Noticed
+
+<div style="font-size: 1.3em; font-weight: 700; text-align: center; margin: 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+In 1054 CE, a star exploded so violently that it was visible in broad daylight for 23 days. Historical records from China, Japan, the Middle East, and the Americas all describe it. Today, the remnant is the Crab Nebula.
+</div>
+
+If stars can **explode**, that's bad news for any planet orbiting them. So the big question becomes:
+
+- 🤔 What made that star explode while our Sun has been stable for 4.6 billion years?
+- 🤔 How do we know which stars are stable enough to support life?
+- 🤔 Does the exoplanet in our performance task orbit a stable star?
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+starLifespans = [
+  {type: "O-type\n(60 M☉)", mass: 60, lifespan: 0.003, temp: 40000, luminosity: 800000, color: "#6ca0dc", fate: "Supernova → Black hole"},
+  {type: "B-type\n(10 M☉)", mass: 10, lifespan: 0.02, temp: 20000, luminosity: 10000, color: "#a0c4ff", fate: "Supernova → Neutron star"},
+  {type: "A-type\n(2 M☉)", mass: 2, lifespan: 1.0, temp: 8500, luminosity: 20, color: "#ffffff", fate: "Planetary nebula"},
+  {type: "G-type\n(1 M☉) ← SUN", mass: 1, lifespan: 10, temp: 5800, luminosity: 1, color: "#ffdd57", fate: "Red giant → White dwarf"},
+  {type: "K-type\n(0.7 M☉)", mass: 0.7, lifespan: 17, temp: 4500, luminosity: 0.3, color: "#ffa94d", fate: "Red giant → White dwarf"},
+  {type: "M-type\n(0.3 M☉)", mass: 0.3, lifespan: 70, temp: 3200, luminosity: 0.01, color: "#ff6b6b", fate: "Never leaves main sequence"}
+]
+
+Plot.plot({
+  title: "Star Lifespan vs. Mass — Bigger Stars Die MUCH Faster",
+  subtitle: "Our Sun (G-type, 1 solar mass) has a 10-billion-year lifespan",
+  width: 700,
+  height: 380,
+  marginLeft: 130,
+  x: {label: "Lifespan (billion years)", type: "log", grid: true},
+  y: {label: null},
+  marks: [
+    Plot.barX(starLifespans, {
+      y: "type",
+      x: "lifespan",
+      fill: "color",
+      sort: {y: "x"}
+    }),
+    Plot.text(starLifespans, {
+      y: "type",
+      x: "lifespan",
+      text: d => `${d.lifespan >= 1 ? d.lifespan + " Gyr" : (d.lifespan * 1000) + " Myr"} → ${d.fate}`,
+      dx: 5,
+      textAnchor: "start",
+      fontSize: 10,
+      fontWeight: "bold"
+    }),
+    Plot.ruleX([4.6], {stroke: "#e74c3c", strokeWidth: 2, strokeDasharray: "5,5"}),
+    Plot.text([{y: "A-type\n(2 M☉)", x: 4.6}], {
+      y: "y", x: "x", text: d => "← Age of life on Earth",
+      dx: 5, dy: -12, fontSize: 10, fill: "#e74c3c", fontWeight: "bold"
+    })
+  ]
+})
+```
+
+::: {.student-task}
+### 📝 Pattern Recognition
+
+1. What's the relationship between a star's **mass** and its **lifespan**?
+2. The red dashed line shows the age of life on Earth (4.6 billion years). Which star types have lifespans **shorter** than this? What does that mean for habitability?
+3. Why might a very low-mass M-type star (70 billion year lifespan!) still not be ideal for life? (Hint: look at luminosity)
+:::
+
+# Explore 1: Patterns of Star Stability
+
+::: {.explore-box}
+## 🔬 The Hertzsprung-Russell Diagram
+
+The H-R diagram is one of the most important tools in astronomy. It plots stars by their **temperature** (x-axis) and **luminosity** (y-axis), revealing patterns in how stars live and die.
+:::
+
+```{ojs}
+//| echo: false
+hrStars = [
+  // Main sequence
+  {name: "Hot blue giant", temp: 30000, lum: 100000, stage: "Main Sequence", r: 5},
+  {name: "B-type", temp: 20000, lum: 10000, stage: "Main Sequence", r: 4},
+  {name: "Sirius A", temp: 9900, lum: 25, stage: "Main Sequence", r: 4},
+  {name: "Sun", temp: 5800, lum: 1, stage: "Main Sequence", r: 6},
+  {name: "K-dwarf", temp: 4500, lum: 0.3, stage: "Main Sequence", r: 3},
+  {name: "Proxima Centauri", temp: 3000, lum: 0.0017, stage: "Main Sequence", r: 4},
+  // Red giants
+  {name: "Betelgeuse", temp: 3500, lum: 100000, stage: "Red Giant", r: 7},
+  {name: "Aldebaran", temp: 3900, lum: 500, stage: "Red Giant", r: 5},
+  {name: "Arcturus", temp: 4300, lum: 170, stage: "Red Giant", r: 5},
+  // White dwarfs
+  {name: "Sirius B", temp: 25000, lum: 0.03, stage: "White Dwarf", r: 3},
+  {name: "Procyon B", temp: 7700, lum: 0.0005, stage: "White Dwarf", r: 3},
+  // Supergiants
+  {name: "Rigel", temp: 12000, lum: 120000, stage: "Supergiant", r: 6},
+  {name: "Deneb", temp: 8500, lum: 200000, stage: "Supergiant", r: 6}
+]
+
+Plot.plot({
+  title: "Hertzsprung-Russell Diagram",
+  subtitle: "Temperature decreases to the right (astronomers are weird like that)",
+  width: 700,
+  height: 450,
+  marginRight: 80,
+  x: {label: "Surface Temperature (K)", reverse: true, type: "log"},
+  y: {label: "Luminosity (× Sun)", type: "log", grid: true},
+  color: {
+    domain: ["Main Sequence", "Red Giant", "White Dwarf", "Supergiant"],
+    range: ["#3498db", "#e74c3c", "#ecf0f1", "#f39c12"],
+    legend: true
+  },
+  marks: [
+    Plot.dot(hrStars, {
+      x: "temp",
+      y: "lum",
+      fill: "stage",
+      r: "r",
+      stroke: "#333",
+      strokeWidth: 0.5,
+      title: d => `${d.name}\nTemp: ${d.temp}K\nLuminosity: ${d.lum}× Sun\nStage: ${d.stage}`
+    }),
+    Plot.text(hrStars.filter(d => ["Sun", "Betelgeuse", "Sirius B", "Rigel", "Proxima Centauri"].includes(d.name)), {
+      x: "temp",
+      y: "lum",
+      text: "name",
+      dx: 15,
+      fontSize: 10,
+      fontWeight: "bold"
+    }),
+    Plot.ruleY([1], {stroke: "#f39c12", strokeDasharray: "3,3", strokeOpacity: 0.5})
+  ]
+})
+```
+
+::: {.key-idea}
+### 💡 What the H-R Diagram Tells Us
+
+- **Main Sequence** (diagonal band): Stars spending most of their lives here, fusing hydrogen stably
+- **Red Giants** (upper right): Stars that ran out of core hydrogen and expanded enormously
+- **White Dwarfs** (lower left): Dead stellar cores, slowly cooling
+- **Supergiants** (top): Massive, luminous stars nearing explosive deaths
+
+Our Sun sits comfortably in the **middle of the Main Sequence** — not too hot, not too cool, with a lifespan of ~10 billion years. This is the **"Goldilocks zone"** for stars supporting life.
+:::
+
+# Explain: Why Are Some Stars Stable and Others Explode?
+
+::: {.explain-box}
+## 🧠 The Battle: Gravity vs. Fusion Pressure
+
+A star is a balancing act between two forces:
+
+- **Gravity** pulls everything inward (wants to crush the star)
+- **Fusion pressure** pushes outward (the energy from fusion creates radiation and heat)
+
+As long as these forces balance, the star is **stable**. When the fuel runs out, gravity wins.
+:::
+
+```{ojs}
+//| echo: false
+viewof starMass = Inputs.range([0.3, 30], {label: "Star mass (solar masses):", step: 0.1, value: 1.0})
+```
+
+```{ojs}
+//| echo: false
+{
+  const width = 700;
+  const height = 300;
+  const svg = d3.create("svg").attr("width", width).attr("height", height);
+  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#0a0a2e").attr("rx", 12);
+
+  const lifespan = (10 / Math.pow(starMass, 2.5)).toFixed(2);
+  const temp = Math.round(5800 * Math.pow(starMass, 0.5));
+  const lum = Math.pow(starMass, 3.5).toFixed(1);
+  const fate = starMass < 0.5 ? "Slowly fades (never becomes red giant)" :
+               starMass < 8 ? "Red Giant → White Dwarf" :
+               starMass < 25 ? "Supergiant → Supernova → Neutron Star" :
+               "Supergiant → Supernova → BLACK HOLE";
+  const fateColor = starMass < 8 ? "#f39c12" : starMass < 25 ? "#e74c3c" : "#9b59b6";
+  const stable = lifespan > 4.6 ? "✅ Long enough for complex life" : "❌ Too short for complex life";
+  const stableColor = lifespan > 4.6 ? "#2ecc71" : "#e74c3c";
+
+  svg.append("text").attr("x", width/2).attr("y", 25).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-size", 16).attr("font-weight", "bold")
+    .text(`Star: ${starMass.toFixed(1)} Solar Masses`);
+
+  // Star visualization
+  const r = Math.min(60, 15 + starMass * 5);
+  const starColor = temp > 20000 ? "#6ca0dc" : temp > 10000 ? "#a0c4ff" : temp > 7000 ? "#ffffff" : temp > 5000 ? "#ffdd57" : temp > 4000 ? "#ffa94d" : "#ff6b6b";
+  svg.append("circle").attr("cx", 100).attr("cy", 170).attr("r", r)
+    .attr("fill", starColor).attr("opacity", 0.9);
+
+  // Stats
+  const stats = [
+    {label: "Surface Temperature:", value: `${temp.toLocaleString()} K`, color: "white"},
+    {label: "Luminosity:", value: `${lum}× Sun`, color: "white"},
+    {label: "Lifespan:", value: `${lifespan} billion years`, color: "white"},
+    {label: "Stability for life:", value: stable, color: stableColor},
+    {label: "Fate:", value: fate, color: fateColor}
+  ];
+
+  stats.forEach((s, i) => {
+    svg.append("text").attr("x", 200).attr("y", 75 + i * 35).attr("fill", "#aaa").attr("font-size", 12).text(s.label);
+    svg.append("text").attr("x", 370).attr("y", 75 + i * 35).attr("fill", s.color).attr("font-size", 13).attr("font-weight", "bold").text(s.value);
+  });
+
+  return svg.node();
+}
+```
+
+::: {.student-task}
+### 📝 Star Mass Investigation
+
+Use the slider to explore stars of different masses:
+
+1. At what mass does a star's lifespan drop below 4.6 billion years (the age of life on Earth)?
+2. What happens to a star's **temperature** and **luminosity** as mass increases?
+3. Stars above ~8 solar masses end as supernovae. Why would this be catastrophic for any orbiting planets?
+4. What range of star masses would you want for an exoplanet's host star? Explain your reasoning.
+:::
+
+# Elaborate: Nucleosynthesis — Stars Build the Elements
+
+::: {.elaborate-box}
+## 🔬 Stars Are Element Factories
+
+Stars don't just burn hydrogen — they **build** heavier elements through nucleosynthesis. The mass of a star determines which elements it can create.
+:::
+
+```{ojs}
+//| echo: false
+elements = [
+  {element: "H → He", minMass: 0.08, phase: "Main Sequence", color: "#3498db"},
+  {element: "He → C, O", minMass: 0.5, phase: "Red Giant", color: "#f39c12"},
+  {element: "C → Ne, Na, Mg", minMass: 4, phase: "Late Giant", color: "#e67e22"},
+  {element: "Ne → O, Mg", minMass: 8, phase: "Supergiant", color: "#e74c3c"},
+  {element: "O → Si, S", minMass: 8, phase: "Supergiant", color: "#c0392b"},
+  {element: "Si → Fe (iron)", minMass: 10, phase: "Pre-supernova", color: "#8e44ad"},
+  {element: "Fe → heavier\n(Au, U, etc.)", minMass: 10, phase: "Supernova only!", color: "#2c3e50"}
+]
+
+Plot.plot({
+  title: "Nucleosynthesis: Which Stars Build Which Elements?",
+  subtitle: "Minimum star mass needed to create each element",
+  width: 700,
+  height: 380,
+  marginLeft: 140,
+  x: {label: "Minimum Star Mass (solar masses)", grid: true},
+  y: {label: null},
+  marks: [
+    Plot.barX(elements, {
+      y: "element",
+      x: "minMass",
+      fill: "color",
+      sort: {y: null}
+    }),
+    Plot.text(elements, {
+      y: "element",
+      x: "minMass",
+      text: d => `${d.minMass} M☉ — ${d.phase}`,
+      dx: 5,
+      textAnchor: "start",
+      fontSize: 10,
+      fontWeight: "bold"
+    }),
+    Plot.ruleX([1], {stroke: "#ffdd57", strokeWidth: 2, strokeDasharray: "5,5"}),
+    Plot.text([{y: "He → C, O", x: 1}], {
+      y: "y", x: "x", text: d => "Our Sun →",
+      dx: -45, fontSize: 10, fill: "#ffdd57", fontWeight: "bold"
+    })
+  ]
+})
+```
+
+<div class="mind-blown">
+⭐ Every atom of carbon in your body, every atom of oxygen you breathe, every atom of iron in your blood — ALL of it was forged inside a star that exploded billions of years ago. You are literally made of star stuff.
+</div>
+
+# Evaluate: Which Star Can Support Life?
+
+::: {.evaluate-box}
+## ✏️ Construct Your Argument
+
+Using everything you've learned about star life cycles, argue which star in the performance task data set is most likely to support a planet with life.
+:::
+
+::: {.student-task}
+### 📝 Performance Task Connection
+
+1. **Revise your model** to include what you've learned about star stability. What features of a star matter for habitability?
+
+2. **Evaluate these criteria** for each exoplanet's host star:
+
+| Criterion | Why It Matters | Ideal Range |
+|---|---|---|
+| Mass | Determines lifespan and stability | 0.5–1.5 solar masses |
+| Spectral type | Related to temperature and luminosity | G or K type |
+| Lifespan | Must be long enough for life to evolve | > 4 billion years |
+| Stability | No dramatic changes in energy output | Main sequence |
+
+3. **Write your argument:** Which star from the data set is most likely to support life? Use evidence from the H-R diagram, lifespan calculations, and nucleosynthesis patterns.
+:::
+
+::: {.check-understanding}
+### 📋 What You Figured Out
+
+- ⭐ More massive stars burn **faster** and die **younger** (inverse relationship)
+- 📊 The H-R diagram reveals that most stars sit on the **Main Sequence** where they're stable
+- 💥 Stars > 8 solar masses end in **supernovae** — destroying any nearby planets
+- ⚛️ Only massive stars can create elements **heavier than iron** — through supernovae
+- 🌍 For life, we need a star with mass **0.5–1.5 solar masses** (G or K type) for stability
+:::

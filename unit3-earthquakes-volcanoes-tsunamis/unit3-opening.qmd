@@ -1,0 +1,188 @@
+---
+title: "Unit 3: Opening — The Krakatoa Enigma"
+subtitle: "Why do massive volcanic eruptions, earthquakes, and tsunamis happen?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(225, 112, 85, 0.3); }
+.engage-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 5px; box-shadow: 0 4px 15px rgba(225, 112, 85, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.5em; font-weight: 800; background: linear-gradient(135deg, #e17055 0%, #d63031 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #e17055; font-size: 1.1em; }
+.student-task { background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.mind-blown { background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 20px; margin: 20px 0; border-radius: 15px; font-size: 1.3em; font-weight: 700; text-align: center; box-shadow: 0 10px 25px rgba(225, 112, 85, 0.4); }
+.check-understanding { background: linear-gradient(to right, #e17055, #d63031); color: white; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 6px solid #fff; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #e17055 !important; }
+</style>
+```
+
+<span class="pe-badge">Unit 3</span> <span class="pe-badge">Time: 2 Days</span>
+
+<div class="big-question">🌋 What Forces Shape Earth's Violent Surface?</div>
+
+# The Anchor Phenomenon
+
+::: {.engage-box}
+## 💥 Krakatoa, August 27, 1883
+
+<div style="font-size: 1.3em; font-weight: 700; text-align: center; margin: 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+The loudest sound in recorded history. The explosion was heard 4,800 km away — like hearing a bomb in New York from London.
+</div>
+
+**What happened:**
+
+- 🌋 The volcanic island of Krakatoa (Indonesia) exploded with a force of **200 megatons** — 10,000 times the Hiroshima bomb
+- 🌊 Tsunamis up to **30 meters** high killed over **36,000 people** on nearby islands
+- 🌡️ Ash and sulfur ejected into the stratosphere **lowered global temperatures** by 1.2°C for a year
+- 🎨 The ash created **brilliant red sunsets** worldwide for months — scientists believe Edvard Munch's painting *The Scream* was inspired by the sky
+- 💨 The pressure wave circled the globe **7 times**, detected on barometers everywhere
+- 🔊 The sound wave traveled at **1,200 km/h** and ruptured eardrums 60 km away
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+eruptionData = [
+  {name: "Mt. St. Helens (1980)", vei: 5, deaths: 57, ejecta: 1, color: "#74b9ff"},
+  {name: "Pinatubo (1991)", vei: 6, deaths: 800, ejecta: 10, color: "#0984e3"},
+  {name: "Krakatoa (1883)", vei: 6, deaths: 36000, ejecta: 25, color: "#e17055"},
+  {name: "Tambora (1815)", vei: 7, deaths: 92000, ejecta: 160, color: "#d63031"},
+  {name: "Toba (74,000 ya)", vei: 8, deaths: 0, ejecta: 2800, color: "#636e72"}
+]
+
+Plot.plot({
+  title: "Volcanic Eruptions by Scale (VEI = Volcanic Explosivity Index)",
+  subtitle: "Each VEI level is ~10x more powerful than the previous",
+  width: 700,
+  height: 300,
+  marginLeft: 180,
+  x: {label: "Material ejected (km³) — log scale", type: "log", grid: true},
+  y: {label: null},
+  marks: [
+    Plot.barX(eruptionData, {
+      x: "ejecta",
+      y: "name",
+      fill: "color",
+      rx: 8,
+      sort: {y: "x"}
+    }),
+    Plot.text(eruptionData, {
+      x: "ejecta",
+      y: "name",
+      text: d => `VEI ${d.vei} — ${d.ejecta} km³`,
+      dx: 25,
+      fontSize: 11,
+      fontWeight: "bold"
+    })
+  ]
+})
+```
+
+<div class="mind-blown">
+🧠 The Toba supervolcano eruption (74,000 years ago) ejected 2,800 km³ of material — enough to bury the entire state of Texas under 12 meters of ash. It may have caused a "volcanic winter" that nearly drove humans extinct, reducing our population to perhaps 10,000 individuals.
+</div>
+
+# The Pattern
+
+## Where Do Disasters Strike?
+
+```{ojs}
+//| echo: false
+hazardData = [
+  {type: "Earthquakes (M6+, 2000-2023)", location: "Pacific Ring of Fire", percent: 81, color: "#e17055"},
+  {type: "Earthquakes (M6+, 2000-2023)", location: "Alpine-Himalayan Belt", percent: 15, color: "#fdcb6e"},
+  {type: "Earthquakes (M6+, 2000-2023)", location: "Rest of world", percent: 4, color: "#dfe6e9"},
+  {type: "Active Volcanoes", location: "Pacific Ring of Fire", percent: 75, color: "#e17055"},
+  {type: "Active Volcanoes", location: "Mid-ocean ridges", percent: 15, color: "#0984e3"},
+  {type: "Active Volcanoes", location: "Hotspots (Hawaii, etc.)", percent: 10, color: "#2ecc71"}
+]
+
+Plot.plot({
+  title: "Where Do Natural Hazards Occur?",
+  subtitle: "The Ring of Fire dominates — but why?",
+  width: 700,
+  height: 300,
+  marginLeft: 200,
+  x: {label: "Percentage of global total (%)", grid: true, domain: [0, 100]},
+  y: {label: null},
+  fy: {label: null},
+  marks: [
+    Plot.barX(hazardData, {
+      x: "percent",
+      y: "location",
+      fy: "type",
+      fill: "color",
+      rx: 5
+    }),
+    Plot.text(hazardData, {
+      x: "percent",
+      y: "location",
+      fy: "type",
+      text: d => d.percent + "%",
+      dx: 15,
+      fontSize: 12,
+      fontWeight: "bold"
+    })
+  ]
+})
+```
+
+::: {.key-idea}
+### 🎯 The Big Mystery
+
+Earthquakes, volcanoes, and tsunamis don't happen randomly. They cluster along **narrow bands** that wrap around the planet. These bands mark the **edges of tectonic plates** — the giant puzzle pieces of Earth's surface.
+
+In this unit, we'll figure out:
+
+1. **What's inside Earth** that drives these violent events
+2. **Why disasters cluster** along specific belts
+3. **What makes the plates move**
+4. **Whether we can predict** and prepare for these hazards
+:::
+
+::: {.student-task}
+### 📝 Initial Model
+
+Draw an initial model that explains:
+
+1. Why do volcanoes, earthquakes, and tsunamis happen in certain locations?
+2. What's happening **beneath** Earth's surface to cause these events?
+3. Why did Krakatoa explode so violently?
+
+**Don't worry about being "right"** — this is your starting model. We'll revise it as we learn more.
+:::
+
+::: {.check-understanding}
+### 📋 Driving Question Board
+
+Write at least **3 questions** you want answered during this unit. Here are some starters:
+
+- Why are there so many volcanoes around the Pacific Ocean?
+- What causes an earthquake?
+- Could a supervolcano like Toba erupt again?
+- How do we know what's inside Earth if we've never drilled more than 12 km?
+- Why do some volcanoes explode violently while others flow gently?
+- Can we predict earthquakes? Why or why not?
+:::

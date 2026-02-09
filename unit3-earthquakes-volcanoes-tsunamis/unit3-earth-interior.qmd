@@ -1,0 +1,509 @@
+---
+title: "Earth's Interior"
+subtitle: "How do we know what's inside Earth if we've never been there?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(225, 112, 85, 0.3); }
+.explore-box { background: linear-gradient(135deg, #0984e3 0%, #00b894 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(9, 132, 227, 0.3); }
+.explain-box { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(253, 203, 110, 0.3); }
+.evaluate-box { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3); }
+.engage-box h2, .explore-box h2, .explain-box h2, .elaborate-box h2, .evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 5px; box-shadow: 0 4px 15px rgba(225, 112, 85, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.5em; font-weight: 800; background: linear-gradient(135deg, #e17055 0%, #d63031 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #e17055; font-size: 1.1em; }
+.student-task { background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.mind-blown { background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 20px; margin: 20px 0; border-radius: 15px; font-size: 1.3em; font-weight: 700; text-align: center; box-shadow: 0 10px 25px rgba(225, 112, 85, 0.4); }
+.check-understanding { background: linear-gradient(to right, #e17055, #d63031); color: white; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 6px solid #fff; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #e17055 !important; }
+</style>
+```
+
+<span class="pe-badge">HS-ESS2-1</span> <span class="pe-badge">HS-ESS2-3</span> <span class="pe-badge">7–8 Days</span>
+
+<div class="big-question">🔬 What's Inside a Planet We've Never Seen?</div>
+
+# 🔥 Engage — The Deepest Hole {.engage-box}
+
+::: {.engage-box}
+## The Kola Superdeep Borehole
+
+The deepest hole ever drilled is the **Kola Superdeep Borehole** in Russia — 12,262 meters (12.3 km) deep. It took **24 years** (1970–1994) to drill.
+
+The result? They barely scratched the surface.
+
+**Earth's radius is 6,371 km.** The Kola borehole reached only **0.2%** of the way to the center. It's like scratching the skin of an apple.
+
+So how do we know what's inside Earth if we've never been there?
+
+**The answer: earthquakes.** Every earthquake sends seismic waves through the entire planet. By analyzing how these waves travel, speed up, slow down, bend, and reflect, we can build a detailed picture of Earth's interior — like an X-ray of the planet.
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+depthData = [
+  {item: "Deepest ocean (Mariana Trench)", depth: 11, color: "#0984e3"},
+  {item: "Kola Superdeep Borehole", depth: 12.3, color: "#636e72"},
+  {item: "Deepest mine (Mponeng, SA)", depth: 4, color: "#fdcb6e"},
+  {item: "Continental crust thickness", depth: 35, color: "#dfe6e9"},
+  {item: "Oceanic crust thickness", depth: 7, color: "#74b9ff"},
+  {item: "Upper mantle", depth: 410, color: "#e17055"},
+  {item: "Lower mantle", depth: 2900, color: "#d63031"},
+  {item: "Outer core", depth: 5100, color: "#f39c12"},
+  {item: "Inner core (center of Earth)", depth: 6371, color: "#fdcb6e"}
+]
+
+Plot.plot({
+  title: "How Deep Have We Gone? (km below surface)",
+  subtitle: "Log scale — we've barely scratched the surface",
+  width: 700,
+  height: 350,
+  marginLeft: 250,
+  x: {label: "Depth (km) — log scale", type: "log", grid: true},
+  y: {label: null},
+  marks: [
+    Plot.barX(depthData, {
+      x: "depth",
+      y: "item",
+      fill: "color",
+      rx: 8,
+      sort: {y: "x"}
+    }),
+    Plot.text(depthData, {
+      x: "depth",
+      y: "item",
+      text: d => d.depth.toLocaleString() + " km",
+      dx: 20,
+      fontSize: 11,
+      fontWeight: "bold"
+    })
+  ]
+})
+```
+
+::: {.student-task}
+### 📝 Engage Questions
+
+1. If we can't directly sample Earth's interior, what kinds of **indirect evidence** might we use?
+2. What could waves tell us about the material they pass through?
+3. Why do you think the Kola borehole project was abandoned? What problems would you encounter drilling that deep?
+:::
+
+# 🔍 Explore 1 — Seismic Waves {.explore-box}
+
+::: {.explore-box}
+## Earthquakes as Earth's X-Ray Machine
+
+When an earthquake occurs, it produces two main types of seismic waves that travel through Earth's interior. These waves behave differently depending on what material they pass through.
+:::
+
+## P-Waves vs. S-Waves
+
+```{ojs}
+//| echo: false
+{
+  const svg = d3.create("svg")
+    .attr("width", 700)
+    .attr("height", 380)
+    .attr("viewBox", "0 0 700 380");
+
+  svg.append("text").attr("x", 350).attr("y", 25).attr("text-anchor", "middle")
+    .attr("font-size", 18).attr("font-weight", "bold").text("Two Types of Seismic Waves");
+
+  // P-wave
+  svg.append("rect").attr("x", 20).attr("y", 50).attr("width", 320).attr("height", 280)
+    .attr("rx", 15).attr("fill", "#e17055").attr("opacity", 0.1);
+  svg.append("text").attr("x", 180).attr("y", 80).attr("text-anchor", "middle")
+    .attr("font-size", 16).attr("font-weight", "bold").attr("fill", "#e17055").text("P-Waves (Primary)");
+  
+  svg.append("text").attr("x", 180).attr("y", 110).attr("text-anchor", "middle")
+    .attr("font-size", 13).text("Push-pull (compression)");
+  svg.append("text").attr("x", 180).attr("y", 135).attr("text-anchor", "middle")
+    .attr("font-size", 20).text("→ ← → ← → ← → ←");
+  
+  const pProps = [
+    "⚡ Fastest (6–14 km/s)",
+    "✅ Travel through solids AND liquids",
+    "📏 Direction: same as wave travel",
+    "🥇 Arrive first at seismometers"
+  ];
+  pProps.forEach((p, i) => {
+    svg.append("text").attr("x", 40).attr("y", 175 + i * 30).attr("font-size", 12).text(p);
+  });
+
+  // S-wave
+  svg.append("rect").attr("x", 360).attr("y", 50).attr("width", 320).attr("height", 280)
+    .attr("rx", 15).attr("fill", "#0984e3").attr("opacity", 0.1);
+  svg.append("text").attr("x", 520).attr("y", 80).attr("text-anchor", "middle")
+    .attr("font-size", 16).attr("font-weight", "bold").attr("fill", "#0984e3").text("S-Waves (Secondary)");
+  
+  svg.append("text").attr("x", 520).attr("y", 110).attr("text-anchor", "middle")
+    .attr("font-size", 13).text("Side-to-side (shear)");
+  svg.append("text").attr("x", 520).attr("y", 135).attr("text-anchor", "middle")
+    .attr("font-size", 20).text("∿∿∿∿∿∿∿∿∿∿");
+  
+  const sProps = [
+    "🐢 Slower (3.5–7.5 km/s)",
+    "❌ CANNOT travel through liquids",
+    "📏 Direction: perpendicular to travel",
+    "🥈 Arrive second at seismometers"
+  ];
+  sProps.forEach((p, i) => {
+    svg.append("text").attr("x", 380).attr("y", 175 + i * 30).attr("font-size", 12).text(p);
+  });
+
+  // Key insight
+  svg.append("rect").attr("x", 100).attr("y", 340).attr("width", 500).attr("height", 30)
+    .attr("rx", 15).attr("fill", "#d63031");
+  svg.append("text").attr("x", 350).attr("y", 360).attr("text-anchor", "middle")
+    .attr("font-size", 13).attr("font-weight", "bold").attr("fill", "white")
+    .text("🔑 S-waves can't pass through liquid → this reveals Earth's liquid outer core!");
+
+  return svg.node();
+}
+```
+
+## Wave Speed Changes with Depth
+
+Seismic wave speeds change as they pass through different materials. Denser materials = faster waves.
+
+```{ojs}
+//| echo: false
+waveSpeedData = [
+  {depth: 0, pSpeed: 6.0, sSpeed: 3.5, layer: "Crust"},
+  {depth: 35, pSpeed: 8.1, sSpeed: 4.5, layer: "Upper Mantle"},
+  {depth: 200, pSpeed: 8.5, sSpeed: 4.6, layer: "Upper Mantle"},
+  {depth: 400, pSpeed: 9.5, sSpeed: 5.1, layer: "Transition Zone"},
+  {depth: 660, pSpeed: 10.3, sSpeed: 5.6, layer: "Lower Mantle"},
+  {depth: 1000, pSpeed: 11.4, sSpeed: 6.2, layer: "Lower Mantle"},
+  {depth: 2000, pSpeed: 12.8, sSpeed: 7.0, layer: "Lower Mantle"},
+  {depth: 2900, pSpeed: 13.7, sSpeed: 7.3, layer: "Lower Mantle"},
+  {depth: 2901, pSpeed: 8.1, sSpeed: 0, layer: "Outer Core (liquid!)"},
+  {depth: 3500, pSpeed: 9.5, sSpeed: 0, layer: "Outer Core"},
+  {depth: 4500, pSpeed: 10.3, sSpeed: 0, layer: "Outer Core"},
+  {depth: 5100, pSpeed: 11.0, sSpeed: 0, layer: "Outer Core"},
+  {depth: 5150, pSpeed: 11.3, sSpeed: 3.6, layer: "Inner Core (solid!)"},
+  {depth: 6000, pSpeed: 11.2, sSpeed: 3.7, layer: "Inner Core"},
+  {depth: 6371, pSpeed: 11.3, sSpeed: 3.7, layer: "Inner Core"}
+]
+
+Plot.plot({
+  title: "Seismic Wave Speed vs. Depth",
+  subtitle: "The dramatic drop in P-wave speed and disappearance of S-waves reveals the liquid outer core",
+  width: 700,
+  height: 450,
+  grid: true,
+  x: {label: "Depth (km)", domain: [0, 6371]},
+  y: {label: "Wave speed (km/s)", domain: [0, 15]},
+  color: {legend: true},
+  marks: [
+    // Layer shading
+    Plot.rectY([{x1: 0, x2: 35, label: "Crust"}], {x1: "x1", x2: "x2", y1: 0, y2: 15, fill: "#dfe6e9", fillOpacity: 0.3}),
+    Plot.rectY([{x1: 35, x2: 2900}], {x1: "x1", x2: "x2", y1: 0, y2: 15, fill: "#e17055", fillOpacity: 0.1}),
+    Plot.rectY([{x1: 2900, x2: 5150}], {x1: "x1", x2: "x2", y1: 0, y2: 15, fill: "#f39c12", fillOpacity: 0.15}),
+    Plot.rectY([{x1: 5150, x2: 6371}], {x1: "x1", x2: "x2", y1: 0, y2: 15, fill: "#fdcb6e", fillOpacity: 0.2}),
+    // P-wave line
+    Plot.line(waveSpeedData, {x: "depth", y: "pSpeed", stroke: "#e17055", strokeWidth: 3, curve: "natural"}),
+    Plot.dot(waveSpeedData, {x: "depth", y: "pSpeed", fill: "#e17055", r: 3}),
+    // S-wave line
+    Plot.line(waveSpeedData, {x: "depth", y: "sSpeed", stroke: "#0984e3", strokeWidth: 3, curve: "natural"}),
+    Plot.dot(waveSpeedData.filter(d => d.sSpeed > 0), {x: "depth", y: "sSpeed", fill: "#0984e3", r: 3}),
+    // Labels
+    Plot.text([{x: 1500, y: 14}], {x: "x", y: "y", text: d => "P-waves", fill: "#e17055", fontSize: 14, fontWeight: "bold"}),
+    Plot.text([{x: 1500, y: 8}], {x: "x", y: "y", text: d => "S-waves", fill: "#0984e3", fontSize: 14, fontWeight: "bold"}),
+    Plot.text([{x: 4000, y: 1.5}], {x: "x", y: "y", text: d => "S-waves = 0\n(LIQUID!)", fill: "#d63031", fontSize: 12, fontWeight: "bold"}),
+    // Boundary markers
+    Plot.ruleX([2900], {stroke: "#d63031", strokeWidth: 2, strokeDasharray: "5,3"}),
+    Plot.ruleX([5150], {stroke: "#f39c12", strokeWidth: 2, strokeDasharray: "5,3"})
+  ]
+})
+```
+
+::: {.key-idea}
+### 💡 How Seismic Waves Reveal Earth's Interior
+
+1. **P-waves drop sharply** at 2,900 km → material changes from solid to liquid (mantle → outer core)
+2. **S-waves disappear entirely** from 2,900 to 5,150 km → outer core is **liquid** (S-waves can't travel through liquid)
+3. **S-waves reappear** below 5,150 km → inner core is **solid** again
+4. **Wave speeds increase with depth** in the mantle → denser material = faster waves
+
+This is how we know Earth has a liquid outer core and solid inner core — without ever going there!
+:::
+
+# 💡 Explain — Earth's Layered Structure {.explain-box}
+
+::: {.explain-box}
+## Why Is Earth Layered?
+
+When Earth was young (~4.5 billion years ago), it was almost entirely **molten**. In this liquid state, dense materials (iron, nickel) **sank to the center** while lighter materials (silicon, oxygen, aluminum) **floated to the surface**. This process is called **differentiation**.
+:::
+
+## Earth's Layers by Density
+
+```{ojs}
+//| echo: false
+viewof layerView = Inputs.select(
+  ["By Composition", "By Physical Properties"],
+  {label: "View Earth's layers:"}
+)
+```
+
+```{ojs}
+//| echo: false
+{
+  const compLayers = [
+    {layer: "Inner Core", depth: "5,150–6,371 km", thickness: 1221, density: "12.8–13.1", composition: "Solid iron & nickel", temp: "5,400°C", color: "#fdcb6e"},
+    {layer: "Outer Core", depth: "2,900–5,150 km", thickness: 2250, density: "9.9–12.2", composition: "Liquid iron & nickel", temp: "4,400–5,400°C", color: "#f39c12"},
+    {layer: "Lower Mantle", depth: "660–2,900 km", thickness: 2240, density: "4.4–5.6", composition: "Silicate rock (Mg, Fe)", temp: "1,900–3,700°C", color: "#d63031"},
+    {layer: "Upper Mantle", depth: "35–660 km", thickness: 625, density: "3.3–4.4", composition: "Silicate rock (olivine)", temp: "500–1,900°C", color: "#e17055"},
+    {layer: "Crust", depth: "0–35 km", thickness: 35, density: "2.7–3.0", composition: "Granite (cont.) / Basalt (ocean)", temp: "0–500°C", color: "#dfe6e9"}
+  ];
+
+  const physLayers = [
+    {layer: "Inner Core (solid)", depth: "5,150–6,371 km", thickness: 1221, density: "12.8–13.1", composition: "Rigid solid — immense pressure keeps iron solid despite extreme heat", temp: "5,400°C", color: "#fdcb6e"},
+    {layer: "Outer Core (liquid)", depth: "2,900–5,150 km", thickness: 2250, density: "9.9–12.2", composition: "Liquid iron — convection here generates Earth's magnetic field", temp: "4,400–5,400°C", color: "#f39c12"},
+    {layer: "Mesosphere (rigid mantle)", depth: "660–2,900 km", thickness: 2240, density: "4.4–5.6", composition: "Solid but slowly flows over millions of years", temp: "1,900–3,700°C", color: "#d63031"},
+    {layer: "Asthenosphere (ductile)", depth: "100–660 km", thickness: 560, density: "3.3–3.6", composition: "Partially molten — plates 'float' and slide on this layer", temp: "1,300–1,900°C", color: "#e17055"},
+    {layer: "Lithosphere (rigid)", depth: "0–100 km", thickness: 100, density: "2.7–3.4", composition: "Rigid crust + upper mantle — the tectonic plates", temp: "0–1,300°C", color: "#dfe6e9"}
+  ];
+
+  const layers = layerView === "By Composition" ? compLayers : physLayers;
+
+  const div = d3.create("div");
+  layers.forEach(l => {
+    const card = div.append("div").style("padding", "15px").style("margin", "10px 0")
+      .style("border-radius", "12px").style("border-left", `6px solid ${l.color}`)
+      .style("background", `${l.color}15`);
+    card.append("h4").style("margin", "0 0 8px 0").style("color", l.color).text(l.layer);
+    card.append("p").style("margin", "3px 0").html(`<strong>Depth:</strong> ${l.depth} | <strong>Density:</strong> ${l.density} g/cm³`);
+    card.append("p").style("margin", "3px 0").html(`<strong>Temperature:</strong> ${l.temp}`);
+    card.append("p").style("margin", "3px 0").text(l.composition);
+  });
+  return div.node();
+}
+```
+
+<div class="mind-blown">
+🧠 Earth's inner core is as hot as the surface of the Sun (5,400°C) — but it's SOLID because the pressure at the center is 3.6 million times atmospheric pressure. Pressure can keep things solid even at insane temperatures.
+</div>
+
+# 🔍 Explore 2 — Density and Differentiation {.explore-box}
+
+::: {.explore-box}
+## The Density Sorting Experiment
+
+When Earth was molten, gravity sorted materials by density — like oil floating on water, but on a planetary scale.
+:::
+
+```{ojs}
+//| echo: false
+viewof showDifferentiation = Inputs.range([0, 100], {
+  label: "Time (% through differentiation):",
+  step: 1,
+  value: 0
+})
+```
+
+```{ojs}
+//| echo: false
+{
+  const t = showDifferentiation / 100;
+  const svg = d3.create("svg")
+    .attr("width", 400)
+    .attr("height", 400)
+    .attr("viewBox", "0 0 400 400");
+
+  const cx = 200, cy = 200;
+  
+  // Earth circle
+  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 180)
+    .attr("fill", "#dfe6e9").attr("stroke", "#636e72").attr("stroke-width", 2);
+  
+  // Layers appear as differentiation progresses
+  if (t > 0.1) {
+    const coreR = Math.min(50, t * 55);
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", coreR)
+      .attr("fill", "#fdcb6e").attr("opacity", Math.min(1, t * 2));
+  }
+  if (t > 0.3) {
+    const outerCoreR = Math.min(90, 50 + (t - 0.3) * 60);
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", outerCoreR)
+      .attr("fill", "#f39c12").attr("opacity", Math.min(1, (t - 0.3) * 2));
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 50)
+      .attr("fill", "#fdcb6e");
+  }
+  if (t > 0.5) {
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 150)
+      .attr("fill", "#e17055").attr("opacity", Math.min(1, (t - 0.5) * 2));
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 90)
+      .attr("fill", "#f39c12");
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 50)
+      .attr("fill", "#fdcb6e");
+  }
+  if (t > 0.7) {
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 180)
+      .attr("fill", "#dfe6e9").attr("opacity", Math.min(1, (t - 0.7) * 3));
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 150)
+      .attr("fill", "#e17055");
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 90)
+      .attr("fill", "#f39c12");
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 50)
+      .attr("fill", "#fdcb6e");
+  }
+
+  // Labels
+  const phase = t < 0.1 ? "Homogeneous molten Earth" :
+                t < 0.3 ? "Dense iron sinking to center..." :
+                t < 0.5 ? "Core forming, outer core separating..." :
+                t < 0.7 ? "Mantle solidifying around core..." :
+                "Differentiation complete — layered Earth!";
+
+  svg.append("text").attr("x", cx).attr("y", 30).attr("text-anchor", "middle")
+    .attr("font-size", 14).attr("font-weight", "bold").text(phase);
+
+  if (t > 0.9) {
+    const labels = [
+      {text: "Crust", y: 30, color: "#636e72"},
+      {text: "Mantle", y: 70, color: "#fff"},
+      {text: "Outer Core", y: 115, color: "#fff"},
+      {text: "Inner Core", y: 200, color: "#636e72"}
+    ];
+    labels.forEach(l => {
+      svg.append("text").attr("x", cx).attr("y", cy - 180 + l.y + 50)
+        .attr("text-anchor", "middle").attr("font-size", 11).attr("font-weight", "bold")
+        .attr("fill", l.color).text(l.text);
+    });
+  }
+
+  return svg.node();
+}
+```
+
+::: {.key-idea}
+### 💡 Differentiation = Density Sorting
+
+- **Densest** (iron, nickel: ~13 g/cm³) → sank to the **core**
+- **Medium density** (silicates: ~4-5 g/cm³) → formed the **mantle**
+- **Least dense** (granite, basalt: ~2.7-3.0 g/cm³) → floated to the **crust**
+
+This is the same principle as oil (less dense) floating on water (more dense) — just happening at a planetary scale over millions of years while Earth was still molten.
+:::
+
+# 🔬 Elaborate — The Rock Cycle Revisited {.elaborate-box}
+
+::: {.elaborate-box}
+## Connecting the Interior to the Surface
+
+Earth's interior doesn't just sit there — it actively drives surface processes through the rock cycle, volcanism, and plate tectonics.
+:::
+
+```{ojs}
+//| echo: false
+{
+  const svg = d3.create("svg")
+    .attr("width", 700)
+    .attr("height", 350)
+    .attr("viewBox", "0 0 700 350");
+
+  svg.append("text").attr("x", 350).attr("y", 25).attr("text-anchor", "middle")
+    .attr("font-size", 16).attr("font-weight", "bold").text("Interior → Surface Connections");
+
+  const connections = [
+    {interior: "Mantle convection", surface: "Plate movement", arrow: "Drives", x: 120, color: "#e17055"},
+    {interior: "Magma rising", surface: "Volcanic eruptions", arrow: "Creates", x: 300, color: "#d63031"},
+    {interior: "Plate stress", surface: "Earthquakes", arrow: "Releases", x: 480, color: "#6c5ce7"},
+    {interior: "Core convection", surface: "Magnetic field", arrow: "Generates", x: 620, color: "#f39c12"}
+  ];
+
+  connections.forEach(c => {
+    // Interior box
+    svg.append("rect").attr("x", c.x - 65).attr("y", 50).attr("width", 130).attr("height", 60)
+      .attr("rx", 10).attr("fill", c.color).attr("opacity", 0.85);
+    const iLines = c.interior.split(" ");
+    iLines.forEach((line, i) => {
+      svg.append("text").attr("x", c.x).attr("y", 75 + i * 16).attr("text-anchor", "middle")
+        .attr("font-size", 11).attr("font-weight", "bold").attr("fill", "white").text(line);
+    });
+
+    // Arrow
+    svg.append("text").attr("x", c.x).attr("y", 140).attr("text-anchor", "middle")
+      .attr("font-size", 22).text("⬇️");
+    svg.append("text").attr("x", c.x).attr("y", 165).attr("text-anchor", "middle")
+      .attr("font-size", 10).attr("fill", "#636e72").attr("font-weight", "bold").text(c.arrow);
+
+    // Surface box
+    svg.append("rect").attr("x", c.x - 65).attr("y", 180).attr("width", 130).attr("height", 60)
+      .attr("rx", 10).attr("fill", c.color).attr("opacity", 0.3);
+    const sLines = c.surface.split(" ");
+    sLines.forEach((line, i) => {
+      svg.append("text").attr("x", c.x).attr("y", 205 + i * 16).attr("text-anchor", "middle")
+        .attr("font-size", 11).attr("font-weight", "bold").text(line);
+    });
+  });
+
+  // Section labels
+  svg.append("text").attr("x", 20).attr("y", 85).attr("font-size", 12).attr("font-weight", "bold")
+    .attr("fill", "#636e72").text("DEEP");
+  svg.append("text").attr("x", 20).attr("y", 215).attr("font-size", 12).attr("font-weight", "bold")
+    .attr("fill", "#636e72").text("SURFACE");
+
+  return svg.node();
+}
+```
+
+::: {.student-task}
+### 📝 Elaborate Activity
+
+1. Explain how we know Earth's outer core is **liquid** using seismic wave evidence.
+2. Why did differentiation happen — why didn't Earth stay homogeneous?
+3. If Earth's core cooled completely and solidified, what surface processes would stop? How would this affect life?
+4. Mars's core has mostly solidified. How does this connect to Mars having no magnetic field and a thin atmosphere?
+:::
+
+# ✅ Evaluate {.evaluate-box}
+
+::: {.evaluate-box}
+## Demonstrating Your Understanding
+:::
+
+::: {.check-understanding}
+### 🧪 Evaluate Questions
+
+1. **Describe** the two types of seismic waves and explain how each reveals information about Earth's interior.
+
+2. **Explain** why S-waves disappear between 2,900 km and 5,150 km depth. What does this tell us?
+
+3. **Construct a model** of Earth's interior that includes:
+   - All major layers (composition AND physical properties)
+   - Approximate depths and temperatures
+   - State of matter (solid/liquid)
+   - How we determined each layer's properties
+
+4. **Compare** Earth's interior to that of a dead planet (like the Moon). What's different and why does it matter?
+
+5. **Predict**: If an earthquake occurs on one side of Earth, describe the path of P-waves and S-waves to a seismometer on the opposite side. What would the seismometer record?
+:::

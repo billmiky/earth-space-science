@@ -1,0 +1,551 @@
+---
+title: "Stability of the Solar System"
+subtitle: "Why does Earth have so few craters while the Moon is covered in them?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 206, 201, 0.3); }
+.explore-box { background: linear-gradient(135deg, #0984e3 0%, #00b894 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(9, 132, 227, 0.3); }
+.explain-box { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(253, 203, 110, 0.3); }
+.evaluate-box { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3); }
+.engage-box h2, .explore-box h2, .explain-box h2, .elaborate-box h2, .evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 5px; box-shadow: 0 4px 15px rgba(0, 206, 201, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.5em; font-weight: 800; background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #ff6b6b; font-size: 1.1em; }
+.student-task { background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.mind-blown { background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 100%); color: white; padding: 20px; margin: 20px 0; border-radius: 15px; font-size: 1.3em; font-weight: 700; text-align: center; box-shadow: 0 10px 25px rgba(0, 206, 201, 0.4); }
+.check-understanding { background: linear-gradient(to right, #00cec9, #6c5ce7); color: white; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 6px solid #fff; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #00cec9 !important; }
+</style>
+```
+
+<span class="pe-badge">HS-ESS1-6</span> <span class="pe-badge">HS-ESS2-5</span> <span class="pe-badge">7–8 Days</span>
+
+<div class="big-question">🌑 Why Is the Moon Covered in Craters But Earth Isn't?</div>
+
+# 🔥 Engage — Counting Craters {.engage-box}
+
+::: {.engage-box}
+## The Crater Mystery
+
+Look at photos of the Moon, Mars, and Earth from space. Something is immediately obvious:
+
+| Body | Known Impact Craters |
+|------|---------------------|
+| 🌍 Earth | ~128 confirmed |
+| 🔴 Mars | ~300,000+ |
+| 🌑 Moon | ~1,000,000+ |
+
+Earth is the **largest** of these three bodies. It has the **strongest gravity**. It should attract **more** impacts than the Moon or Mars. So where did all the craters go?
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+craterData = [
+  {body: "Earth", craters: 128, color: "#2ecc71"},
+  {body: "Mars", craters: 300000, color: "#e74c3c"},
+  {body: "Moon", craters: 1000000, color: "#95a5a6"}
+]
+
+Plot.plot({
+  title: "Known Impact Craters by Body (log scale)",
+  subtitle: "Earth has barely any — why?",
+  width: 650,
+  height: 300,
+  marginLeft: 80,
+  x: {type: "log", label: "Number of Craters (log scale)", grid: true},
+  y: {label: null},
+  marks: [
+    Plot.barX(craterData, {
+      x: "craters",
+      y: "body",
+      fill: "color",
+      rx: 8
+    }),
+    Plot.text(craterData, {
+      x: "craters",
+      y: "body",
+      text: d => d.craters.toLocaleString(),
+      dx: 30,
+      fontSize: 14,
+      fontWeight: "bold"
+    })
+  ]
+})
+```
+
+::: {.student-task}
+### 📝 Engage Questions
+
+1. Why do you think Earth has so few visible craters compared to the Moon?
+2. What processes on Earth might destroy or hide craters over time?
+3. Does the lack of craters mean Earth was hit less, or that something erased them?
+:::
+
+# 🔍 Explore 1 — Rock Evidence {.explore-box}
+
+::: {.explore-box}
+## Reading the Stories in Rocks
+
+Rocks are like history books. Their **composition**, **age**, and **density** tell us about the conditions when and where they formed.
+:::
+
+## Rock Composition & Age
+
+Scientists use **radiometric dating** to determine the ages of rocks. Here's what we find:
+
+```{ojs}
+//| echo: false
+rockData = [
+  {sample: "Oldest Earth rocks (Jack Hills, Australia)", age: 4.4, type: "Earth", density: 2.7},
+  {sample: "Oldest ocean floor", age: 0.2, type: "Earth", density: 3.0},
+  {sample: "Appalachian Mountains", age: 0.48, type: "Earth", density: 2.7},
+  {sample: "Moon rocks (Apollo)", age: 4.5, type: "Moon", density: 3.3},
+  {sample: "Mars meteorites", age: 4.1, type: "Mars", density: 3.4},
+  {sample: "Oldest meteorites", age: 4.57, type: "Meteorite", density: 3.5}
+]
+
+Plot.plot({
+  title: "Age of Rock Samples (billions of years)",
+  subtitle: "Most Earth rocks are young — the Moon and meteorites are ancient",
+  width: 700,
+  height: 300,
+  marginLeft: 200,
+  x: {label: "Age (billions of years)", domain: [0, 5], grid: true},
+  y: {label: null},
+  color: {legend: true, domain: ["Earth", "Moon", "Mars", "Meteorite"], range: ["#2ecc71", "#95a5a6", "#e74c3c", "#f39c12"]},
+  marks: [
+    Plot.dot(rockData, {
+      x: "age",
+      y: "sample",
+      fill: "type",
+      r: 8,
+      stroke: "white",
+      strokeWidth: 1
+    }),
+    Plot.ruleX([4.5], {stroke: "#00cec9", strokeWidth: 2, strokeDasharray: "5,5"})
+  ]
+})
+```
+
+::: {.key-idea}
+### 💡 Key Pattern
+
+The oldest meteorites and Moon rocks are **~4.5 billion years old** — the age of our solar system. But most Earth rocks are much younger. Earth's ocean floor is only ~200 million years old! Something keeps **recycling** Earth's surface.
+:::
+
+## Rock Density & Layers
+
+```{ojs}
+//| echo: false
+densityData = [
+  {layer: "Atmosphere", density: 0.001, depth: 0, color: "#74b9ff"},
+  {layer: "Ocean water", density: 1.03, depth: 0, color: "#0984e3"},
+  {layer: "Continental crust (granite)", density: 2.7, depth: 30, color: "#dfe6e9"},
+  {layer: "Oceanic crust (basalt)", density: 3.0, depth: 7, color: "#636e72"},
+  {layer: "Upper mantle", density: 3.4, depth: 400, color: "#e17055"},
+  {layer: "Lower mantle", density: 5.5, depth: 2900, color: "#d63031"},
+  {layer: "Outer core (liquid iron)", density: 10.0, depth: 5100, color: "#fdcb6e"},
+  {layer: "Inner core (solid iron)", density: 13.0, depth: 6371, color: "#f39c12"}
+]
+
+Plot.plot({
+  title: "Density of Earth's Layers (g/cm³)",
+  subtitle: "Denser materials sank to the center when Earth was molten",
+  width: 700,
+  height: 350,
+  marginLeft: 200,
+  x: {label: "Density (g/cm³)", grid: true},
+  y: {label: null},
+  marks: [
+    Plot.barX(densityData, {
+      x: "density",
+      y: "layer",
+      fill: "color",
+      rx: 5,
+      sort: {y: "-x"}
+    }),
+    Plot.text(densityData, {
+      x: "density",
+      y: "layer",
+      text: d => d.density + " g/cm³",
+      dx: 30,
+      fontSize: 11,
+      fontWeight: "bold"
+    })
+  ]
+})
+```
+
+::: {.student-task}
+### 📝 Explore 1 Questions
+
+1. Why are Earth's surface rocks so much younger than Moon rocks?
+2. What does the density pattern tell you about how Earth formed?
+3. The ocean floor is only ~200 million years old. Where did the older ocean floor go?
+:::
+
+# 💡 Explain 1 — Early Solar System {.explain-box}
+
+::: {.explain-box}
+## The Late Heavy Bombardment
+
+About **4.1 to 3.8 billion years ago**, the inner solar system experienced an intense period of asteroid and comet impacts called the **Late Heavy Bombardment**. This shaped every rocky body — but Earth's record was mostly erased.
+:::
+
+## Why Earth's Record Disappears
+
+The Moon preserves its craters because it has:
+
+- ❌ No atmosphere (no weathering)
+- ❌ No liquid water (no erosion)
+- ❌ No plate tectonics (no recycling)
+- ❌ No volcanic activity (no resurfacing)
+
+Earth has **all four** of these processes working constantly to erase its surface history.
+
+```{ojs}
+//| echo: false
+{
+  const svg = d3.create("svg")
+    .attr("width", 700)
+    .attr("height", 340)
+    .attr("viewBox", "0 0 700 340");
+
+  svg.append("text").attr("x", 350).attr("y", 25).attr("text-anchor", "middle")
+    .attr("font-size", 16).attr("font-weight", "bold").text("Why Earth Erases Its Craters");
+
+  const processes = [
+    {name: "Weathering", desc: "Wind & rain break\ndown rocks", icon: "🌧️", x: 100, color: "#74b9ff"},
+    {name: "Erosion", desc: "Water carries\nsediment away", icon: "🌊", x: 250, color: "#0984e3"},
+    {name: "Plate Tectonics", desc: "Crust subducts\n& recycles", icon: "🌋", x: 400, color: "#e17055"},
+    {name: "Volcanism", desc: "Lava covers\nold surfaces", icon: "🔥", x: 550, color: "#d63031"}
+  ];
+
+  processes.forEach(p => {
+    svg.append("rect").attr("x", p.x - 70).attr("y", 50).attr("width", 140).attr("height", 130)
+      .attr("rx", 15).attr("fill", p.color).attr("opacity", 0.9);
+    svg.append("text").attr("x", p.x).attr("y", 90).attr("text-anchor", "middle")
+      .attr("font-size", 30).text(p.icon);
+    svg.append("text").attr("x", p.x).attr("y", 120).attr("text-anchor", "middle")
+      .attr("font-size", 14).attr("font-weight", "bold").attr("fill", "white").text(p.name);
+    const lines = p.desc.split("\n");
+    lines.forEach((line, i) => {
+      svg.append("text").attr("x", p.x).attr("y", 145 + i * 16).attr("text-anchor", "middle")
+        .attr("font-size", 11).attr("fill", "white").text(line);
+    });
+  });
+
+  // Arrow to result
+  svg.append("text").attr("x", 350).attr("y", 220).attr("text-anchor", "middle")
+    .attr("font-size", 30).text("⬇️");
+  
+  svg.append("rect").attr("x", 150).attr("y", 240).attr("width", 400).attr("height", 80)
+    .attr("rx", 15).attr("fill", "#00cec9").attr("opacity", 0.9);
+  svg.append("text").attr("x", 350).attr("y", 275).attr("text-anchor", "middle")
+    .attr("font-size", 16).attr("font-weight", "bold").attr("fill", "white")
+    .text("Earth's surface is constantly renewed!");
+  svg.append("text").attr("x", 350).attr("y", 300).attr("text-anchor", "middle")
+    .attr("font-size", 13).attr("fill", "white")
+    .text("Craters erased • Old rocks recycled • New crust created");
+
+  return svg.node();
+}
+```
+
+::: {.key-idea}
+### 💡 The Solar System's Age
+
+All objects in the solar system formed about **4.57 billion years ago** from the same spinning cloud of gas and dust (the **solar nebula**). We know this because the oldest meteorites, Moon rocks, and Earth minerals all give roughly the same age. The solar system formed **all at once**, not piece by piece.
+:::
+
+# 🔍 Explore 2 — Properties of Water {.explore-box}
+
+::: {.explore-box}
+## Water: Earth's Secret Weapon
+
+Water is the most important substance for life and for shaping Earth's surface. But water has some truly **bizarre** properties that make it unique among all liquids.
+:::
+
+```{ojs}
+//| echo: false
+viewof waterProperty = Inputs.select(
+  ["Density anomaly", "High heat capacity", "Universal solvent", "Surface tension"],
+  {label: "Explore a property of water:"}
+)
+```
+
+```{ojs}
+//| echo: false
+{
+  const descriptions = {
+    "Density anomaly": {
+      title: "🧊 Ice Floats!",
+      text: "Most substances are denser as solids. Water is the opposite — ice is LESS dense than liquid water. This is why ice floats on lakes, insulating the water below and allowing fish to survive winter.",
+      fact: "If ice sank, lakes would freeze solid from the bottom up, killing all aquatic life.",
+      data: [{state: "Ice (0°C)", density: 0.917}, {state: "Liquid (4°C)", density: 1.000}, {state: "Liquid (25°C)", density: 0.997}]
+    },
+    "High heat capacity": {
+      title: "🌡️ Hard to Heat, Hard to Cool",
+      text: "Water absorbs enormous amounts of energy before its temperature changes. This is why oceans moderate coastal climates and why it takes a long time to boil water.",
+      fact: "Water's heat capacity is 5x higher than rock. Oceans absorb heat all summer and release it in winter, stabilizing Earth's climate.",
+      data: [{state: "Water", density: 4.18}, {state: "Rock", density: 0.84}, {state: "Iron", density: 0.45}]
+    },
+    "Universal solvent": {
+      title: "🧪 Dissolves Almost Everything",
+      text: "Water dissolves more substances than any other liquid. This makes it perfect for carrying nutrients in your blood, minerals in rivers, and chemicals in the ocean.",
+      fact: "A single cup of seawater contains about 1 teaspoon of dissolved salt plus traces of nearly every element on Earth.",
+      data: [{state: "Seawater salinity", density: 3.5}, {state: "River water", density: 0.01}, {state: "Pure water", density: 0.0}]
+    },
+    "Surface tension": {
+      title: "🕷️ Water is Sticky",
+      text: "Water molecules are attracted to each other strongly (cohesion). This creates surface tension — strong enough for insects to walk on water and for water to climb up narrow tubes (capillary action in plants).",
+      fact: "Surface tension is what makes water form droplets instead of spreading into a thin film.",
+      data: [{state: "Water", density: 72.8}, {state: "Ethanol", density: 22.1}, {state: "Mercury", density: 485.0}]
+    }
+  };
+  const info = descriptions[waterProperty];
+  const div = d3.create("div");
+  div.append("h3").style("color", "#00cec9").style("font-family", "Space Grotesk").text(info.title);
+  div.append("p").style("font-size", "1.1em").text(info.text);
+  div.append("div").style("background", "#ffecd2").style("padding", "15px").style("border-radius", "10px")
+    .style("border-left", "5px solid #ff6b6b").style("margin", "10px 0")
+    .append("strong").text("🤯 " + info.fact);
+  return div.node();
+}
+```
+
+::: {.key-idea}
+### 💡 Why Water Matters for This Unit
+
+Water is essential for:
+
+- **Erasing craters** through erosion and weathering
+- **Supporting life** as the universal solvent for biochemistry
+- **Regulating climate** through its enormous heat capacity
+- **Driving the rock cycle** through weathering, transport, and deposition
+
+Without water, Earth would look like the Moon — ancient, cratered, and lifeless.
+:::
+
+# 💡 Explain 2 — Why Craters Persist on the Moon {.explain-box}
+
+::: {.explain-box}
+## The Moon: A Frozen Time Capsule
+
+The Moon stopped being geologically active billions of years ago. With no atmosphere, water, or plate tectonics, craters from 4 billion years ago look almost the same as they did when they formed.
+:::
+
+## Surface Age Comparison
+
+```{ojs}
+//| echo: false
+surfaceAge = [
+  {body: "Moon (highlands)", age: 4.4, active: "No", color: "#95a5a6"},
+  {body: "Moon (maria)", age: 3.2, active: "No", color: "#636e72"},
+  {body: "Mars (Hellas Basin)", age: 4.0, active: "Minimal", color: "#e74c3c"},
+  {body: "Earth (ocean floor)", age: 0.2, active: "Yes!", color: "#0984e3"},
+  {body: "Earth (oldest continent)", age: 4.0, active: "Yes!", color: "#2ecc71"},
+  {body: "Io (Jupiter's moon)", age: 0.001, active: "Extremely!", color: "#fdcb6e"}
+]
+
+Plot.plot({
+  title: "Average Surface Age by Body (billions of years)",
+  subtitle: "Geologically active bodies have young surfaces",
+  width: 700,
+  height: 300,
+  marginLeft: 180,
+  x: {label: "Surface age (billion years)", grid: true, domain: [0, 5]},
+  y: {label: null},
+  marks: [
+    Plot.barX(surfaceAge, {
+      x: "age",
+      y: "body",
+      fill: "color",
+      rx: 8,
+      sort: {y: "-x"}
+    }),
+    Plot.text(surfaceAge, {
+      x: "age",
+      y: "body",
+      text: d => d.age + " Gyr",
+      dx: 25,
+      fontSize: 12,
+      fontWeight: "bold"
+    })
+  ]
+})
+```
+
+<div class="mind-blown">
+🧠 Jupiter's moon Io has the youngest surface in the solar system — it's so volcanically active that its entire surface is replaced every few thousand years! Earth's ocean floor is replaced every ~200 million years. The Moon's surface hasn't changed in over 3 billion years.
+</div>
+
+# 🔬 Elaborate — The Rock Cycle {.elaborate-box}
+
+::: {.elaborate-box}
+## Earth's Recycling Program
+
+Earth's rocks are in a constant cycle of creation, destruction, and transformation. This is why Earth's surface stays young while the Moon's stays old.
+:::
+
+```{ojs}
+//| echo: false
+{
+  const svg = d3.create("svg")
+    .attr("width", 700)
+    .attr("height", 380)
+    .attr("viewBox", "0 0 700 380");
+
+  svg.append("text").attr("x", 350).attr("y", 25).attr("text-anchor", "middle")
+    .attr("font-size", 18).attr("font-weight", "bold").text("The Rock Cycle");
+
+  // Rock type nodes
+  const rocks = [
+    {name: "Igneous\nRock", x: 350, y: 80, color: "#e74c3c", desc: "From cooling\nmagma/lava"},
+    {name: "Sedimentary\nRock", x: 580, y: 230, color: "#f39c12", desc: "From compressed\nsediments"},
+    {name: "Metamorphic\nRock", x: 120, y: 230, color: "#6c5ce7", desc: "Changed by heat\n& pressure"},
+    {name: "Magma", x: 350, y: 340, color: "#d63031", desc: "Molten rock\nbelow surface"}
+  ];
+
+  rocks.forEach(r => {
+    svg.append("ellipse").attr("cx", r.x).attr("cy", r.y).attr("rx", 80).attr("ry", 40)
+      .attr("fill", r.color).attr("opacity", 0.85);
+    const lines = r.name.split("\n");
+    lines.forEach((line, i) => {
+      svg.append("text").attr("x", r.x).attr("y", r.y - 5 + i * 18).attr("text-anchor", "middle")
+        .attr("font-size", 13).attr("font-weight", "bold").attr("fill", "white").text(line);
+    });
+  });
+
+  // Process arrows with labels
+  const arrows = [
+    {from: "Igneous", to: "Sedimentary", label: "Weathering\n& Erosion", x: 490, y: 140},
+    {from: "Sedimentary", to: "Metamorphic", label: "Heat &\nPressure", x: 350, y: 265},
+    {from: "Metamorphic", to: "Magma", label: "Melting", x: 200, y: 310},
+    {from: "Magma", to: "Igneous", label: "Cooling", x: 280, y: 200}
+  ];
+
+  arrows.forEach(a => {
+    const lines = a.label.split("\n");
+    lines.forEach((line, i) => {
+      svg.append("text").attr("x", a.x).attr("y", a.y + i * 14).attr("text-anchor", "middle")
+        .attr("font-size", 11).attr("font-weight", "bold").attr("fill", "#2d3436").text(line);
+    });
+  });
+
+  return svg.node();
+}
+```
+
+::: {.key-idea}
+### 💡 The Rock Cycle and Life
+
+The rock cycle isn't just about geology — it's critical for life:
+
+- **Weathering** releases minerals that wash into oceans, feeding marine life
+- **Volcanic eruptions** release CO₂, keeping Earth warm enough for liquid water
+- **Subduction** recycles carbon back into the mantle, preventing runaway greenhouse
+- **New crust formation** creates fresh habitats and coastlines
+
+Earth's geological activity is one reason life can exist here. A dead planet (geologically) might also be a dead planet (biologically).
+:::
+
+::: {.student-task}
+### 📝 Elaborate Activity
+
+1. Trace a rock through one complete cycle: start as magma, go through all three rock types, and return to magma.
+2. At each step, explain what process transforms the rock.
+3. Why can't this cycle happen on the Moon?
+:::
+
+# ✅ Evaluate — Impact and Life {.evaluate-box}
+
+::: {.evaluate-box}
+## How Did Asteroid Impacts Shape the History of Life?
+:::
+
+```{ojs}
+//| echo: false
+impacts = [
+  {event: "Late Heavy Bombardment", time: 4000, effect: "Sterilized early Earth repeatedly", severity: 10, color: "#d63031"},
+  {event: "Vredefort Impact", time: 2023, effect: "Largest known crater (300 km)", severity: 8, color: "#e74c3c"},
+  {event: "Sudbury Impact", time: 1849, effect: "Second largest known crater", severity: 7, color: "#e17055"},
+  {event: "Chicxulub Impact", time: 66, effect: "Killed dinosaurs, enabled mammals", severity: 9, color: "#fdcb6e"},
+  {event: "Tunguska Event", time: 0.000115, effect: "Flattened 2,000 km² of forest", severity: 3, color: "#74b9ff"},
+  {event: "Chelyabinsk meteor", time: 0.000011, effect: "Injured 1,500 people (2013)", severity: 1, color: "#00cec9"}
+]
+
+Plot.plot({
+  title: "Major Impact Events in Earth's History",
+  subtitle: "Time in millions of years ago (log scale)",
+  width: 700,
+  height: 300,
+  marginLeft: 180,
+  x: {type: "log", label: "Millions of years ago (log scale)", grid: true},
+  y: {label: null},
+  marks: [
+    Plot.dot(impacts, {
+      x: "time",
+      y: "event",
+      r: d => d.severity * 3,
+      fill: "color",
+      stroke: "white",
+      strokeWidth: 1
+    }),
+    Plot.text(impacts, {
+      x: "time",
+      y: "event",
+      text: "effect",
+      dx: d => d.severity * 3 + 10,
+      fontSize: 10
+    })
+  ]
+})
+```
+
+::: {.check-understanding}
+### 🧪 Evaluate Questions
+
+1. **Explain** why Earth has far fewer visible craters than the Moon, using evidence from rock ages, Earth's active processes, and the rock cycle.
+
+2. **Argue** whether asteroid impacts have been helpful or harmful to the evolution of life. Use at least two specific examples.
+
+3. **Connect** the properties of water to why Earth's surface looks so different from the Moon's.
+
+4. **Predict** what Earth's surface would look like if plate tectonics suddenly stopped. How would this affect life?
+:::
+
+::: {.student-task}
+### 📝 Model Update
+
+Return to your initial model from the Unit Opening. Update it with what you've learned:
+
+- How do Earth's active processes affect the chances of life surviving?
+- Could a planet without plate tectonics support complex life? Why or why not?
+- How do asteroid impacts connect to both **destroying** and **enabling** life?
+:::

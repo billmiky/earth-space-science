@@ -1,117 +1,42 @@
-# The Sun's Lifespan and Energy
+# Unit 1: Discovering New Worlds {.unnumbered}
 
-## Essential Question
+## Anchor Phenomenon
 
-> How does the Sun produce energy, and how long will it last?
+> **Out of all of the planets in the solar system, only Earth has life! Earth didn't have life for a long time, and now it does. What makes Earth so special?**
 
-## The Sun: Our Star
+## Unit Driving Question
 
-The Sun is a middle-aged star about 4.6 billion years old. It will continue to shine for another 5 billion years before exhausting its hydrogen fuel.
+> **What has made Earth able to sustain life? If we can't stop the negative changes to our planet, is there an exoplanet Earth-like enough to sustain life?**
 
-### Nuclear Fusion
+## Unit Overview
 
-The Sun produces energy through **nuclear fusion** - combining hydrogen atoms into helium in its core.
+Earth has been an ideal place for humans and other life to thrive for 12,000 years. But rising global temperatures are causing sea levels to rise, floods and droughts to increase, and species to disappear in what scientists call the "Sixth Mass Extinction." In this unit, you investigate what makes Earth uniquely habitable — from our Sun's energy output to our planet's orbit — and then use that knowledge to evaluate real exoplanet data and argue which distant world might be able to support life.
 
-```{python}
-#| label: fig-sun-structure
-#| fig-cap: "Temperature and density profile of the Sun"
-#| code-fold: true
+## Performance Expectations
 
-import matplotlib.pyplot as plt
-import numpy as np
+| Standard | Description |
+|----------|-------------|
+| **HS-ESS1-1** | Develop a model based on evidence to illustrate the life span of the Sun and the role of nuclear fusion in the Sun's core to release energy |
+| **HS-ESS1-3** | Communicate scientific ideas about the way stars, over their life cycle, produce elements |
+| **HS-ESS1-4** | Use mathematical or computational representations to predict the motion of orbiting objects in the solar system |
 
-# Distance from center (in solar radii)
-radius = np.linspace(0, 1, 100)
+## Lesson Sequences
 
-# Temperature profile (simplified model)
-temp = 15.7 * np.exp(-4.5 * radius) + 0.006  # millions of Kelvin
+| Chapter | Topic | Days | Standards |
+|---------|-------|------|-----------|
+| **Opening** | Anchor phenomenon, initial models, driving question board | 2 | — |
+| **How the Sun Works 5E** | Solar composition, spectroscopy, nuclear fusion, energy output | 6 | HS-ESS1-1 |
+| **Star Life Cycles 5E** | Supernova, H-R diagram, star mass and stability, nucleosynthesis | 7 | HS-ESS1-1, HS-ESS1-3 |
+| **Planets & Orbits 5E** | Kepler's Laws, habitable zones, exoplanet orbit analysis | 7–9 | HS-ESS1-4 |
+| **Closing** | Performance task: argue which exoplanet is most likely habitable | 1–5 | HS-ESS1-1, HS-ESS1-3, HS-ESS1-4 |
 
-# Density profile (simplified model)
-density = 160 * np.exp(-8 * radius)  # g/cm³
+## What You'll Figure Out
 
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+By the end of this unit, you will be able to:
 
-# Temperature plot
-ax1.plot(radius, temp, 'r-', linewidth=2)
-ax1.fill_between(radius, temp, alpha=0.3, color='red')
-ax1.set_xlabel('Distance from Center (Solar Radii)')
-ax1.set_ylabel('Temperature (millions K)')
-ax1.set_title('Temperature Profile of the Sun')
-ax1.axvspan(0, 0.25, alpha=0.2, color='yellow', label='Core')
-ax1.axvspan(0.25, 0.7, alpha=0.2, color='orange', label='Radiative Zone')
-ax1.axvspan(0.7, 1.0, alpha=0.2, color='red', label='Convective Zone')
-ax1.legend()
-ax1.grid(True, alpha=0.3)
-
-# Density plot
-ax2.plot(radius, density, 'b-', linewidth=2)
-ax2.fill_between(radius, density, alpha=0.3, color='blue')
-ax2.set_xlabel('Distance from Center (Solar Radii)')
-ax2.set_ylabel('Density (g/cm³)')
-ax2.set_title('Density Profile of the Sun')
-ax2.grid(True, alpha=0.3)
-
-plt.tight_layout()
-plt.show()
-```
-
-## Interactive: Solar Energy Output
-
-Explore how the Sun's luminosity changes over its lifetime:
-
-```{ojs}
-//| echo: false
-
-viewof sunAge = Inputs.range([0, 12], {
-  value: 4.6,
-  step: 0.1,
-  label: "Sun's Age (billion years)"
-})
-
-// Calculate luminosity (simplified model)
-luminosity = sunAge < 10 ? (1 + 0.1 * sunAge) : (1 + sunAge - 10) ** 3
-
-phase = sunAge < 10 ? "Main Sequence" : sunAge < 11 ? "Red Giant" : "White Dwarf"
-```
-
-```{ojs}
-//| echo: false
-
-html`
-<div class="interactive-container">
-  <h4>Sun at ${sunAge.toFixed(1)} billion years old</h4>
-  <p><strong>Phase:</strong> ${phase}</p>
-  <p><strong>Luminosity:</strong> ${luminosity.toFixed(2)} × current brightness</p>
-  <div style="background: linear-gradient(to right, yellow, orange, red); 
-              width: ${Math.min(luminosity * 50, 300)}px; 
-              height: 30px; 
-              border-radius: 15px;
-              margin-top: 10px;">
-  </div>
-</div>
-`
-```
-
-::: {.callout-important}
-## Key Concept
-The Sun converts **4 million tons of matter into energy every second** through nuclear fusion. Despite this enormous rate, it has enough hydrogen to last billions more years!
-:::
-
-## Simulation: Nuclear Fusion
-
-Explore the physics of nuclear fusion with this PhET simulation:
-
-<iframe src="https://phet.colorado.edu/sims/html/build-a-nucleus/latest/build-a-nucleus_all.html" 
-        width="100%" 
-        height="600" 
-        allowfullscreen>
-</iframe>
-
-## Check Your Understanding
-
-::: {.callout-note}
-## Questions
-1. What type of nuclear reaction powers the Sun?
-2. Approximately how old is the Sun, and how much longer will it remain on the main sequence?
-3. Why does temperature decrease as you move from the core to the surface?
-:::
+- ☀️ **Model** how the Sun produces energy through nuclear fusion and predict its future stages
+- 🔭 **Analyze** light spectra to determine the composition of stars
+- ⭐ **Explain** why some stars are stable for billions of years while others explode
+- 🪐 **Use** Kepler's Laws to calculate and predict planetary orbits
+- 🌡️ **Determine** whether an exoplanet stays within its star's habitable zone
+- 📢 **Construct** an evidence-based argument about which exoplanet is most likely habitable
