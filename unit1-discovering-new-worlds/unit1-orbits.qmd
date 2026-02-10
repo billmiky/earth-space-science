@@ -4,7 +4,7 @@ subtitle: "Is the exoplanet the right distance from its star for liquid water?"
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -97,7 +97,8 @@ Plot.plot({
       stroke: "#333",
       strokeWidth: 0.5,
       title: d => `${d.name}\nDistance: ${d.distance} AU\nPeriod: ${d.period} yr`
-    }),
+    ,
+        tip: true}),
     Plot.text(solarSystem, {
       x: "distance",
       y: "period",
@@ -108,7 +109,8 @@ Plot.plot({
     }),
     // Kepler's law fit line
     Plot.line(
-      d3.range(0.2, 35, 0.1).map(d => ({x: d, y: Math.pow(d, 1.5)})),
+      d3.range(0.2, 35, 0.1).map(d => ({x: d, y: Math.pow(d, 1.5),
+        tip: true})),
       {x: "x", y: "y", stroke: "#667eea", strokeWidth: 2, strokeDasharray: "5,5"}
     )
   ]
@@ -384,7 +386,8 @@ Plot.plot({
       fill: "zone",
       r: 8,
       stroke: "#333"
-    }),
+    ,
+        tip: true}),
     Plot.text(exoplanets, {
       x: "distance",
       y: "period",

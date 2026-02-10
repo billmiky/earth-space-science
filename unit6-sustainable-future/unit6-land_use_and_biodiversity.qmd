@@ -4,7 +4,7 @@ subtitle: "How do the ways we change land affect the health of people and ecosys
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -213,7 +213,8 @@ Plot.plot({
       fill: "hvi",
       stroke: "#2d3436",
       strokeWidth: 1.5
-    }),
+    ,
+        tip: true}),
     Plot.text(neighborhoodData, {
       x: "income",
       y: "deaths",
@@ -284,7 +285,8 @@ Plot.plot({
       y: "pct",
       fill: "type",
       order: "appearance"
-    })),
+    ,
+        tip: true})),
     Plot.ruleY([0])
   ]
 })
@@ -637,9 +639,11 @@ Plot.plot({
   x: {label: "Decade"},
   y: {label: "% of Original Forest Remaining", domain: [60, 100]},
   marks: [
-    Plot.areaY(amazonData, {x: "decade", y: "remaining", fill: "#00b894", fillOpacity: 0.3}),
+    Plot.areaY(amazonData, {x: "decade", y: "remaining", fill: "#00b894", fillOpacity: 0.3,
+        tip: true}),
     Plot.lineY(amazonData, {x: "decade", y: "remaining", stroke: "#00b894", strokeWidth: 3}),
-    Plot.dot(amazonData, {x: "decade", y: "remaining", fill: "#1e6f5c", r: 6}),
+    Plot.dot(amazonData, {x: "decade", y: "remaining", fill: "#1e6f5c", r: 6,
+        tip: true}),
     Plot.ruleY([80], {stroke: "#d63031", strokeDasharray: "8,4", strokeWidth: 2}),
     Plot.ruleY([75], {stroke: "#d63031", strokeDasharray: "4,4", strokeWidth: 2}),
     Plot.text([{decade: "2020", remaining: 78}], {x: "decade", y: "remaining", text: d => "⚠️ TIPPING POINT ZONE", fill: "#d63031", fontWeight: "bold", fontSize: 12, dx: -60}),
@@ -802,7 +806,8 @@ Plot.plot({
       y: "solution",
       x: "value",
       fill: "metric"
-    })),
+    ,
+        tip: true})),
     Plot.ruleX([0])
   ]
 })

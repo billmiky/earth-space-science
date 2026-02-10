@@ -4,7 +4,7 @@ subtitle: "Why is burning fossil fuels killing millions — and what can we do a
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -209,7 +209,8 @@ Plot.plot({
       x: "rate",
       fill: "rate",
       sort: {y: "-x"}
-    }),
+    ,
+        tip: true}),
     Plot.text(deathsByRegion, {
       y: "region",
       x: "rate",
@@ -281,7 +282,8 @@ Plot.plot({
       x: "source",
       y: "pct",
       fill: "source"
-    }),
+    ,
+        tip: true}),
     Plot.text(energyLong, {
       fx: "country",
       x: "source",
@@ -330,7 +332,8 @@ Plot.plot({
       x: "value",
       fill: "country",
       fx: "country"
-    }),
+    ,
+        tip: true}),
     Plot.text(healthLong, {
       y: "metric",
       x: "value",
@@ -437,7 +440,8 @@ Plot.plot({
       x: "storage",
       fill: "color",
       sort: {y: "-x"}
-    }),
+    ,
+        tip: true}),
     Plot.text(carbonReservoirs, {
       y: "reservoir",
       x: "storage",
@@ -593,7 +597,8 @@ Plot.plot({
       fill: "period",
       fx: "period",
       sort: {y: "-x"}
-    }),
+    ,
+        tip: true}),
     Plot.text(cascadeLong, {
       y: "impact",
       x: "deaths",
@@ -664,7 +669,8 @@ Plot.plot({
       x: "potential",
       fill: "color",
       sort: {y: "-x"}
-    }),
+    ,
+        tip: true}),
     Plot.text(carbonTech, {
       y: "tech",
       x: "potential",
@@ -783,7 +789,8 @@ Plot.plot({
       fillOpacity: 0.7,
       stroke: "#d63031",
       strokeWidth: 2
-    }),
+    ,
+        tip: true}),
     Plot.text(transportSolutions, {
       x: "emissionCut",
       y: "livesSaved",

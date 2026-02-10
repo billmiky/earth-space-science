@@ -15,15 +15,15 @@ execute:
 
 ```{=html}
 <style>
-.engage-box { background: #e3f2fd; border-left: 5px solid #2196F3; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
-.explore-box { background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
-.explain-box { background: #e8f5e9; border-left: 5px solid #4caf50; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
-.elaborate-box { background: #f3e5f5; border-left: 5px solid #9c27b0; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
-.evaluate-box { background: #ffebee; border-left: 5px solid #f44336; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
-.check-understanding { background-color: #d1ecf1; border-left: 5px solid #17a2b8; padding: 15px; margin: 15px 0; }
-.key-idea { background-color: #d4edda; border-left: 5px solid #28a745; padding: 15px; margin: 15px 0; }
-.lab-activity { background: #fafafa; border: 2px solid #333; padding: 20px; margin: 20px 0; border-radius: 10px; }
-.quiz-section { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 20px; margin: 20px 0; border-radius: 10px; }
+.engage-box { background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%); color: white; border-left: 5px solid #2196F3; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.explore-box { background: linear-gradient(135deg, #E65100 0%, #BF360C 100%); color: white; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.explain-box { background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%); color: white; border-left: 5px solid #4caf50; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.elaborate-box { background: linear-gradient(135deg, #6A1B9A 0%, #4A148C 100%); color: white; border-left: 5px solid #9c27b0; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.evaluate-box { background: linear-gradient(135deg, #C62828 0%, #B71C1C 100%); color: white; border-left: 5px solid #f44336; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.check-understanding { background: linear-gradient(135deg, #00838F 0%, #006064 100%); color: white; border-left: 5px solid #17a2b8; padding: 15px; margin: 15px 0; }
+.key-idea { background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%); color: white; border-left: 5px solid #28a745; padding: 15px; margin: 15px 0; }
+.lab-activity { background: linear-gradient(135deg, #424242 0%, #212121 100%); color: white; border: 2px solid #666; padding: 20px; margin: 20px 0; border-radius: 10px; }
+.quiz-section { background: linear-gradient(135deg, #C62828 0%, #B71C1C 100%); color: white; border-left: 5px solid #dc3545; padding: 20px; margin: 20px 0; border-radius: 10px; }
 .feedback-loop { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0; }
 .pe-badge { display: inline-block; background: #673ab7; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin: 5px; }
 </style>
@@ -80,7 +80,8 @@ Plot.plot({
     Plot.ruleX(arcticData, Plot.pointerX({x: "year", stroke: "gray", strokeOpacity: 0.5})),
 
     // ARCTIC LINE & DOTS
-    Plot.line(arcticData, {x: "year", y: "arctic", stroke: "#3498db", strokeWidth: 3}),
+    Plot.line(arcticData, {x: "year", y: "arctic", stroke: "#3498db", strokeWidth: 3,
+        tip: true}),
     Plot.dot(arcticData, {
       x: "year", 
       y: "arctic", 
@@ -93,7 +94,8 @@ Plot.plot({
     }),
 
     // GLOBAL LINE & DOTS
-    Plot.line(arcticData, {x: "year", y: "global", stroke: "#e74c3c", strokeWidth: 3}),
+    Plot.line(arcticData, {x: "year", y: "global", stroke: "#e74c3c", strokeWidth: 3,
+        tip: true}),
     Plot.dot(arcticData, {
       x: "year", 
       y: "global", 
@@ -526,8 +528,10 @@ Plot.plot({
   y: {label: "CO₂ (ppm)", domain: [150, showModern ? 450 : 320]},
   marks: [
     Plot.ruleY([280], {stroke: "#999", strokeDasharray: "4,4"}),
-    Plot.line(displayData, {x: "kya", y: "co2", stroke: "#27ae60", strokeWidth: 2}),
-    Plot.dot(displayData.filter(d => d.kya === 0), {x: "kya", y: "co2", fill: "#e74c3c", r: 10}),
+    Plot.line(displayData, {x: "kya", y: "co2", stroke: "#27ae60", strokeWidth: 2,
+        tip: true}),
+    Plot.dot(displayData.filter(d => d.kya === 0), {x: "kya", y: "co2", fill: "#e74c3c", r: 10,
+        tip: true}),
     Plot.text([{x: 400, y: 295}], {x: "x", y: "y", text: d => "Pre-industrial maximum: 280 ppm", fill: "#999", fontSize: 11}),
     showModern ? Plot.text([{x: 50, y: 420}], {x: "x", y: "y", text: d => "TODAY: 420 ppm", fill: "#e74c3c", fontSize: 12, fontWeight: "bold"}) : null
   ].filter(d => d !== null)
@@ -779,7 +783,8 @@ Plot.plot({
   x: {label: "Albedo (reflection coefficient)", domain: [0, 1]},
   y: {label: "Surface Type", domain: albedoData.map(d => d.surface)},
   marks: [
-    Plot.barX(albedoData, {x: "albedo", y: "surface", fill: "color", sort: {y: "-x"}}),
+    Plot.barX(albedoData, {x: "albedo", y: "surface", fill: "color", sort: {y: "-x"},
+        tip: true}),
     Plot.text(albedoData, {x: "albedo", y: "surface", text: d => (d.albedo * 100).toFixed(0) + "%", dx: 25, fontSize: 12})
   ]
 })
@@ -1132,10 +1137,14 @@ Plot.plot({
   x: {label: "Year"},
   y: {label: "Sea Ice Extent (million km²)", domain: [0, 9]},
   marks: [
-    Plot.areaY(seaIceData, {x: "year", y: "extent", fill: "#81d4fa", fillOpacity: 0.5}),
-    Plot.line(seaIceData, {x: "year", y: "extent", stroke: "#0277bd", strokeWidth: 3}),
-    Plot.dot(seaIceData, {x: "year", y: "extent", fill: "#01579b", r: 5}),
-    Plot.dot(seaIceData.filter(d => d.year === 2012), {x: "year", y: "extent", fill: "#e74c3c", r: 8}),
+    Plot.areaY(seaIceData, {x: "year", y: "extent", fill: "#81d4fa", fillOpacity: 0.5,
+        tip: true}),
+    Plot.line(seaIceData, {x: "year", y: "extent", stroke: "#0277bd", strokeWidth: 3,
+        tip: true}),
+    Plot.dot(seaIceData, {x: "year", y: "extent", fill: "#01579b", r: 5,
+        tip: true}),
+    Plot.dot(seaIceData.filter(d => d.year === 2012), {x: "year", y: "extent", fill: "#e74c3c", r: 8,
+        tip: true}),
     Plot.text(seaIceData.filter(d => d.year === 2012), {x: "year", y: "extent", text: d => "Record Low: 2012", dy: -15, fill: "#e74c3c", fontSize: 11}),
     Plot.linearRegressionY(seaIceData, {x: "year", y: "extent", stroke: "#e74c3c", strokeDasharray: "5,5"})
   ]
@@ -1177,7 +1186,8 @@ Plot.plot({
   x: {label: "Percentage of Global Emissions"},
   y: {label: "Sector", domain: co2SourcesData.map(d => d.source)},
   marks: [
-    Plot.barX(co2SourcesData, {x: "emissions", y: "source", fill: "color", sort: {y: "-x"}}),
+    Plot.barX(co2SourcesData, {x: "emissions", y: "source", fill: "color", sort: {y: "-x"},
+        tip: true}),
     Plot.text(co2SourcesData, {x: "emissions", y: "source", text: d => d.emissions + "%", dx: 20, fontSize: 12, fontWeight: "bold"})
   ]
 })
@@ -1215,8 +1225,10 @@ Plot.plot({
     Plot.text([{x: 1800, y: 275}], {x: "x", y: "y", text: d => "Pre-industrial level: 280 ppm", fill: "#27ae60", fontSize: 10}),
     Plot.ruleY([350], {stroke: "#f39c12", strokeDasharray: "5,5"}),
     Plot.text([{x: 1800, y: 345}], {x: "x", y: "y", text: d => "\"Safe\" level: 350 ppm", fill: "#f39c12", fontSize: 10}),
-    Plot.line(co2GrowthData, {x: "year", y: "co2", stroke: "#e74c3c", strokeWidth: 3}),
-    Plot.dot(co2GrowthData, {x: "year", y: "co2", fill: "#c0392b", r: 4})
+    Plot.line(co2GrowthData, {x: "year", y: "co2", stroke: "#e74c3c", strokeWidth: 3,
+        tip: true}),
+    Plot.dot(co2GrowthData, {x: "year", y: "co2", fill: "#c0392b", r: 4,
+        tip: true})
   ]
 })
 ```
@@ -1693,105 +1705,131 @@ ${feedbackType === "Ice-Albedo Feedback" ? `
 ---
 
 ::: {.quiz-section}
-## 📝 Climate Feedbacks Quiz (Click to Reveal Answers)
-
-**Question 1:** What is the primary greenhouse gas that humans have increased in the atmosphere?
-- A) Oxygen
-- B) Nitrogen
-- C) Carbon dioxide
-- D) Argon
-<details>
-<summary>Show answer</summary>
-<p><strong>Answer:</strong> C) Carbon dioxide</p>
-</details>
-
-**Question 2:** What is albedo?
-- A) The amount of CO₂ in the atmosphere
-- B) The measure of how much light a surface reflects
-- C) The temperature of the ocean
-- D) The speed of ice melting
-<details>
-<summary>Show answer</summary>
-<p><strong>Answer:</strong> B) The measure of how much light a surface reflects</p>
-</details>
-
-**Question 3:** Which surface has the HIGHEST albedo?
-- A) Fresh snow
-- B) Ocean water
-- C) Forest
-- D) Desert sand
-<details>
-<summary>Show answer</summary>
-<p><strong>Answer:</strong> A) Fresh snow</p>
-</details>
-
-**Question 4:** The ice-albedo feedback is an example of:
-- A) Negative feedback that stabilizes climate
-- B) Positive feedback that amplifies warming
-- C) No feedback effect
-- D) A cooling mechanism
-<details>
-<summary>Show answer</summary>
-<p><strong>Answer:</strong> B) Positive feedback that amplifies warming</p>
-</details>
-
-**Question 5:** Why is the Arctic warming almost 4 times faster than the global average?
-- A) The Sun is closer to the Arctic
-- B) Ice-albedo feedback amplifies warming there
-- C) There are more people in the Arctic
-- D) Volcanic activity in the Arctic
-<details>
-<summary>Show answer</summary>
-<p><strong>Answer:</strong> B) Ice-albedo feedback amplifies warming there</p>
-</details>
-
-**Question 6:** Current atmospheric CO₂ levels are approximately:
-- A) 280 ppm (pre-industrial level)
-- B) 350 ppm
-- C) 420 ppm
-- D) 1000 ppm
-<details>
-<summary>Show answer</summary>
-<p><strong>Answer:</strong> C) 420 ppm</p>
-</details>
-
-**Question 7:** In the greenhouse effect, what type of radiation do greenhouse gases absorb?
-- A) Visible light from the Sun
-- B) Ultraviolet radiation
-- C) Infrared radiation from Earth's surface
-- D) X-rays
-<details>
-<summary>Show answer</summary>
-<p><strong>Answer:</strong> C) Infrared radiation from Earth's surface</p>
-</details>
-
-**Question 8:** The permafrost feedback involves the release of which gases?
-- A) Oxygen and nitrogen
-- B) Methane and carbon dioxide
-- C) Ozone and CFCs
-- D) Hydrogen and helium
-<details>
-<summary>Show answer</summary>
-<p><strong>Answer:</strong> B) Methane and carbon dioxide</p>
-</details>
-
-**Question 9:** If Arctic sea ice (albedo 0.60) is replaced by open ocean (albedo 0.06), what happens to energy absorption?
-- A) Stays the same
-- B) Decreases slightly
-- C) Increases dramatically (10x more absorbed)
-- D) Decreases dramatically
-<details>
-<summary>Show answer</summary>
-<p><strong>Answer:</strong> C) Increases dramatically (10x more absorbed)</p>
-</details>
-
-**Question 10:** Which statement best explains why scientists are confident humans are causing current climate change?
-- A) It's just a guess
-- B) Temperatures have changed before naturally
-- C) CO₂ levels are far beyond natural range and match timing of industrialization
-- D) The Sun has gotten brighter
-<details>
-<summary>Show answer</summary>
-<p><strong>Answer:</strong> C) CO₂ levels are far beyond natural range and match timing of industrialization</p>
-</details>
+## 📝 Climate Feedbacks Quiz
 :::
+
+```{ojs}
+//| echo: false
+{
+  const questions = [
+    {
+      q: "What is the primary greenhouse gas that humans have increased in the atmosphere?",
+      options: ["A) Oxygen", "B) Nitrogen", "C) Carbon dioxide", "D) Argon"],
+      correct: 2,
+      explanation: "Carbon dioxide (CO₂) is the primary greenhouse gas increased by human activities, mainly through burning fossil fuels."
+    },
+    {
+      q: "What is albedo?",
+      options: ["A) The amount of CO₂ in the atmosphere", "B) The measure of how much light a surface reflects", "C) The temperature of the ocean", "D) The speed of ice melting"],
+      correct: 1,
+      explanation: "Albedo measures the reflectivity of a surface — from 0 (absorbs all light) to 1 (reflects all light)."
+    },
+    {
+      q: "Which surface has the HIGHEST albedo?",
+      options: ["A) Fresh snow", "B) Ocean water", "C) Forest", "D) Desert sand"],
+      correct: 0,
+      explanation: "Fresh snow has an albedo of about 0.80–0.90, reflecting most incoming solar radiation."
+    },
+    {
+      q: "The ice-albedo feedback is an example of:",
+      options: ["A) Negative feedback that stabilizes climate", "B) Positive feedback that amplifies warming", "C) No feedback effect", "D) A cooling mechanism"],
+      correct: 1,
+      explanation: "Ice-albedo is a positive feedback: warming melts ice → darker surface → more absorption → more warming."
+    },
+    {
+      q: "Why is the Arctic warming almost 4 times faster than the global average?",
+      options: ["A) The Sun is closer to the Arctic", "B) Ice-albedo feedback amplifies warming there", "C) There are more people in the Arctic", "D) Volcanic activity in the Arctic"],
+      correct: 1,
+      explanation: "Arctic amplification occurs because the ice-albedo feedback is strongest where ice is melting, creating a self-reinforcing warming cycle."
+    },
+    {
+      q: "Current atmospheric CO₂ levels are approximately:",
+      options: ["A) 280 ppm (pre-industrial level)", "B) 350 ppm", "C) 420 ppm", "D) 1000 ppm"],
+      correct: 2,
+      explanation: "As of 2024, atmospheric CO₂ is approximately 420 ppm — 50% higher than the pre-industrial level of 280 ppm."
+    },
+    {
+      q: "In the greenhouse effect, what type of radiation do greenhouse gases absorb?",
+      options: ["A) Visible light from the Sun", "B) Ultraviolet radiation", "C) Infrared radiation from Earth's surface", "D) X-rays"],
+      correct: 2,
+      explanation: "Greenhouse gases absorb infrared (heat) radiation emitted by Earth's surface, trapping energy in the atmosphere."
+    },
+    {
+      q: "The permafrost feedback involves the release of which gases?",
+      options: ["A) Oxygen and nitrogen", "B) Methane and carbon dioxide", "C) Ozone and CFCs", "D) Hydrogen and helium"],
+      correct: 1,
+      explanation: "Thawing permafrost releases methane (CH₄) and CO₂ from decomposing organic matter — methane is 80x more potent as a greenhouse gas over 20 years."
+    },
+    {
+      q: "If Arctic sea ice (albedo 0.60) is replaced by open ocean (albedo 0.06), what happens to energy absorption?",
+      options: ["A) Stays the same", "B) Decreases slightly", "C) Increases dramatically (10x more absorbed)", "D) Decreases dramatically"],
+      correct: 2,
+      explanation: "Ocean absorbs 94% of incoming radiation vs. ice absorbing only 40% — nearly 10x more energy is absorbed."
+    },
+    {
+      q: "Which statement best explains why scientists are confident humans are causing current climate change?",
+      options: ["A) It's just a guess", "B) Temperatures have changed before naturally", "C) CO₂ levels are far beyond natural range and match timing of industrialization", "D) The Sun has gotten brighter"],
+      correct: 2,
+      explanation: "CO₂ at 420 ppm is far beyond the 180–280 ppm natural range of the last 800,000 years, and the rise correlates precisely with fossil fuel use."
+    }
+  ];
+
+  const container = d3.create("div").attr("class", "interactive-quiz");
+  container.append("p").style("text-align", "center").style("color", "#718096").style("font-style", "italic")
+    .text("Select an answer for each question, then click 'Check Answers' to see your score.");
+
+  const state = { answers: new Array(questions.length).fill(-1) };
+
+  questions.forEach((question, qi) => {
+    const qDiv = container.append("div").attr("class", "quiz-question");
+    qDiv.append("p").style("font-weight", "700").style("margin-bottom", "12px")
+      .text(`Question ${qi + 1}: ${question.q}`);
+
+    question.options.forEach((opt, oi) => {
+      const label = qDiv.append("label").attr("class", "quiz-option")
+        .style("display", "block").style("padding", "10px 16px").style("margin", "6px 0")
+        .style("border", "2px solid #e2e8f0").style("border-radius", "8px").style("cursor", "pointer");
+      label.append("input").attr("type", "radio").attr("name", `cfq${qi}`)
+        .style("margin-right", "10px")
+        .on("change", () => { state.answers[qi] = oi; });
+      label.append("span").text(opt);
+    });
+
+    qDiv.append("div").attr("class", `cf-feedback-${qi}`);
+  });
+
+  const btnDiv = container.append("div").style("text-align", "center").style("margin-top", "20px");
+  btnDiv.append("button")
+    .style("background", "linear-gradient(135deg, #667eea, #764ba2)").style("color", "white")
+    .style("border", "none").style("padding", "12px 36px").style("border-radius", "25px")
+    .style("font-size", "1.1em").style("font-weight", "700").style("cursor", "pointer")
+    .style("box-shadow", "0 4px 15px rgba(102,126,234,0.4)")
+    .text("Check Answers")
+    .on("click", function() {
+      let score = 0;
+      questions.forEach((question, qi) => {
+        const fb = container.select(`.cf-feedback-${qi}`);
+        fb.html("");
+        if (state.answers[qi] === -1) {
+          fb.append("div").attr("class", "quiz-feedback incorrect")
+            .text("⚠️ Please select an answer.");
+          return;
+        }
+        const isCorrect = state.answers[qi] === question.correct;
+        if (isCorrect) score++;
+        fb.append("div").attr("class", `quiz-feedback ${isCorrect ? "correct" : "incorrect"}`)
+          .html(`${isCorrect ? "✅ Correct!" : "❌ Incorrect. The correct answer is " + question.options[question.correct] + "."}<br><em>${question.explanation}</em>`);
+      });
+      
+      const scoreDiv = container.select(".cf-score-display");
+      scoreDiv.html("");
+      const pct = Math.round(score / questions.length * 100);
+      const emoji = pct === 100 ? "🌟" : pct >= 80 ? "👏" : pct >= 60 ? "👍" : "📚";
+      scoreDiv.append("div").attr("class", "quiz-score")
+        .text(`${emoji} Score: ${score}/${questions.length} (${pct}%)`);
+    });
+
+  container.append("div").attr("class", "cf-score-display");
+  return container.node();
+}
+```

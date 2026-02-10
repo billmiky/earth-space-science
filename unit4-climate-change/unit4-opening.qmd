@@ -4,7 +4,7 @@ subtitle: "How do natural factors contribute to changes in Earth's temperature?"
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -158,8 +158,10 @@ Plot.plot({
   x: {label: "Year"},
   marks: [
     Plot.ruleY([0], {stroke: "#ccc", strokeDasharray: "4,4"}),
-    Plot.line(filteredData, {x: "year", y: "anomaly", stroke: "steelblue", strokeWidth: 2}),
-    Plot.dot(filteredData, {x: "year", y: "anomaly", fill: d => d.anomaly > 0 ? "red" : "blue", r: 5}),
+    Plot.line(filteredData, {x: "year", y: "anomaly", stroke: "steelblue", strokeWidth: 2,
+        tip: true}),
+    Plot.dot(filteredData, {x: "year", y: "anomaly", fill: d => d.anomaly > 0 ? "red" : "blue", r: 5,
+        tip: true}),
     Plot.text(filteredData.slice(-1), {x: "year", y: "anomaly", text: d => `${d.anomaly}°C`, dy: -15, fontSize: 14, fontWeight: "bold"})
   ]
 })
@@ -207,7 +209,8 @@ Plot.plot({
   x: {label: "Year", tickFormat: d => d.toString()},
   y: {label: "People Displaced (Millions)", domain: [0, 40]},
   marks: [
-    Plot.barY(displacementData, {x: "year", y: "displaced", fill: "#e74c3c"}),
+    Plot.barY(displacementData, {x: "year", y: "displaced", fill: "#e74c3c",
+        tip: true}),
     Plot.text(displacementData, {x: "year", y: "displaced", text: d => d.displaced + "M", dy: -10, fontSize: 11})
   ]
 })
@@ -273,9 +276,12 @@ Plot.plot({
   y: {label: "Temperature Anomaly (°C)", domain: [-0.6, 1.2]},
   marks: [
     Plot.ruleY([0], {stroke: "#999", strokeDasharray: "4,4"}),
-    Plot.areaY(longTermData.filter(d => d.year <= 1850), {x: "year", y: "temp", fill: "#3498db", fillOpacity: 0.3}),
-    Plot.areaY(longTermData.filter(d => d.year >= 1850), {x: "year", y: "temp", fill: "#e74c3c", fillOpacity: 0.3}),
-    Plot.line(longTermData, {x: "year", y: "temp", stroke: "#2c3e50", strokeWidth: 2}),
+    Plot.areaY(longTermData.filter(d => d.year <= 1850), {x: "year", y: "temp", fill: "#3498db", fillOpacity: 0.3,
+        tip: true}),
+    Plot.areaY(longTermData.filter(d => d.year >= 1850), {x: "year", y: "temp", fill: "#e74c3c", fillOpacity: 0.3,
+        tip: true}),
+    Plot.line(longTermData, {x: "year", y: "temp", stroke: "#2c3e50", strokeWidth: 2,
+        tip: true}),
     Plot.text([{x: 900, y: -0.45, text: "Natural Cooling Trend"}], {x: "x", y: "y", text: "text", fill: "#3498db", fontSize: 12}),
     Plot.text([{x: 1950, y: 0.7, text: "Industrial Era Warming"}], {x: "x", y: "y", text: "text", fill: "#e74c3c", fontSize: 12})
   ]
@@ -344,36 +350,100 @@ By the end of this unit, you will create a communication piece for someone in yo
 
 ::: {.quiz-section}
 ## 📝 Unit Opening Quiz
-
-**Question 1:** Based on the temperature data, approximately how much has global temperature increased since 1880?
-- A) 0.5°C
-- B) 1.0°C
-- C) 1.5°C
-- D) 2.0°C
-
-**Question 2:** What percentage of climate scientists agree that humans are causing climate change?
-- A) About 57%
-- B) About 75%
-- C) About 90%
-- D) About 99.9%
-
-**Question 3:** Before approximately 200 years ago, Earth's temperature had been:
-- A) Rapidly warming
-- B) Staying constant
-- C) Gradually cooling
-- D) Fluctuating wildly
-
-**Question 4:** Why is the gap between scientific consensus and public perception important to address?
-- A) It doesn't matter what the public thinks
-- B) Scientists might be wrong
-- C) Public support is needed for climate action
-- D) The public knows more than scientists
-
-**Question 5:** What is the anchor phenomenon for this unit?
-- A) Ice ages occur every 100,000 years
-- B) The Sun's output varies over time
-- C) Earth's temperature is rising, reversing a 2,000-year cooling trend
-- D) Volcanoes cause climate change
-
-*Answers: 1-C, 2-D, 3-C, 4-C, 5-C*
 :::
+
+```{ojs}
+//| echo: false
+{
+  const questions = [
+    {
+      q: "Based on the temperature data, approximately how much has global temperature increased since 1880?",
+      options: ["A) 0.5°C", "B) 1.0°C", "C) 1.5°C", "D) 2.0°C"],
+      correct: 2,
+      explanation: "Global temperatures have risen approximately 1.5°C since 1880, with most of the warming occurring in the last 50 years."
+    },
+    {
+      q: "What percentage of climate scientists agree that humans are causing climate change?",
+      options: ["A) About 57%", "B) About 75%", "C) About 90%", "D) About 99.9%"],
+      correct: 3,
+      explanation: "Multiple studies confirm that over 99% of climate scientists agree that human activities are causing climate change."
+    },
+    {
+      q: "Before approximately 200 years ago, Earth's temperature had been:",
+      options: ["A) Rapidly warming", "B) Staying constant", "C) Gradually cooling", "D) Fluctuating wildly"],
+      correct: 2,
+      explanation: "Earth had been in a gradual cooling trend for about 2,000 years due to Milankovitch cycles — until industrialization reversed that trend."
+    },
+    {
+      q: "Why is the gap between scientific consensus and public perception important to address?",
+      options: ["A) It doesn't matter what the public thinks", "B) Scientists might be wrong", "C) Public support is needed for climate action", "D) The public knows more than scientists"],
+      correct: 2,
+      explanation: "Addressing climate change requires broad public support for policy changes, which depends on understanding and trusting the science."
+    },
+    {
+      q: "What is the anchor phenomenon for this unit?",
+      options: ["A) Ice ages occur every 100,000 years", "B) The Sun's output varies over time", "C) Earth's temperature is rising, reversing a 2,000-year cooling trend", "D) Volcanoes cause climate change"],
+      correct: 2,
+      explanation: "The anchor phenomenon is that Earth's temperature is rising dramatically, reversing a natural 2,000-year cooling trend driven by orbital cycles."
+    }
+  ];
+
+  const container = d3.create("div").attr("class", "interactive-quiz");
+  container.append("p").style("text-align", "center").style("color", "#718096").style("font-style", "italic")
+    .text("Select an answer for each question, then click 'Check Answers' to see your score.");
+
+  const state = { answers: new Array(questions.length).fill(-1), submitted: false };
+
+  questions.forEach((question, qi) => {
+    const qDiv = container.append("div").attr("class", "quiz-question");
+    qDiv.append("p").style("font-weight", "700").style("margin-bottom", "12px")
+      .text(`Question ${qi + 1}: ${question.q}`);
+
+    question.options.forEach((opt, oi) => {
+      const label = qDiv.append("label").attr("class", "quiz-option")
+        .style("display", "block").style("padding", "10px 16px").style("margin", "6px 0")
+        .style("border", "2px solid #e2e8f0").style("border-radius", "8px").style("cursor", "pointer");
+      label.append("input").attr("type", "radio").attr("name", `q${qi}`)
+        .style("margin-right", "10px")
+        .on("change", () => { state.answers[qi] = oi; });
+      label.append("span").text(opt);
+    });
+
+    qDiv.append("div").attr("class", `feedback-${qi}`);
+  });
+
+  const btnDiv = container.append("div").style("text-align", "center").style("margin-top", "20px");
+  btnDiv.append("button")
+    .style("background", "linear-gradient(135deg, #667eea, #764ba2)").style("color", "white")
+    .style("border", "none").style("padding", "12px 36px").style("border-radius", "25px")
+    .style("font-size", "1.1em").style("font-weight", "700").style("cursor", "pointer")
+    .style("box-shadow", "0 4px 15px rgba(102,126,234,0.4)")
+    .text("Check Answers")
+    .on("click", function() {
+      let score = 0;
+      questions.forEach((question, qi) => {
+        const fb = container.select(`.feedback-${qi}`);
+        fb.html("");
+        if (state.answers[qi] === -1) {
+          fb.append("div").attr("class", "quiz-feedback incorrect")
+            .text("⚠️ Please select an answer.");
+          return;
+        }
+        const isCorrect = state.answers[qi] === question.correct;
+        if (isCorrect) score++;
+        fb.append("div").attr("class", `quiz-feedback ${isCorrect ? "correct" : "incorrect"}`)
+          .html(`${isCorrect ? "✅ Correct!" : "❌ Incorrect. The correct answer is " + question.options[question.correct] + "."}<br><em>${question.explanation}</em>`);
+      });
+      
+      const scoreDiv = container.select(".score-display");
+      scoreDiv.html("");
+      const pct = Math.round(score / questions.length * 100);
+      const emoji = pct === 100 ? "🌟" : pct >= 80 ? "👏" : pct >= 60 ? "👍" : "📚";
+      scoreDiv.append("div").attr("class", "quiz-score")
+        .text(`${emoji} Score: ${score}/${questions.length} (${pct}%)`);
+    });
+
+  container.append("div").attr("class", "score-display");
+  return container.node();
+}
+```

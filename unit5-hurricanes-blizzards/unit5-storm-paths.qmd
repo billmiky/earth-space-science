@@ -4,7 +4,7 @@ subtitle: "Why do storms follow the paths they do, and could those paths shift?"
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -673,7 +673,8 @@ Plot.plot({
   x: {label: "Latitude (°N)", domain: [0, 90]},
   y: {label: "Annual Precipitation (mm)", domain: [0, 2200]},
   marks: [
-    Plot.barY(precipPatternData, {x: "lat", y: "precip", fill: d => d.precip > 800 ? "#3498db" : d.precip > 400 ? "#f39c12" : "#e74c3c", dx: -3}),
+    Plot.barY(precipPatternData, {x: "lat", y: "precip", fill: d => d.precip > 800 ? "#3498db" : d.precip > 400 ? "#f39c12" : "#e74c3c", dx: -3,
+        tip: true}),
     Plot.text(precipPatternData, {x: "lat", y: d => d.precip + 80, text: "emoji", fontSize: 20}),
     Plot.text(precipPatternData, {x: "lat", y: d => d.precip + 150, text: "type", fontSize: 10})
   ]

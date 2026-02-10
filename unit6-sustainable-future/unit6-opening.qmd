@@ -4,7 +4,7 @@ subtitle: "Human activity is harming people and the planet. What can we do about
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -61,7 +61,7 @@ execute:
 
 .pe-badge {
   display: inline-block;
-  background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+  background: linear-gradient(135deg, #00876d 0%, #009688 100%);
   color: white;
   padding: 8px 16px;
   border-radius: 20px;
@@ -91,7 +91,7 @@ execute:
 }
 
 .check-understanding {
-  background: linear-gradient(to right, #00b894, #00cec9);
+  background: linear-gradient(to right, #00876d, #009688);
   color: white;
   padding: 20px;
   margin: 20px 0;
@@ -222,7 +222,8 @@ Plot.plot({
       x: "deaths",
       fill: "color",
       sort: {y: "-x"}
-    }),
+    ,
+        tip: true}),
     Plot.text(envDeaths, {
       y: "cause",
       x: "deaths",
@@ -280,7 +281,8 @@ Plot.plot({
       x: "rate",
       fill: "cause",
       sort: {y: "-x"}
-    })),
+    ,
+        tip: true})),
     Plot.ruleX([0])
   ]
 })

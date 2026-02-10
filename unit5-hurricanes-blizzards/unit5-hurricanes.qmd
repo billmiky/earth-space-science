@@ -4,7 +4,7 @@ subtitle: "How do hurricanes form, and why do they only occur at certain times o
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -245,11 +245,14 @@ Plot.plot({
   x: {label: "Month", domain: sstData.map(d => d.month)},
   y: {label: "Sea Surface Temperature (°C)", domain: [24, 30]},
   marks: [
-    Plot.barY(sstData, {x: "month", y: "sst", fill: d => d.sst >= 26.5 ? (d.sst >= 27.5 ? "#e74c3c" : "#f39c12") : "#3498db", dx: -3}),
+    Plot.barY(sstData, {x: "month", y: "sst", fill: d => d.sst >= 26.5 ? (d.sst >= 27.5 ? "#e74c3c" : "#f39c12") : "#3498db", dx: -3,
+        tip: true}),
     Plot.ruleY([26.5], {stroke: "#e74c3c", strokeWidth: 2, strokeDasharray: "8,4"}),
     Plot.text([{x: "Mar", y: 26.8}], {x: "x", y: "y", text: d => "← 26.5°C threshold for hurricane formation", fill: "#e74c3c", fontSize: 11, textAnchor: "start"}),
-    Plot.dot(sstData, {x: "month", y: d => 24 + d.hurricanes * 1.2, fill: "#6c5ce7", r: d => Math.max(d.hurricanes * 3, 2)}),
-    Plot.line(sstData, {x: "month", y: d => 24 + d.hurricanes * 1.2, stroke: "#6c5ce7", strokeWidth: 1.5})
+    Plot.dot(sstData, {x: "month", y: d => 24 + d.hurricanes * 1.2, fill: "#6c5ce7", r: d => Math.max(d.hurricanes * 3, 2),
+        tip: true}),
+    Plot.line(sstData, {x: "month", y: d => 24 + d.hurricanes * 1.2, stroke: "#6c5ce7", strokeWidth: 1.5,
+        tip: true})
   ]
 })
 ```
@@ -303,7 +306,8 @@ Plot.plot({
   y: {label: "Peak Category", domain: [0, 6]},
   color: {legend: true, domain: ["Jun", "Jul", "Aug", "Sep", "Oct", "Nov"], range: ["#3498db", "#2ecc71", "#e74c3c", "#f39c12", "#9b59b6", "#1abc9c"]},
   marks: [
-    Plot.barY(storms2005, {x: "name", y: "peak", fill: "month", sort: {x: null}}),
+    Plot.barY(storms2005, {x: "name", y: "peak", fill: "month", sort: {x: null},
+        tip: true}),
     Plot.ruleY([3], {stroke: "#999", strokeDasharray: "5,5"}),
     Plot.text([{x: "Katrina", y: 5.5}], {x: "x", y: "y", text: d => "🌀", fontSize: 25}),
     Plot.text([{x: "Arlene", y: 3.3}], {x: "x", y: "y", text: d => "← Major hurricane threshold (Cat 3+)", fontSize: 10, textAnchor: "start"})
@@ -460,7 +464,8 @@ Plot.plot({
   x: {label: "Category"},
   y: {label: "Maximum Sustained Wind (mph)", domain: [0, 200]},
   marks: [
-    Plot.barY(safirSimpsonData, {x: "label", y: "wind", fill: "color", sort: {x: null}}),
+    Plot.barY(safirSimpsonData, {x: "label", y: "wind", fill: "color", sort: {x: null},
+        tip: true}),
     Plot.ruleY([74], {stroke: "#e74c3c", strokeDasharray: "5,5"}),
     Plot.text([{x: "Trop. Storm", y: 80}], {x: "x", y: "y", text: d => "← Hurricane threshold (74 mph)", fontSize: 10, fill: "#e74c3c", textAnchor: "start"}),
     Plot.text(safirSimpsonData, {x: "label", y: d => d.wind + 8, text: "damage", fontSize: 9})
@@ -506,9 +511,12 @@ Plot.plot({
   y: {label: "Relative Value (normalized)"},
   color: {legend: true},
   marks: [
-    Plot.areaY(seasonData, {x: "month", y: d => (d.sst - 24) / 6, fill: "#e74c3c", fillOpacity: 0.15, curve: "catmull-rom"}),
-    Plot.line(seasonData, {x: "month", y: d => (d.sst - 24) / 6, stroke: "#e74c3c", strokeWidth: 3, curve: "catmull-rom"}),
-    Plot.line(seasonData, {x: "month", y: d => (d.solarInput - 200) / 200, stroke: "#f39c12", strokeWidth: 2, strokeDasharray: "5,3", curve: "catmull-rom"}),
+    Plot.areaY(seasonData, {x: "month", y: d => (d.sst - 24) / 6, fill: "#e74c3c", fillOpacity: 0.15, curve: "catmull-rom",
+        tip: true}),
+    Plot.line(seasonData, {x: "month", y: d => (d.sst - 24) / 6, stroke: "#e74c3c", strokeWidth: 3, curve: "catmull-rom",
+        tip: true}),
+    Plot.line(seasonData, {x: "month", y: d => (d.solarInput - 200) / 200, stroke: "#f39c12", strokeWidth: 2, strokeDasharray: "5,3", curve: "catmull-rom",
+        tip: true}),
     Plot.ruleY([(26.5 - 24) / 6], {stroke: "#e74c3c", strokeWidth: 1, strokeDasharray: "3,3"}),
     Plot.text([{x: "Jan", y: 0.5}], {x: "x", y: "y", text: d => "26.5°C threshold", fill: "#e74c3c", fontSize: 10}),
     Plot.text([{x: "Jul", y: 0.95}], {x: "x", y: "y", text: d => "🌞 Solar Input", fill: "#f39c12", fontSize: 11}),
@@ -572,7 +580,8 @@ Plot.plot({
   x: {label: "Year"},
   y: {label: "Temperature Anomaly (°C)", domain: [-0.3, 0.8]},
   marks: [
-    Plot.barY(sstTrend, {x: "year", y: "anomaly", fill: d => d.anomaly > 0 ? "#e74c3c" : "#3498db"}),
+    Plot.barY(sstTrend, {x: "year", y: "anomaly", fill: d => d.anomaly > 0 ? "#e74c3c" : "#3498db",
+        tip: true}),
     Plot.ruleY([0], {stroke: "#2d3436"}),
     Plot.linearRegressionY(sstTrend, {x: "year", y: "anomaly", stroke: "#c62828", strokeWidth: 2, strokeDasharray: "8,4"}),
     Plot.text([{x: 2005, y: 0.65}], {x: "x", y: "y", text: d => "2005 ↑", fontSize: 10, fill: "#c62828"}),
@@ -603,7 +612,8 @@ Plot.plot({
   x: {label: "Period"},
   y: {label: "Number of Rapid Intensification Events"},
   marks: [
-    Plot.barY(riData, {x: "period", y: "events", fill: "#e74c3c"}),
+    Plot.barY(riData, {x: "period", y: "events", fill: "#e74c3c",
+        tip: true}),
     Plot.text(riData, {x: "period", y: d => d.events + 2, text: d => `${d.pctMajor}% became\nmajor (Cat 3+)`, fontSize: 10, lineAnchor: "bottom"})
   ]
 })

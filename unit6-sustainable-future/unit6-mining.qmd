@@ -4,7 +4,7 @@ subtitle: "How can we get the resources we need without poisoning communities?"
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -18,7 +18,7 @@ execute:
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
 
 .engage-box {
-  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+  background: linear-gradient(135deg, #5848c7 0%, #764ba2 100%);
   color: white;
   padding: 25px;
   margin: 20px 0;
@@ -65,7 +65,7 @@ execute:
 }
 
 .check-understanding {
-  background: linear-gradient(to right, #6c5ce7, #a29bfe);
+  background: linear-gradient(to right, #5848c7, #764ba2);
   color: white;
   padding: 20px;
   margin: 20px 0;
@@ -92,7 +92,7 @@ execute:
 
 .pe-badge {
   display: inline-block;
-  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+  background: linear-gradient(135deg, #5848c7 0%, #764ba2 100%);
   color: white;
   padding: 8px 16px;
   border-radius: 20px;
@@ -117,7 +117,7 @@ execute:
 }
 
 .mind-blown {
-  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+  background: linear-gradient(135deg, #5848c7 0%, #764ba2 100%);
   color: white;
   padding: 20px;
   margin: 20px 0;
@@ -216,7 +216,8 @@ Plot.plot({
       x: "group",
       y: "value",
       fill: "group"
-    }),
+    ,
+        tip: true}),
     Plot.text(healthLong, {
       fx: "metric",
       x: "group",
@@ -275,7 +276,8 @@ Plot.plot({
       x: "extent",
       fill: "color",
       sort: {y: "-x"}
-    }),
+    ,
+        tip: true}),
     Plot.text(miningImpacts, {
       y: "impact",
       x: "extent",
@@ -324,7 +326,8 @@ Plot.plot({
       y: "method",
       x: "value",
       fill: "impact"
-    })),
+    ,
+        tip: true})),
     Plot.ruleX([0])
   ]
 })

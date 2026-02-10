@@ -4,7 +4,7 @@ subtitle: "How do we know what's inside Earth if we've never been there?"
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -19,8 +19,8 @@ execute:
 
 .engage-box { background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(225, 112, 85, 0.3); }
 .explore-box { background: linear-gradient(135deg, #0984e3 0%, #00b894 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(9, 132, 227, 0.3); }
-.explain-box { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
-.elaborate-box { background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(253, 203, 110, 0.3); }
+.explain-box { background: linear-gradient(135deg, #5848c7 0%, #7c6fd6 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #e8a338 0%, #e17055 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(253, 203, 110, 0.3); }
 .evaluate-box { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3); }
 .engage-box h2, .explore-box h2, .explain-box h2, .elaborate-box h2, .evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
 .pe-badge { display: inline-block; background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 5px; box-shadow: 0 4px 15px rgba(225, 112, 85, 0.4); text-transform: uppercase; letter-spacing: 1px; }
@@ -90,7 +90,8 @@ Plot.plot({
       fill: "color",
       rx: 8,
       sort: {y: "x"}
-    }),
+    ,
+        tip: true}),
     Plot.text(depthData, {
       x: "depth",
       y: "item",
@@ -220,16 +221,24 @@ Plot.plot({
   color: {legend: true},
   marks: [
     // Layer shading
-    Plot.rectY([{x1: 0, x2: 35, label: "Crust"}], {x1: "x1", x2: "x2", y1: 0, y2: 15, fill: "#dfe6e9", fillOpacity: 0.3}),
-    Plot.rectY([{x1: 35, x2: 2900}], {x1: "x1", x2: "x2", y1: 0, y2: 15, fill: "#e17055", fillOpacity: 0.1}),
-    Plot.rectY([{x1: 2900, x2: 5150}], {x1: "x1", x2: "x2", y1: 0, y2: 15, fill: "#f39c12", fillOpacity: 0.15}),
-    Plot.rectY([{x1: 5150, x2: 6371}], {x1: "x1", x2: "x2", y1: 0, y2: 15, fill: "#fdcb6e", fillOpacity: 0.2}),
+    Plot.rectY([{x1: 0, x2: 35, label: "Crust",
+        tip: true}], {x1: "x1", x2: "x2", y1: 0, y2: 15, fill: "#dfe6e9", fillOpacity: 0.3}),
+    Plot.rectY([{x1: 35, x2: 2900,
+        tip: true}], {x1: "x1", x2: "x2", y1: 0, y2: 15, fill: "#e17055", fillOpacity: 0.1}),
+    Plot.rectY([{x1: 2900, x2: 5150,
+        tip: true}], {x1: "x1", x2: "x2", y1: 0, y2: 15, fill: "#f39c12", fillOpacity: 0.15}),
+    Plot.rectY([{x1: 5150, x2: 6371,
+        tip: true}], {x1: "x1", x2: "x2", y1: 0, y2: 15, fill: "#fdcb6e", fillOpacity: 0.2}),
     // P-wave line
-    Plot.line(waveSpeedData, {x: "depth", y: "pSpeed", stroke: "#e17055", strokeWidth: 3, curve: "natural"}),
-    Plot.dot(waveSpeedData, {x: "depth", y: "pSpeed", fill: "#e17055", r: 3}),
+    Plot.line(waveSpeedData, {x: "depth", y: "pSpeed", stroke: "#e17055", strokeWidth: 3, curve: "natural",
+        tip: true}),
+    Plot.dot(waveSpeedData, {x: "depth", y: "pSpeed", fill: "#e17055", r: 3,
+        tip: true}),
     // S-wave line
-    Plot.line(waveSpeedData, {x: "depth", y: "sSpeed", stroke: "#0984e3", strokeWidth: 3, curve: "natural"}),
-    Plot.dot(waveSpeedData.filter(d => d.sSpeed > 0), {x: "depth", y: "sSpeed", fill: "#0984e3", r: 3}),
+    Plot.line(waveSpeedData, {x: "depth", y: "sSpeed", stroke: "#0984e3", strokeWidth: 3, curve: "natural",
+        tip: true}),
+    Plot.dot(waveSpeedData.filter(d => d.sSpeed > 0), {x: "depth", y: "sSpeed", fill: "#0984e3", r: 3,
+        tip: true}),
     // Labels
     Plot.text([{x: 1500, y: 14}], {x: "x", y: "y", text: d => "P-waves", fill: "#e17055", fontSize: 14, fontWeight: "bold"}),
     Plot.text([{x: 1500, y: 8}], {x: "x", y: "y", text: d => "S-waves", fill: "#0984e3", fontSize: 14, fontWeight: "bold"}),

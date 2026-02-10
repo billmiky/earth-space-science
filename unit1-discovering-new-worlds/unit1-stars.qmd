@@ -4,7 +4,7 @@ subtitle: "Does the exoplanet have a star like our Sun? What is our Sun like com
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -86,7 +86,8 @@ Plot.plot({
       x: "lifespan",
       fill: "color",
       sort: {y: "x"}
-    }),
+    ,
+        tip: true}),
     Plot.text(starLifespans, {
       y: "type",
       x: "lifespan",
@@ -165,7 +166,8 @@ Plot.plot({
       stroke: "#333",
       strokeWidth: 0.5,
       title: d => `${d.name}\nTemp: ${d.temp}K\nLuminosity: ${d.lum}× Sun\nStage: ${d.stage}`
-    }),
+    ,
+        tip: true}),
     Plot.text(hrStars.filter(d => ["Sun", "Betelgeuse", "Sirius B", "Rigel", "Proxima Centauri"].includes(d.name)), {
       x: "temp",
       y: "lum",
@@ -300,7 +302,8 @@ Plot.plot({
       x: "minMass",
       fill: "color",
       sort: {y: null}
-    }),
+    ,
+        tip: true}),
     Plot.text(elements, {
       y: "element",
       x: "minMass",

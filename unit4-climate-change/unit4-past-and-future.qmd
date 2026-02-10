@@ -4,7 +4,7 @@ subtitle: "Have humans experienced dramatic climate change in the past? How have
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -249,8 +249,10 @@ Plot.plot({
       fontWeight: "bold",
       lineAnchor: "top"
     }) : null,
-    Plot.line(lgmData, {x: "kya", y: "temp", stroke: "#2196F3", strokeWidth: 2}),
-    Plot.dot(lgmData, {x: "kya", y: "temp", fill: d => d.event.includes("YOUNGER") ? "#c62828" : "#1565c0", r: 5})
+    Plot.line(lgmData, {x: "kya", y: "temp", stroke: "#2196F3", strokeWidth: 2,
+        tip: true}),
+    Plot.dot(lgmData, {x: "kya", y: "temp", fill: d => d.event.includes("YOUNGER") ? "#c62828" : "#1565c0", r: 5,
+        tip: true})
   ].filter(d => d !== null)
 })
 ```
@@ -455,8 +457,10 @@ Plot.plot({
   y: {label: "Temperature (°C)", domain: [-50, -25]},
   marks: [
     Plot.rect([{x1: 12900, x2: 11700}], {x1: "x1", x2: "x2", y1: -50, y2: -25, fill: "#e3f2fd", fillOpacity: 0.5}),
-    Plot.line(ydDetailData, {x: "year", y: "temp", stroke: "#1565c0", strokeWidth: 3}),
-    Plot.dot(ydDetailData, {x: "year", y: "temp", fill: "#0d47a1", r: 5}),
+    Plot.line(ydDetailData, {x: "year", y: "temp", stroke: "#1565c0", strokeWidth: 3,
+        tip: true}),
+    Plot.dot(ydDetailData, {x: "year", y: "temp", fill: "#0d47a1", r: 5,
+        tip: true}),
     Plot.text([{x: 12300, y: -28}], {x: "x", y: "y", text: d => "Younger Dryas Cold Period", fill: "#1565c0", fontSize: 12, fontWeight: "bold"})
   ]
 })
@@ -525,8 +529,10 @@ Plot.plot({
   x: {label: "Year"},
   y: {label: "AMOC Strength (Sv)", domain: [10, 20]},
   marks: [
-    Plot.line(amocHistoryData, {x: "year", y: "strength", stroke: "#e74c3c", strokeWidth: 3}),
-    Plot.dot(amocHistoryData, {x: "year", y: "strength", fill: "#c62828", r: 5}),
+    Plot.line(amocHistoryData, {x: "year", y: "strength", stroke: "#e74c3c", strokeWidth: 3,
+        tip: true}),
+    Plot.dot(amocHistoryData, {x: "year", y: "strength", fill: "#c62828", r: 5,
+        tip: true}),
     Plot.linearRegressionY(amocHistoryData, {x: "year", y: "strength", stroke: "#999", strokeDasharray: "5,5"}),
     Plot.text([{x: 1970, y: 12}], {x: "x", y: "y", text: d => "Declining trend", fill: "#999", fontSize: 11})
   ]
@@ -571,8 +577,10 @@ Plot.plot({
   y: {label: "Ice Mass Change (Gt)"},
   marks: [
     Plot.ruleY([0], {stroke: "#999"}),
-    Plot.line(iceLossData, {x: "year", y: "greenland", stroke: "#2196F3", strokeWidth: 3}),
-    Plot.line(iceLossData, {x: "year", y: "antarctica", stroke: "#81d4fa", strokeWidth: 3}),
+    Plot.line(iceLossData, {x: "year", y: "greenland", stroke: "#2196F3", strokeWidth: 3,
+        tip: true}),
+    Plot.line(iceLossData, {x: "year", y: "antarctica", stroke: "#81d4fa", strokeWidth: 3,
+        tip: true}),
     Plot.text([{x: 2008, y: -800}], {x: "x", y: "y", text: d => "Greenland", fill: "#2196F3", fontSize: 12}),
     Plot.text([{x: 2008, y: -200}], {x: "x", y: "y", text: d => "Antarctica", fill: "#81d4fa", fontSize: 12})
   ]
@@ -634,9 +642,12 @@ Plot.plot({
   x: {label: "Year", domain: [2020, 2100]},
   y: {label: "Sea Level Rise (m)", domain: [0, 1.5]},
   marks: [
-    Plot.areaY(slrData, {x: "year", y: "level", fill: "#0277bd", fillOpacity: 0.3}),
-    Plot.line(slrData, {x: "year", y: "level", stroke: "#01579b", strokeWidth: 3}),
-    Plot.dot(slrData, {x: "year", y: "level", fill: "#01579b", r: 5}),
+    Plot.areaY(slrData, {x: "year", y: "level", fill: "#0277bd", fillOpacity: 0.3,
+        tip: true}),
+    Plot.line(slrData, {x: "year", y: "level", stroke: "#01579b", strokeWidth: 3,
+        tip: true}),
+    Plot.dot(slrData, {x: "year", y: "level", fill: "#01579b", r: 5,
+        tip: true}),
     Plot.ruleY([0.5], {stroke: "#e74c3c", strokeDasharray: "5,5"}),
     Plot.text([{x: 2040, y: 0.55}], {x: "x", y: "y", text: d => "0.5m: Major coastal flooding", fill: "#e74c3c", fontSize: 10})
   ]
@@ -666,7 +677,8 @@ Plot.plot({
   x: {label: "People at Risk (millions)"},
   y: {label: "Region", domain: riskData.map(d => d.region)},
   marks: [
-    Plot.barX(riskData, {x: "population", y: "region", fill: d => d.type === "Complete displacement" ? "#c62828" : "#1565c0", sort: {y: "-x"}}),
+    Plot.barX(riskData, {x: "population", y: "region", fill: d => d.type === "Complete displacement" ? "#c62828" : "#1565c0", sort: {y: "-x"},
+        tip: true}),
     Plot.text(riskData, {x: "population", y: "region", text: d => d.population + "M", dx: 20, fontSize: 11})
   ]
 })

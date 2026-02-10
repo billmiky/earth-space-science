@@ -4,7 +4,7 @@ subtitle: "Why do earthquakes and volcanoes form patterns on a map?"
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -19,8 +19,8 @@ execute:
 
 .engage-box { background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(225, 112, 85, 0.3); }
 .explore-box { background: linear-gradient(135deg, #0984e3 0%, #00b894 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(9, 132, 227, 0.3); }
-.explain-box { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
-.elaborate-box { background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(253, 203, 110, 0.3); }
+.explain-box { background: linear-gradient(135deg, #5848c7 0%, #7c6fd6 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #e8a338 0%, #e17055 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(253, 203, 110, 0.3); }
 .evaluate-box { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3); }
 .engage-box h2, .explore-box h2, .explain-box h2, .elaborate-box h2, .evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
 .pe-badge { display: inline-block; background: linear-gradient(135deg, #e17055 0%, #d63031 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 5px; box-shadow: 0 4px 15px rgba(225, 112, 85, 0.4); text-transform: uppercase; letter-spacing: 1px; }
@@ -108,7 +108,8 @@ Plot.plot({
       fillOpacity: 0.6,
       stroke: "white",
       strokeWidth: 0.5
-    })
+    ,
+        tip: true})
   ]
 })
 ```
@@ -324,9 +325,12 @@ Plot.plot({
   y: {label: "Rock age (million years)"},
   color: {legend: true, domain: ["East", "West"], range: ["#e17055", "#0984e3"]},
   marks: [
-    Plot.line(seafloorAge.filter(d => d.direction === "East"), {x: "distance", y: "age", stroke: "#e17055", strokeWidth: 3}),
-    Plot.line(seafloorAge.filter(d => d.direction === "West"), {x: "distance", y: "age", stroke: "#0984e3", strokeWidth: 3}),
-    Plot.dot(seafloorAge, {x: "distance", y: "age", fill: "direction", r: 4}),
+    Plot.line(seafloorAge.filter(d => d.direction === "East"), {x: "distance", y: "age", stroke: "#e17055", strokeWidth: 3,
+        tip: true}),
+    Plot.line(seafloorAge.filter(d => d.direction === "West"), {x: "distance", y: "age", stroke: "#0984e3", strokeWidth: 3,
+        tip: true}),
+    Plot.dot(seafloorAge, {x: "distance", y: "age", fill: "direction", r: 4,
+        tip: true}),
     Plot.ruleX([0], {stroke: "#d63031", strokeWidth: 2, strokeDasharray: "5,3"})
   ]
 })

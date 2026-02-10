@@ -4,7 +4,7 @@ subtitle: "Will there be more frequent and more intense severe storms in the fut
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -269,10 +269,14 @@ Plot.plot({
   y: {label: "Count / Anomaly (°C)"},
   color: {legend: true},
   marks: [
-    Plot.barY(synthesisData, {x: "year", y: "storms", fill: "#3498db", fillOpacity: 0.4, title: d => `${d.storms} named storms`}),
-    Plot.dot(synthesisData, {x: "year", y: d => d.temp * 20, fill: "#e74c3c", r: 6, title: d => `${d.temp}°C anomaly`}),
-    Plot.line(synthesisData, {x: "year", y: d => d.temp * 20, stroke: "#e74c3c", strokeWidth: 2}),
-    Plot.dot(synthesisData, {x: "year", y: d => d.category45 * 3, fill: "#f39c12", r: d => d.category45 * 2, symbol: "diamond"}),
+    Plot.barY(synthesisData, {x: "year", y: "storms", fill: "#3498db", fillOpacity: 0.4, title: d => `${d.storms} named storms`,
+        tip: true}),
+    Plot.dot(synthesisData, {x: "year", y: d => d.temp * 20, fill: "#e74c3c", r: 6, title: d => `${d.temp}°C anomaly`,
+        tip: true}),
+    Plot.line(synthesisData, {x: "year", y: d => d.temp * 20, stroke: "#e74c3c", strokeWidth: 2,
+        tip: true}),
+    Plot.dot(synthesisData, {x: "year", y: d => d.category45 * 3, fill: "#f39c12", r: d => d.category45 * 2, symbol: "diamond",
+        tip: true}),
     Plot.text([{x: 2000, y: 28}], {x: "x", y: "y", text: d => "🔴 Temp anomaly (×20)", fontSize: 10, fill: "#e74c3c"}),
     Plot.text([{x: 2000, y: 25}], {x: "x", y: "y", text: d => "🔵 Named storms", fontSize: 10, fill: "#3498db"}),
     Plot.text([{x: 2000, y: 22}], {x: "x", y: "y", text: d => "🔶 Cat 4-5 storms (×3)", fontSize: 10, fill: "#f39c12"})

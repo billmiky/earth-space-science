@@ -4,7 +4,7 @@ subtitle: "Constructing your argument from evidence"
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -147,7 +147,8 @@ Plot.plot({
       x: "score",
       fill: d => d.score >= 8 ? "#2ecc71" : d.score >= 5 ? "#f39c12" : "#e74c3c",
       sort: {y: "-x"}
-    }),
+    ,
+        tip: true}),
     Plot.text(ptData, {
       y: "name",
       x: "score",

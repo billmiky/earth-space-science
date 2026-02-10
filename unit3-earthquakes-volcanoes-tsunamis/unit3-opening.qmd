@@ -4,7 +4,7 @@ subtitle: "Why do massive volcanic eruptions, earthquakes, and tsunamis happen?"
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -85,7 +85,8 @@ Plot.plot({
       fill: "color",
       rx: 8,
       sort: {y: "x"}
-    }),
+    ,
+        tip: true}),
     Plot.text(eruptionData, {
       x: "ejecta",
       y: "name",
@@ -133,7 +134,8 @@ Plot.plot({
       fy: "type",
       fill: "color",
       rx: 5
-    }),
+    ,
+        tip: true}),
     Plot.text(hazardData, {
       x: "percent",
       y: "location",

@@ -4,7 +4,7 @@ subtitle: "How do severe winter storms form, and could they become worse in the 
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -911,9 +911,12 @@ Plot.plot({
   y: {label: "Count / Inches"},
   color: {legend: true},
   marks: [
-    Plot.barY(snowData, {x: "decade", y: "extremeEvents", fill: "#3498db", title: d => `${d.extremeEvents} extreme events`}),
-    Plot.dot(snowData, {x: "decade", y: "avgSnowfall", fill: "#e74c3c", r: 8}),
-    Plot.line(snowData, {x: "decade", y: "avgSnowfall", stroke: "#e74c3c", strokeWidth: 2}),
+    Plot.barY(snowData, {x: "decade", y: "extremeEvents", fill: "#3498db", title: d => `${d.extremeEvents} extreme events`,
+        tip: true}),
+    Plot.dot(snowData, {x: "decade", y: "avgSnowfall", fill: "#e74c3c", r: 8,
+        tip: true}),
+    Plot.line(snowData, {x: "decade", y: "avgSnowfall", stroke: "#e74c3c", strokeWidth: 2,
+        tip: true}),
     Plot.text([{x: "2020s*", y: 48}], {x: "x", y: "y", text: d => "🔴 Avg Annual Snowfall (inches)", dx: -80, fill: "#e74c3c", fontSize: 11}),
     Plot.text([{x: "2020s*", y: 7}], {x: "x", y: "y", text: d => "🔵 Extreme events per decade", dx: -80, fill: "#3498db", fontSize: 11})
   ]

@@ -4,7 +4,7 @@ subtitle: "What has made Earth able to sustain life?"
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -138,7 +138,8 @@ Plot.plot({
       y: "temp",
       fill: d => d.habitable === "Yes!" ? "#2ecc71" : "#e74c3c",
       sort: {x: null}
-    }),
+    ,
+        tip: true}),
     Plot.text(planetData, {
       x: "planet",
       y: "temp",

@@ -4,7 +4,7 @@ subtitle: "How can we reduce the negative impacts of human activities on the env
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -460,7 +460,8 @@ Plot.plot({
       stroke: "domain",
       strokeWidth: 2,
       title: d => `${d.solution}\nHealth: +${d.health}%\nCost: $${d.cost}B\nEco: ${d.size}`
-    }),
+    ,
+        tip: true}),
     Plot.text(tradeoffData, {
       x: "cost",
       y: "health",

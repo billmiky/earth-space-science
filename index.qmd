@@ -1,40 +1,270 @@
-# Welcome to Earth and Space Science {.unnumbered}
+---
+title: "Earth and Space Science"
+format:
+  html:
+    toc: false
+---
 
-Welcome to your interactive Earth and Space Science textbook! This course explores the dynamic systems of our planet and the vastness of our universe.
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;600;800&display=swap');
+</style>
+```
 
-## Course Overview
+::: {.hero-section}
 
-This curriculum is based on the [New Visions for Public Schools](https://www.newvisions.org/curriculum/science/earth-space/) Earth & Space Science course, aligned with NGSS and New York State Science Learning Standards.
+# 🌍 Earth and Space Science {.unnumbered}
 
-## What You'll Explore
+<p>An interactive journey from the core of our planet to the edge of the observable universe.<br>
+<strong>Explore. Discover. Understand.</strong></p>
 
-| Unit | Driving Question | Key Concepts |
-|------|------------------|--------------|
-| 1 | How do we discover new worlds? | Sun's lifespan, star life cycles, solar system |
-| 2 | What is the probability of life elsewhere? | Big Bang, early Earth, water, evolution |
-| 3 | Who's at risk from earthquakes, volcanoes, and tsunamis? | Plate tectonics, Earth's interior, hazards |
-| 4 | How is our climate changing? | Moon phases, Earth systems, carbon cycle |
-| 5 | Will NYC see more hurricanes and blizzards? | Severe weather, climate impacts |
-| 6 | How can we create a sustainable future? | Solutions, mitigation, adaptation |
-
-## Interactive Features
-
-This textbook includes:
-
-- 📊 **Interactive graphs** - Hover, zoom, and explore data
-- 🗺️ **Live maps** - Real-time earthquake and weather data
-- 🔬 **Simulations** - PhET and custom simulations
-- 💻 **Runnable code** - Modify and execute Python code
-- ✅ **Check your understanding** - Self-assessment questions
-
-## How to Use This Book
-
-::: {.callout-tip}
-## Navigation Tips
-- Use the sidebar to navigate between units and chapters
-- Click the 🔍 search icon to find specific topics
-- Toggle between light/dark mode in the top right
-- Expand code blocks to see how visualizations are created
 :::
 
-Let's begin our exploration of Earth and Space!
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+## 🗺️ Our Dynamic Planet — Right Now
+
+The map below shows simulated global earthquake and volcanic activity. These events aren't random — they trace the boundaries of massive tectonic plates. **This is the central mystery you'll investigate.**
+
+```{ojs}
+//| echo: false
+{
+  // Simulated earthquake data along plate boundaries
+  const quakes = [];
+  // Ring of Fire
+  for (let i = 0; i < 60; i++) {
+    const angle = (i / 60) * Math.PI * 1.6 - Math.PI * 0.8;
+    quakes.push({
+      lon: -165 + 85 * Math.cos(angle) + (Math.random() - 0.5) * 6,
+      lat: 8 + 38 * Math.sin(angle) + (Math.random() - 0.5) * 4,
+      mag: 4.5 + Math.random() * 4,
+      type: "Earthquake",
+      region: "Ring of Fire"
+    });
+  }
+  // Mid-Atlantic Ridge
+  for (let i = 0; i < 25; i++) {
+    quakes.push({
+      lon: -32 + (Math.random() - 0.5) * 8,
+      lat: -45 + i * 5 + (Math.random() - 0.5) * 3,
+      mag: 3.5 + Math.random() * 2.5,
+      type: "Earthquake",
+      region: "Mid-Atlantic Ridge"
+    });
+  }
+  // Alpine-Himalayan
+  for (let i = 0; i < 25; i++) {
+    quakes.push({
+      lon: -5 + i * 5.5 + (Math.random() - 0.5) * 4,
+      lat: 28 + Math.sin(i * 0.35) * 8 + (Math.random() - 0.5) * 5,
+      mag: 4 + Math.random() * 3.5,
+      type: "Earthquake",
+      region: "Alpine-Himalayan Belt"
+    });
+  }
+  // East African Rift
+  for (let i = 0; i < 12; i++) {
+    quakes.push({
+      lon: 34 + (Math.random() - 0.5) * 4,
+      lat: -8 + i * 3 + (Math.random() - 0.5) * 2,
+      mag: 3.5 + Math.random() * 2,
+      type: "Earthquake",
+      region: "East African Rift"
+    });
+  }
+  // Volcanoes
+  const volcanoes = [
+    {lon: -122.2, lat: 46.2, name: "Mt. St. Helens", type: "Volcano", region: "Ring of Fire", mag: 6},
+    {lon: 105.4, lat: -6.1, name: "Krakatoa", type: "Volcano", region: "Ring of Fire", mag: 7},
+    {lon: 14.4, lat: 40.8, name: "Vesuvius", type: "Volcano", region: "Alpine-Himalayan Belt", mag: 5},
+    {lon: -155.3, lat: 19.4, name: "Kilauea", type: "Volcano", region: "Hotspot", mag: 5},
+    {lon: 139.5, lat: 35.4, name: "Mt. Fuji", type: "Volcano", region: "Ring of Fire", mag: 5},
+    {lon: -17.8, lat: 28.6, name: "Teide", type: "Volcano", region: "Hotspot", mag: 4},
+    {lon: -64.7, lat: -18.2, name: "Ubinas", type: "Volcano", region: "Ring of Fire", mag: 4},
+    {lon: 36.5, lat: -1.5, name: "Ol Doinyo Lengai", type: "Volcano", region: "East African Rift", mag: 4},
+    {lon: -19.6, lat: 63.6, name: "Eyjafjallajökull", type: "Volcano", region: "Mid-Atlantic Ridge", mag: 5},
+    {lon: 131.1, lat: 31.6, name: "Sakurajima", type: "Volcano", region: "Ring of Fire", mag: 4},
+    {lon: 15.0, lat: 38.8, name: "Stromboli", type: "Volcano", region: "Alpine-Himalayan Belt", mag: 3.5},
+  ];
+
+  const allData = [...quakes, ...volcanoes];
+
+  return Plot.plot({
+    title: "🌍 Global Seismic & Volcanic Activity",
+    subtitle: "Why do these events cluster in narrow bands?",
+    width: Math.min(800, window.innerWidth - 60),
+    height: 420,
+    projection: {type: "equirectangular"},
+    color: {
+      legend: true,
+      domain: ["Earthquake", "Volcano"],
+      range: ["#3182ce", "#e53e3e"]
+    },
+    marks: [
+      Plot.geo({type: "Sphere"}, {stroke: "#cbd5e0", fill: "#f0f4f8"}),
+      Plot.dot(allData, {
+        x: "lon",
+        y: "lat",
+        r: d => d.type === "Volcano" ? 5 : d.mag * 0.6,
+        fill: "type",
+        fillOpacity: d => d.type === "Volcano" ? 0.9 : 0.45,
+        stroke: d => d.type === "Volcano" ? "#c53030" : "#2b6cb0",
+        strokeWidth: 0.5,
+        symbol: d => d.type === "Volcano" ? "triangle" : "circle",
+        tip: true,
+        channels: {
+          Region: "region",
+          Magnitude: d => d.mag.toFixed(1),
+          Name: d => d.name || ""
+        }
+      })
+    ]
+  });
+}
+```
+
+---
+
+## 🚀 Your Journey Through 6 Units
+
+Each unit is built around a **driving question** — a real-world mystery you'll investigate using data, simulations, and scientific reasoning.
+
+```{ojs}
+//| echo: false
+{
+  const units = [
+    {unit: 1, title: "Discovering New Worlds", icon: "🌟", question: "How do we discover new worlds?", color: "#667eea", topics: "Sun's lifespan • Star life cycles • Exoplanets • Nuclear fusion"},
+    {unit: 2, title: "Probability of Life", icon: "🧬", question: "What is the probability of life elsewhere?", color: "#00cec9", topics: "Big Bang • Early Earth • Water • Co-evolution"},
+    {unit: 3, title: "Earthquakes & Volcanoes", icon: "🌋", question: "Who's at risk from earthquakes, volcanoes, tsunamis?", color: "#e17055", topics: "Earth's interior • Plate tectonics • Seismic waves • Hazards"},
+    {unit: 4, title: "Climate Change", icon: "🌡️", question: "How is our climate changing?", color: "#6c5ce7", topics: "Earth-Sun dynamics • Carbon cycle • Feedback loops • Ice cores"},
+    {unit: 5, title: "Hurricanes & Blizzards", icon: "🌀", question: "Will NYC see more hurricanes and blizzards?", color: "#0984e3", topics: "Severe weather • Storm paths • Climate impacts"},
+    {unit: 6, title: "Sustainable Future", icon: "♻️", question: "How can we create a sustainable future?", color: "#00b894", topics: "Fossil fuels • Land use • Mining • Solutions"}
+  ];
+
+  const div = d3.create("div");
+
+  units.forEach(u => {
+    const card = div.append("div")
+      .attr("class", "unit-card")
+      .style("border-left-color", u.color);
+
+    card.append("span").attr("class", "unit-icon").text(u.icon);
+    card.append("h3").style("color", u.color).text(`Unit ${u.unit}: ${u.title}`);
+    card.append("p").style("font-size", "1.1em").style("font-weight", "600").style("font-style", "italic")
+      .text(`"${u.question}"`);
+    card.append("p").style("color", "#718096").style("margin-bottom", "0").text(u.topics);
+  });
+
+  return div.node();
+}
+```
+
+---
+
+## 📊 What Makes This Textbook Different?
+
+::: {.feature-grid}
+
+:::: {.feature-item}
+<span class="feature-icon">📊</span>
+**Interactive Graphs**
+
+Hover over any chart to explore data. Zoom, pan, and discover patterns yourself.
+::::
+
+:::: {.feature-item}
+<span class="feature-icon">🗺️</span>
+**Live Maps**
+
+Visualize real earthquake, climate, and weather data on interactive maps.
+::::
+
+:::: {.feature-item}
+<span class="feature-icon">🔬</span>
+**Simulations**
+
+Manipulate variables in orbital, climate, and geological simulations.
+::::
+
+:::: {.feature-item}
+<span class="feature-icon">💻</span>
+**Runnable Code**
+
+See and modify the code behind every visualization.
+::::
+
+:::: {.feature-item}
+<span class="feature-icon">✅</span>
+**Interactive Quizzes**
+
+Test your understanding with instant feedback after each chapter.
+::::
+
+:::: {.feature-item}
+<span class="feature-icon">🌍</span>
+**Real Data**
+
+Work with the same datasets scientists use — from NASA, USGS, and NOAA.
+::::
+
+:::
+
+---
+
+## 🔥 A Taste of What's Inside
+
+Here's a preview of the kind of data you'll explore — global temperature change over the last 140+ years:
+
+```{ojs}
+//| echo: false
+{
+  const years = d3.range(1880, 2025);
+  const tempData = years.map(y => ({
+    year: y,
+    anomaly: -0.2 + (y - 1880) * 0.002 + Math.sin((y - 1880) * 0.15) * 0.1 + (y > 1970 ? (y - 1970) * 0.018 : 0) + (Math.random() - 0.5) * 0.08,
+    decade: Math.floor(y / 10) * 10 + "s"
+  }));
+
+  return Plot.plot({
+    title: "🌡️ Global Temperature Anomaly (1880–2024)",
+    subtitle: "Hover over any bar to see the year and temperature change",
+    width: Math.min(800, window.innerWidth - 60),
+    height: 350,
+    x: {label: "Year", tickFormat: "d"},
+    y: {label: "Temperature anomaly (°C)", grid: true},
+    color: {
+      scheme: "RdBu",
+      reverse: true,
+      legend: true,
+      label: "°C anomaly"
+    },
+    marks: [
+      Plot.ruleY([0], {stroke: "#a0aec0", strokeDasharray: "4,2"}),
+      Plot.rectY(tempData, {
+        x: "year",
+        y: "anomaly",
+        fill: "anomaly",
+        tip: true,
+        channels: {
+          Year: "year",
+          "Temp Anomaly": d => d.anomaly.toFixed(2) + " °C"
+        }
+      })
+    ]
+  });
+}
+```
+
+::: {.callout-tip}
+## 🧭 How to Navigate
+- Use the **sidebar** (left) to jump between units and chapters
+- **Hover** over charts to see data values
+- **Expand code** blocks to see how visualizations work
+- Use the **🔍 search** icon to find any topic
+:::
+
+*Let's begin our exploration of Earth and Space — start with [Unit 1: Discovering New Worlds](unit1-discovering-new-worlds/index.qmd)!*

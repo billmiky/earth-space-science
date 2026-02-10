@@ -1,26 +1,32 @@
 /* Custom styles for Earth & Space Science textbook */
+/* ================================================= */
 
+/* === FONTS === */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* === GLOBAL TYPOGRAPHY === */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.7;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+}
+
+/* === SIDEBAR NAVIGATION === */
 .sidebar nav[role=doc-toc] > ul > li > a {
   font-weight: bold;
   color: #2c5282;
 }
 
-.callout-note {
-  border-left-color: #3182ce;
-}
+/* === CALLOUT OVERRIDES === */
+.callout-note { border-left-color: #3182ce; }
+.callout-tip { border-left-color: #38a169; }
+.callout-warning { border-left-color: #d69e2e; }
+.callout-important { border-left-color: #e53e3e; }
 
-.callout-tip {
-  border-left-color: #38a169;
-}
-
-.callout-warning {
-  border-left-color: #d69e2e;
-}
-
-.callout-important {
-  border-left-color: #e53e3e;
-}
-
+/* === INTERACTIVE CONTAINER === */
 .interactive-container {
   border: 2px solid #e2e8f0;
   border-radius: 8px;
@@ -33,4 +39,511 @@ figcaption {
   font-style: italic;
   color: #4a5568;
   text-align: center;
+}
+
+/* ================================================================= */
+/* DARK MODE & READABILITY FIXES                                       */
+/* ================================================================= */
+
+/* Fix h2 color in dark mode — many pages force h2 to unit colors    */
+/* which becomes unreadable on dark backgrounds                       */
+[data-bs-theme="dark"] h2,
+.quarto-dark h2,
+body.quarto-dark h2 {
+  color: #e2e8f0 !important;
+}
+
+[data-bs-theme="dark"] h1,
+.quarto-dark h1,
+body.quarto-dark h1 {
+  color: #f7fafc !important;
+}
+
+/* Fix gradient text (big-question class) in dark mode */
+[data-bs-theme="dark"] .big-question,
+.quarto-dark .big-question {
+  -webkit-text-fill-color: unset !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+}
+
+/* Fix engage-box and similar colored boxes — ensure white text always */
+.engage-box,
+.explore-box,
+.explain-box,
+.elaborate-box,
+.evaluate-box {
+  color: white !important;
+}
+
+.engage-box *,
+.explore-box *,
+.explain-box *,
+.elaborate-box *,
+.evaluate-box * {
+  color: white !important;
+}
+
+/* Fix key-idea box readability in dark mode */
+[data-bs-theme="dark"] .key-idea,
+.quarto-dark .key-idea {
+  background: rgba(255, 236, 210, 0.12) !important;
+  border-left-color: #e17055 !important;
+  color: #e2e8f0 !important;
+}
+
+[data-bs-theme="dark"] .key-idea *,
+.quarto-dark .key-idea * {
+  color: #e2e8f0 !important;
+}
+
+/* Fix student-task box readability in dark mode */
+[data-bs-theme="dark"] .student-task,
+.quarto-dark .student-task {
+  background: rgba(255, 152, 0, 0.1) !important;
+  border-left-color: #ff9800 !important;
+  color: #e2e8f0 !important;
+}
+
+[data-bs-theme="dark"] .student-task *,
+.quarto-dark .student-task * {
+  color: #e2e8f0 !important;
+}
+
+/* Fix check-understanding readability — white text on gradient */
+.check-understanding {
+  color: white !important;
+}
+.check-understanding * {
+  color: white !important;
+}
+.check-understanding a {
+  color: #ffecd2 !important;
+  text-decoration: underline !important;
+}
+
+/* Fix mind-blown box */
+.mind-blown {
+  color: white !important;
+}
+.mind-blown * {
+  color: white !important;
+}
+
+/* === Fix for "Earthquakes Aren't Random" and similar engage-box h2 === */
+.engage-box h2 {
+  color: white !important;
+}
+
+/* Fix for Unit 4 climate-feedbacks inconsistent styling in dark mode */
+[data-bs-theme="dark"] .anchor-box,
+.quarto-dark .anchor-box {
+  color: #e2e8f0 !important;
+}
+[data-bs-theme="dark"] .anchor-box *,
+.quarto-dark .anchor-box * {
+  color: #e2e8f0 !important;
+}
+
+[data-bs-theme="dark"] .summary-box,
+.quarto-dark .summary-box {
+  color: #e2e8f0 !important;
+}
+
+[data-bs-theme="dark"] .evidence-card,
+.quarto-dark .evidence-card {
+  color: #e2e8f0 !important;
+}
+
+/* Fix quiz sections in dark mode */
+[data-bs-theme="dark"] .quiz-section,
+.quarto-dark .quiz-section {
+  background: rgba(40, 44, 52, 0.9) !important;
+  color: #e2e8f0 !important;
+  border-color: #4a5568 !important;
+}
+
+[data-bs-theme="dark"] .quiz-section *,
+.quarto-dark .quiz-section * {
+  color: #e2e8f0 !important;
+}
+
+/* Fix question-box in dark mode */
+[data-bs-theme="dark"] .question-box,
+.quarto-dark .question-box {
+  background: rgba(40, 44, 52, 0.8) !important;
+  color: #e2e8f0 !important;
+}
+
+/* ================================================================= */
+/* LIGHT MODE READABILITY IMPROVEMENTS                                 */
+/* ================================================================= */
+
+/* Gradient-background boxes always have white text */
+.engage-box, .explore-box, .explain-box, .elaborate-box, .evaluate-box,
+.mind-blown, .check-understanding {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* h2 inside colored section boxes must be white */
+.engage-box h1, .engage-box h2,
+.explore-box h1, .explore-box h2,
+.explain-box h1, .explain-box h2,
+.elaborate-box h1, .elaborate-box h2,
+.evaluate-box h1, .evaluate-box h2 {
+  color: white !important;
+  -webkit-text-fill-color: white !important;
+}
+
+/* ================================================================= */
+/* OBSERVABLE PLOT TOOLTIP STYLES                                      */
+/* ================================================================= */
+
+[aria-label="tip"] {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  background: rgba(30, 30, 30, 0.92) !important;
+  color: white !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  max-width: 300px !important;
+  z-index: 1000 !important;
+}
+
+/* Ensure figure containers allow overflow for tooltips */
+figure, .observablehq, .cell-output-display {
+  overflow: visible !important;
+}
+
+/* OJS plots get crosshair cursor */
+.observablehq svg,
+.cell-output-display svg {
+  cursor: crosshair;
+}
+
+/* ================================================================= */
+/* INTERACTIVE QUIZ STYLES                                             */
+/* ================================================================= */
+
+.interactive-quiz {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 16px;
+  padding: 30px;
+  margin: 30px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+[data-bs-theme="dark"] .interactive-quiz,
+.quarto-dark .interactive-quiz {
+  background: linear-gradient(135deg, #2d3436 0%, #1e272e 100%);
+  color: #e2e8f0;
+}
+
+.quiz-question {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 15px 0;
+  border-left: 4px solid #667eea;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quiz-question:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+[data-bs-theme="dark"] .quiz-question,
+.quarto-dark .quiz-question {
+  background: #2d3436;
+  color: #e2e8f0;
+  border-left-color: #a29bfe;
+}
+
+.quiz-option {
+  display: block;
+  padding: 10px 16px;
+  margin: 6px 0;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95em;
+}
+
+.quiz-option:hover {
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.06);
+  transform: translateX(4px);
+}
+
+.quiz-option.selected {
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  font-weight: 600;
+}
+
+.quiz-option.correct {
+  border-color: #38a169 !important;
+  background: rgba(56, 161, 105, 0.12) !important;
+  color: #276749 !important;
+}
+
+.quiz-option.incorrect {
+  border-color: #e53e3e !important;
+  background: rgba(229, 62, 62, 0.08) !important;
+}
+
+[data-bs-theme="dark"] .quiz-option {
+  border-color: #4a5568;
+  color: #e2e8f0;
+}
+
+[data-bs-theme="dark"] .quiz-option:hover {
+  border-color: #a29bfe;
+  background: rgba(162, 155, 254, 0.1);
+}
+
+[data-bs-theme="dark"] .quiz-option.correct {
+  color: #68d391 !important;
+  background: rgba(56, 161, 105, 0.15) !important;
+}
+
+.quiz-feedback {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-top: 8px;
+  font-weight: 500;
+  animation: quizFadeIn 0.3s ease;
+}
+
+.quiz-feedback.correct {
+  background: rgba(56, 161, 105, 0.12);
+  color: #276749;
+  border-left: 4px solid #38a169;
+}
+
+.quiz-feedback.incorrect {
+  background: rgba(229, 62, 62, 0.08);
+  color: #c53030;
+  border-left: 4px solid #e53e3e;
+}
+
+[data-bs-theme="dark"] .quiz-feedback.correct {
+  color: #68d391;
+  background: rgba(56, 161, 105, 0.15);
+}
+
+[data-bs-theme="dark"] .quiz-feedback.incorrect {
+  color: #fc8181;
+  background: rgba(229, 62, 62, 0.12);
+}
+
+.quiz-score {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: 700;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+@keyframes quizFadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================================================= */
+/* WELCOME/INDEX PAGE STYLES                                           */
+/* ================================================================= */
+
+.hero-section {
+  background: linear-gradient(135deg, #0c3547 0%, #1a6fb5 40%, #2196f3 70%, #0c3547 100%);
+  color: white;
+  padding: 60px 40px;
+  border-radius: 20px;
+  margin: -20px -10px 30px -10px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(12, 53, 71, 0.4);
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='40' cy='40' r='1.5' fill='white' opacity='0.3'/%3E%3Ccircle cx='100' cy='20' r='1' fill='white' opacity='0.5'/%3E%3Ccircle cx='160' cy='60' r='1.2' fill='white' opacity='0.4'/%3E%3Ccircle cx='30' cy='120' r='0.8' fill='white' opacity='0.3'/%3E%3Ccircle cx='80' cy='90' r='1.5' fill='white' opacity='0.2'/%3E%3Ccircle cx='140' cy='140' r='1' fill='white' opacity='0.4'/%3E%3Ccircle cx='180' cy='30' r='0.6' fill='white' opacity='0.5'/%3E%3Ccircle cx='60' cy='170' r='1.3' fill='white' opacity='0.3'/%3E%3Ccircle cx='120' cy='180' r='0.9' fill='white' opacity='0.4'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  animation: twinkle 8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.hero-section h1 {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-size: 3em !important;
+  font-weight: 700 !important;
+  margin-bottom: 10px !important;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  color: white !important;
+  -webkit-text-fill-color: white !important;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-section p {
+  font-size: 1.2em;
+  opacity: 0.9;
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+  color: white !important;
+}
+
+.unit-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin: 12px 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border-left: 6px solid;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+}
+
+.unit-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+[data-bs-theme="dark"] .unit-card,
+.quarto-dark .unit-card {
+  background: #2d3436;
+  color: #e2e8f0;
+}
+
+.unit-card h3 {
+  margin-top: 0;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.unit-card .unit-icon {
+  font-size: 2em;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.feature-item {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-2px);
+}
+
+[data-bs-theme="dark"] .feature-item,
+.quarto-dark .feature-item {
+  background: linear-gradient(135deg, #2d3436, #1e272e);
+  color: #e2e8f0;
+}
+
+.feature-item .feature-icon {
+  font-size: 2.5em;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* ================================================================= */
+/* GENERAL POLISH                                                      */
+/* ================================================================= */
+
+/* Better code block styling */
+pre {
+  border-radius: 10px !important;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* PE badges always visible */
+.pe-badge {
+  color: white !important;
+}
+
+/* Lab activity boxes in dark mode */
+[data-bs-theme="dark"] .lab-activity,
+.quarto-dark .lab-activity {
+  background: rgba(40, 44, 52, 0.9) !important;
+  color: #e2e8f0 !important;
+}
+[data-bs-theme="dark"] .lab-activity *,
+.quarto-dark .lab-activity * {
+  color: #e2e8f0 !important;
+}
+
+/* Feedback loop boxes in dark mode */
+[data-bs-theme="dark"] .feedback-loop,
+.quarto-dark .feedback-loop {
+  color: #e2e8f0 !important;
+}
+
+/* Details/summary in dark mode */
+[data-bs-theme="dark"] details,
+.quarto-dark details {
+  color: #e2e8f0 !important;
+}
+[data-bs-theme="dark"] details summary,
+.quarto-dark details summary {
+  color: #e2e8f0 !important;
+}
+
+/* Fix table readability in dark mode */
+[data-bs-theme="dark"] table th,
+[data-bs-theme="dark"] table td,
+.quarto-dark table th,
+.quarto-dark table td {
+  color: #e2e8f0 !important;
+  border-color: #4a5568 !important;
+}
+
+/* ================================================================= */
+/* PRINT STYLES                                                        */
+/* ================================================================= */
+
+@media print {
+  .hero-section { background: #1a6fb5 !important; }
+  .engage-box, .explore-box, .explain-box, .elaborate-box, .evaluate-box {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }

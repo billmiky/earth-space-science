@@ -4,7 +4,7 @@ subtitle: "How does the annual cycle of Earth around the Sun create seasonal tem
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -137,8 +137,10 @@ Plot.plot({
   x: {label: "Month", domain: orbitData.map(d => d.month)},
   y: {label: "Distance (million km)", domain: [146, 153]},
   marks: [
-    Plot.line(orbitData, {x: "month", y: "distance", stroke: "#e67e22", strokeWidth: 3}),
-    Plot.dot(orbitData, {x: "month", y: "distance", fill: "#e67e22", r: 6}),
+    Plot.line(orbitData, {x: "month", y: "distance", stroke: "#e67e22", strokeWidth: 3,
+        tip: true}),
+    Plot.dot(orbitData, {x: "month", y: "distance", fill: "#e67e22", r: 6,
+        tip: true}),
     Plot.text([{month: "Jan", distance: 147.1}], {x: "month", y: "distance", text: d => "Closest!", dy: -15, fill: "red", fontWeight: "bold"}),
     Plot.text([{month: "Jul", distance: 152.1}], {x: "month", y: "distance", text: d => "Farthest!", dy: -15, fill: "blue", fontWeight: "bold"})
   ]

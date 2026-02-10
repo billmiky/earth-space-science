@@ -4,7 +4,7 @@ subtitle: "Why is the Sun so important to life on Earth? How does it work?"
 author: "Earth & Space Science"
 format:
   html:
-    toc: true
+    toc: false
     toc-depth: 3
     number-sections: true
     code-fold: true
@@ -148,7 +148,8 @@ Plot.plot({
       x: "log",
       fill: "color",
       sort: {y: "-x"}
-    }),
+    ,
+        tip: true}),
     Plot.text(energyComparison, {
       y: "source",
       x: "log",
@@ -423,7 +424,8 @@ Plot.plot({
       x: "duration",
       fill: "color",
       sort: {y: "x"}
-    }),
+    ,
+        tip: true}),
     Plot.text(durationData, {
       y: "source",
       x: "duration",
