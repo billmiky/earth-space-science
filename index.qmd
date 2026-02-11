@@ -22,108 +22,119 @@ format:
 
 ```{ojs}
 //| echo: false
-Plot = require("@observablehq/plot")
-d3 = require("d3@7")
-```
+//| output: true
 
-## 🗺️ Our Dynamic Planet — Right Now
-
-The map below shows simulated global earthquake and volcanic activity. These events aren't random — they trace the boundaries of massive tectonic plates. **This is the central mystery you'll investigate.**
-
-```{ojs}
-//| echo: false
 {
-  // Simulated earthquake data along plate boundaries
-  const quakes = [];
-  // Ring of Fire
-  for (let i = 0; i < 60; i++) {
-    const angle = (i / 60) * Math.PI * 1.6 - Math.PI * 0.8;
-    quakes.push({
-      lon: -165 + 85 * Math.cos(angle) + (Math.random() - 0.5) * 6,
-      lat: 8 + 38 * Math.sin(angle) + (Math.random() - 0.5) * 4,
-      mag: 4.5 + Math.random() * 4,
-      type: "Earthquake",
-      region: "Ring of Fire"
-    });
-  }
-  // Mid-Atlantic Ridge
-  for (let i = 0; i < 25; i++) {
-    quakes.push({
-      lon: -32 + (Math.random() - 0.5) * 8,
-      lat: -45 + i * 5 + (Math.random() - 0.5) * 3,
-      mag: 3.5 + Math.random() * 2.5,
-      type: "Earthquake",
-      region: "Mid-Atlantic Ridge"
-    });
-  }
-  // Alpine-Himalayan
-  for (let i = 0; i < 25; i++) {
-    quakes.push({
-      lon: -5 + i * 5.5 + (Math.random() - 0.5) * 4,
-      lat: 28 + Math.sin(i * 0.35) * 8 + (Math.random() - 0.5) * 5,
-      mag: 4 + Math.random() * 3.5,
-      type: "Earthquake",
-      region: "Alpine-Himalayan Belt"
-    });
-  }
-  // East African Rift
-  for (let i = 0; i < 12; i++) {
-    quakes.push({
-      lon: 34 + (Math.random() - 0.5) * 4,
-      lat: -8 + i * 3 + (Math.random() - 0.5) * 2,
-      mag: 3.5 + Math.random() * 2,
-      type: "Earthquake",
-      region: "East African Rift"
-    });
-  }
-  // Volcanoes
-  const volcanoes = [
-    {lon: -122.2, lat: 46.2, name: "Mt. St. Helens", type: "Volcano", region: "Ring of Fire", mag: 6},
-    {lon: 105.4, lat: -6.1, name: "Krakatoa", type: "Volcano", region: "Ring of Fire", mag: 7},
-    {lon: 14.4, lat: 40.8, name: "Vesuvius", type: "Volcano", region: "Alpine-Himalayan Belt", mag: 5},
-    {lon: -155.3, lat: 19.4, name: "Kilauea", type: "Volcano", region: "Hotspot", mag: 5},
-    {lon: 139.5, lat: 35.4, name: "Mt. Fuji", type: "Volcano", region: "Ring of Fire", mag: 5},
-    {lon: -17.8, lat: 28.6, name: "Teide", type: "Volcano", region: "Hotspot", mag: 4},
-    {lon: -64.7, lat: -18.2, name: "Ubinas", type: "Volcano", region: "Ring of Fire", mag: 4},
-    {lon: 36.5, lat: -1.5, name: "Ol Doinyo Lengai", type: "Volcano", region: "East African Rift", mag: 4},
-    {lon: -19.6, lat: 63.6, name: "Eyjafjallajökull", type: "Volcano", region: "Mid-Atlantic Ridge", mag: 5},
-    {lon: 131.1, lat: 31.6, name: "Sakurajima", type: "Volcano", region: "Ring of Fire", mag: 4},
-    {lon: 15.0, lat: 38.8, name: "Stromboli", type: "Volcano", region: "Alpine-Himalayan Belt", mag: 3.5},
+  // 1. CSS: Force high-contrast tooltips (readable in dark/light mode)
+  const style = html`<style>
+    g[aria-label="tip"] text { fill: #1a202c !important; font-family: sans-serif; }
+    g[aria-label="tip"] path { fill: #ffffff !important; stroke: #e2e8f0 !important; }
+    .plot-title { font-size: 20px; font-weight: bold; font-family: sans-serif; fill: #2d3748; }
+    .plot-subtitle { font-size: 14px; font-family: sans-serif; fill: #4a5568; }
+  </style>`;
+
+  // 2. LIBRARIES & MAP DATA
+  const topojson = await require("topojson-client@3");
+  let land = null;
+  try {
+    const world = await FileAttachment("world-110m.json").json();
+    land = topojson.feature(world, world.objects.land);
+  } catch (e) {}
+
+  // 3. ANNOTATIONS: Key locations to welcome students
+  // These labels act as "tour guides" on the map.
+  const annotations = [
+    {lon: -150, lat: 40, label: "The Ring of Fire", rotate: -25},
+    {lon: -28, lat: 20, label: "Mid-Atlantic Ridge", rotate: 80},
+    {lon: 90, lat: 25, label: "Himalayan Belt", rotate: 0},
+    {lon: 38, lat: -5, label: "East African Rift", rotate: 85}
   ];
 
-  const allData = [...quakes, ...volcanoes];
+  // 4. DATA FETCHING (Same robust logic as before)
+  let earthQuakeData = [];
+  try {
+    const feed = await d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month.geojson");
+    earthQuakeData = feed.features.map(f => ({
+      lon: f.geometry.coordinates[0],
+      lat: f.geometry.coordinates[1],
+      mag: f.properties.mag,
+      place: f.properties.place,
+      time: new Date(f.properties.time).toLocaleDateString(),
+      type: "Earthquake"
+    }));
+  } catch (e) {
+    earthQuakeData = [{lon: 0, lat: 0, mag: 0, place: "Data Offline", type: "Earthquake"}];
+  }
 
-  return Plot.plot({
-    title: "🌍 Global Seismic & Volcanic Activity",
-    subtitle: "Why do these events cluster in narrow bands?",
-    width: Math.min(800, window.innerWidth - 60),
-    height: 420,
-    projection: {type: "equirectangular"},
+  const volcanoes = [
+    {name: "Mt. Fuji", lat: 35.36, lon: 138.72, type: "Volcano"},
+    {name: "Krakatoa", lat: -6.10, lon: 105.42, type: "Volcano"},
+    {name: "Mt. St. Helens", lat: 46.19, lon: -122.19, type: "Volcano"},
+    {name: "Mauna Loa", lat: 19.47, lon: -155.60, type: "Volcano"},
+    {name: "Vesuvius", lat: 40.82, lon: 14.42, type: "Volcano"},
+    {name: "Kilimanjaro", lat: -3.06, lon: 37.35, type: "Volcano"},
+    {name: "Eyjafjallajökull", lat: 63.63, lon: -19.62, type: "Volcano"},
+    {name: "Popocatépetl", lat: 19.02, lon: -98.62, type: "Volcano"},
+    {name: "Etna", lat: 37.75, lon: 14.99, type: "Volcano"},
+  ];
+  
+  const allData = [...earthQuakeData, ...volcanoes];
+
+  // 5. RENDER WELCOME MAP
+  return html`${style}
+    ${Plot.plot({
+    title: "Welcome to a Living Planet",
+    subtitle: "Every dot represents the Earth moving, breathing, and reshaping itself.",
+    width: Math.min(900, window.innerWidth - 40),
+    height: 520,
+    projection: "equal-earth",
+    
     color: {
       legend: true,
       domain: ["Earthquake", "Volcano"],
-      range: ["#3182ce", "#e53e3e"]
+      range: ["#4299e1", "#f56565"] // Friendlier Blue and Red
     },
+    
     marks: [
-      Plot.geo({type: "Sphere"}, {stroke: "#cbd5e0", fill: "#f0f4f8"}),
+      // Ocean (Softer blue-grey)
+      Plot.geo({type: "Sphere"}, {fill: "#f7fafc", stroke: "#cbd5e0"}),
+      
+      // Land
+      land ? Plot.geo(land, {fill: "#edf2f7", stroke: "white", strokeWidth: 0.7}) : null,
+      
+      // Graticule (Subtle grid)
+      Plot.graticule({stroke: "#cbd5e0", strokeOpacity: 0.3}),
+      
+      // ANNOTATIONS: Large text labels on the map
+      Plot.text(annotations, {
+        x: "lon", y: "lat", 
+        text: "label", 
+        fill: "#718096", 
+        fontSize: 14, 
+        fontStyle: "italic",
+        fontWeight: "bold",
+        stroke: "#f7fafc", 
+        strokeWidth: 3, // White halo around text to make it readable
+      }),
+
+      // Data Points
       Plot.dot(allData, {
-        x: "lon",
-        y: "lat",
-        r: d => d.type === "Volcano" ? 5 : d.mag * 0.6,
+        x: "lon", y: "lat",
+        r: d => d.type === "Volcano" ? 5 : Math.max(1.8, d.mag * 0.7), 
         fill: "type",
-        fillOpacity: d => d.type === "Volcano" ? 0.9 : 0.45,
-        stroke: d => d.type === "Volcano" ? "#c53030" : "#2b6cb0",
-        strokeWidth: 0.5,
+        fillOpacity: d => d.type === "Volcano" ? 0.9 : 0.5,
+        stroke: "white",
+        strokeWidth: 0.3,
         symbol: d => d.type === "Volcano" ? "triangle" : "circle",
         tip: true,
         channels: {
-          Region: "region",
-          Magnitude: d => d.mag.toFixed(1),
-          Name: d => d.name || ""
+          Name: d => d.name || d.place,
+          Magnitude: "mag",
+          Date: "time"
         }
       })
     ]
-  });
+  })}`;
 }
 ```
 
@@ -222,6 +233,7 @@ Here's a preview of the kind of data you'll explore — global temperature chang
 ```{ojs}
 //| echo: false
 {
+  // 1. Generate Data
   const years = d3.range(1880, 2025);
   const tempData = years.map(y => ({
     year: y,
@@ -229,6 +241,7 @@ Here's a preview of the kind of data you'll explore — global temperature chang
     decade: Math.floor(y / 10) * 10 + "s"
   }));
 
+  // 2. Render Plot
   return Plot.plot({
     title: "🌡️ Global Temperature Anomaly (1880–2024)",
     subtitle: "Hover over any bar to see the year and temperature change",
@@ -238,15 +251,18 @@ Here's a preview of the kind of data you'll explore — global temperature chang
     y: {label: "Temperature anomaly (°C)", grid: true},
     color: {
       scheme: "RdBu",
-      reverse: true,
+      reverse: true, // Reverses so Red = Hot, Blue = Cold
       legend: true,
-      label: "°C anomaly"
+      label: "°C anomaly",
+      // Optional: Set domain to be symmetric so 0 is perfectly white
+      domain: [-1.2, 1.2] 
     },
     marks: [
       Plot.ruleY([0], {stroke: "#a0aec0", strokeDasharray: "4,2"}),
       Plot.rectY(tempData, {
         x: "year",
         y: "anomaly",
+        interval: 1, // <--- THIS FIXED IT
         fill: "anomaly",
         tip: true,
         channels: {

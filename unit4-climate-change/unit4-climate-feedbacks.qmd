@@ -538,6 +538,94 @@ Plot.plot({
 })
 ```
 
+### Annual Global Emissions
+
+```{ojs}
+
+//| label: fig-global-emissions-fixed
+//| fig-cap: "Annual Global Emissions by Source (1850-2019). Source: Global Carbon Project."
+
+// 1. Load and Clean Data
+// We use a specific mapped block to ensure the variables don't conflict with others.
+emissionsDataFixed = {
+  const url = "https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv";
+  
+  // Load CSV
+  const raw = await d3.csv(url);
+
+  // Filter for "World" and the correct time range
+  // We use d.country === 'World' which is often more reliable than ISO codes in this dataset
+  const worldData = raw.filter(d => d.country === 'World' && +d.year >= 1850 && +d.year <= 2019);
+
+  // Transform data (Wide to Long format for stacking)
+  return worldData.flatMap(d => {
+    // Force convert strings to numbers with "+"
+    const coal = +d.coal_co2 || 0;
+    const oil = +d.oil_co2 || 0;
+    const gas = +d.gas_co2 || 0;
+    const cement = +d.cement_co2 || 0;
+    const flaring = +d.flaring_co2 || 0;
+    const landUse = +d.land_use_change_co2 || 0;
+    
+    // Combine Cement and Flaring into "Others"
+    const others = cement + flaring;
+
+    // Return array of objects for this year (divide by 1000 for Gt)
+    return [
+      { year: +d.year, category: "Coal", emissions: coal / 1000 },
+      { year: +d.year, category: "Oil", emissions: oil / 1000 },
+      { year: +d.year, category: "Gas", emissions: gas / 1000 },
+      { year: +d.year, category: "Others", emissions: others / 1000 },
+      { year: +d.year, category: "Land-use change", emissions: landUse / 1000 }
+    ];
+  });
+}
+
+// 2. Define Colors
+emissionsColorsFixed = new Map([
+  ["Land-use change", "#e3c28b"], 
+  ["Others", "#7f7f7f"],          
+  ["Gas", "#4db8ff"],             
+  ["Oil", "#000000"],             
+  ["Coal", "#8c4619"]             
+]);
+
+// 3. Render Chart
+emissionsChartFixed = Plot.plot({
+  title: "Annual Global Emissions",
+  subtitle: "In Gigatonnes of CO₂ (Gt CO₂)",
+  style: { fontFamily: "sans-serif", fontSize: "14px" },
+  marginLeft: 50,
+  color: {
+    domain: Array.from(emissionsColorsFixed.keys()),
+    range: Array.from(emissionsColorsFixed.values()),
+    legend: true
+  },
+  x: {
+    tickFormat: "d", 
+    ticks: [1850, 1900, 1950, 2000, 2019]
+  },
+  y: {
+    label: "Gt CO₂",
+    grid: true,
+    domain: [0, 45] // Slightly higher to ensure top isn't cut off
+  },
+  marks: [
+    Plot.areaY(emissionsDataFixed, {
+      x: "year",
+      y: "emissions",
+      fill: "category",
+      // Explicitly define stack order
+      order: ["Coal", "Oil", "Gas", "Others", "Land-use change"], 
+      tip: true
+    }),
+    Plot.ruleY([0])
+  ]
+})
+
+
+```
+
 ::: {.check-understanding}
 ### ✅ Data Analysis
 1. What is the highest CO₂ level in the past 800,000 years (before humans)?
@@ -1701,6 +1789,200 @@ ${feedbackType === "Ice-Albedo Feedback" ? `
 `
 ```
 
+```{ojs}
+//| echo: false
+{
+  // 1. CONTENT: Define your Myths and Facts here
+  const cards = [
+    {
+      text: "The Arctic is warming at the same rate as the rest of the planet.",
+      type: "Myth",
+      explanation: "False. The Arctic is warming at nearly 4x the global rate due to the ice-albedo feedback loop."
+    },
+    {
+      text: "Melting sea ice creates a 'positive feedback loop' that speeds up warming.",
+      type: "Fact",
+      explanation: "Correct! Less ice means less reflection (albedo), causing the ocean to absorb more heat, melting more ice."
+    },
+    {
+      text: "In the past, temperature sometimes rose BEFORE CO2 levels increased.",
+      type: "Fact",
+      explanation: "True! Historically, orbital shifts started warming, which caused oceans to release CO2. Today, humans are adding the CO2 directly."
+    },
+    {
+      text: "Darker surfaces (like oceans) have a higher 'albedo' than lighter surfaces (like ice).",
+      type: "Myth",
+      explanation: "False. Albedo is reflectivity. Ice has high albedo (reflects light); dark oceans have low albedo (absorb heat)."
+    },
+    {
+      text: "Water vapor and methane are also greenhouse gases, not just Carbon Dioxide.",
+      type: "Fact",
+      explanation: "Correct. While CO2 is the main driver of current warming, methane and water vapor also trap significant heat."
+    },
+    {
+      text: "The sun getting hotter is the main cause of the current global warming trend.",
+      type: "Myth",
+      explanation: "False. Solar output has actually decreased slightly since the 1950s, while global temperatures have skyrocketed."
+    }
+  ];
+
+  // 2. STATE MANAGEMENT (Vanilla JS - No external libraries needed)
+  let currentIndex = 0;
+  let score = 0;
+  
+  // Container for the game
+  const container = html`<div style="
+    font-family: sans-serif; 
+    max-width: 500px; 
+    margin: 20px auto; 
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    background: #f7fafc;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  "></div>`;
+
+  // Function to render the current card
+  function renderCard() {
+    container.innerHTML = ""; // Clear previous content
+
+    // A. End Screen
+    if (currentIndex >= cards.length) {
+      container.innerHTML = `
+        <h2 style="color: #2d3748; margin-bottom: 10px;">Activity Complete!</h2>
+        <div style="font-size: 40px; margin-bottom: 10px;">🎉</div>
+        <p style="font-size: 18px; color: #2d3748;">You got <b>${score} / ${cards.length}</b> correct.</p>
+        <p style="color: #718096; font-size: 14px; margin-bottom: 20px;">Review the "Climate Feedbacks" section for any you missed.</p>
+        <button id="restart-btn" style="
+          padding: 10px 20px; 
+          background: #3182ce; 
+          color: white; 
+          border: none; 
+          border-radius: 6px; 
+          cursor: pointer;
+          font-weight: bold;
+        ">Play Again</button>
+      `;
+      // Re-attach listener for the restart button
+      container.querySelector("#restart-btn").addEventListener("click", () => {
+        currentIndex = 0;
+        score = 0;
+        renderCard();
+      });
+      return;
+    }
+
+    // B. The Card
+    const cardData = cards[currentIndex];
+    
+    // Create Card Elements
+    const progress = html`<div style="font-size: 12px; color: #a0aec0; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Card ${currentIndex + 1} of ${cards.length}</div>`;
+    
+    const card = html`
+      <div style="
+        background: white;
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
+        border-radius: 8px;
+        border: 1px solid #cbd5e0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-bottom: 25px;
+      ">
+        <h3 style="color: #2d3748; font-size: 18px; line-height: 1.5; margin: 0;">${cardData.text}</h3>
+      </div>
+    `;
+
+    // C. The Buttons
+    const controls = html`
+      <div style="display: flex; justify-content: center; gap: 15px;">
+        <button id="myth-btn" style="
+          background: white; color: #e53e3e; border: 2px solid #e53e3e; padding: 10px 24px; 
+          border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 16px; transition: all 0.2s;
+        ">MYTH (False)</button>
+        
+        <button id="fact-btn" style="
+          background: white; color: #38a169; border: 2px solid #38a169; padding: 10px 24px; 
+          border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 16px; transition: all 0.2s;
+        ">FACT (True)</button>
+      </div>
+    `;
+
+    // Feedback overlay (hidden by default)
+    const feedback = html`<div style="
+      display: none; 
+      margin-top: 20px; 
+      padding: 15px; 
+      border-radius: 6px; 
+      text-align: left;
+      animation: fadeIn 0.3s;
+    "></div>`;
+
+    // Attach elements to container
+    container.appendChild(progress);
+    container.appendChild(card);
+    container.appendChild(controls);
+    container.appendChild(feedback);
+
+    // D. Handle Logic
+    const handleChoice = (choice) => {
+      const isCorrect = choice === cardData.type;
+      if (isCorrect) score++;
+
+      // Disable buttons
+      const btnMyth = container.querySelector("#myth-btn");
+      const btnFact = container.querySelector("#fact-btn");
+      btnMyth.disabled = true;
+      btnFact.disabled = true;
+      
+      // Style buttons to show result
+      if (choice === "Myth") {
+         btnMyth.style.background = isCorrect ? "#e53e3e" : "#e53e3e";
+         btnMyth.style.color = "white";
+      } else {
+         btnFact.style.background = isCorrect ? "#38a169" : "#38a169";
+         btnFact.style.color = "white";
+      }
+
+      // Show Feedback Text
+      feedback.style.display = "block";
+      feedback.style.background = isCorrect ? "#f0fff4" : "#fff5f5";
+      feedback.style.border = isCorrect ? "1px solid #38a169" : "1px solid #e53e3e";
+      
+      feedback.innerHTML = `
+        <div style="font-size: 18px; margin-bottom: 5px; font-weight: bold; color: ${isCorrect ? "#2f855a" : "#c53030"}">
+          ${isCorrect ? "✅ Correct!" : "❌ Incorrect."}
+        </div>
+        <div style="color: #4a5568; margin-bottom: 10px;">It is a <b>${cardData.type}</b>. ${cardData.explanation}</div>
+        <div style="text-align: right;">
+          <button id="next-btn" style="
+            background: #4a5568; color: white; border: none; padding: 8px 16px; 
+            border-radius: 4px; cursor: pointer; font-weight: bold;
+          ">Next Card →</button>
+        </div>
+      `;
+
+      feedback.querySelector("#next-btn").addEventListener("click", () => {
+        currentIndex++;
+        renderCard();
+      });
+    };
+
+    // Attach Event Listeners
+    container.querySelector("#myth-btn").addEventListener("click", () => handleChoice("Myth"));
+    container.querySelector("#fact-btn").addEventListener("click", () => handleChoice("Fact"));
+  }
+
+  // Initial Render
+  renderCard();
+  
+  return container;
+}
+
+```
 
 ---
 

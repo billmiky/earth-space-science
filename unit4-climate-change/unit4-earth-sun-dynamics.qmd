@@ -186,6 +186,129 @@ h2 {
 - 🔥 What happens to Earth's temperature when our orbit shifts?
 :::
 
+``` {ojs}
+//| echo: false
+{
+  // 1. Load Plotly
+  const Plotly = await require("plotly.js-dist-min");
+
+  // 2. Generate Simulated Data to match the image
+  // The graph covers 0 to 350,000 years ago
+  const years = d3.range(0, 360, 0.5); 
+  
+  const data = years.map(t => {
+    // A. Insolation (Orange Line): Dominated by Precession (~23k yr cycle)
+    // We sum sine waves to mimic the Milankovitch pattern seen in the image
+    const precession = Math.sin((t / 23) * 2 * Math.PI) * 25; 
+    const obliquity = Math.sin((t / 41) * 2 * Math.PI) * 5;
+    const eccentricity = Math.cos((t / 100) * 2 * Math.PI) * 2 + 1; // Modulates the amplitude
+    
+    // Combine and shift to match the Y-axis range (400-500)
+    const insolation = 440 + (precession + obliquity) * eccentricity * 0.4 + (Math.random() * 2);
+
+    // B. Temperature (Black Line): Sawtooth pattern (100k yr cycle)
+    // Fast warming (interglacial), slow cooling (glacial)
+    const cycle100k = (t % 110) / 110; 
+    // Create the "sawtooth" shape seen in ice core data
+    let baseTemp = -8 + (Math.exp(-4 * cycle100k) * 10); 
+    
+    // Add noise and correlation to insolation to make it look real
+    const tempNoise = (Math.random() - 0.5) * 1.5;
+    const temp = baseTemp + (insolation - 440) * 0.1 + tempNoise;
+
+    return { t, insolation, temp };
+  });
+
+  // 3. Define the "Interglacial" (IG) Yellow Highlights
+  // These approximate the yellow bars in your image
+  const shapes = [
+    { type: 'rect', x0: 5, x1: 20, y0: 0, y1: 1, xref: 'x', yref: 'paper', fillcolor: 'gold', opacity: 0.2, line: {width: 0}},
+    { type: 'rect', x0: 118, x1: 135, y0: 0, y1: 1, xref: 'x', yref: 'paper', fillcolor: 'gold', opacity: 0.2, line: {width: 0}},
+    { type: 'rect', x0: 235, x1: 250, y0: 0, y1: 1, xref: 'x', yref: 'paper', fillcolor: 'gold', opacity: 0.2, line: {width: 0}},
+    { type: 'rect', x0: 325, x1: 345, y0: 0, y1: 1, xref: 'x', yref: 'paper', fillcolor: 'gold', opacity: 0.2, line: {width: 0}}
+  ];
+
+  // 4. Create Traces
+  const traceInsolation = {
+    x: data.map(d => d.t),
+    y: data.map(d => d.insolation),
+    mode: 'lines',
+    name: 'July Insolation',
+    line: { color: '#e6ac5a', width: 2 }, // Light Orange
+    yaxis: 'y2' // Maps to the left axis
+  };
+
+  const traceTemp = {
+    x: data.map(d => d.t),
+    y: data.map(d => d.temp),
+    mode: 'lines',
+    name: 'Temperature Change',
+    line: { color: '#2d3436', width: 1.5 } // Dark Grey/Black
+  };
+
+  // 5. Layout Configuration
+  const layout = {
+    title: { text: "Insolation vs. Temperature (Past 350,000 Years)", font: { size: 18 } },
+    height: 500,
+    margin: { l: 60, r: 60, t: 50, b: 60 },
+    showlegend: false,
+    
+    // X-Axis: Reversed (Present is 0, on the right)
+    xaxis: {
+      title: "Years before present (in thousands)",
+      autorange: "reversed", 
+      range: [350, 0],
+      showgrid: false
+    },
+
+    // Left Y-Axis (Temperature - Black)
+    yaxis: {
+      title: "Temperature change from present (°C)",
+      titlefont: { color: '#2d3436' },
+      tickfont: { color: '#2d3436' },
+      range: [-12, 6],
+      side: 'right' // In Plotly, we often swap sides to match visual preference, usually temp is right in these charts
+    },
+
+    // Right Y-Axis (Insolation - Orange)
+    yaxis2: {
+      title: "July Insolation at 65°N (W/m²)",
+      titlefont: { color: '#e6ac5a' },
+      tickfont: { color: '#e6ac5a' },
+      overlaying: 'y', // Important: This overlays the second axis on top of the first
+      side: 'left',
+      range: [380, 530],
+      showgrid: false
+    },
+
+    shapes: shapes,
+
+    // Annotations (IG labels and Snowflakes)
+    annotations: [
+      // IG Labels
+      { x: 12, y: 1, yref: 'paper', text: "<b>IG</b>", showarrow: false, font: {color: 'red', size: 12} },
+      { x: 126, y: 0.75, yref: 'paper', text: "<b>IG</b>", showarrow: false, font: {color: 'red', size: 12} },
+      { x: 242, y: 0.75, yref: 'paper', text: "<b>IG</b>", showarrow: false, font: {color: 'red', size: 12} },
+      { x: 335, y: 0.75, yref: 'paper', text: "<b>IG</b>", showarrow: false, font: {color: 'red', size: 12} },
+      
+      // Snowflakes (Using emoji)
+      { x: 60, y: -9, yref: 'y', text: "❄️", showarrow: false, font: {size: 20} },
+      { x: 165, y: -9, yref: 'y', text: "❄️", showarrow: false, font: {size: 20} },
+      { x: 270, y: -9, yref: 'y', text: "❄️", showarrow: false, font: {size: 20} },
+      
+      // Legend (Manual placement)
+      { x: 350, y: -16, yref: 'y', text: "<b>IG = Inter-glacial</b>", showarrow: false, xanchor: 'left', font: {color: 'red'} },
+      { x: 350, y: -18, yref: 'y', text: "<b>❄️ = Glacial</b>", showarrow: false, xanchor: 'left', font: {color: 'blue'} }
+    ]
+  };
+
+  // 6. Render
+  const div = document.createElement('div');
+  Plotly.newPlot(div, [traceTemp, traceInsolation], layout, {responsive: true});
+  return div;
+}
+```
+
 # Engage: Solar Radiation Patterns
 
 ## Solar Radiation at 65°N

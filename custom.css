@@ -1,0 +1,38 @@
+/* Only apply this on large screens (desktop) */
+@media (min-width: 992px) {
+  
+  /* 1. Undock the sidebar and fix it to the left edge */
+  #quarto-sidebar {
+    position: fixed;
+    left: 0;
+    top: 60px; /* Adjust based on your navbar height */
+    bottom: 0;
+    z-index: 1000;
+    background-color: white; /* Needed so text behind it doesn't show through */
+    border-right: 1px solid #dee2e6;
+    
+    /* 2. Hide most of it (keep 15px visible as a 'trigger zone') */
+    width: 300px; /* Standard width */
+    transform: translateX(-285px); /* Move 285px to the left */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    opacity: 0.8; /* Slightly dim when hidden */
+  }
+
+  /* 3. Slide out on hover */
+  #quarto-sidebar:hover {
+    transform: translateX(0); /* Return to normal position */
+    opacity: 1;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.1); /* Add a shadow for depth */
+  }
+
+  /* 4. Allow main content to expand into the empty space */
+  /* This tells the main content to ignore the sidebar's original grid slot */
+  .page-columns {
+    display: block !important; /* Break the standard grid */
+  }
+  
+  #quarto-content {
+    margin-left: 40px; /* Add a small left margin so text isn't cut off */
+    max-width: 1000px; /* Optional: Keep text from getting too wide to read */
+  }
+}

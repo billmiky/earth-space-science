@@ -352,12 +352,12 @@
                     </div>
 
                     <div class="control-group">
-                        <label>Precession (Direction of Tilt)</label>
+                        <label>Precession (Summer Solstice Position)</label>
                         <input type="range" id="precession" min="0" max="360" value="180">
                         <div class="value-display">
-                            <span>NH toward Sun</span>
+                            <span>Perihelion (Closest)</span>
                             <span class="current-value" id="prec-value">180°</span>
-                            <span>NH away from Sun</span>
+                            <span>Aphelion (Furthest)</span>
                         </div>
                     </div>
                 </div>
@@ -371,7 +371,7 @@
             </div>
 
             <div class="card">
-                <h2>Earth's Orbit Visualization</h2>
+                <h2>Earth's Orbit Visualization (Top Down)</h2>
                 <canvas id="orbitCanvas"></canvas>
                 
                 <div class="legend">
@@ -381,22 +381,22 @@
                     </div>
                     <div class="legend-item">
                         <div class="legend-color" style="background: #4a90e2;"></div>
-                        <span>Earth</span>
+                        <span>Earth (at Summer Solstice)</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-color" style="background: #ff6b6b;"></div>
-                        <span>NH Summer Position</span>
+                        <span>North Pole (Tilted toward Sun)</span>
                     </div>
                 </div>
 
                 <div class="data-display">
                     <div class="data-card">
-                        <div class="data-label">Min Distance</div>
-                        <div class="data-value" id="minDist">147.1 M km</div>
+                        <div class="data-label">Solar Distance</div>
+                        <div class="data-value" id="currDist">152.1 M km</div>
                     </div>
                     <div class="data-card">
-                        <div class="data-label">Max Distance</div>
-                        <div class="data-value" id="maxDist">152.1 M km</div>
+                        <div class="data-label">Insolation Factor</div>
+                        <div class="data-value" id="insolation">Low</div>
                     </div>
                 </div>
             </div>
@@ -444,22 +444,22 @@
         const periods = {
             1: {
                 name: "144 kya → 130 kya",
-                start: { ecc: 0.019, tilt: 22.6, prec: 90, minDist: 145.6, maxDist: 153.6 },
-                end: { ecc: 0.028, tilt: 24.25, prec: 90, minDist: 143.8, maxDist: 155.4 },
+                start: { ecc: 0.019, tilt: 22.6, prec: 270, minDist: 145.6, maxDist: 153.6 },
+                end: { ecc: 0.028, tilt: 24.25, prec: 45, minDist: 143.8, maxDist: 155.4 },
                 info: "During this transition, Earth moved from a glacial period to an interglacial period. Both increased tilt and NH pointing toward Sun when closer caused more summer radiation at 65°N.",
                 outcome: "glacial to interglacial"
             },
             2: {
                 name: "130 kya → 113 kya",
-                start: { ecc: 0.028, tilt: 24.25, prec: 90, minDist: 143.8, maxDist: 155.4 },
-                end: { ecc: 0.029, tilt: 22.25, prec: 270, minDist: 143.6, maxDist: 155.6 },
+                start: { ecc: 0.028, tilt: 24.25, prec: 45, minDist: 143.8, maxDist: 155.4 },
+                end: { ecc: 0.029, tilt: 22.25, prec: 225, minDist: 143.6, maxDist: 155.6 },
                 info: "During this transition, Earth moved from an interglacial to a glacial period. Decreased tilt and NH pointing away from Sun when closer reduced summer radiation at 65°N.",
                 outcome: "interglacial to glacial"
             },
             3: {
                 name: "25 kya → 9 kya",
-                start: { ecc: 0.011, tilt: 22.3, prec: 270, minDist: 147.36, maxDist: 151.84 },
-                end: { ecc: 0.013, tilt: 24.25, prec: 270, minDist: 146.61, maxDist: 152.59 },
+                start: { ecc: 0.011, tilt: 22.3, prec: 200, minDist: 147.36, maxDist: 151.84 },
+                end: { ecc: 0.013, tilt: 24.25, prec: 300, minDist: 146.61, maxDist: 152.59 },
                 info: "During this transition, Earth moved from a glacial to an interglacial period. Increased tilt was the primary driver, overcoming the effect of precession keeping NH away from Sun when closer.",
                 outcome: "glacial to interglacial"
             }
@@ -470,11 +470,15 @@
 
         const canvas = document.getElementById('orbitCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = canvas.offsetWidth * 2;
-        canvas.height = 600;
+        // Handle High DPI displays
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = 300 * dpr;
+        ctx.scale(dpr, dpr);
 
         function updateDisplay() {
-            const ecc = parseFloat(document.getElementById('eccentricity').value) / 5000;
+            const ecc = parseFloat(document.getElementById('eccentricity').value) / 1000; // Scaled for visibility
             const tilt = parseFloat(document.getElementById('tilt').value) / 10;
             const prec = parseFloat(document.getElementById('precession').value);
 
@@ -483,106 +487,192 @@
             currentSettings.prec = prec;
 
             const meanDist = 149.6;
+            // Calculate actual distance based on Precession angle logic (0 = Perihelion, 180 = Aphelion)
+            // r = a(1-e^2) / (1 + e*cos(theta))
+            // Here, theta is determined by precession. If prec=0, theta=0 (Perihelion).
+            // Note: In orbital mechanics, theta=0 is usually Perihelion.
+            const theta = (prec * Math.PI) / 180;
+            const currentDistance = (meanDist * (1 - ecc * ecc)) / (1 + ecc * Math.cos(theta));
+
             currentSettings.minDist = meanDist * (1 - ecc);
             currentSettings.maxDist = meanDist * (1 + ecc);
+            currentSettings.currentDist = currentDistance;
 
             document.getElementById('ecc-value').textContent = ecc.toFixed(3);
             document.getElementById('tilt-value').textContent = tilt.toFixed(1) + '°';
             document.getElementById('prec-value').textContent = Math.round(prec) + '°';
-            document.getElementById('minDist').textContent = currentSettings.minDist.toFixed(1) + ' M km';
-            document.getElementById('maxDist').textContent = currentSettings.maxDist.toFixed(1) + ' M km';
+            document.getElementById('currDist').textContent = currentDistance.toFixed(1) + ' M km';
+
+            // Calculate Insolation Factor (Inverse Square Law + Tilt)
+            const distFactor = Math.pow(meanDist / currentDistance, 2);
+            const tiltFactor = Math.sin(tilt * Math.PI / 180) / Math.sin(23.5 * Math.PI / 180);
+            const totalInsolation = distFactor * tiltFactor;
+            
+            let insolationText = "Moderate";
+            if (totalInsolation > 1.05) insolationText = "Very High";
+            else if (totalInsolation > 1.02) insolationText = "High";
+            else if (totalInsolation < 0.95) insolationText = "Very Low";
+            else if (totalInsolation < 0.98) insolationText = "Low";
+            
+            document.getElementById('insolation').textContent = insolationText;
 
             drawOrbit();
             calculateImpacts();
         }
 
         function drawOrbit() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Clear
+            ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
             
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const scale = 3;
+            const centerX = (canvas.width / dpr) / 2;
+            const centerY = (canvas.height / dpr) / 2;
+            const scale = 2.5; // Visual scale
             
-            const a = 150 * scale;
-            const ecc = currentSettings.ecc;
-            const b = a * Math.sqrt(1 - ecc * ecc);
-            const c = a * ecc;
+            // Visual Eccentricity (exaggerated for effect)
+            // Real eccentricity is 0.01-0.05 (invisible). We map 0.0-0.1 to 0.0-0.6 visually.
+            const visualEcc = currentSettings.ecc * 6; 
+            
+            const a = 120; // Semi-major axis in pixels
+            const b = a * Math.sqrt(1 - visualEcc * visualEcc);
+            const c = a * visualEcc; // Focus offset
 
+            // Draw Sun at CenterX (Focus 1)
+            // Ellipse center is at (centerX + c)
+            
+            // Draw Orbit Path
             ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-border');
             ctx.lineWidth = 2;
             ctx.beginPath();
+            // ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle)
+            // Center of ellipse is shifted right by c so Sun remains at x=centerX
             ctx.ellipse(centerX + c, centerY, a, b, 0, 0, 2 * Math.PI);
             ctx.stroke();
 
+            // Draw Sun
             ctx.fillStyle = '#ffd700';
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = 'rgba(255, 215, 0, 0.5)';
             ctx.beginPath();
-            ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI);
+            ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
             ctx.fill();
+            ctx.shadowBlur = 0;
 
+            // Draw Earth Position based on Precession
+            // Precession slider: 0 = Perihelion (Closest), 180 = Aphelion (Furthest)
+            // Perihelion is at angle PI (Left side of ellipse relative to center? No.)
+            // Let's do the geometry relative to the Sun (Focus).
+            // Perihelion is closest to Sun.
+            // If Sun is at (centerX, centerY) and Ellipse Center is (centerX+c, centerY),
+            // Then Left side of ellipse is (centerX+c - a) = centerX + ae - a = centerX - a(1-e).
+            // Distance is a(1-e). This IS Perihelion.
+            // So Perihelion is at angle PI relative to Ellipse Center.
+            
+            // We want Slider=0 to be Perihelion.
+            // So we map Slider 0 -> Angle PI.
+            // Slider 180 -> Angle 0 (Aphelion).
+            
             const precRad = (currentSettings.prec * Math.PI) / 180;
-            const earthX = centerX + c + a * Math.cos(precRad);
-            const earthY = centerY + b * Math.sin(precRad);
+            // Map 0 (Perihelion) to PI, 180 to 0/2PI.
+            // ellipseAngle = PI + precRad. 
+            // If prec=0, angle=PI (Left). If prec=180, angle=PI+PI = 2PI = 0 (Right).
+            const ellipseAngle = Math.PI + precRad;
 
+            const earthX = (centerX + c) + a * Math.cos(ellipseAngle);
+            const earthY = centerY + b * Math.sin(ellipseAngle);
+
+            // Draw Earth
             ctx.fillStyle = '#4a90e2';
             ctx.beginPath();
-            ctx.arc(earthX, earthY, 20, 0, 2 * Math.PI);
+            ctx.arc(earthX, earthY, 12, 0, 2 * Math.PI);
             ctx.fill();
 
-            const tiltRad = (currentSettings.tilt * Math.PI) / 180;
-            const axisLength = 40;
-            const axisAngle = precRad + Math.PI / 2;
-            
+            // Draw Axis and Red Dot (NH Summer)
+            // We are simulating Summer Solstice.
+            // So North Pole must tilt TOWARD Sun.
+            // Vector from Earth to Sun
+            const dx = centerX - earthX;
+            const dy = centerY - earthY;
+            const angleToSun = Math.atan2(dy, dx);
+
+            // Draw Axis Line
             ctx.strokeStyle = '#ffffff';
             ctx.lineWidth = 3;
+            const axisLen = 22;
+            
+            // The axis aligns with the sun vector
             ctx.beginPath();
-            ctx.moveTo(earthX - Math.cos(axisAngle) * axisLength, earthY - Math.sin(axisAngle) * axisLength);
-            ctx.lineTo(earthX + Math.cos(axisAngle) * axisLength, earthY + Math.sin(axisAngle) * axisLength);
+            ctx.moveTo(earthX - Math.cos(angleToSun) * axisLen, earthY - Math.sin(angleToSun) * axisLen);
+            ctx.lineTo(earthX + Math.cos(angleToSun) * axisLen, earthY + Math.sin(angleToSun) * axisLen);
             ctx.stroke();
 
+            // Draw Red Dot (North Pole) on the side closer to Sun
             ctx.fillStyle = '#ff6b6b';
             ctx.beginPath();
-            ctx.arc(earthX + Math.cos(axisAngle) * axisLength, earthY + Math.sin(axisAngle) * axisLength, 8, 0, 2 * Math.PI);
+            ctx.arc(earthX + Math.cos(angleToSun) * axisLen, earthY + Math.sin(angleToSun) * axisLen, 5, 0, 2 * Math.PI);
             ctx.fill();
 
+            // Labels
             ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-text-secondary');
-            ctx.font = '24px -apple-system, sans-serif';
+            ctx.font = '14px -apple-system, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('Sun', centerX, centerY + 50);
+            ctx.fillText('Sun', centerX, centerY + 40);
+            
+            // Label Earth Position
+            let posLabel = "";
+            if (currentSettings.prec < 45 || currentSettings.prec > 315) posLabel = "Summer at Perihelion";
+            else if (currentSettings.prec > 135 && currentSettings.prec < 225) posLabel = "Summer at Aphelion";
+            
+            if(posLabel) {
+                 ctx.fillText(posLabel, earthX, earthY - 25);
+            }
         }
 
         function calculateImpacts() {
             const baseRadiation = 100;
             let radiationChange = 0;
             
-            const tiltEffect = (currentSettings.tilt - 23.5) * 3;
+            // 1. Tilt Effect (Obliquity)
+            // Higher tilt = More intense summer radiation at poles
+            // Range 22.1 to 24.5. 23.5 is baseline.
+            const tiltEffect = (currentSettings.tilt - 23.5) * 4.0; // Weighting factor
             radiationChange += tiltEffect;
 
-            const precEffect = currentSettings.prec > 180 ? -5 : 5;
-            radiationChange += precEffect * currentSettings.ecc * 200;
-
-            const distEffect = -((currentSettings.minDist - 147.1) / 147.1) * 100;
-            radiationChange += distEffect * 2;
+            // 2. Precession & Eccentricity Effect
+            // Precession determines distance at Summer. Eccentricity determines how much distance varies.
+            // If prec = 0 (Perihelion), we are closest. Distance factor is max.
+            // Distance varies from a(1-e) to a(1+e).
+            // Radiation falls off as 1/r^2.
+            // % diff in radiation ≈ 4 * e * cos(theta)?
+            // Let's use the explicit distance we calculated in updateDisplay: currentSettings.currentDist
+            
+            const meanDist = 149.6;
+            const distRatio = meanDist / currentSettings.currentDist;
+            const radFactor = Math.pow(distRatio, 2); // Intensity proportional to 1/r^2
+            
+            // radFactor is 1.0 at mean. 1.06 at perihelion (if e=0.03). 0.94 at aphelion.
+            // Convert to percentage change relative to mean: (1.06 - 1) * 100 = +6%
+            const distEffect = (radFactor - 1) * 100; 
+            
+            radiationChange += distEffect;
 
             const impacts = [
                 {
                     factor: 'Eccentricity',
                     value: currentSettings.ecc.toFixed(3),
-                    effect: Math.abs(distEffect) < 1 ? 'Minimal effect' : 
-                           distEffect > 0 ? 'Increases radiation (closer to Sun)' : 'Decreases radiation (farther from Sun)',
-                    impact: Math.abs(distEffect) < 1 ? 'neutral' : distEffect > 0 ? 'warming' : 'cooling'
+                    effect: 'Modulates the strength of Precession',
+                    impact: 'neutral'
                 },
                 {
                     factor: 'Axial Tilt',
                     value: currentSettings.tilt.toFixed(1) + '°',
-                    effect: Math.abs(tiltEffect) < 1 ? 'Minimal effect' : 
-                           tiltEffect > 0 ? 'Increases summer radiation at 65°N' : 'Decreases summer radiation at 65°N',
-                    impact: Math.abs(tiltEffect) < 1 ? 'neutral' : tiltEffect > 0 ? 'warming' : 'cooling'
+                    effect: tiltEffect > 0.1 ? 'Higher tilt increases summer intensity' : tiltEffect < -0.1 ? 'Lower tilt decreases summer intensity' : 'Average tilt',
+                    impact: Math.abs(tiltEffect) < 0.5 ? 'neutral' : tiltEffect > 0 ? 'warming' : 'cooling'
                 },
                 {
                     factor: 'Precession',
                     value: Math.round(currentSettings.prec) + '°',
-                    effect: currentSettings.prec < 180 ? 'NH toward Sun when closer (increases radiation)' : 'NH away from Sun when closer (decreases radiation)',
-                    impact: currentSettings.prec < 180 ? 'warming' : 'cooling'
+                    effect: distEffect > 1 ? 'Summer occurs near Perihelion (Stronger Sun)' : distEffect < -1 ? 'Summer occurs near Aphelion (Weaker Sun)' : 'Average distance',
+                    impact: Math.abs(distEffect) < 1 ? 'neutral' : distEffect > 0 ? 'warming' : 'cooling'
                 }
             ];
 
@@ -599,22 +689,25 @@
             document.getElementById('totalRadiation').textContent = 
                 (radiationChange > 0 ? '+' : '') + radiationChange.toFixed(1) + '%';
             
-            document.getElementById('climateState').textContent = 
-                radiationChange > 2 ? 'Warming Trend' : radiationChange < -2 ? 'Cooling Trend' : 'Stable';
+            let climateState = "Stable Interglacial";
+            if (radiationChange < -3) climateState = "Glacial Onset (Cooling)";
+            else if (radiationChange < 0) climateState = "Cooling Trend";
+            else if (radiationChange > 3) climateState = "Super-Interglacial";
+            else if (radiationChange > 0) climateState = "Warming Trend";
+
+            document.getElementById('climateState').textContent = climateState;
             
             document.getElementById('iceResponse').textContent = 
-                radiationChange > 2 ? 'Melting' : radiationChange < -2 ? 'Growing' : 'Stable';
+                radiationChange > 1.5 ? 'Retreating (Melting)' : radiationChange < -1.5 ? 'Advancing (Growing)' : 'Stable';
 
-            let explanation = 'The combination of orbital factors ';
+            let explanation = '';
             if (radiationChange > 2) {
-                explanation += 'increases summer radiation at 65°N, causing ice sheets to melt and leading to interglacial conditions. ';
+                explanation = 'High northern latitude summer radiation is HIGH. This melts winter snow, preventing ice sheet accumulation.';
             } else if (radiationChange < -2) {
-                explanation += 'decreases summer radiation at 65°N, allowing ice sheets to grow and leading to glacial conditions. ';
+                explanation = 'High northern latitude summer radiation is LOW. Winter snow survives the summer, allowing ice sheets to grow year over year.';
             } else {
-                explanation += 'produces minimal net change in summer radiation at 65°N, maintaining current ice sheet conditions. ';
+                explanation = 'Summer radiation is near average. Ice sheets are likely stable.';
             }
-
-            explanation += 'Tilt has the strongest effect on the angle and concentration of radiation at high latitudes, while precession determines if the NH is closer or farther when tilted toward the Sun.';
             
             document.getElementById('explanation').textContent = explanation;
         }
@@ -622,7 +715,7 @@
         function setPeriodValues(period, isStart = true) {
             const data = isStart ? periods[period].start : periods[period].end;
             
-            document.getElementById('eccentricity').value = data.ecc * 5000;
+            document.getElementById('eccentricity').value = data.ecc * 1000;
             document.getElementById('tilt').value = data.tilt * 10;
             document.getElementById('precession').value = data.prec;
             
@@ -648,8 +741,16 @@
         document.getElementById('tilt').addEventListener('input', updateDisplay);
         document.getElementById('precession').addEventListener('input', updateDisplay);
 
-        setPeriodValues(1, true);
+        // Initial render
+        // Wait for font load or just run
+        setTimeout(() => setPeriodValues(1, true), 100);
+        window.addEventListener('resize', () => {
+             const rect = canvas.getBoundingClientRect();
+             canvas.width = rect.width * dpr;
+             canvas.height = 300 * dpr;
+             ctx.scale(dpr, dpr);
+             drawOrbit();
+        });
     </script>
 </body>
 </html>
-
