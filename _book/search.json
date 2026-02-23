@@ -10,16 +10,6 @@
     ]
   },
   {
-    "objectID": "index.html#our-dynamic-planet-right-now",
-    "href": "index.html#our-dynamic-planet-right-now",
-    "title": "Earth and Space Science",
-    "section": "0.1 🗺️ Our Dynamic Planet — Right Now",
-    "text": "0.1 🗺️ Our Dynamic Planet — Right Now\nThe map below shows simulated global earthquake and volcanic activity. These events aren’t random — they trace the boundaries of massive tectonic plates. This is the central mystery you’ll investigate.\n\n\nCode\n{\n  // 1. SETUP: Load Libraries\n  const topojson = await require(\"topojson-client@3\");\n\n  // 2. MAP DATA: Load the local file you downloaded\n  // If this fails, it falls back to a sphere so the chart doesn't break.\n  let land = null;\n  try {\n    const world = await FileAttachment(\"world-110m.json\").json();\n    land = topojson.feature(world, world.objects.land);\n  } catch (e) {\n    // If file is missing, we just won't draw land (no error)\n  }\n\n  // 3. EARTHQUAKE DATA (Live or Fallback)\n  let earthQuakeData = [];\n  try {\n    // Try to fetch live USGS data (Past 30 Days)\n    const feed = await d3.json(\"https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month.geojson\");\n    earthQuakeData = feed.features.map(f =&gt; ({\n      lon: f.geometry.coordinates[0],\n      lat: f.geometry.coordinates[1],\n      mag: f.properties.mag,\n      place: f.properties.place,\n      time: new Date(f.properties.time).toLocaleDateString(),\n      type: \"Earthquake\"\n    }));\n  } catch (e) {\n    // Fallback if offline\n    earthQuakeData = [{lon: 0, lat: 0, mag: 0, place: \"Data Offline\", type: \"Earthquake\"}];\n  }\n\n  // 4. VOLCANO DATA (Hardcoded)\n  const volcanoes = [\n    {name: \"Mt. Fuji\", lat: 35.36, lon: 138.72, type: \"Volcano\", status: \"Active\"},\n    {name: \"Krakatoa\", lat: -6.10, lon: 105.42, type: \"Volcano\", status: \"Active\"},\n    {name: \"Mt. St. Helens\", lat: 46.19, lon: -122.19, type: \"Volcano\", status: \"Active\"},\n    {name: \"Mauna Loa\", lat: 19.47, lon: -155.60, type: \"Volcano\", status: \"Active\"},\n    {name: \"Vesuvius\", lat: 40.82, lon: 14.42, type: \"Volcano\", status: \"Active\"},\n    {name: \"Etna\", lat: 37.75, lon: 14.99, type: \"Volcano\", status: \"Active\"},\n    {name: \"Kilimanjaro\", lat: -3.06, lon: 37.35, type: \"Volcano\", status: \"Dormant\"},\n    {name: \"Popocatépetl\", lat: 19.02, lon: -98.62, type: \"Volcano\", status: \"Active\"},\n    {name: \"Rainier\", lat: 46.85, lon: -121.76, type: \"Volcano\", status: \"Active\"},\n    {name: \"Cotopaxi\", lat: -0.68, lon: -78.43, type: \"Volcano\", status: \"Active\"},\n    {name: \"Yellowstone\", lat: 44.42, lon: -110.58, type: \"Volcano\", status: \"Active\"},\n    {name: \"Eyjafjallajökull\", lat: 63.63, lon: -19.62, type: \"Volcano\", status: \"Active\"},\n    {name: \"Santorini\", lat: 36.40, lon: 25.40, type: \"Volcano\", status: \"Dormant\"},\n    {name: \"Teide\", lat: 28.27, lon: -16.64, type: \"Volcano\", status: \"Dormant\"},\n    {name: \"Sakurajima\", lat: 31.59, lon: 130.65, type: \"Volcano\", status: \"Active\"}\n  ];\n\n  const allData = [...earthQuakeData, ...volcanoes];\n\n  // 5. RENDER PLOT\n  return Plot.plot({\n    title: \"Global Seismic Activity\",\n    subtitle: \"Hover over points for details\",\n    width: Math.min(900, window.innerWidth - 40),\n    height: 500,\n    projection: \"equal-earth\",\n    \n    color: {\n      legend: true,\n      domain: [\"Earthquake\", \"Volcano\"],\n      range: [\"#3182ce\", \"#e53e3e\"]\n    },\n    \n    marks: [\n      // 1. The Ocean\n      Plot.geo({type: \"Sphere\"}, {fill: \"#f1f5f9\", stroke: \"#cbd5e0\"}),\n      \n      // 2. The Continents (Only draws if you downloaded the file)\n      land ? Plot.geo(land, {fill: \"#e2e8f0\", stroke: \"white\", strokeWidth: 0.5}) : null,\n      \n      // 3. The Graticule (Grid lines - always draws)\n      Plot.graticule({stroke: \"#cbd5e0\", strokeOpacity: 0.5}),\n      \n      // 4. The Data Points with Tooltips\n      Plot.dot(allData, {\n        x: \"lon\",\n        y: \"lat\",\n        r: d =&gt; d.type === \"Volcano\" ? 4 : Math.max(2, d.mag * 0.8), // Scale size by magnitude\n        fill: \"type\",\n        fillOpacity: d =&gt; d.type === \"Volcano\" ? 0.9 : 0.5,\n        stroke: \"white\",\n        strokeWidth: 0.5,\n        symbol: d =&gt; d.type === \"Volcano\" ? \"triangle\" : \"circle\",\n        \n        // INTERACTIVITY: This enables the hover tooltip\n        tip: true,\n        \n        // This defines what shows inside the tooltip\n        channels: {\n          Name: d =&gt; d.name || d.place,\n          Magnitude: \"mag\",\n          Status: \"status\",\n          Date: \"time\"\n        }\n      })\n    ]\n  });\n}",
-    "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Earth and Space Science</span>"
-    ]
-  },
-  {
     "objectID": "index.html#your-journey-through-6-units",
     "href": "index.html#your-journey-through-6-units",
     "title": "Earth and Space Science",
@@ -1469,6 +1459,61 @@
     ]
   },
   {
+    "objectID": "unit4-climate-change/index.html",
+    "href": "unit4-climate-change/index.html",
+    "title": "Unit 4: Climate Change",
+    "section": "",
+    "text": "Driving Question",
+    "crumbs": [
+      "Unit 4: Climate Change",
+      "Unit 4: Climate Change"
+    ]
+  },
+  {
+    "objectID": "unit4-climate-change/index.html#driving-question",
+    "href": "unit4-climate-change/index.html#driving-question",
+    "title": "Unit 4: Climate Change",
+    "section": "",
+    "text": "How is Earth’s climate changing, and what are the consequences?",
+    "crumbs": [
+      "Unit 4: Climate Change",
+      "Unit 4: Climate Change"
+    ]
+  },
+  {
+    "objectID": "unit4-climate-change/index.html#unit-overview",
+    "href": "unit4-climate-change/index.html#unit-overview",
+    "title": "Unit 4: Climate Change",
+    "section": "Unit Overview",
+    "text": "Unit Overview\nIn this unit, we investigate Earth’s climate system, the evidence for climate change, and the interconnected feedbacks that amplify or moderate climate shifts.",
+    "crumbs": [
+      "Unit 4: Climate Change",
+      "Unit 4: Climate Change"
+    ]
+  },
+  {
+    "objectID": "unit4-climate-change/index.html#what-youll-learn",
+    "href": "unit4-climate-change/index.html#what-youll-learn",
+    "title": "Unit 4: Climate Change",
+    "section": "What You’ll Learn",
+    "text": "What You’ll Learn\n\nMoon phases, eclipses, tides, and seasonal cycles\nHow Earth’s systems interact through feedback loops\nEnergy flow patterns that drive climate\nThe carbon cycle and human impacts",
+    "crumbs": [
+      "Unit 4: Climate Change",
+      "Unit 4: Climate Change"
+    ]
+  },
+  {
+    "objectID": "unit4-climate-change/index.html#phenomenon",
+    "href": "unit4-climate-change/index.html#phenomenon",
+    "title": "Unit 4: Climate Change",
+    "section": "Phenomenon",
+    "text": "Phenomenon\nGlobal average temperatures have risen approximately 1.1°C since the pre-industrial era, with accelerating impacts on ice sheets, sea levels, and extreme weather. What’s driving these changes?\n\n\nCode\nimport plotly.express as px\nimport pandas as pd\nimport numpy as np\n\n# Simulated global temperature data\nnp.random.seed(42)\nyears = list(range(1880, 2026))\nbaseline_trend = [(y - 1880) * 0.007 for y in years]\nacceleration = [0.00005 * (y - 1950)**2 if y &gt; 1950 else 0 for y in years]\nnoise = np.random.normal(0, 0.1, len(years))\ntemps = [b + a + n - 0.2 for b, a, n in zip(baseline_trend, acceleration, noise)]\n\ndf = pd.DataFrame({\n    'Year': years,\n    'Temperature Anomaly (°C)': temps\n})\n\nfig = px.bar(df, x='Year', y='Temperature Anomaly (°C)',\n             color='Temperature Anomaly (°C)',\n             color_continuous_scale=['blue', 'white', 'red'],\n             range_color=[-0.5, 1.5],\n             title='Global Temperature Anomaly (1880-2025)')\nfig.add_hline(y=0, line_dash='dash', line_color='black')\nfig.update_layout(height=450)\nfig\n\n\n\n\n\n\n\n        \n        \n        \n\n\n(a) Global temperature anomaly from 1880 to present\n\n\n\n\n\n\n                            \n                                            \n\n\n(b)\n\n\n\n\n\nFigure 1\n\n\n\n\n\n\n\n\n\n\nStandards Alignment\n\n\n\nThis unit addresses NGSS standards: HS-ESS2-2, HS-ESS2-4, HS-ESS2-6, HS-ESS3-5, HS-ESS3-6\n\n\n:::",
+    "crumbs": [
+      "Unit 4: Climate Change",
+      "Unit 4: Climate Change"
+    ]
+  },
+  {
     "objectID": "unit4-climate-change/unit4-opening.html",
     "href": "unit4-climate-change/unit4-opening.html",
     "title": "19  Unit 4: Climate Change - Unit Opening",
@@ -1792,7 +1837,7 @@
     "href": "unit4-climate-change/unit4-climate-feedbacks.html",
     "title": "23  Unit 4: Climate Feedbacks 5E",
     "section": "",
-    "text": "24 Investigative Phenomenon",
+    "text": "23.1 🌍 Current CO₂ Levels\nThe most recent daily average atmospheric CO₂ concentration at Mauna Loa is  ppm.",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1804,6 +1849,17 @@
     "title": "23  Unit 4: Climate Feedbacks 5E",
     "section": "24.1 🌡️ Arctic Amplification",
     "text": "24.1 🌡️ Arctic Amplification\nThe globe is warming, and the average temperature of the Arctic is increasing at almost 4 times the rate as the rest of the globe.\n\n24.1.1 Driving Questions:\n\nWhat is causing global temperatures to rise today?\nWhy is the Arctic warming almost 4x faster than the rest of the globe?\nHow do feedbacks (like greenhouse gases and ice) amplify or reduce change?\nHow do greenhouse gas increases connect to glacial cycles and current warming?",
+    "crumbs": [
+      "Unit 4: Climate Change",
+      "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
+    ]
+  },
+  {
+    "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#section",
+    "href": "unit4-climate-change/unit4-climate-feedbacks.html#section",
+    "title": "23  Unit 4: Climate Feedbacks 5E",
+    "section": "25.1 ",
+    "text": "25.1",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1825,7 +1881,7 @@
     "href": "unit4-climate-change/unit4-climate-feedbacks.html#co₂-and-temperature-the-evidence",
     "title": "23  Unit 4: Climate Feedbacks 5E",
     "section": "26.2 CO₂ and Temperature: The Evidence",
-    "text": "26.2 CO₂ and Temperature: The Evidence\n\n26.2.1 Ice Core Data: 800,000 Years of CO₂ and Temperature\n\n\nCode\n// Ice core CO2 and temperature data\niceCoreData = [\n  {kya: 800, co2: 190, temp: -8},\n  {kya: 700, co2: 210, temp: -6},\n  {kya: 600, co2: 240, temp: -4},\n  {kya: 500, co2: 200, temp: -7},\n  {kya: 400, co2: 180, temp: -9},\n  {kya: 350, co2: 200, temp: -6},\n  {kya: 300, co2: 240, temp: -3},\n  {kya: 250, co2: 200, temp: -7},\n  {kya: 200, co2: 190, temp: -8},\n  {kya: 150, co2: 220, temp: -5},\n  {kya: 130, co2: 280, temp: 2},\n  {kya: 100, co2: 230, temp: -4},\n  {kya: 50, co2: 200, temp: -6},\n  {kya: 20, co2: 180, temp: -9},\n  {kya: 10, co2: 260, temp: -1},\n  {kya: 0.2, co2: 280, temp: 0},\n  {kya: 0, co2: 420, temp: 1.2}\n]\n\n\n\n\n\n\n\n\n\nCode\nviewof showModern = Inputs.toggle({label: \"Show modern CO₂ level (420 ppm)\", value: false})\n\n\n\n\n\n\n\n\n\nCode\ndisplayData = showModern ? iceCoreData : iceCoreData.filter(d =&gt; d.kya &gt; 0.1)\n\nPlot.plot({\n  title: \"CO₂ Concentration Over 800,000 Years\",\n  subtitle: \"Data from Antarctic ice cores\",\n  width: 750,\n  height: 350,\n  x: {label: \"Thousands of Years Ago\", reverse: true, domain: [800, 0]},\n  y: {label: \"CO₂ (ppm)\", domain: [150, showModern ? 450 : 320]},\n  marks: [\n    Plot.ruleY([280], {stroke: \"#999\", strokeDasharray: \"4,4\"}),\n    Plot.line(displayData, {x: \"kya\", y: \"co2\", stroke: \"#27ae60\", strokeWidth: 2,\n        tip: true}),\n    Plot.dot(displayData.filter(d =&gt; d.kya === 0), {x: \"kya\", y: \"co2\", fill: \"#e74c3c\", r: 10,\n        tip: true}),\n    Plot.text([{x: 400, y: 295}], {x: \"x\", y: \"y\", text: d =&gt; \"Pre-industrial maximum: 280 ppm\", fill: \"#999\", fontSize: 11}),\n    showModern ? Plot.text([{x: 50, y: 420}], {x: \"x\", y: \"y\", text: d =&gt; \"TODAY: 420 ppm\", fill: \"#e74c3c\", fontSize: 12, fontWeight: \"bold\"}) : null\n  ].filter(d =&gt; d !== null)\n})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n26.2.2 Annual Global Emissions\n\n\nCode\nemissionsDataFixed = {\n  const url = \"https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv\";\n  \n  // Load CSV\n  const raw = await d3.csv(url);\n\n  // Filter for \"World\" and the correct time range\n  // We use d.country === 'World' which is often more reliable than ISO codes in this dataset\n  const worldData = raw.filter(d =&gt; d.country === 'World' && +d.year &gt;= 1850 && +d.year &lt;= 2019);\n\n  // Transform data (Wide to Long format for stacking)\n  return worldData.flatMap(d =&gt; {\n    // Force convert strings to numbers with \"+\"\n    const coal = +d.coal_co2 || 0;\n    const oil = +d.oil_co2 || 0;\n    const gas = +d.gas_co2 || 0;\n    const cement = +d.cement_co2 || 0;\n    const flaring = +d.flaring_co2 || 0;\n    const landUse = +d.land_use_change_co2 || 0;\n    \n    // Combine Cement and Flaring into \"Others\"\n    const others = cement + flaring;\n\n    // Return array of objects for this year (divide by 1000 for Gt)\n    return [\n      { year: +d.year, category: \"Coal\", emissions: coal / 1000 },\n      { year: +d.year, category: \"Oil\", emissions: oil / 1000 },\n      { year: +d.year, category: \"Gas\", emissions: gas / 1000 },\n      { year: +d.year, category: \"Others\", emissions: others / 1000 },\n      { year: +d.year, category: \"Land-use change\", emissions: landUse / 1000 }\n    ];\n  });\n}\n\n// 2. Define Colors\nemissionsColorsFixed = new Map([\n  [\"Land-use change\", \"#e3c28b\"], \n  [\"Others\", \"#7f7f7f\"],          \n  [\"Gas\", \"#4db8ff\"],             \n  [\"Oil\", \"#000000\"],             \n  [\"Coal\", \"#8c4619\"]             \n]);\n\n// 3. Render Chart\nemissionsChartFixed = Plot.plot({\n  title: \"Annual Global Emissions\",\n  subtitle: \"In Gigatonnes of CO₂ (Gt CO₂)\",\n  style: { fontFamily: \"sans-serif\", fontSize: \"14px\" },\n  marginLeft: 50,\n  color: {\n    domain: Array.from(emissionsColorsFixed.keys()),\n    range: Array.from(emissionsColorsFixed.values()),\n    legend: true\n  },\n  x: {\n    tickFormat: \"d\", \n    ticks: [1850, 1900, 1950, 2000, 2019]\n  },\n  y: {\n    label: \"Gt CO₂\",\n    grid: true,\n    domain: [0, 45] // Slightly higher to ensure top isn't cut off\n  },\n  marks: [\n    Plot.areaY(emissionsDataFixed, {\n      x: \"year\",\n      y: \"emissions\",\n      fill: \"category\",\n      // Explicitly define stack order\n      order: [\"Coal\", \"Oil\", \"Gas\", \"Others\", \"Land-use change\"], \n      tip: true\n    }),\n    Plot.ruleY([0])\n  ]\n})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n26.2.3 ✅ Data Analysis\n\nWhat is the highest CO₂ level in the past 800,000 years (before humans)?\nWhat is today’s CO₂ level?\nHow does today’s CO₂ compare to the natural range?\nWhat pattern do you notice between CO₂ and temperature in the ice core record?\nBased on these data, make a claim about how CO₂ levels and temperature are related.",
+    "text": "26.2 CO₂ and Temperature: The Evidence\n\n26.2.1 Ice Core Data: 800,000 Years of CO₂ and Temperature\n\n\nCode\nco2_historical_data = [\n  {year: 1750, co2: 278, emissions: 0.01},\n  {year: 1800, co2: 282, emissions: 0.03},\n  {year: 1850, co2: 285, emissions: 0.2},\n  {year: 1900, co2: 296, emissions: 1.95},\n  {year: 1950, co2: 311, emissions: 6.0},\n  {year: 1970, co2: 325, emissions: 15.0},\n  {year: 1990, co2: 354, emissions: 22.7},\n  {year: 2000, co2: 369, emissions: 25.4},\n  {year: 2010, co2: 389, emissions: 33.1},\n  {year: 2022, co2: 418, emissions: 37.5}\n]\n\n// 2. THE CHART\nvl.layer(\n  // First Layer: Blue Line (CO2)\n  vl.markLine({color: \"#0ea5e9\", strokeWidth: 3})\n    .encode(\n      vl.x().fieldQ(\"year\").title(\"Year\").axis({format: \"d\"}),\n      vl.y().fieldQ(\"co2\").scale({domain: [260, 420]}).title(\"Atmospheric CO2 (ppm)\")\n    ),\n\n  // Second Layer: Grey Line (Emissions)\n  vl.markLine({color: \"#9ca3af\", strokeWidth: 3})\n    .encode(\n      vl.x().fieldQ(\"year\"),\n      vl.y().fieldQ(\"emissions\").axis({orient: \"right\"}).title(\"Emissions (Gt)\")\n    )\n)\n.data(co2_historical_data) // Data is attached to the *entire layer*\n.resolve({scale: {y: \"independent\"}}) // This splits the Y axes\n.width(600)\n.height(400)\n.render()\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a)\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\nFigure 26.1\n\n\n\n\n\n\n\n26.2.2 ✅ Data Analysis\n\nWhat is the highest CO₂ level in the past 800,000 years (before humans)?\nWhat is today’s CO₂ level?\nHow does today’s CO₂ compare to the natural range?\nWhat pattern do you notice between CO₂ and temperature in the ice core record?\nBased on these data, make a claim about how CO₂ levels and temperature are related.",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1835,8 +1891,8 @@
     "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#what-is-albedo",
     "href": "unit4-climate-change/unit4-climate-feedbacks.html#what-is-albedo",
     "title": "23  Unit 4: Climate Feedbacks 5E",
-    "section": "27.1 What is Albedo?",
-    "text": "27.1 What is Albedo?\nAlbedo is the measure of how much light a surface reflects. It ranges from 0 (absorbs all light) to 1 (reflects all light).\n\n\n\n\n\n\n\n\n  \n  \n    \n  \n    \n        \n    \n    \n        June 14, 2023\n        July 24, 2023\n    \n\n\n\n    Drag the slider left and right to compare the images\n\n\n\n\n\nFigure 27.1: Interactive comparison of Frederiksdal Glacier, Greenland between June 14 and July 24, 2023, showing dramatic ice loss over 40 days.\n\n\n\n\n\n\nCode\nalbedoData = [\n  {surface: \"Fresh Snow\", albedo: 0.85, color: \"#ffffff\"},\n  {surface: \"Sea Ice\", albedo: 0.60, color: \"#b3e5fc\"},\n  {surface: \"Old Snow\", albedo: 0.45, color: \"#e0e0e0\"},\n  {surface: \"Desert Sand\", albedo: 0.40, color: \"#fdd835\"},\n  {surface: \"Grassland\", albedo: 0.25, color: \"#81c784\"},\n  {surface: \"Forest\", albedo: 0.15, color: \"#2e7d32\"},\n  {surface: \"Ocean Water\", albedo: 0.06, color: \"#1565c0\"},\n  {surface: \"Asphalt\", albedo: 0.04, color: \"#37474f\"}\n]\n\nPlot.plot({\n  title: \"Albedo of Different Surfaces\",\n  subtitle: \"Higher albedo = more reflection = less heating\",\n  width: 700,\n  height: 400,\n  x: {label: \"Albedo (reflection coefficient)\", domain: [0, 1]},\n  y: {label: \"Surface Type\", domain: albedoData.map(d =&gt; d.surface)},\n  marks: [\n    Plot.barX(albedoData, {x: \"albedo\", y: \"surface\", fill: \"color\", sort: {y: \"-x\"},\n        tip: true}),\n    Plot.text(albedoData, {x: \"albedo\", y: \"surface\", text: d =&gt; (d.albedo * 100).toFixed(0) + \"%\", dx: 25, fontSize: 12})\n  ]\n})",
+    "section": "28.1 What is Albedo?",
+    "text": "28.1 What is Albedo?\nAlbedo is the measure of how much light a surface reflects. It ranges from 0 (absorbs all light) to 1 (reflects all light).\n\n\n\n\n\n\n\n\n  \n  \n    \n  \n    \n        \n    \n    \n        June 14, 2023\n        July 24, 2023\n    \n\n\n\n    Drag the slider left and right to compare the images\n\n\n\n\n\nFigure 28.1: Interactive comparison of Frederiksdal Glacier, Greenland between June 14 and July 24, 2023, showing dramatic ice loss over 40 days.\n\n\n\n\n\n\nCode\nalbedoData = [\n  {surface: \"Fresh Snow\", albedo: 0.85, color: \"#ffffff\"},\n  {surface: \"Sea Ice\", albedo: 0.60, color: \"#b3e5fc\"},\n  {surface: \"Old Snow\", albedo: 0.45, color: \"#e0e0e0\"},\n  {surface: \"Desert Sand\", albedo: 0.40, color: \"#fdd835\"},\n  {surface: \"Grassland\", albedo: 0.25, color: \"#81c784\"},\n  {surface: \"Forest\", albedo: 0.15, color: \"#2e7d32\"},\n  {surface: \"Ocean Water\", albedo: 0.06, color: \"#1565c0\"},\n  {surface: \"Asphalt\", albedo: 0.04, color: \"#37474f\"}\n]\n\nPlot.plot({\n  title: \"Albedo of Different Surfaces\",\n  subtitle: \"Higher albedo = more reflection = less heating\",\n  width: 700,\n  height: 400,\n  x: {label: \"Albedo (reflection coefficient)\", domain: [0, 1]},\n  y: {label: \"Surface Type\", domain: albedoData.map(d =&gt; d.surface)},\n  marks: [\n    Plot.barX(albedoData, {x: \"albedo\", y: \"surface\", fill: \"color\", sort: {y: \"-x\"},\n        tip: true}),\n    Plot.text(albedoData, {x: \"albedo\", y: \"surface\", text: d =&gt; (d.albedo * 100).toFixed(0) + \"%\", dx: 25, fontSize: 12})\n  ]\n})",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1846,8 +1902,8 @@
     "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#interactive-ice-albedo-feedback-simulation",
     "href": "unit4-climate-change/unit4-climate-feedbacks.html#interactive-ice-albedo-feedback-simulation",
     "title": "23  Unit 4: Climate Feedbacks 5E",
-    "section": "27.2 Interactive: Ice-Albedo Feedback Simulation",
-    "text": "27.2 Interactive: Ice-Albedo Feedback Simulation\n\n\nCode\nviewof iceExtent = Inputs.range([0, 100], {\n  step: 5,\n  value: 50,\n  label: \"Arctic Ice Coverage (%):\"\n})\n\n\n\n\n\n\n\n\n\nCode\navgAlbedo = (iceExtent / 100 * 0.6) + ((100 - iceExtent) / 100 * 0.06)\nabsorbedEnergy = ((1 - avgAlbedo) * 100).toFixed(1)\nreflectedEnergy = (avgAlbedo * 100).toFixed(1)\n\nhtml`\n&lt;div style=\"display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0;\"&gt;\n  &lt;div style=\"flex: 1; min-width: 300px;\"&gt;\n    &lt;svg width=\"350\" height=\"250\" style=\"background: linear-gradient(180deg, #87CEEB 0%, #1565c0 100%); border-radius: 10px;\"&gt;\n      &lt;!-- Ice --&gt;\n      &lt;rect x=\"0\" y=\"150\" width=\"${iceExtent * 3.5}\" height=\"100\" fill=\"#e3f2fd\" opacity=\"0.9\"/&gt;\n      &lt;!-- Ocean --&gt;\n      &lt;rect x=\"${iceExtent * 3.5}\" y=\"150\" width=\"${(100 - iceExtent) * 3.5}\" height=\"100\" fill=\"#0d47a1\"/&gt;\n      &lt;!-- Sun rays --&gt;\n      &lt;line x1=\"175\" y1=\"20\" x2=\"100\" y2=\"140\" stroke=\"yellow\" stroke-width=\"3\" marker-end=\"url(#arrow)\"/&gt;\n      &lt;line x1=\"175\" y1=\"20\" x2=\"250\" y2=\"140\" stroke=\"yellow\" stroke-width=\"3\"/&gt;\n      &lt;!-- Reflected rays from ice --&gt;\n      &lt;line x1=\"100\" y1=\"140\" x2=\"50\" y2=\"60\" stroke=\"yellow\" stroke-width=\"2\" stroke-dasharray=\"5,5\" opacity=\"${iceExtent/100}\"/&gt;\n      &lt;!-- Labels --&gt;\n      &lt;text x=\"50\" y=\"200\" fill=\"white\" font-size=\"12\"&gt;Ice: ${iceExtent}%&lt;/text&gt;\n      &lt;text x=\"250\" y=\"200\" fill=\"white\" font-size=\"12\"&gt;Ocean: ${100-iceExtent}%&lt;/text&gt;\n    &lt;/svg&gt;\n  &lt;/div&gt;\n  &lt;div style=\"flex: 1; min-width: 250px; padding: 20px; background: #f5f5f5; border-radius: 10px;\"&gt;\n    &lt;h4 style=\"margin-top: 0;\"&gt;Energy Balance&lt;/h4&gt;\n    &lt;p&gt;&lt;strong&gt;Average Albedo:&lt;/strong&gt; ${(avgAlbedo * 100).toFixed(1)}%&lt;/p&gt;\n    &lt;p&gt;&lt;strong&gt;Energy Reflected:&lt;/strong&gt; ${reflectedEnergy}%&lt;/p&gt;\n    &lt;p&gt;&lt;strong&gt;Energy Absorbed:&lt;/strong&gt; ${absorbedEnergy}%&lt;/p&gt;\n    &lt;div style=\"margin-top: 15px; padding: 10px; background: ${iceExtent &lt; 30 ? '#ffcdd2' : iceExtent &gt; 70 ? '#c8e6c9' : '#fff9c4'}; border-radius: 5px;\"&gt;\n      &lt;strong&gt;Effect:&lt;/strong&gt; ${iceExtent &lt; 30 ? '🔥 High absorption → More warming → More ice melts' : iceExtent &gt; 70 ? '❄️ High reflection → Less warming → Ice preserved' : '⚖️ Moderate balance'}\n    &lt;/div&gt;\n  &lt;/div&gt;\n&lt;/div&gt;\n`",
+    "section": "28.2 Interactive: Ice-Albedo Feedback Simulation",
+    "text": "28.2 Interactive: Ice-Albedo Feedback Simulation\n\n\nCode\nviewof iceExtent = Inputs.range([0, 100], {\n  step: 5,\n  value: 50,\n  label: \"Arctic Ice Coverage (%):\"\n})\n\n\n\n\n\n\n\n\n\nCode\navgAlbedo = (iceExtent / 100 * 0.6) + ((100 - iceExtent) / 100 * 0.06)\nabsorbedEnergy = ((1 - avgAlbedo) * 100).toFixed(1)\nreflectedEnergy = (avgAlbedo * 100).toFixed(1)\n\nhtml`\n&lt;div style=\"display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0;\"&gt;\n  &lt;div style=\"flex: 1; min-width: 300px;\"&gt;\n    &lt;svg width=\"350\" height=\"250\" style=\"background: linear-gradient(180deg, #87CEEB 0%, #1565c0 100%); border-radius: 10px;\"&gt;\n      &lt;!-- Ice --&gt;\n      &lt;rect x=\"0\" y=\"150\" width=\"${iceExtent * 3.5}\" height=\"100\" fill=\"#e3f2fd\" opacity=\"0.9\"/&gt;\n      &lt;!-- Ocean --&gt;\n      &lt;rect x=\"${iceExtent * 3.5}\" y=\"150\" width=\"${(100 - iceExtent) * 3.5}\" height=\"100\" fill=\"#0d47a1\"/&gt;\n      &lt;!-- Sun rays --&gt;\n      &lt;line x1=\"175\" y1=\"20\" x2=\"100\" y2=\"140\" stroke=\"yellow\" stroke-width=\"3\" marker-end=\"url(#arrow)\"/&gt;\n      &lt;line x1=\"175\" y1=\"20\" x2=\"250\" y2=\"140\" stroke=\"yellow\" stroke-width=\"3\"/&gt;\n      &lt;!-- Reflected rays from ice --&gt;\n      &lt;line x1=\"100\" y1=\"140\" x2=\"50\" y2=\"60\" stroke=\"yellow\" stroke-width=\"2\" stroke-dasharray=\"5,5\" opacity=\"${iceExtent/100}\"/&gt;\n      &lt;!-- Labels --&gt;\n      &lt;text x=\"50\" y=\"200\" fill=\"white\" font-size=\"12\"&gt;Ice: ${iceExtent}%&lt;/text&gt;\n      &lt;text x=\"250\" y=\"200\" fill=\"white\" font-size=\"12\"&gt;Ocean: ${100-iceExtent}%&lt;/text&gt;\n    &lt;/svg&gt;\n  &lt;/div&gt;\n  &lt;div style=\"flex: 1; min-width: 250px; padding: 20px; background: #f5f5f5; border-radius: 10px;\"&gt;\n    &lt;h4 style=\"margin-top: 0;\"&gt;Energy Balance&lt;/h4&gt;\n    &lt;p&gt;&lt;strong&gt;Average Albedo:&lt;/strong&gt; ${(avgAlbedo * 100).toFixed(1)}%&lt;/p&gt;\n    &lt;p&gt;&lt;strong&gt;Energy Reflected:&lt;/strong&gt; ${reflectedEnergy}%&lt;/p&gt;\n    &lt;p&gt;&lt;strong&gt;Energy Absorbed:&lt;/strong&gt; ${absorbedEnergy}%&lt;/p&gt;\n    &lt;div style=\"margin-top: 15px; padding: 10px; background: ${iceExtent &lt; 30 ? '#ffcdd2' : iceExtent &gt; 70 ? '#c8e6c9' : '#fff9c4'}; border-radius: 5px;\"&gt;\n      &lt;strong&gt;Effect:&lt;/strong&gt; ${iceExtent &lt; 30 ? '🔥 High absorption → More warming → More ice melts' : iceExtent &gt; 70 ? '❄️ High reflection → Less warming → Ice preserved' : '⚖️ Moderate balance'}\n    &lt;/div&gt;\n  &lt;/div&gt;\n&lt;/div&gt;\n`",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1857,8 +1913,8 @@
     "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#lab-activity-albedo-investigation",
     "href": "unit4-climate-change/unit4-climate-feedbacks.html#lab-activity-albedo-investigation",
     "title": "23  Unit 4: Climate Feedbacks 5E",
-    "section": "27.3 🔬 Lab Activity: Albedo Investigation",
-    "text": "27.3 🔬 Lab Activity: Albedo Investigation\n\n27.3.1 Materials:\n\nTwo identical containers with lids\nBlack paper and white paper\nTwo thermometers\nHeat lamp or sunny window\nTimer\n\n\n\n27.3.2 Procedure:\n\nSetup:\n\nLine one container with black paper (low albedo)\nLine the other with white paper (high albedo)\nPlace a thermometer in each container\n\nData Collection:\n\nRecord starting temperatures\nPlace both containers under heat lamp or in direct sunlight\nRecord temperatures every 2 minutes for 20 minutes\n\nData Table:\n\n\n\n\n\n\n\n\n\n\nTime (min)\nBlack Container (°C)\nWhite Container (°C)\nDifference (°C)\n\n\n\n\n0\n\n\n\n\n\n2\n\n\n\n\n\n4\n\n\n\n\n\n6\n\n\n\n\n\n8\n\n\n\n\n\n10\n\n\n\n\n\n12\n\n\n\n\n\n14\n\n\n\n\n\n16\n\n\n\n\n\n18\n\n\n\n\n\n20\n\n\n\n\n\n\n\nAnalysis Questions:\n\nWhich container heated up faster? Why?\nHow does this relate to ice-covered vs. ice-free Arctic?\nPredict what happens as Arctic ice melts.",
+    "section": "28.3 🔬 Lab Activity: Albedo Investigation",
+    "text": "28.3 🔬 Lab Activity: Albedo Investigation\nAnalysis Questions: - Which container heated up faster? Why? - How does this relate to ice-covered vs. ice-free Arctic? - Predict what happens as Arctic ice melts.",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1868,8 +1924,8 @@
     "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#understanding-climate-feedbacks",
     "href": "unit4-climate-change/unit4-climate-feedbacks.html#understanding-climate-feedbacks",
     "title": "23  Unit 4: Climate Feedbacks 5E",
-    "section": "29.1 🔄 Understanding Climate Feedbacks",
-    "text": "29.1 🔄 Understanding Climate Feedbacks\nA feedback loop occurs when the output of a system affects its input, creating a cycle.\n\n29.1.1 Positive Feedback (Amplifying)\nMakes changes BIGGER - the system amplifies itself\n\n\n29.1.2 Negative Feedback (Stabilizing)\nMakes changes SMALLER - the system stabilizes itself",
+    "section": "30.1 🔄 Understanding Climate Feedbacks",
+    "text": "30.1 🔄 Understanding Climate Feedbacks\nA feedback loop occurs when the output of a system affects its input, creating a cycle.\n\n30.1.1 Positive Feedback (Amplifying)\nMakes changes BIGGER - the system amplifies itself\n\n\n30.1.2 Negative Feedback (Stabilizing)\nMakes changes SMALLER - the system stabilizes itself",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1879,8 +1935,8 @@
     "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#interactive-feedback-loop-diagram",
     "href": "unit4-climate-change/unit4-climate-feedbacks.html#interactive-feedback-loop-diagram",
     "title": "23  Unit 4: Climate Feedbacks 5E",
-    "section": "29.2 Interactive Feedback Loop Diagram",
-    "text": "29.2 Interactive Feedback Loop Diagram\n\n\nCode\nviewof feedbackTypeSimple = Inputs.radio([\"Ice-Albedo Feedback\", \"Water Vapor Feedback\", \"Permafrost Feedback\"], {\n  label: \"Select feedback loop:\",\n  value: \"Ice-Albedo Feedback\"\n})\n\n\n\n\n\n\n\n\n\nCode\nfeedbackInfo = {\n  if (feedbackTypeSimple === \"Ice-Albedo Feedback\") {\n    return {\n      steps: [\n        \"1. Temperature increases\",\n        \"2. Ice and snow melt\",\n        \"3. Darker ocean/land exposed\",\n        \"4. More solar radiation absorbed\",\n        \"5. Temperature increases MORE\"\n      ],\n      color: \"#3498db\",\n      icon: \"🧊\"\n    }\n  } else if (feedbackTypeSimple === \"Water Vapor Feedback\") {\n    return {\n      steps: [\n        \"1. Temperature increases\",\n        \"2. More water evaporates\",\n        \"3. Water vapor is a greenhouse gas\",\n        \"4. More heat trapped in atmosphere\",\n        \"5. Temperature increases MORE\"\n      ],\n      color: \"#9b59b6\",\n      icon: \"💨\"\n    }\n  } else {\n    return {\n      steps: [\n        \"1. Temperature increases\",\n        \"2. Permafrost thaws\",\n        \"3. Trapped methane/CO₂ released\",\n        \"4. More greenhouse gases in atmosphere\",\n        \"5. Temperature increases MORE\"\n      ],\n      color: \"#e67e22\",\n      icon: \"🏔️\"\n    }\n  }\n}\n\nhtml`\n&lt;div style=\"background: linear-gradient(135deg, ${feedbackInfo.color}22, ${feedbackInfo.color}44); padding: 25px; border-radius: 15px; border-left: 5px solid ${feedbackInfo.color};\"&gt;\n  &lt;h3 style=\"margin-top: 0;\"&gt;${feedbackInfo.icon} ${feedbackType}&lt;/h3&gt;\n  &lt;div style=\"display: flex; flex-direction: column; gap: 10px;\"&gt;\n    ${feedbackInfo.steps.map((step, i) =&gt; `\n      &lt;div style=\"display: flex; align-items: center; gap: 10px;\"&gt;\n        &lt;div style=\"width: 30px; height: 30px; background: ${feedbackInfo.color}; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;\"&gt;${i+1}&lt;/div&gt;\n        &lt;div style=\"flex: 1; padding: 10px; background: white; border-radius: 5px;\"&gt;${step.substring(3)}&lt;/div&gt;\n        ${i &lt; feedbackInfo.steps.length - 1 ? '&lt;div style=\"font-size: 20px;\"&gt;↓&lt;/div&gt;' : '&lt;div style=\"font-size: 20px;\"&gt;🔄&lt;/div&gt;'}\n      &lt;/div&gt;\n    `).join('')}\n  &lt;/div&gt;\n  &lt;p style=\"margin-top: 15px; font-style: italic;\"&gt;&lt;strong&gt;Type:&lt;/strong&gt; Positive (amplifying) feedback - makes warming worse!&lt;/p&gt;\n&lt;/div&gt;\n`",
+    "section": "30.2 Interactive Feedback Loop Diagram",
+    "text": "30.2 Interactive Feedback Loop Diagram\n\n\nCode\nviewof feedbackTypeSimple = Inputs.radio([\"Ice-Albedo Feedback\", \"Water Vapor Feedback\", \"Permafrost Feedback\"], {\n  label: \"Select feedback loop:\",\n  value: \"Ice-Albedo Feedback\"\n})\n\n\n\n\n\n\n\n\n\nCode\nfeedbackInfo = {\n  if (feedbackTypeSimple === \"Ice-Albedo Feedback\") {\n    return {\n      steps: [\n        \"1. Temperature increases\",\n        \"2. Ice and snow melt\",\n        \"3. Darker ocean/land exposed\",\n        \"4. More solar radiation absorbed\",\n        \"5. Temperature increases MORE\"\n      ],\n      color: \"#3498db\",\n      icon: \"🧊\"\n    }\n  } else if (feedbackTypeSimple === \"Water Vapor Feedback\") {\n    return {\n      steps: [\n        \"1. Temperature increases\",\n        \"2. More water evaporates\",\n        \"3. Water vapor is a greenhouse gas\",\n        \"4. More heat trapped in atmosphere\",\n        \"5. Temperature increases MORE\"\n      ],\n      color: \"#9b59b6\",\n      icon: \"💨\"\n    }\n  } else {\n    return {\n      steps: [\n        \"1. Temperature increases\",\n        \"2. Permafrost thaws\",\n        \"3. Trapped methane/CO₂ released\",\n        \"4. More greenhouse gases in atmosphere\",\n        \"5. Temperature increases MORE\"\n      ],\n      color: \"#e67e22\",\n      icon: \"🏔️\"\n    }\n  }\n}\n\nhtml`\n&lt;div style=\"background: linear-gradient(135deg, ${feedbackInfo.color}22, ${feedbackInfo.color}44); padding: 25px; border-radius: 15px; border-left: 5px solid ${feedbackInfo.color};\"&gt;\n  &lt;h3 style=\"margin-top: 0;\"&gt;${feedbackInfo.icon} ${feedbackType}&lt;/h3&gt;\n  &lt;div style=\"display: flex; flex-direction: column; gap: 10px;\"&gt;\n    ${feedbackInfo.steps.map((step, i) =&gt; `\n      &lt;div style=\"display: flex; align-items: center; gap: 10px;\"&gt;\n        &lt;div style=\"width: 30px; height: 30px; background: ${feedbackInfo.color}; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;\"&gt;${i+1}&lt;/div&gt;\n        &lt;div style=\"flex: 1; padding: 10px; background: white; border-radius: 5px;\"&gt;${step.substring(3)}&lt;/div&gt;\n        ${i &lt; feedbackInfo.steps.length - 1 ? '&lt;div style=\"font-size: 20px;\"&gt;↓&lt;/div&gt;' : '&lt;div style=\"font-size: 20px;\"&gt;🔄&lt;/div&gt;'}\n      &lt;/div&gt;\n    `).join('')}\n  &lt;/div&gt;\n  &lt;p style=\"margin-top: 15px; font-style: italic;\"&gt;&lt;strong&gt;Type:&lt;/strong&gt; Positive (amplifying) feedback - makes warming worse!&lt;/p&gt;\n&lt;/div&gt;\n`",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1890,8 +1946,8 @@
     "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#why-the-arctic-warms-4x-faster",
     "href": "unit4-climate-change/unit4-climate-feedbacks.html#why-the-arctic-warms-4x-faster",
     "title": "23  Unit 4: Climate Feedbacks 5E",
-    "section": "29.3 🌍 Why the Arctic Warms ~4x Faster",
-    "text": "29.3 🌍 Why the Arctic Warms ~4x Faster\nThe Ice-Albedo Feedback explains Arctic amplification:\n\nArctic starts bright: thick ice/snow with high albedo (~60%)\nWarming melts ice: exposes darker ocean/land (albedo ~6%)\nEnergy jump: darker surfaces absorb ~10x more solar energy\nFaster local warming: extra absorbed heat accelerates melt\nRunaway loop: more melt → lower albedo → more absorption\n\nThis positive feedback is why the Arctic is the “canary in the coal mine.” It also explains why Arctic warming is much higher than the global average.",
+    "section": "30.3 🌍 Why the Arctic Warms ~4x Faster",
+    "text": "30.3 🌍 Why the Arctic Warms ~4x Faster\nThe Ice-Albedo Feedback explains Arctic amplification:\n\nArctic starts bright: thick ice/snow with high albedo (~60%)\nWarming melts ice: exposes darker ocean/land (albedo ~6%)\nEnergy jump: darker surfaces absorb ~10x more solar energy\nFaster local warming: extra absorbed heat accelerates melt\nRunaway loop: more melt → lower albedo → more absorption\n\nThis positive feedback is why the Arctic is the “canary in the coal mine.” It also explains why Arctic warming is much higher than the global average.",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1901,8 +1957,8 @@
     "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#arctic-sea-ice-decline",
     "href": "unit4-climate-change/unit4-climate-feedbacks.html#arctic-sea-ice-decline",
     "title": "23  Unit 4: Climate Feedbacks 5E",
-    "section": "29.4 Arctic Sea Ice Decline",
-    "text": "29.4 Arctic Sea Ice Decline\n\n\nCode\nseaIceData = [\n  {year: 1980, extent: 7.8},\n  {year: 1985, extent: 7.5},\n  {year: 1990, extent: 7.4},\n  {year: 1995, extent: 7.1},\n  {year: 2000, extent: 6.8},\n  {year: 2005, extent: 6.2},\n  {year: 2007, extent: 4.3},\n  {year: 2010, extent: 5.0},\n  {year: 2012, extent: 3.6},\n  {year: 2015, extent: 4.6},\n  {year: 2020, extent: 3.9},\n  {year: 2024, extent: 4.2}\n]\n\nPlot.plot({\n  title: \"September Arctic Sea Ice Extent\",\n  subtitle: \"Million square kilometers\",\n  width: 700,\n  height: 400,\n  x: {label: \"Year\"},\n  y: {label: \"Sea Ice Extent (million km²)\", domain: [0, 9]},\n  marks: [\n    Plot.areaY(seaIceData, {x: \"year\", y: \"extent\", fill: \"#81d4fa\", fillOpacity: 0.5,\n        tip: true}),\n    Plot.line(seaIceData, {x: \"year\", y: \"extent\", stroke: \"#0277bd\", strokeWidth: 3,\n        tip: true}),\n    Plot.dot(seaIceData, {x: \"year\", y: \"extent\", fill: \"#01579b\", r: 5,\n        tip: true}),\n    Plot.dot(seaIceData.filter(d =&gt; d.year === 2012), {x: \"year\", y: \"extent\", fill: \"#e74c3c\", r: 8,\n        tip: true}),\n    Plot.text(seaIceData.filter(d =&gt; d.year === 2012), {x: \"year\", y: \"extent\", text: d =&gt; \"Record Low: 2012\", dy: -15, fill: \"#e74c3c\", fontSize: 11}),\n    Plot.linearRegressionY(seaIceData, {x: \"year\", y: \"extent\", stroke: \"#e74c3c\", strokeDasharray: \"5,5\"})\n  ]\n})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n29.4.1 ✅ Check Your Understanding\n\nWhat type of feedback is the ice-albedo feedback? (positive or negative)\nWhy does exposing dark ocean water lead to more warming?\nCalculate: If ice (albedo 0.6) is replaced by ocean (albedo 0.06), how much more energy is absorbed?\nHow does the ice-albedo feedback help explain why the Arctic warms faster than the rest of the planet?",
+    "section": "30.4 Arctic Sea Ice Decline",
+    "text": "30.4 Arctic Sea Ice Decline\n\n\nCode\nseaIceData = [\n  {year: 1980, extent: 7.8},\n  {year: 1985, extent: 7.5},\n  {year: 1990, extent: 7.4},\n  {year: 1995, extent: 7.1},\n  {year: 2000, extent: 6.8},\n  {year: 2005, extent: 6.2},\n  {year: 2007, extent: 4.3},\n  {year: 2010, extent: 5.0},\n  {year: 2012, extent: 3.6},\n  {year: 2015, extent: 4.6},\n  {year: 2020, extent: 3.9},\n  {year: 2024, extent: 4.2}\n]\n\nPlot.plot({\n  title: \"September Arctic Sea Ice Extent\",\n  subtitle: \"Million square kilometers\",\n  width: 700,\n  height: 400,\n  x: {label: \"Year\"},\n  y: {label: \"Sea Ice Extent (million km²)\", domain: [0, 9]},\n  marks: [\n    Plot.areaY(seaIceData, {x: \"year\", y: \"extent\", fill: \"#81d4fa\", fillOpacity: 0.5,\n        tip: true}),\n    Plot.line(seaIceData, {x: \"year\", y: \"extent\", stroke: \"#0277bd\", strokeWidth: 3,\n        tip: true}),\n    Plot.dot(seaIceData, {x: \"year\", y: \"extent\", fill: \"#01579b\", r: 5,\n        tip: true}),\n    Plot.dot(seaIceData.filter(d =&gt; d.year === 2012), {x: \"year\", y: \"extent\", fill: \"#e74c3c\", r: 8,\n        tip: true}),\n    Plot.text(seaIceData.filter(d =&gt; d.year === 2012), {x: \"year\", y: \"extent\", text: d =&gt; \"Record Low: 2012\", dy: -15, fill: \"#e74c3c\", fontSize: 11}),\n    Plot.linearRegressionY(seaIceData, {x: \"year\", y: \"extent\", stroke: \"#e74c3c\", strokeDasharray: \"5,5\"})\n  ]\n})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n30.4.1 ✅ Check Your Understanding\n\nWhat type of feedback is the ice-albedo feedback? (positive or negative)\nWhy does exposing dark ocean water lead to more warming?\nCalculate: If ice (albedo 0.6) is replaced by ocean (albedo 0.06), how much more energy is absorbed?\nHow does the ice-albedo feedback help explain why the Arctic warms faster than the rest of the planet?",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1912,8 +1968,8 @@
     "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#co₂-and-human-activity",
     "href": "unit4-climate-change/unit4-climate-feedbacks.html#co₂-and-human-activity",
     "title": "23  Unit 4: Climate Feedbacks 5E",
-    "section": "30.1 CO₂ and Human Activity",
-    "text": "30.1 CO₂ and Human Activity",
+    "section": "31.1 CO₂ and Human Activity",
+    "text": "31.1 CO₂ and Human Activity",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1923,8 +1979,8 @@
     "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#where-does-the-co₂-come-from",
     "href": "unit4-climate-change/unit4-climate-feedbacks.html#where-does-the-co₂-come-from",
     "title": "23  Unit 4: Climate Feedbacks 5E",
-    "section": "30.2 Where Does the CO₂ Come From?",
-    "text": "30.2 Where Does the CO₂ Come From?\n\n\nCode\nco2SourcesData = [\n  {source: \"Electricity & Heat\", emissions: 25, color: \"#e74c3c\"},\n  {source: \"Transportation\", emissions: 16, color: \"#3498db\"},\n  {source: \"Manufacturing\", emissions: 21, color: \"#f39c12\"},\n  {source: \"Agriculture & Land Use\", emissions: 24, color: \"#27ae60\"},\n  {source: \"Buildings\", emissions: 6, color: \"#9b59b6\"},\n  {source: \"Other Energy\", emissions: 8, color: \"#95a5a6\"}\n]\n\nPlot.plot({\n  title: \"Global Greenhouse Gas Emissions by Sector\",\n  width: 600,\n  height: 400,\n  x: {label: \"Percentage of Global Emissions\"},\n  y: {label: \"Sector\", domain: co2SourcesData.map(d =&gt; d.source)},\n  marks: [\n    Plot.barX(co2SourcesData, {x: \"emissions\", y: \"source\", fill: \"color\", sort: {y: \"-x\"},\n        tip: true}),\n    Plot.text(co2SourcesData, {x: \"emissions\", y: \"source\", text: d =&gt; d.emissions + \"%\", dx: 20, fontSize: 12, fontWeight: \"bold\"})\n  ]\n})",
+    "section": "31.2 Where Does the CO₂ Come From?",
+    "text": "31.2 Where Does the CO₂ Come From?\n\n\nCode\nco2SourcesData = [\n  {source: \"Electricity & Heat\", emissions: 25, color: \"#e74c3c\"},\n  {source: \"Transportation\", emissions: 16, color: \"#3498db\"},\n  {source: \"Manufacturing\", emissions: 21, color: \"#f39c12\"},\n  {source: \"Agriculture & Land Use\", emissions: 24, color: \"#27ae60\"},\n  {source: \"Buildings\", emissions: 6, color: \"#9b59b6\"},\n  {source: \"Other Energy\", emissions: 8, color: \"#95a5a6\"}\n]\n\nPlot.plot({\n  title: \"Global Greenhouse Gas Emissions by Sector\",\n  width: 600,\n  height: 400,\n  x: {label: \"Percentage of Global Emissions\"},\n  y: {label: \"Sector\", domain: co2SourcesData.map(d =&gt; d.source)},\n  marks: [\n    Plot.barX(co2SourcesData, {x: \"emissions\", y: \"source\", fill: \"color\", sort: {y: \"-x\"},\n        tip: true}),\n    Plot.text(co2SourcesData, {x: \"emissions\", y: \"source\", text: d =&gt; d.emissions + \"%\", dx: 20, fontSize: 12, fontWeight: \"bold\"})\n  ]\n})",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1934,8 +1990,8 @@
     "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#co₂-growth-over-time",
     "href": "unit4-climate-change/unit4-climate-feedbacks.html#co₂-growth-over-time",
     "title": "23  Unit 4: Climate Feedbacks 5E",
-    "section": "30.3 CO₂ Growth Over Time",
-    "text": "30.3 CO₂ Growth Over Time\n\n\nCode\nco2GrowthData = [\n  {year: 1750, co2: 280, source: \"Pre-industrial\"},\n  {year: 1800, co2: 283, source: \"Historical\"},\n  {year: 1850, co2: 288, source: \"Historical\"},\n  {year: 1900, co2: 296, source: \"Historical\"},\n  {year: 1950, co2: 311, source: \"Historical\"},\n  {year: 1960, co2: 317, source: \"Mauna Loa\"},\n  {year: 1970, co2: 326, source: \"Mauna Loa\"},\n  {year: 1980, co2: 339, source: \"Mauna Loa\"},\n  {year: 1990, co2: 354, source: \"Mauna Loa\"},\n  {year: 2000, co2: 369, source: \"Mauna Loa\"},\n  {year: 2010, co2: 390, source: \"Mauna Loa\"},\n  {year: 2020, co2: 414, source: \"Mauna Loa\"},\n  {year: 2024, co2: 422, source: \"Mauna Loa\"}\n]\n\nPlot.plot({\n  title: \"Atmospheric CO₂ Concentration (1750-2024)\",\n  subtitle: \"Parts per million (ppm)\",\n  width: 700,\n  height: 400,\n  x: {label: \"Year\"},\n  y: {label: \"CO₂ (ppm)\", domain: [270, 440]},\n  marks: [\n    Plot.ruleY([280], {stroke: \"#27ae60\", strokeDasharray: \"5,5\"}),\n    Plot.text([{x: 1800, y: 275}], {x: \"x\", y: \"y\", text: d =&gt; \"Pre-industrial level: 280 ppm\", fill: \"#27ae60\", fontSize: 10}),\n    Plot.ruleY([350], {stroke: \"#f39c12\", strokeDasharray: \"5,5\"}),\n    Plot.text([{x: 1800, y: 345}], {x: \"x\", y: \"y\", text: d =&gt; \"\\\"Safe\\\" level: 350 ppm\", fill: \"#f39c12\", fontSize: 10}),\n    Plot.line(co2GrowthData, {x: \"year\", y: \"co2\", stroke: \"#e74c3c\", strokeWidth: 3,\n        tip: true}),\n    Plot.dot(co2GrowthData, {x: \"year\", y: \"co2\", fill: \"#c0392b\", r: 4,\n        tip: true})\n  ]\n})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n30.3.1 💡 Key Ideas: Climate Feedbacks\n\nThe greenhouse effect explains why increasing CO₂ leads to global warming\nAlbedo is the tendency of a surface to reflect or absorb radiation\nIce has high albedo (~60%) compared to seawater (~6%)\nAs ice melts, more radiation is absorbed, causing more warming → positive feedback\nArctic amplification (4x faster warming) is explained by ice-albedo feedback\nMultiple feedback loops (ice-albedo, water vapor, permafrost) amplify climate change\nHuman activities have dramatically increased CO₂ levels beyond natural ranges",
+    "section": "31.3 CO₂ Growth Over Time",
+    "text": "31.3 CO₂ Growth Over Time\n\n\nCode\nco2GrowthData = [\n  {year: 1750, co2: 280, source: \"Pre-industrial\"},\n  {year: 1800, co2: 283, source: \"Historical\"},\n  {year: 1850, co2: 288, source: \"Historical\"},\n  {year: 1900, co2: 296, source: \"Historical\"},\n  {year: 1950, co2: 311, source: \"Historical\"},\n  {year: 1960, co2: 317, source: \"Mauna Loa\"},\n  {year: 1970, co2: 326, source: \"Mauna Loa\"},\n  {year: 1980, co2: 339, source: \"Mauna Loa\"},\n  {year: 1990, co2: 354, source: \"Mauna Loa\"},\n  {year: 2000, co2: 369, source: \"Mauna Loa\"},\n  {year: 2010, co2: 390, source: \"Mauna Loa\"},\n  {year: 2020, co2: 414, source: \"Mauna Loa\"},\n  {year: 2024, co2: 422, source: \"Mauna Loa\"}\n]\n\nPlot.plot({\n  title: \"Atmospheric CO₂ Concentration (1750-2024)\",\n  subtitle: \"Parts per million (ppm)\",\n  width: 700,\n  height: 400,\n  x: {label: \"Year\"},\n  y: {label: \"CO₂ (ppm)\", domain: [270, 440]},\n  marks: [\n    Plot.ruleY([280], {stroke: \"#27ae60\", strokeDasharray: \"5,5\"}),\n    Plot.text([{x: 1800, y: 275}], {x: \"x\", y: \"y\", text: d =&gt; \"Pre-industrial level: 280 ppm\", fill: \"#27ae60\", fontSize: 10}),\n    Plot.ruleY([350], {stroke: \"#f39c12\", strokeDasharray: \"5,5\"}),\n    Plot.text([{x: 1800, y: 345}], {x: \"x\", y: \"y\", text: d =&gt; \"\\\"Safe\\\" level: 350 ppm\", fill: \"#f39c12\", fontSize: 10}),\n    Plot.line(co2GrowthData, {x: \"year\", y: \"co2\", stroke: \"#e74c3c\", strokeWidth: 3,\n        tip: true}),\n    Plot.dot(co2GrowthData, {x: \"year\", y: \"co2\", fill: \"#c0392b\", r: 4,\n        tip: true})\n  ]\n})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n31.3.1 💡 Key Ideas: Climate Feedbacks\n\nThe greenhouse effect explains why increasing CO₂ leads to global warming\nAlbedo is the tendency of a surface to reflect or absorb radiation\nIce has high albedo (~60%) compared to seawater (~6%)\nAs ice melts, more radiation is absorbed, causing more warming → positive feedback\nArctic amplification (4x faster warming) is explained by ice-albedo feedback\nMultiple feedback loops (ice-albedo, water vapor, permafrost) amplify climate change\nHuman activities have dramatically increased CO₂ levels beyond natural ranges",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1945,8 +2001,8 @@
     "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#performance-task-check-in",
     "href": "unit4-climate-change/unit4-climate-feedbacks.html#performance-task-check-in",
     "title": "23  Unit 4: Climate Feedbacks 5E",
-    "section": "31.1 📊 Performance Task Check-In",
-    "text": "31.1 📊 Performance Task Check-In\nUsing what you’ve learned, you can now explain:\n\nWhy scientists are confident humans are causing climate change:\n\nCO₂ levels are far beyond natural range (420 ppm vs. max 280 ppm)\nThe timing matches industrialization\nNatural factors (Milankovitch cycles, solar output) can’t explain current warming\n\nWhy the Arctic is warming so fast:\n\nIce-albedo feedback amplifies warming\nAs ice melts, dark ocean absorbs more energy\nThis creates a self-reinforcing cycle\n\nHow feedbacks make climate change worse:\n\nIce-albedo: melting ice → more absorption → more melting\nWater vapor: warming → more evaporation → more greenhouse effect\nPermafrost: warming → methane release → more warming\n\nClaim with evidence: Use data from this lesson to explain how human activities are driving destabilizing feedback loops today.",
+    "section": "32.1 📊 Performance Task Check-In",
+    "text": "32.1 📊 Performance Task Check-In\nUsing what you’ve learned, you can now explain:\n\nWhy scientists are confident humans are causing climate change:\n\nCO₂ levels are far beyond natural range (420 ppm vs. max 280 ppm)\nThe timing matches industrialization\nNatural factors (Milankovitch cycles, solar output) can’t explain current warming\n\nWhy the Arctic is warming so fast:\n\nIce-albedo feedback amplifies warming\nAs ice melts, dark ocean absorbs more energy\nThis creates a self-reinforcing cycle\n\nHow feedbacks make climate change worse:\n\nIce-albedo: melting ice → more absorption → more melting\nWater vapor: warming → more evaporation → more greenhouse effect\nPermafrost: warming → methane release → more warming\n\nClaim with evidence: Use data from this lesson to explain how human activities are driving destabilizing feedback loops today.",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1956,8 +2012,8 @@
     "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#create-your-feedback-diagram",
     "href": "unit4-climate-change/unit4-climate-feedbacks.html#create-your-feedback-diagram",
     "title": "23  Unit 4: Climate Feedbacks 5E",
-    "section": "31.2 Create Your Feedback Diagram",
-    "text": "31.2 Create Your Feedback Diagram\n\n31.2.1 📝 Activity: Draw Your Own Feedback Loop\nCreate a diagram showing how multiple feedback loops interact:\n\nStart with “Human emissions increase CO₂”\nShow how this leads to warming\nInclude ice-albedo feedback\nInclude water vapor feedback\nShow how they connect and amplify each other\nIndicate which parts are observed data vs. projected consequences\n\nGuiding Questions: - Where do humans enter this system? - Which parts of the cycle have we already observed? - What might happen if Arctic ice disappears entirely in summer? - Are there any potential negative (stabilizing) feedbacks?",
+    "section": "32.2 Create Your Feedback Diagram",
+    "text": "32.2 Create Your Feedback Diagram\n\n32.2.1 📝 Activity: Draw Your Own Feedback Loop\nCreate a diagram showing how multiple feedback loops interact:\n\nStart with “Human emissions increase CO₂”\nShow how this leads to warming\nInclude ice-albedo feedback\nInclude water vapor feedback\nShow how they connect and amplify each other\nIndicate which parts are observed data vs. projected consequences\n\nGuiding Questions: - Where do humans enter this system? - Which parts of the cycle have we already observed? - What might happen if Arctic ice disappears entirely in summer? - Are there any potential negative (stabilizing) feedbacks?",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -1967,8 +2023,8 @@
     "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#climate-feedbacks-quiz",
     "href": "unit4-climate-change/unit4-climate-feedbacks.html#climate-feedbacks-quiz",
     "title": "23  Unit 4: Climate Feedbacks 5E",
-    "section": "33.1 📝 Climate Feedbacks Quiz",
-    "text": "33.1 📝 Climate Feedbacks Quiz",
+    "section": "34.1 📝 Climate Feedbacks Quiz",
+    "text": "34.1 📝 Climate Feedbacks Quiz",
     "crumbs": [
       "Unit 4: Climate Change",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
@@ -3410,6 +3466,50 @@
     "text": "Curriculum Alignment\nThis textbook is aligned with: - New Visions Earth & Space Science Curriculum - Next Generation Science Standards (NGSS) - New York State Science Learning Standards (NYSSLS)",
     "crumbs": [
       "References"
+    ]
+  },
+  {
+    "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#arctic-amplification-1",
+    "href": "unit4-climate-change/unit4-climate-feedbacks.html#arctic-amplification-1",
+    "title": "23  Unit 4: Climate Feedbacks 5E",
+    "section": "24.1 🌡️ Arctic Amplification",
+    "text": "24.1 🌡️ Arctic Amplification\nThe globe is warming, and the average temperature of the Arctic is increasing at almost 4 times the rate as the rest of the globe.\n\n24.1.1 Driving Questions:\n\nWhat is causing global temperatures to rise today?\nWhy is the Arctic warming almost 4x faster than the rest of the globe?\nHow do feedbacks (like greenhouse gases and ice) amplify or reduce change?\nHow do greenhouse gas increases connect to glacial cycles and current warming?",
+    "crumbs": [
+      "Unit 4: Climate Change",
+      "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
+    ]
+  },
+  {
+    "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#arctic-amplification-2",
+    "href": "unit4-climate-change/unit4-climate-feedbacks.html#arctic-amplification-2",
+    "title": "23  Unit 4: Climate Feedbacks 5E",
+    "section": "24.1 🌡️ Arctic Amplification",
+    "text": "24.1 🌡️ Arctic Amplification\nThe globe is warming, and the average temperature of the Arctic is increasing at almost 4 times the rate as the rest of the globe.\n\n24.1.1 Driving Questions:\n\nWhat is causing global temperatures to rise today?\nWhy is the Arctic warming almost 4x faster than the rest of the globe?\nHow do feedbacks (like greenhouse gases and ice) amplify or reduce change?\nHow do greenhouse gas increases connect to glacial cycles and current warming?",
+    "crumbs": [
+      "Unit 4: Climate Change",
+      "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
+    ]
+  },
+  {
+    "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#current-atmospheric-co₂",
+    "href": "unit4-climate-change/unit4-climate-feedbacks.html#current-atmospheric-co₂",
+    "title": "23  Unit 4: Climate Feedbacks 5E",
+    "section": "",
+    "text": "```{ojs}\n//| echo: false\n//| output: false\n\n// 1. Fetch the raw CSV data directly from Scripps\ncurrent_co2-data = await FileAttachment(\"[https://scrippsco2.ucsd.edu/assets/data/atmospheric/stations/in_situ_co2/daily/daily_in_situ_co2_mlo.csv](https://scrippsco2.ucsd.edu/assets/data/atmospheric/stations/in_situ_co2/daily/daily_in_situ_co2_mlo.csv)\").csv({header: false, comment: \"%\"})\n\n// 2. Process the data to get the last valid reading\n// Columns are: Year, Month, Day, Hour, Minute, Excel Date, Time (Excel), CO2 (ppm)\n// We filter out -99.99 which represents missing data\nclean_data = current_co2_data.map(d =&gt; ({\n  date: new Date(d[0], d[1]-1, d[2]), \n  co2: parseFloat(d[7])\n})).filter(d =&gt; d.co2 &gt; 0)\n\n// 3. Extract the most recent value\nlatest_reading = clean_data[clean_data.length - 1]\nlatest_co2 = latest_reading.co2\n\n```\n\n\n\n\n\n\n\nOJS Syntax Error (line 43, column 1)Assigning to rvalue",
+    "crumbs": [
+      "Unit 4: Climate Change",
+      "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
+    ]
+  },
+  {
+    "objectID": "unit4-climate-change/unit4-climate-feedbacks.html#local-connection-the-urban-heat-island-effect",
+    "href": "unit4-climate-change/unit4-climate-feedbacks.html#local-connection-the-urban-heat-island-effect",
+    "title": "23  Unit 4: Climate Feedbacks 5E",
+    "section": "28.4 🏙️ Local Connection: The Urban Heat Island Effect",
+    "text": "28.4 🏙️ Local Connection: The Urban Heat Island Effect\nWhy is the city often hotter than the countryside in the summer?\n\nAsphalt & Concrete: Roads and buildings have low albedo (0.04–0.12), absorbing most sunlight.\nLack of Vegetation: Trees (albedo ~0.15–0.25) cool the air through evaporation, but cities have fewer of them.\nThe Result: Cities can be 1–3°C (2–5°F) hotter than rural neighbors during the day and up to 12°C (22°F) hotter at night!\n\nThink about it: Why are many school buses and roofs painted white?",
+    "crumbs": [
+      "Unit 4: Climate Change",
+      "<span class='chapter-number'>23</span>  <span class='chapter-title'>Unit 4: Climate Feedbacks 5E</span>"
     ]
   }
 ]

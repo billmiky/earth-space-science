@@ -29,6 +29,63 @@ execute:
 </style>
 ```
 
+::: {.card}
+## 🌍 Current CO₂ Levels
+The most recent daily average atmospheric CO₂ concentration at Mauna Loa is **${current_mlo_co2.value} ppm**.
+:::
+
+```{ojs}
+//| echo: false
+//| output: false
+
+// Fetch real-time CO2 data with proxy and fallback
+current_mlo_co2 = {
+  const fallback = {
+    value: "426.85",
+    date: "February 2026 (approximate)",
+    success: false
+  };
+  
+  try {
+    const response = await fetch("https://corsproxy.io/?https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_daily_mlo.txt");
+    if (!response.ok) return fallback;
+    const rawText = await response.text();
+    const lines = rawText.trim().split("\n").filter(l => !l.startsWith("#"));
+    if (lines.length === 0) return fallback;
+    
+    const lastLine = lines[lines.length - 1].trim().split(/\s+/);
+    const value = parseFloat(lastLine[4]);
+    
+    if (isNaN(value) || value <= 0) return fallback;
+    
+    return {
+      value: value.toFixed(2),
+      date: new Date(parseInt(lastLine[0]), parseInt(lastLine[1])-1, parseInt(lastLine[2]))
+                 .toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+      success: true
+    };
+  } catch (e) {
+    console.error("CO2 Fetch Error:", e);
+    return fallback;
+  }
+}
+```
+
+
+::: {.callout-important}
+## 🌍 Current Atmospheric CO₂
+
+**The most recent daily average concentration of CO₂ at Mauna Loa Observatory (${current_mlo_co2.date}) is:**
+
+::: {style="text-align: center; font-size: 2.5em; font-weight: bold; color: #dc3545; margin: 20px 0;"}
+${current_mlo_co2.value} ppm
+:::
+
+*Data sourced from [NOAA Global Monitoring Laboratory](https://gml.noaa.gov/ccgg/trends/).${current_mlo_co2.success ? "" : " (Live data unavailable - showing recent approximate value)"}*
+
+:::
+
+
 <span class="pe-badge">HS-ESS2-2</span> <span class="pe-badge">HS-ESS2-4</span> <span class="pe-badge">HS-ESS2-6</span> <span class="pe-badge">Time: 7-9 Days</span>
 
 # Investigative Phenomenon
@@ -45,9 +102,18 @@ execute:
 - How do greenhouse gas increases connect to glacial cycles and current warming?
 :::
 
+
+
 # Engage: Arctic vs Global Warming
 
 What is happening to temperatures and Arctic ice today? Use the graph below to compare warming in the Arctic to the global average and surface student questions about the current climate change that orbital factors did not explain in the previous lesson.
+
+```{ojs}
+//| echo: false
+md`${prediction === "The Arctic is warming much faster" 
+  ? "✅ **Good hypothesis.** Let's look at the data below to confirm." 
+  : "🤔 **Interesting idea.** Look closely at the blue line in the graph below. Does it match your prediction?"}`
+```
 
 ```{ojs}
 //| echo: false
@@ -119,121 +185,10 @@ Plot.plot({
 3. What changes in the Arctic might amplify or reduce this warming trend?
 :::
 
-``` {python}
-#| label: fig-co2-temp-800ka
-#| fig-cap: "Atmospheric CO₂ concentration and Antarctic temperature over the past 800,000 years, showing strong correlation during glacial-interglacial cycles and unprecedented current CO₂ levels."
-#| echo: false
-#| warning: false
+## 
 
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-import pandas as pd
-import numpy as np
-from scipy.interpolate import interp1d
-
-# Climate data over 800,000 years
-time_ka = np.array([
-    800, 750, 700, 650, 600, 550, 500, 450, 400, 350, 
-    300, 250, 200, 150, 100, 50, 0
-])
-
-# CO₂ concentrations (ppm) showing glacial-interglacial cycles
-co2_ppm = np.array([
-    190, 220, 190, 240, 190, 270, 210, 280, 200, 260, 
-    190, 280, 200, 240, 200, 280, 420
-])
-
-# Antarctic temperature anomaly (°C)
-temp_anomaly = np.array([
-    -8, -4, -9, -2, -8, 2, -7, 4, -8, 0, 
-    -9, 2, -8, -2, -6, 0, 0
-])
-
-# Create smoother curves
-time_dense = np.linspace(800, 0, 200)
-co2_interp = interp1d(time_ka, co2_ppm, kind="cubic")
-temp_interp = interp1d(time_ka, temp_anomaly, kind="cubic")
-
-co2_dense = co2_interp(time_dense)
-temp_dense = temp_interp(time_dense)
-
-# Add natural variability
-np.random.seed(42)
-co2_dense += np.random.normal(0, 5, len(co2_dense))
-temp_dense += np.random.normal(0, 0.5, len(temp_dense))
-
-# Mark current CO₂
-co2_dense[-1] = 420
-
-df = pd.DataFrame({
-    "Time_ka": time_dense,
-    "CO2": co2_dense,
-    "Temperature": temp_dense
-})
-
-# Create dual-axis figure
-fig = make_subplots(specs=[[{"secondary_y": True}]])
-
-# CO₂ data (BLUE)
-fig.add_trace(
-    go.Scatter(
-        x=df["Time_ka"], y=df["CO2"],
-        mode="lines", name="Atmospheric CO₂",
-        line=dict(color="rgb(40, 120, 200)", width=2),
-        hovertemplate="<b>CO₂</b><br>%{x:.0f}k years ago<br>%{y:.0f} ppm<extra></extra>"
-    ),
-    secondary_y=False
-)
-
-# Temperature data (ORANGE)
-fig.add_trace(
-    go.Scatter(
-        x=df["Time_ka"], y=df["Temperature"],
-        mode="lines", name="Antarctic Temperature",
-        line=dict(color="rgb(230, 140, 50)", width=2),
-        hovertemplate="<b>Temperature</b><br>%{x:.0f}k years ago<br>%{y:.1f}°C<extra></extra>"
-    ),
-    secondary_y=True
-)
-
-# Current CO₂ marker
-fig.add_trace(
-    go.Scatter(
-        x=[0], y=[420],
-        mode="markers+text",
-        marker=dict(size=12, color="red"),
-        text=["Current<br>420 ppm"],
-        textposition="top center",
-        textfont=dict(size=11, color="red"),
-        hovertemplate="<b>Current (2026)</b><br>420 ppm<extra></extra>",
-        showlegend=False
-    ),
-    secondary_y=False
-)
-
-# Layout
-fig.update_layout(
-    title="CO₂ and Antarctic Temperature over 800,000 Years",
-    xaxis=dict(title="Years ago (in thousands)", 
-               autorange="reversed", gridcolor="lightgray"),
-    hovermode="x unified",
-    plot_bgcolor="white",
-    legend=dict(x=0.02, y=0.98, bgcolor="rgba(255, 255, 255, 0.9)",
-                bordercolor="gray", borderwidth=1),
-    height=600
-)
-
-fig.update_yaxes(
-    title_text="Atmospheric CO₂ (ppm)",
-    secondary_y=False, gridcolor="lightgray", range=[150, 450]
-)
-
-fig.update_yaxes(
-    title_text="Temperature Anomaly (°C)",
-    secondary_y=True, showgrid=False, range=[-12, 8]
-)
-
-fig
+```{=html}
+<iframe src="https://ourworldindata.org/grapher/co2-long-term-concentration?tab=chart" loading="lazy" style="width: 100%; height: 600px; border: 0px none;" allow="web-share; clipboard-write"></iframe>
 ```
 
 # Explore Part 1: The Greenhouse Effect
@@ -487,143 +442,47 @@ Explore how greenhouse gases trap heat in Earth's atmosphere:
 ### Ice Core Data: 800,000 Years of CO₂ and Temperature
 
 ```{ojs}
-//| echo: false
-// Ice core CO2 and temperature data
-iceCoreData = [
-  {kya: 800, co2: 190, temp: -8},
-  {kya: 700, co2: 210, temp: -6},
-  {kya: 600, co2: 240, temp: -4},
-  {kya: 500, co2: 200, temp: -7},
-  {kya: 400, co2: 180, temp: -9},
-  {kya: 350, co2: 200, temp: -6},
-  {kya: 300, co2: 240, temp: -3},
-  {kya: 250, co2: 200, temp: -7},
-  {kya: 200, co2: 190, temp: -8},
-  {kya: 150, co2: 220, temp: -5},
-  {kya: 130, co2: 280, temp: 2},
-  {kya: 100, co2: 230, temp: -4},
-  {kya: 50, co2: 200, temp: -6},
-  {kya: 20, co2: 180, temp: -9},
-  {kya: 10, co2: 260, temp: -1},
-  {kya: 0.2, co2: 280, temp: 0},
-  {kya: 0, co2: 420, temp: 1.2}
+//| label: fig-climate-correlation-fixed
+
+// 1. DATA
+co2_historical_data = [
+  {year: 1750, co2: 278, emissions: 0.01},
+  {year: 1800, co2: 282, emissions: 0.03},
+  {year: 1850, co2: 285, emissions: 0.2},
+  {year: 1900, co2: 296, emissions: 1.95},
+  {year: 1950, co2: 311, emissions: 6.0},
+  {year: 1970, co2: 325, emissions: 15.0},
+  {year: 1990, co2: 354, emissions: 22.7},
+  {year: 2000, co2: 369, emissions: 25.4},
+  {year: 2010, co2: 389, emissions: 33.1},
+  {year: 2022, co2: 418, emissions: 37.5}
 ]
+
+// 2. THE CHART
+vl.layer(
+  // First Layer: Blue Line (CO2)
+  vl.markLine({color: "#0ea5e9", strokeWidth: 3})
+    .encode(
+      vl.x().fieldQ("year").title("Year").axis({format: "d"}),
+      vl.y().fieldQ("co2").scale({domain: [260, 420]}).title("Atmospheric CO2 (ppm)")
+    ),
+
+  // Second Layer: Grey Line (Emissions)
+  vl.markLine({color: "#9ca3af", strokeWidth: 3})
+    .encode(
+      vl.x().fieldQ("year"),
+      vl.y().fieldQ("emissions").axis({orient: "right"}).title("Emissions (Gt)")
+    )
+)
+.data(co2_historical_data) // Data is attached to the *entire layer*
+.resolve({scale: {y: "independent"}}) // This splits the Y axes
+.width(600)
+.height(400)
+.render()
 ```
 
-```{ojs}
-//| echo: false
-viewof showModern = Inputs.toggle({label: "Show modern CO₂ level (420 ppm)", value: false})
-```
-
-```{ojs}
-//| echo: false
-displayData = showModern ? iceCoreData : iceCoreData.filter(d => d.kya > 0.1)
-
-Plot.plot({
-  title: "CO₂ Concentration Over 800,000 Years",
-  subtitle: "Data from Antarctic ice cores",
-  width: 750,
-  height: 350,
-  x: {label: "Thousands of Years Ago", reverse: true, domain: [800, 0]},
-  y: {label: "CO₂ (ppm)", domain: [150, showModern ? 450 : 320]},
-  marks: [
-    Plot.ruleY([280], {stroke: "#999", strokeDasharray: "4,4"}),
-    Plot.line(displayData, {x: "kya", y: "co2", stroke: "#27ae60", strokeWidth: 2,
-        tip: true}),
-    Plot.dot(displayData.filter(d => d.kya === 0), {x: "kya", y: "co2", fill: "#e74c3c", r: 10,
-        tip: true}),
-    Plot.text([{x: 400, y: 295}], {x: "x", y: "y", text: d => "Pre-industrial maximum: 280 ppm", fill: "#999", fontSize: 11}),
-    showModern ? Plot.text([{x: 50, y: 420}], {x: "x", y: "y", text: d => "TODAY: 420 ppm", fill: "#e74c3c", fontSize: 12, fontWeight: "bold"}) : null
-  ].filter(d => d !== null)
-})
-```
-
-### Annual Global Emissions
-
-```{ojs}
-
-//| label: fig-global-emissions-fixed
-//| fig-cap: "Annual Global Emissions by Source (1850-2019). Source: Global Carbon Project."
-
-// 1. Load and Clean Data
-// We use a specific mapped block to ensure the variables don't conflict with others.
-emissionsDataFixed = {
-  const url = "https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv";
-  
-  // Load CSV
-  const raw = await d3.csv(url);
-
-  // Filter for "World" and the correct time range
-  // We use d.country === 'World' which is often more reliable than ISO codes in this dataset
-  const worldData = raw.filter(d => d.country === 'World' && +d.year >= 1850 && +d.year <= 2019);
-
-  // Transform data (Wide to Long format for stacking)
-  return worldData.flatMap(d => {
-    // Force convert strings to numbers with "+"
-    const coal = +d.coal_co2 || 0;
-    const oil = +d.oil_co2 || 0;
-    const gas = +d.gas_co2 || 0;
-    const cement = +d.cement_co2 || 0;
-    const flaring = +d.flaring_co2 || 0;
-    const landUse = +d.land_use_change_co2 || 0;
-    
-    // Combine Cement and Flaring into "Others"
-    const others = cement + flaring;
-
-    // Return array of objects for this year (divide by 1000 for Gt)
-    return [
-      { year: +d.year, category: "Coal", emissions: coal / 1000 },
-      { year: +d.year, category: "Oil", emissions: oil / 1000 },
-      { year: +d.year, category: "Gas", emissions: gas / 1000 },
-      { year: +d.year, category: "Others", emissions: others / 1000 },
-      { year: +d.year, category: "Land-use change", emissions: landUse / 1000 }
-    ];
-  });
-}
-
-// 2. Define Colors
-emissionsColorsFixed = new Map([
-  ["Land-use change", "#e3c28b"], 
-  ["Others", "#7f7f7f"],          
-  ["Gas", "#4db8ff"],             
-  ["Oil", "#000000"],             
-  ["Coal", "#8c4619"]             
-]);
-
-// 3. Render Chart
-emissionsChartFixed = Plot.plot({
-  title: "Annual Global Emissions",
-  subtitle: "In Gigatonnes of CO₂ (Gt CO₂)",
-  style: { fontFamily: "sans-serif", fontSize: "14px" },
-  marginLeft: 50,
-  color: {
-    domain: Array.from(emissionsColorsFixed.keys()),
-    range: Array.from(emissionsColorsFixed.values()),
-    legend: true
-  },
-  x: {
-    tickFormat: "d", 
-    ticks: [1850, 1900, 1950, 2000, 2019]
-  },
-  y: {
-    label: "Gt CO₂",
-    grid: true,
-    domain: [0, 45] // Slightly higher to ensure top isn't cut off
-  },
-  marks: [
-    Plot.areaY(emissionsDataFixed, {
-      x: "year",
-      y: "emissions",
-      fill: "category",
-      // Explicitly define stack order
-      order: ["Coal", "Oil", "Gas", "Others", "Land-use change"], 
-      tip: true
-    }),
-    Plot.ruleY([0])
-  ]
-})
-
-
+```{=html}
+<iframe src="https://ourworldindata.org/grapher/co2-by-source?tab=chart" loading="lazy" style="width: 100%; height: 600px; border: 0px none;" allow="web-share; clipboard-write"></iframe>
 ```
 
 ::: {.check-understanding}
@@ -633,6 +492,12 @@ emissionsChartFixed = Plot.plot({
 3. How does today's CO₂ compare to the natural range?
 4. What pattern do you notice between CO₂ and temperature in the ice core record?
 5. Based on these data, make a claim about how CO₂ levels and temperature are related.
+:::
+
+::: {.explain-box}
+# Explain Part 1: CO₂–Temperature Connection
+
+How are atmospheric carbon dioxide levels and temperatures related? Construct an explanation using evidence from the simulation, ice core data, and text, describing how human activities have increased greenhouse gas levels and how that drives warming.
 :::
 
 # Explore Part 2: The Albedo Effect
@@ -930,46 +795,96 @@ html`
 ::: {.lab-activity}
 ## 🔬 Lab Activity: Albedo Investigation
 
-### Materials:
-- Two identical containers with lids
-- Black paper and white paper
-- Two thermometers
-- Heat lamp or sunny window
-- Timer
-
-### Procedure:
-
-1. **Setup:**
-   - Line one container with black paper (low albedo)
-   - Line the other with white paper (high albedo)
-   - Place a thermometer in each container
-
-2. **Data Collection:**
-   - Record starting temperatures
-   - Place both containers under heat lamp or in direct sunlight
-   - Record temperatures every 2 minutes for 20 minutes
-
-3. **Data Table:**
-
-| Time (min) | Black Container (°C) | White Container (°C) | Difference (°C) |
-|------------|---------------------|---------------------|-----------------|
-| 0 | | | |
-| 2 | | | |
-| 4 | | | |
-| 6 | | | |
-| 8 | | | |
-| 10 | | | |
-| 12 | | | |
-| 14 | | | |
-| 16 | | | |
-| 18 | | | |
-| 20 | | | |
-
-4. **Analysis Questions:**
+**Analysis Questions:**
    - Which container heated up faster? Why?
    - How does this relate to ice-covered vs. ice-free Arctic?
    - Predict what happens as Arctic ice melts.
 :::
+
+```{ojs}
+// Define the data points extracted from the image
+data = [
+  // Black Paper
+  { time: 0, temperature: 20, paperColor: "Black Paper" },
+  { time: 5, temperature: 31, paperColor: "Black Paper" },
+  { time: 10, temperature: 36, paperColor: "Black Paper" },
+  { time: 15, temperature: 42, paperColor: "Black Paper" },
+  { time: 20, temperature: 48, paperColor: "Black Paper" },
+  { time: 25, temperature: 54, paperColor: "Black Paper" },
+  { time: 30, temperature: 58, paperColor: "Black Paper" },
+
+  // Blue Paper
+  { time: 0, temperature: 20, paperColor: "Blue Paper" },
+  { time: 5, temperature: 24, paperColor: "Blue Paper" },
+  { time: 10, temperature: 32, paperColor: "Blue Paper" },
+  { time: 15, temperature: 37, paperColor: "Blue Paper" },
+  { time: 20, temperature: 46, paperColor: "Blue Paper" },
+  { time: 25, temperature: 49, paperColor: "Blue Paper" },
+  { time: 30, temperature: 53, paperColor: "Blue Paper" },
+
+  // Green Paper
+  { time: 0, temperature: 20, paperColor: "Green Paper" },
+  { time: 5, temperature: 21, paperColor: "Green Paper" },
+  { time: 10, temperature: 27, paperColor: "Green Paper" },
+  { time: 15, temperature: 32, paperColor: "Green Paper" },
+  { time: 20, temperature: 37, paperColor: "Green Paper" },
+  { time: 25, temperature: 42, paperColor: "Green Paper" },
+  { time: 30, temperature: 45, paperColor: "Green Paper" },
+
+  // White Paper
+  { time: 0, temperature: 20, paperColor: "White Paper" },
+  { time: 5, temperature: 20.5, paperColor: "White Paper" },
+  { time: 10, temperature: 21, paperColor: "White Paper" },
+  { time: 15, temperature: 22, paperColor: "White Paper" },
+  { time: 20, temperature: 24, paperColor: "White Paper" },
+  { time: 25, temperature: 25, paperColor: "White Paper" },
+  { time: 30, temperature: 26, paperColor: "White Paper" },
+]
+
+// Create the plot
+Plot.plot({
+  title: "Effect of Paper Color on Temperature Over Time",
+  subtitle: "Data from Earth and Space Science Unit 4 - Climate Change",
+  y: {
+    label: "Temperature (°C)",
+    domain: [0, 60],
+    grid: true
+  },
+  x: {
+    label: "Time (Minutes)",
+    domain: [0, 30],
+    grid: true,
+    ticks: 5 // Ensure ticks are every 5 minutes
+  },
+  color: {
+    legend: true,
+    //Map the paper color names to actual colors.
+    //Using a light grey for "White Paper" for visibility.
+    domain: ["Black Paper", "Blue Paper", "Green Paper", "White Paper"],
+    range: ["black", "blue", "green", "#aaa"] 
+  },
+  marks: [
+    // Draw the lines
+    Plot.lineY(data, { x: "time", y: "temperature", stroke: "paperColor", strokeWidth: 2 }),
+    // Add dots at each data point
+    Plot.dot(data, { x: "time", y: "temperature", fill: "paperColor", r: 4 })
+  ]
+})
+```
+
+::: {.elaborate-box}
+## 🏙️ Local Connection: The Urban Heat Island Effect
+
+Why is the city often hotter than the countryside in the summer?
+
+* **Asphalt & Concrete:** Roads and buildings have low albedo (0.04–0.12), absorbing most sunlight.
+* **Lack of Vegetation:** Trees (albedo ~0.15–0.25) cool the air through evaporation, but cities have fewer of them.
+* **The Result:** Cities can be **1–3°C (2–5°F) hotter** than rural neighbors during the day and up to **12°C (22°F) hotter** at night!
+
+**Think about it:** Why are many school buses and roofs painted white?
+:::
+
+# Glacial Retreat and Sea Level Rise
 
 ``` {python}
 #| label: fig-pbs-glacier-comparison
@@ -1097,9 +1012,8 @@ html_code = """
 display(HTML(html_code))
 ```
 
-# Explain Part 1: CO₂–Temperature Connection
 
-How are atmospheric carbon dioxide levels and temperatures related? Construct an explanation using evidence from the simulation, ice core data, and text, describing how human activities have increased greenhouse gas levels and how that drives warming.
+
 
 # Explain Part 2: Feedback Loops in the Climate System
 
@@ -1183,6 +1097,8 @@ html`
 </div>
 `
 ```
+
+
 
 ::: {.feedback-loop}
 ## 🌍 Why the Arctic Warms ~4x Faster

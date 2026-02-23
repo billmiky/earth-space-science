@@ -20,6 +20,51 @@ format:
 
 :::
 
+```{python}
+#| echo: false
+#| warning: false
+
+import folium
+import pandas as pd
+
+# URL for earthquake data
+url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.csv"
+
+try:
+    # Read earthquake data
+    earthquakes = pd.read_csv(url)
+    
+    # Create map centered on the Pacific Ocean
+    m = folium.Map(location=[20, -155], zoom_start=3, tiles="CartoDB positron")
+    
+    # Define color scheme
+    def get_color(magnitude):
+        if magnitude >= 6:
+            return 'red'      # Major
+        elif magnitude >= 5:
+            return 'orange'   # Moderate
+        else:
+            return '#FFD700'  # Minor (Yellow)
+    
+    # Plot earthquake locations
+    for index, row in earthquakes.head(50).iterrows():
+        folium.CircleMarker(
+            location=[row['latitude'], row['longitude']],
+            radius=6,
+            popup=f"Mag {row['mag']}: {row['place']}",
+            color=get_color(row['mag']),
+            fill=True,
+            fill_color=get_color(row['mag']),
+            fill_opacity=0.7
+        ).add_to(m)
+    
+    # Display map
+    m
+
+except Exception as e:
+    print(f"Error loading map: {e}")
+```
+
 ```{ojs}
 //| echo: false
 //| output: true
@@ -92,7 +137,7 @@ format:
     color: {
       legend: true,
       domain: ["Earthquake", "Volcano"],
-      range: ["#4299e1", "#f56565"] // Friendlier Blue and Red
+      range: ["#f7ea3e", "#f56565"] // Friendlier Blue and Red
     },
     
     marks: [
@@ -100,7 +145,7 @@ format:
       Plot.geo({type: "Sphere"}, {fill: "#f7fafc", stroke: "#cbd5e0"}),
       
       // Land
-      land ? Plot.geo(land, {fill: "#edf2f7", stroke: "white", strokeWidth: 0.7}) : null,
+      land ? Plot.geo(land, {fill: "#2f6ba7", stroke: "white", strokeWidth: 0.7}) : null,
       
       // Graticule (Subtle grid)
       Plot.graticule({stroke: "#cbd5e0", strokeOpacity: 0.3}),

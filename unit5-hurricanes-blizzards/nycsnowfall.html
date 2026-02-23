@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYC Snowfall Explorer</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        :root {
+            --color-bg-primary: #0f172a;
+            --color-bg-secondary: #1e293b;
+            --color-text-primary: #f1f5f9;
+            --color-text-secondary: #cbd5e1;
+            --color-accent: #38bdf8;
+            --color-accent-hover: #0ea5e9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-accent);
+        }
+
+        .subtitle {
+            color: var(--color-text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            background: var(--color-bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .range-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--color-bg-primary);
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px;
+            color: var(--color-text-primary);
+            font-size: 1rem;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        .range-slider {
+            width: 100%;
+            height: 8px;
+            background: var(--color-bg-primary);
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--color-accent);
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .range-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--color-accent);
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--color-bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-label {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            color: var(--color-accent);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .stat-unit {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+        }
+
+        #chart {
+            background: var(--color-bg-secondary);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+            min-height: 500px;
+        }
+
+        .records {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .records-section {
+            background: var(--color-bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .records-section h3 {
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+        }
+
+        .record-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: var(--color-bg-primary);
+            border-radius: 8px;
+        }
+
+        .record-season {
+            font-weight: 600;
+        }
+
+        .record-value {
+            color: var(--color-accent);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .range-inputs {
+                grid-template-columns: 1fr;
+            }
+
+            .records {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>NYC Snowfall Explorer</h1>
+            <p class="subtitle">Central Park Seasonal Snowfall Data (1869-2026)</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>Select Year Range</label>
+                <div class="range-inputs">
+                    <div>
+                        <input type="number" id="startYear" min="1869" max="2025" value="1869">
+                    </div>
+                    <div>
+                        <input type="number" id="endYear" min="1869" max="2025" value="2025">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Average Snowfall</div>
+                <div class="stat-value"><span id="avgSnow">--</span><span class="stat-unit">"</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Maximum Season</div>
+                <div class="stat-value"><span id="maxSnow">--</span><span class="stat-unit">"</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Minimum Season</div>
+                <div class="stat-value"><span id="minSnow">--</span><span class="stat-unit">"</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Seasons</div>
+                <div class="stat-value"><span id="seasonCount">--</span></div>
+            </div>
+        </div>
+
+        <div id="chart"></div>
+
+        <div class="records">
+            <div class="records-section">
+                <h3>Top 5 Snowiest Seasons</h3>
+                <div id="topSeasons"></div>
+            </div>
+            <div class="records-section">
+                <h3>Top 5 Least Snowy Seasons</h3>
+                <div id="bottomSeasons"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const snowfallData = [{"Year":1869,"Season":"1869-70","Snowfall":27.8},{"Year":1870,"Season":"1870-71","Snowfall":33.1},{"Year":1871,"Season":"1871-72","Snowfall":14.1},{"Year":1872,"Season":"1872-73","Snowfall":60.3},{"Year":1873,"Season":"1873-74","Snowfall":36.9},{"Year":1874,"Season":"1874-75","Snowfall":57.8},{"Year":1875,"Season":"1875-76","Snowfall":18.3},{"Year":1876,"Season":"1876-77","Snowfall":40.4},{"Year":1877,"Season":"1877-78","Snowfall":8.1},{"Year":1878,"Season":"1878-79","Snowfall":35.7},{"Year":1879,"Season":"1879-80","Snowfall":22.7},{"Year":1880,"Season":"1880-81","Snowfall":35.5},{"Year":1881,"Season":"1881-82","Snowfall":31.4},{"Year":1882,"Season":"1882-83","Snowfall":44.0},{"Year":1883,"Season":"1883-84","Snowfall":43.1},{"Year":1884,"Season":"1884-85","Snowfall":34.2},{"Year":1885,"Season":"1885-86","Snowfall":20.8},{"Year":1886,"Season":"1886-87","Snowfall":32.9},{"Year":1887,"Season":"1887-88","Snowfall":45.6},{"Year":1888,"Season":"1888-89","Snowfall":16.5},{"Year":1889,"Season":"1889-90","Snowfall":24.3},{"Year":1890,"Season":"1890-91","Snowfall":28.8},{"Year":1891,"Season":"1891-92","Snowfall":25.4},{"Year":1892,"Season":"1892-93","Snowfall":49.7},{"Year":1893,"Season":"1893-94","Snowfall":36.1},{"Year":1894,"Season":"1894-95","Snowfall":27.0},{"Year":1895,"Season":"1895-96","Snowfall":46.3},{"Year":1896,"Season":"1896-97","Snowfall":43.6},{"Year":1897,"Season":"1897-98","Snowfall":21.1},{"Year":1898,"Season":"1898-99","Snowfall":55.9},{"Year":1899,"Season":"1899-00","Snowfall":13.4},{"Year":1900,"Season":"1900-01","Snowfall":9.1},{"Year":1901,"Season":"1901-02","Snowfall":30.0},{"Year":1902,"Season":"1902-03","Snowfall":28.7},{"Year":1903,"Season":"1903-04","Snowfall":32.3},{"Year":1904,"Season":"1904-05","Snowfall":48.1},{"Year":1905,"Season":"1905-06","Snowfall":20.0},{"Year":1906,"Season":"1906-07","Snowfall":53.2},{"Year":1907,"Season":"1907-08","Snowfall":33.4},{"Year":1908,"Season":"1908-09","Snowfall":20.3},{"Year":1909,"Season":"1909-10","Snowfall":27.2},{"Year":1910,"Season":"1910-11","Snowfall":25.2},{"Year":1911,"Season":"1911-12","Snowfall":29.5},{"Year":1912,"Season":"1912-13","Snowfall":15.3},{"Year":1913,"Season":"1913-14","Snowfall":40.5},{"Year":1914,"Season":"1914-15","Snowfall":28.8},{"Year":1915,"Season":"1915-16","Snowfall":50.7},{"Year":1916,"Season":"1916-17","Snowfall":50.7},{"Year":1917,"Season":"1917-18","Snowfall":34.5},{"Year":1918,"Season":"1918-19","Snowfall":3.8},{"Year":1919,"Season":"1919-20","Snowfall":47.6},{"Year":1920,"Season":"1920-21","Snowfall":18.6},{"Year":1921,"Season":"1921-22","Snowfall":27.8},{"Year":1922,"Season":"1922-23","Snowfall":60.4},{"Year":1923,"Season":"1923-24","Snowfall":27.5},{"Year":1924,"Season":"1924-25","Snowfall":29.6},{"Year":1925,"Season":"1925-26","Snowfall":32.4},{"Year":1926,"Season":"1926-27","Snowfall":22.3},{"Year":1927,"Season":"1927-28","Snowfall":14.5},{"Year":1928,"Season":"1928-29","Snowfall":13.8},{"Year":1929,"Season":"1929-30","Snowfall":13.6},{"Year":1930,"Season":"1930-31","Snowfall":11.6},{"Year":1931,"Season":"1931-32","Snowfall":5.3},{"Year":1932,"Season":"1932-33","Snowfall":27.0},{"Year":1933,"Season":"1933-34","Snowfall":52.0},{"Year":1934,"Season":"1934-35","Snowfall":33.8},{"Year":1935,"Season":"1935-36","Snowfall":33.2},{"Year":1936,"Season":"1936-37","Snowfall":15.6},{"Year":1937,"Season":"1937-38","Snowfall":15.1},{"Year":1938,"Season":"1938-39","Snowfall":37.3},{"Year":1939,"Season":"1939-40","Snowfall":25.7},{"Year":1940,"Season":"1940-41","Snowfall":39.0},{"Year":1941,"Season":"1941-42","Snowfall":11.3},{"Year":1942,"Season":"1942-43","Snowfall":29.5},{"Year":1943,"Season":"1943-44","Snowfall":23.8},{"Year":1944,"Season":"1944-45","Snowfall":27.1},{"Year":1945,"Season":"1945-46","Snowfall":31.4},{"Year":1946,"Season":"1946-47","Snowfall":30.6},{"Year":1947,"Season":"1947-48","Snowfall":63.8},{"Year":1948,"Season":"1948-49","Snowfall":46.6},{"Year":1949,"Season":"1949-50","Snowfall":13.8},{"Year":1950,"Season":"1950-51","Snowfall":11.6},{"Year":1951,"Season":"1951-52","Snowfall":19.7},{"Year":1952,"Season":"1952-53","Snowfall":15.1},{"Year":1953,"Season":"1953-54","Snowfall":15.8},{"Year":1954,"Season":"1954-55","Snowfall":11.5},{"Year":1955,"Season":"1955-56","Snowfall":33.5},{"Year":1956,"Season":"1956-57","Snowfall":21.9},{"Year":1957,"Season":"1957-58","Snowfall":44.7},{"Year":1958,"Season":"1958-59","Snowfall":13.0},{"Year":1959,"Season":"1959-60","Snowfall":39.2},{"Year":1960,"Season":"1960-61","Snowfall":54.7},{"Year":1961,"Season":"1961-62","Snowfall":18.1},{"Year":1962,"Season":"1962-63","Snowfall":16.3},{"Year":1963,"Season":"1963-64","Snowfall":44.7},{"Year":1964,"Season":"1964-65","Snowfall":24.4},{"Year":1965,"Season":"1965-66","Snowfall":21.4},{"Year":1966,"Season":"1966-67","Snowfall":51.5},{"Year":1967,"Season":"1967-68","Snowfall":19.5},{"Year":1968,"Season":"1968-69","Snowfall":30.2},{"Year":1969,"Season":"1969-70","Snowfall":25.6},{"Year":1970,"Season":"1970-71","Snowfall":15.5},{"Year":1971,"Season":"1971-72","Snowfall":22.9},{"Year":1972,"Season":"1972-73","Snowfall":2.8},{"Year":1973,"Season":"1973-74","Snowfall":23.5},{"Year":1974,"Season":"1974-75","Snowfall":13.1},{"Year":1975,"Season":"1975-76","Snowfall":17.3},{"Year":1976,"Season":"1976-77","Snowfall":24.5},{"Year":1977,"Season":"1977-78","Snowfall":50.7},{"Year":1978,"Season":"1978-79","Snowfall":29.4},{"Year":1979,"Season":"1979-80","Snowfall":12.8},{"Year":1980,"Season":"1980-81","Snowfall":19.4},{"Year":1981,"Season":"1981-82","Snowfall":24.6},{"Year":1982,"Season":"1982-83","Snowfall":27.2},{"Year":1983,"Season":"1983-84","Snowfall":25.4},{"Year":1984,"Season":"1984-85","Snowfall":24.1},{"Year":1985,"Season":"1985-86","Snowfall":13.0},{"Year":1986,"Season":"1986-87","Snowfall":23.1},{"Year":1987,"Season":"1987-88","Snowfall":19.1},{"Year":1988,"Season":"1988-89","Snowfall":8.1},{"Year":1989,"Season":"1989-90","Snowfall":13.4},{"Year":1990,"Season":"1990-91","Snowfall":24.9},{"Year":1991,"Season":"1991-92","Snowfall":12.6},{"Year":1992,"Season":"1992-93","Snowfall":24.5},{"Year":1993,"Season":"1993-94","Snowfall":53.4},{"Year":1994,"Season":"1994-95","Snowfall":11.8},{"Year":1995,"Season":"1995-96","Snowfall":75.6},{"Year":1996,"Season":"1996-97","Snowfall":10.0},{"Year":1997,"Season":"1997-98","Snowfall":5.5},{"Year":1998,"Season":"1998-99","Snowfall":12.7},{"Year":1999,"Season":"1999-00","Snowfall":16.3},{"Year":2000,"Season":"2000-01","Snowfall":35.0},{"Year":2001,"Season":"2001-02","Snowfall":3.5},{"Year":2002,"Season":"2002-03","Snowfall":49.3},{"Year":2003,"Season":"2003-04","Snowfall":42.6},{"Year":2004,"Season":"2004-05","Snowfall":41.0},{"Year":2005,"Season":"2005-06","Snowfall":40.0},{"Year":2006,"Season":"2006-07","Snowfall":12.4},{"Year":2007,"Season":"2007-08","Snowfall":11.9},{"Year":2008,"Season":"2008-09","Snowfall":27.6},{"Year":2009,"Season":"2009-10","Snowfall":51.4},{"Year":2010,"Season":"2010-11","Snowfall":61.9},{"Year":2011,"Season":"2011-12","Snowfall":7.4},{"Year":2012,"Season":"2012-13","Snowfall":26.1},{"Year":2013,"Season":"2013-14","Snowfall":57.4},{"Year":2014,"Season":"2014-15","Snowfall":50.3},{"Year":2015,"Season":"2015-16","Snowfall":32.8},{"Year":2016,"Season":"2016-17","Snowfall":30.2},{"Year":2017,"Season":"2017-18","Snowfall":40.9},{"Year":2018,"Season":"2018-19","Snowfall":20.5},{"Year":2019,"Season":"2019-20","Snowfall":4.8},{"Year":2020,"Season":"2020-21","Snowfall":38.6},{"Year":2021,"Season":"2021-22","Snowfall":17.9},{"Year":2022,"Season":"2022-23","Snowfall":2.3},{"Year":2023,"Season":"2023-24","Snowfall":7.5},{"Year":2024,"Season":"2024-25","Snowfall":12.9},{"Year":2025,"Season":"2025-26","Snowfall":7.2}];
+
+        let filteredData = [...snowfallData];
+
+        function filterData() {
+            const startYear = parseInt(document.getElementById('startYear').value);
+            const endYear = parseInt(document.getElementById('endYear').value);
+            
+            if (startYear > endYear) {
+                document.getElementById('endYear').value = startYear;
+                return;
+            }
+
+            filteredData = snowfallData.filter(d => d.Year >= startYear && d.Year <= endYear);
+            updateChart();
+            updateStats();
+            updateRecords();
+        }
+
+        function updateChart() {
+            const trace = {
+                x: filteredData.map(d => d.Year),
+                y: filteredData.map(d => d.Snowfall),
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Snowfall',
+                line: { 
+                    color: '#38bdf8',
+                    width: 2
+                },
+                marker: { 
+                    color: '#38bdf8',
+                    size: 6
+                },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(56, 189, 248, 0.1)',
+                hovertemplate: '<b>%{text}</b><br>Snowfall: %{y:.1f}"<extra></extra>',
+                text: filteredData.map(d => d.Season)
+            };
+
+            const layout = {
+                title: {
+                    text: 'Seasonal Snowfall at Central Park',
+                    font: { size: 20, color: '#f1f5f9' }
+                },
+                xaxis: {
+                    title: 'Year',
+                    gridcolor: 'rgba(56, 189, 248, 0.1)',
+                    color: '#cbd5e1'
+                },
+                yaxis: {
+                    title: 'Snowfall (inches)',
+                    gridcolor: 'rgba(56, 189, 248, 0.1)',
+                    color: '#cbd5e1'
+                },
+                paper_bgcolor: '#1e293b',
+                plot_bgcolor: '#1e293b',
+                font: { color: '#cbd5e1' },
+                hovermode: 'closest',
+                showlegend: false,
+                margin: { t: 60, r: 40, b: 60, l: 60 }
+            };
+
+            const config = {
+                responsive: true,
+                displayModeBar: true,
+                displaylogo: false
+            };
+
+            Plotly.react('chart', [trace], layout, config);
+        }
+
+        function updateStats() {
+            const snowfalls = filteredData.map(d => d.Snowfall);
+            const avg = snowfalls.reduce((a, b) => a + b, 0) / snowfalls.length;
+            const max = Math.max(...snowfalls);
+            const min = Math.min(...snowfalls);
+
+            document.getElementById('avgSnow').textContent = avg.toFixed(1);
+            document.getElementById('maxSnow').textContent = max.toFixed(1);
+            document.getElementById('minSnow').textContent = min.toFixed(1);
+            document.getElementById('seasonCount').textContent = filteredData.length;
+        }
+
+        function updateRecords() {
+            const sorted = [...filteredData].sort((a, b) => b.Snowfall - a.Snowfall);
+            const top5 = sorted.slice(0, 5);
+            const bottom5 = sorted.slice(-5).reverse();
+
+            document.getElementById('topSeasons').innerHTML = top5.map(d => `
+                <div class="record-item">
+                    <span class="record-season">${d.Season}</span>
+                    <span class="record-value">${d.Snowfall.toFixed(1)}"</span>
+                </div>
+            `).join('');
+
+            document.getElementById('bottomSeasons').innerHTML = bottom5.map(d => `
+                <div class="record-item">
+                    <span class="record-season">${d.Season}</span>
+                    <span class="record-value">${d.Snowfall.toFixed(1)}"</span>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('startYear').addEventListener('input', filterData);
+        document.getElementById('endYear').addEventListener('input', filterData);
+
+        filterData();
+    </script>
+</body>
+</html>
