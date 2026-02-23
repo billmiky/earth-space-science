@@ -5,7 +5,7 @@ export QUARTO_DENO_EXTRA_OPTIONS="--v8-flags=--max-old-space-size=8192"
 
 # 2. Install Python libraries
 echo "Installing Python libraries..."
-python3 -m pip install jupyter numpy matplotlib pandas plotly scipy
+python3 -m pip install jupyter numpy matplotlib pandas plotly scipy folium
 
 # 3. Download Quarto
 curl -L -o quarto.tar.gz https://github.com/quarto-dev/quarto-cli/releases/download/v1.4.550/quarto-1.4.550-linux-amd64.tar.gz
