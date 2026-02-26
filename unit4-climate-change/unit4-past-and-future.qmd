@@ -199,6 +199,10 @@ h2 {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Fix Observable Plot tooltip visibility — prevent white-on-white */
+svg [aria-label="tip"] text { fill: #1a1a1a !important; }
+svg [aria-label="tip"] rect { fill: rgba(255, 255, 255, 0.97) !important; stroke: #d4d4d4 !important; }
 </style>
 ```
 
@@ -320,6 +324,15 @@ viewof salinityLevel = Inputs.range([30, 38], {
 
 ```{ojs}
 //| echo: false
+viewof tempIncrease = Inputs.range([0, 5], {
+  step: 0.5,
+  value: 0,
+  label: "Global Temp Increase (°C):"
+})
+```
+
+```{ojs}
+//| echo: false
 viewof freshwaterInput = Inputs.range([0, 100], {
   step: 10,
   value: 0,
@@ -329,40 +342,98 @@ viewof freshwaterInput = Inputs.range([0, 100], {
 
 ```{ojs}
 //| echo: false
-effectiveSalinity = salinityLevel - (freshwaterInput * 0.05)
+effectiveSalinity = salinityLevel - (freshwaterInput * 0.05) - (tempIncrease * 0.8)
 amocStrength = Math.max(0, Math.min(100, (effectiveSalinity - 30) * 12.5))
-sinkingRate = amocStrength > 50 ? "Normal" : amocStrength > 25 ? "Reduced" : "Minimal"
+sinkingRate = amocStrength > 70 ? "Strong" : amocStrength > 40 ? "Moderate" : amocStrength > 15 ? "Weak" : "Collapsed"
+
+animDuration = amocStrength > 0 ? (200 / amocStrength).toFixed(1) : 0
 
 html`
-<div style="display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0;">
-  <div style="flex: 2; min-width: 400px;">
-    <svg width="500" height="300" style="background: linear-gradient(180deg, #e3f2fd 0%, #0d47a1 100%); border-radius: 10px;">
-      <text x="50" y="50" fill="#333" font-size="12">Equator (Warm)</text>
-      <text x="350" y="50" fill="#333" font-size="12">North Atlantic</text>
+<style>
+  @keyframes flow {
+    from { stroke-dashoffset: 40; }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes flow-reverse {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: 40; }
+  }
+  .current-path {
+    stroke-dasharray: 10 10;
+    animation: flow ${animDuration}s linear infinite;
+  }
+  .current-path-reverse {
+    stroke-dasharray: 10 10;
+    animation: flow-reverse ${animDuration}s linear infinite;
+  }
+  ${amocStrength === 0 ? '.current-path, .current-path-reverse { animation: none; }' : ''}
+</style>
+<div style="display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0; font-family: 'Inter', sans-serif;">
+  <div style="flex: 2; min-width: 400px; position: relative;">
+    <svg width="100%" height="350" viewBox="0 0 500 350" style="background: linear-gradient(180deg, #87CEEB 0%, #4682B4 40%, #000080 100%); border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.15);">
       
-      <path d="M 80 80 Q 250 60 420 100" fill="none" stroke="#e74c3c" stroke-width="${amocStrength/10 + 2}"/>
-      <text x="200" y="55" fill="#e74c3c" font-size="11">Warm Surface Current →</text>
+      <!-- Landmasses -->
+      <path d="M 0 150 Q 30 140 50 150 L 50 350 L 0 350 Z" fill="#8B4513" opacity="0.8"/>
+      <text x="10" y="140" fill="white" font-size="12" font-weight="bold">Americas</text>
       
-      <circle cx="420" cy="150" r="${amocStrength/3 + 10}" fill="#1565c0" opacity="0.7"/>
-      <text x="420" y="155" fill="white" font-size="10" text-anchor="middle">Sinking</text>
+      <path d="M 420 120 Q 460 110 500 130 L 500 350 L 420 350 Z" fill="#8B4513" opacity="0.8"/>
+      <text x="430" y="110" fill="white" font-size="12" font-weight="bold">Europe</text>
       
-      <path d="M 420 200 Q 250 220 80 200" fill="none" stroke="#2196F3" stroke-width="${amocStrength/10 + 2}"
-            stroke-dasharray="${amocStrength < 30 ? '10,5' : 'none'}"/>
-      <text x="200" y="245" fill="#2196F3" font-size="11">← Cold Deep Current</text>
-      
-      ${freshwaterInput > 0 ? `
-        <circle cx="380" cy="30" r="${freshwaterInput/5 + 5}" fill="#81d4fa" opacity="0.8"/>
-        <text x="380" y="35" fill="#01579b" font-size="10" text-anchor="middle">🧊</text>
+      <!-- Ice Sheet (Greenland) -->
+      <path d="M 350 20 Q 400 10 450 30 L 450 100 Q 400 90 350 80 Z" fill="white" opacity="${Math.max(0, 1 - (tempIncrease/10) - (freshwaterInput/200))}"/>
+      <text x="380" y="50" fill="#333" font-size="12" font-weight="bold">Greenland Ice</text>
+
+      <!-- Meltwater -->
+      ${freshwaterInput > 0 || tempIncrease > 0 ? `
+        <path d="M 350 80 Q 380 120 420 120" fill="none" stroke="#E0F7FA" stroke-width="${(freshwaterInput/20) + (tempIncrease)}" opacity="0.8" stroke-dasharray="5 5" class="current-path"/>
       ` : ''}
+
+      <!-- Warm Surface Current (Gulf Stream) -->
+      <path d="M 60 160 Q 250 140 400 140" fill="none" stroke="#FF4500" stroke-width="${amocStrength/8 + 2}" opacity="0.8"/>
+      <path d="M 60 160 Q 250 140 400 140" fill="none" stroke="#FFF" stroke-width="${amocStrength/15 + 1}" class="current-path"/>
+      <text x="180" y="130" fill="#FF4500" font-size="14" font-weight="bold">Warm Surface Current</text>
+      
+      <!-- Sinking Region -->
+      <ellipse cx="400" cy="200" rx="${amocStrength/4 + 10}" ry="${amocStrength/2 + 20}" fill="#4169E1" opacity="0.6"/>
+      <text x="400" y="205" fill="white" font-size="12" font-weight="bold" text-anchor="middle">Sinking</text>
+      <path d="M 400 140 L 400 260" fill="none" stroke="#FFF" stroke-width="${amocStrength/15 + 1}" class="current-path"/>
+      
+      <!-- Cold Deep Current -->
+      <path d="M 400 260 Q 250 280 60 260" fill="none" stroke="#00BFFF" stroke-width="${amocStrength/8 + 2}" opacity="0.8"/>
+      <path d="M 400 260 Q 250 280 60 260" fill="none" stroke="#FFF" stroke-width="${amocStrength/15 + 1}" class="current-path-reverse"/>
+      <text x="180" y="295" fill="#00BFFF" font-size="14" font-weight="bold">Cold Deep Current</text>
+      
+      <!-- Labels -->
+      <text x="20" y="30" fill="white" font-size="14" font-weight="bold">Equator</text>
+      <text x="400" y="30" fill="white" font-size="14" font-weight="bold">North Atlantic</text>
     </svg>
   </div>
-  <div style="flex: 1; min-width: 200px; padding: 20px; background: #f5f5f5; border-radius: 10px;">
-    <h4 style="margin-top: 0;">AMOC Status</h4>
-    <p><strong>Effective Salinity:</strong> ${effectiveSalinity.toFixed(1)} ppt</p>
-    <p><strong>AMOC Strength:</strong> ${amocStrength.toFixed(0)}%</p>
-    <p><strong>Sinking Rate:</strong> ${sinkingRate}</p>
-    <div style="margin-top: 15px; padding: 10px; background: ${amocStrength < 30 ? '#ffcdd2' : amocStrength < 60 ? '#fff9c4' : '#c8e6c9'}; border-radius: 5px;">
-      <strong>Status:</strong> ${amocStrength < 30 ? '⚠️ AMOC severely weakened!' : amocStrength < 60 ? '⚡ AMOC weakening' : '✅ AMOC functioning normally'}
+  
+  <div style="flex: 1; min-width: 250px; padding: 25px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 5px solid ${amocStrength < 30 ? '#e53e3e' : amocStrength < 60 ? '#d69e2e' : '#38a169'};">
+    <h3 style="margin-top: 0; color: #2d3748; font-family: 'Space Grotesk', sans-serif;">AMOC Status</h3>
+    
+    <div style="margin-bottom: 15px;">
+      <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+        <span style="color: #4a5568; font-weight: 600;">Flow Strength:</span>
+        <span style="font-weight: bold; color: ${amocStrength < 30 ? '#e53e3e' : '#2d3748'};">${amocStrength.toFixed(0)}%</span>
+      </div>
+      <div style="width: 100%; background: #edf2f7; border-radius: 4px; height: 8px; overflow: hidden;">
+        <div style="height: 100%; width: ${amocStrength}%; background: ${amocStrength < 30 ? '#e53e3e' : amocStrength < 60 ? '#d69e2e' : '#38a169'}; transition: width 0.3s ease;"></div>
+      </div>
+    </div>
+
+    <p style="margin: 10px 0; color: #4a5568;"><strong>Sinking Rate:</strong> ${sinkingRate}</p>
+    <p style="margin: 10px 0; color: #4a5568;"><strong>Effective Salinity:</strong> ${effectiveSalinity.toFixed(1)} ppt</p>
+    
+    <div style="margin-top: 20px; padding: 15px; background: ${amocStrength < 30 ? '#fff5f5' : amocStrength < 60 ? '#fffff0' : '#f0fff4'}; border-radius: 8px; border: 1px solid ${amocStrength < 30 ? '#feb2b2' : amocStrength < 60 ? '#fef08a' : '#bbf7d0'};">
+      <strong style="display: block; margin-bottom: 5px; color: ${amocStrength < 30 ? '#c53030' : amocStrength < 60 ? '#b45309' : '#22543d'};">
+        ${amocStrength < 30 ? '⚠️ Critical Warning' : amocStrength < 60 ? '⚡ Weakening Detected' : '✅ Stable Circulation'}
+      </strong>
+      <span style="font-size: 0.9em; color: #4a5568;">
+        ${amocStrength < 30 ? 'AMOC is near collapse. Severe cooling expected in Northern Europe and disrupted global weather patterns.' : 
+          amocStrength < 60 ? 'Reduced heat transport to the North Atlantic. Regional climate impacts beginning.' : 
+          'Normal heat transport maintaining mild European climate.'}
+      </span>
     </div>
   </div>
 </div>
@@ -700,12 +771,14 @@ Plot.plot({
   subtitle: "Millions of people potentially displaced by 1m rise",
   width: 700,
   height: 400,
+  marginLeft: 160,
+  marginRight: 55,
   x: {label: "People at Risk (millions)"},
-  y: {label: "Region", domain: riskData.map(d => d.region)},
+  y: {label: null, domain: riskData.map(d => d.region)},
   marks: [
     Plot.barX(riskData, {x: "population", y: "region", fill: d => d.type === "Complete displacement" ? "#c62828" : "#1565c0", sort: {y: "-x"},
         tip: true}),
-    Plot.text(riskData, {x: "population", y: "region", text: d => d.population + "M", dx: 20, fontSize: 11})
+    Plot.text(riskData, {x: "population", y: "region", text: d => d.population + "M", dx: 6, fontSize: 11, textAnchor: "start"})
   ]
 })
 ```

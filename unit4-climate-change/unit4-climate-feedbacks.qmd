@@ -930,12 +930,14 @@ Plot.plot({
   subtitle: "Higher albedo = more reflection = less heating",
   width: 700,
   height: 400,
+  marginLeft: 120,
+  marginRight: 50,
   x: {label: "Albedo (reflection coefficient)", domain: [0, 1]},
-  y: {label: "Surface Type", domain: albedoData.map(d => d.surface)},
+  y: {label: null, domain: albedoData.map(d => d.surface)},
   marks: [
     Plot.barX(albedoData, {x: "albedo", y: "surface", fill: "color", sort: {y: "-x"},
         tip: true}),
-    Plot.text(albedoData, {x: "albedo", y: "surface", text: d => (d.albedo * 100).toFixed(0) + "%", dx: 25, fontSize: 12})
+    Plot.text(albedoData, {x: "albedo", y: "surface", text: d => (d.albedo * 100).toFixed(0) + "%", dx: 6, fontSize: 12, textAnchor: "start"})
   ]
 })
 ```
@@ -1382,14 +1384,16 @@ co2SourcesData = [
 
 Plot.plot({
   title: "Global Greenhouse Gas Emissions by Sector",
-  width: 600,
+  width: 700,
   height: 400,
+  marginLeft: 175,
+  marginRight: 45,
   x: {label: "Percentage of Global Emissions"},
-  y: {label: "Sector", domain: co2SourcesData.map(d => d.source)},
+  y: {label: null, domain: co2SourcesData.map(d => d.source)},
   marks: [
     Plot.barX(co2SourcesData, {x: "emissions", y: "source", fill: "color", sort: {y: "-x"},
         tip: true}),
-    Plot.text(co2SourcesData, {x: "emissions", y: "source", text: d => d.emissions + "%", dx: 20, fontSize: 12, fontWeight: "bold"})
+    Plot.text(co2SourcesData, {x: "emissions", y: "source", text: d => d.emissions + "%", dx: 6, fontSize: 12, fontWeight: "bold", textAnchor: "start"})
   ]
 })
 ```
@@ -2216,7 +2220,117 @@ ${feedbackType === "Ice-Albedo Feedback" ? `
       options: ["It's just a guess", "Temperatures have changed before naturally", "CO₂ levels are far beyond natural range and match timing of industrialization", "The Sun has gotten brighter"],
       correct: 2,
       explanation: "CO₂ at 420 ppm is far beyond the 180–280 ppm natural range of the last 800,000 years, and the rise correlates precisely with fossil fuel use."
-    }
+    },
+    {
+    "q": "What is the effect of decreasing snow and ice cover on Earth's albedo?",
+    "options": [
+      "It increases albedo, causing more sunlight to be reflected.",
+      "It decreases albedo, causing more sunlight to be absorbed.",
+      "It has no effect on albedo.",
+      "It decreases albedo, causing more sunlight to be reflected."
+    ],
+    "correct": 1,
+    "explanation": "Decreasing snow and ice cover reduces the reflectivity (albedo) of Earth's surface, leading to more sunlight being absorbed and further warming the area."
+  },
+  {
+    "q": "Which of the following processes amplifies atmospheric greenhouse gases?",
+    "options": [
+      "Oceans removing carbon dioxide from the air.",
+      "Plants removing carbon dioxide from the air.",
+      "Wetlands and thawing permafrost releasing methane.",
+      "Earth radiating infrared energy into space."
+    ],
+    "correct": 2,
+    "explanation": "Thawing permafrost and wetlands release trapped carbon dioxide and methane into the atmosphere, which amplifies the warming effect by adding more greenhouse gases."
+  },
+  {
+    "q": "How do oceans act to reduce the warming caused by atmospheric greenhouse gases?",
+    "options": [
+      "By releasing large amounts of methane.",
+      "By absorbing and removing carbon dioxide from the air.",
+      "By increasing their surface albedo.",
+      "By warming up and creating more water vapor."
+    ],
+    "correct": 1,
+    "explanation": "Oceans help reduce the concentration of atmospheric greenhouse gases by removing carbon dioxide from the air, acting as a crucial carbon sink."
+  },
+  {
+    "q": "In an Arctic climate feedback model, what happens after the ocean absorbs more heat due to reduced ice cover?",
+    "options": [
+      "The ocean freezes over completely.",
+      "Heat is released back into the atmosphere, causing further warming.",
+      "Atmospheric wind patterns immediately reverse direction.",
+      "The Earth stops radiating infrared energy."
+    ],
+    "correct": 1,
+    "explanation": "When the ocean absorbs more heat, this heat is eventually released back into the atmosphere in the fall season, which warms the Arctic atmosphere and contributes to further ice reduction."
+  },
+  {
+    "q": "If a climate model predicts impacts to the cryosphere and hydrosphere due to warming, what specific changes might occur?",
+    "options": [
+      "Snow and ice will melt (cryosphere), leading to increased sea levels covering coastlines (hydrosphere).",
+      "Snow and ice will increase (cryosphere), leading to lower sea levels (hydrosphere).",
+      "Oceans will evaporate completely (hydrosphere), causing massive glaciation (cryosphere).",
+      "Wind patterns will change (hydrosphere), increasing solar radiation (cryosphere)."
+    ],
+    "correct": 0,
+    "explanation": "A warming climate impacts the cryosphere by melting snow and ice, which in turn impacts the hydrosphere by adding water to the oceans, increasing sea levels and covering existing coastal areas."
+  },
+  {
+    "q": "How might a regional ocean current, such as the Norwegian Current, affect Arctic sea ice?",
+    "options": [
+      "It causes regional cooling, increasing sea ice formation.",
+      "It causes regional warming, resulting in less sea ice formation.",
+      "It pushes sea ice into the Pacific Ocean.",
+      "It has no measurable effect on sea ice or regional climate."
+    ],
+    "correct": 1,
+    "explanation": "Ocean currents that bring warmer water into the Arctic, like the Norwegian Current, cause regional warming and result in less sea ice formation in those specific coastal areas."
+  },
+  {
+    "q": "Which process acts as a negative feedback factor to reduce Arctic warming?",
+    "options": [
+      "Earth radiating more infrared energy into space as it warms.",
+      "A decrease in snow cover reducing sunlight reflection.",
+      "Increased water vapor in the air from warming.",
+      "Thawing permafrost releasing carbon dioxide."
+    ],
+    "correct": 0,
+    "explanation": "As Earth warms, it radiates more infrared energy back out into space. This process allows heat to escape the atmosphere, acting to reduce overall warming."
+  },
+  {
+    "q": "When analyzing the decline of Arctic ice extent over a 40-year period, what information is most useful for making future climate predictions?",
+    "options": [
+      "The visual color of the ice on satellite imagery.",
+      "The exact temperature at the North Pole on a single day in 1980.",
+      "The average rate of change in miles or kilometers per year.",
+      "The name of the reference line drawn on the map."
+    ],
+    "correct": 2,
+    "explanation": "Calculating the rate of decline over a specific time period (such as 40 years) helps scientists calculate when specific areas, like the North Pole, might become ice-free in the future."
+  },
+  {
+    "q": "How does the warming of the Arctic Ocean and the subsequent release of heat and moisture affect the atmosphere?",
+    "options": [
+      "It increases average atmospheric pressure and cools the region.",
+      "It lowers average atmospheric pressure and causes the region to warm.",
+      "It completely eliminates all atmospheric wind patterns.",
+      "It prevents any further heat from leaving the ocean."
+    ],
+    "correct": 1,
+    "explanation": "When the warming ocean releases heat and moisture into the atmosphere, it lowers atmospheric pressure and causes the surrounding region to warm further."
+  },
+  {
+    "q": "Why does an increase in water vapor in the air act to amplify warming?",
+    "options": [
+      "Water vapor acts as a greenhouse gas, trapping more heat in the atmosphere.",
+      "Water vapor reflects all incoming sunlight back to space.",
+      "Water vapor immediately turns into ice, rapidly cooling the air.",
+      "Water vapor removes large amounts of carbon dioxide from the atmosphere."
+    ],
+    "correct": 0,
+    "explanation": "As warming increases water vapor in the air, the water vapor itself amplifies the greenhouse effect, further increasing temperatures in a positive feedback loop."
+  }
   ];
 
   // Build the interactive quiz
