@@ -104,6 +104,32 @@ execute:
   border: 4px dashed #ff6b6b;
 }
 
+/* Interactive Quiz Styles */
+.pf-quiz { font-family: 'Inter', sans-serif; max-width: 720px; margin: 0 auto; }
+.pf-quiz-header { text-align: center; margin-bottom: 28px; }
+.pf-quiz-header h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.8em; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
+.pf-quiz-header p { color: #718096; font-size: 0.95em; }
+.pf-question-card { background: white; border-radius: 14px; padding: 22px 26px; margin-bottom: 22px; border: 2px solid #e2e8f0; box-shadow: 0 3px 12px rgba(0,0,0,0.07); transition: box-shadow 0.2s; }
+.pf-question-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.11); }
+.pf-q-meta { font-size: 11px; font-weight: 700; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.pf-q-text { font-size: 16.5px; font-weight: 700; color: #2d3748; margin-bottom: 14px; line-height: 1.5; }
+.pf-option { display: block; padding: 12px 18px; margin: 7px 0; border-radius: 9px; border: 2px solid #e2e8f0; cursor: pointer; font-size: 14.5px; color: #4a5568; transition: border-color 0.18s, background 0.18s, transform 0.1s; background: #f7fafc; user-select: none; }
+.pf-option:hover:not(.pf-locked) { border-color: #667eea; background: #eef2ff; transform: translateX(3px); }
+.pf-option.pf-selected-correct { border-color: #38a169 !important; background: #f0fff4 !important; color: #22543d !important; font-weight: 700; }
+.pf-option.pf-selected-wrong { border-color: #e53e3e !important; background: #fff5f5 !important; color: #9b2c2c !important; }
+.pf-option.pf-reveal-correct { border-color: #38a169 !important; background: #f0fff4 !important; color: #22543d !important; font-weight: 700; }
+.pf-option.pf-locked { cursor: not-allowed; opacity: 0.65; }
+.pf-option.pf-locked:not(.pf-selected-correct):not(.pf-selected-wrong):not(.pf-reveal-correct) { opacity: 0.5; }
+.pf-feedback-box { margin-top: 14px; padding: 13px 17px; border-radius: 9px; font-size: 14px; line-height: 1.65; display: none; }
+.pf-feedback-box.pf-fb-correct { display: block; background: #f0fff4; border: 1.5px solid #38a169; color: #276749; }
+.pf-feedback-box.pf-fb-wrong { display: block; background: #fff5f5; border: 1.5px solid #e53e3e; color: #742a2a; }
+.pf-score-banner { text-align: center; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 14px; padding: 22px 30px; margin-top: 10px; margin-bottom: 10px; }
+.pf-score-banner .pf-score-emoji { font-size: 2.5em; margin-bottom: 6px; }
+.pf-score-banner .pf-score-text { font-size: 1.35em; font-weight: 800; color: #1a1a1a; }
+.pf-score-banner .pf-score-sub { font-size: 0.9em; color: #333; margin-top: 4px; }
+.pf-restart-btn { margin-top: 14px; padding: 10px 28px; background: #2d3748; color: white; border: none; border-radius: 25px; font-weight: 700; font-size: 0.95em; cursor: pointer; transition: background 0.2s; }
+.pf-restart-btn:hover { background: #1a202c; }
+
 .case-study {
   background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
   color: white;
@@ -821,70 +847,432 @@ You now have the knowledge to explain:
 7. **Learning from the past** helps us prepare for and potentially prevent future disasters
 :::
 
+```{ojs}
+//| echo: false
+{
+  // 1. CONTENT: Define your Myths and Facts here
+  const cards = [
+    {
+    "text": "The Younger Dryas was a sudden WARMING event that occurred about 12,900 years ago.",
+    "type": "Myth",
+    "explanation": "False. The Younger Dryas was a sudden COOLING event. As the last ice age ended and ice melted, freshwater flooded into the North Atlantic, slowing the AMOC and plunging the Northern Hemisphere back into near-glacial conditions."
+  },
+  {
+    "text": "When glaciers melt, the freshwater they release into the ocean makes ocean currents flow FASTER.",
+    "type": "Myth",
+    "explanation": "False. Glacier meltwater is fresh and less dense than salty seawater. This dilutes the saltwater at the poles, making it less dense, so it sinks more slowly — slowing ocean currents like the AMOC."
+  },
+  {
+    "text": "The AMOC (Atlantic Meridional Overturning Circulation) acts like a giant conveyor belt, moving warm water from the equator toward the poles.",
+    "type": "Fact",
+    "explanation": "Correct! AMOC transports warm water northward and sinks cold, salty water near Greenland. This redistribution of heat keeps climates in Europe and North America much warmer than they would otherwise be."
+  },
+  {
+    "text": "If AMOC slowed significantly today, Europe and North America would experience warmer temperatures.",
+    "type": "Myth",
+    "explanation": "False. A slowdown of AMOC would actually cause COOLING in the Northern Hemisphere, since less warm water from the tropics would be transported north — similar to what triggered the Younger Dryas cooling event."
+  },
+  {
+    "text": "The Clovis people disappeared from the fossil record at the exact same time as a major, rapid climate change event.",
+    "type": "Fact",
+    "explanation": "True! Clovis stone tools appear in the fossil record starting ~13,500 years ago and vanish around 12,750 years ago — coinciding with the sudden cooling of the Younger Dryas, which disrupted food supplies and flooded coastlines."
+  },
+  {
+    "text": "Sea levels were roughly the same 20,000 years ago (during the last glacial maximum) as they are today.",
+    "type": "Myth",
+    "explanation": "False. During the last glacial maximum, so much water was locked up in massive ice sheets that sea levels were approximately 120 meters (nearly 400 feet) LOWER than today, exposing land bridges like the Bering Land Bridge."
+  },
+  {
+    "text": "Rising sea levels from melting glaciers only affect people who live right on the coastline.",
+    "type": "Myth",
+    "explanation": "False. Sea level rise also causes saltwater intrusion into freshwater supplies, increases flooding inland along rivers and estuaries, erodes coastlines at rates of over 3 feet per year in some Alaskan communities, and can force entire villages to relocate."
+  },
+  {
+    "text": "Climate change is already affecting global food supplies today, not just in the distant future.",
+    "type": "Fact",
+    "explanation": "True! Warming oceans, melting sea ice, and shifting precipitation patterns are already impacting fisheries, farming, and food security. For example, the snow crab fishery in the Bering Sea — worth $227 million — collapsed in 2018-2019 and has not recovered."
+  },
+  {
+    "text": "All the ice on Earth melting would raise sea levels by only a few feet, mostly affecting low-lying islands.",
+    "type": "Myth",
+    "explanation": "False. If all land-based ice on Earth melted, sea levels would rise by approximately 70 meters (230 feet), flooding major coastal cities like New York, Miami, London, and Shanghai — affecting hundreds of millions of people worldwide."
+  },
+  {
+    "text": "Humans have survived dramatic climate change in the past, which proves we don't need to worry about the climate change happening today.",
+    "type": "Myth",
+    "explanation": "False. While our species survived past climate events, many populations did not — like the Clovis culture. Today's climate is changing far faster than past natural events, and with 8+ billion people and complex global food and infrastructure systems, our vulnerability is much greater."
+  }
+  ];
+
+  // 2. STATE MANAGEMENT (Vanilla JS - No external libraries needed)
+  let currentIndex = 0;
+  let score = 0;
+  
+  // Container for the game
+  const container = html`<div style="
+    font-family: sans-serif; 
+    max-width: 500px; 
+    margin: 20px auto; 
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    background: #f7fafc;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  "></div>`;
+
+  // Function to render the current card
+  function renderCard() {
+    container.innerHTML = ""; // Clear previous content
+
+    // A. End Screen
+    if (currentIndex >= cards.length) {
+      container.innerHTML = `
+        <h2 style="color: #2d3748; margin-bottom: 10px;">Activity Complete!</h2>
+        <div style="font-size: 40px; margin-bottom: 10px;">🎉</div>
+        <p style="font-size: 18px; color: #2d3748;">You got <b>${score} / ${cards.length}</b> correct.</p>
+        <p style="color: #718096; font-size: 14px; margin-bottom: 20px;">Review the "Past and Future" section for any you missed.</p>
+        <button id="restart-btn" style="
+          padding: 10px 20px; 
+          background: #3182ce; 
+          color: white; 
+          border: none; 
+          border-radius: 6px; 
+          cursor: pointer;
+          font-weight: bold;
+        ">Play Again</button>
+      `;
+      // Re-attach listener for the restart button
+      container.querySelector("#restart-btn").addEventListener("click", () => {
+        currentIndex = 0;
+        score = 0;
+        renderCard();
+      });
+      return;
+    }
+
+    // B. The Card
+    const cardData = cards[currentIndex];
+    
+    // Create Card Elements
+    const progress = html`<div style="font-size: 12px; color: #a0aec0; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Card ${currentIndex + 1} of ${cards.length}</div>`;
+    
+    const card = html`
+      <div style="
+        background: white;
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
+        border-radius: 8px;
+        border: 1px solid #cbd5e0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-bottom: 25px;
+      ">
+        <h3 style="color: #2d3748; font-size: 18px; line-height: 1.5; margin: 0;">${cardData.text}</h3>
+      </div>
+    `;
+
+    // C. The Buttons
+    const controls = html`
+      <div style="display: flex; justify-content: center; gap: 15px;">
+        <button id="myth-btn" style="
+          background: white; color: #e53e3e; border: 2px solid #e53e3e; padding: 10px 24px; 
+          border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 16px; transition: all 0.2s;
+        ">MYTH (False)</button>
+        
+        <button id="fact-btn" style="
+          background: white; color: #38a169; border: 2px solid #38a169; padding: 10px 24px; 
+          border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 16px; transition: all 0.2s;
+        ">FACT (True)</button>
+      </div>
+    `;
+
+    // Feedback overlay (hidden by default)
+    const feedback = html`<div style="
+      display: none; 
+      margin-top: 20px; 
+      padding: 15px; 
+      border-radius: 6px; 
+      text-align: left;
+      animation: fadeIn 0.3s;
+    "></div>`;
+
+    // Attach elements to container
+    container.appendChild(progress);
+    container.appendChild(card);
+    container.appendChild(controls);
+    container.appendChild(feedback);
+
+    // D. Handle Logic
+    const handleChoice = (choice) => {
+      const isCorrect = choice === cardData.type;
+      if (isCorrect) score++;
+
+      // Disable buttons
+      const btnMyth = container.querySelector("#myth-btn");
+      const btnFact = container.querySelector("#fact-btn");
+      btnMyth.disabled = true;
+      btnFact.disabled = true;
+      
+      // Style buttons to show result
+      if (choice === "Myth") {
+         btnMyth.style.background = isCorrect ? "#e53e3e" : "#e53e3e";
+         btnMyth.style.color = "white";
+      } else {
+         btnFact.style.background = isCorrect ? "#38a169" : "#38a169";
+         btnFact.style.color = "white";
+      }
+
+      // Show Feedback Text
+      feedback.style.display = "block";
+      feedback.style.background = isCorrect ? "#f0fff4" : "#fff5f5";
+      feedback.style.border = isCorrect ? "1px solid #38a169" : "1px solid #e53e3e";
+      
+      feedback.innerHTML = `
+        <div style="font-size: 18px; margin-bottom: 5px; font-weight: bold; color: ${isCorrect ? "#2f855a" : "#c53030"}">
+          ${isCorrect ? "✅ Correct!" : "❌ Incorrect."}
+        </div>
+        <div style="color: #4a5568; margin-bottom: 10px;">It is a <b>${cardData.type}</b>. ${cardData.explanation}</div>
+        <div style="text-align: right;">
+          <button id="next-btn" style="
+            background: #4a5568; color: white; border: none; padding: 8px 16px; 
+            border-radius: 4px; cursor: pointer; font-weight: bold;
+          ">Next Card →</button>
+        </div>
+      `;
+
+      feedback.querySelector("#next-btn").addEventListener("click", () => {
+        currentIndex++;
+        renderCard();
+      });
+    };
+
+    // Attach Event Listeners
+    container.querySelector("#myth-btn").addEventListener("click", () => handleChoice("Myth"));
+    container.querySelector("#fact-btn").addEventListener("click", () => handleChoice("Fact"));
+  }
+
+  // Initial Render
+  renderCard();
+  
+  return container;
+}
+
+```
+
 ---
 
-::: {.quiz-section}
-## 📝 The Past and the Future Quiz
+```{ojs}
+//| echo: false
+{
+  const d3 = await require("d3@7");
 
-**Question 1:** What is AMOC?
-- A) A type of greenhouse gas
-- B) The Atlantic Meridional Overturning Circulation - a major ocean current system
-- C) A glacier in Antarctica
-- D) A climate modeling computer
+  const questions = [
+    {
+      q: "What is AMOC?",
+      options: [
+        "A type of greenhouse gas",
+        "The Atlantic Meridional Overturning Circulation — a major ocean current system",
+        "A glacier in Antarctica",
+        "A climate modeling computer"
+      ],
+      correct: 1,
+      explanation: "AMOC (Atlantic Meridional Overturning Circulation) is a system of ocean currents that acts like a conveyor belt — it carries warm surface water northward from the tropics toward Europe and Greenland, then sinks as cold, dense water and returns south at depth. It plays a critical role in regulating climate across the Northern Hemisphere."
+    },
+    {
+      q: "What drives the sinking of water in the North Atlantic that powers AMOC?",
+      options: [
+        "Wind patterns",
+        "The Moon's gravity",
+        "Cold, salty water being denser than warm, fresh water",
+        "Volcanic activity"
+      ],
+      correct: 2,
+      explanation: "Thermohaline circulation is driven by density. As warm, salty water moves north, it cools and becomes very dense. This cold, salty water sinks near Greenland and Iceland, pulling more warm surface water northward to replace it — creating a continuous loop."
+    },
+    {
+      q: "What triggered the Younger Dryas cooling event ~12,900 years ago?",
+      options: [
+        "A large volcanic eruption",
+        "A meteor impact",
+        "Massive freshwater release from melting ice sheets into the North Atlantic",
+        "Changes in the Sun's energy output"
+      ],
+      correct: 2,
+      explanation: "As the last ice age ended, enormous ice sheets began melting, releasing massive amounts of freshwater into the North Atlantic. This freshwater diluted the salty ocean water, making it less dense. It could no longer sink, shutting down AMOC and plunging the Northern Hemisphere back into near-glacial conditions — the Younger Dryas."
+    },
+    {
+      q: "Approximately how long did the Younger Dryas cooling event last?",
+      options: [
+        "About 100 years",
+        "About 1,200 years",
+        "About 10,000 years",
+        "About 1 million years"
+      ],
+      correct: 1,
+      explanation: "The Younger Dryas lasted roughly 1,200 years (from ~12,900 to ~11,700 years ago). It ended almost as abruptly as it began — temperatures in Greenland rose by about 10°C in just a few decades, showing how rapidly AMOC can switch states."
+    },
+    {
+      q: "How did the Younger Dryas affect human populations?",
+      options: [
+        "It had no measurable effect on humans",
+        "It helped humans develop agriculture faster by forcing innovation",
+        "It delayed the agricultural revolution and caused population decline",
+        "It caused humans to migrate to Antarctica"
+      ],
+      correct: 2,
+      explanation: "The Younger Dryas disrupted food supplies and cooled climates in areas where humans were starting to farm. Archaeological evidence shows a decline in human populations and the disappearance of cultures like the Clovis people. The agricultural revolution, which was just getting started, was set back by over a thousand years."
+    },
+    {
+      q: "Current scientific observations show that AMOC is:",
+      options: [
+        "Strengthening rapidly due to warming oceans",
+        "Staying constant with no measurable change",
+        "Showing signs of weakening — at its weakest in over 1,000 years",
+        "Completely stopped"
+      ],
+      correct: 2,
+      explanation: "Multiple studies using ocean temperature and salinity data show that AMOC has been weakening, and some estimates suggest it is now at its weakest point in over 1,000 years. Freshwater from accelerating Greenland ice sheet melt is reducing the salinity and density of North Atlantic water — the same mechanism that triggered the Younger Dryas."
+    },
+    {
+      q: "Based on GRACE satellite data, which ice sheet is currently losing mass fastest?",
+      options: [
+        "Greenland",
+        "Antarctica",
+        "They are losing mass at equal rates",
+        "Neither is currently losing mass"
+      ],
+      correct: 0,
+      explanation: "GRACE satellite measurements show that Greenland is currently losing ice mass at a faster rate than Antarctica, contributing about twice as much to sea level rise. Greenland has lost over 4,000 gigatonnes of ice since 2002. However, Antarctica's contribution is accelerating and represents the larger long-term risk."
+    },
+    {
+      q: "Approximately how many people could be displaced by 1 meter of sea level rise?",
+      options: [
+        "About 1 million people",
+        "About 10 million people",
+        "About 100 million or more",
+        "Only a few thousand people in low-lying islands"
+      ],
+      correct: 2,
+      explanation: "The data shows that over 100 million people live in coastal areas that would be affected by 1 meter of sea level rise — including densely populated regions like Bangladesh (~20M), coastal China (~50M), Vietnam (~12M), and many others. This doesn't count indirect effects like saltwater intrusion into freshwater supplies and agricultural land."
+    },
+    {
+      q: "Why is understanding past climate change events important for preparing for future climate change?",
+      options: [
+        "It isn't important — past climate was too different to be relevant",
+        "Past events show how quickly climate can shift and how severely human populations can be affected",
+        "Past climates were always stable, so studying them provides a baseline of stability",
+        "We cannot extract reliable data from ice cores or other proxy records"
+      ],
+      correct: 1,
+      explanation: "Events like the Younger Dryas demonstrate that climate can shift dramatically within decades — not just centuries — and that these shifts have caused mass population disruptions, species extinctions, and delayed civilization. Understanding past tipping points (like AMOC shutdown) helps scientists identify warning signs and thresholds we should avoid today."
+    },
+    {
+      q: "If AMOC were to significantly weaken or collapse today, what would most likely happen to Europe?",
+      options: [
+        "Europe would get much warmer due to greenhouse gas heating",
+        "Europe would experience significant cooling even as global average temperatures rise",
+        "Nothing significant would change for Europe's climate",
+        "Europe would experience more volcanic eruptions and earthquakes"
+      ],
+      correct: 1,
+      explanation: "AMOC currently keeps Europe roughly 5–10°C warmer than it would otherwise be at its latitude. If AMOC weakened significantly, less warm tropical water would reach the North Atlantic, causing cooling in Europe and the northeastern US — even as greenhouse gas warming continues globally. The Younger Dryas is the best historical example of exactly this pattern."
+    }
+  ];
 
-**Question 2:** What drives the sinking of water in the North Atlantic that powers AMOC?
-- A) Wind patterns
-- B) The Moon's gravity
-- C) Cold, salty water being denser than warm, fresh water
-- D) Volcanic activity
+  // Build the interactive quiz
+  const wrap = d3.create("div").attr("class", "pf-quiz");
 
-**Question 3:** What triggered the Younger Dryas cooling event?
-- A) A volcanic eruption
-- B) A meteor impact
-- C) Massive freshwater release from melting ice sheets into the North Atlantic
-- D) Changes in the Sun's output
+  // Header
+  const header = wrap.append("div").attr("class", "pf-quiz-header");
+  header.append("h2").text("📝 The Past and the Future Quiz");
+  header.append("p").text("Click an answer to see instant feedback and guidance on each question.");
 
-**Question 4:** How long did the Younger Dryas last?
-- A) About 100 years
-- B) About 1,200 years
-- C) About 10,000 years
-- D) About 1 million years
+  let score = 0;
+  let answered = 0;
+  const scoreBanner = wrap.append("div").attr("class", "pf-score-banner").style("display", "none");
 
-**Question 5:** How did the Younger Dryas affect human populations?
-- A) It had no effect on humans
-- B) It helped humans develop agriculture faster
-- C) It delayed the agricultural revolution and caused population decline
-- D) It caused humans to migrate to Antarctica
+  questions.forEach((q, qi) => {
+    const card = wrap.append("div").attr("class", "pf-question-card");
+    card.append("div").attr("class", "pf-q-meta").text(`Question ${qi + 1} of ${questions.length}`);
+    card.append("div").attr("class", "pf-q-text").text(q.q);
 
-**Question 6:** Current observations show that AMOC is:
-- A) Strengthening rapidly
-- B) Staying constant
-- C) Showing signs of weakening
-- D) Completely stopped
+    const feedbackDiv = card.append("div").attr("class", "pf-feedback-box");
 
-**Question 7:** Which ice sheet is losing mass fastest?
-- A) Greenland
-- B) Antarctica
-- C) They're losing mass at equal rates
-- D) Neither is losing mass
+    const optionEls = q.options.map((opt, oi) => {
+      const btn = card.append("div")
+        .attr("class", "pf-option")
+        .text(opt);
 
-**Question 8:** Approximately how many people globally could be displaced by 1 meter of sea level rise?
-- A) About 1 million
-- B) About 10 million
-- C) About 100 million or more
-- D) About 1,000 people
+      btn.on("click", function() {
+        // Ignore if already answered
+        if (card.classed("pf-done")) return;
+        card.classed("pf-done", true);
 
-**Question 9:** Why is understanding past climate change important for preparing for future climate change?
-- A) It's not important - the past is different from the future
-- B) Past events show how quickly climate can change and how populations can be affected
-- C) Past climates were always stable
-- D) We can't learn anything from ice cores
+        const isCorrect = oi === q.correct;
+        if (isCorrect) score++;
+        answered++;
 
-**Question 10:** If AMOC were to significantly weaken or collapse today, what would likely happen to Europe?
-- A) It would get much warmer
-- B) It would experience significant cooling despite global warming
-- C) Nothing would change
-- D) It would experience more earthquakes
+        // Lock and style all options
+        optionEls.forEach((el, idx) => {
+          el.classed("pf-locked", true);
+          if (idx === oi && isCorrect) el.classed("pf-selected-correct", true);
+          else if (idx === oi && !isCorrect) el.classed("pf-selected-wrong", true);
+          else if (idx === q.correct && !isCorrect) el.classed("pf-reveal-correct", true);
+        });
 
-*Answers: 1-B, 2-C, 3-C, 4-B, 5-C, 6-C, 7-A, 8-C, 9-B, 10-B*
-:::
+        // Show feedback
+        feedbackDiv
+          .classed("pf-fb-correct", isCorrect)
+          .classed("pf-fb-wrong", !isCorrect)
+          .html(
+            `<strong>${isCorrect ? "✅ Correct!" : `❌ Not quite — the correct answer is: <em>${q.options[q.correct]}</em>`}</strong><br><br>` +
+            q.explanation
+          );
+
+        // Update score banner
+        if (answered === questions.length) {
+          const pct = Math.round(score / questions.length * 100);
+          const emoji = pct === 100 ? "🌟" : pct >= 80 ? "👏" : pct >= 60 ? "👍" : "📚";
+          scoreBanner.style("display", "block")
+            .html(
+              `<div class="pf-score-emoji">${emoji}</div>` +
+              `<div class="pf-score-text">Score: ${score} / ${questions.length} &nbsp;(${pct}%)</div>` +
+              `<div class="pf-score-sub">${
+                pct === 100 ? "Perfect score! Outstanding mastery of past and future climate." :
+                pct >= 80 ? "Great work! Review any questions you missed for full understanding." :
+                pct >= 60 ? "Good effort! Revisit the AMOC and Younger Dryas sections to strengthen your knowledge." :
+                "Keep studying! Focus on the Engage and Explain sections to build your understanding."
+              }</div>` +
+              `<button class="pf-restart-btn" onclick="
+                this.closest('.pf-quiz').querySelectorAll('.pf-question-card').forEach(c => {
+                  c.classList.remove('pf-done');
+                  c.querySelectorAll('.pf-option').forEach(o => {
+                    o.classList.remove('pf-locked','pf-selected-correct','pf-selected-wrong','pf-reveal-correct');
+                  });
+                  c.querySelector('.pf-feedback-box').className = 'pf-feedback-box';
+                  c.querySelector('.pf-feedback-box').innerHTML = '';
+                });
+                this.closest('.pf-score-banner').style.display = 'none';
+              ">🔄 Try Again</button>`
+            );
+          // Reset counters on restart click
+          scoreBanner.select(".pf-restart-btn").on("click.reset", () => {
+            score = 0;
+            answered = 0;
+          });
+        }
+      });
+
+      return btn;
+    });
+  });
+
+  // Move score banner to end
+  wrap.node().appendChild(scoreBanner.node());
+
+  return wrap.node();
+}
+```

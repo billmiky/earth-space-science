@@ -166,6 +166,34 @@ h2 {
   font-weight: 700 !important;
   color: #667eea !important;
 }
+/* Interactive Quiz Styles */
+.pf-quiz { font-family: 'Inter', sans-serif; max-width: 720px; margin: 0 auto; }
+.pf-quiz-header { text-align: center; margin-bottom: 28px; }
+.pf-quiz-header h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800; font-size: 1.8em; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; color: unset !important; }
+.pf-quiz-header p { color: #718096; font-size: 0.95em; }
+.pf-question-card { background: white; border-radius: 14px; padding: 22px 26px; margin-bottom: 22px; border: 2px solid #e2e8f0; box-shadow: 0 3px 12px rgba(0,0,0,0.07); transition: box-shadow 0.2s; }
+.pf-question-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.11); }
+.pf-q-meta { font-size: 11px; font-weight: 700; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.pf-q-text { font-size: 16.5px; font-weight: 700; color: #2d3748; margin-bottom: 14px; line-height: 1.5; }
+.pf-option { display: block; padding: 12px 18px; margin: 7px 0; border-radius: 9px; border: 2px solid #e2e8f0; cursor: pointer; font-size: 14.5px; color: #4a5568; transition: border-color 0.18s, background 0.18s, transform 0.1s; background: #f7fafc; user-select: none; }
+.pf-option:hover:not(.pf-locked) { border-color: #667eea; background: #eef2ff; transform: translateX(3px); }
+.pf-option.pf-selected-correct { border-color: #38a169 !important; background: #f0fff4 !important; color: #22543d !important; font-weight: 700; }
+.pf-option.pf-selected-wrong { border-color: #e53e3e !important; background: #fff5f5 !important; color: #9b2c2c !important; }
+.pf-option.pf-reveal-correct { border-color: #38a169 !important; background: #f0fff4 !important; color: #22543d !important; font-weight: 700; }
+.pf-option.pf-locked { cursor: not-allowed; opacity: 0.65; }
+.pf-option.pf-locked:not(.pf-selected-correct):not(.pf-selected-wrong):not(.pf-reveal-correct) { opacity: 0.5; }
+.pf-feedback-box { margin-top: 14px; padding: 13px 17px; border-radius: 9px; font-size: 14px; line-height: 1.65; display: none; }
+.pf-feedback-box.pf-fb-correct { display: block; background: #f0fff4; border: 1.5px solid #38a169; color: #276749; }
+.pf-feedback-box.pf-fb-wrong { display: block; background: #fff5f5; border: 1.5px solid #e53e3e; color: #742a2a; }
+.pf-score-banner { text-align: center; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 14px; padding: 22px 30px; margin-top: 10px; margin-bottom: 10px; }
+.pf-score-banner .pf-score-emoji { font-size: 2.5em; margin-bottom: 6px; }
+.pf-score-banner .pf-score-text { font-size: 1.35em; font-weight: 800; color: #1a1a1a; }
+.pf-score-banner .pf-score-sub { font-size: 0.9em; color: #333; margin-top: 4px; }
+.pf-restart-btn { margin-top: 14px; padding: 10px 28px; background: #2d3748; color: white; border: none; border-radius: 25px; font-weight: 700; font-size: 0.95em; cursor: pointer; transition: background 0.2s; }
+.pf-restart-btn:hover { background: #1a202c; }
+/* Fix Observable Plot tooltip visibility — prevent currentColor:white from bleeding in */
+svg [aria-label="tip"] text { fill: #1a1a1a !important; }
+svg [aria-label="tip"] rect { fill: rgba(255, 255, 255, 0.97) !important; stroke: #d4d4d4 !important; }
 </style>
 ```
 
@@ -906,194 +934,390 @@ This sets up our next investigation: **What IS causing the warming?**
 
 ---
 
-::: {.quiz-section}
-## 🎮 CHALLENGE MODE: Test Your Knowledge! 🏆
-
-<div style="text-align: center; font-size: 1.3em; font-weight: 700; margin: 15px 0; color: #ff6b6b;">
-🔥 Can you ace this quiz? Let's find out! 🔥
-</div>
-
 ```{ojs}
 //| echo: false
-quizData = [
-  {
-    question: "What is the approximate period of the eccentricity cycle?",
-    options: ["23,000 years", "41,000 years", "100,000 years", "1 million years"],
-    correct: 2,
-    feedback: {
-      correct: "🎉 YES! The eccentricity cycle takes about 100,000 years, which matches the major Ice Age pattern we saw in the data!",
-      wrong: "❌ Not quite! Remember, the eccentricity cycle is the LONGEST of the three Milankovitch cycles. It takes about 100,000 years!"
+{
+  // 1. CONTENT: Myths and Facts about Earth-Sun Dynamics & Milankovitch Cycles
+  const cards = [
+    {
+      text: "Earth's orbit around the Sun is a perfect circle.",
+      type: "Myth",
+      explanation: "False. Earth's orbit is an ellipse — slightly oval-shaped. This eccentricity changes over a ~100,000-year cycle, affecting how much solar energy Earth receives."
+    },
+    {
+      text: "Milankovitch cycles can trigger ice ages by changing the distribution of solar energy on Earth.",
+      type: "Fact",
+      explanation: "Correct! Even though total solar energy barely changes, shifts in where and when that energy arrives — especially at 65°N in summer — can trigger the growth or retreat of ice sheets."
+    },
+    {
+      text: "When Earth is closest to the Sun (perihelion), it is summer in the Northern Hemisphere.",
+      type: "Myth",
+      explanation: "False. Earth is currently closest to the Sun in early January — which is winter in the Northern Hemisphere. Seasons are caused by axial tilt, not distance from the Sun."
+    },
+    {
+      text: "Earth's axial tilt stays fixed at exactly 23.5° forever.",
+      type: "Myth",
+      explanation: "False. Earth's tilt slowly cycles between about 22.1° and 24.5° over ~41,000 years. More tilt means more extreme seasons; less tilt means milder seasons."
+    },
+    {
+      text: "Summer insolation at 65°N is important for ice ages because that's where most of Earth's land is located.",
+      type: "Fact",
+      explanation: "Correct! The Northern Hemisphere has most of Earth's land mass. If summers at 65°N are too cool to melt the previous winter's snow, ice sheets can grow — potentially triggering an ice age."
+    },
+    {
+      text: "The 'wobble' of Earth's axis (precession) changes the total amount of solar energy Earth receives each year.",
+      type: "Myth",
+      explanation: "False. Precession only changes which season occurs when Earth is closest to the Sun. It does not change the total annual solar energy received — it shifts how that energy is distributed across seasons."
+    },
+    {
+      text: "Based on current Milankovitch cycles, Earth should be slowly cooling right now.",
+      type: "Fact",
+      explanation: "Correct! Our current orbital parameters — decreasing eccentricity and obliquity, with Northern Hemisphere summer at aphelion — point toward gradual cooling. The fact that Earth is rapidly warming instead means another factor (greenhouse gases) is overriding the natural trend."
+    },
+    {
+      text: "The ~100,000-year ice age cycle is caused by changes in Earth's axial tilt.",
+      type: "Myth",
+      explanation: "False. The ~100,000-year cycle matches Earth's eccentricity cycle — the gradual change in the shape of Earth's orbit. Axial tilt (obliquity) drives a separate ~41,000-year cycle."
+    },
+    {
+      text: "Milankovitch cycles have successfully explained the timing of ice ages over the past 800,000 years.",
+      type: "Fact",
+      explanation: "Correct! Ice core records show that glacial-interglacial cycles closely match the rhythms predicted by Milankovitch's three orbital parameters. This is strong evidence that orbital cycles drove past climate change."
+    },
+    {
+      text: "Because Milankovitch cycles caused past climate changes, they must also be responsible for the warming we see today.",
+      type: "Myth",
+      explanation: "False. Milankovitch cycles work over tens of thousands of years. Current warming has occurred in just ~150 years — far too fast for orbital changes. The culprit is the rapid increase in greenhouse gases from human activity."
+    },
+    {
+      text: "A stronger axial tilt leads to more extreme seasons — hotter summers and colder winters.",
+      type: "Fact",
+      explanation: "Correct! Greater tilt means each hemisphere tilts more directly toward (or away from) the Sun during summer (or winter), intensifying seasonal temperature swings."
+    },
+    {
+      text: "Precession causes ice ages by moving Earth farther away from the Sun.",
+      type: "Myth",
+      explanation: "False. Precession does not change Earth's distance from the Sun — it only changes which season lines up with perihelion (closest approach). Ice ages result from changes in seasonal insolation, not total distance."
     }
-  },
-  {
-    question: "Why is summer radiation at 65°N latitude so important for ice ages?",
-    options: [
-      "It's where most people live",
-      "It's where most land mass is located, and ice sheets need cool summers to persist",
-      "The Sun is closest to Earth at this latitude",
-      "Ocean currents are strongest here"
-    ],
-    correct: 1,
-    feedback: {
-      correct: "💯 PERFECT! Most land is in the Northern Hemisphere. When summers are cool at 65°N, snow doesn't melt and ice sheets GROW!",
-      wrong: "❌ Think about it: Where is most of Earth's land? And what happens if summer isn't warm enough to melt winter snow?"
-    }
-  },
-  {
-    question: "Earth's current axial tilt is approximately:",
-    options: ["22.1°", "23.5°", "24.5°", "45°"],
-    correct: 1,
-    feedback: {
-      correct: "✅ Spot on! Earth currently tilts at 23.5° — right in the middle of its range!",
-      wrong: "❌ Close! Earth's tilt right now is 23.5°, which is about halfway between the minimum (22.1°) and maximum (24.5°)."
-    }
-  },
-  {
-    question: "According to Milankovitch cycles, what should Earth's climate be doing right now?",
-    options: ["Warming rapidly", "Staying constant", "Cooling gradually", "Experiencing an ice age"],
-    correct: 2,
-    feedback: {
-      correct: "🧠 SMART! Based on orbital cycles alone, Earth should be cooling slightly. But it's warming instead — which means something ELSE is going on!",
-      wrong: "❌ Actually, our orbital parameters suggest we should be cooling gradually. But we're warming instead... 🤔 Something else must be causing it!"
-    }
-  },
-  {
-    question: "What causes the ~100,000 year glacial-interglacial cycle?",
-    options: [
-      "Changes in the Sun's energy output",
-      "Volcanic activity",
-      "Changes in Earth's orbital eccentricity",
-      "Human activity"
-    ],
-    correct: 2,
-    feedback: {
-      correct: "🌟 EXCELLENT! Eccentricity — the shape of Earth's orbit — drives the major 100,000-year cycle!",
-      wrong: "❌ Nope! The 100,000-year cycle matches the eccentricity cycle — when Earth's orbit becomes more or less elliptical!"
-    }
-  },
-  {
-    question: "The precession cycle affects climate by:",
-    options: [
-      "Changing total solar radiation received",
-      "Changing which season occurs at perihelion vs aphelion",
-      "Changing Earth's distance from the Sun",
-      "Changing the Sun's output"
-    ],
-    correct: 1,
-    feedback: {
-      correct: "🎯 NAILED IT! Precession changes WHEN (which season) Earth is closest to the Sun, making some hemispheres' summers more intense!",
-      wrong: "❌ Think about what 'wobble' means — precession changes which SEASON happens when Earth is closest to or farthest from the Sun!"
-    }
-  },
-  {
-    question: "If Earth's axial tilt increased to 24.5°, seasons would become:",
-    options: ["Less extreme", "More extreme", "Unchanged", "Reversed"],
-    correct: 1,
-    feedback: {
-      correct: "💪 YES! Greater tilt = more extreme seasons. Summer gets HOTTER, winter gets COLDER!",
-      wrong: "❌ Remember: Greater tilt means the Northern Hemisphere points MORE toward (or away from) the Sun, making seasons more extreme!"
-    }
-  },
-  {
-    question: "What is the significance of global warming occurring despite Milankovitch cycles predicting cooling?",
-    options: [
-      "Milankovitch cycles are wrong",
-      "Another factor must be causing the warming",
-      "The Sun's output has increased dramatically",
-      "Earth's orbit has changed unexpectedly"
-    ],
-    correct: 1,
-    feedback: {
-      correct: "🔥 GENIUS! You got it! Orbital cycles say we should cool, but we're warming — so something NEW and POWERFUL must be at work!",
-      wrong: "❌ The cycles aren't wrong — they've worked for hundreds of thousands of years! The fact that we're warming ANYWAY means a NEW factor is involved..."
-    }
-  }
-]
-```
+  ];
 
-```{ojs}
-//| echo: false
-viewof answer0 = Inputs.radio(quizData[0].options, {label: `❓ Question 1: ${quizData[0].question}`})
-viewof answer1 = Inputs.radio(quizData[1].options, {label: `❓ Question 2: ${quizData[1].question}`})
-viewof answer2 = Inputs.radio(quizData[2].options, {label: `❓ Question 3: ${quizData[2].question}`})
-viewof answer3 = Inputs.radio(quizData[3].options, {label: `❓ Question 4: ${quizData[3].question}`})
-viewof answer4 = Inputs.radio(quizData[4].options, {label: `❓ Question 5: ${quizData[4].question}`})
-viewof answer5 = Inputs.radio(quizData[5].options, {label: `❓ Question 6: ${quizData[5].question}`})
-viewof answer6 = Inputs.radio(quizData[6].options, {label: `❓ Question 7: ${quizData[6].question}`})
-viewof answer7 = Inputs.radio(quizData[7].options, {label: `❓ Question 8: ${quizData[7].question}`})
-```
+  // 2. STATE MANAGEMENT
+  let currentIndex = 0;
+  let score = 0;
 
-```{ojs}
-//| echo: false
-mutable showResults = false
-```
+  // Container for the game
+  const container = html`<div style="
+    font-family: sans-serif; 
+    max-width: 500px; 
+    margin: 20px auto; 
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    background: #f7fafc;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  "></div>`;
 
-```{ojs}
-//| echo: false
-viewof submitButton = Inputs.button("🎯 Submit Answers & See Your Score!", {
-  reduce: () => {
-    mutable showResults = true;
-    return Date.now();
-  }
-})
-```
+  // Function to render the current card
+  function renderCard() {
+    container.innerHTML = "";
 
-```{ojs}
-//| echo: false
-userAnswers = [answer0, answer1, answer2, answer3, answer4, answer5, answer6, answer7]
+    // A. End Screen
+    if (currentIndex >= cards.length) {
+      container.innerHTML = `
+        <h2 style="color: #2d3748; margin-bottom: 10px;">Activity Complete!</h2>
+        <div style="font-size: 40px; margin-bottom: 10px;">🎉</div>
+        <p style="font-size: 18px; color: #2d3748;">You got <b>${score} / ${cards.length}</b> correct.</p>
+        <p style="color: #718096; font-size: 14px; margin-bottom: 20px;">Review the "Earth-Sun Dynamics" sections for any you missed.</p>
+        <button id="restart-btn" style="
+          padding: 10px 20px; 
+          background: #3182ce; 
+          color: white; 
+          border: none; 
+          border-radius: 6px; 
+          cursor: pointer;
+          font-weight: bold;
+        ">Play Again</button>
+      `;
+      container.querySelector("#restart-btn").addEventListener("click", () => {
+        currentIndex = 0;
+        score = 0;
+        renderCard();
+      });
+      return;
+    }
 
-score = showResults ? userAnswers.reduce((sum, ans, i) => {
-  const answerIndex = quizData[i].options.indexOf(ans);
-  return sum + (answerIndex === quizData[i].correct ? 1 : 0);
-}, 0) : null
+    // B. The Card
+    const cardData = cards[currentIndex];
 
-percentage = score !== null ? Math.round((score / quizData.length) * 100) : null
-```
+    const progress = html`<div style="font-size: 12px; color: #a0aec0; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Card ${currentIndex + 1} of ${cards.length}</div>`;
 
-```{ojs}
-//| echo: false
-showResults ? html`
-<div>
-  ${quizData.map((q, i) => {
-    const userAnswer = userAnswers[i];
-    const answerIndex = q.options.indexOf(userAnswer);
-    const isCorrect = answerIndex === q.correct;
-    const answered = userAnswer !== undefined;
-    const bgColor = !answered ? "#f5f5f5" : isCorrect ? "#d4edda" : "#ffebee";
-    const borderColor = !answered ? "#ccc" : isCorrect ? "#28a745" : "#dc3545";
-    const icon = !answered ? "⚠️" : isCorrect ? "✅" : "❌";
-    
-    return html`
-      <div style="background: ${bgColor}; border: 3px solid ${borderColor}; padding: 15px; margin: 15px 0; border-radius: 10px;">
-        <strong>${icon} Question ${i + 1}:</strong> ${q.question}<br/>
-        <strong>Your answer:</strong> ${answered ? userAnswer : "Not answered"}<br/>
-        <strong>Correct answer:</strong> ${q.options[q.correct]}<br/>
-        <div style="margin-top: 10px; font-style: italic; color: #333;">
-          ${isCorrect ? q.feedback.correct : q.feedback.wrong}
-        </div>
+    const card = html`
+      <div style="
+        background: white;
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
+        border-radius: 8px;
+        border: 1px solid #cbd5e0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-bottom: 25px;
+      ">
+        <h3 style="color: #2d3748; font-size: 18px; line-height: 1.5; margin: 0;">${cardData.text}</h3>
       </div>
     `;
-  })}
-  
-  <div style="background: linear-gradient(135deg, ${percentage >= 80 ? '#43e97b' : percentage >= 60 ? '#feca57' : '#fa709a'} 0%, ${percentage >= 80 ? '#38f9d7' : percentage >= 60 ? '#ff6b6b' : '#fee140'} 100%); color: ${percentage >= 60 ? '#1a1a1a' : 'white'}; padding: 25px; margin: 25px 0; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-    <div style="font-size: 2.5em; font-weight: 800; margin-bottom: 10px;">
-      ${percentage >= 80 ? '🏆' : percentage >= 60 ? '👍' : '📚'}
-    </div>
-    <div style="font-size: 2em; font-weight: 700; margin-bottom: 15px;">
-      Your Score: ${score}/${quizData.length} (${percentage}%)
-    </div>
-    <div style="font-size: 1.3em; font-weight: 600;">
-      ${percentage >= 80 ? 
-        "🌟 ORBITAL EXPERT! You've mastered Earth-Sun dynamics! You're ready to explain Ice Ages to anyone!" : 
-        percentage >= 60 ? 
-        "💪 SOLID WORK! You understand the basics. Review those tricky concepts and you'll be an expert!" : 
-        "🔄 KEEP LEARNING! These concepts are tough. Go back through the chapter, play with the simulations, and try again!"}
-    </div>
-  </div>
-</div>
-` : html`<div style="text-align: center; padding: 20px; color: #666; font-style: italic;">
-  📝 Answer all questions above, then click "Submit Answers" to see how you did!
-</div>`
+
+    const controls = html`
+      <div style="display: flex; justify-content: center; gap: 15px;">
+        <button id="myth-btn" style="
+          background: white; color: #e53e3e; border: 2px solid #e53e3e; padding: 10px 24px; 
+          border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 16px; transition: all 0.2s;
+        ">MYTH (False)</button>
+        <button id="fact-btn" style="
+          background: white; color: #38a169; border: 2px solid #38a169; padding: 10px 24px; 
+          border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 16px; transition: all 0.2s;
+        ">FACT (True)</button>
+      </div>
+    `;
+
+    const feedback = html`<div style="
+      display: none; 
+      margin-top: 20px; 
+      padding: 15px; 
+      border-radius: 6px; 
+      text-align: left;
+    "></div>`;
+
+    container.appendChild(progress);
+    container.appendChild(card);
+    container.appendChild(controls);
+    container.appendChild(feedback);
+
+    const handleChoice = (choice) => {
+      const isCorrect = choice === cardData.type;
+      if (isCorrect) score++;
+
+      const btnMyth = container.querySelector("#myth-btn");
+      const btnFact = container.querySelector("#fact-btn");
+      btnMyth.disabled = true;
+      btnFact.disabled = true;
+
+      if (choice === "Myth") {
+        btnMyth.style.background = "#e53e3e";
+        btnMyth.style.color = "white";
+      } else {
+        btnFact.style.background = "#38a169";
+        btnFact.style.color = "white";
+      }
+
+      feedback.style.display = "block";
+      feedback.style.background = isCorrect ? "#f0fff4" : "#fff5f5";
+      feedback.style.border = isCorrect ? "1px solid #38a169" : "1px solid #e53e3e";
+
+      feedback.innerHTML = `
+        <div style="font-size: 18px; margin-bottom: 5px; font-weight: bold; color: ${isCorrect ? "#2f855a" : "#c53030"}">
+          ${isCorrect ? "✅ Correct!" : "❌ Incorrect."}
+        </div>
+        <div style="color: #4a5568; margin-bottom: 10px;">It is a <b>${cardData.type}</b>. ${cardData.explanation}</div>
+        <div style="text-align: right;">
+          <button id="next-btn" style="
+            background: #4a5568; color: white; border: none; padding: 8px 16px; 
+            border-radius: 4px; cursor: pointer; font-weight: bold;
+          ">Next Card →</button>
+        </div>
+      `;
+
+      feedback.querySelector("#next-btn").addEventListener("click", () => {
+        currentIndex++;
+        renderCard();
+      });
+    };
+
+    container.querySelector("#myth-btn").addEventListener("click", () => handleChoice("Myth"));
+    container.querySelector("#fact-btn").addEventListener("click", () => handleChoice("Fact"));
+  }
+
+  renderCard();
+  return container;
+}
+```
+
+---
+
+::: {.quiz-section}
+
+
+```{ojs}
+//| echo: false
+{
+  const d3 = await require("d3@7");
+
+  const questions = [
+    {
+      q: "What is the approximate period of the eccentricity cycle?",
+      options: ["23,000 years", "41,000 years", "100,000 years", "1 million years"],
+      correct: 2,
+      explanation: "The eccentricity cycle takes about 100,000 years — the longest of the three Milankovitch cycles. This matches the major Ice Age pattern seen in the paleoclimate data."
+    },
+    {
+      q: "Why is summer radiation at 65°N latitude so important for ice ages?",
+      options: [
+        "It's where most people live",
+        "It's where most land mass is located, and ice sheets need cool summers to persist",
+        "The Sun is closest to Earth at this latitude",
+        "Ocean currents are strongest here"
+      ],
+      correct: 1,
+      explanation: "Most of Earth's land is in the Northern Hemisphere. When summers at 65°N are cool enough that winter snow doesn't fully melt, ice sheets can grow and persist — triggering an ice age."
+    },
+    {
+      q: "Earth's current axial tilt is approximately:",
+      options: ["22.1°", "23.5°", "24.5°", "45°"],
+      correct: 1,
+      explanation: "Earth currently tilts at about 23.5° — right in the middle of its range between the minimum (22.1°) and maximum (24.5°)."
+    },
+    {
+      q: "According to Milankovitch cycles, what should Earth's climate be doing right now?",
+      options: ["Warming rapidly", "Staying constant", "Cooling gradually", "Experiencing an ice age"],
+      correct: 2,
+      explanation: "Based on current orbital parameters alone, Earth should be cooling gradually. The fact that it's warming rapidly instead means another factor — greenhouse gas emissions — must be at work."
+    },
+    {
+      q: "What causes the ~100,000 year glacial-interglacial cycle?",
+      options: [
+        "Changes in the Sun's energy output",
+        "Volcanic activity",
+        "Changes in Earth's orbital eccentricity",
+        "Human activity"
+      ],
+      correct: 2,
+      explanation: "Changes in Earth's orbital eccentricity — how elliptical or circular its orbit is — drive the major 100,000-year glacial-interglacial cycle seen in ice core records."
+    },
+    {
+      q: "The precession cycle affects climate by:",
+      options: [
+        "Changing total solar radiation received",
+        "Changing which season occurs at perihelion vs aphelion",
+        "Changing Earth's distance from the Sun",
+        "Changing the Sun's output"
+      ],
+      correct: 1,
+      explanation: "Precession (Earth's wobble) changes WHICH SEASON occurs when Earth is closest to the Sun (perihelion). This makes some hemispheres' summers more intense without changing total solar radiation received."
+    },
+    {
+      q: "If Earth's axial tilt increased to 24.5°, seasons would become:",
+      options: ["Less extreme", "More extreme", "Unchanged", "Reversed"],
+      correct: 1,
+      explanation: "Greater axial tilt means the Northern Hemisphere points more directly toward (or away from) the Sun during summer and winter, making seasons more extreme — hotter summers and colder winters."
+    },
+    {
+      q: "What is the significance of global warming occurring despite Milankovitch cycles predicting cooling?",
+      options: [
+        "Milankovitch cycles are wrong",
+        "Another factor must be causing the warming",
+        "The Sun's output has increased dramatically",
+        "Earth's orbit has changed unexpectedly"
+      ],
+      correct: 1,
+      explanation: "Milankovitch cycles have reliably explained climate patterns for hundreds of thousands of years. The fact that Earth is warming despite orbital cycles predicting cooling means a new, powerful factor — human greenhouse gas emissions — is overriding the natural trend."
+    }
+  ];
+
+  // Build the interactive quiz
+  const wrap = d3.create("div").attr("class", "pf-quiz");
+
+  // Header
+  const header = wrap.append("div").attr("class", "pf-quiz-header");
+  header.append("h2").text("📝 Earth-Sun Dynamics Quiz");
+  header.append("p").text("Click an answer to see instant feedback and guidance on each question.");
+
+  let score = 0;
+  let answered = 0;
+  const scoreBanner = wrap.append("div").attr("class", "pf-score-banner").style("display", "none");
+
+  questions.forEach((q, qi) => {
+    const card = wrap.append("div").attr("class", "pf-question-card");
+    card.append("div").attr("class", "pf-q-meta").text(`Question ${qi + 1} of ${questions.length}`);
+    card.append("div").attr("class", "pf-q-text").text(q.q);
+
+    const feedbackDiv = card.append("div").attr("class", "pf-feedback-box");
+
+    const optionEls = q.options.map((opt, oi) => {
+      const btn = card.append("div")
+        .attr("class", "pf-option")
+        .text(opt);
+
+      btn.on("click", function() {
+        // Ignore if already answered
+        if (card.classed("pf-done")) return;
+        card.classed("pf-done", true);
+
+        const isCorrect = oi === q.correct;
+        if (isCorrect) score++;
+        answered++;
+
+        // Lock and style all options
+        optionEls.forEach((el, idx) => {
+          el.classed("pf-locked", true);
+          if (idx === oi && isCorrect) el.classed("pf-selected-correct", true);
+          else if (idx === oi && !isCorrect) el.classed("pf-selected-wrong", true);
+          else if (idx === q.correct && !isCorrect) el.classed("pf-reveal-correct", true);
+        });
+
+        // Show feedback
+        feedbackDiv
+          .classed("pf-fb-correct", isCorrect)
+          .classed("pf-fb-wrong", !isCorrect)
+          .html(
+            `<strong>${isCorrect ? "✅ Correct!" : `❌ Not quite — the correct answer is: <em>${q.options[q.correct]}</em>`}</strong><br><br>` +
+            q.explanation
+          );
+
+        // Update score banner
+        if (answered === questions.length) {
+          const pct = Math.round(score / questions.length * 100);
+          const emoji = pct === 100 ? "🌟" : pct >= 80 ? "👏" : pct >= 60 ? "👍" : "📚";
+          scoreBanner.style("display", "block")
+            .html(
+              `<div class="pf-score-emoji">${emoji}</div>` +
+              `<div class="pf-score-text">Score: ${score} / ${questions.length} &nbsp;(${pct}%)</div>` +
+              `<div class="pf-score-sub">${
+                pct === 100 ? "Perfect score! You've mastered Earth-Sun dynamics and Milankovitch cycles!" :
+                pct >= 80 ? "Great work! Review any questions you missed for full understanding." :
+                pct >= 60 ? "Good effort! Revisit the orbital simulator and Milankovitch sections to strengthen your knowledge." :
+                "Keep studying! Focus on the Engage and Explain sections to build your understanding."
+              }</div>` +
+              `<button class="pf-restart-btn" onclick="
+                this.closest('.pf-quiz').querySelectorAll('.pf-question-card').forEach(c => {
+                  c.classList.remove('pf-done');
+                  c.querySelectorAll('.pf-option').forEach(o => {
+                    o.classList.remove('pf-locked','pf-selected-correct','pf-selected-wrong','pf-reveal-correct');
+                  });
+                  c.querySelector('.pf-feedback-box').className = 'pf-feedback-box';
+                  c.querySelector('.pf-feedback-box').innerHTML = '';
+                });
+                this.closest('.pf-score-banner').style.display = 'none';
+              ">🔄 Try Again</button>`
+            );
+          // Reset counters on restart click
+          scoreBanner.select(".pf-restart-btn").on("click.reset", () => {
+            score = 0;
+            answered = 0;
+          });
+        }
+      });
+
+      return btn;
+    });
+  });
+
+  // Move score banner to end
+  wrap.node().appendChild(scoreBanner.node());
+
+  return wrap.node();
+}
 ```
 
 :::

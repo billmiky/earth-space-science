@@ -26,6 +26,34 @@ execute:
 .quiz-section { background: linear-gradient(135deg, #C62828 0%, #B71C1C 100%); color: white; border-left: 5px solid #dc3545; padding: 20px; margin: 20px 0; border-radius: 10px; }
 .feedback-loop { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0; }
 .pe-badge { display: inline-block; background: #673ab7; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin: 5px; }
+/* Interactive Quiz Styles */
+.pf-quiz { font-family: 'Inter', sans-serif; max-width: 720px; margin: 0 auto; }
+.pf-quiz-header { text-align: center; margin-bottom: 28px; }
+.pf-quiz-header h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.8em; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
+.pf-quiz-header p { color: #718096; font-size: 0.95em; }
+.pf-question-card { background: white; border-radius: 14px; padding: 22px 26px; margin-bottom: 22px; border: 2px solid #e2e8f0; box-shadow: 0 3px 12px rgba(0,0,0,0.07); transition: box-shadow 0.2s; }
+.pf-question-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.11); }
+.pf-q-meta { font-size: 11px; font-weight: 700; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.pf-q-text { font-size: 16.5px; font-weight: 700; color: #2d3748; margin-bottom: 14px; line-height: 1.5; }
+.pf-option { display: block; padding: 12px 18px; margin: 7px 0; border-radius: 9px; border: 2px solid #e2e8f0; cursor: pointer; font-size: 14.5px; color: #4a5568; transition: border-color 0.18s, background 0.18s, transform 0.1s; background: #f7fafc; user-select: none; }
+.pf-option:hover:not(.pf-locked) { border-color: #667eea; background: #eef2ff; transform: translateX(3px); }
+.pf-option.pf-selected-correct { border-color: #38a169 !important; background: #f0fff4 !important; color: #22543d !important; font-weight: 700; }
+.pf-option.pf-selected-wrong { border-color: #e53e3e !important; background: #fff5f5 !important; color: #9b2c2c !important; }
+.pf-option.pf-reveal-correct { border-color: #38a169 !important; background: #f0fff4 !important; color: #22543d !important; font-weight: 700; }
+.pf-option.pf-locked { cursor: not-allowed; opacity: 0.65; }
+.pf-option.pf-locked:not(.pf-selected-correct):not(.pf-selected-wrong):not(.pf-reveal-correct) { opacity: 0.5; }
+.pf-feedback-box { margin-top: 14px; padding: 13px 17px; border-radius: 9px; font-size: 14px; line-height: 1.65; display: none; }
+.pf-feedback-box.pf-fb-correct { display: block; background: #f0fff4; border: 1.5px solid #38a169; color: #276749; }
+.pf-feedback-box.pf-fb-wrong { display: block; background: #fff5f5; border: 1.5px solid #e53e3e; color: #742a2a; }
+.pf-score-banner { text-align: center; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 14px; padding: 22px 30px; margin-top: 10px; margin-bottom: 10px; }
+.pf-score-banner .pf-score-emoji { font-size: 2.5em; margin-bottom: 6px; }
+.pf-score-banner .pf-score-text { font-size: 1.35em; font-weight: 800; color: #1a1a1a; }
+.pf-score-banner .pf-score-sub { font-size: 0.9em; color: #333; margin-top: 4px; }
+.pf-restart-btn { margin-top: 14px; padding: 10px 28px; background: #2d3748; color: white; border: none; border-radius: 25px; font-weight: 700; font-size: 0.95em; cursor: pointer; transition: background 0.2s; }
+.pf-restart-btn:hover { background: #1a202c; }
+/* Fix Observable Plot tooltip visibility — prevent currentColor:white from bleeding in */
+svg [aria-label="tip"] text { fill: #1a1a1a !important; }
+svg [aria-label="tip"] rect { fill: rgba(255, 255, 255, 0.97) !important; stroke: #d4d4d4 !important; }
 </style>
 ```
 
@@ -107,6 +135,21 @@ ${current_mlo_co2.value} ppm
 # Engage: Arctic vs Global Warming
 
 What is happening to temperatures and Arctic ice today? Use the graph below to compare warming in the Arctic to the global average and surface student questions about the current climate change that orbital factors did not explain in the previous lesson.
+
+**Before looking at the data, make a prediction:**
+
+```{ojs}
+//| echo: false
+viewof prediction = Inputs.radio(
+  [
+    "The Arctic is warming much faster",
+    "The Arctic is warming at the same rate as the global average",
+    "The Arctic is warming more slowly than the global average",
+    "The Arctic is actually cooling"
+  ],
+  {label: "How do you think the Arctic is warming compared to the global average?", value: "The Arctic is warming much faster"}
+)
+```
 
 ```{ojs}
 //| echo: false
@@ -190,6 +233,160 @@ Plot.plot({
 ```{=html}
 <iframe src="https://ourworldindata.org/grapher/co2-long-term-concentration?tab=chart" loading="lazy" style="width: 100%; height: 600px; border: 0px none;" allow="web-share; clipboard-write"></iframe>
 ```
+
+## Greenhouse Feedback Interactive Plot
+
+:::: {.columns}
+
+::: {.column width="25%"}
+
+<span style="font-family: sans-serif; font-size: 0.9em; font-style: italic; color: #555;">
+Turn on/off graph layers:
+</span>
+
+```{ojs}
+//| echo: false
+viewof showAnt = Inputs.toggle({label: html`<b style="color:white; background-color:#e63946; padding:4px 8px; border-radius:4px; display:inline-block; width:130px; text-align:center;">ANTARCTIC TEMP</b>`, value: true})
+```
+
+```{ojs}
+//| echo: false
+viewof showCo2 = Inputs.toggle({label: html`<b style="color:white; background-color:#219ebc; padding:4px 8px; border-radius:4px; display:inline-block; width:130px; text-align:center; margin-top:5px;">CO2</b>`, value: true})
+```
+
+```{ojs}
+//| echo: false
+viewof showGlob = Inputs.toggle({label: html`<b style="color:white; background-color:#7209b7; padding:4px 8px; border-radius:4px; display:inline-block; width:130px; text-align:center; margin-top:5px;">GLOBAL TEMP</b>`, value: true})
+```
+
+:::
+
+::: {.column width="75%"}
+
+```{ojs}
+//| echo: false
+Plotly = require("https://cdn.plot.ly/plotly-2.24.1.min.js")
+```
+
+```{ojs}
+//| echo: false
+ghData = {
+  const time_arr = Array.from({length: 161}, (_, i) => 22 - i * 0.1);
+  return time_arr.map(t => {
+    let ant, co2, glob;
+
+    if (t > 18.5) ant = -59.5 + (Math.random()-0.5)*1.2;
+    else if (t > 14) ant = -59.5 + ((18.5-t)/(18.5-14)) * 5.5 + (Math.random()-0.5)*1.5;
+    else if (t > 12) ant = -54 + ((14-t)/(14-12)) * 4 + (Math.random()-0.5)*1.5;
+    else ant = -50.5 + (Math.random()-0.5)*1.2;
+
+    if (t > 17.5) co2 = 188 + (Math.random()-0.5)*4;
+    else if (t > 14) co2 = 188 + ((17.5-t)/(17.5-14)) * 42 + (Math.random()-0.5)*5;
+    else if (t > 13) co2 = 230 - ((14-t)/(14-13)) * 5 + (Math.random()-0.5)*5;
+    else if (t > 11) co2 = 225 + ((13-t)/(13-11)) * 40 + (Math.random()-0.5)*5;
+    else co2 = 262 + (Math.random()-0.5)*4;
+
+    if (t > 16.5) glob = 11.2 + (Math.random()-0.5)*0.2;
+    else if (t > 10) glob = 11.2 + ((16.5-t)/(16.5-10)) * 3.8 + (Math.random()-0.5)*0.2;
+    else glob = 15 + (Math.random()-0.5)*0.2;
+
+    return { t, ant, co2, glob };
+  });
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const div = DOM.element("div");
+
+  const trace1 = {
+    x: ghData.map(d => d.t), y: ghData.map(d => d.ant),
+    name: 'Antarctic Temp', mode: 'lines',
+    line: {color: '#e63946', width: 2},
+    yaxis: 'y1',
+    visible: showAnt
+  };
+
+  const trace2 = {
+    x: ghData.map(d => d.t), y: ghData.map(d => d.co2),
+    name: 'CO2', mode: 'lines',
+    line: {color: '#219ebc', width: 2},
+    yaxis: 'y2',
+    visible: showCo2
+  };
+
+  const trace3 = {
+    x: ghData.map(d => d.t), y: ghData.map(d => d.glob),
+    name: 'Global Temp', mode: 'lines',
+    line: {color: '#7209b7', width: 2.5},
+    yaxis: 'y3',
+    visible: showGlob
+  };
+
+  const layout = {
+    xaxis: {
+      title: '<b>Time (thousands of years ago)</b>',
+      range: [22, 6],
+      domain: [0, 0.82],
+      gridcolor: '#f0f0f0'
+    },
+    yaxis: {
+      title: '<b>Temperature in Antarctica (°C)</b>',
+      titlefont: {color: '#e63946'}, tickfont: {color: '#e63946'},
+      range: [-62, -49], gridcolor: '#f0f0f0'
+    },
+    yaxis2: {
+      title: '<b>CO₂ in the Atmosphere (parts per million)</b>',
+      titlefont: {color: '#219ebc'}, tickfont: {color: '#219ebc'},
+      anchor: 'x', overlaying: 'y', side: 'right',
+      range: [165, 275]
+    },
+    yaxis3: {
+      title: '<b>Global Temperature (°C)</b>',
+      titlefont: {color: '#7209b7'}, tickfont: {color: '#7209b7'},
+      anchor: 'free', overlaying: 'y', side: 'right',
+      position: 1.0,
+      range: [10.5, 15.5]
+    },
+    annotations: [
+      {
+        x: 18.2, y: -58.5, xref: 'x', yref: 'y1',
+        text: 'The antarctic<br>temperature<br>rises first',
+        showarrow: true, arrowhead: 2, ax: -50, ay: -50,
+        font: {color: '#e63946'}, arrowcolor: '#e63946',
+        visible: showAnt
+      },
+      {
+        x: 17, y: 198, xref: 'x', yref: 'y2',
+        text: 'CO₂ rises<br>second',
+        showarrow: true, arrowhead: 2, ax: 0, ay: -60,
+        font: {color: '#219ebc'}, arrowcolor: '#219ebc',
+        visible: showCo2
+      },
+      {
+        x: 15.5, y: 11.5, xref: 'x', yref: 'y3',
+        text: 'Global<br>temperature<br>rises third',
+        showarrow: true, arrowhead: 2, ax: 50, ay: 40,
+        font: {color: '#7209b7'}, arrowcolor: '#7209b7',
+        visible: showGlob
+      }
+    ],
+    showlegend: false,
+    plot_bgcolor: 'white',
+    paper_bgcolor: 'white',
+    margin: { l: 60, r: 80, t: 40, b: 60 },
+    height: 550
+  };
+
+  Plotly.newPlot(div, [trace1, trace2, trace3], layout, {responsive: true});
+  return div;
+}
+```
+
+:::
+
+::::
 
 # Explore Part 1: The Greenhouse Effect
 
@@ -1739,7 +1936,57 @@ ${feedbackType === "Ice-Albedo Feedback" ? `
       text: "The sun getting hotter is the main cause of the current global warming trend.",
       type: "Myth",
       explanation: "False. Solar output has actually decreased slightly since the 1950s, while global temperatures have skyrocketed."
-    }
+    },
+    {
+      text: "Volcanoes emit more CO2 than human activities.",
+      type: "Myth",
+      explanation: "False. Human activities emit about 100 times more CO2 annually than all volcanoes combined."
+    },
+    {
+      text: "Ocean acidification is a direct result of increased atmospheric CO2.",
+      type: "Fact",
+      explanation: "True. The ocean absorbs about 30% of CO2 emissions, forming carbonic acid which lowers pH."
+    },
+    {
+      text: "Climate change is just part of a natural cycle.",
+      type: "Myth",
+      explanation: "False. While natural cycles exist, the current rate of warming is unprecedented and driven by human activities."
+    },
+    {
+    "text": "As the ocean gets warmer, it absorbs MORE carbon dioxide, helping to cool the planet down.",
+    "type": "Myth",
+    "explanation": "False. Warm water holds less gas than cold water (think of warm soda going flat). As oceans warm, they release CO2 back into the air, creating a positive feedback loop [file:3]."
+  },
+  {
+    "text": "Thawing permafrost (frozen soil) releases methane, a greenhouse gas that traps more heat than CO2.",
+    "type": "Fact",
+    "explanation": "Correct! When permafrost thaws, bacteria break down ancient organic matter, releasing methane and CO2. This causes more warming, which melts more permafrost [file:3]."
+  },
+  {
+    "text": "A record-breaking cold winter in New York proves that the Earth is not warming.",
+    "type": "Myth",
+    "explanation": "False. Weather is short-term; climate is long-term. Warming in the Arctic can destabilize the jet stream, pushing freezing air south even while the globe warms [file:2]."
+  },
+  {
+    "text": "The 'Ozone Hole' is the main cause of the global warming we see today.",
+    "type": "Myth",
+    "explanation": "False. The ozone hole lets in UV radiation (causing sunburns), but the Greenhouse Effect traps heat (infrared). They are different atmospheric issues."
+  },
+  {
+    "text": "As the atmosphere warms, it holds more water vapor, which traps even more heat.",
+    "type": "Fact",
+    "explanation": "Correct! Warmer air acts like a bigger sponge for water. Since water vapor is a greenhouse gas, this amplifies the warming (a positive feedback loop) [file:2]."
+  },
+  {
+    "text": "Plants will grow much faster with more CO2, so climate change will actually make the Earth greener and cooler.",
+    "type": "Myth",
+    "explanation": "False. While plants need CO2, the heat stress, droughts, and lack of soil nutrients caused by climate change often outweigh the benefits of extra CO2."
+  },
+  {
+    "text": "Clouds can both cool the Earth by reflecting sunlight and warm the Earth by trapping heat.",
+    "type": "Fact",
+    "explanation": "Correct! White clouds reflect sunlight (albedo effect/cooling), but they are made of water vapor which traps heat (greenhouse effect/warming). The balance is tricky!"
+  }
   ];
 
   // 2. STATE MANAGEMENT (Vanilla JS - No external libraries needed)
@@ -1903,131 +2150,168 @@ ${feedbackType === "Ice-Albedo Feedback" ? `
 ---
 
 ::: {.quiz-section}
-## 📝 Climate Feedbacks Quiz
-:::
 
 ```{ojs}
 //| echo: false
 {
+  const d3 = await require("d3@7");
+
   const questions = [
     {
       q: "What is the primary greenhouse gas that humans have increased in the atmosphere?",
-      options: ["A) Oxygen", "B) Nitrogen", "C) Carbon dioxide", "D) Argon"],
+      options: ["Oxygen", "Nitrogen", "Carbon dioxide", "Argon"],
       correct: 2,
       explanation: "Carbon dioxide (CO₂) is the primary greenhouse gas increased by human activities, mainly through burning fossil fuels."
     },
     {
       q: "What is albedo?",
-      options: ["A) The amount of CO₂ in the atmosphere", "B) The measure of how much light a surface reflects", "C) The temperature of the ocean", "D) The speed of ice melting"],
+      options: ["The amount of CO₂ in the atmosphere", "The measure of how much light a surface reflects", "The temperature of the ocean", "The speed of ice melting"],
       correct: 1,
       explanation: "Albedo measures the reflectivity of a surface — from 0 (absorbs all light) to 1 (reflects all light)."
     },
     {
       q: "Which surface has the HIGHEST albedo?",
-      options: ["A) Fresh snow", "B) Ocean water", "C) Forest", "D) Desert sand"],
+      options: ["Fresh snow", "Ocean water", "Forest", "Desert sand"],
       correct: 0,
       explanation: "Fresh snow has an albedo of about 0.80–0.90, reflecting most incoming solar radiation."
     },
     {
       q: "The ice-albedo feedback is an example of:",
-      options: ["A) Negative feedback that stabilizes climate", "B) Positive feedback that amplifies warming", "C) No feedback effect", "D) A cooling mechanism"],
+      options: ["Negative feedback that stabilizes climate", "Positive feedback that amplifies warming", "No feedback effect", "A cooling mechanism"],
       correct: 1,
       explanation: "Ice-albedo is a positive feedback: warming melts ice → darker surface → more absorption → more warming."
     },
     {
       q: "Why is the Arctic warming almost 4 times faster than the global average?",
-      options: ["A) The Sun is closer to the Arctic", "B) Ice-albedo feedback amplifies warming there", "C) There are more people in the Arctic", "D) Volcanic activity in the Arctic"],
+      options: ["The Sun is closer to the Arctic", "Ice-albedo feedback amplifies warming there", "There are more people in the Arctic", "Volcanic activity in the Arctic"],
       correct: 1,
       explanation: "Arctic amplification occurs because the ice-albedo feedback is strongest where ice is melting, creating a self-reinforcing warming cycle."
     },
     {
       q: "Current atmospheric CO₂ levels are approximately:",
-      options: ["A) 280 ppm (pre-industrial level)", "B) 350 ppm", "C) 420 ppm", "D) 1000 ppm"],
+      options: ["280 ppm (pre-industrial level)", "350 ppm", "420 ppm", "1000 ppm"],
       correct: 2,
       explanation: "As of 2024, atmospheric CO₂ is approximately 420 ppm — 50% higher than the pre-industrial level of 280 ppm."
     },
     {
       q: "In the greenhouse effect, what type of radiation do greenhouse gases absorb?",
-      options: ["A) Visible light from the Sun", "B) Ultraviolet radiation", "C) Infrared radiation from Earth's surface", "D) X-rays"],
+      options: ["Visible light from the Sun", "Ultraviolet radiation", "Infrared radiation from Earth's surface", "X-rays"],
       correct: 2,
       explanation: "Greenhouse gases absorb infrared (heat) radiation emitted by Earth's surface, trapping energy in the atmosphere."
     },
     {
       q: "The permafrost feedback involves the release of which gases?",
-      options: ["A) Oxygen and nitrogen", "B) Methane and carbon dioxide", "C) Ozone and CFCs", "D) Hydrogen and helium"],
+      options: ["Oxygen and nitrogen", "Methane and carbon dioxide", "Ozone and CFCs", "Hydrogen and helium"],
       correct: 1,
       explanation: "Thawing permafrost releases methane (CH₄) and CO₂ from decomposing organic matter — methane is 80x more potent as a greenhouse gas over 20 years."
     },
     {
       q: "If Arctic sea ice (albedo 0.60) is replaced by open ocean (albedo 0.06), what happens to energy absorption?",
-      options: ["A) Stays the same", "B) Decreases slightly", "C) Increases dramatically (10x more absorbed)", "D) Decreases dramatically"],
+      options: ["Stays the same", "Decreases slightly", "Increases dramatically (10x more absorbed)", "Decreases dramatically"],
       correct: 2,
       explanation: "Ocean absorbs 94% of incoming radiation vs. ice absorbing only 40% — nearly 10x more energy is absorbed."
     },
     {
       q: "Which statement best explains why scientists are confident humans are causing current climate change?",
-      options: ["A) It's just a guess", "B) Temperatures have changed before naturally", "C) CO₂ levels are far beyond natural range and match timing of industrialization", "D) The Sun has gotten brighter"],
+      options: ["It's just a guess", "Temperatures have changed before naturally", "CO₂ levels are far beyond natural range and match timing of industrialization", "The Sun has gotten brighter"],
       correct: 2,
       explanation: "CO₂ at 420 ppm is far beyond the 180–280 ppm natural range of the last 800,000 years, and the rise correlates precisely with fossil fuel use."
     }
   ];
 
-  const container = d3.create("div").attr("class", "interactive-quiz");
-  container.append("p").style("text-align", "center").style("color", "#718096").style("font-style", "italic")
-    .text("Select an answer for each question, then click 'Check Answers' to see your score.");
+  // Build the interactive quiz
+  const wrap = d3.create("div").attr("class", "pf-quiz");
 
-  const state = { answers: new Array(questions.length).fill(-1) };
+  // Header
+  const header = wrap.append("div").attr("class", "pf-quiz-header");
+  header.append("h2").text("📝 Climate Feedbacks Quiz");
+  header.append("p").text("Click an answer to see instant feedback and guidance on each question.");
 
-  questions.forEach((question, qi) => {
-    const qDiv = container.append("div").attr("class", "quiz-question");
-    qDiv.append("p").style("font-weight", "700").style("margin-bottom", "12px")
-      .text(`Question ${qi + 1}: ${question.q}`);
+  let score = 0;
+  let answered = 0;
+  const scoreBanner = wrap.append("div").attr("class", "pf-score-banner").style("display", "none");
 
-    question.options.forEach((opt, oi) => {
-      const label = qDiv.append("label").attr("class", "quiz-option")
-        .style("display", "block").style("padding", "10px 16px").style("margin", "6px 0")
-        .style("border", "2px solid #e2e8f0").style("border-radius", "8px").style("cursor", "pointer");
-      label.append("input").attr("type", "radio").attr("name", `cfq${qi}`)
-        .style("margin-right", "10px")
-        .on("change", () => { state.answers[qi] = oi; });
-      label.append("span").text(opt);
+  questions.forEach((q, qi) => {
+    const card = wrap.append("div").attr("class", "pf-question-card");
+    card.append("div").attr("class", "pf-q-meta").text(`Question ${qi + 1} of ${questions.length}`);
+    card.append("div").attr("class", "pf-q-text").text(q.q);
+
+    const feedbackDiv = card.append("div").attr("class", "pf-feedback-box");
+
+    const optionEls = q.options.map((opt, oi) => {
+      const btn = card.append("div")
+        .attr("class", "pf-option")
+        .text(opt);
+
+      btn.on("click", function() {
+        // Ignore if already answered
+        if (card.classed("pf-done")) return;
+        card.classed("pf-done", true);
+
+        const isCorrect = oi === q.correct;
+        if (isCorrect) score++;
+        answered++;
+
+        // Lock and style all options
+        optionEls.forEach((el, idx) => {
+          el.classed("pf-locked", true);
+          if (idx === oi && isCorrect) el.classed("pf-selected-correct", true);
+          else if (idx === oi && !isCorrect) el.classed("pf-selected-wrong", true);
+          else if (idx === q.correct && !isCorrect) el.classed("pf-reveal-correct", true);
+        });
+
+        // Show feedback
+        feedbackDiv
+          .classed("pf-fb-correct", isCorrect)
+          .classed("pf-fb-wrong", !isCorrect)
+          .html(
+            `<strong>${isCorrect ? "✅ Correct!" : `❌ Not quite — the correct answer is: <em>${q.options[q.correct]}</em>`}</strong><br><br>` +
+            q.explanation
+          );
+
+        // Update score banner
+        if (answered === questions.length) {
+          const pct = Math.round(score / questions.length * 100);
+          const emoji = pct === 100 ? "🌟" : pct >= 80 ? "👏" : pct >= 60 ? "👍" : "📚";
+          scoreBanner.style("display", "block")
+            .html(
+              `<div class="pf-score-emoji">${emoji}</div>` +
+              `<div class="pf-score-text">Score: ${score} / ${questions.length} &nbsp;(${pct}%)</div>` +
+              `<div class="pf-score-sub">${
+                pct === 100 ? "Perfect score! Outstanding mastery of climate feedbacks and the greenhouse effect." :
+                pct >= 80 ? "Great work! Review any questions you missed for full understanding." :
+                pct >= 60 ? "Good effort! Revisit the ice-albedo feedback and greenhouse sections to strengthen your knowledge." :
+                "Keep studying! Focus on the Engage and Explain sections to build your understanding."
+              }</div>` +
+              `<button class="pf-restart-btn" onclick="
+                this.closest('.pf-quiz').querySelectorAll('.pf-question-card').forEach(c => {
+                  c.classList.remove('pf-done');
+                  c.querySelectorAll('.pf-option').forEach(o => {
+                    o.classList.remove('pf-locked','pf-selected-correct','pf-selected-wrong','pf-reveal-correct');
+                  });
+                  c.querySelector('.pf-feedback-box').className = 'pf-feedback-box';
+                  c.querySelector('.pf-feedback-box').innerHTML = '';
+                });
+                this.closest('.pf-score-banner').style.display = 'none';
+              ">🔄 Try Again</button>`
+            );
+          // Reset counters on restart click
+          scoreBanner.select(".pf-restart-btn").on("click.reset", () => {
+            score = 0;
+            answered = 0;
+          });
+        }
+      });
+
+      return btn;
     });
-
-    qDiv.append("div").attr("class", `cf-feedback-${qi}`);
   });
 
-  const btnDiv = container.append("div").style("text-align", "center").style("margin-top", "20px");
-  btnDiv.append("button")
-    .style("background", "linear-gradient(135deg, #667eea, #764ba2)").style("color", "white")
-    .style("border", "none").style("padding", "12px 36px").style("border-radius", "25px")
-    .style("font-size", "1.1em").style("font-weight", "700").style("cursor", "pointer")
-    .style("box-shadow", "0 4px 15px rgba(102,126,234,0.4)")
-    .text("Check Answers")
-    .on("click", function() {
-      let score = 0;
-      questions.forEach((question, qi) => {
-        const fb = container.select(`.cf-feedback-${qi}`);
-        fb.html("");
-        if (state.answers[qi] === -1) {
-          fb.append("div").attr("class", "quiz-feedback incorrect")
-            .text("⚠️ Please select an answer.");
-          return;
-        }
-        const isCorrect = state.answers[qi] === question.correct;
-        if (isCorrect) score++;
-        fb.append("div").attr("class", `quiz-feedback ${isCorrect ? "correct" : "incorrect"}`)
-          .html(`${isCorrect ? "✅ Correct!" : "❌ Incorrect. The correct answer is " + question.options[question.correct] + "."}<br><em>${question.explanation}</em>`);
-      });
-      
-      const scoreDiv = container.select(".cf-score-display");
-      scoreDiv.html("");
-      const pct = Math.round(score / questions.length * 100);
-      const emoji = pct === 100 ? "🌟" : pct >= 80 ? "👏" : pct >= 60 ? "👍" : "📚";
-      scoreDiv.append("div").attr("class", "quiz-score")
-        .text(`${emoji} Score: ${score}/${questions.length} (${pct}%)`);
-    });
+  // Move score banner to end
+  wrap.node().appendChild(scoreBanner.node());
 
-  container.append("div").attr("class", "cf-score-display");
-  return container.node();
+  return wrap.node();
 }
 ```
+
+:::

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYC Snowfall Stacked Bars</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        :root {
+            --color-bg-primary: #ffffff;
+            --color-bg-secondary: #f8f9fa;
+            --color-text-primary: #212529;
+            --color-text-secondary: #6c757d;
+            --color-border: #dee2e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-text-primary);
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+        }
+
+        .controls {
+            background: var(--color-bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            white-space: nowrap;
+        }
+
+        .range-inputs {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            width: 100px;
+            padding: 0.5rem;
+            background: var(--color-bg-primary);
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            color: var(--color-text-primary);
+            font-size: 0.95rem;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #0d6efd;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        #chart {
+            background: var(--color-bg-primary);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid var(--color-border);
+            margin-bottom: 2rem;
+            min-height: 600px;
+        }
+
+        .info-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .stats-box, .records-box {
+            background: var(--color-bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+        }
+
+        .stats-box h3, .records-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--color-text-primary);
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            color: var(--color-text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        .record-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .record-item:last-child {
+            border-bottom: none;
+        }
+
+        .record-rank {
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            width: 30px;
+        }
+
+        .record-details {
+            flex: 1;
+            color: var(--color-text-primary);
+        }
+
+        .record-amount {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        @media (max-width: 968px) {
+            .info-section {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .control-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .range-inputs {
+                flex-direction: column;
+            }
+
+            input[type="number"] {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Snowfall in New York City Central Park</h1>
+            <p class="subtitle">Monthly Seasonal Snowfall with Trend Analysis (1869-2026)</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>Year Range:</label>
+                <div class="range-inputs">
+                    <input type="number" id="startYear" min="1869" max="2025" value="1869">
+                    <span>to</span>
+                    <input type="number" id="endYear" min="1869" max="2025" value="2025">
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="showTrend" checked>
+                        Show Trend Line
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="showMovingAvg" checked>
+                        Show 10-Year Moving Average
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div id="chart"></div>
+
+        <div class="info-section">
+            <div class="stats-box">
+                <h3>Statistics for Selected Period</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">Total Seasons</div>
+                        <div class="stat-value"><span id="seasonCount">--</span></div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Average Snowfall</div>
+                        <div class="stat-value"><span id="avgSnow">--</span>"</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Maximum Season</div>
+                        <div class="stat-value"><span id="maxSnow">--</span>"</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Trend</div>
+                        <div class="stat-value"><span id="trendValue">--</span>"/decade</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Dec-Feb Avg</div>
+                        <div class="stat-value"><span id="avgWinter">--</span>"</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Mar-Apr Avg</div>
+                        <div class="stat-value"><span id="avgSpring">--</span>"</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="records-box">
+                <h3>Heaviest Snowfalls in One Storm</h3>
+                <div id="recordStorms">
+                    <div class="record-item">
+                        <span class="record-rank">1.</span>
+                        <span class="record-details">Jan. 22-23, 2016</span>
+                        <span class="record-amount">27.5"</span>
+                    </div>
+                    <div class="record-item">
+                        <span class="record-rank">2.</span>
+                        <span class="record-details">Feb. 11-12, 2006</span>
+                        <span class="record-amount">26.9"</span>
+                    </div>
+                    <div class="record-item">
+                        <span class="record-rank">3.</span>
+                        <span class="record-details">Dec. 26-27, 1947</span>
+                        <span class="record-amount">25.8"</span>
+                    </div>
+                    <div class="record-item">
+                        <span class="record-rank">4.</span>
+                        <span class="record-details">Mar. 12-14, 1888</span>
+                        <span class="record-amount">21.0"</span>
+                    </div>
+                    <div class="record-item">
+                        <span class="record-rank">5.</span>
+                        <span class="record-details">Feb. 25-26, 2010</span>
+                        <span class="record-amount">20.9"</span>
+                    </div>
+                    <div class="record-item">
+                        <span class="record-rank">6.</span>
+                        <span class="record-details">Jan. 7-8, 1996</span>
+                        <span class="record-amount">20.2"</span>
+                    </div>
+                    <div class="record-item">
+                        <span class="record-rank">7.</span>
+                        <span class="record-details">Dec. 26-27, 2010</span>
+                        <span class="record-amount">20.0"</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const monthlyData = [{"Year":1869,"Season":"1869-70","OctNov":0.0,"Dec":5.3,"Jan":1.1,"Feb":9.3,"Mar":9.6,"Apr":2.5,"Total":27.8},{"Year":1870,"Season":"1870-71","OctNov":0.0,"Dec":3.0,"Jan":15.9,"Feb":12.1,"Mar":0.1,"Apr":2.0,"Total":33.1},{"Year":1871,"Season":"1871-72","OctNov":0.3,"Dec":3.9,"Jan":1.8,"Feb":3.0,"Mar":5.1,"Apr":0.0,"Total":14.1},{"Year":1872,"Season":"1872-73","OctNov":3.5,"Dec":27.0,"Jan":10.6,"Feb":18.8,"Mar":0.4,"Apr":0.0,"Total":60.3},{"Year":1873,"Season":"1873-74","OctNov":2.0,"Dec":9.3,"Jan":6.6,"Feb":19.0,"Mar":0.0,"Apr":0.0,"Total":36.9},{"Year":1874,"Season":"1874-75","OctNov":0.0,"Dec":10.0,"Jan":14.5,"Feb":4.5,"Mar":15.3,"Apr":13.5,"Total":57.8},{"Year":1875,"Season":"1875-76","OctNov":0.0,"Dec":0.5,"Jan":1.5,"Feb":12.5,"Mar":3.8,"Apr":0.0,"Total":18.3},{"Year":1876,"Season":"1876-77","OctNov":0.6,"Dec":12.4,"Jan":20.5,"Feb":0.4,"Mar":6.5,"Apr":0.0,"Total":40.4},{"Year":1877,"Season":"1877-78","OctNov":0.0,"Dec":0.0,"Jan":6.1,"Feb":2.0,"Mar":0.0,"Apr":0.0,"Total":8.1},{"Year":1878,"Season":"1878-79","OctNov":0.1,"Dec":5.5,"Jan":17.3,"Feb":11.3,"Mar":1.5,"Apr":0.0,"Total":35.7},{"Year":1879,"Season":"1879-80","OctNov":2.5,"Dec":5.4,"Jan":2.5,"Feb":4.0,"Mar":8.3,"Apr":0.0,"Total":22.7},{"Year":1880,"Season":"1880-81","OctNov":1.4,"Dec":11.5,"Jan":11.5,"Feb":8.8,"Mar":2.3,"Apr":0.0,"Total":35.5},{"Year":1881,"Season":"1881-82","OctNov":0.0,"Dec":1.3,"Jan":17.5,"Feb":9.3,"Mar":2.8,"Apr":0.5,"Total":31.4},{"Year":1882,"Season":"1882-83","OctNov":14.0,"Dec":0.0,"Jan":9.4,"Feb":10.1,"Mar":10.0,"Apr":0.5,"Total":44.0},{"Year":1883,"Season":"1883-84","OctNov":0.0,"Dec":22.5,"Jan":10.3,"Feb":8.0,"Mar":2.3,"Apr":0.0,"Total":43.1},{"Year":1884,"Season":"1884-85","OctNov":0.4,"Dec":10.6,"Jan":4.6,"Feb":14.5,"Mar":4.1,"Apr":0.0,"Total":34.2},{"Year":1885,"Season":"1885-86","OctNov":0.0,"Dec":0.0,"Jan":13.5,"Feb":5.3,"Mar":1.0,"Apr":1.0,"Total":20.8},{"Year":1886,"Season":"1886-87","OctNov":0.0,"Dec":10.3,"Jan":6.6,"Feb":9.0,"Mar":2.0,"Apr":5.0,"Total":32.9},{"Year":1887,"Season":"1887-88","OctNov":0.3,"Dec":9.0,"Jan":11.0,"Feb":3.0,"Mar":22.3,"Apr":0.0,"Total":45.6},{"Year":1888,"Season":"1888-89","OctNov":1.5,"Dec":0.0,"Jan":4.0,"Feb":7.0,"Mar":4.0,"Apr":0.0,"Total":16.5},{"Year":1889,"Season":"1889-90","OctNov":0.0,"Dec":6.0,"Jan":0.0,"Feb":1.0,"Mar":17.0,"Apr":0.3,"Total":24.3},{"Year":1890,"Season":"1890-91","OctNov":0.0,"Dec":11.4,"Jan":10.0,"Feb":5.3,"Mar":2.1,"Apr":0.0,"Total":28.8},{"Year":1891,"Season":"1891-92","OctNov":0.0,"Dec":0.0,"Jan":12.3,"Feb":0.1,"Mar":12.0,"Apr":1.0,"Total":25.4},{"Year":1892,"Season":"1892-93","OctNov":6.3,"Dec":3.0,"Jan":16.0,"Feb":17.8,"Mar":6.1,"Apr":0.5,"Total":49.7},{"Year":1893,"Season":"1893-94","OctNov":0.0,"Dec":5.3,"Jan":9.3,"Feb":20.5,"Mar":0.0,"Apr":1.0,"Total":36.1},{"Year":1894,"Season":"1894-95","OctNov":0.5,"Dec":4.0,"Jan":9.5,"Feb":9.0,"Mar":4.0,"Apr":0.0,"Total":27.0},{"Year":1895,"Season":"1895-96","OctNov":0.0,"Dec":0.3,"Jan":3.0,"Feb":9.5,"Mar":30.5,"Apr":3.0,"Total":46.3},{"Year":1896,"Season":"1896-97","OctNov":5.0,"Dec":13.0,"Jan":11.3,"Feb":11.0,"Mar":3.3,"Apr":0.0,"Total":43.6},{"Year":1897,"Season":"1897-98","OctNov":2.3,"Dec":4.0,"Jan":9.0,"Feb":1.3,"Mar":2.0,"Apr":2.5,"Total":21.1},{"Year":1898,"Season":"1898-99","OctNov":19.0,"Dec":1.5,"Jan":5.3,"Feb":25.3,"Mar":4.8,"Apr":0.0,"Total":55.9},{"Year":1899,"Season":"1899-00","OctNov":0.0,"Dec":0.1,"Jan":1.0,"Feb":6.5,"Mar":5.8,"Apr":0.0,"Total":13.4},{"Year":1900,"Season":"1900-01","OctNov":0.0,"Dec":0.1,"Jan":2.0,"Feb":7.0,"Mar":0.0,"Apr":0.0,"Total":9.1},{"Year":1901,"Season":"1901-02","OctNov":0.1,"Dec":1.5,"Jan":6.1,"Feb":15.8,"Mar":6.5,"Apr":0.0,"Total":30.0},{"Year":1902,"Season":"1902-03","OctNov":0.0,"Dec":14.4,"Jan":4.5,"Feb":9.8,"Mar":0.0,"Apr":0.0,"Total":28.7},{"Year":1903,"Season":"1903-04","OctNov":0.0,"Dec":6.3,"Jan":15.6,"Feb":5.0,"Mar":5.4,"Apr":0.0,"Total":32.3},{"Year":1904,"Season":"1904-05","OctNov":0.5,"Dec":21.6,"Jan":18.4,"Feb":5.8,"Mar":1.8,"Apr":0.0,"Total":48.1},{"Year":1905,"Season":"1905-06","OctNov":0.0,"Dec":1.0,"Jan":1.5,"Feb":6.0,"Mar":11.5,"Apr":0.0,"Total":20.0},{"Year":1906,"Season":"1906-07","OctNov":1.0,"Dec":0.3,"Jan":11.0,"Feb":21.8,"Mar":13.3,"Apr":5.8,"Total":53.2},{"Year":1907,"Season":"1907-08","OctNov":0.0,"Dec":5.3,"Jan":10.0,"Feb":14.6,"Mar":3.5,"Apr":0.0,"Total":33.4},{"Year":1908,"Season":"1908-09","OctNov":1.0,"Dec":2.9,"Jan":11.3,"Feb":0.8,"Mar":4.3,"Apr":0.0,"Total":20.3},{"Year":1909,"Season":"1909-10","OctNov":0.8,"Dec":9.0,"Jan":11.1,"Feb":5.0,"Mar":1.3,"Apr":0.0,"Total":27.2},{"Year":1910,"Season":"1910-11","OctNov":0.0,"Dec":6.6,"Jan":1.3,"Feb":13.3,"Mar":3.5,"Apr":0.5,"Total":25.2},{"Year":1911,"Season":"1911-12","OctNov":1.0,"Dec":8.5,"Jan":13.0,"Feb":2.5,"Mar":4.5,"Apr":0.0,"Total":29.5},{"Year":1912,"Season":"1912-13","OctNov":0.8,"Dec":11.4,"Jan":0.3,"Feb":2.6,"Mar":0.2,"Apr":0.0,"Total":15.3},{"Year":1913,"Season":"1913-14","OctNov":0.0,"Dec":0.3,"Jan":1.3,"Feb":17.4,"Mar":21.5,"Apr":0.0,"Total":40.5},{"Year":1914,"Season":"1914-15","OctNov":0.0,"Dec":2.6,"Jan":3.8,"Feb":4.5,"Mar":7.7,"Apr":10.2,"Total":28.8},{"Year":1915,"Season":"1915-16","OctNov":0.0,"Dec":8.1,"Jan":0.7,"Feb":13.1,"Mar":25.5,"Apr":3.3,"Total":50.7},{"Year":1916,"Season":"1916-17","OctNov":0.0,"Dec":14.5,"Jan":5.8,"Feb":12.2,"Mar":11.7,"Apr":6.5,"Total":50.7},{"Year":1917,"Season":"1917-18","OctNov":0.3,"Dec":14.1,"Jan":13.2,"Feb":3.7,"Mar":0.6,"Apr":2.6,"Total":34.5},{"Year":1918,"Season":"1918-19","OctNov":0.0,"Dec":0.3,"Jan":0.3,"Feb":0.5,"Mar":2.7,"Apr":0.0,"Total":3.8},{"Year":1919,"Season":"1919-20","OctNov":0.0,"Dec":8.8,"Jan":8.2,"Feb":25.3,"Mar":5.3,"Apr":0.0,"Total":47.6},{"Year":1920,"Season":"1920-21","OctNov":0.0,"Dec":1.7,"Jan":3.5,"Feb":13.3,"Mar":0.0,"Apr":0.1,"Total":18.6},{"Year":1921,"Season":"1921-22","OctNov":0.0,"Dec":7.3,"Jan":9.4,"Feb":7.2,"Mar":3.9,"Apr":0.0,"Total":27.8},{"Year":1922,"Season":"1922-23","OctNov":1.0,"Dec":8.0,"Jan":24.5,"Feb":18.8,"Mar":8.1,"Apr":0.0,"Total":60.4},{"Year":1923,"Season":"1923-24","OctNov":0.0,"Dec":1.5,"Jan":2.5,"Feb":11.9,"Mar":3.1,"Apr":8.5,"Total":27.5},{"Year":1924,"Season":"1924-25","OctNov":0.0,"Dec":0.9,"Jan":27.4,"Feb":1.3,"Mar":0.0,"Apr":0.0,"Total":29.6},{"Year":1925,"Season":"1925-26","OctNov":0.9,"Dec":0.9,"Jan":3.1,"Feb":26.3,"Mar":1.2,"Apr":0.0,"Total":32.4},{"Year":1926,"Season":"1926-27","OctNov":0.0,"Dec":11.7,"Jan":5.7,"Feb":4.6,"Mar":0.2,"Apr":0.1,"Total":22.3},{"Year":1927,"Season":"1927-28","OctNov":0.0,"Dec":2.1,"Jan":2.7,"Feb":4.0,"Mar":5.7,"Apr":0.0,"Total":14.5},{"Year":1928,"Season":"1928-29","OctNov":0.0,"Dec":2.0,"Jan":2.3,"Feb":9.3,"Mar":0.2,"Apr":0.0,"Total":13.8},{"Year":1929,"Season":"1929-30","OctNov":0.0,"Dec":6.3,"Jan":3.5,"Feb":3.8,"Mar":0.0,"Apr":0.0,"Total":13.6},{"Year":1930,"Season":"1930-31","OctNov":0.0,"Dec":5.7,"Jan":0.5,"Feb":3.6,"Mar":1.8,"Apr":0.0,"Total":11.6},{"Year":1931,"Season":"1931-32","OctNov":2.0,"Dec":0.1,"Jan":0.8,"Feb":1.8,"Mar":0.6,"Apr":0.0,"Total":5.3},{"Year":1932,"Season":"1932-33","OctNov":0.0,"Dec":9.4,"Jan":0.0,"Feb":12.8,"Mar":4.8,"Apr":0.0,"Total":27.0},{"Year":1933,"Season":"1933-34","OctNov":0.5,"Dec":14.9,"Jan":0.1,"Feb":27.9,"Mar":8.6,"Apr":0.0,"Total":52.0},{"Year":1934,"Season":"1934-35","OctNov":0.0,"Dec":1.0,"Jan":23.6,"Feb":7.2,"Mar":2.0,"Apr":0.0,"Total":33.8},{"Year":1935,"Season":"1935-36","OctNov":2.7,"Dec":6.6,"Jan":12.1,"Feb":10.3,"Mar":1.5,"Apr":0.0,"Total":33.2},{"Year":1936,"Season":"1936-37","OctNov":3.2,"Dec":0.0,"Jan":6.5,"Feb":3.4,"Mar":2.5,"Apr":0.0,"Total":15.6},{"Year":1937,"Season":"1937-38","OctNov":0.8,"Dec":0.7,"Jan":6.5,"Feb":0.0,"Mar":0.7,"Apr":6.4,"Total":15.1},{"Year":1938,"Season":"1938-39","OctNov":12.8,"Dec":1.7,"Jan":10.3,"Feb":5.5,"Mar":7.0,"Apr":0.0,"Total":37.3},{"Year":1939,"Season":"1939-40","OctNov":0.0,"Dec":3.1,"Jan":3.5,"Feb":12.0,"Mar":5.3,"Apr":1.8,"Total":25.7},{"Year":1940,"Season":"1940-41","OctNov":2.2,"Dec":3.0,"Jan":9.2,"Feb":5.4,"Mar":19.2,"Apr":0.0,"Total":39.0},{"Year":1941,"Season":"1941-42","OctNov":0.0,"Dec":0.3,"Jan":6.4,"Feb":1.9,"Mar":0.5,"Apr":2.2,"Total":11.3},{"Year":1942,"Season":"1942-43","OctNov":0.0,"Dec":8.5,"Jan":9.5,"Feb":4.4,"Mar":7.1,"Apr":0.0,"Total":29.5},{"Year":1943,"Season":"1943-44","OctNov":0.0,"Dec":0.0,"Jan":4.8,"Feb":7.7,"Mar":4.8,"Apr":6.5,"Total":23.8},{"Year":1944,"Season":"1944-45","OctNov":0.0,"Dec":6.7,"Jan":12.3,"Feb":8.1,"Mar":0.0,"Apr":0.0,"Total":27.1},{"Year":1945,"Season":"1945-46","OctNov":3.7,"Dec":15.6,"Jan":4.2,"Feb":7.9,"Mar":0.0,"Apr":0.0,"Total":31.4},{"Year":1946,"Season":"1946-47","OctNov":0.0,"Dec":1.3,"Jan":5.5,"Feb":17.7,"Mar":6.1,"Apr":0.0,"Total":30.6},{"Year":1947,"Season":"1947-48","OctNov":0.0,"Dec":30.2,"Jan":15.3,"Feb":13.6,"Mar":4.7,"Apr":0.0,"Total":63.8},{"Year":1948,"Season":"1948-49","OctNov":0.0,"Dec":25.3,"Jan":6.4,"Feb":10.7,"Mar":4.2,"Apr":0.0,"Total":46.6},{"Year":1949,"Season":"1949-50","OctNov":0.5,"Dec":1.1,"Jan":0.4,"Feb":8.5,"Mar":1.4,"Apr":1.9,"Total":13.8},{"Year":1950,"Season":"1950-51","OctNov":0.0,"Dec":3.8,"Jan":3.2,"Feb":1.9,"Mar":2.7,"Apr":0.0,"Total":11.6},{"Year":1951,"Season":"1951-52","OctNov":0.0,"Dec":3.3,"Jan":6.2,"Feb":2.8,"Mar":7.4,"Apr":0.0,"Total":19.7},{"Year":1952,"Season":"1952-53","OctNov":2.2,"Dec":7.5,"Jan":4.1,"Feb":0.4,"Mar":0.9,"Apr":0.0,"Total":15.1},{"Year":1953,"Season":"1953-54","OctNov":2.2,"Dec":0.0,"Jan":12.7,"Feb":0.5,"Mar":0.1,"Apr":0.3,"Total":15.8},{"Year":1954,"Season":"1954-55","OctNov":0.0,"Dec":0.1,"Jan":2.6,"Feb":5.2,"Mar":3.6,"Apr":0.0,"Total":11.5},{"Year":1955,"Season":"1955-56","OctNov":1.0,"Dec":3.3,"Jan":1.2,"Feb":2.7,"Mar":21.1,"Apr":4.2,"Total":33.5},{"Year":1956,"Season":"1956-57","OctNov":0.0,"Dec":0.9,"Jan":8.9,"Feb":7.0,"Mar":2.6,"Apr":2.5,"Total":21.9},{"Year":1957,"Season":"1957-58","OctNov":0.0,"Dec":8.7,"Jan":9.2,"Feb":10.7,"Mar":15.9,"Apr":0.2,"Total":44.7},{"Year":1958,"Season":"1958-59","OctNov":0.0,"Dec":3.8,"Jan":1.5,"Feb":0.4,"Mar":6.7,"Apr":0.6,"Total":13.0},{"Year":1959,"Season":"1959-60","OctNov":0.5,"Dec":15.8,"Jan":2.5,"Feb":1.9,"Mar":18.5,"Apr":0.0,"Total":39.2},{"Year":1960,"Season":"1960-61","OctNov":0.0,"Dec":18.6,"Jan":16.7,"Feb":18.2,"Mar":1.2,"Apr":0.0,"Total":54.7},{"Year":1961,"Season":"1961-62","OctNov":0.0,"Dec":7.7,"Jan":0.6,"Feb":9.6,"Mar":0.2,"Apr":0.0,"Total":18.1},{"Year":1962,"Season":"1962-63","OctNov":0.0,"Dec":4.5,"Jan":5.3,"Feb":3.7,"Mar":2.8,"Apr":0.0,"Total":16.3},{"Year":1963,"Season":"1963-64","OctNov":0.0,"Dec":11.3,"Jan":13.3,"Feb":14.1,"Mar":6.0,"Apr":0.0,"Total":44.7},{"Year":1964,"Season":"1964-65","OctNov":0.0,"Dec":3.1,"Jan":14.8,"Feb":2.5,"Mar":2.8,"Apr":1.2,"Total":24.4},{"Year":1965,"Season":"1965-66","OctNov":0.0,"Dec":0.0,"Jan":11.6,"Feb":9.8,"Mar":0.0,"Apr":0.0,"Total":21.4},{"Year":1966,"Season":"1966-67","OctNov":0.0,"Dec":9.1,"Jan":1.4,"Feb":23.6,"Mar":17.4,"Apr":0.0,"Total":51.5},{"Year":1967,"Season":"1967-68","OctNov":3.2,"Dec":5.5,"Jan":3.6,"Feb":1.1,"Mar":6.1,"Apr":0.0,"Total":19.5},{"Year":1968,"Season":"1968-69","OctNov":0.0,"Dec":7.0,"Jan":1.0,"Feb":16.6,"Mar":5.6,"Apr":0.0,"Total":30.2},{"Year":1969,"Season":"1969-70","OctNov":0.0,"Dec":6.8,"Jan":8.4,"Feb":6.4,"Mar":4.0,"Apr":0.0,"Total":25.6},{"Year":1970,"Season":"1970-71","OctNov":0.0,"Dec":2.4,"Jan":11.4,"Feb":0.0,"Mar":1.3,"Apr":0.4,"Total":15.5},{"Year":1971,"Season":"1971-72","OctNov":0.0,"Dec":0.0,"Jan":2.8,"Feb":17.8,"Mar":2.3,"Apr":0.0,"Total":22.9},{"Year":1972,"Season":"1972-73","OctNov":0.0,"Dec":0.0,"Jan":1.8,"Feb":0.8,"Mar":0.2,"Apr":0.0,"Total":2.8},{"Year":1973,"Season":"1973-74","OctNov":0.0,"Dec":2.8,"Jan":7.8,"Feb":9.4,"Mar":3.2,"Apr":0.3,"Total":23.5},{"Year":1974,"Season":"1974-75","OctNov":0.1,"Dec":0.1,"Jan":2.0,"Feb":10.6,"Mar":0.3,"Apr":0.0,"Total":13.1},{"Year":1975,"Season":"1975-76","OctNov":0.0,"Dec":2.3,"Jan":5.6,"Feb":5.0,"Mar":4.4,"Apr":0.0,"Total":17.3},{"Year":1976,"Season":"1976-77","OctNov":0.0,"Dec":5.1,"Jan":13.0,"Feb":5.8,"Mar":0.6,"Apr":0.0,"Total":24.5},{"Year":1977,"Season":"1977-78","OctNov":0.2,"Dec":0.4,"Jan":20.3,"Feb":23.0,"Mar":6.8,"Apr":0.0,"Total":50.7},{"Year":1978,"Season":"1978-79","OctNov":2.2,"Dec":0.5,"Jan":6.6,"Feb":20.1,"Mar":0.0,"Apr":0.0,"Total":29.4},{"Year":1979,"Season":"1979-80","OctNov":0.0,"Dec":3.5,"Jan":2.0,"Feb":2.7,"Mar":4.6,"Apr":0.0,"Total":12.8},{"Year":1980,"Season":"1980-81","OctNov":0.0,"Dec":2.8,"Jan":8.0,"Feb":0.0,"Mar":8.6,"Apr":0.0,"Total":19.4},{"Year":1981,"Season":"1981-82","OctNov":0.0,"Dec":2.1,"Jan":11.8,"Feb":0.4,"Mar":0.7,"Apr":9.6,"Total":24.6},{"Year":1982,"Season":"1982-83","OctNov":0.0,"Dec":3.0,"Jan":1.9,"Feb":21.5,"Mar":0.0,"Apr":0.8,"Total":27.2},{"Year":1983,"Season":"1983-84","OctNov":0.0,"Dec":1.6,"Jan":11.7,"Feb":0.2,"Mar":11.9,"Apr":0.0,"Total":25.4},{"Year":1984,"Season":"1984-85","OctNov":0.0,"Dec":5.5,"Jan":8.4,"Feb":10.0,"Mar":0.2,"Apr":0.0,"Total":24.1},{"Year":1985,"Season":"1985-86","OctNov":0.0,"Dec":0.9,"Jan":2.2,"Feb":9.9,"Mar":0.0,"Apr":0.0,"Total":13.0},{"Year":1986,"Season":"1986-87","OctNov":0.0,"Dec":0.6,"Jan":13.6,"Feb":7.0,"Mar":1.9,"Apr":0.0,"Total":23.1},{"Year":1987,"Season":"1987-88","OctNov":1.1,"Dec":2.6,"Jan":13.9,"Feb":1.5,"Mar":0.0,"Apr":0.0,"Total":19.1},{"Year":1988,"Season":"1988-89","OctNov":0.0,"Dec":0.3,"Jan":5.0,"Feb":0.3,"Mar":2.5,"Apr":0.0,"Total":8.1},{"Year":1989,"Season":"1989-90","OctNov":4.7,"Dec":1.4,"Jan":1.8,"Feb":1.8,"Mar":3.1,"Apr":0.6,"Total":13.4},{"Year":1990,"Season":"1990-91","OctNov":0.0,"Dec":7.2,"Jan":8.4,"Feb":9.1,"Mar":0.2,"Apr":0.0,"Total":24.9},{"Year":1991,"Season":"1991-92","OctNov":0.0,"Dec":0.7,"Jan":1.5,"Feb":1.0,"Mar":9.4,"Apr":0.0,"Total":12.6},{"Year":1992,"Season":"1992-93","OctNov":0.0,"Dec":0.4,"Jan":1.5,"Feb":10.7,"Mar":11.9,"Apr":0.0,"Total":24.5},{"Year":1993,"Season":"1993-94","OctNov":0.0,"Dec":6.9,"Jan":12.0,"Feb":26.4,"Mar":8.1,"Apr":0.0,"Total":53.4},{"Year":1994,"Season":"1994-95","OctNov":0.0,"Dec":0.0,"Jan":0.2,"Feb":11.6,"Mar":0.0,"Apr":0.0,"Total":11.8},{"Year":1995,"Season":"1995-96","OctNov":2.9,"Dec":11.5,"Jan":26.1,"Feb":21.2,"Mar":13.2,"Apr":0.7,"Total":75.6},{"Year":1996,"Season":"1996-97","OctNov":0.1,"Dec":0.0,"Jan":4.4,"Feb":3.8,"Mar":1.7,"Apr":0.0,"Total":10.0},{"Year":1997,"Season":"1997-98","OctNov":0.0,"Dec":0.0,"Jan":0.5,"Feb":0.0,"Mar":5.0,"Apr":0.0,"Total":5.5},{"Year":1998,"Season":"1998-99","OctNov":0.0,"Dec":2.0,"Jan":4.5,"Feb":1.7,"Mar":4.5,"Apr":0.0,"Total":12.7},{"Year":1999,"Season":"1999-00","OctNov":0.0,"Dec":0.0,"Jan":9.5,"Feb":5.2,"Mar":0.4,"Apr":1.2,"Total":16.3},{"Year":2000,"Season":"2000-01","OctNov":0.0,"Dec":13.4,"Jan":8.3,"Feb":9.5,"Mar":3.8,"Apr":0.0,"Total":35.0},{"Year":2001,"Season":"2001-02","OctNov":0.0,"Dec":0.0,"Jan":3.5,"Feb":0.0,"Mar":0.0,"Apr":0.0,"Total":3.5},{"Year":2002,"Season":"2002-03","OctNov":0.0,"Dec":11.0,"Jan":4.7,"Feb":26.1,"Mar":3.5,"Apr":4.0,"Total":49.3},{"Year":2003,"Season":"2003-04","OctNov":0.0,"Dec":19.8,"Jan":17.3,"Feb":0.7,"Mar":4.8,"Apr":0.0,"Total":42.6},{"Year":2004,"Season":"2004-05","OctNov":0.0,"Dec":3.0,"Jan":15.3,"Feb":15.8,"Mar":6.9,"Apr":0.0,"Total":41.0},{"Year":2005,"Season":"2005-06","OctNov":0.0,"Dec":9.7,"Jan":2.0,"Feb":26.9,"Mar":1.3,"Apr":0.1,"Total":40.0},{"Year":2006,"Season":"2006-07","OctNov":0.0,"Dec":0.0,"Jan":2.6,"Feb":3.8,"Mar":6.0,"Apr":0.0,"Total":12.4},{"Year":2007,"Season":"2007-08","OctNov":0.0,"Dec":2.9,"Jan":0.0,"Feb":9.0,"Mar":0.0,"Apr":0.0,"Total":11.9},{"Year":2008,"Season":"2008-09","OctNov":0.0,"Dec":6.0,"Jan":9.0,"Feb":4.3,"Mar":8.3,"Apr":0.0,"Total":27.6},{"Year":2009,"Season":"2009-10","OctNov":0.0,"Dec":12.4,"Jan":2.1,"Feb":36.9,"Mar":0.0,"Apr":0.0,"Total":51.4},{"Year":2010,"Season":"2010-11","OctNov":0.0,"Dec":20.1,"Jan":36.0,"Feb":4.8,"Mar":1.0,"Apr":0.0,"Total":61.9},{"Year":2011,"Season":"2011-12","OctNov":2.9,"Dec":0.0,"Jan":4.3,"Feb":0.2,"Mar":0.0,"Apr":0.0,"Total":7.4},{"Year":2012,"Season":"2012-13","OctNov":4.7,"Dec":0.4,"Jan":1.5,"Feb":12.2,"Mar":7.3,"Apr":0.0,"Total":26.1},{"Year":2013,"Season":"2013-14","OctNov":0.0,"Dec":8.6,"Jan":19.7,"Feb":29.0,"Mar":0.1,"Apr":0.0,"Total":57.4},{"Year":2014,"Season":"2014-15","OctNov":0.2,"Dec":1.0,"Jan":16.9,"Feb":13.6,"Mar":18.6,"Apr":0.0,"Total":50.3},{"Year":2015,"Season":"2015-16","OctNov":0.0,"Dec":0.0,"Jan":27.9,"Feb":4.0,"Mar":0.9,"Apr":0.0,"Total":32.8},{"Year":2016,"Season":"2016-17","OctNov":0.0,"Dec":3.2,"Jan":7.9,"Feb":9.4,"Mar":9.7,"Apr":0.0,"Total":30.2},{"Year":2017,"Season":"2017-18","OctNov":0.0,"Dec":7.7,"Jan":11.2,"Feb":4.9,"Mar":11.6,"Apr":5.5,"Total":40.9},{"Year":2018,"Season":"2018-19","OctNov":6.4,"Dec":0.0,"Jan":1.1,"Feb":2.6,"Mar":10.4,"Apr":0.0,"Total":20.5},{"Year":2019,"Season":"2019-20","OctNov":0.0,"Dec":2.5,"Jan":2.3,"Feb":0.0,"Mar":0.0,"Apr":0.0,"Total":4.8},{"Year":2020,"Season":"2020-21","OctNov":0.0,"Dec":10.5,"Jan":2.1,"Feb":26.0,"Mar":0.0,"Apr":0.0,"Total":38.6},{"Year":2021,"Season":"2021-22","OctNov":0.0,"Dec":0.2,"Jan":15.3,"Feb":2.0,"Mar":0.4,"Apr":0.0,"Total":17.9},{"Year":2022,"Season":"2022-23","OctNov":0.0,"Dec":0.0,"Jan":0.0,"Feb":2.2,"Mar":0.1,"Apr":0.0,"Total":2.3},{"Year":2023,"Season":"2023-24","OctNov":0.0,"Dec":0.0,"Jan":2.3,"Feb":5.2,"Mar":0.0,"Apr":0.0,"Total":7.5},{"Year":2024,"Season":"2024-25","OctNov":0.0,"Dec":2.8,"Jan":3.0,"Feb":7.1,"Mar":0.0,"Apr":0.0,"Total":12.9},{"Year":2025,"Season":"2025-26","OctNov":0.0,"Dec":7.2,"Jan":0.0,"Feb":0.0,"Mar":0.0,"Apr":0.0,"Total":7.2}];
+
+        let filteredData = [...monthlyData];
+
+        function calculateLinearRegression(data) {
+            const n = data.length;
+            const sumX = data.reduce((sum, d, i) => sum + i, 0);
+            const sumY = data.reduce((sum, d) => sum + d.Total, 0);
+            const sumXY = data.reduce((sum, d, i) => sum + i * d.Total, 0);
+            const sumX2 = data.reduce((sum, d, i) => sum + i * i, 0);
+            
+            const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+            const intercept = (sumY - slope * sumX) / n;
+            
+            return { slope, intercept };
+        }
+
+        function calculateMovingAverage(data, window = 10) {
+            const result = [];
+            for (let i = 0; i < data.length; i++) {
+                const start = Math.max(0, i - Math.floor(window / 2));
+                const end = Math.min(data.length, i + Math.ceil(window / 2));
+                const slice = data.slice(start, end);
+                const avg = slice.reduce((sum, d) => sum + d.Total, 0) / slice.length;
+                result.push(avg);
+            }
+            return result;
+        }
+
+        function filterData() {
+            const startYear = parseInt(document.getElementById('startYear').value);
+            const endYear = parseInt(document.getElementById('endYear').value);
+            
+            if (startYear > endYear) {
+                document.getElementById('endYear').value = startYear;
+                return;
+            }
+
+            filteredData = monthlyData.filter(d => d.Year >= startYear && d.Year <= endYear);
+            updateChart();
+            updateStats();
+        }
+
+        function updateChart() {
+            const years = filteredData.map(d => d.Year);
+            const showTrend = document.getElementById('showTrend').checked;
+            const showMovingAvg = document.getElementById('showMovingAvg').checked;
+            
+            const traces = [
+                {
+                    x: years,
+                    y: filteredData.map(d => d.Apr),
+                    name: 'Apr',
+                    type: 'bar',
+                    marker: { color: '#e8d4a2' },
+                    hovertemplate: '<b>%{fullData.name}</b><br>%{y:.1f}"<extra></extra>'
+                },
+                {
+                    x: years,
+                    y: filteredData.map(d => d.Mar),
+                    name: 'Mar',
+                    type: 'bar',
+                    marker: { color: '#d4b896' },
+                    hovertemplate: '<b>%{fullData.name}</b><br>%{y:.1f}"<extra></extra>'
+                },
+                {
+                    x: years,
+                    y: filteredData.map(d => d.Feb),
+                    name: 'Feb',
+                    type: 'bar',
+                    marker: { color: '#9db8d4' },
+                    hovertemplate: '<b>%{fullData.name}</b><br>%{y:.1f}"<extra></extra>'
+                },
+                {
+                    x: years,
+                    y: filteredData.map(d => d.Jan),
+                    name: 'Jan',
+                    type: 'bar',
+                    marker: { color: '#7a9ec4' },
+                    hovertemplate: '<b>%{fullData.name}</b><br>%{y:.1f}"<extra></extra>'
+                },
+                {
+                    x: years,
+                    y: filteredData.map(d => d.Dec),
+                    name: 'Dec',
+                    type: 'bar',
+                    marker: { color: '#5885b4' },
+                    hovertemplate: '<b>%{fullData.name}</b><br>%{y:.1f}"<extra></extra>'
+                },
+                {
+                    x: years,
+                    y: filteredData.map(d => d.OctNov),
+                    name: 'O-N',
+                    type: 'bar',
+                    marker: { color: '#c4d4e0' },
+                    hovertemplate: '<b>%{fullData.name}</b><br>%{y:.1f}"<extra></extra>'
+                }
+            ];
+
+            if (showTrend && filteredData.length > 2) {
+                const regression = calculateLinearRegression(filteredData);
+                const trendY = filteredData.map((d, i) => regression.intercept + regression.slope * i);
+                
+                traces.push({
+                    x: years,
+                    y: trendY,
+                    name: 'Trend',
+                    type: 'scatter',
+                    mode: 'lines',
+                    line: { color: '#d62728', width: 2, dash: 'dash' },
+                    hovertemplate: 'Trend: %{y:.1f}"<extra></extra>'
+                });
+            }
+
+            if (showMovingAvg && filteredData.length >= 10) {
+                const movingAvg = calculateMovingAverage(filteredData, 10);
+                
+                traces.push({
+                    x: years,
+                    y: movingAvg,
+                    name: '10-Year Avg',
+                    type: 'scatter',
+                    mode: 'lines',
+                    line: { color: '#2ca02c', width: 2.5 },
+                    hovertemplate: '10-Yr Avg: %{y:.1f}"<extra></extra>'
+                });
+            }
+
+            const layout = {
+                barmode: 'stack',
+                xaxis: {
+                    title: '',
+                    gridcolor: '#e9ecef',
+                    color: '#495057',
+                    showline: true,
+                    linecolor: '#212529',
+                    linewidth: 2
+                },
+                yaxis: {
+                    title: 'Snowfall (inches)',
+                    gridcolor: '#e9ecef',
+                    color: '#495057',
+                    range: [0, 85],
+                    showline: true,
+                    linecolor: '#212529',
+                    linewidth: 2,
+                    dtick: 20
+                },
+                paper_bgcolor: '#ffffff',
+                plot_bgcolor: '#ffffff',
+                font: { family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', color: '#495057', size: 12 },
+                hovermode: 'x unified',
+                showlegend: true,
+                legend: {
+                    orientation: 'v',
+                    x: 1.02,
+                    y: 0.5,
+                    xanchor: 'left',
+                    yanchor: 'middle',
+                    font: { size: 11 }
+                },
+                margin: { t: 40, r: 100, b: 60, l: 60 }
+            };
+
+            const config = {
+                responsive: true,
+                displayModeBar: true,
+                displaylogo: false,
+                modeBarButtonsToRemove: ['lasso2d', 'select2d']
+            };
+
+            Plotly.react('chart', traces, layout, config);
+        }
+
+        function updateStats() {
+            const totals = filteredData.map(d => d.Total);
+            const winters = filteredData.map(d => d.Dec + d.Jan + d.Feb);
+            const springs = filteredData.map(d => d.Mar + d.Apr);
+
+            const avg = totals.reduce((a, b) => a + b, 0) / totals.length;
+            const max = Math.max(...totals);
+            const avgWinter = winters.reduce((a, b) => a + b, 0) / winters.length;
+            const avgSpring = springs.reduce((a, b) => a + b, 0) / springs.length;
+
+            const regression = calculateLinearRegression(filteredData);
+            const yearsSpan = filteredData[filteredData.length - 1].Year - filteredData[0].Year;
+            const trendPerDecade = (regression.slope * (filteredData.length / (yearsSpan / 10)));
+
+            document.getElementById('seasonCount').textContent = filteredData.length;
+            document.getElementById('avgSnow').textContent = avg.toFixed(1);
+            document.getElementById('maxSnow').textContent = max.toFixed(1);
+            document.getElementById('avgWinter').textContent = avgWinter.toFixed(1);
+            document.getElementById('avgSpring').textContent = avgSpring.toFixed(1);
+            document.getElementById('trendValue').textContent = trendPerDecade.toFixed(2);
+        }
+
+        document.getElementById('startYear').addEventListener('input', filterData);
+        document.getElementById('endYear').addEventListener('input', filterData);
+        document.getElementById('showTrend').addEventListener('change', updateChart);
+        document.getElementById('showMovingAvg').addEventListener('change', updateChart);
+
+        filterData();
+    </script>
+</body>
+</html>
