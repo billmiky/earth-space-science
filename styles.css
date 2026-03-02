@@ -197,20 +197,59 @@ body.quarto-dark h1 {
 
 /* ================================================================= */
 /* OBSERVABLE PLOT TOOLTIP STYLES                                      */
+/* Must beat wildcard rules (.explore-box *, .check-understanding *,   */
+/* .mind-blown *, etc.) that set color/fill to white !important.       */
+/* We use high-specificity selectors and reset ALL text properties.     */
 /* ================================================================= */
 
-[aria-label="tip"] {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 13px !important;
-  background: rgba(30, 30, 30, 0.92) !important;
-  color: white !important;
-  border-radius: 8px !important;
-  padding: 8px 12px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-  backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  max-width: 300px !important;
-  z-index: 1000 !important;
+/* Tooltip background rect — white with subtle border */
+svg g[aria-label="tip"] > rect,
+svg g[aria-label="tip"] > rect[fill],
+figure g[aria-label="tip"] > rect {
+  fill: white !important;
+  stroke: #ccc !important;
+  stroke-width: 1 !important;
+  rx: 4 !important;
+  opacity: 1 !important;
+}
+
+/* Tooltip text — force dark on white, overriding every white-text rule */
+svg g[aria-label="tip"] text,
+svg g[aria-label="tip"] text *,
+svg g[aria-label="tip"] tspan,
+svg [aria-label="tip"] text,
+svg [aria-label="tip"] tspan,
+figure g[aria-label="tip"] text,
+figure g[aria-label="tip"] tspan,
+.cell-output-display svg g[aria-label="tip"] text,
+.cell-output-display svg g[aria-label="tip"] tspan {
+  fill: #1a1a1a !important;
+  color: #1a1a1a !important;
+  -webkit-text-fill-color: #1a1a1a !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+}
+
+/* Tooltip rule/pointer line */
+svg g[aria-label="tip"] > line,
+svg g[aria-label="tip"] > path:not(:first-child),
+figure g[aria-label="tip"] > line {
+  stroke: #999 !important;
+}
+
+/* Dark mode tooltips — invert to light-on-dark */
+[data-bs-theme="dark"] svg g[aria-label="tip"] > rect,
+.quarto-dark svg g[aria-label="tip"] > rect {
+  fill: #1e1e1e !important;
+  stroke: #555 !important;
+}
+[data-bs-theme="dark"] svg g[aria-label="tip"] text,
+[data-bs-theme="dark"] svg g[aria-label="tip"] tspan,
+.quarto-dark svg g[aria-label="tip"] text,
+.quarto-dark svg g[aria-label="tip"] tspan {
+  fill: #f0f0f0 !important;
+  color: #f0f0f0 !important;
+  -webkit-text-fill-color: #f0f0f0 !important;
 }
 
 /* Ensure figure containers allow overflow for tooltips */

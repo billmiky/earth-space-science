@@ -209,6 +209,184 @@ Winter storm Jonas produced strong enough winds and enough snow to cause signifi
 <iframe src="nycsnowbymonth.html" width="100%" height="1200px" style="border:none;"></iframe>
 ```
 
+::: {.key-idea}
+### 🌨️ The Winter Storm Paradox: Less Snow Overall, But Fiercer Storms?
+
+The chart above shows NYC's total seasonal snowfall **trending downward** over 150+ years. But does that mean blizzards are becoming a thing of the past?
+
+Not exactly. Climate scientists have identified a striking pattern: **as average snowfall totals decline, the most intense individual storm events are becoming more powerful.** Warmer oceans inject more moisture into storm systems, and disruptions to the polar vortex can still funnel frigid Arctic air deep into the Northeast — creating the perfect recipe for a catastrophic blizzard, even in an otherwise low-snow year.
+
+The two charts below reveal this paradox using the same NYC Central Park data.
+:::
+
+```{ojs}
+//| echo: false
+// NYC Annual Snowfall Data (1869–2025)
+// year       = start year of the winter season (e.g. 2009 = winter 2009–10)
+// total      = total seasonal snowfall (inches)  — note: 2025-26 is a partial season
+// maxMonth   = largest single-month snowfall that season (inches)
+// Source: NOAA / NWS Central Park station
+nycStormData = [
+  {year:1869,total:27.8,maxMonth:9.6},{year:1870,total:33.1,maxMonth:15.9},
+  {year:1871,total:14.1,maxMonth:5.1},{year:1872,total:60.3,maxMonth:27.0},
+  {year:1873,total:36.9,maxMonth:19.0},{year:1874,total:57.8,maxMonth:15.3},
+  {year:1875,total:18.3,maxMonth:12.5},{year:1876,total:40.4,maxMonth:20.5},
+  {year:1877,total:8.1,maxMonth:6.1},{year:1878,total:35.7,maxMonth:17.3},
+  {year:1879,total:22.7,maxMonth:8.3},{year:1880,total:35.5,maxMonth:11.5},
+  {year:1881,total:31.4,maxMonth:17.5},{year:1882,total:44.0,maxMonth:10.1},
+  {year:1883,total:43.1,maxMonth:22.5},{year:1884,total:34.2,maxMonth:14.5},
+  {year:1885,total:20.8,maxMonth:13.5},{year:1886,total:32.9,maxMonth:10.3},
+  {year:1887,total:45.6,maxMonth:22.3},{year:1888,total:16.5,maxMonth:7.0},
+  {year:1889,total:24.3,maxMonth:17.0},{year:1890,total:28.8,maxMonth:11.4},
+  {year:1891,total:25.4,maxMonth:12.3},{year:1892,total:49.7,maxMonth:17.8},
+  {year:1893,total:36.1,maxMonth:20.5},{year:1894,total:27.0,maxMonth:9.5},
+  {year:1895,total:46.3,maxMonth:30.5},{year:1896,total:43.6,maxMonth:13.0},
+  {year:1897,total:21.1,maxMonth:9.0},{year:1898,total:55.9,maxMonth:25.3},
+  {year:1899,total:13.4,maxMonth:6.5},{year:1900,total:9.1,maxMonth:7.0},
+  {year:1901,total:30.0,maxMonth:15.8},{year:1902,total:28.7,maxMonth:14.4},
+  {year:1903,total:32.3,maxMonth:15.6},{year:1904,total:48.1,maxMonth:21.6},
+  {year:1905,total:20.0,maxMonth:11.5},{year:1906,total:53.2,maxMonth:21.8},
+  {year:1907,total:33.4,maxMonth:14.6},{year:1908,total:20.3,maxMonth:11.3},
+  {year:1909,total:27.2,maxMonth:11.1},{year:1910,total:25.2,maxMonth:13.3},
+  {year:1911,total:29.5,maxMonth:13.0},{year:1912,total:15.3,maxMonth:11.4},
+  {year:1913,total:40.5,maxMonth:21.5},{year:1914,total:28.8,maxMonth:7.7},
+  {year:1915,total:50.7,maxMonth:25.5},{year:1916,total:50.7,maxMonth:14.5},
+  {year:1917,total:34.5,maxMonth:14.1},{year:1918,total:3.8,maxMonth:2.7},
+  {year:1919,total:47.6,maxMonth:25.3},{year:1920,total:18.6,maxMonth:13.3},
+  {year:1921,total:27.8,maxMonth:9.4},{year:1922,total:60.4,maxMonth:24.5},
+  {year:1923,total:27.5,maxMonth:11.9},{year:1924,total:29.6,maxMonth:27.4},
+  {year:1925,total:32.4,maxMonth:26.3},{year:1926,total:22.3,maxMonth:11.7},
+  {year:1927,total:14.5,maxMonth:5.7},{year:1928,total:13.8,maxMonth:9.3},
+  {year:1929,total:13.6,maxMonth:6.3},{year:1930,total:11.6,maxMonth:5.7},
+  {year:1931,total:5.3,maxMonth:1.8},{year:1932,total:27.0,maxMonth:12.8},
+  {year:1933,total:52.0,maxMonth:27.9},{year:1934,total:33.8,maxMonth:23.6},
+  {year:1935,total:33.2,maxMonth:12.1},{year:1936,total:15.6,maxMonth:6.5},
+  {year:1937,total:15.1,maxMonth:6.5},{year:1938,total:37.3,maxMonth:10.3},
+  {year:1939,total:25.7,maxMonth:12.0},{year:1940,total:39.0,maxMonth:19.2},
+  {year:1941,total:11.3,maxMonth:6.4},{year:1942,total:29.5,maxMonth:9.5},
+  {year:1943,total:23.8,maxMonth:7.7},{year:1944,total:27.1,maxMonth:12.3},
+  {year:1945,total:31.4,maxMonth:15.6},{year:1946,total:30.6,maxMonth:17.7},
+  {year:1947,total:63.8,maxMonth:30.2},{year:1948,total:46.6,maxMonth:25.3},
+  {year:1949,total:13.8,maxMonth:8.5},{year:1950,total:11.6,maxMonth:3.8},
+  {year:1951,total:19.7,maxMonth:7.4},{year:1952,total:15.1,maxMonth:7.5},
+  {year:1953,total:15.8,maxMonth:12.7},{year:1954,total:11.5,maxMonth:5.2},
+  {year:1955,total:33.5,maxMonth:21.1},{year:1956,total:21.9,maxMonth:8.9},
+  {year:1957,total:44.7,maxMonth:15.9},{year:1958,total:13.0,maxMonth:6.7},
+  {year:1959,total:39.2,maxMonth:18.5},{year:1960,total:54.7,maxMonth:18.6},
+  {year:1961,total:18.1,maxMonth:9.6},{year:1962,total:16.3,maxMonth:5.3},
+  {year:1963,total:44.7,maxMonth:14.1},{year:1964,total:24.4,maxMonth:14.8},
+  {year:1965,total:21.4,maxMonth:11.6},{year:1966,total:51.5,maxMonth:23.6},
+  {year:1967,total:19.5,maxMonth:6.1},{year:1968,total:30.2,maxMonth:16.6},
+  {year:1969,total:25.6,maxMonth:8.4},{year:1970,total:15.5,maxMonth:11.4},
+  {year:1971,total:22.9,maxMonth:17.8},{year:1972,total:2.8,maxMonth:1.8},
+  {year:1973,total:23.5,maxMonth:9.4},{year:1974,total:13.1,maxMonth:10.6},
+  {year:1975,total:17.3,maxMonth:5.6},{year:1976,total:24.5,maxMonth:13.0},
+  {year:1977,total:50.7,maxMonth:23.0},{year:1978,total:29.4,maxMonth:20.1},
+  {year:1979,total:12.8,maxMonth:4.6},{year:1980,total:19.4,maxMonth:8.6},
+  {year:1981,total:24.6,maxMonth:11.8},{year:1982,total:27.2,maxMonth:21.5},
+  {year:1983,total:25.4,maxMonth:11.9},{year:1984,total:24.1,maxMonth:10.0},
+  {year:1985,total:13.0,maxMonth:9.9},{year:1986,total:23.1,maxMonth:13.6},
+  {year:1987,total:19.1,maxMonth:13.9},{year:1988,total:8.1,maxMonth:5.0},
+  {year:1989,total:13.4,maxMonth:3.1},{year:1990,total:24.9,maxMonth:9.1},
+  {year:1991,total:12.6,maxMonth:9.4},{year:1992,total:24.5,maxMonth:11.9},
+  {year:1993,total:53.4,maxMonth:26.4},{year:1994,total:11.8,maxMonth:11.6},
+  {year:1995,total:75.6,maxMonth:26.1},{year:1996,total:10.0,maxMonth:4.4},
+  {year:1997,total:5.5,maxMonth:5.0},{year:1998,total:12.7,maxMonth:4.5},
+  {year:1999,total:16.3,maxMonth:9.5},{year:2000,total:35.0,maxMonth:13.4},
+  {year:2001,total:3.5,maxMonth:3.5},{year:2002,total:49.3,maxMonth:26.1},
+  {year:2003,total:42.6,maxMonth:19.8},{year:2004,total:41.0,maxMonth:15.8},
+  {year:2005,total:40.0,maxMonth:26.9},{year:2006,total:12.4,maxMonth:6.0},
+  {year:2007,total:11.9,maxMonth:9.0},{year:2008,total:27.6,maxMonth:9.0},
+  {year:2009,total:51.4,maxMonth:36.9},{year:2010,total:61.9,maxMonth:36.0},
+  {year:2011,total:7.4,maxMonth:4.3},{year:2012,total:26.1,maxMonth:12.2},
+  {year:2013,total:57.4,maxMonth:29.0},{year:2014,total:50.3,maxMonth:18.6},
+  {year:2015,total:32.8,maxMonth:27.9},{year:2016,total:30.2,maxMonth:9.7},
+  {year:2017,total:40.9,maxMonth:11.6},{year:2018,total:20.5,maxMonth:10.4},
+  {year:2019,total:4.8,maxMonth:2.5},{year:2020,total:38.6,maxMonth:26.0},
+  {year:2021,total:17.9,maxMonth:15.3},{year:2022,total:2.3,maxMonth:2.2},
+  {year:2023,total:7.5,maxMonth:5.2},{year:2024,total:12.9,maxMonth:7.1},
+  {year:2025,total:44.4,maxMonth:24.9}  // 2025–26: partial season (through Feb 2026)
+]
+```
+
+```{ojs}
+//| echo: false
+// Shared helper — reactive, available to all cells below
+function rollingMean(arr, key, w = 15) {
+  const h = Math.floor(w / 2);
+  return arr.map((d, i) => {
+    const slice = arr.slice(Math.max(0, i - h), Math.min(arr.length, i + h + 1));
+    return { year: d.year, v: slice.reduce((a, x) => a + x[key], 0) / slice.length };
+  });
+}
+totalRoll = rollingMean(nycStormData, "total")
+maxRoll   = rollingMean(nycStormData, "maxMonth")
+```
+
+```{ojs}
+//| echo: false
+Plot.plot({
+  title: "① Total Seasonal Snowfall Is Declining",
+  width, height: 270,
+  marginLeft: 58, marginRight: 22, marginTop: 40,
+  x: { label: null, tickFormat: "d", ticks: [1880, 1900, 1920, 1940, 1960, 1980, 2000, 2020] },
+  y: { label: "Season total (inches)", domain: [0, 88], grid: true },
+  marks: [
+    Plot.barY(nycStormData, {
+      x: "year", y: "total", fill: "#6da8d4", opacity: 0.55, tip: true,
+      title: d => `${d.year}–${String(d.year + 1).slice(-2)}: ${d.total.toFixed(1)}"`
+    }),
+    Plot.line(totalRoll, { x: "year", y: "v", stroke: "#1a3a5c", strokeWidth: 3 }),
+    Plot.text([{ year: 1935, v: 58 }], {
+      x: "year", y: "v",
+      text: ["← 15-yr average (declining)"],
+      fill: "#1a3a5c", fontSize: 11, fontWeight: "600", textAnchor: "start"
+    })
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+Plot.plot({
+  title: "② Peak Single-Month Storm Intensity — Rising Since the 2000s",
+  width, height: 270,
+  marginLeft: 58, marginRight: 22, marginTop: 40,
+  x: { label: "Season start year", tickFormat: "d", ticks: [1880, 1900, 1920, 1940, 1960, 1980, 2000, 2020] },
+  y: { label: "Largest monthly snowfall (inches)", domain: [0, 42], grid: true },
+  color: {
+    domain: [false, true],
+    range: ["#f0a070", "#c0392b"],
+    legend: true,
+    tickFormat: d => d ? "≥ 20\" (major storm)" : "< 20\""
+  },
+  marks: [
+    Plot.dot(nycStormData, {
+      x: "year", y: "maxMonth",
+      fill: d => d.maxMonth >= 20,
+      r: d => d.maxMonth >= 20 ? 5 : 3,
+      opacity: 0.8, tip: true,
+      title: d => `${d.year}–${String(d.year + 1).slice(-2)}: peak ${d.maxMonth.toFixed(1)}"`
+    }),
+    Plot.line(maxRoll, { x: "year", y: "v", stroke: "#7b241c", strokeWidth: 3 }),
+    Plot.ruleY([20], { stroke: "#c0392b", strokeDasharray: "6,4", opacity: 0.45 }),
+    Plot.text([{ year: 1873, v: 21.8 }], {
+      x: "year", y: "v",
+      text: ["20\" threshold →"],
+      fill: "#c0392b", fontSize: 10, fontWeight: "600", textAnchor: "start"
+    })
+  ]
+})
+```
+
+<p style="color:#555; font-size:0.85rem; line-height:1.6; margin: 4px 0 24px;">
+<strong style="color:#c0392b">● Red dots</strong> = seasons where a single month topped 20" (a major storm).
+<strong>Dark lines</strong> = 15-year rolling average.
+Notice: while seasonal totals trend <em>downward</em>, the 15-yr average of peak monthly snowfall
+<em>increased sharply after 2000</em> — the 2000s and 2010s logged the highest peak-storm averages
+of any era. The current 2025–26 season already recorded 24.9" in a single month (Feb 2026).
+</p>
+
 ::: {.student-task}
 ### 📝 Notice & Wonder
 
@@ -237,6 +415,57 @@ But what causes pressure differences? **Uneven heating** of Earth's surface.
 //| echo: false
 Plot = require("@observablehq/plot")
 d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+function buildQuiz(id, questions) {
+  const outer = html`<div style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const toggle = html`<button style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:2px solid #c7d2fe;border-radius:30px;background:linear-gradient(135deg,#eef2ff 0%,#e8f4fd 100%);color:#4338ca;font-weight:700;font-size:0.95em;cursor:pointer;transition:all 0.25s ease;box-shadow:0 2px 8px rgba(67,56,202,0.12);"><span style="font-size:1.15em;">✅</span><span>Check Your Understanding</span><span class="quiz-chevron" style="display:inline-block;transition:transform 0.3s ease;font-size:0.8em;">▶</span></button>`;
+  const body = html`<div style="display:none; margin-top:12px; border:1.5px solid #c7d2fe; border-radius:14px; overflow:hidden; background:white;"></div>`;
+  const closeBtn = html`<div style="padding:12px 18px; background:#eef2ff; cursor:pointer; display:flex; justify-content:space-between; align-items:center;"><span style="font-weight:600; color:#4338ca;">🧠 Knowledge Check</span><span style="color:#6366f1; font-size:0.85em;">▲ Hide</span></div>`;
+  let isOpen = false;
+  toggle.onclick = () => {
+    isOpen = !isOpen;
+    body.style.display = isOpen ? "block" : "none";
+    toggle.querySelector(".quiz-chevron").style.transform = isOpen ? "rotate(90deg)" : "";
+  };
+  closeBtn.onclick = () => { isOpen = false; body.style.display = "none"; toggle.querySelector(".quiz-chevron").style.transform = ""; };
+  body.appendChild(closeBtn);
+  questions.forEach((q, qi) => {
+    const card = html`<div id="${id}-q${qi}" style="padding:18px 22px; border-top:1px solid #e0e7ff;"></div>`;
+    card.appendChild(html`<div style="font-weight:700; color:#1e1b4b; margin-bottom:12px; line-height:1.5;">${qi+1}. ${q.q}</div>`);
+    const optWrap = html`<div style="display:flex; flex-direction:column; gap:8px;"></div>`;
+    const feedback = html`<div style="margin-top:12px; padding:12px; border-radius:10px; display:none;"></div>`;
+    q.options.forEach((opt, oi) => {
+      const btn = html`<button style="text-align:left; padding:10px 16px; border-radius:10px; border:2px solid #e0e7ff; background:#f5f7ff; cursor:pointer; font-size:0.95em; color:#1e1b4b; transition:all 0.2s;">${opt}</button>`;
+      btn.onmouseenter = () => { if(!btn.disabled) btn.style.background = "#e0e7ff"; };
+      btn.onmouseleave = () => { if(!btn.disabled && !btn.chosen) btn.style.background = "#f5f7ff"; };
+      btn.onclick = () => {
+        card.querySelectorAll("button").forEach(b => { b.disabled = true; b.chosen = false; });
+        btn.chosen = true;
+        const correct = oi === q.correct;
+        btn.style.background = correct ? "#dcfce7" : "#fee2e2";
+        btn.style.borderColor = correct ? "#22c55e" : "#ef4444";
+        if (!correct) {
+          card.querySelectorAll("button")[q.correct].style.background = "#dcfce7";
+          card.querySelectorAll("button")[q.correct].style.borderColor = "#22c55e";
+        }
+        feedback.style.display = "block";
+        feedback.style.background = correct ? "#f0fdf4" : "#fff1f2";
+        feedback.style.borderLeft = `4px solid ${correct ? "#22c55e" : "#ef4444"}`;
+        feedback.innerHTML = `${q.emoji || (correct ? "✅" : "❌")} <strong>${correct ? "Correct!" : "Not quite."}</strong> ${q.explanation}`;
+      };
+      optWrap.appendChild(btn);
+    });
+    card.appendChild(optWrap);
+    card.appendChild(feedback);
+    body.appendChild(card);
+  });
+  outer.appendChild(toggle);
+  outer.appendChild(body);
+  return outer;
+}
 ```
 
 ```{ojs}
@@ -350,6 +579,149 @@ viewof neighborTemp = Inputs.range([250, 320], {label: "Neighboring Region Temp 
 }
 ```
 
+
+
+```{ojs}
+//| echo: false
+viewof pressureA = Inputs.range([950, 1050], { value: 1013, step: 1, label: "Area A (Western) mb" })
+```
+
+```{ojs}
+//| echo: false
+viewof pressureB = Inputs.range([950, 1050], { value: 1013, step: 1, label: "Area B (Eastern) mb" })
+```
+
+```{ojs}
+//| echo: false
+html`
+<div style="background: #1e293b; color: white; padding: 20px; border-radius: 12px; display: flex; justify-content: space-around; font-family: system-ui, sans-serif; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px;">
+  <div style="text-align: center;">
+    <div style="font-size: 0.85em; color: #94a3b8; text-transform: uppercase; font-weight: bold;">Pressure Diff</div>
+    <div style="font-size: 1.5em; font-weight: normal; font-family: monospace;">${Math.abs(pressureA - pressureB)} mb</div>
+  </div>
+  <div style="text-align: center;">
+    <div style="font-size: 0.85em; color: #94a3b8; text-transform: uppercase; font-weight: bold;">Wind Speed</div>
+    <div style="font-size: 1.5em; font-weight: normal; color: #facc15; font-family: monospace;">${(Math.abs(pressureA - pressureB) * 1.5).toFixed(1)} km/h</div>
+  </div>
+  <div style="text-align: center;">
+    <div style="font-size: 0.85em; color: #94a3b8; text-transform: uppercase; font-weight: bold;">Direction</div>
+    <div style="font-size: 1.5em; font-weight: normal; font-family: monospace;">
+      ${pressureA > pressureB ? 'A → B' : pressureA < pressureB ? 'B → A' : 'Calm'}
+    </div>
+  </div>
+</div>
+`
+```
+
+```{ojs}
+//| echo: false
+windChart = {
+  const width = 800;
+  const height = 400;
+
+  const canvas = DOM.canvas(width, height);
+  canvas.style.width = "100%";
+  canvas.style.maxWidth = "800px";
+  canvas.style.borderRadius = "12px";
+  canvas.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)";
+  const ctx = canvas.getContext("2d");
+
+  const getBackgroundColor = (pressure) => {
+    const ratio = (pressure - 950) / (1050 - 950);
+    const r = Math.round(100 + ratio * 30);
+    const g = Math.round(110 + ratio * 90);
+    const b = Math.round(120 + ratio * 135);
+    return `rgb(${r}, ${g}, ${b})`;
+  };
+
+  const particleCount = 400;
+  const particles = Array.from({ length: particleCount }, () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    size: Math.random() * 2 + 1,
+    speedMultiplier: Math.random() * 0.8 + 0.4,
+    yDrift: (Math.random() - 0.5) * 0.5,
+    phase: Math.random() * Math.PI * 2
+  }));
+
+  let animationId;
+
+  function render(time) {
+    ctx.clearRect(0, 0, width, height);
+    const midP = (pressureA + pressureB) / 2;
+
+    const gradLeft = ctx.createLinearGradient(0, 0, width / 2, 0);
+    gradLeft.addColorStop(0, getBackgroundColor(pressureA));
+    gradLeft.addColorStop(1, getBackgroundColor(midP));
+
+    const gradRight = ctx.createLinearGradient(width / 2, 0, width, 0);
+    gradRight.addColorStop(0, getBackgroundColor(midP));
+    gradRight.addColorStop(1, getBackgroundColor(pressureB));
+
+    ctx.fillStyle = gradLeft;
+    ctx.fillRect(0, 0, width / 2, height);
+    ctx.fillStyle = gradRight;
+    ctx.fillRect(width / 2, 0, width / 2, height);
+
+    ctx.beginPath();
+    ctx.setLineDash([10, 10]);
+    ctx.moveTo(width / 2, 0);
+    ctx.lineTo(width / 2, height);
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.font = "bold 80px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    ctx.fillStyle = pressureA > pressureB
+        ? "rgba(180, 220, 255, 0.8)"
+        : pressureA < pressureB ? "rgba(255, 180, 180, 0.8)" : "rgba(255, 255, 255, 0.4)";
+    ctx.fillText(pressureA > pressureB ? "H" : pressureA < pressureB ? "L" : "", width * 0.25, height / 2);
+
+    ctx.fillStyle = pressureB > pressureA
+        ? "rgba(180, 220, 255, 0.8)"
+        : pressureB < pressureA ? "rgba(255, 180, 180, 0.8)" : "rgba(255, 255, 255, 0.4)";
+    ctx.fillText(pressureB > pressureA ? "H" : pressureB < pressureA ? "L" : "", width * 0.75, height / 2);
+
+    let baseVelocity = ((pressureA - pressureB) / 100) * 15;
+
+    ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+    for (const p of particles) {
+      let vx = baseVelocity * p.speedMultiplier;
+      if (Math.abs(vx) < 0.1) {
+        vx = (Math.random() - 0.5) * 0.5;
+        p.y += (Math.random() - 0.5) * 0.5;
+      }
+      p.x += vx;
+      p.y += Math.sin(time * 0.002 + p.phase) * (Math.abs(baseVelocity) * 0.05) + p.yDrift;
+      if (p.x > width + 10) p.x = -10;
+      if (p.x < -10) p.x = width + 10;
+      if (p.y > height + 10) p.y = -10;
+      if (p.y < -10) p.y = height + 10;
+      ctx.beginPath();
+      const stretch = Math.max(1, Math.abs(vx) * 1.5);
+      if (Math.abs(vx) > 1) {
+        ctx.ellipse(p.x, p.y, p.size * stretch, p.size, vx > 0 ? 0 : Math.PI, 0, Math.PI * 2);
+      } else {
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      }
+      ctx.fill();
+    }
+    animationId = requestAnimationFrame(render);
+  }
+
+  animationId = requestAnimationFrame(render);
+  invalidation.then(() => cancelAnimationFrame(animationId));
+  return canvas;
+}
+```
+::: {.callout-note}
+Did you know? In real weather systems, wind doesn't flow in a perfectly straight line from high to low pressure. Because the Earth is spinning, the Coriolis Effect causes the wind to curve (to the right in the Northern Hemisphere, and left in the Southern Hemisphere). However, the primary driving force of the wind is always this pressure difference!
+:::
+
 ::: {.key-idea}
 ### 💡 Key Concept: What Drives Wind
 
@@ -373,6 +745,45 @@ Use the sliders above to investigate:
 4. In your own words, explain why uneven heating causes wind.
 :::
 
+```{ojs}
+//| echo: false
+buildQuiz("wind-pressure", [
+  {
+    q: "You set the left surface to 310 K (hot desert) and the right to 260 K (frozen tundra). Which direction does the surface wind blow?",
+    options: [
+      "From the hot (left/low-pressure) side toward the cold (right/high-pressure) side",
+      "From the cold (right/high-pressure) side toward the hot (left/low-pressure) side",
+      "Wind does not form — the temperatures are too extreme",
+      "Wind direction is determined solely by Earth's rotation"
+    ],
+    correct: 1,
+    explanation: "Hot air rises → creates LOW pressure at the surface. Cold air sinks → creates HIGH pressure. Surface wind always flows FROM high pressure TOWARD low pressure, so from cold → toward hot. The bigger the temperature (pressure) difference, the faster the wind!"
+  },
+  {
+    q: "What is the pressure gradient force?",
+    options: [
+      "The force of gravity pulling air downward",
+      "The force pushing air from areas of HIGH pressure toward areas of LOW pressure",
+      "The Coriolis deflection caused by Earth's rotation",
+      "The force that lifts warm air at frontal boundaries"
+    ],
+    correct: 1,
+    explanation: "The pressure gradient force is the FUNDAMENTAL driver of all wind. It pushes air 'downhill' from high to low pressure. The steeper the gradient (larger pressure difference over a shorter distance), the stronger the wind — just like steeper hills create faster-moving rivers."
+  },
+  {
+    q: "A blizzard requires sustained 35+ mph winds. What atmospheric feature generates these extreme winds?",
+    options: [
+      "The weight of heavy snowflakes pushing down on the air column",
+      "A steep pressure gradient around a deep low-pressure cyclone with tightly packed isobars",
+      "Cold temperatures causing air molecules to vibrate and move faster",
+      "Friction between falling snow crystals and the atmosphere"
+    ],
+    correct: 1,
+    explanation: "Blizzards form within powerful mid-latitude cyclones — very deep low-pressure systems. The enormous pressure difference between the low center and surrounding high pressure creates a steep gradient. This drives extreme winds toward the low center, spinning counter-clockwise due to the Coriolis Effect."
+  }
+])
+```
+
 ## Air Masses: The Building Blocks of Weather
 
 An **air mass** is a large body of air (covering thousands of square miles) that has relatively uniform temperature and humidity. Air masses form when air sits over a region long enough to take on that region's characteristics.
@@ -384,9 +795,13 @@ An **air mass** is a large body of air (covering thousands of square miles) that
   const height = 420;
   const svg = d3.create("svg").attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`);
 
-  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#e8f0fe").attr("rx", 12);
-  svg.append("text").attr("x", width/2).attr("y", 30).attr("text-anchor", "middle")
-    .attr("font-size", 20).attr("font-weight", "bold").attr("fill", "#2c3e50").text("Air Masses Affecting North America");
+  // Ocean background (blue)
+  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#b8d4e8").attr("rx", 12);
+  // North America land polygon (simplified outline, clockwise from Alaska)
+  const naPath = "M 120,82 L 162,56 L 228,48 L 350,42 L 478,46 L 600,62 L 675,95 L 700,138 L 696,198 L 675,258 L 655,296 L 640,330 L 614,364 L 588,390 L 558,404 L 510,408 L 460,400 L 410,410 L 358,415 L 308,408 L 268,390 L 234,366 L 204,334 L 190,296 L 178,256 L 158,218 L 140,196 L 130,174 L 120,152 L 98,138 L 74,124 L 60,108 L 76,94 L 96,84 L 120,82 Z M 120,82 L 98,74 L 70,78 L 50,104 L 55,124 L 74,124 L 98,138 L 120,152 Z";
+  svg.append("path").attr("d", naPath).attr("fill", "#d4e6b5").attr("stroke", "#7a9a5a").attr("stroke-width", 1.5).attr("opacity", 0.9);
+  svg.append("text").attr("x", width/2).attr("y", 28).attr("text-anchor", "middle")
+    .attr("font-size", 19).attr("font-weight", "bold").attr("fill", "#1a2a4a").text("Air Masses Affecting North America");
 
   // Continental Arctic (cA)
   svg.append("rect").attr("x", 200).attr("y", 45).attr("width", 150).attr("height", 70).attr("fill", "#74b9ff").attr("rx", 8).attr("opacity", 0.8);
@@ -426,9 +841,9 @@ An **air mass** is a large body of air (covering thousands of square miles) that
   svg.append("text").attr("x", 535).attr("y", 337).attr("text-anchor", "middle").attr("font-weight", "bold").attr("fill", "white").text("mT (Gulf/Atlantic)");
   svg.append("text").attr("x", 535).attr("y", 355).attr("text-anchor", "middle").attr("font-size", 11).attr("fill", "white").text("🌴 Warm & Moist");
 
-  // North America outline (simplified)
-  svg.append("text").attr("x", 375).attr("y", 250).attr("text-anchor", "middle").attr("font-size", 13).attr("fill", "#636e72")
-    .text("🇺🇸 North America");
+  // Geographic center label (subtle)
+  svg.append("text").attr("x", 375).attr("y", 238).attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "#4a6741").attr("opacity", 0.55)
+    .text("North America");
 
   // Arrows showing movement
   const arrows = [
@@ -470,6 +885,45 @@ Air masses are classified by two properties:
 
 So **mT** = **maritime Tropical** = warm and moist (like air from the Gulf of Mexico), and **cP** = **continental Polar** = cool and dry (like air from Canada in winter).
 :::
+
+```{ojs}
+//| echo: false
+buildQuiz("air-masses", [
+  {
+    q: "An air mass that forms over central Canada in January (over land, at polar latitude) is classified as:",
+    options: [
+      "mT — maritime Tropical",
+      "cP — continental Polar",
+      "mP — maritime Polar",
+      "cA — continental Arctic"
+    ],
+    correct: 1,
+    explanation: "Continental Polar (cP): 'c' = continental (forms over LAND → dry), 'P' = Polar (cold latitude). This is the dominant cold air mass responsible for most US blizzards. True Continental Arctic (cA) only forms over the permanent ice cap and is even colder and drier than cP."
+  },
+  {
+    q: "Why does mT (maritime Tropical) air from the Gulf of Mexico provide critical 'fuel' for blizzards?",
+    options: [
+      "It is cold enough to supply the ice crystals needed for snowflakes",
+      "It carries enormous amounts of water vapor that condense into heavy snow when forced up over cold air",
+      "It creates high surface pressure that drives the blizzard winds",
+      "It brings warm temperatures that melt and refreeze into ice pellets"
+    ],
+    correct: 1,
+    explanation: "Maritime Tropical air is warm AND moist — it holds large quantities of water vapor. When this air is lifted at a frontal boundary over cold polar air, it cools rapidly (adiabatic cooling), and the excess moisture condenses and freezes. Without Gulf mT moisture, there is not enough water vapor to produce significant snowfall."
+  },
+  {
+    q: "Which collision of air masses is most responsible for major East Coast nor'easter blizzards?",
+    options: [
+      "cA (continental Arctic) from Canada colliding with mT (maritime Tropical) from the Gulf of Mexico",
+      "mP (maritime Polar) from the Pacific meeting cT (continental Tropical) from the Sonoran Desert",
+      "cP (continental Polar) from Canada meeting mP (maritime Polar) from the Atlantic",
+      "mT from the Pacific Ocean meeting cA from the Arctic"
+    ],
+    correct: 0,
+    explanation: "Classic nor'easters involve frigid cA or cP air from Canada/Arctic colliding with warm, moist mT air from the Gulf of Mexico. The extreme temperature and moisture contrast fuels rapid cyclone development — rapid deepening of the low-pressure center. Winter Storm Jonas followed exactly this pattern!"
+  }
+])
+```
 
 # Explore: Fronts — When Air Masses Collide
 
@@ -576,6 +1030,45 @@ Use the dropdown above to explore each front type. For each one, answer:
 3. What type of precipitation would you expect (brief and intense, or steady and prolonged)?
 4. Which front type is most associated with blizzards?
 :::
+
+```{ojs}
+//| echo: false
+buildQuiz("fronts", [
+  {
+    q: "Select 'Cold Front' in the diagram above. Why does a cold front produce brief, intense storms rather than prolonged steady rain?",
+    options: [
+      "Cold fronts move slowly, giving clouds more time to develop",
+      "Cold air wedges sharply under warm air — the steep frontal slope forces rapid uplift, creating intense convection that moves through quickly",
+      "Cold fronts only produce heavy precipitation during summer months",
+      "Cold air absorbs precipitation before it reaches the ground"
+    ],
+    correct: 1,
+    explanation: "A cold front's steep slope (cold dense air rapidly undercutting warm air) creates very fast uplift — intense vertical motion → intense convection. But because the front is moving quickly, the violent weather passes fast (an hour or two of squalls vs. days of steady rain from a warm front)."
+  },
+  {
+    q: "Which front type can produce multi-day blizzard accumulations in the same location, and why?",
+    options: [
+      "Warm front — it brings moisture from tropical regions",
+      "Stationary front — neither air mass advances, so snow falls continuously over the same area for days",
+      "Occluded front — it combines cold and cool air for maximum snowfall",
+      "Cold front — it moves quickly and drops heavy snow in a narrow band"
+    ],
+    correct: 1,
+    explanation: "Stationary fronts are particularly dangerous for extreme snowfall accumulations because neither air mass advances. The lifting of moist air continues hour after hour, sometimes day after day, over the same location. Winter Storm Jonas was associated with a quasi-stationary pattern over the Mid-Atlantic before the cold front finally swept through."
+  },
+  {
+    q: "What is the key structural difference between a cold front and a warm front?",
+    options: [
+      "Cold fronts only involve Arctic air; warm fronts only involve tropical air",
+      "On a cold front, cold air ADVANCES and wedges steeply under warm air → rapid uplift; on a warm front, warm air ADVANCES and slides gently over cool air → gradual uplift",
+      "Cold fronts always produce snow; warm fronts always produce rain",
+      "The difference is only in temperature — both fronts work identically"
+    ],
+    correct: 1,
+    explanation: "Which air mass is advancing determines the slope and intensity. Cold front: cold air advancing, steep slope, rapid intense precipitation (but brief). Warm front: warm air advancing, gentle slope, gradual prolonged precipitation. This structural difference explains why your forecast depends on which front is approaching!"
+  }
+])
+```
 
 # Explain: How Do Blizzards Form?
 
@@ -690,6 +1183,45 @@ A blizzard is a severe mid-latitude cyclone that produces:
 These conditions occur on the **cold side** of the low-pressure center (north and west of the center in the Northern Hemisphere), where cold, dry polar air wraps around the system and collides with moist air being lifted along the fronts.
 :::
 
+```{ojs}
+//| echo: false
+buildQuiz("cyclone", [
+  {
+    q: "Use the Cyclone Life Stage slider. At Stage 3 (Mature Cyclone), the BLIZZARD zone is shown north/northwest of the low center. Why that location specifically?",
+    options: [
+      "East of the center, in the warm sector between the two fronts",
+      "North/northwest of the center — where cold polar air wraps around the system, pressure gradient is steepest, and precipitation from lifted moist air is heaviest",
+      "Directly at the low center, where pressure is lowest",
+      "South of the warm front, far from any cold air"
+    ],
+    correct: 1,
+    explanation: "The blizzard zone needs THREE things simultaneously: (1) temperatures below freezing — provided by cold polar air wrapping north/west of the low; (2) extreme winds — provided by the steep pressure gradient near the low center; (3) heavy precipitation — provided by moist air being lifted along the cold front. Only the north/west quadrant has all three!"
+  },
+  {
+    q: "Why do mid-latitude cyclones in the Northern Hemisphere spin COUNTER-CLOCKWISE?",
+    options: [
+      "Warm air rises and cold air sinks simultaneously, creating opposite rotations",
+      "The Coriolis Effect deflects inflowing air to the RIGHT, causing it to spiral counter-clockwise around the low center",
+      "Ocean currents beneath force the overlying atmosphere to rotate counter-clockwise",
+      "High-pressure systems push air in a counter-clockwise direction toward low-pressure centers"
+    ],
+    correct: 1,
+    explanation: "As air converges toward a low-pressure center, Earth's rotation deflects it to the right (Coriolis Effect). This rightward deflection makes air spiral counter-clockwise around the Northern Hemisphere low. In the Southern Hemisphere, the deflection is to the LEFT, so cyclones spin clockwise. This is why all Northern Hemisphere low-pressure systems (including blizzards, hurricanes, and tornadoes) rotate counter-clockwise."
+  },
+  {
+    q: "What happens to a mid-latitude cyclone after the cold front overtakes the warm front (Stage 4 — Occlusion)?",
+    options: [
+      "The storm intensifies dramatically as both fronts combine their energy",
+      "The storm weakens — warm air is completely lifted off the surface, cutting off the temperature contrast that was driving the cyclone",
+      "The storm stalls and becomes a long-lived stationary front",
+      "Occlusion has no effect on storm intensity"
+    ],
+    correct: 1,
+    explanation: "Once the fast-moving cold front catches the warm front, all the warm air is lifted off the surface — creating the occluded front. With no more warm vs. cold temperature contrast at the surface, the pressure gradient weakens, the system fills in, and the storm dissipates. Every mid-latitude cyclone (including every blizzard) eventually dies this way."
+  }
+])
+```
+
 ## Reading Weather Maps
 
 Meteorologists use **surface analysis maps** to track air masses, fronts, and pressure systems. Understanding these maps is key to predicting blizzards.
@@ -801,6 +1333,45 @@ Understanding precipitation requires connecting energy, water, and air movement.
 ::: {.mind-blown}
 ❄️ A single mid-latitude cyclone can lift BILLIONS of tons of moist air, producing enough snow to bury an entire state! ❄️
 :::
+
+```{ojs}
+//| echo: false
+buildQuiz("precipitation", [
+  {
+    q: "Looking at the precipitation diagram above: what triggers water vapor to condense into cloud droplets or ice crystals?",
+    options: [
+      "Increased atmospheric pressure as air rises compresses the moisture",
+      "Adiabatic cooling — rising air expands (pressure decreases with altitude) and cools, eventually reaching its dew point",
+      "Mixing with cold polar air molecules at the frontal surface",
+      "Solar radiation heating water droplets already in the cloud"
+    ],
+    correct: 1,
+    explanation: "Adiabatic cooling is the key mechanism: as air rises, it moves into lower-pressure regions and EXPANDS. Expansion requires energy (work done against surroundings), so the air cools WITHOUT exchanging heat with its environment. When the rising air cools to its dew point temperature, condensation begins — water droplets or ice crystals form."
+  },
+  {
+    q: "Why does precipitation fall as SNOW rather than RAIN during a blizzard?",
+    options: [
+      "Snow forms when two ice crystals collide and stick together in a turbulent cloud",
+      "Temperatures must remain below freezing from the cloud base all the way to the ground so precipitation stays frozen",
+      "Snow only forms from cP continental air masses; rain only forms from mT maritime air",
+      "Low atmospheric pressure prevents water droplets from remaining liquid"
+    ],
+    correct: 1,
+    explanation: "Whether you get snow or rain depends on the entire atmospheric temperature profile. If a warm layer exists aloft (above freezing), snow melts into rain. For blizzards, the cold polar air mass extends from the cloud level all the way to the surface — temperatures below 32°F throughout — so ice crystals fall as snow and stay frozen until they hit the ground."
+  },
+  {
+    q: "Why is moist air (carrying lots of water vapor) LESS dense than dry air at the same temperature?",
+    options: [
+      "Water vapor molecules are heavier than nitrogen and oxygen, making moist air denser",
+      "Water vapor molecules (H₂O, MW=18) are LIGHTER than nitrogen (N₂, MW=28) and oxygen (O₂, MW=32), so moist air has lower average molecular weight",
+      "Water vapor adds extra pressure that spreads air molecules further apart",
+      "Humidity has no effect on air density — only temperature matters"
+    ],
+    correct: 1,
+    explanation: "This surprises many students! Water vapor (H₂O) has a molecular weight of 18, while N₂ = 28 and O₂ = 32. When water vapor replaces heavier N₂ and O₂ molecules in air, the average molecular weight DECREASES — making moist air LIGHTER than dry air. This is why warm, moist Gulf air rises so readily when it meets colder, drier polar air at a frontal boundary."
+  }
+])
+```
 
 # Elaborate: Blizzards & Climate Change
 
@@ -940,6 +1511,141 @@ Plot.plot({
 4. Connect this back to Winter Storm Jonas — what conditions made it possible?
 :::
 
+```{ojs}
+//| echo: false
+buildQuiz("climate-paradox", [
+  {
+    q: "The NYC snowfall charts show total seasonal snowfall DECLINING over the 20th century. Does this mean blizzards are becoming less dangerous?",
+    options: [
+      "Yes — less total snow means weaker storms across the board",
+      "No — the peak single-month snowfall has INCREASED since the 2000s; fewer but more intense extreme events are possible",
+      "Yes — warming temperatures prevent any future blizzard conditions",
+      "No — the data shows both total and peak snowfall are increasing simultaneously"
+    ],
+    correct: 1,
+    explanation: "This is the winter storm paradox! The 15-year rolling average of peak monthly snowfall INCREASED after 2000, even as seasonal totals declined. This means the number of small-to-moderate snowfall events is decreasing, but the most extreme individual storms may be getting more intense. The 2025-26 season already shows a 24.9-inch February — the highest single-month total in decades."
+  },
+  {
+    q: "The Clausius-Clapeyron relation: for every 1°C of warming, air holds ~7% more water vapor. What does this mean for blizzard intensity?",
+    options: [
+      "Blizzards will disappear because warmer temperatures will keep precipitation above freezing",
+      "When cold outbreaks DO occur, the extra moisture in the atmosphere can fuel heavier snowfall than the same cold event would have produced in a cooler era",
+      "The 7% increase is negligible at the scale of weather systems",
+      "More moisture only affects summer storms — not cold-season precipitation"
+    ],
+    correct: 1,
+    explanation: "More atmospheric moisture = more potential snowfall when temperatures are cold enough. Even if severe cold outbreaks become less frequent, when they DO occur (driven by a wavy jet stream), they can tap into an atmosphere loaded with extra water vapor. This extra fuel can produce heavier snowfall than the same cold air mass would have in the 1950s or 1960s."
+  },
+  {
+    q: "What is 'Arctic amplification' and how does it connect to blizzards in the northeastern US?",
+    options: [
+      "The Arctic growing larger, physically blocking cold air from moving southward",
+      "The Arctic warming 2–4× faster than the global average, weakening the polar jet stream so it develops larger meanders that can send Arctic air deep into the US",
+      "A natural 60-year climate cycle that has always caused periodic blizzard outbreaks",
+      "Arctic amplification only affects sea ice and marine ecosystems with no impact on mid-latitude weather"
+    ],
+    correct: 1,
+    explanation: "Arctic amplification reduces the temperature difference between the poles and mid-latitudes. This temperature contrast is what keeps the polar jet stream tight and fast. A weaker, wavier jet stream develops deeper Rossby waves — meanders that can dip Arctic air far south into the US, even into Georgia or Texas. When these cold outbreaks encounter extra-moist air, intense blizzards can result."
+  }
+])
+```
+
+```{=html}
+<div id="blizzard-myths" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%); color:white; padding:30px; border-radius:16px; margin:30px 0; font-family:'Inter',sans-serif; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.8em; margin:0 0 8px 0; background:linear-gradient(135deg,#74b9ff,#a29bfe); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
+    🌨️ Blizzard Myths vs. Facts
+  </h2>
+  <p style="color:#94a3b8; margin:0 0 20px 0; font-size:0.95em;">Think you know blizzards? Is each statement a MYTH or a FACT?</p>
+  <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:12px 20px; border-radius:12px; margin-bottom:20px;">
+    <div id="bmf-progress" style="color:#94a3b8; font-size:0.9em;">Card 1 of 10</div>
+    <div style="color:#94a3b8; font-size:0.9em;">Score: <span id="bmf-score" style="color:#74b9ff; font-weight:700;">0</span> / <span id="bmf-total">0</span></div>
+  </div>
+  <div id="bmf-card" style="background:rgba(255,255,255,0.08); border-radius:14px; padding:28px; min-height:100px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:1.1em; font-weight:600; line-height:1.6; border:1.5px solid rgba(255,255,255,0.1);"></div>
+  <div style="display:flex; gap:12px; margin-top:16px;">
+    <button id="bmf-myth" onclick="bmfAnswer('Myth')" style="flex:1; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#e17055,#d63031); color:white; font-size:1em; font-weight:700; cursor:pointer; box-shadow:0 4px 15px rgba(214,48,49,0.3);">❌ MYTH</button>
+    <button id="bmf-fact" onclick="bmfAnswer('Fact')" style="flex:1; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#00b894,#00cec9); color:white; font-size:1em; font-weight:700; cursor:pointer; box-shadow:0 4px 15px rgba(0,184,148,0.3);">✅ FACT</button>
+  </div>
+  <div id="bmf-feedback" style="margin-top:16px; padding:16px; border-radius:10px; display:none; font-size:0.95em; line-height:1.6;"></div>
+  <button id="bmf-next" onclick="bmfNext()" style="display:none; margin-top:12px; width:100%; padding:12px; border:2px solid rgba(255,255,255,0.2); border-radius:10px; background:transparent; color:white; font-size:0.95em; font-weight:600; cursor:pointer;">Next Card →</button>
+  <div id="bmf-done" style="display:none; text-align:center; padding:20px;">
+    <div style="font-size:2.5em; margin-bottom:10px;">🎉</div>
+    <div style="font-size:1.3em; font-weight:700;">Quiz complete!</div>
+    <div style="color:#94a3b8; margin:8px 0;">Final score: <span id="bmf-final" style="color:#74b9ff; font-weight:700;"></span> / 10</div>
+    <button onclick="bmfRestart()" style="margin-top:12px; padding:10px 24px; border:2px solid #74b9ff; border-radius:20px; background:transparent; color:#74b9ff; font-size:0.9em; cursor:pointer; font-weight:600;">Play Again</button>
+  </div>
+</div>
+<script>
+(function() {
+  var cards = [
+    { text: "More total annual snowfall always means a worse blizzard season.", type: "Myth", explanation: "High totals don't equal more blizzards. A season with 60 inches spread over many small storms differs greatly from one with 30 inches in one catastrophic event. NYC data shows total snowfall DECLINING while peak storm intensity INCREASES." },
+    { text: "The official NWS blizzard definition requires sustained 35+ mph winds AND visibility under one-quarter mile for at least 3 hours.", type: "Fact", explanation: "Correct — heavy snow alone is NOT a blizzard by definition. You need the combination of heavy snow or blowing snow reducing visibility to under 1/4 mile, PLUS sustained 35+ mph winds, for at least 3 consecutive hours." },
+    { text: "Because the Arctic is warming, blizzards in the northeastern US will soon completely disappear.", type: "Myth", explanation: "Arctic warming makes the jet stream WAVIER, allowing cold Arctic air to plunge deeper south more often. Combined with more moisture in a warmer atmosphere, the most extreme blizzards may become MORE severe even as average winters get milder." },
+    { text: "Warm ocean temperatures can fuel more powerful blizzards.", type: "Fact", explanation: "Yes! The Clausius-Clapeyron relation: warmer seawater evaporates more, loading the atmosphere with extra moisture. When cold air sweeps in, it can produce far heavier snowfall than the same storm would in a cooler-ocean era." },
+    { text: "The coldest Arctic air produces the heaviest snowfall.", type: "Myth", explanation: "Very cold Arctic air is extremely DRY. It holds almost no moisture. The heaviest snowfall requires temperatures just below 32°F with a moisture-rich mT air source nearby — not the deepest Arctic cold. That's why the biggest snowstorms often occur at 25-30°F, not -10°F." },
+    { text: "Wind always flows from HIGH pressure toward LOW pressure at the surface.", type: "Fact", explanation: "This is the pressure gradient force — the fundamental driver of ALL surface wind. Air flows 'downhill' from high to low pressure, just as water flows downhill. The steeper the gradient (bigger pressure difference over shorter distance), the faster the wind." },
+    { text: "The 'L' (low pressure) on a weather map marks where the clearest, calmest weather will be found.", type: "Myth", explanation: "The opposite! In a low-pressure center, air converges and RISES — it cools, condenses, and produces clouds and precipitation. CLEAR weather is found under HIGH pressure centers, where air sinks, compresses, and warms, inhibiting cloud formation." },
+    { text: "Gulf of Mexico moisture is the primary source of water vapor for major East Coast blizzards.", type: "Fact", explanation: "For northeast US nor'easters and major blizzards, warm moist mT air from the Gulf of Mexico provides the critical moisture. It flows northward, collides with cold polar air, and gets lifted — producing heavy snowfall. Without Gulf moisture, there is not enough water vapor for significant snow accumulation." },
+    { text: "All mid-latitude cyclones (blizzards included) eventually weaken and die when the cold front overtakes the warm front.", type: "Fact", explanation: "Yes — this occlusion process is how ALL mid-latitude cyclones die. When the cold front catches the warm front, warm air is completely lifted off the surface. With no more warm vs. cold temperature contrast, the pressure gradient weakens, the system fills, and the storm dissipates." },
+    { text: "Climate change will only make summer storms more extreme — winter blizzards will be unaffected.", type: "Myth", explanation: "A warmer atmosphere holds more water vapor year-round (Clausius-Clapeyron). When cold air still exists in winter (guaranteed for decades), it encounters this extra moisture — potentially producing more intense precipitation events. Additionally, Arctic amplification can increase the frequency and depth of polar air outbreaks into the mid-latitudes." }
+  ];
+  var idx = 0, score = 0, answered = 0, cardAnswered = false;
+  function updateCard() {
+    if (idx >= cards.length) {
+      document.getElementById('bmf-card').style.display = 'none';
+      document.getElementById('bmf-myth').style.display = 'none';
+      document.getElementById('bmf-fact').style.display = 'none';
+      document.getElementById('bmf-feedback').style.display = 'none';
+      document.getElementById('bmf-next').style.display = 'none';
+      document.getElementById('bmf-done').style.display = 'block';
+      document.getElementById('bmf-final').textContent = score;
+      return;
+    }
+    document.getElementById('bmf-card').textContent = cards[idx].text;
+    document.getElementById('bmf-progress').textContent = 'Card ' + (idx + 1) + ' of ' + cards.length;
+    document.getElementById('bmf-feedback').style.display = 'none';
+    document.getElementById('bmf-next').style.display = 'none';
+    document.getElementById('bmf-myth').disabled = false;
+    document.getElementById('bmf-fact').disabled = false;
+    document.getElementById('bmf-myth').style.opacity = '1';
+    document.getElementById('bmf-fact').style.opacity = '1';
+    cardAnswered = false;
+  }
+  window.bmfAnswer = function(choice) {
+    if (cardAnswered) return;
+    cardAnswered = true;
+    answered++;
+    var card = cards[idx];
+    var correct = (choice === card.type);
+    if (correct) score++;
+    document.getElementById('bmf-score').textContent = score;
+    document.getElementById('bmf-total').textContent = answered;
+    var fb = document.getElementById('bmf-feedback');
+    fb.style.display = 'block';
+    fb.style.background = correct ? 'rgba(0,184,148,0.2)' : 'rgba(214,48,49,0.2)';
+    fb.style.border = '1px solid ' + (correct ? '#00b894' : '#e17055');
+    fb.innerHTML = '<strong>' + (correct ? '✅ Correct! ' : '❌ That's a ' + card.type + '! ') + '</strong>' + card.explanation;
+    document.getElementById('bmf-myth').disabled = true;
+    document.getElementById('bmf-fact').disabled = true;
+    document.getElementById('bmf-myth').style.opacity = (choice === 'Myth') ? '1' : '0.5';
+    document.getElementById('bmf-fact').style.opacity = (choice === 'Fact') ? '1' : '0.5';
+    document.getElementById('bmf-next').style.display = 'block';
+  };
+  window.bmfNext = function() { idx++; updateCard(); };
+  window.bmfRestart = function() {
+    idx = 0; score = 0; answered = 0;
+    document.getElementById('bmf-card').style.display = 'flex';
+    document.getElementById('bmf-myth').style.display = 'block';
+    document.getElementById('bmf-fact').style.display = 'block';
+    document.getElementById('bmf-done').style.display = 'none';
+    document.getElementById('bmf-score').textContent = '0';
+    document.getElementById('bmf-total').textContent = '0';
+    updateCard();
+  };
+  updateCard();
+})();
+</script>
+```
+
 # Evaluate: Putting It All Together
 
 ::: {.evaluate-box}
@@ -948,69 +1654,78 @@ Plot.plot({
 You now have all the pieces to explain how blizzards form and how they may change with climate change. Let's check your understanding!
 :::
 
-::: {.quiz-section}
-### 🧠 Check Your Understanding
+::: {.evaluate-box}
+### 🧠 Comprehensive Unit Quiz
 
-**Question 1:** What is the fundamental cause of wind?
-
-```{ojs}
-//| echo: false
-viewof q1_blizzard = Inputs.radio(
-  ["Temperature differences between the surface and upper atmosphere",
-   "Pressure differences caused by uneven heating of Earth's surface",
-   "The rotation of the Earth on its axis",
-   "Evaporation of water from the ocean"],
-  {label: "Select the best answer:"}
-)
-```
-
-```{ojs}
-//| echo: false
-q1_blizzard === "Pressure differences caused by uneven heating of Earth's surface" ? 
-  html`<div style="background: #d4edda; padding: 12px; border-radius: 8px; border-left: 4px solid #28a745;">✅ <strong>Correct!</strong> Uneven heating creates temperature differences, which create pressure differences. Air flows from high to low pressure — that's wind!</div>` :
-  q1_blizzard ? html`<div style="background: #f8d7da; padding: 12px; border-radius: 8px; border-left: 4px solid #dc3545;">❌ Not quite. Think about the causal chain: uneven heating → temperature differences → pressure differences → wind.</div>` : html``
-```
-
-**Question 2:** In a mid-latitude cyclone, blizzard conditions (heavy snow, high winds) are most likely found:
-
-```{ojs}
-//| echo: false
-viewof q2_blizzard = Inputs.radio(
-  ["Ahead of the warm front (east/northeast of the low center)",
-   "Behind the cold front (north/west of the low center)",
-   "At the exact center of the low-pressure system",
-   "Far away from all fronts in the warm sector"],
-  {label: "Select the best answer:"}
-)
-```
-
-```{ojs}
-//| echo: false
-q2_blizzard === "Behind the cold front (north/west of the low center)" ? 
-  html`<div style="background: #d4edda; padding: 12px; border-radius: 8px; border-left: 4px solid #28a745;">✅ <strong>Correct!</strong> The north/west side of the cyclone has cold air wrapping around the system, strong pressure gradients (= high winds), and moisture being lifted along the fronts — the recipe for blizzard conditions.</div>` :
-  q2_blizzard ? html`<div style="background: #f8d7da; padding: 12px; border-radius: 8px; border-left: 4px solid #dc3545;">❌ Think about where cold air and moisture overlap. Blizzard conditions need both heavy precipitation AND cold temperatures.</div>` : html``
-```
-
-**Question 3:** How can climate change lead to more intense blizzards even as average temperatures rise?
-
-```{ojs}
-//| echo: false
-viewof q3_blizzard = Inputs.radio(
-  ["Climate change has no effect on blizzards",
-   "Warmer air holds more moisture, providing more fuel; weakened jet stream allows cold outbreaks",
-   "Climate change only makes hurricanes worse, not blizzards",
-   "Blizzards are caused by the Sun, not greenhouse gases"],
-  {label: "Select the best answer:"}
-)
-```
-
-```{ojs}
-//| echo: false
-q3_blizzard === "Warmer air holds more moisture, providing more fuel; weakened jet stream allows cold outbreaks" ? 
-  html`<div style="background: #d4edda; padding: 12px; border-radius: 8px; border-left: 4px solid #28a745;">✅ <strong>Excellent!</strong> The Clausius-Clapeyron relation means ~7% more moisture per °C of warming. When deep cold outbreaks (from a weakened jet stream) meet this extra moisture, the result can be more intense snowfall events.</div>` :
-  q3_blizzard ? html`<div style="background: #f8d7da; padding: 12px; border-radius: 8px; border-left: 4px solid #dc3545;">❌ Think about two mechanisms: (1) more moisture in a warmer atmosphere, and (2) Arctic amplification weakening the jet stream.</div>` : html``
-```
+Test your complete understanding of the blizzard formation model from wind to climate change!
 :::
+
+```{ojs}
+//| echo: false
+buildQuiz("blizzard-unit-quiz", [
+  {
+    q: "What is the FUNDAMENTAL cause of all surface wind?",
+    options: [
+      "Temperature differences between Earth's surface and the upper atmosphere",
+      "Pressure differences created by uneven heating — air flows from HIGH to LOW pressure",
+      "Earth's rotation deflecting air molecules sideways (Coriolis Effect)",
+      "Evaporation of ocean water creating updrafts near the equator"
+    ],
+    correct: 1,
+    explanation: "The pressure gradient force — pushing air from high to low pressure — is the fundamental driver of all wind. Uneven heating creates temperature differences → density differences → pressure differences. The Coriolis Effect then curves the wind, but the pressure gradient is always the primary driver."
+  },
+  {
+    q: "A cold, dry air mass that forms over central Canada in January is classified as:",
+    options: ["mT — maritime Tropical", "cP — continental Polar", "mP — maritime Polar", "cA — continental Arctic"],
+    correct: 1,
+    explanation: "Continental Polar (cP): 'c' = forms over LAND (dry), 'P' = polar latitude (cold). This is the primary cold air mass responsible for most US blizzards. True cA (continental Arctic) forms only over the permanent Arctic ice cap and is even more extreme."
+  },
+  {
+    q: "In a mature mid-latitude cyclone, where are blizzard conditions (heavy snow + extreme winds) most likely to occur?",
+    options: [
+      "Ahead of the warm front, in the warm and moist sector",
+      "North and west of the low center — where cold air, strong winds, and heavy precipitation all overlap",
+      "Exactly at the eye of the low-pressure center, where pressure is lowest",
+      "South of the cold front, in the retreating warm air mass"
+    ],
+    correct: 1,
+    explanation: "The blizzard zone needs all three ingredients at once: (1) sub-freezing temperatures from cold polar air wrapping north/west; (2) extreme winds from the steep pressure gradient near the low; (3) heavy precipitation from moist air being lifted along the cold front. Only the north/west quadrant has all three!"
+  },
+  {
+    q: "What process causes water vapor to condense into snow at a frontal boundary?",
+    options: [
+      "Compression heating increases air density until condensation is forced",
+      "Adiabatic cooling — rising air expands as pressure decreases, cooling until it reaches its dew point",
+      "Cold polar air absorbs moisture from warm air molecules at the surface",
+      "Solar radiation activates ice nuclei already present in the cloud"
+    ],
+    correct: 1,
+    explanation: "Adiabatic cooling: warm moist air is forced UP at the front, moves into lower-pressure regions, EXPANDS (doing work against surroundings), and therefore COOLS without exchanging heat. When it cools to its dew point, water vapor condenses. If temperatures stay below 32°F from cloud to ground, precipitation falls and stays as snow."
+  },
+  {
+    q: "Climate change and the Clausius-Clapeyron relation (~7% more moisture per °C of warming): what does this mean for blizzard intensity?",
+    options: [
+      "Blizzards will disappear as warmer temperatures prevent any freezing precipitation",
+      "When cold outbreaks occur, extra atmospheric moisture can fuel heavier snowfall than the same cold event would have produced in a cooler era",
+      "The 7% change is too small to have any measurable effect on storm precipitation",
+      "More moisture only makes summer convective storms stronger, not winter cyclones"
+    ],
+    correct: 1,
+    explanation: "More atmospheric moisture = more potential snowfall when temperatures are cold enough. Even if severe cold outbreaks become less frequent, when they DO occur (driven by Arctic amplification and a wavy jet stream), they encounter an atmosphere loaded with extra water vapor. This extra fuel can produce historically extreme snowfall — the 'less frequent but more intense' pattern visible in the NYC snowfall data."
+  },
+  {
+    q: "Arctic amplification (the Arctic warming 2–4× faster than the global average) affects mid-latitude blizzards by:",
+    options: [
+      "Physically blocking cold air from escaping the Arctic region",
+      "Reducing the temperature contrast that keeps the polar jet stream tight, causing it to develop deep meanders that send Arctic air far south",
+      "Only affecting sea ice and Arctic marine ecosystems with no mid-latitude impact",
+      "Permanently locking cold air in the Arctic and reducing blizzard risk in the US"
+    ],
+    correct: 1,
+    explanation: "The polar jet stream is maintained by the temperature contrast between cold polar and warm tropical air. Arctic amplification weakens this contrast, slowing and waving the jet stream. Deeper Rossby wave troughs can send Arctic air deep into the southern US. When this frigid air encounters a moisture-laden atmosphere (thanks to warm oceans), catastrophic blizzards can result — exactly the conditions that made Winter Storm Jonas possible."
+  }
+])
+```
 
 ::: {.lab-activity}
 ### 📝 Culminating Task: Blizzard Explanation Model

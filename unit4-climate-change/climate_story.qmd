@@ -81,6 +81,115 @@ fig_co2
 
 :::
 
+```{ojs}
+//| echo: false
+// --- Collapsible quiz builder (file-scoped) ---
+buildQuiz = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="margin:18px 0 24px 0;text-align:center;">
+    <button style="
+      display:inline-flex;align-items:center;gap:7px;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      color:#fff;border:none;padding:9px 22px;border-radius:50px;
+      font-size:.95em;font-weight:700;cursor:pointer;
+      box-shadow:0 3px 12px rgba(102,126,234,.45);
+      transition:transform .15s,box-shadow .15s;"
+      onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 5px 18px rgba(102,126,234,.55)'"
+      onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 3px 12px rgba(102,126,234,.45)'"
+    >
+      <span style="font-size:1.1em;">📝</span> ${title}
+      <span class="chevron" style="transition:transform .3s;">▼</span>
+    </button>
+
+    <div class="quiz-body" style="
+      max-height:0;opacity:0;overflow:hidden;
+      transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin-top .3s ease;
+      margin-top:0;text-align:left;">
+
+      <button class="close-btn" style="
+        display:block;margin:0 auto 10px auto;
+        background:rgba(102,126,234,.12);color:#667eea;border:none;
+        padding:5px 18px;border-radius:50px;font-size:.85em;
+        font-weight:600;cursor:pointer;">Hide Quiz</button>
+      <p style="text-align:center;color:#718096;font-style:italic;font-size:.9em;margin-bottom:12px;">
+        Select an answer for each question.</p>
+    </div>
+  </div>`;
+
+  const toggle = outer.querySelector("button");
+  const chevron = toggle.querySelector(".chevron");
+  const body   = outer.querySelector(".quiz-body");
+  const closeBtn = body.querySelector(".close-btn");
+
+  function expand(){  body.style.maxHeight="2000px";body.style.opacity="1";body.style.marginTop="14px";chevron.style.transform="rotate(180deg)"; }
+  function collapse(){ body.style.maxHeight="0";body.style.opacity="0";body.style.marginTop="0";chevron.style.transform="rotate(0)"; }
+  toggle.onclick = () => body.style.maxHeight === "0px" || body.style.maxHeight === "" ? expand() : collapse();
+  closeBtn.onclick = collapse;
+
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;">${qi+1}. ${qq.q}</p>`;
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#667eea";btn.style.background="#f0f0ff"; }};
+      btn.onmouseout  = () => { if(!card.dataset.answered){ btn.style.borderColor="#e2e8f0";btn.style.background="#fff"; }};
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => { b.style.cursor="default"; b.onmouseover=null; b.onmouseout=null; });
+        if(oi === qq.correct){
+          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";
+          card.querySelectorAll("button")[qq.correct].style.borderColor="#48bb78";
+          card.querySelectorAll("button")[qq.correct].style.background="#f0fff4";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";
+      };
+      card.appendChild(btn);
+    });
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("keeling-curve-quiz", "Check Your Understanding — The Keeling Curve", [
+  {
+    q: "What causes the zig-zag (seasonal oscillation) pattern visible in the Keeling Curve?",
+    options: [
+      "A) Measurement errors at the Mauna Loa observatory",
+      "B) Volcanic eruptions releasing and absorbing CO₂",
+      "C) Seasonal plant growth absorbing CO₂ in spring/summer and releasing it in fall/winter",
+      "D) Changes in ocean temperature throughout the year"
+    ],
+    correct: 2,
+    explanation: "The seasonal 'breathing' pattern comes from Northern Hemisphere vegetation: plants absorb CO₂ during the growing season (lowering levels) and release it during decomposition in fall/winter."
+  },
+  {
+    q: "What is the approximate CO₂ level today, and how does it compare to pre-industrial levels (~280 ppm)?",
+    options: [
+      "A) About 315 ppm — only slightly higher than pre-industrial",
+      "B) About 350 ppm — a moderate increase",
+      "C) About 420 ppm — roughly 50% higher than pre-industrial",
+      "D) About 600 ppm — more than double pre-industrial"
+    ],
+    correct: 2,
+    explanation: "Current CO₂ levels have surpassed 420 ppm, about 50% higher than the pre-industrial baseline of ~280 ppm. This level has not been seen on Earth for millions of years."
+  }
+])
+
 ## Part 2: The Consequence
 
 Rising CO2 is not just a number; it traps heat. We can see the direct correlation when we look at global temperature anomalies over the last century.
@@ -105,3 +214,30 @@ fig_temp
 :::
 
 :::
+
+```{ojs}
+//| echo: false
+buildQuiz("temp-anomaly-story-quiz", "Check Your Understanding — Temperature Anomalies", [
+  {
+    q: "According to the temperature anomaly chart, when did the shift from mostly blue (cool) bars to mostly red (warm) bars occur?",
+    options: [
+      "A) Around 1920",
+      "B) Around 1950",
+      "C) Around the 1980s",
+      "D) Around 2010"
+    ],
+    correct: 2,
+    explanation: "By the 1980s, cool years (blue bars) largely disappeared and were replaced by warm years (red bars), marking the emergence of a clear, sustained warming signal above natural variability."
+  },
+  {
+    q: "How are the Keeling Curve (Part 1) and the Temperature Anomaly chart (Part 2) connected?",
+    options: [
+      "A) They are unrelated — CO₂ and temperature change independently",
+      "B) Rising CO₂ traps more heat in the atmosphere, causing the temperature anomalies to grow",
+      "C) Temperature increases cause CO₂ to rise, not the other way around",
+      "D) Both are caused solely by changes in solar output"
+    ],
+    correct: 1,
+    explanation: "The rising CO₂ from burning fossil fuels strengthens the greenhouse effect, trapping more heat and causing the temperature anomalies to grow larger over time. The physics of the greenhouse effect directly links these two datasets."
+  }
+])

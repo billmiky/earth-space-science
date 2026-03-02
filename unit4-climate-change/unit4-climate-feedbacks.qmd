@@ -160,6 +160,59 @@ md`${prediction === "The Arctic is warming much faster"
 
 ```{ojs}
 //| echo: false
+function buildQuiz(id, questions) {
+  const outer = html`<div style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const toggle = html`<button style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:2px solid #c7d2fe;border-radius:30px;background:linear-gradient(135deg,#eef2ff 0%,#e8f4fd 100%);color:#4338ca;font-weight:700;font-size:0.95em;cursor:pointer;transition:all 0.25s ease;box-shadow:0 2px 8px rgba(67,56,202,0.12);"><span style="font-size:1.15em;">✅</span><span>Check Your Understanding</span><span class="quiz-chevron" style="display:inline-block;transition:transform 0.3s ease;font-size:0.8em;">▶</span></button>`;
+  toggle.onmouseenter = () => { toggle.style.background='linear-gradient(135deg,#dbeafe 0%,#c7d2fe 100%)'; toggle.style.boxShadow='0 4px 14px rgba(67,56,202,0.22)'; };
+  toggle.onmouseleave = () => { toggle.style.background='linear-gradient(135deg,#eef2ff 0%,#e8f4fd 100%)'; toggle.style.boxShadow='0 2px 8px rgba(67,56,202,0.12)'; };
+  outer.appendChild(toggle);
+  const body = html`<div style="max-height:0;overflow:hidden;opacity:0;transition:max-height 0.5s cubic-bezier(0.4,0,0.2,1),opacity 0.4s ease,margin-top 0.4s ease,padding 0.4s ease;padding:0 20px;margin-top:0;background:linear-gradient(135deg,#eef2ff 0%,#e8f4fd 100%);border-radius:14px;border:2px solid #c7d2fe;"></div>`;
+  const closeBtn = html`<div style="text-align:right;padding-top:14px;"><button style="padding:6px 16px;border:1.5px solid #c7d2fe;border-radius:20px;background:white;color:#4338ca;font-weight:700;font-size:0.82em;cursor:pointer;transition:all 0.2s;">▲ Hide Quiz</button></div>`;
+  closeBtn.querySelector('button').onmouseenter = function(){ this.style.background='#eef2ff'; };
+  closeBtn.querySelector('button').onmouseleave = function(){ this.style.background='white'; };
+  body.appendChild(closeBtn);
+  body.appendChild(html`<div style="text-align:center;margin-bottom:14px;"><span style="font-size:1.3em;font-weight:800;color:#4338ca;">✅ Check Your Understanding</span></div>`);
+  let expanded = false;
+  function collapseQuiz(){ expanded=false; body.style.maxHeight='0'; body.style.opacity='0'; body.style.marginTop='0'; body.style.padding='0 20px'; toggle.querySelector('.quiz-chevron').style.transform='rotate(0deg)'; }
+  function expandQuiz(){ expanded=true; body.style.padding='0 20px 20px 20px'; body.style.marginTop='12px'; body.style.opacity='1'; body.style.maxHeight=body.scrollHeight+5000+'px'; toggle.querySelector('.quiz-chevron').style.transform='rotate(90deg)'; }
+  toggle.onclick = () => { expanded ? collapseQuiz() : expandQuiz(); };
+  closeBtn.querySelector('button').onclick = collapseQuiz;
+  questions.forEach((q, qi) => {
+    const emoji = q.emoji || '❓';
+    const card = html`<div style="background:white;border-radius:10px;padding:16px 20px;margin-bottom:14px;border:2px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,0.06);max-height:2000px;overflow:hidden;"><div style="font-size:11px;font-weight:700;color:#a0aec0;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">${emoji} Question ${qi+1}</div><div style="font-size:15px;font-weight:700;color:#2d3748;margin-bottom:12px;line-height:1.5;">${q.q}</div></div>`;
+    const fb = html`<div style="display:none;margin-top:10px;padding:12px 15px;border-radius:8px;font-size:13.5px;line-height:1.6;"></div>`;
+    q.options.forEach((opt, oi) => {
+      const btn = html`<div style="display:block;padding:10px 16px;margin:6px 0;border-radius:8px;border:2px solid #e2e8f0;cursor:pointer;font-size:14px;color:#4a5568;background:#f7fafc;transition:all 0.18s;user-select:none;">${opt}</div>`;
+      btn.onmouseenter = () => { if(!card.dataset.done){ btn.style.borderColor='#667eea'; btn.style.background='#eef2ff'; btn.style.transform='translateX(3px)'; } };
+      btn.onmouseleave = () => { if(!card.dataset.done){ btn.style.borderColor='#e2e8f0'; btn.style.background='#f7fafc'; btn.style.transform='none'; } };
+      btn.onclick = () => {
+        if(card.dataset.done) return;
+        card.dataset.done='1';
+        const correct = oi===q.correct;
+        btn.style.borderColor = correct ? '#38a169' : '#e53e3e';
+        btn.style.background = correct ? '#f0fff4' : '#fff5f5';
+        btn.style.fontWeight = '700';
+        btn.style.color = correct ? '#22543d' : '#9b2c2c';
+        if(!correct){ const corEl=card.querySelectorAll('div')[q.correct+2]; corEl.style.borderColor='#38a169'; corEl.style.background='#f0fff4'; corEl.style.fontWeight='700'; corEl.style.color='#22543d'; }
+        card.querySelectorAll('div').forEach((el,i)=>{ if(i>1){ el.style.cursor='not-allowed'; el.style.opacity=(i-2===oi||i-2===q.correct)?'1':'0.5'; } });
+        fb.style.display='block';
+        fb.style.background = correct ? '#f0fff4' : '#fff5f5';
+        fb.style.border = correct ? '1.5px solid #38a169' : '1.5px solid #e53e3e';
+        fb.innerHTML = `<strong style="color:${correct?'#276749':'#c53030'}">${correct?'✅ Correct!':'❌ Not quite.'}</strong><br>${q.explanation}`;
+        body.style.maxHeight = body.scrollHeight+2000+'px';
+      };
+      card.appendChild(btn);
+    });
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  outer.appendChild(body);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
 // Ensure we are grabbing a version of Plot that supports tooltips
 Plot = require("@observablehq/plot@0.6.13")
 
@@ -221,6 +274,26 @@ Plot.plot({
 })
 ```
 
+```{ojs}
+//| echo: false
+buildQuiz("arctic-vs-global", [
+  {
+    q: "According to the graph, approximately how many times faster is the Arctic warming compared to the global average?",
+    options: ["About the same rate", "About 2x faster", "About 3-4x faster", "About 10x faster"],
+    correct: 2,
+    emoji: "🌡️",
+    explanation: "The Arctic temperature anomaly in 2024 is about 4.1°C while the global average is about 1.29°C. That's roughly 3-4 times faster! This phenomenon is called Arctic amplification and is primarily driven by the ice-albedo feedback loop."
+  },
+  {
+    q: "What trend do both the Arctic and Global lines share?",
+    options: ["Both are decreasing over time", "Both show accelerating warming, especially after 2000", "Both are flat with no clear trend", "They move in opposite directions"],
+    correct: 1,
+    emoji: "📈",
+    explanation: "Both lines show a clear upward trend that accelerates after 2000. However, the Arctic line rises much more steeply, with the gap between Arctic and Global widening over time — evidence that feedback mechanisms are amplifying Arctic warming."
+  }
+])
+```
+
 ::: {.check-understanding}
 ### 🤔 Initial Questions
 1. How much faster is the Arctic warming compared to the global average?
@@ -232,6 +305,26 @@ Plot.plot({
 
 ```{=html}
 <iframe src="https://ourworldindata.org/grapher/co2-long-term-concentration?tab=chart" loading="lazy" style="width: 100%; height: 600px; border: 0px none;" allow="web-share; clipboard-write"></iframe>
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("co2-long-term", [
+  {
+    q: "What was the approximate range of CO₂ levels over the past 800,000 years (before industrialization)?",
+    options: ["100–200 ppm", "180–280 ppm", "280–400 ppm", "400–600 ppm"],
+    correct: 1,
+    emoji: "📊",
+    explanation: "Over the past 800,000 years, CO₂ naturally cycled between about 180 ppm (during ice ages) and 280 ppm (during interglacial warm periods). This ~100 ppm range was driven by Milankovitch cycles and natural carbon cycle feedbacks."
+  },
+  {
+    q: "How does today's CO₂ level (~420 ppm) compare to the natural range shown in the chart?",
+    options: ["It's within the normal natural range", "It's slightly above the natural maximum", "It's about 50% higher than the natural maximum of 280 ppm", "It's about the same as ice age levels"],
+    correct: 2,
+    emoji: "🚨",
+    explanation: "Today's CO₂ at ~420 ppm is about 50% higher than the natural maximum of ~280 ppm — a level not seen in at least 800,000 years. The rate of increase is also unprecedented: natural changes took thousands of years, while the current rise happened in about 150 years."
+  }
+])
 ```
 
 ## Greenhouse Feedback Interactive Plot
@@ -384,6 +477,26 @@ ghData = {
 }
 ```
 
+```{ojs}
+//| echo: false
+buildQuiz("greenhouse-feedback", [
+  {
+    q: "In the Greenhouse Feedback chart, which factor rises FIRST during deglaciation?",
+    options: ["Global temperature", "CO₂ concentration", "Antarctic temperature (driven by orbital changes)", "Sea level"],
+    correct: 2,
+    emoji: "🔬",
+    explanation: "Antarctic temperature rises first, triggered by orbital (Milankovitch) changes. This initial warming then causes CO₂ to rise (from warming oceans releasing dissolved CO₂), which amplifies the warming globally. It's a feedback sequence: orbital change → Antarctic warming → CO₂ release → global warming."
+  },
+  {
+    q: "What does this sequence of events tell us about the relationship between CO₂ and temperature?",
+    options: ["CO₂ has nothing to do with temperature", "CO₂ always causes temperature to change first", "CO₂ acts as both a response to AND an amplifier of temperature change", "Temperature and CO₂ are completely independent"],
+    correct: 2,
+    emoji: "🔄",
+    explanation: "CO₂ plays a dual role: it rises in response to initial warming (oceans release CO₂ when warmed), AND it amplifies that warming through the greenhouse effect. This feedback loop explains why small orbital changes can trigger large global temperature swings. Today, humans are adding CO₂ directly — skipping the orbital trigger entirely."
+  }
+])
+```
+
 :::
 
 ::::
@@ -495,6 +608,26 @@ htl.html`<svg width="600" height="450" viewBox="0 0 600 450" style="font-family:
   ` : ""}
 
 </svg>`
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("carbon-cycle-model", [
+  {
+    q: "In the carbon cycle model, what happens to the Atmosphere reservoir when you increase the Fossil Fuel Burning rate?",
+    options: ["It stays the same because oceans absorb all the extra CO₂", "It increases because more carbon is being added than removed", "It decreases because burning removes carbon from the atmosphere", "It fluctuates randomly"],
+    correct: 1,
+    emoji: "🏭",
+    explanation: "When fossil fuel burning increases, carbon is transferred from the Fossil Fuel reservoir to the Atmosphere faster than natural processes (ocean absorption, photosynthesis) can remove it. This is exactly what's happening in the real world — we're adding ~10 Gt of carbon per year, but natural sinks only absorb about half."
+  },
+  {
+    q: "What does the Pre-Industrial equilibrium (Fossil Fuel Burning = 0) tell us about the natural carbon cycle?",
+    options: ["Carbon doesn't move between reservoirs naturally", "Carbon flows were approximately balanced — inputs ≈ outputs for each reservoir", "The atmosphere had no CO₂ before humans", "Oceans contained no carbon"],
+    correct: 1,
+    emoji: "⚖️",
+    explanation: "Before industrialization, the carbon cycle was roughly in equilibrium. Carbon flowed between atmosphere, oceans, biosphere, and land at similar rates in and out, keeping atmospheric CO₂ stable at ~280 ppm. Human fossil fuel burning disrupted this balance by adding a large new source with no corresponding new sink."
+  }
+])
 ```
 
 ## Modeling the Effect of the Carbon Cycle on Temperature
@@ -680,6 +813,26 @@ vl.layer(
 
 ```{=html}
 <iframe src="https://ourworldindata.org/grapher/co2-by-source?tab=chart" loading="lazy" style="width: 100%; height: 600px; border: 0px none;" allow="web-share; clipboard-write"></iframe>
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("co2-emissions", [
+  {
+    q: "Looking at the CO₂ & Emissions chart, what happened to both CO₂ concentration and emissions after ~1950?",
+    options: ["Both leveled off", "Both decreased", "Both increased sharply — an exponential acceleration", "CO₂ rose but emissions fell"],
+    correct: 2,
+    emoji: "📈",
+    explanation: "After ~1950, both CO₂ concentration and carbon emissions show a dramatic exponential increase. This 'Great Acceleration' corresponds to rapid industrialization, population growth, and increased fossil fuel use worldwide. CO₂ has risen from ~311 ppm in 1950 to over 420 ppm today."
+  },
+  {
+    q: "According to the CO₂ by Source chart, which sector is the largest source of CO₂ emissions?",
+    options: ["Transportation", "Agriculture", "Electricity and heat production", "Buildings"],
+    correct: 2,
+    emoji: "⚡",
+    explanation: "Electricity and heat production is the largest single source of CO₂, accounting for roughly 25% of global emissions. This is primarily from burning coal and natural gas in power plants. This is also why transitioning to renewable energy is considered one of the most impactful climate solutions."
+  }
+])
 ```
 
 ::: {.check-understanding}
@@ -942,6 +1095,26 @@ Plot.plot({
 })
 ```
 
+```{ojs}
+//| echo: false
+buildQuiz("albedo-surfaces", [
+  {
+    q: "The Frederiksdal Glacier images show dramatic ice loss over just 40 days (June–July 2023). What feedback mechanism does this illustrate?",
+    options: ["Negative feedback — ice loss slows warming", "Positive feedback — ice loss exposes darker surfaces, accelerating warming", "No feedback — ice melt has no climate effect", "Negative feedback — meltwater cools the ocean"],
+    correct: 1,
+    emoji: "🏔️",
+    explanation: "This is a powerful example of ice-albedo positive feedback. As bright ice melts away, it exposes darker rock and water underneath. These darker surfaces absorb more solar radiation, causing more warming, which melts more ice — a self-reinforcing cycle."
+  },
+  {
+    q: "Based on the albedo chart, how much more solar energy does ocean water absorb compared to fresh snow?",
+    options: ["About 2x more", "About 5x more", "About 14x more", "About the same amount"],
+    correct: 2,
+    emoji: "☀️",
+    explanation: "Fresh snow reflects 85% (absorbs 15%) while ocean water reflects only 6% (absorbs 94%). That means ocean water absorbs 94/15 ≈ 6.3x more energy. When you consider that ice (60% albedo) is replaced by ocean (6% albedo), the absorbed energy goes from 40% to 94% — more than doubling! This enormous energy difference drives the ice-albedo feedback."
+  }
+])
+```
+
 ## Interactive: Ice-Albedo Feedback Simulation
 
 ```{ojs}
@@ -989,6 +1162,26 @@ html`
   </div>
 </div>
 `
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("ice-albedo-sim", [
+  {
+    q: "In the ice-albedo simulation, what happens to the energy absorbed as you slide ice coverage from 100% down to 0%?",
+    options: ["Energy absorbed stays constant", "Energy absorbed decreases", "Energy absorbed increases dramatically", "Energy absorbed fluctuates randomly"],
+    correct: 2,
+    emoji: "🔥",
+    explanation: "As ice coverage decreases from 100% to 0%, the average albedo drops from ~0.6 (mostly reflective) to ~0.06 (mostly absorptive). This means the surface goes from reflecting most solar energy to absorbing most of it — a massive increase in energy absorption that drives further warming."
+  },
+  {
+    q: "At what approximate ice coverage does the simulation transition from '❄️ Ice preserved' to '🔥 More warming'?",
+    options: ["Below 90%", "Below 70%", "Below 30%", "Below 10%"],
+    correct: 2,
+    emoji: "⚠️",
+    explanation: "The simulation shows that below ~30% ice coverage, the system enters a 'high absorption' state where most energy is absorbed rather than reflected. This suggests there may be a tipping point: once enough ice is lost, the feedback becomes very difficult to reverse because the system strongly absorbs energy and keeps warming."
+  }
+])
 ```
 
 ::: {.lab-activity}
@@ -1069,6 +1262,26 @@ Plot.plot({
     Plot.dot(data, { x: "time", y: "temperature", fill: "paperColor", r: 4 })
   ]
 })
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("paper-albedo", [
+  {
+    q: "Which paper color heated up the fastest, and why?",
+    options: ["White paper — it traps heat inside", "Black paper — it has the lowest albedo and absorbs the most light energy", "Green paper — plants absorb the most energy", "Blue paper — it matches the sky and absorbs sky radiation"],
+    correct: 1,
+    emoji: "📊",
+    explanation: "Black paper heated fastest because it has the lowest albedo (reflects the least light). Darker colors absorb more electromagnetic radiation and convert it to heat. This is the same principle behind the ice-albedo feedback: dark surfaces (ocean, rock) absorb more energy than light surfaces (ice, snow)."
+  },
+  {
+    q: "How does this lab result connect to the Urban Heat Island Effect?",
+    options: ["It doesn't — cities and paper are unrelated", "Dark asphalt and concrete in cities absorb more heat, just like dark paper, making cities hotter than surrounding areas", "Cities are cooler because buildings create shade", "White roofs make cities warmer"],
+    correct: 1,
+    emoji: "🏙️",
+    explanation: "Cities have lots of dark, low-albedo surfaces (asphalt at 0.04, concrete at 0.10–0.35) that absorb solar radiation — just like the black paper in the experiment. This is why cities can be 1–3°C hotter during the day and up to 12°C hotter at night than rural areas. White/reflective roofs and more vegetation can help mitigate this."
+  }
+])
 ```
 
 ::: {.elaborate-box}
@@ -1354,6 +1567,26 @@ Plot.plot({
 })
 ```
 
+```{ojs}
+//| echo: false
+buildQuiz("sea-ice-decline", [
+  {
+    q: "Based on the Arctic Sea Ice Extent chart, approximately how much has September ice extent declined from 1980 to 2024?",
+    options: ["About 10% decline", "About 25% decline", "About 40-50% decline", "No significant change"],
+    correct: 2,
+    emoji: "🧊",
+    explanation: "September Arctic sea ice has declined from about 7.5 million km\u00b2 in 1980 to about 4.3 million km\u00b2 in recent years \u2014 a decline of roughly 40-45%. The 2012 record low was about 3.4 million km\u00b2. The red trend line shows a clear and accelerating downward trajectory."
+  },
+  {
+    q: "If September Arctic sea ice continues declining at this rate, what is the most likely consequence?",
+    options: ["The ice-albedo feedback will slow down", "Arctic warming will accelerate further as more dark ocean is exposed year-round", "Sea ice will naturally recover due to negative feedbacks", "There will be no climate impact"],
+    correct: 1,
+    emoji: "🚨",
+    explanation: "As September ice continues to decline, more dark ocean water is exposed during the period of maximum sunlight. This accelerates warming through the ice-albedo feedback. Scientists project the Arctic could see ice-free summers by the 2040s-2050s, which would dramatically amplify regional and global warming."
+  }
+])
+```
+
 ::: {.check-understanding}
 ### ✅ Check Your Understanding
 
@@ -1398,6 +1631,19 @@ Plot.plot({
 })
 ```
 
+```{ojs}
+//| echo: false
+buildQuiz("co2-sources", [
+  {
+    q: "Based on the CO₂ sources chart, what are the TWO largest emission sectors combined?",
+    options: ["Transportation + Buildings (22%)", "Electricity & Heat + Agriculture & Land Use (49%)", "Manufacturing + Other Energy (29%)", "Agriculture + Transportation (40%)"],
+    correct: 1,
+    emoji: "🏭",
+    explanation: "Electricity & Heat (25%) and Agriculture & Land Use (24%) together account for nearly half (49%) of global emissions. This tells us that decarbonizing electricity (with renewables) and transforming food/land-use practices are the two highest-impact strategies for reducing emissions."
+  }
+])
+```
+
 ## CO₂ Growth Over Time
 
 ```{ojs}
@@ -1436,6 +1682,26 @@ Plot.plot({
         tip: true})
   ]
 })
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("co2-growth", [
+  {
+    q: "When did atmospheric CO\u2082 first exceed the 'safe' level of 350 ppm marked on the chart?",
+    options: ["Around 1800", "Around 1900", "Around 1990", "It hasn't exceeded it yet"],
+    correct: 2,
+    emoji: "⚠️",
+    explanation: "CO\u2082 crossed the 350 ppm 'safe' threshold around 1990. Scientist James Hansen identified 350 ppm as the upper limit for a stable climate. Today we're at ~422 ppm and rising \u2014 about 20% above what many scientists consider safe for long-term climate stability."
+  },
+  {
+    q: "What shape does the CO\u2082 curve show after 1950, and what does it mean?",
+    options: ["Linear \u2014 CO\u2082 increases at a constant rate", "Exponential \u2014 CO\u2082 is increasing faster and faster", "Flat \u2014 CO\u2082 has stabilized", "Decreasing \u2014 emissions controls are working"],
+    correct: 1,
+    emoji: "📈",
+    explanation: "The curve shows exponential growth after ~1950 \u2014 CO\u2082 is not just increasing, it's increasing faster each decade. From 1950-2000, CO\u2082 rose by ~58 ppm. From 2000-2024, it rose by ~53 ppm in only 24 years. This acceleration reflects increasing fossil fuel use worldwide."
+  }
+])
 ```
 
 ::: {.key-idea}
@@ -1676,6 +1942,26 @@ md`
 `
 ```
 
+```{ojs}
+//| echo: false
+buildQuiz("carbon-reservoirs", [
+  {
+    q: "When you toggle from Pre-Industrial to Post-Industrial, what is the most dramatic change in the Carbon Reservoirs diagram?",
+    options: ["The ocean lost most of its carbon", "The atmosphere gained a significant amount of carbon while fossil fuel reserves decreased", "The biosphere absorbed all the extra carbon", "Nothing changed significantly"],
+    correct: 1,
+    emoji: "🏭",
+    explanation: "The most dramatic change is the large increase in atmospheric carbon and the decrease in fossil fuel reserves. Humans have moved carbon from underground storage (fossil fuels) into the atmosphere. While the ocean has absorbed some extra carbon too, the atmosphere has accumulated the most — driving the greenhouse effect and climate change."
+  },
+  {
+    q: "Why is the phrase 'the carbon cycle became unbalanced' significant?",
+    options: ["It means carbon stopped moving between reservoirs", "It means more carbon is entering the atmosphere than natural processes can remove", "It means the ocean stopped absorbing CO₂", "It means plants stopped photosynthesizing"],
+    correct: 1,
+    emoji: "⚖️",
+    explanation: "Before industrialization, carbon flows in and out of each reservoir were roughly balanced. Now, fossil fuel burning adds ~10 Gt of carbon per year to the atmosphere, but natural sinks (oceans + plants) only remove about 5 Gt. The remaining ~5 Gt accumulates in the atmosphere each year, steadily increasing CO₂ concentration."
+  }
+])
+```
+
 # Feedback Loop Visualization
 
 This visualization shows how positive feedback mechanisms amplify climate change through interconnected processes.
@@ -1904,6 +2190,26 @@ ${feedbackType === "Ice-Albedo Feedback" ? `
 
 ⚠️ **Why this matters:** These are called **positive feedbacks** not because they're good, but because they **amplify change** rather than damping it. Once triggered, they make climate change harder to stop.
 `
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("animated-feedbacks", [
+  {
+    q: "In the Combined Feedbacks animation, how do the Ice-Albedo and Greenhouse Gas feedbacks interact?",
+    options: ["They cancel each other out", "They operate independently with no interaction", "They reinforce each other — ice melt increases absorption AND releases GHGs, while GHGs warm and melt more ice", "Only one operates at a time"],
+    correct: 2,
+    emoji: "🔗",
+    explanation: "The combined feedbacks create a 'feedback of feedbacks': warming melts ice (ice-albedo) → exposed ocean absorbs more heat → warmer ocean releases CO₂ (greenhouse gas feedback) → more warming → more ice melt. Each feedback amplifies the other, making the combined effect much larger than either alone."
+  },
+  {
+    q: "Why are these called 'positive' feedbacks even though their effects are harmful?",
+    options: ["Because they have positive effects on the environment", "Because they make temperatures go in the positive (upward) direction only", "Because they amplify change in the same direction — 'positive' means reinforcing, not beneficial", "Because scientists named them incorrectly"],
+    correct: 2,
+    emoji: "📚",
+    explanation: "'Positive' in feedback terminology means the output reinforces (amplifies) the original change — it pushes the system further in the same direction. It does NOT mean 'good.' A positive feedback on warming means: warming → process → MORE warming. This is why climate scientists are concerned about crossing tipping points where these feedbacks become self-sustaining."
+  }
+])
 ```
 
 ```{ojs}

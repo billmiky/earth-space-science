@@ -337,6 +337,79 @@ svg [aria-label="tip"] rect { fill: rgba(255, 255, 255, 0.97) !important; stroke
 }
 ```
 
+```{ojs}
+//| echo: false
+function buildQuiz(id, questions) {
+  const outer = html`<div style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const toggle = html`<button style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:2px solid #c7d2fe;border-radius:30px;background:linear-gradient(135deg,#eef2ff 0%,#e8f4fd 100%);color:#4338ca;font-weight:700;font-size:0.95em;cursor:pointer;transition:all 0.25s ease;box-shadow:0 2px 8px rgba(67,56,202,0.12);"><span style="font-size:1.15em;">✅</span><span>Check Your Understanding</span><span class="quiz-chevron" style="display:inline-block;transition:transform 0.3s ease;font-size:0.8em;">▶</span></button>`;
+  toggle.onmouseenter = () => { toggle.style.background='linear-gradient(135deg,#dbeafe 0%,#c7d2fe 100%)'; toggle.style.boxShadow='0 4px 14px rgba(67,56,202,0.22)'; };
+  toggle.onmouseleave = () => { toggle.style.background='linear-gradient(135deg,#eef2ff 0%,#e8f4fd 100%)'; toggle.style.boxShadow='0 2px 8px rgba(67,56,202,0.12)'; };
+  outer.appendChild(toggle);
+  const body = html`<div style="max-height:0;overflow:hidden;opacity:0;transition:max-height 0.5s cubic-bezier(0.4,0,0.2,1),opacity 0.4s ease,margin-top 0.4s ease,padding 0.4s ease;padding:0 20px;margin-top:0;background:linear-gradient(135deg,#eef2ff 0%,#e8f4fd 100%);border-radius:14px;border:2px solid #c7d2fe;"></div>`;
+  const closeBtn = html`<div style="text-align:right;padding-top:14px;"><button style="padding:6px 16px;border:1.5px solid #c7d2fe;border-radius:20px;background:white;color:#4338ca;font-weight:700;font-size:0.82em;cursor:pointer;transition:all 0.2s;">▲ Hide Quiz</button></div>`;
+  closeBtn.querySelector('button').onmouseenter = function(){ this.style.background='#eef2ff'; };
+  closeBtn.querySelector('button').onmouseleave = function(){ this.style.background='white'; };
+  body.appendChild(closeBtn);
+  body.appendChild(html`<div style="text-align:center;margin-bottom:14px;"><span style="font-size:1.3em;font-weight:800;color:#4338ca;">✅ Check Your Understanding</span></div>`);
+  let expanded = false;
+  function collapseQuiz(){ expanded=false; body.style.maxHeight='0'; body.style.opacity='0'; body.style.marginTop='0'; body.style.padding='0 20px'; toggle.querySelector('.quiz-chevron').style.transform='rotate(0deg)'; }
+  function expandQuiz(){ expanded=true; body.style.padding='0 20px 20px 20px'; body.style.marginTop='12px'; body.style.opacity='1'; body.style.maxHeight=body.scrollHeight+5000+'px'; toggle.querySelector('.quiz-chevron').style.transform='rotate(90deg)'; }
+  toggle.onclick = () => { expanded ? collapseQuiz() : expandQuiz(); };
+  closeBtn.querySelector('button').onclick = collapseQuiz;
+  questions.forEach((q, qi) => {
+    const emoji = q.emoji || '❓';
+    const card = html`<div style="background:white;border-radius:10px;padding:16px 20px;margin-bottom:14px;border:2px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,0.06);max-height:2000px;overflow:hidden;"><div style="font-size:11px;font-weight:700;color:#a0aec0;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">${emoji} Question ${qi+1}</div><div style="font-size:15px;font-weight:700;color:#2d3748;margin-bottom:12px;line-height:1.5;">${q.q}</div></div>`;
+    const fb = html`<div style="display:none;margin-top:10px;padding:12px 15px;border-radius:8px;font-size:13.5px;line-height:1.6;"></div>`;
+    q.options.forEach((opt, oi) => {
+      const btn = html`<div style="display:block;padding:10px 16px;margin:6px 0;border-radius:8px;border:2px solid #e2e8f0;cursor:pointer;font-size:14px;color:#4a5568;background:#f7fafc;transition:all 0.18s;user-select:none;">${opt}</div>`;
+      btn.onmouseenter = () => { if(!card.dataset.done){ btn.style.borderColor='#667eea'; btn.style.background='#eef2ff'; btn.style.transform='translateX(3px)'; } };
+      btn.onmouseleave = () => { if(!card.dataset.done){ btn.style.borderColor='#e2e8f0'; btn.style.background='#f7fafc'; btn.style.transform='none'; } };
+      btn.onclick = () => {
+        if(card.dataset.done) return;
+        card.dataset.done='1';
+        const correct = oi===q.correct;
+        btn.style.borderColor = correct ? '#38a169' : '#e53e3e';
+        btn.style.background = correct ? '#f0fff4' : '#fff5f5';
+        btn.style.fontWeight = '700';
+        btn.style.color = correct ? '#22543d' : '#9b2c2c';
+        if(!correct){ const corEl=card.querySelectorAll('div')[q.correct+2]; corEl.style.borderColor='#38a169'; corEl.style.background='#f0fff4'; corEl.style.fontWeight='700'; corEl.style.color='#22543d'; }
+        card.querySelectorAll('div').forEach((el,i)=>{ if(i>1){ el.style.cursor='not-allowed'; el.style.opacity=(i-2===oi||i-2===q.correct)?'1':'0.5'; } });
+        fb.style.display='block';
+        fb.style.background = correct ? '#f0fff4' : '#fff5f5';
+        fb.style.border = correct ? '1.5px solid #38a169' : '1.5px solid #e53e3e';
+        fb.innerHTML = `<strong style="color:${correct?'#276749':'#c53030'}">${correct?'✅ Correct!':'❌ Not quite.'}</strong><br>${q.explanation}`;
+        body.style.maxHeight = body.scrollHeight+2000+'px';
+      };
+      card.appendChild(btn);
+    });
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  outer.appendChild(body);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("insolation-temp", [
+  {
+    q: "In the graph above, what is the approximate period of the major temperature cycles?",
+    options: ["About 10,000 years", "About 23,000 years", "About 100,000 years", "About 1 million years"],
+    correct: 2,
+    emoji: "🌡️",
+    explanation: "The temperature trace shows a clear sawtooth pattern that repeats roughly every 100,000 years — matching Earth's eccentricity cycle. Notice the rapid warming (interglacial spikes) followed by slow cooling back into glacial periods."
+  },
+  {
+    q: "What do the yellow highlighted regions (labeled 'IG') represent?",
+    options: ["Ice ages (glacial periods)", "Interglacial warm periods", "Volcanic eruptions", "Periods of low solar output"],
+    correct: 1,
+    emoji: "☀️",
+    explanation: "IG stands for 'interglacial' — warm periods between ice ages when temperatures were similar to or warmer than today. Notice these correspond to peaks in the insolation (orange) curve."
+  }
+])
+```
+
 # Engage: Solar Radiation Patterns
 
 ## Solar Radiation at 65°N
@@ -426,6 +499,26 @@ Plot.plot({
 <div class="mind-blown">
 🤯 WAIT — this pattern has been repeating for THREE-QUARTERS OF A MILLION YEARS?! Let's find out WHY... 🤯
 </div>
+
+```{ojs}
+//| echo: false
+buildQuiz("solar-rad-65n", [
+  {
+    q: "What repeating pattern do you observe in the Summer Radiation at 65°N graph?",
+    options: ["Radiation is constant over time", "Radiation peaks and dips in a regular cycle roughly every 20,000–25,000 years", "Radiation has been steadily increasing", "The pattern is completely random"],
+    correct: 1,
+    emoji: "🔍",
+    explanation: "The graph shows regular peaks and valleys with a period of roughly 20,000–25,000 years. This matches the precession cycle — one of the three Milankovitch orbital cycles that controls how much summer sunlight reaches 65°N."
+  },
+  {
+    q: "What does the dashed horizontal line at ~480 W/m² represent, and why is it significant?",
+    options: ["The maximum possible radiation", "An approximate average — above it (red) means warmer summers, below it (blue) means cooler summers", "The current radiation level", "The minimum needed for life"],
+    correct: 1,
+    emoji: "📊",
+    explanation: "The 480 W/m² line serves as a baseline. When radiation is above this line (shaded red), summers at 65°N are warmer and can melt ice sheets. When below (shaded blue), summers are cooler and ice can accumulate — potentially triggering ice ages."
+  }
+])
+```
 
 # Explore: Earth's Orbital Cycles
 
@@ -550,6 +643,26 @@ viewof eccentricity = Inputs.range([0, 0.06], {
 }
 ```
 
+```{ojs}
+//| echo: false
+buildQuiz("eccentricity-quiz", [
+  {
+    q: "As you increase eccentricity from 0 to 0.06, what happens to Earth's orbit shape?",
+    options: ["It becomes more circular", "It becomes more elongated (elliptical)", "It stays the same shape but gets larger", "It flips upside down"],
+    correct: 1,
+    emoji: "🥚",
+    explanation: "Higher eccentricity means the orbit is more stretched out — more elliptical. At eccentricity = 0, the orbit would be a perfect circle. At 0.06 (the maximum in Earth's cycle), it's noticeably oval-shaped."
+  },
+  {
+    q: "What is the period of Earth's eccentricity cycle, and why does it matter for climate?",
+    options: ["23,000 years — it changes seasonal timing", "41,000 years — it changes seasonal intensity", "100,000 years — it changes the total solar energy Earth receives over a year", "1,000 years — it causes volcanic eruptions"],
+    correct: 2,
+    emoji: "⏰",
+    explanation: "The eccentricity cycle takes ~100,000 years. When the orbit is more elliptical, the difference between Earth's closest approach (perihelion) and farthest point (aphelion) is greater, affecting total annual solar radiation — and this matches the major glacial-interglacial cycle!"
+  }
+])
+```
+
 ### 🌐 Cycle 2: OBLIQUITY (Axial Tilt) (~41,000 years)
 
 **THE WOBBLE:** Earth doesn't spin perfectly upright! Our axial tilt changes between 22.1° and 24.5° — affecting how extreme our seasons are! 🎿❄️🏖️
@@ -647,6 +760,26 @@ viewof tiltAngle = Inputs.range([22.1, 24.5], {
   
   return svg.node();
 }
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("obliquity-quiz", [
+  {
+    q: "When Earth's axial tilt increases from 22.1° to 24.5°, what happens to the seasons?",
+    options: ["Seasons become less extreme (milder summers and winters)", "Seasons become more extreme (hotter summers and colder winters)", "Only summers change; winters stay the same", "The seasons reverse (summer becomes winter)"],
+    correct: 1,
+    emoji: "🌡️",
+    explanation: "Greater tilt means the Northern Hemisphere points more directly toward the Sun in summer and more directly away in winter. This amplifies the seasonal contrast — hotter summers and colder winters. Less tilt = milder, more uniform seasons."
+  },
+  {
+    q: "Why is obliquity important for ice ages?",
+    options: ["Higher tilt causes Earth to move closer to the Sun", "Lower tilt means cooler summers, allowing winter snow to persist and ice sheets to grow", "Higher tilt stops ocean currents", "Obliquity has no effect on ice ages"],
+    correct: 1,
+    emoji: "🧊",
+    explanation: "When obliquity decreases, summers at high latitudes become cooler. If summers aren't warm enough to melt winter snow, ice accumulates year after year, eventually forming massive ice sheets. This is the key mechanism by which obliquity influences glaciation."
+  }
+])
 ```
 
 ### 🔄 Cycle 3: PRECESSION (~23,000 years)
@@ -789,6 +922,33 @@ Go back and review that radiation graph from the beginning!
 </div>
 :::
 
+```{ojs}
+//| echo: false
+buildQuiz("precession-orbital-quiz", [
+  {
+    q: "How does precession affect Earth's climate?",
+    options: ["It changes the total solar energy Earth receives each year", "It changes which season occurs when Earth is closest to the Sun", "It changes Earth's distance from the Sun", "It changes the Sun's brightness"],
+    correct: 1,
+    emoji: "🔄",
+    explanation: "Precession (Earth's axial wobble) changes WHICH season occurs at perihelion (closest approach to the Sun). Currently, Northern Hemisphere winter occurs near perihelion. ~11,500 years from now, Northern Hemisphere summer will be at perihelion, making Northern summers more intense."
+  },
+  {
+    q: "Which Milankovitch cycle's period best matches the major ~100,000-year glacial pattern in the radiation data?",
+    options: ["Precession (~23,000 years)", "Obliquity (~41,000 years)", "Eccentricity (~100,000 years)", "None of them match"],
+    correct: 2,
+    emoji: "🎯",
+    explanation: "The eccentricity cycle at ~100,000 years matches the dominant glacial-interglacial pattern. While precession and obliquity contribute smaller variations (the 'wiggles'), the big picture rhythm of ice ages is paced by eccentricity changes."
+  },
+  {
+    q: "In the orbital simulator, what happens when all three cycles align to minimize summer radiation at 65°N?",
+    options: ["Temperatures rise sharply", "Conditions favor ice sheet growth and glaciation", "Ocean currents reverse", "The Earth moves closer to the Sun"],
+    correct: 1,
+    emoji: "❄️",
+    explanation: "When eccentricity is high, obliquity is low, and precession puts Northern summer at aphelion (farthest from the Sun), summer radiation at 65°N drops to its lowest. Cool summers can't melt winter snow, ice sheets grow, and albedo feedback amplifies the cooling — triggering an ice age."
+  }
+])
+```
+
 # Explain: Connecting Orbit to Climate 
 
 <div class="big-question">🧊 THE MILLION-DOLLAR QUESTION 🧊</div>
@@ -862,6 +1022,26 @@ Plot.plot({
 5. **Current orbital parameters suggest Earth should be cooling**, yet global temperatures are increasing
 :::
 
+```{ojs}
+//| echo: false
+buildQuiz("temp-vs-rad-quiz", [
+  {
+    q: "Looking at the Temperature vs. Summer Radiation chart, what is the relationship between radiation peaks and temperature peaks?",
+    options: ["They are completely unrelated", "Temperature peaks closely follow radiation peaks — they are strongly correlated", "Temperature peaks occur opposite to radiation peaks", "Only some peaks align; most are random"],
+    correct: 1,
+    emoji: "📈",
+    explanation: "The red temperature line and blue radiation line show a strong correlation — when summer radiation at 65°N peaks, temperatures rise to interglacial levels shortly after. This is powerful evidence that orbital changes in solar radiation drive the glacial-interglacial cycle."
+  },
+  {
+    q: "Based on the key ideas, why is it significant that current orbital parameters predict cooling, yet Earth is warming?",
+    options: ["It means Milankovitch theory is wrong", "It means another powerful factor (greenhouse gases) must be overriding the natural orbital cooling trend", "It means Earth's orbit has changed unexpectedly", "It means the data is inaccurate"],
+    correct: 1,
+    emoji: "🚨",
+    explanation: "Milankovitch cycles have reliably explained 800,000+ years of climate patterns. The fact that Earth is warming despite orbital parameters favoring cooling is strong evidence that human greenhouse gas emissions are now the dominant climate forcing — powerful enough to override natural orbital trends."
+  }
+])
+```
+
 # Elaborate: Solar Activity vs. Glacial Cycles
 
 <div class="big-question">☀️ BUT WAIT... WHAT ABOUT THE SUN? ☀️</div>
@@ -907,6 +1087,26 @@ Plot.plot({
 2. Has temperature increased significantly since 1980?
 3. Can changes in solar output explain recent warming? Why or why not?
 :::
+
+```{ojs}
+//| echo: false
+buildQuiz("tsi-temp-quiz", [
+  {
+    q: "Looking at the Solar Output (TSI) vs. Global Temperature chart, what happens after 1980?",
+    options: ["Both solar output and temperature increase together", "Solar output increases but temperature decreases", "Solar output levels off or decreases while temperature rises sharply", "Both solar output and temperature decrease"],
+    correct: 2,
+    emoji: "📊",
+    explanation: "After ~1980, solar output (yellow line) flattens or even slightly decreases, while global temperature (red line) rises dramatically. This divergence is key evidence that the Sun's output is NOT driving recent warming."
+  },
+  {
+    q: "What can you conclude from the fact that solar output and temperature diverge after 1980?",
+    options: ["The Sun is the main driver of current warming", "Another factor besides solar output must be responsible for the rapid warming since 1980", "Temperature data after 1980 must be incorrect", "Solar cycles take time to affect temperature, so the warming will stop soon"],
+    correct: 1,
+    emoji: "🔬",
+    explanation: "If the Sun were driving warming, we'd expect solar output and temperature to rise together. Since they diverge — solar output flat, temperature shooting up — something else must be responsible. This points to rising greenhouse gas concentrations as the dominant cause of recent warming."
+  }
+])
+```
 
 # Evaluate: Are Orbital Factors Causing Warming Today?
 

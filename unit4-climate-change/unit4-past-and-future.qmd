@@ -287,13 +287,478 @@ Plot.plot({
 })
 ```
 
-::: {.check-understanding}
-### 🤔 Initial Observations
-1. What dramatic event occurred around 12,900 years ago?
-2. How fast did temperatures drop during the Younger Dryas?
-3. How long did this cold period last?
-4. What might have caused such a rapid climate shift?
-:::
+```{ojs}
+//| echo: false
+function buildQuiz(id, questions) {
+  /* ── outer container ── */
+  const outer = html`<div style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+
+  /* ── toggle button (always visible) ── */
+  const toggle = html`<button style="
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 22px; border:2px solid #c7d2fe; border-radius:30px;
+    background:linear-gradient(135deg,#eef2ff 0%,#e8f4fd 100%);
+    color:#4338ca; font-weight:700; font-size:0.95em;
+    cursor:pointer; transition:all 0.25s ease;
+    box-shadow:0 2px 8px rgba(67,56,202,0.12);
+  ">
+    <span style="font-size:1.15em;">✅</span>
+    <span>Check Your Understanding</span>
+    <span class="quiz-chevron" style="display:inline-block; transition:transform 0.3s ease; font-size:0.8em;">▶</span>
+  </button>`;
+  toggle.onmouseenter = () => { toggle.style.background='linear-gradient(135deg,#dbeafe 0%,#c7d2fe 100%)'; toggle.style.boxShadow='0 4px 14px rgba(67,56,202,0.22)'; };
+  toggle.onmouseleave = () => { toggle.style.background='linear-gradient(135deg,#eef2ff 0%,#e8f4fd 100%)'; toggle.style.boxShadow='0 2px 8px rgba(67,56,202,0.12)'; };
+  outer.appendChild(toggle);
+
+  /* ── collapsible quiz body ── */
+  const body = html`<div style="
+    max-height:0; overflow:hidden; opacity:0;
+    transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1),
+                opacity 0.4s ease,
+                margin-top 0.4s ease,
+                padding 0.4s ease;
+    padding:0 20px; margin-top:0;
+    background:linear-gradient(135deg,#eef2ff 0%,#e8f4fd 100%);
+    border-radius:14px; border:2px solid #c7d2fe;
+  "></div>`;
+
+  /* ── close / collapse button inside the body ── */
+  const closeBtn = html`<div style="text-align:right; padding-top:14px;">
+    <button style="
+      padding:6px 16px; border:1.5px solid #c7d2fe; border-radius:20px;
+      background:white; color:#4338ca; font-weight:700; font-size:0.82em;
+      cursor:pointer; transition:all 0.2s;
+    ">▲ Hide Quiz</button>
+  </div>`;
+  closeBtn.querySelector('button').onmouseenter = function(){ this.style.background='#eef2ff'; };
+  closeBtn.querySelector('button').onmouseleave = function(){ this.style.background='white'; };
+  body.appendChild(closeBtn);
+
+  /* ── header ── */
+  body.appendChild(html`<div style="text-align:center; margin-bottom:14px;">
+    <span style="font-size:1.3em; font-weight:800; color:#4338ca;">✅ Check Your Understanding</span>
+  </div>`);
+
+  /* ── state ── */
+  let expanded = false;
+  function collapseQuiz() {
+    expanded = false;
+    body.style.maxHeight = '0';
+    body.style.opacity = '0';
+    body.style.marginTop = '0';
+    body.style.padding = '0 20px';
+    toggle.querySelector('.quiz-chevron').style.transform = 'rotate(0deg)';
+  }
+  function expandQuiz() {
+    expanded = true;
+    body.style.padding = '0 20px 20px 20px';
+    body.style.marginTop = '12px';
+    body.style.opacity = '1';
+    body.style.maxHeight = body.scrollHeight + 5000 + 'px';
+    toggle.querySelector('.quiz-chevron').style.transform = 'rotate(90deg)';
+  }
+  toggle.onclick = () => { expanded ? collapseQuiz() : expandQuiz(); };
+  closeBtn.querySelector('button').onclick = collapseQuiz;
+
+  /* ── build question cards (same logic as before) ── */
+  questions.forEach((q, qi) => {
+    const emoji = q.emoji || '❓';
+    const card = html`<div style="background:white; border-radius:10px; padding:16px 20px; margin-bottom:14px; border:2px solid #e2e8f0; box-shadow:0 2px 8px rgba(0,0,0,0.06); max-height:2000px; overflow:hidden;">
+      <div style="font-size:11px; font-weight:700; color:#a0aec0; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">${emoji} Question ${qi+1}</div>
+      <div style="font-size:15px; font-weight:700; color:#2d3748; margin-bottom:12px; line-height:1.5;">${q.q}</div>
+    </div>`;
+    const fb = html`<div style="display:none; margin-top:10px; padding:12px 15px; border-radius:8px; font-size:13.5px; line-height:1.6;"></div>`;
+    q.options.forEach((opt, oi) => {
+      const btn = html`<div style="display:block; padding:10px 16px; margin:6px 0; border-radius:8px; border:2px solid #e2e8f0; cursor:pointer; font-size:14px; color:#4a5568; background:#f7fafc; transition: all 0.18s; user-select:none;">${opt}</div>`;
+      btn.onmouseenter = () => { if (!card.dataset.done) { btn.style.borderColor='#667eea'; btn.style.background='#eef2ff'; btn.style.transform='translateX(3px)'; } };
+      btn.onmouseleave = () => { if (!card.dataset.done) { btn.style.borderColor='#e2e8f0'; btn.style.background='#f7fafc'; btn.style.transform='none'; } };
+      btn.onclick = () => {
+        if (card.dataset.done) return;
+        card.dataset.done = '1';
+        const correct = oi === q.correct;
+        btn.style.borderColor = correct ? '#38a169' : '#e53e3e';
+        btn.style.background = correct ? '#f0fff4' : '#fff5f5';
+        btn.style.fontWeight = '700';
+        btn.style.color = correct ? '#22543d' : '#9b2c2c';
+        if (!correct) {
+          const corEl = card.querySelectorAll('div')[q.correct + 2];
+          corEl.style.borderColor='#38a169'; corEl.style.background='#f0fff4'; corEl.style.fontWeight='700'; corEl.style.color='#22543d';
+        }
+        card.querySelectorAll('div').forEach((el,i) => { if(i>1) { el.style.cursor='not-allowed'; el.style.opacity = (i-2===oi || i-2===q.correct) ? '1' : '0.5'; } });
+        fb.style.display='block';
+        fb.style.background = correct ? '#f0fff4' : '#fff5f5';
+        fb.style.border = correct ? '1.5px solid #38a169' : '1.5px solid #e53e3e';
+        fb.innerHTML = `<strong style="color:${correct?'#276749':'#c53030'}">${correct ? '✅ Correct!' : '❌ Not quite.'}</strong><br>${q.explanation}`;
+        /* after answering correctly, update maxHeight so collapse still works */
+        body.style.maxHeight = body.scrollHeight + 2000 + 'px';
+      };
+      card.appendChild(btn);
+    });
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+
+  outer.appendChild(body);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("lgm-temp", [
+  {
+    q: "Looking at the graph, what dramatic event occurred around 12,900 years ago?",
+    options: [
+      "Temperatures gradually continued warming",
+      "A sudden cooling event (the Younger Dryas) dropped temperatures by about 6°C",
+      "Temperatures reached the warmest point in the record",
+      "An asteroid impact caused a brief temperature spike"
+    ],
+    correct: 1,
+    explanation: "The graph clearly shows a sharp drop in temperature at ~12,900 years ago — from about 0°C anomaly to -6°C. This is the Younger Dryas, one of the most dramatic rapid climate change events in recent Earth history."
+  },
+  {
+    q: "Based on the graph, approximately how long did the Younger Dryas cold period last before temperatures recovered?",
+    options: [
+      "About 100 years",
+      "About 1,200 years",
+      "About 5,000 years",
+      "About 10,000 years"
+    ],
+    correct: 1,
+    explanation: "The highlighted zone shows the Younger Dryas lasting from ~12,900 to ~11,700 years ago — roughly 1,200 years. Notice how the recovery was almost as abrupt as the onset, indicating how quickly the climate system can flip between states."
+  }
+])
+```
+
+### 📊 Post-LGM Sea Level Rise & Ice Sheet Retreat
+
+#### 1. Post-LGM Sea Level Rise
+
+```{ojs}
+//| echo: false
+seaLevelData = [
+  { age: 22, level: -130, location: "Sunda", errX: 0.5, errY: 5 },
+  { age: 19, level: -120, location: "Barbados", errX: 0.4, errY: 4 },
+  { age: 14.5, level: -100, location: "Tahiti", errX: 0.2, errY: 6 },
+  { age: 14, level: -80, location: "Tahiti", errX: 0.2, errY: 5 },
+  { age: 10, level: -40, location: "Huon Peninsula", errX: 0.1, errY: 3 },
+  { age: 6, level: -10, location: "Jamaica", errX: 0.1, errY: 2 },
+  { age: 2, level: -2, location: "Australia", errX: 0.05, errY: 1 }
+]
+
+trendData = [
+  { age: 24, level: -130 }, { age: 18, level: -120 },
+  { age: 15, level: -105 }, { age: 14, level: -80 },
+  { age: 10, level: -40 }, { age: 6, level: -5 }, { age: 0, level: 0 }
+]
+```
+
+```{ojs}
+//| echo: false
+Plot.plot({
+  width: 800,
+  height: 500,
+  grid: true,
+  x: {
+    domain: [24, 0],
+    label: "Thousands of Years Ago →",
+    ticks: 12
+  },
+  y: {
+    domain: [-150, 0],
+    label: "↑ Change in Sea Level (m)"
+  },
+  color: {
+    legend: true,
+    scheme: "spectral"
+  },
+  marks: [
+    Plot.link(seaLevelData, {
+      x1: d => d.age - d.errX, x2: d => d.age + d.errX, y: "level",
+      stroke: "location", strokeWidth: 1
+    }),
+    Plot.link(seaLevelData, {
+      x: "age", y1: d => d.level - d.errY, y2: d => d.level + d.errY,
+      stroke: "location", strokeWidth: 1
+    }),
+    Plot.dot(seaLevelData, {
+      x: "age", y: "level", fill: "location", r: 4
+    }),
+    Plot.line(trendData, {
+      x: "age", y: "level", stroke: "black", strokeWidth: 2, curve: "catmull-rom"
+    }),
+    Plot.text([{age: 22, level: -100}], {
+      x: "age", y: "level", text: () => "Last Glacial\nMaximum",
+      textAnchor: "start", fontSize: 14
+    }),
+    Plot.text([{age: 15.5, level: -60}], {
+      x: "age", y: "level", text: () => "Meltwater Pulse 1A ↓",
+      textAnchor: "start", fontSize: 14
+    })
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("sea-level", [
+  {
+    q: "According to the graph, approximately how much lower were sea levels during the Last Glacial Maximum (~22,000 years ago) compared to today?",
+    options: [
+      "About 10 meters lower",
+      "About 50 meters lower",
+      "About 130 meters lower",
+      "About 300 meters lower"
+    ],
+    correct: 2,
+    explanation: "The data points from Sunda at ~22,000 years ago show sea levels at approximately -130 meters. This massive drop happened because enormous volumes of water were locked up in continental ice sheets during the Last Glacial Maximum."
+  },
+  {
+    q: "The label 'Meltwater Pulse 1A' marks a period around 14,500 years ago. What does the graph show happening to sea levels during this event?",
+    options: [
+      "Sea levels dropped sharply",
+      "Sea levels remained stable",
+      "Sea levels rose very rapidly — from about -100m to -80m in a short time",
+      "Sea levels oscillated up and down"
+    ],
+    correct: 2,
+    explanation: "Meltwater Pulse 1A was a period of extremely rapid sea level rise (~20 meters in just a few hundred years) caused by massive ice sheet collapse. The steep jump in the trend line around 14,500–14,000 years ago shows this. This rate of rise would be catastrophic for modern coastal cities."
+  }
+])
+```
+
+---
+
+#### 3. Laurentide Ice Sheet Animated Retreat
+
+The visualization below animates the retreat of the Laurentide Ice Sheet step by step, or shows all isochrone contours at once as a topographic-style map.
+
+```{ojs}
+//| echo: false
+import {topojson} from "npm:topojson-client"
+
+world = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json")
+land = topojson.feature(world, world.objects.land)
+```
+
+```{ojs}
+//| echo: false
+lgmIceData = [
+  {
+    label: "15-18 ka",
+    polygons: [
+      [[-135, 70], [-135, 60], [-130, 50], [-120, 45], [-110, 42], [-100, 39],
+       [-90, 39], [-80, 40], [-72, 41], [-65, 43], [-58, 47], [-52, 53],
+       [-52, 60], [-60, 70], [-75, 78], [-100, 80], [-120, 75]]
+    ]
+  },
+  {
+    label: "12-15 ka",
+    polygons: [
+      [[-132, 68], [-130, 58], [-122, 49], [-112, 46], [-102, 43],
+       [-92, 43], [-82, 44], [-75, 45], [-65, 47], [-58, 54],
+       [-60, 65], [-75, 75], [-100, 76], [-120, 72]]
+    ]
+  },
+  {
+    label: "9-12 ka",
+    polygons: [
+      [[-130, 62], [-128, 55], [-122, 52], [-120, 58], [-125, 65]],
+      [[-115, 65], [-112, 55], [-105, 50], [-95, 48], [-85, 48],
+       [-75, 50], [-65, 53], [-62, 62], [-70, 72], [-90, 74], [-110, 70]]
+    ]
+  },
+  {
+    label: "8-9 ka",
+    polygons: [
+      [[-108, 65], [-100, 55], [-90, 52], [-80, 53], [-72, 56],
+       [-68, 64], [-75, 70], [-95, 72]]
+    ]
+  },
+  {
+    label: "6-7 ka",
+    polygons: [
+      [[-105, 65], [-98, 60], [-92, 62], [-95, 68]],
+      [[-78, 55], [-70, 53], [-65, 56], [-68, 62], [-75, 60]]
+    ]
+  },
+  {
+    label: "5-7 ka",
+    polygons: [
+      [[-75, 70], [-70, 65], [-65, 68], [-70, 72]],
+      [[-72, 58], [-68, 55], [-65, 58], [-68, 60]]
+    ]
+  }
+]
+```
+
+```{ojs}
+//| echo: false
+lgmProjection = d3.geoAzimuthalEqualArea()
+  .rotate([95, -55])
+  .scale(500)
+  .translate([400, 300])
+
+lgmLineGen = d3.line()
+  .x(d => lgmProjection(d)[0])
+  .y(d => lgmProjection(d)[1])
+  .curve(d3.curveCatmullRomClosed)
+```
+
+```{ojs}
+//| echo: false
+viewof lgmViewMode = Inputs.radio(["Animated", "All Contours"], {
+  label: "Display Mode:",
+  value: "Animated"
+})
+
+viewof lgmTimeIndex = Inputs.range([0, 5], {
+  step: 1,
+  value: 0,
+  label: "Time Period:",
+  format: i => lgmIceData[i].label
+})
+```
+
+```{ojs}
+//| echo: false
+lgmBaseMap = {
+  const width = 800;
+  const height = 600;
+
+  const svg = d3.create("svg")
+    .attr("viewBox", [0, 0, width, height])
+    .style("max-width", "100%")
+    .style("height", "auto")
+    .style("background-color", "#e0f2fe")
+    .style("border-radius", "8px")
+    .style("box-shadow", "0 4px 6px rgba(0,0,0,0.1)");
+
+  const geoPath = d3.geoPath().projection(lgmProjection);
+
+  svg.append("g")
+    .selectAll("path")
+    .data(topojson.feature(world, world.objects.countries).features)
+    .join("path")
+    .attr("d", geoPath)
+    .style("fill", "#f3f4f6")
+    .style("stroke", "#d1d5db")
+    .style("stroke-width", "1px");
+
+  svg.append("g").attr("id", "lgm-ice-layer");
+
+  // Wrap SVG in a relative-positioned div; badge is an HTML element (immune to SVG CSS issues)
+  const wrapper = d3.create("div")
+    .style("position", "relative")
+    .style("display", "inline-block")
+    .style("max-width", "100%");
+  wrapper.node().appendChild(svg.node());
+
+  wrapper.append("div")
+    .attr("id", "lgm-time-label")
+    .style("position", "absolute")
+    .style("bottom", "18px")
+    .style("left", "16px")
+    .style("background", "#1e3a8a")
+    .style("color", "#ffffff")
+    .style("padding", "5px 16px")
+    .style("border-radius", "8px")
+    .style("font-size", "18px")
+    .style("font-family", "sans-serif")
+    .style("font-weight", "bold")
+    .style("opacity", "0.92")
+    .style("pointer-events", "none");
+
+  return wrapper.node();
+}
+```
+
+```{ojs}
+//| echo: false
+//| output: false
+lgmUpdateIce = {
+  const layer = d3.select(lgmBaseMap).select("#lgm-ice-layer");
+  const label = d3.select(lgmBaseMap).select("#lgm-time-label");
+
+  if (lgmViewMode === "Animated") {
+    const currentIce = lgmIceData[lgmTimeIndex];
+    label.text(currentIce.label);
+
+    layer.selectAll("path")
+      .data(currentIce.polygons)
+      .join(
+        enter => enter.append("path")
+          .attr("d", lgmLineGen)
+          .style("fill", "rgba(255, 255, 255, 0.85)")
+          .style("stroke", "#3b82f6")
+          .style("stroke-width", "2.5px")
+          .style("opacity", 0)
+          .style("filter", "drop-shadow(0px 3px 4px rgba(0,0,0,0.15))")
+          .call(enter => enter.transition().duration(750).style("opacity", 1)),
+        update => update
+          .call(update => update.transition().duration(750)
+            .attr("d", lgmLineGen)
+            .style("fill", "rgba(255, 255, 255, 0.85)")
+            .style("stroke", "#3b82f6")),
+        exit => exit
+          .call(exit => exit.transition().duration(750).style("opacity", 0).remove())
+      );
+  } else {
+    label.text("Retreat Contours");
+    const allPolygons = lgmIceData.flatMap(d => d.polygons);
+
+    layer.selectAll("path")
+      .data(allPolygons)
+      .join(
+        enter => enter.append("path")
+          .attr("d", lgmLineGen)
+          .style("fill", "rgba(255, 255, 255, 0.2)")
+          .style("stroke", "#1e40af")
+          .style("stroke-width", "1.5px")
+          .style("filter", "none")
+          .style("opacity", 0)
+          .call(enter => enter.transition().duration(750).style("opacity", 1)),
+        update => update
+          .call(update => update.transition().duration(750)
+            .attr("d", lgmLineGen)
+            .style("fill", "rgba(255, 255, 255, 0.2)")
+            .style("stroke", "#1e40af")
+            .style("filter", "none")),
+        exit => exit
+          .call(exit => exit.transition().duration(750).style("opacity", 0).remove())
+      );
+  }
+}
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("laurentide-anim", [
+  {
+    q: "In the 'All Contours' view, what pattern do you notice about how the ice sheet retreated?",
+    options: [
+      "It retreated evenly from all edges at the same rate",
+      "It retreated from the south and west first, with the last remnants near Hudson Bay and Labrador",
+      "It retreated from the north first",
+      "It disappeared all at once"
+    ],
+    correct: 1,
+    explanation: "The nested contour lines show the ice retreating from its southern and western margins first (where it was thinnest and farthest from the main accumulation zone). The thickest ice near Hudson Bay and Quebec/Labrador persisted the longest — remnants lasted until ~6,000 years ago. This pattern is because the center of the ice sheet was thickest (up to 3-4 km) and at higher latitudes."
+  },
+  {
+    q: "Between the 15-18ka and 9-12ka time steps, the animation shows the ice splitting into two separate bodies. What does this represent?",
+    options: [
+      "A data error in the ice core record",
+      "The separation of the Cordilleran (western) and Laurentide (eastern) ice sheets as the ice-free corridor opened",
+      "New ice forming in a different region",
+      "The ice sheet moving to a new location"
+    ],
+    correct: 1,
+    explanation: "During deglaciation, the western Cordilleran Ice Sheet and the eastern Laurentide Ice Sheet separated as the area between them melted, opening an 'ice-free corridor' through Alberta. This corridor is one proposed route for early human migration into the Americas."
+  }
+])
+```
 
 # Explore Part 1: The AMOC (Atlantic Meridional Overturning Circulation)
 
@@ -440,6 +905,34 @@ html`
 `
 ```
 
+```{ojs}
+//| echo: false
+buildQuiz("amoc-sim", [
+  {
+    q: "In the AMOC simulation, what happens to the flow strength when you increase freshwater input to 80-100%?",
+    options: [
+      "Flow strength increases because more water is entering the system",
+      "Flow strength stays the same — freshwater has no effect on ocean currents",
+      "Flow strength drops dramatically, and the AMOC status shows 'Critical Warning' or 'Collapsed'",
+      "The warm surface current reverses direction"
+    ],
+    correct: 2,
+    explanation: "When you add a lot of freshwater (simulating ice sheet melt), the effective salinity drops, making the water less dense. Since AMOC is driven by dense water sinking in the North Atlantic, reducing density weakens or stops the sinking — and the entire circulation weakens. This is exactly what scientists believe happened during the Younger Dryas."
+  },
+  {
+    q: "Try setting temperature increase to 3°C and freshwater input to 50%. What does the status panel tell you about the combined effect?",
+    options: [
+      "The system is stable and functioning normally",
+      "The AMOC is strengthening due to warmer water",
+      "Both factors together weaken AMOC more than either alone — the system shows 'Weakening' or 'Critical'",
+      "Temperature and freshwater cancel each other out"
+    ],
+    correct: 2,
+    explanation: "Temperature increase and freshwater input both reduce the density of North Atlantic surface water (warming makes water less dense, and freshwater dilutes the salt). Together they have a compounding effect that weakens AMOC more severely. This is why scientists are concerned about the combination of global warming and accelerating Greenland ice melt."
+  }
+])
+```
+
 ::: {.explain-box}
 ## 🌊 How AMOC Works
 
@@ -563,6 +1056,34 @@ Plot.plot({
 })
 ```
 
+```{ojs}
+//| echo: false
+buildQuiz("yd-detail", [
+  {
+    q: "Based on the Greenland ice core data, approximately how much did temperatures drop at the onset of the Younger Dryas (~12,900 years ago)?",
+    options: [
+      "About 1-2°C",
+      "About 5°C",
+      "About 10°C (from roughly -33°C to -43°C)",
+      "About 25°C"
+    ],
+    correct: 2,
+    explanation: "The graph shows temperatures plunging from about -33°C to -43°C — a drop of roughly 10°C in Greenland. Remarkably, much of this drop occurred within just a few decades. For context, the entire difference between today's climate and the peak of the last ice age is about 5-6°C globally — so this regional drop was enormous."
+  },
+  {
+    q: "Notice how the temperature recovery at ~11,700 years ago looks on the graph. What does the steepness tell you?",
+    options: [
+      "The climate gradually warmed over thousands of years",
+      "The warming was nearly as abrupt as the cooling — temperatures jumped ~10°C in just decades",
+      "Temperatures fluctuated up and down before stabilizing",
+      "The recovery took longer than the cooling"
+    ],
+    correct: 1,
+    explanation: "The sharp upward jump at ~11,700 years ago shows that the end of the Younger Dryas was almost as abrupt as its beginning. Ice core data suggests temperatures rose ~10°C in as little as a few decades — possibly even a single decade. This tells us that AMOC can 'switch on' rapidly once conditions allow deep water formation to resume."
+  }
+])
+```
+
 ::: {.warning-box}
 ### ⚠️ Human Consequences of the Younger Dryas
 
@@ -636,13 +1157,33 @@ Plot.plot({
 })
 ```
 
-::: {.check-understanding}
-### ✅ Check Your Understanding
-1. What drives the sinking of water in the North Atlantic?
-2. How does freshwater from melting ice affect AMOC?
-3. Why would a weakening AMOC cause Europe to cool even as global temperatures rise?
-4. What evidence from the Younger Dryas suggests AMOC can change rapidly?
-:::
+```{ojs}
+//| echo: false
+buildQuiz("amoc-trend", [
+  {
+    q: "What does the dashed trend line on the AMOC Strength graph tell you about the circulation since 1950?",
+    options: [
+      "AMOC has been steadily strengthening",
+      "AMOC strength has remained constant",
+      "AMOC has been weakening — declining from about 18 Sv to about 14 Sv",
+      "AMOC has been fluctuating with no clear trend"
+    ],
+    correct: 2,
+    explanation: "The linear regression line shows a clear declining trend, dropping from roughly 18 Sverdrups in 1950 to about 14 Sv by 2024 — a decline of about 22%. This weakening is consistent with increased freshwater input from Greenland ice melt and warming North Atlantic surface waters, both of which reduce the density-driven sinking that powers AMOC."
+  },
+  {
+    q: "If this declining trend continues, what past event does it most closely resemble in mechanism?",
+    options: [
+      "The formation of the Sahara Desert",
+      "The freshwater-driven AMOC shutdown that triggered the Younger Dryas",
+      "The eruption of a supervolcano",
+      "A gradual ice age onset from Milankovitch cycles"
+    ],
+    correct: 1,
+    explanation: "The mechanism is the same: freshwater from melting ice reduces North Atlantic salinity, weakening the density-driven sinking that powers AMOC. During the Younger Dryas, catastrophic drainage of glacial Lake Agassiz shut down AMOC rapidly. Today, Greenland's accelerating ice loss is gradually producing a similar (though slower) freshwater input. Scientists are watching carefully to see if a tipping point could be reached."
+  }
+])
+```
 
 # Elaborate: Climate Change Impacts Today and Tomorrow
 
@@ -682,6 +1223,34 @@ Plot.plot({
     Plot.text([{x: 2008, y: -200}], {x: "x", y: "y", text: d => "Antarctica", fill: "#81d4fa", fontSize: 12})
   ]
 })
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("ice-loss", [
+  {
+    q: "Based on the graph, which ice sheet has lost more total mass since 2002, and by approximately how much?",
+    options: [
+      "Antarctica has lost more — about twice as much as Greenland",
+      "They have lost approximately equal amounts",
+      "Greenland has lost more — approximately 4,000 Gt compared to Antarctica's ~2,400 Gt",
+      "Neither has lost a significant amount of ice"
+    ],
+    correct: 2,
+    explanation: "The darker blue line (Greenland) shows cumulative losses of about 4,000 Gigatonnes, while Antarctica (lighter blue) shows about 2,400 Gt. Greenland is losing ice faster because it is farther from the pole and more exposed to warming ocean currents and air temperatures. However, Antarctica holds about 10× more total ice, so even smaller percentage losses matter enormously for sea level."
+  },
+  {
+    q: "Look at the curve shape for both ice sheets. Are the losses happening at a constant rate, or are they accelerating?",
+    options: [
+      "The losses are constant (straight lines)",
+      "The losses are decelerating (curves are flattening)",
+      "The losses are accelerating (the curves get steeper over time)",
+      "There is no clear pattern"
+    ],
+    correct: 2,
+    explanation: "Both curves get steeper over time — the gap between consecutive data points grows larger in recent years. This acceleration means ice is being lost faster each year. For Greenland, the rate has roughly tripled since 2002. Accelerating ice loss is one of the most concerning signals in climate science because it means sea level rise projections may need to be revised upward."
+  }
+])
 ```
 
 ## Sea Level Rise Projections
@@ -751,6 +1320,34 @@ Plot.plot({
 })
 ```
 
+```{ojs}
+//| echo: false
+buildQuiz("slr-proj", [
+  {
+    q: "Switch between the three emissions scenarios. By 2100, how much more sea level rise does the High Emissions scenario project compared to Low Emissions?",
+    options: [
+      "About the same — the scenario doesn't matter much",
+      "High emissions projects about 0.70m more (1.20m vs 0.50m)",
+      "Low emissions actually projects more sea level rise",
+      "The difference is only a few centimeters"
+    ],
+    correct: 1,
+    explanation: "Under Low Emissions (SSP1-2.6), sea levels rise about 0.50m by 2100. Under High Emissions (SSP5-8.5), they rise about 1.20m — more than double. The dashed red line at 0.5m marks 'major coastal flooding,' which ALL scenarios cross. This shows that while we cannot avoid some sea level rise, our emissions choices determine whether it's manageable or catastrophic."
+  },
+  {
+    q: "The red dashed line marks 0.5m of sea level rise. In which scenario(s) does sea level cross this threshold, and approximately when?",
+    options: [
+      "Only the High Emissions scenario crosses 0.5m, around 2090",
+      "All three scenarios cross 0.5m — Low around 2100, Moderate around 2080, High around 2070",
+      "None of the scenarios reach 0.5m by 2100",
+      "Only Low Emissions crosses 0.5m"
+    ],
+    correct: 1,
+    explanation: "All three scenarios eventually reach or approach 0.5m, but the timing differs dramatically. High emissions crosses 0.5m around 2070, giving coastal communities only ~45 years to prepare. Low emissions doesn't reach it until near 2100. This extra time is critical for building sea walls, relocating infrastructure, and implementing adaptation plans."
+  }
+])
+```
+
 ## Populations at Risk
 
 ```{ojs}
@@ -781,6 +1378,34 @@ Plot.plot({
     Plot.text(riskData, {x: "population", y: "region", text: d => d.population + "M", dx: 6, fontSize: 11, textAnchor: "start"})
   ]
 })
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("pop-risk", [
+  {
+    q: "According to the bar chart, which single region has the most people at risk from 1 meter of sea level rise, and approximately how many?",
+    options: [
+      "Bangladesh — about 20 million",
+      "Small Island Nations — about 50 million",
+      "China (coastal) — about 50 million",
+      "US Gulf Coast — about 30 million"
+    ],
+    correct: 2,
+    explanation: "Coastal China has approximately 50 million people at risk — the highest of any region. This is because major population centers like Shanghai, Guangzhou, and Shenzhen sit in low-lying coastal deltas. However, note that Small Island Nations, while having fewer total people at risk (5M), face COMPLETE displacement — their entire countries could become uninhabitable."
+  },
+  {
+    q: "What distinguishes Small Island Nations from all other regions on this chart?",
+    options: [
+      "They have the most people at risk",
+      "They are the only region colored differently — indicating 'complete displacement' rather than just flooding",
+      "They will not be affected by sea level rise",
+      "They have the best infrastructure to handle flooding"
+    ],
+    correct: 1,
+    explanation: "Small Island Nations are colored red (complete displacement) rather than blue (flooding). While other regions face serious flooding and damage, their populations could potentially retreat to higher ground. For low-lying island nations like Tuvalu, the Maldives, and the Marshall Islands, there IS no higher ground — their entire nations could become submerged, creating climate refugees with nowhere to go."
+  }
+])
 ```
 
 ## Climate Impacts Already Happening
@@ -1137,6 +1762,8 @@ You now have the knowledge to explain:
 
 ---
 
+::: {.quiz-section}
+
 ```{ojs}
 //| echo: false
 {
@@ -1255,7 +1882,7 @@ You now have the knowledge to explain:
     }
   ];
 
-  // Build the interactive quiz
+  // Build the interactive quiz (same format as unit4-climate-feedbacks)
   const wrap = d3.create("div").attr("class", "pf-quiz");
 
   // Header
@@ -1349,3 +1976,5 @@ You now have the knowledge to explain:
   return wrap.node();
 }
 ```
+
+:::

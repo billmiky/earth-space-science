@@ -147,6 +147,115 @@ Plot.plot({
 })
 ```
 
+```{ojs}
+//| echo: false
+// --- Collapsible quiz builder (file-scoped) ---
+buildQuiz = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="margin:18px 0 24px 0;text-align:center;">
+    <button style="
+      display:inline-flex;align-items:center;gap:7px;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      color:#fff;border:none;padding:9px 22px;border-radius:50px;
+      font-size:.95em;font-weight:700;cursor:pointer;
+      box-shadow:0 3px 12px rgba(102,126,234,.45);
+      transition:transform .15s,box-shadow .15s;"
+      onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 5px 18px rgba(102,126,234,.55)'"
+      onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 3px 12px rgba(102,126,234,.45)'"
+    >
+      <span style="font-size:1.1em;">📝</span> ${title}
+      <span class="chevron" style="transition:transform .3s;">▼</span>
+    </button>
+
+    <div class="quiz-body" style="
+      max-height:0;opacity:0;overflow:hidden;
+      transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin-top .3s ease;
+      margin-top:0;text-align:left;">
+
+      <button class="close-btn" style="
+        display:block;margin:0 auto 10px auto;
+        background:rgba(102,126,234,.12);color:#667eea;border:none;
+        padding:5px 18px;border-radius:50px;font-size:.85em;
+        font-weight:600;cursor:pointer;">Hide Quiz</button>
+      <p style="text-align:center;color:#718096;font-style:italic;font-size:.9em;margin-bottom:12px;">
+        Select an answer for each question.</p>
+    </div>
+  </div>`;
+
+  const toggle = outer.querySelector("button");
+  const chevron = toggle.querySelector(".chevron");
+  const body   = outer.querySelector(".quiz-body");
+  const closeBtn = body.querySelector(".close-btn");
+
+  function expand(){  body.style.maxHeight="2000px";body.style.opacity="1";body.style.marginTop="14px";chevron.style.transform="rotate(180deg)"; }
+  function collapse(){ body.style.maxHeight="0";body.style.opacity="0";body.style.marginTop="0";chevron.style.transform="rotate(0)"; }
+  toggle.onclick = () => body.style.maxHeight === "0px" || body.style.maxHeight === "" ? expand() : collapse();
+  closeBtn.onclick = collapse;
+
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;">${qi+1}. ${qq.q}</p>`;
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#667eea";btn.style.background="#f0f0ff"; }};
+      btn.onmouseout  = () => { if(!card.dataset.answered){ btn.style.borderColor="#e2e8f0";btn.style.background="#fff"; }};
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => { b.style.cursor="default"; b.onmouseover=null; b.onmouseout=null; });
+        if(oi === qq.correct){
+          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";
+          card.querySelectorAll("button")[qq.correct].style.borderColor="#48bb78";
+          card.querySelectorAll("button")[qq.correct].style.background="#f0fff4";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";
+      };
+      card.appendChild(btn);
+    });
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("orbit-distance-quiz", "Check Your Understanding — Earth-Sun Distance", [
+  {
+    q: "According to the chart, when is Earth CLOSEST to the Sun?",
+    options: [
+      "A) June–July (Northern Hemisphere summer)",
+      "B) January (Northern Hemisphere winter)",
+      "C) March–April (spring equinox)",
+      "D) September–October (fall equinox)"
+    ],
+    correct: 1,
+    explanation: "Earth reaches perihelion (closest to the Sun) in early January at ~147.1 million km — during Northern Hemisphere winter! This proves distance isn't the main cause of seasons."
+  },
+  {
+    q: "The difference between Earth's closest and farthest distance from the Sun is only about 5 million km (~3%). What does this tell us about the cause of seasons?",
+    options: [
+      "A) Distance must be the main cause because 5 million km is a lot",
+      "B) The small distance variation means something else must cause seasons",
+      "C) Distance only affects the Southern Hemisphere",
+      "D) The chart data must be wrong"
+    ],
+    correct: 1,
+    explanation: "A 3% change in distance creates only a ~7% change in solar energy — far too small to explain the large seasonal temperature swings. Earth's 23.5° axial tilt is the real cause."
+  }
+])
+
 # Explore: Axial Tilt and Sunlight
 
 ## PhET Simulation: Seasons
@@ -209,6 +318,33 @@ html`<div style="display: flex; gap: 30px; align-items: center; margin: 20px 0;"
 </div>`
 ```
 
+```{ojs}
+//| echo: false
+buildQuiz("sunlight-angle-quiz", "Check Your Understanding — Sunlight Angle & Intensity", [
+  {
+    q: "Using the simulator, what happens to the relative intensity of sunlight as you decrease the Sun angle from 90° toward 0°?",
+    options: [
+      "A) Intensity increases because rays travel a shorter path",
+      "B) Intensity stays the same regardless of angle",
+      "C) Intensity decreases because the same energy is spread over a larger area",
+      "D) Intensity decreases only below 30°"
+    ],
+    correct: 2,
+    explanation: "At lower sun angles, the same beam of light is spread over a larger surface area, reducing the energy per unit area. At 90° (directly overhead) intensity is 100%, but at 30° it drops to just 50%."
+  },
+  {
+    q: "How does this sunlight angle effect explain why summers are warmer than winters?",
+    options: [
+      "A) In summer, Earth is closer to the Sun",
+      "B) In summer, the Sun is higher in the sky so sunlight strikes more directly, concentrating energy",
+      "C) In summer, the atmosphere is thinner",
+      "D) In summer, clouds reflect less sunlight"
+    ],
+    correct: 1,
+    explanation: "During summer, Earth's axial tilt causes the Sun to appear higher in the sky, so sunlight strikes at a steeper angle. This concentrates solar energy over a smaller area, warming the surface more effectively."
+  }
+])
+
 # Explain: The Science of Seasons
 
 ::: {.explain-box}
@@ -244,26 +380,41 @@ Understanding seasons helps us understand climate change because:
 
 ---
 
-::: {.quiz-section}
-## 📝 Seasons Quiz
-
-**Question 1:** Earth is closest to the Sun during which month?
-- A) July
-- B) January
-- C) March
-- D) September
-
-**Question 2:** What primarily causes Earth's seasons?
-- A) Distance from the Sun
-- B) Earth's axial tilt of 23.5°
-- C) Changes in the Sun's output
-- D) Ocean currents
-
-**Question 3:** During Northern Hemisphere summer, the North Pole is:
-- A) Tilted away from the Sun
-- B) Tilted toward the Sun
-- C) Not tilted at all
-- D) Experiencing 24 hours of darkness
-
-*Answers: 1-B, 2-B, 3-B*
-:::
+```{ojs}
+//| echo: false
+buildQuiz("seasons-final-quiz", "📝 Seasons Quiz", [
+  {
+    q: "Earth is closest to the Sun during which month?",
+    options: [
+      "A) July",
+      "B) January",
+      "C) March",
+      "D) September"
+    ],
+    correct: 1,
+    explanation: "Earth reaches perihelion (closest approach) in early January at about 147.1 million km, which is during Northern Hemisphere winter."
+  },
+  {
+    q: "What primarily causes Earth's seasons?",
+    options: [
+      "A) Distance from the Sun",
+      "B) Earth's axial tilt of 23.5°",
+      "C) Changes in the Sun's output",
+      "D) Ocean currents"
+    ],
+    correct: 1,
+    explanation: "Earth's 23.5° axial tilt determines which hemisphere receives more direct sunlight at different times of year, creating the seasons."
+  },
+  {
+    q: "During Northern Hemisphere summer, the North Pole is:",
+    options: [
+      "A) Tilted away from the Sun",
+      "B) Tilted toward the Sun",
+      "C) Not tilted at all",
+      "D) Experiencing 24 hours of darkness"
+    ],
+    correct: 1,
+    explanation: "During Northern Hemisphere summer, Earth's axial tilt orients the North Pole toward the Sun, resulting in higher sun angles, longer days, and even 24-hour daylight above the Arctic Circle."
+  }
+]
+)

@@ -181,6 +181,91 @@ Plot.plot({
 })
 ```
 
+::: {.explore-box}
+## 🔭 Real Star Data: Hipparcos H-R Diagram
+
+The diagram above uses a handful of example stars. Below is the same concept built from **real data** — over 800 nearby stars measured by the Hipparcos space telescope. Each point is an actual star plotted by its color (B−V index, which maps to surface temperature) and absolute magnitude (luminosity). **Hover over any star** to see its temperature, luminosity, and magnitude.
+:::
+
+```{ojs}
+//| echo: false
+// Fetch the real Hipparcos star catalog directly — avoids Observable FileAttachment issues
+hrRawData = d3.csv(
+  "https://static.observableusercontent.com/files/a01b08636a1314e9dc329d141684564156cb49190d762542f3b8d09a20f7c3275fe0be93d2ed6f9056af7b27708ed91037b729cf12263e63c0eb98abd43702fc",
+  d3.autoType
+)
+```
+
+```{ojs}
+//| echo: false
+// Enrich each star with temperature, luminosity, and pre-computed star color
+hrStarData = {
+  function bv2rgb(bv) {
+    bv = Math.max(-0.4, Math.min(2, bv));
+    let t;
+    return `#${[
+      bv < 0 ? (t=(bv+0.4)/0.4, 0.61+0.11*t+0.1*t*t) : bv < 0.4 ? (t=bv/0.4, 0.83+0.17*t) : 1,
+      bv < 0 ? (t=(bv+0.4)/0.4, 0.70+0.07*t+0.1*t*t) : bv < 0.4 ? (t=bv/0.4, 0.87+0.11*t) : bv < 1.6 ? (t=(bv-0.4)/1.2, 0.98-0.16*t) : (t=(bv-1.6)/0.4, 0.82-0.5*t*t),
+      bv < 0.4 ? 1 : bv < 1.5 ? (t=(bv-0.4)/1.1, 1-0.47*t+0.1*t*t) : bv < 1.94 ? (t=(bv-1.5)/0.44, 0.63-0.6*t*t) : 0
+    ].map(t => Math.round(t*255).toString(16).padStart(2,"0")).join("")}`;
+  }
+  return hrRawData.map(d => ({
+    bv:          +d.color.toFixed(3),
+    magnitude:   +d.absolute_magnitude.toFixed(2),
+    temperature: Math.round(4600 * (1/(0.92*d.color+1.7) + 1/(0.92*d.color+0.62))),
+    luminosity:  +(10**((4.83-d.absolute_magnitude)/2.5)).toFixed(2),
+    starColor:   bv2rgb(d.color)
+  }));
+}
+```
+
+```{ojs}
+//| echo: false
+Plot.plot({
+  title: "Hertzsprung-Russell Diagram — Real Stars from the Hipparcos Catalog",
+  subtitle: "Hover any star to see its temperature, luminosity, and magnitude",
+  width: 700,
+  height: 600,
+  style: { background: "#111", color: "#eee", fontFamily: "sans-serif" },
+  x: {
+    label: "B-V Color Index  (blue/hot ←——→ red/cool)",
+    domain: [-0.39, 2.19],
+    grid: true
+  },
+  y: {
+    label: "Absolute Magnitude  (bright ↑ ↓ dim)",
+    domain: [-7, 19],
+    reverse: true,
+    grid: true
+  },
+  marks: [
+    Plot.dot(hrStarData, {
+      x: "bv",
+      y: "magnitude",
+      fill: d => d.starColor,
+      r: 2.5,
+      opacity: 0.85,
+      channels: {
+        "B-V":           "bv",
+        "Temp (K)":      "temperature",
+        "Luminosity (L☉)": "luminosity",
+        "Abs. Magnitude":  "magnitude"
+      },
+      tip: true
+    })
+  ]
+})
+```
+
+::: {.check-understanding}
+### 🤔 Check for Understanding: Reading the Real H-R Diagram
+
+1. The dense diagonal band from upper-left to lower-right is the **Main Sequence**. Why are there far more cool, dim stars (lower-right) than hot, bright ones (upper-left)?
+2. Identify the cluster of stars in the **upper-right** (high luminosity, low temperature). What evolutionary stage are these? Hover a few to check their magnitudes — how do they compare to main-sequence stars?
+3. The sparse group in the **lower-left** (hot but very dim) are white dwarfs. Why are so few visible here compared to main-sequence stars, even though most stars eventually become white dwarfs?
+4. Hover over stars with a B-V of ~0.65 and absolute magnitude near +4.8 — that's where our Sun sits. What temperature does the tooltip report? Does that match the ~5,800 K you'd expect for a G-type star?
+:::
+
 ::: {.key-idea}
 ### 💡 What the H-R Diagram Tells Us
 
