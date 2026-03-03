@@ -530,235 +530,31 @@ buildQuiz("sea-level", [
 
 ---
 
-#### 3. Laurentide Ice Sheet Animated Retreat
+#### 3. Laurentide Ice Sheet Retreat
 
-The visualization below animates the retreat of the Laurentide Ice Sheet step by step, or shows all isochrone contours at once as a topographic-style map.
+The map below shows the maximum extent of the Laurentide Ice Sheet (~21,000 years ago) and its slow retreat over the following 15,000 years as the climate warmed out of the Last Glacial Maximum.
 
-```{ojs}
-//| echo: false
-import {topojson} from "npm:topojson-client"
-
-world = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json")
-land = topojson.feature(world, world.objects.land)
+```{=html}
+<div style="text-align:center;margin:24px 0;">
+  <img
+    src="../images/Retrait_des_glaces_en_Amérique.svg.png"
+    alt="Laurentide Ice Sheet at the Last Glacial Maximum (~21,000 years ago) covering most of Canada and the northern United States"
+    style="max-width:720px;width:100%;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.28);">
+  <p style="font-size:.82em;color:#718096;margin-top:10px;line-height:1.6;">
+    <strong>Figure:</strong> The Laurentide Ice Sheet at its Last Glacial Maximum (LGM) extent, with retreat isochrones showing the ice margin at successive time intervals. At its peak the ice was up to 3–4 km thick over Hudson Bay and covered roughly 13 million km². <em>Source: Wikimedia Commons</em>
+  </p>
+</div>
 ```
 
-```{ojs}
-//| echo: false
-lgmIceData = [
-  {
-    label: "15-18 ka",
-    polygons: [
-      [[-135, 70], [-135, 60], [-130, 50], [-120, 45], [-110, 42], [-100, 39],
-       [-90, 39], [-80, 40], [-72, 41], [-65, 43], [-58, 47], [-52, 53],
-       [-52, 60], [-60, 70], [-75, 78], [-100, 80], [-120, 75]]
-    ]
-  },
-  {
-    label: "12-15 ka",
-    polygons: [
-      [[-132, 68], [-130, 58], [-122, 49], [-112, 46], [-102, 43],
-       [-92, 43], [-82, 44], [-75, 45], [-65, 47], [-58, 54],
-       [-60, 65], [-75, 75], [-100, 76], [-120, 72]]
-    ]
-  },
-  {
-    label: "9-12 ka",
-    polygons: [
-      [[-130, 62], [-128, 55], [-122, 52], [-120, 58], [-125, 65]],
-      [[-115, 65], [-112, 55], [-105, 50], [-95, 48], [-85, 48],
-       [-75, 50], [-65, 53], [-62, 62], [-70, 72], [-90, 74], [-110, 70]]
-    ]
-  },
-  {
-    label: "8-9 ka",
-    polygons: [
-      [[-108, 65], [-100, 55], [-90, 52], [-80, 53], [-72, 56],
-       [-68, 64], [-75, 70], [-95, 72]]
-    ]
-  },
-  {
-    label: "6-7 ka",
-    polygons: [
-      [[-105, 65], [-98, 60], [-92, 62], [-95, 68]],
-      [[-78, 55], [-70, 53], [-65, 56], [-68, 62], [-75, 60]]
-    ]
-  },
-  {
-    label: "5-7 ka",
-    polygons: [
-      [[-75, 70], [-70, 65], [-65, 68], [-70, 72]],
-      [[-72, 58], [-68, 55], [-65, 58], [-68, 60]]
-    ]
-  }
-]
-```
+::: {.key-idea}
+### 🧊 Key Patterns in Laurentide Ice Sheet Retreat (18,000 → 6,000 years ago)
 
-```{ojs}
-//| echo: false
-lgmProjection = d3.geoAzimuthalEqualArea()
-  .rotate([95, -55])
-  .scale(500)
-  .translate([400, 300])
-
-lgmLineGen = d3.line()
-  .x(d => lgmProjection(d)[0])
-  .y(d => lgmProjection(d)[1])
-  .curve(d3.curveCatmullRomClosed)
-```
-
-```{ojs}
-//| echo: false
-viewof lgmViewMode = Inputs.radio(["Animated", "All Contours"], {
-  label: "Display Mode:",
-  value: "Animated"
-})
-
-viewof lgmTimeIndex = Inputs.range([0, 5], {
-  step: 1,
-  value: 0,
-  label: "Time Period:",
-  format: i => lgmIceData[i].label
-})
-```
-
-```{ojs}
-//| echo: false
-lgmBaseMap = {
-  const width = 800;
-  const height = 600;
-
-  const svg = d3.create("svg")
-    .attr("viewBox", [0, 0, width, height])
-    .style("max-width", "100%")
-    .style("height", "auto")
-    .style("background-color", "#e0f2fe")
-    .style("border-radius", "8px")
-    .style("box-shadow", "0 4px 6px rgba(0,0,0,0.1)");
-
-  const geoPath = d3.geoPath().projection(lgmProjection);
-
-  svg.append("g")
-    .selectAll("path")
-    .data(topojson.feature(world, world.objects.countries).features)
-    .join("path")
-    .attr("d", geoPath)
-    .style("fill", "#f3f4f6")
-    .style("stroke", "#d1d5db")
-    .style("stroke-width", "1px");
-
-  svg.append("g").attr("id", "lgm-ice-layer");
-
-  // Wrap SVG in a relative-positioned div; badge is an HTML element (immune to SVG CSS issues)
-  const wrapper = d3.create("div")
-    .style("position", "relative")
-    .style("display", "inline-block")
-    .style("max-width", "100%");
-  wrapper.node().appendChild(svg.node());
-
-  wrapper.append("div")
-    .attr("id", "lgm-time-label")
-    .style("position", "absolute")
-    .style("bottom", "18px")
-    .style("left", "16px")
-    .style("background", "#1e3a8a")
-    .style("color", "#ffffff")
-    .style("padding", "5px 16px")
-    .style("border-radius", "8px")
-    .style("font-size", "18px")
-    .style("font-family", "sans-serif")
-    .style("font-weight", "bold")
-    .style("opacity", "0.92")
-    .style("pointer-events", "none");
-
-  return wrapper.node();
-}
-```
-
-```{ojs}
-//| echo: false
-//| output: false
-lgmUpdateIce = {
-  const layer = d3.select(lgmBaseMap).select("#lgm-ice-layer");
-  const label = d3.select(lgmBaseMap).select("#lgm-time-label");
-
-  if (lgmViewMode === "Animated") {
-    const currentIce = lgmIceData[lgmTimeIndex];
-    label.text(currentIce.label);
-
-    layer.selectAll("path")
-      .data(currentIce.polygons)
-      .join(
-        enter => enter.append("path")
-          .attr("d", lgmLineGen)
-          .style("fill", "rgba(255, 255, 255, 0.85)")
-          .style("stroke", "#3b82f6")
-          .style("stroke-width", "2.5px")
-          .style("opacity", 0)
-          .style("filter", "drop-shadow(0px 3px 4px rgba(0,0,0,0.15))")
-          .call(enter => enter.transition().duration(750).style("opacity", 1)),
-        update => update
-          .call(update => update.transition().duration(750)
-            .attr("d", lgmLineGen)
-            .style("fill", "rgba(255, 255, 255, 0.85)")
-            .style("stroke", "#3b82f6")),
-        exit => exit
-          .call(exit => exit.transition().duration(750).style("opacity", 0).remove())
-      );
-  } else {
-    label.text("Retreat Contours");
-    const allPolygons = lgmIceData.flatMap(d => d.polygons);
-
-    layer.selectAll("path")
-      .data(allPolygons)
-      .join(
-        enter => enter.append("path")
-          .attr("d", lgmLineGen)
-          .style("fill", "rgba(255, 255, 255, 0.2)")
-          .style("stroke", "#1e40af")
-          .style("stroke-width", "1.5px")
-          .style("filter", "none")
-          .style("opacity", 0)
-          .call(enter => enter.transition().duration(750).style("opacity", 1)),
-        update => update
-          .call(update => update.transition().duration(750)
-            .attr("d", lgmLineGen)
-            .style("fill", "rgba(255, 255, 255, 0.2)")
-            .style("stroke", "#1e40af")
-            .style("filter", "none")),
-        exit => exit
-          .call(exit => exit.transition().duration(750).style("opacity", 0).remove())
-      );
-  }
-}
-```
-
-```{ojs}
-//| echo: false
-buildQuiz("laurentide-anim", [
-  {
-    q: "In the 'All Contours' view, what pattern do you notice about how the ice sheet retreated?",
-    options: [
-      "It retreated evenly from all edges at the same rate",
-      "It retreated from the south and west first, with the last remnants near Hudson Bay and Labrador",
-      "It retreated from the north first",
-      "It disappeared all at once"
-    ],
-    correct: 1,
-    explanation: "The nested contour lines show the ice retreating from its southern and western margins first (where it was thinnest and farthest from the main accumulation zone). The thickest ice near Hudson Bay and Quebec/Labrador persisted the longest — remnants lasted until ~6,000 years ago. This pattern is because the center of the ice sheet was thickest (up to 3-4 km) and at higher latitudes."
-  },
-  {
-    q: "Between the 15-18ka and 9-12ka time steps, the animation shows the ice splitting into two separate bodies. What does this represent?",
-    options: [
-      "A data error in the ice core record",
-      "The separation of the Cordilleran (western) and Laurentide (eastern) ice sheets as the ice-free corridor opened",
-      "New ice forming in a different region",
-      "The ice sheet moving to a new location"
-    ],
-    correct: 1,
-    explanation: "During deglaciation, the western Cordilleran Ice Sheet and the eastern Laurentide Ice Sheet separated as the area between them melted, opening an 'ice-free corridor' through Alberta. This corridor is one proposed route for early human migration into the Americas."
-  }
-])
-```
+- **Southern & western margins melted first** — these edges were thinnest and at lower latitudes
+- **Hudson Bay was the last to go** — the thickest ice (3–4 km) persisted there until ~7,500 years ago
+- **The ice split in two** around 12,000 years ago, separating the western *Cordilleran* and eastern *Laurentide* sheets — opening the **ice-free corridor** through Alberta that early humans likely used to migrate into the Americas
+- **Meltwater carved the Great Lakes** and formed massive lakes like glacial Lake Agassiz (larger than all five Great Lakes combined)
+- **The final collapse of Lake Agassiz** (~12,900 years ago) flooded the North Atlantic with freshwater and **triggered the Younger Dryas** cold snap
+:::
 
 # Explore Part 1: The AMOC (Atlantic Meridional Overturning Circulation)
 
@@ -950,50 +746,6 @@ buildQuiz("amoc-sim", [
 - Freshwater is **less dense** than saltwater
 - Less dense water **doesn't sink as well**
 - AMOC **slows down or stops**
-:::
-
-::: {.lab-activity}
-## 🔬 Lab Activity: Density-Driven Currents
-
-### Materials:
-- Clear rectangular container (aquarium or large baking dish)
-- Ice cubes (some colored with blue food dye)
-- Salt
-- Warm water (colored with red food dye)
-- Room temperature water
-- Thermometer
-
-### Procedure:
-
-**Part 1: Setting Up the "Ocean"**
-1. Fill the container with room temperature water
-2. Place blue ice cubes at one end (representing the Arctic)
-3. Carefully add warm red water at the other end (representing the tropics)
-4. Observe the movement of water
-
-**Part 2: Testing Salinity Effects**
-1. Reset the container with fresh water
-2. Add salt to the warm water (make it as salty as seawater: ~35g per liter)
-3. Add blue ice cubes at the cold end
-4. Observe how salinity affects the circulation
-
-**Part 3: Simulating Ice Sheet Melt**
-1. While circulation is established, add plain (fresh) ice water at the "Arctic" end
-2. Observe what happens to the circulation pattern
-3. Record your observations
-
-### Data Table:
-
-| Trial | Setup | Circulation Speed | Pattern Observed |
-|-------|-------|-------------------|------------------|
-| 1 | Basic (no salt) | | |
-| 2 | With salt | | |
-| 3 | Salt + freshwater input | | |
-
-### Analysis Questions:
-1. How did adding salt affect the circulation?
-2. What happened when you added freshwater to the salty system?
-3. How does this relate to what might happen in the real Atlantic Ocean?
 :::
 
 # Explore Part 2: The Younger Dryas Event
@@ -1503,6 +1255,499 @@ Explore how sea level rise will affect coastal communities:
 | Sea level (if coastal) | | | | |
 | Annual precipitation | | | | |
 | Drought frequency | | | | |
+:::
+
+# 🌍 Climate Crisis City Challenge: 12 Cities, 2 Futures
+
+::: {.elaborate-box}
+## 🎮 Mission Briefing
+
+Your team has been assigned cities facing climate change. **Explore each city card below** — click to flip and reveal detailed climate projections for **SSP2-4.5 (2050)** and **SSP5-8.5 (2100)**. Use these data to build your city's **Climate Action Plan**.
+
+**How to play:** Each group receives 1–2 cities. Flip the card to see threats. Then develop adaptation and mitigation strategies for your city in both 2050 and 2100 scenarios.
+:::
+
+```{=html}
+<style>
+/* ═══════════════════════════════════════════════════════════════ */
+/*  CITY CARD SYSTEM                                              */
+/* ═══════════════════════════════════════════════════════════════ */
+.cc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:26px;margin:30px 0 40px}
+.cc-card{perspective:1200px;height:520px;cursor:pointer}
+.cc-inner{position:relative;width:100%;height:100%;transition:transform .65s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
+.cc-card.cc-flipped .cc-inner{transform:rotateY(180deg)}
+.cc-face{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18)}
+.cc-front{position:relative;display:flex;flex-direction:column;padding:20px 24px 20px;color:#fff}
+.cc-back{transform:rotateY(180deg);background:#fff;display:flex;flex-direction:column}
+
+/* Front face gradients per threat type */
+.cc-front.cc-sea{background:linear-gradient(160deg,#0d47a1 0%,#1565c0 40%,#42a5f5 100%)}
+.cc-front.cc-heat{background:linear-gradient(160deg,#bf360c 0%,#e65100 40%,#ff9800 100%)}
+.cc-front.cc-river{background:linear-gradient(160deg,#004d40 0%,#00695c 40%,#26a69a 100%)}
+.cc-front.cc-multi{background:linear-gradient(160deg,#4a148c 0%,#7b1fa2 40%,#ce93d8 100%)}
+.cc-front.cc-fire{background:linear-gradient(160deg,#3e2723 0%,#6d4c41 40%,#ff7043 100%)}
+.cc-front.cc-water{background:linear-gradient(160deg,#1a237e 0%,#283593 40%,#7986cb 100%)}
+
+/* City number badge (top-left) */
+.cc-city-num{position:absolute;top:14px;left:18px;font-size:.68em;font-weight:800;background:rgba(255,255,255,.22);padding:3px 11px;border-radius:14px;letter-spacing:.6px;backdrop-filter:blur(4px);text-transform:uppercase}
+/* Flag badge (top-right) */
+.cc-flag-badge{position:absolute;top:10px;right:16px;font-size:2em;line-height:1;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
+/* Landmark icon — hero element in the center */
+.cc-landmark-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:6px 0}
+.cc-landmark-icon{font-size:5.2em;line-height:1;filter:drop-shadow(0 6px 18px rgba(0,0,0,.4));animation:cc-float 4s ease-in-out infinite}
+@keyframes cc-float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-10px) scale(1.06)}}
+/* Bottom info */
+.cc-city-name{font-family:'Space Grotesk',sans-serif;font-size:1.7em;font-weight:800;line-height:1.15;text-shadow:0 2px 10px rgba(0,0,0,.4)}
+.cc-country{font-size:.92em;opacity:.85;margin-top:2px;font-weight:600}
+.cc-pop{margin-top:8px;font-size:.82em;background:rgba(255,255,255,.18);display:inline-block;padding:4px 14px;border-radius:20px;backdrop-filter:blur(4px)}
+.cc-threat-badge{margin-top:10px;display:flex;flex-wrap:wrap;gap:5px}
+.cc-threat-badge span{font-size:.7em;font-weight:700;text-transform:uppercase;letter-spacing:.8px;background:rgba(255,255,255,.22);padding:3px 9px;border-radius:12px;backdrop-filter:blur(4px)}
+.cc-flip-hint{margin-top:8px;font-size:.75em;opacity:.7;text-align:center;animation:cc-pulse 2s infinite}
+@keyframes cc-pulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* Back face */
+.cc-back-header{padding:14px 20px;color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.05em;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.cc-back-body{flex:1;overflow-y:auto;padding:10px 18px 16px;font-size:.82em;line-height:1.55;color:#2d3748}
+.cc-back-body::-webkit-scrollbar{width:5px}
+.cc-back-body::-webkit-scrollbar-thumb{background:#cbd5e0;border-radius:4px}
+
+/* Tabs inside back */
+.cc-tabs{display:flex;gap:0;border-bottom:2px solid #e2e8f0;margin-bottom:10px;flex-shrink:0;padding:0 18px}
+.cc-tab{padding:8px 14px;font-size:.78em;font-weight:700;color:#a0aec0;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.cc-tab:hover{color:#4a5568}
+.cc-tab.cc-active{color:#2d3748;border-bottom-color:#667eea}
+
+/* Data rows */
+.cc-data-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0}
+.cc-data-row:last-child{border-bottom:none}
+.cc-data-label{color:#718096;font-weight:600;flex:1}
+.cc-data-value{color:#2d3748;font-weight:700;text-align:right;flex:1}
+.cc-data-value.cc-danger{color:#e53e3e}
+.cc-data-value.cc-warn{color:#dd6b20}
+.cc-section-title{font-weight:800;color:#2d3748;font-size:.88em;margin:12px 0 6px;padding-bottom:4px;border-bottom:2px solid #edf2f7;text-transform:uppercase;letter-spacing:.5px}
+.cc-section-title:first-child{margin-top:0}
+.cc-infra-item{display:flex;align-items:flex-start;gap:6px;padding:3px 0}
+.cc-infra-item::before{content:"⚠️";font-size:.85em;flex-shrink:0}
+
+/* Filter bar */
+.cc-filter-bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:20px 0}
+.cc-filter-btn{padding:8px 18px;border:2px solid #e2e8f0;border-radius:25px;background:#fff;font-size:.82em;font-weight:700;color:#4a5568;cursor:pointer;transition:all .2s}
+.cc-filter-btn:hover,.cc-filter-btn.cc-factive{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(102,126,234,.35)}
+
+/* Search */
+.cc-search{display:flex;justify-content:center;margin-bottom:16px}
+.cc-search input{width:100%;max-width:480px;padding:10px 20px;border:2px solid #e2e8f0;border-radius:30px;font-size:.95em;outline:none;transition:border-color .2s}
+.cc-search input:focus{border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,.15)}
+</style>
+
+<div class="cc-search">
+  <input type="text" id="ccSearch" placeholder="🔍 Search cities by name, country, or threat..." oninput="ccFilterCards()">
+</div>
+
+<div class="cc-filter-bar">
+  <button class="cc-filter-btn cc-factive" onclick="ccSetFilter('all',this)">🌍 All Cities</button>
+  <button class="cc-filter-btn" onclick="ccSetFilter('sea',this)">🌊 Sea Level Rise</button>
+  <button class="cc-filter-btn" onclick="ccSetFilter('heat',this)">🔥 Extreme Heat</button>
+  <button class="cc-filter-btn" onclick="ccSetFilter('river',this)">🏞️ River / Delta Flooding</button>
+  <button class="cc-filter-btn" onclick="ccSetFilter('water',this)">💧 Water Scarcity</button>
+</div>
+
+<div class="cc-grid" id="ccGrid">
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════ */
+/*  CITY DATA (12 cities)                                         */
+/* ═══════════════════════════════════════════════════════════════ */
+const CC_CITIES = [
+{
+  id:1,name:"Miami",country:"USA",flag:"🇺🇸",pop:"6.2 M (metro)",
+  theme:"cc-sea",tags:["sea","heat"],
+  threats:["Sea Level Rise","Hurricanes","Saltwater Intrusion"],
+  headerBg:"linear-gradient(135deg,#0d47a1,#42a5f5)",
+  vuln:"Low elevation (avg 6 ft ASL), hurricane exposure, porous limestone geology, saltwater intrusion into aquifers",
+  projections:{
+    slr:"+0.5 m (1.6 ft) since 2020",
+    temp:"+2.1 °C warmer avg; +35 days/yr above 35 °C (95 °F)",
+    precip:"+8% annual rainfall; +25% intensity of extreme rain events",
+    extra1_label:"Hurricane Risk",extra1:"Cat 4–5 storms 40% more frequent",
+    extra2_label:"King Tides",extra2:"Flood downtown 12 days/yr (vs 2 in 2020)"
+  },
+  economy:[
+    {l:"Major Industries",v:"Tourism ($24B/yr), finance, real estate, shipping"},
+    {l:"At-Risk Population",v:"60% live within 10 ft of sea level"},
+    {l:"Property at Risk",v:"$1.2 trillion"}
+  ],
+  infra:["Miami International Airport (9 ft elevation)","Port of Miami (cargo + cruise)","Downtown financial district","Water treatment plants along coast"]
+},
+{
+  id:2,name:"Lagos",country:"Nigeria",flag:"🇳🇬",pop:"24 M (metro)",
+  theme:"cc-sea",tags:["sea","river"],
+  threats:["Sea Level Rise","Coastal Erosion","Storm Surge"],
+  headerBg:"linear-gradient(135deg,#004d40,#26a69a)",
+  vuln:"Rapid urbanization, 70% on coastal lowlands, inadequate drainage, informal settlements",
+  projections:{
+    slr:"+0.45 m (1.5 ft) since 2020",
+    temp:"+1.8 °C warmer; +50 additional days above 32 °C (90 °F)",
+    precip:"+12% in wet season (Apr–Oct); longer dry season (Nov–Mar)",
+    extra1_label:"Coastal Erosion",extra1:"Losing 30 m/yr of coastline (Bar Beach)",
+    extra2_label:"Storm Surge",extra2:"1-in-10-yr events reach 2.5 m (8.2 ft)"
+  },
+  economy:[
+    {l:"City GDP",v:"~$90B — Africa's largest city economy"},
+    {l:"Informal Settlements",v:"40% of population in slums"},
+    {l:"Port Traffic",v:"Handles 60% of Nigeria's imports"}
+  ],
+  infra:["Victoria Island & Lekki business districts","Apapa Port (300,000 containers/mo)","Eko Atlantic land reclamation project","Freshwater lagoons (now brackish)"]
+},
+{
+  id:3,name:"Shanghai",country:"China",flag:"🇨🇳",pop:"28 M (metro)",
+  theme:"cc-sea",tags:["sea","river"],
+  threats:["Sea Level Rise","Land Subsidence","Typhoons","River Flooding"],
+  headerBg:"linear-gradient(135deg,#1a237e,#7986cb)",
+  vuln:"Yangtze Delta subsidence (1–2 cm/yr), typhoon exposure, dense urban infrastructure",
+  projections:{
+    slr:"+0.5 m + subsidence = effective +0.7 m (2.3 ft)",
+    temp:"+2.0 °C warmer; heat waves 10+ days (vs 2–3 days in 2020)",
+    precip:"+5% annual, but −15% dry season (water stress)",
+    extra1_label:"Typhoons",extra1:"Cat 3+ storms 30% more frequent",
+    extra2_label:"Yangtze Flooding",extra2:"1-in-20-yr floods → 1-in-10-yr events"
+  },
+  economy:[
+    {l:"Port",v:"World's busiest container port (47M TEUs/yr)"},
+    {l:"GDP",v:"$700B financial hub"},
+    {l:"Defenses",v:"Already has 520 km of sea walls/levees"}
+  ],
+  infra:["Pudong financial district (3–4 m elevation)","Port facilities","Subway system (14 lines partially below sea level)","Industrial zones along Yangtze"]
+},
+{
+  id:4,name:"Dhaka",country:"Bangladesh",flag:"🇧🇩",pop:"22 M (metro)",
+  theme:"cc-river",tags:["river","sea","heat"],
+  threats:["River Flooding","Cyclones","Extreme Heat","Subsidence"],
+  headerBg:"linear-gradient(135deg,#004d40,#00695c)",
+  vuln:"River delta 2–10 m elevation, monsoon flooding, groundwater depletion causing subsidence, extreme density",
+  projections:{
+    slr:"+0.45 m in Bay of Bengal",
+    temp:"+1.9 °C warmer; wet-bulb temps exceed survivability 5–8 days/yr",
+    precip:"+18% rain Jul–Sep; monsoon onset shifts 2 weeks later",
+    extra1_label:"River Flooding",extra1:"Brahmaputra/Ganges peak flows +20%",
+    extra2_label:"Cyclones",extra2:"Storm surges reach 8+ m (26 ft) in Cat 4+"
+  },
+  economy:[
+    {l:"Density",v:"44,000 people/km² — one of world's densest"},
+    {l:"Garment Exports",v:"$35B (80% of national exports)"},
+    {l:"GDP per Capita",v:"$2,500 (limited adaptation resources)"}
+  ],
+  infra:["Entire city built on active delta","90% of buildings informal/non-engineered","Water supply from overextracted groundwater","Export processing zones near coast"]
+},
+{
+  id:5,name:"London",country:"United Kingdom",flag:"🇬🇧",pop:"9.6 M (metro)",
+  theme:"cc-multi",tags:["sea","heat"],
+  threats:["Thames Flooding","Extreme Heat","Infrastructure Aging"],
+  headerBg:"linear-gradient(135deg,#4a148c,#ce93d8)",
+  vuln:"Thames tidal flooding, aging Victorian infrastructure, historic buildings",
+  projections:{
+    slr:"+0.4 m (1.3 ft) in Thames Estuary",
+    temp:"+2.2 °C warmer; days above 30 °C → 10/yr to 35/yr",
+    precip:"−8% in summer (drought); +12% in winter (flooding)",
+    extra1_label:"Thames Barrier",extra1:"Closes 25×/yr (vs 4× in 2020)",
+    extra2_label:"Heat Waves",extra2:"2003-style event now 1-in-3-year"
+  },
+  economy:[
+    {l:"GDP",v:"$650B — global financial capital"},
+    {l:"Tourism",v:"30 million visitors/yr"},
+    {l:"Tube",v:"1.35 billion trips/yr"}
+  ],
+  infra:["Parliament & Buckingham Palace (Thames-adjacent)","Canary Wharf financial district (8 m elev.)","Tube lines running under Thames","Victorian sewer system (capacity exceeded)"]
+},
+{
+  id:6,name:"Jakarta",country:"Indonesia",flag:"🇮🇩",pop:"34 M (metro)",
+  theme:"cc-sea",tags:["sea","river"],
+  threats:["Extreme Subsidence","Sea Level Rise","River Flooding"],
+  headerBg:"linear-gradient(135deg,#0d47a1,#1565c0)",
+  vuln:"Land subsiding 5–25 cm/yr, 40% below sea level, 13 flood-prone rivers",
+  projections:{
+    slr:"+0.5 m + subsidence = effective +1.5 to +3.0 m in worst areas",
+    temp:"+1.7 °C warmer; heat index >40 °C for 90+ days/yr",
+    precip:"+10% annual; monsoon rains +20% more intense",
+    extra1_label:"Flooding",extra1:"30% of city floods annually",
+    extra2_label:"Coastal Retreat",extra2:"Northern districts (10M people) becoming uninhabitable"
+  },
+  economy:[
+    {l:"GDP",v:"$200B — capital of Indonesia (until ~2045)"},
+    {l:"Traffic Costs",v:"Congestion costs $7B/yr"},
+    {l:"Sea Wall",v:"43-km Giant Sea Wall Project underway"}
+  ],
+  infra:["Presidential palace & government buildings","Tanjung Priok Port (busiest in Indonesia)","Industrial estates","Informal settlements along rivers"]
+},
+{
+  id:7,name:"Phoenix",country:"USA",flag:"🇺🇸",pop:"4.9 M (metro)",
+  theme:"cc-heat",tags:["heat","water"],
+  threats:["Extreme Heat","Water Scarcity","Grid Failure"],
+  headerBg:"linear-gradient(135deg,#bf360c,#ff9800)",
+  vuln:"Desert city, limited water (Colorado River + groundwater), extreme heat, sprawling car-dependent development",
+  projections:{
+    slr:"N/A (inland desert city)",
+    temp:"+3.0 °C warmer; summer avg 42 °C (108 °F); 60+ days above 46 °C (115 °F)",
+    precip:"−5% annual; droughts last 8+ years",
+    extra1_label:"Heat Deaths",extra1:"Currently 400/yr → projected 1,200/yr by 2050",
+    extra2_label:"Water Supply",extra2:"Colorado River flows down 20%; groundwater overdraft"
+  },
+  economy:[
+    {l:"GDP",v:"$270B (tech, healthcare, tourism)"},
+    {l:"Growth",v:"Still growing 1.5%/yr — 5th-largest U.S. city"},
+    {l:"Water Use",v:"1,100 L/person/day (U.S. avg: 575)"}
+  ],
+  infra:["Electrical grid (extreme demand in heat waves)","Water canals (losing water to evaporation)","Outdoor infrastructure (pavement buckling)","Public health system (ERs overwhelmed)"]
+},
+{
+  id:8,name:"Ho Chi Minh City",country:"Vietnam",flag:"🇻🇳",pop:"13 M (metro)",
+  theme:"cc-river",tags:["river","sea"],
+  threats:["Delta Subsidence","Saltwater Intrusion","Typhoons"],
+  headerBg:"linear-gradient(135deg,#004d40,#26a69a)",
+  vuln:"Mekong Delta subsidence, 40% of city <1.5 m elevation, seasonal flooding",
+  projections:{
+    slr:"+0.5 m + subsidence = effective +1.0 m (3.3 ft)",
+    temp:"+1.9 °C warmer; wet-bulb temps approach dangerous levels",
+    precip:"+15% rain Jun–Nov; flash flooding in 20% of city annually",
+    extra1_label:"Mekong River",extra1:"Dry-season flows −30%; saltwater intrudes 60 km inland",
+    extra2_label:"Typhoons",extra2:"Cat 3+ reach city every 3–5 years"
+  },
+  economy:[
+    {l:"GDP",v:"$100B — 25% of Vietnam's national GDP"},
+    {l:"Growth",v:"5–7% GDP growth/yr"},
+    {l:"Flood Exposure",v:"2.5 million in flood-prone zones"}
+  ],
+  infra:["Tan Son Nhat Airport (access roads flood)","Saigon Port","District 1 CBD (along Saigon River)","Rice paddies (saltwater intrusion destroys crops)"]
+},
+{
+  id:9,name:"Amsterdam",country:"Netherlands",flag:"🇳🇱",pop:"2.4 M (metro)",
+  theme:"cc-sea",tags:["sea"],
+  threats:["Sea Level Rise","Storm Surges","River Flooding"],
+  headerBg:"linear-gradient(135deg,#1a237e,#7986cb)",
+  vuln:"26% of country below sea level; relies on dikes, dams, and pumping stations",
+  projections:{
+    slr:"+0.45 m (1.5 ft) in North Sea",
+    temp:"+2.1 °C warmer; heat waves 12+ days (vs 3 in 2020)",
+    precip:"+10% in winter; −5% in summer",
+    extra1_label:"Storm Surges",extra1:"North Sea surges 1 m higher than 2020",
+    extra2_label:"River Flooding",extra2:"Rhine discharges +15% in spring"
+  },
+  economy:[
+    {l:"GDP per Capita",v:"$58,000 — high-income, tech-advanced"},
+    {l:"Port",v:"Port of Rotterdam (largest in Europe) nearby"},
+    {l:"Tourism",v:"20M visitors/yr (canals, museums)"}
+  ],
+  infra:["Canal houses & historic center (UNESCO)","Schiphol Airport (4 m below sea level!)","Port facilities","Polder farmland (saltwater intrusion)"]
+},
+{
+  id:10,name:"Sydney",country:"Australia",flag:"🇦🇺",pop:"5.3 M (metro)",
+  theme:"cc-fire",tags:["heat","sea"],
+  threats:["Bushfires","Coastal Erosion","Drought","Heat Waves"],
+  headerBg:"linear-gradient(135deg,#3e2723,#ff7043)",
+  vuln:"Coastal with harbor, bushfire risk in hinterlands, water from distant reservoirs",
+  projections:{
+    slr:"+0.5 m (1.6 ft)",
+    temp:"+2.0 °C warmer; days above 35 °C → 5/yr to 20/yr",
+    precip:"−10% annual; droughts intensify",
+    extra1_label:"Bushfires",extra1:"Fire season 3 months longer; extreme fire days double",
+    extra2_label:"Coastal Erosion",extra2:"Beaches lose 30–50 m width; storm surges damage harbourside"
+  },
+  economy:[
+    {l:"GDP",v:"$400B — Australia's largest economy"},
+    {l:"Tourism",v:"$12B/yr (Opera House, beaches)"},
+    {l:"Coastal Real Estate",v:"$500B+ in value at risk"}
+  ],
+  infra:["Sydney Opera House & Circular Quay (harbor flooding)","Bondi, Manly beaches (erosion + storms)","Kurnell Desalination Plant (flood risk)","Blue Mountains interface (bushfire zone)"]
+},
+{
+  id:11,name:"Cairo",country:"Egypt",flag:"🇪🇬",pop:"21 M (metro)",
+  theme:"cc-heat",tags:["heat","water"],
+  threats:["Extreme Heat","Water Scarcity","Nile Delta Loss"],
+  headerBg:"linear-gradient(135deg,#bf360c,#e65100)",
+  vuln:"Nile Delta subsidence, Aswan Dam controls Nile flows, extreme heat, water scarcity",
+  projections:{
+    slr:"+0.5 m threatens Nile Delta (50% of Egypt's agriculture)",
+    temp:"+2.5 °C warmer; summer avg 39 °C; 40+ days above 45 °C (113 °F)",
+    precip:"Already <25 mm/yr — expected to decrease further",
+    extra1_label:"Nile River",extra1:"Flows −8% (upstream use + evaporation)",
+    extra2_label:"Wet-Bulb Heat",extra2:"Approaches dangerous thresholds 3–5 days/yr"
+  },
+  economy:[
+    {l:"GDP",v:"$150B — Egypt's capital"},
+    {l:"Agriculture",v:"Nile Delta grows 50% of Egypt's food"},
+    {l:"Youth Unemployment",v:"25% — linked to food/water stress"}
+  ],
+  infra:["Nile Delta farmland (saltwater intrusion + subsidence)","Water supply (90% Nile-dependent; Ethiopia conflicts)","Urban heat (inadequate cooling in low-income areas)","Alexandria (5M people at severe flood risk)"]
+},
+{
+  id:12,name:"New York City",country:"USA",flag:"🇺🇸",pop:"19.6 M (metro)",
+  theme:"cc-sea",tags:["sea","heat"],
+  threats:["Sea Level Rise","Storm Surge","Subway Flooding","Extreme Rain"],
+  headerBg:"linear-gradient(135deg,#0d47a1,#42a5f5)",
+  vuln:"Coastal, Hurricane Sandy (2012) = $65B damage, aging subway below sea level",
+  projections:{
+    slr:"+0.6 m (2 ft) since 2020",
+    temp:"+2.3 °C warmer; days above 32 °C → 20/yr to 50/yr",
+    precip:"+8% annual; +20% intensity extreme rain events",
+    extra1_label:"Storm Surge",extra1:"Sandy-level (4 m) now 1-in-25-yr (was 1-in-100)",
+    extra2_label:"Tidal Flooding",extra2:"'Sunny day' floods hit Lower Manhattan 15 days/yr"
+  },
+  economy:[
+    {l:"GDP",v:"$1.7 trillion — largest U.S. metro economy"},
+    {l:"Subway",v:"5.5 million trips/day"},
+    {l:"Coastal Real Estate",v:"$3 trillion in flood zones"}
+  ],
+  infra:["Lower Manhattan financial district","Subway tunnels (7 lines under rivers/harbor)","JFK & LaGuardia airports (coastal, low elev.)","14 wastewater treatment plants along coast"]
+}
+];
+
+/* ═══════════════════════════════════════════════════════════════ */
+/*  RENDER CARDS                                                  */
+/* ═══════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════ */
+/*  LANDMARK ICONS (one per city)                                 */
+/* ═══════════════════════════════════════════════════════════════ */
+const CC_LANDMARKS={
+  1:"🌴",  // Miami — palm tree
+  2:"🌊",  // Lagos — ocean waves
+  3:"🏯",  // Shanghai — pagoda tower
+  4:"🕌",  // Dhaka — mosque/temple
+  5:"🎡",  // London — London Eye
+  6:"🛕",  // Jakarta — temple (Borobudur)
+  7:"🌵",  // Phoenix — cactus
+  8:"🛵",  // Ho Chi Minh City — motorbike
+  9:"🚲",  // Amsterdam — bicycle
+  10:"🎭", // Sydney — Opera House
+  11:"🏺", // Cairo — ancient vessel / pyramids
+  12:"🗽"  // New York City — Statue of Liberty
+};
+
+function ccRenderCards(cities){
+  const grid=document.getElementById("ccGrid");
+  grid.innerHTML="";
+  cities.forEach(c=>{
+    const card=document.createElement("div");
+    card.className="cc-card";
+    card.dataset.tags=c.tags.join(",");
+    card.dataset.search=(c.name+" "+c.country+" "+c.threats.join(" ")+" "+c.vuln).toLowerCase();
+    card.onclick=function(e){
+      if(!e.target.classList.contains("cc-tab")) this.classList.toggle("cc-flipped");
+    };
+
+    /* ── FRONT ── */
+    const lm=CC_LANDMARKS[c.id]||c.flag;
+    const threatBadges=c.threats.map(t=>`<span>${t}</span>`).join("");
+    const front=`
+      <div class="cc-face cc-front ${c.theme}">
+        <div class="cc-city-num">City ${c.id}</div>
+        <div class="cc-flag-badge">${c.flag}</div>
+        <div class="cc-landmark-wrap">
+          <div class="cc-landmark-icon">${lm}</div>
+        </div>
+        <div class="cc-city-name">${c.name}</div>
+        <div class="cc-country">${c.country}</div>
+        <div class="cc-pop">👥 ${c.pop}</div>
+        <div class="cc-threat-badge">${threatBadges}</div>
+        <div class="cc-flip-hint">👆 Click to flip — view climate data</div>
+      </div>`;
+
+    /* ── BACK ── */
+    // Tab: Projections
+    const projRows=`
+      <div class="cc-section-title">SSP2-4.5 — 2050 Projections</div>
+      ${c.projections.slr!=="N/A (inland desert city)"?`<div class="cc-data-row"><span class="cc-data-label">🌊 Sea Level Rise</span><span class="cc-data-value cc-danger">${c.projections.slr}</span></div>`:""}
+      <div class="cc-data-row"><span class="cc-data-label">🌡️ Temperature</span><span class="cc-data-value cc-danger">${c.projections.temp}</span></div>
+      <div class="cc-data-row"><span class="cc-data-label">🌧️ Precipitation</span><span class="cc-data-value cc-warn">${c.projections.precip}</span></div>
+      <div class="cc-data-row"><span class="cc-data-label">${c.projections.extra1_label}</span><span class="cc-data-value cc-danger">${c.projections.extra1}</span></div>
+      <div class="cc-data-row"><span class="cc-data-label">${c.projections.extra2_label}</span><span class="cc-data-value cc-warn">${c.projections.extra2}</span></div>
+      <div class="cc-section-title" style="margin-top:14px;">Current Vulnerabilities</div>
+      <div style="color:#4a5568;line-height:1.6">${c.vuln}</div>
+    `;
+
+    // Tab: Economy
+    const econRows=c.economy.map(e=>`<div class="cc-data-row"><span class="cc-data-label">${e.l}</span><span class="cc-data-value">${e.v}</span></div>`).join("");
+
+    // Tab: Infrastructure
+    const infraRows=c.infra.map(i=>`<div class="cc-infra-item">${i}</div>`).join("");
+
+    const back=`
+      <div class="cc-face cc-back">
+        <div class="cc-back-header" style="background:${c.headerBg}">${c.flag} ${c.name}, ${c.country}</div>
+        <div class="cc-tabs">
+          <div class="cc-tab cc-active" onclick="ccSwitchTab(event,'proj',${c.id})">📊 Projections</div>
+          <div class="cc-tab" onclick="ccSwitchTab(event,'econ',${c.id})">💰 Economy</div>
+          <div class="cc-tab" onclick="ccSwitchTab(event,'infra',${c.id})">🏗️ Infrastructure</div>
+        </div>
+        <div class="cc-back-body">
+          <div class="cc-tab-content" data-city="${c.id}" data-tab="proj" style="display:block">${projRows}</div>
+          <div class="cc-tab-content" data-city="${c.id}" data-tab="econ" style="display:none">${econRows}</div>
+          <div class="cc-tab-content" data-city="${c.id}" data-tab="infra" style="display:none">${infraRows}</div>
+        </div>
+      </div>`;
+
+    card.innerHTML=`<div class="cc-inner">${front}${back}</div>`;
+    grid.appendChild(card);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/*  TAB SWITCHING                                                 */
+/* ═══════════════════════════════════════════════════════════════ */
+function ccSwitchTab(e,tab,cityId){
+  e.stopPropagation();
+  // activate tab button
+  const tabBar=e.target.parentElement;
+  tabBar.querySelectorAll(".cc-tab").forEach(t=>t.classList.remove("cc-active"));
+  e.target.classList.add("cc-active");
+  // show content
+  const body=tabBar.nextElementSibling;
+  body.querySelectorAll(".cc-tab-content").forEach(p=>{
+    p.style.display=(p.dataset.tab===tab && +p.dataset.city===cityId)?"block":"none";
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/*  FILTERING                                                     */
+/* ═══════════════════════════════════════════════════════════════ */
+let ccCurrentFilter="all";
+function ccSetFilter(tag,btn){
+  ccCurrentFilter=tag;
+  document.querySelectorAll(".cc-filter-btn").forEach(b=>b.classList.remove("cc-factive"));
+  btn.classList.add("cc-factive");
+  ccFilterCards();
+}
+function ccFilterCards(){
+  const q=document.getElementById("ccSearch").value.toLowerCase();
+  document.querySelectorAll(".cc-card").forEach(card=>{
+    const matchFilter=ccCurrentFilter==="all"||card.dataset.tags.includes(ccCurrentFilter);
+    const matchSearch=!q||card.dataset.search.includes(q);
+    card.style.display=(matchFilter&&matchSearch)?"block":"none";
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/*  INIT                                                          */
+/* ═══════════════════════════════════════════════════════════════ */
+ccRenderCards(CC_CITIES);
+</script>
+```
+
+::: {.elaborate-box}
+## 📋 Group Challenge Instructions
+
+**Round 1 — Year 2050 (SSP2-4.5 "Middle Road"):**
+Use the data on your city card. You have **$500 million** and 10 years to prepare. Choose your adaptations wisely!
+
+**Round 2 — Year 2100 (SSP5-8.5 "Fossil Fuel Development"):**
+Conditions have worsened dramatically. Multiply all projections by roughly **2×**. Sea levels are +1 m or more. Extreme events are the new normal. Can your city survive?
+
+### Discussion Questions for Each City:
+1. 🏗️ **Infrastructure** — What do you build, reinforce, or relocate?
+2. 👥 **Population** — Who is most vulnerable? How do you protect them?
+3. 💰 **Economy** — How do you fund adaptations? What industries must transform?
+4. 🌍 **Equity** — How do wealthier vs. poorer cities compare in their ability to adapt?
+5. 🔗 **Connections** — How does your city's crisis affect other cities globally?
 :::
 
 # Evaluate: Connecting Past to Future
