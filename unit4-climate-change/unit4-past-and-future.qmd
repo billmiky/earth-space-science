@@ -615,19 +615,11 @@ html`
     from { stroke-dashoffset: 40; }
     to { stroke-dashoffset: 0; }
   }
-  @keyframes flow-reverse {
-    from { stroke-dashoffset: 0; }
-    to { stroke-dashoffset: 40; }
-  }
   .current-path {
     stroke-dasharray: 10 10;
     animation: flow ${animDuration}s linear infinite;
   }
-  .current-path-reverse {
-    stroke-dasharray: 10 10;
-    animation: flow-reverse ${animDuration}s linear infinite;
-  }
-  ${amocStrength === 0 ? '.current-path, .current-path-reverse { animation: none; }' : ''}
+  ${amocStrength === 0 ? '.current-path { animation: none; }' : ''}
 </style>
 <div style="display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0; font-family: 'Inter', sans-serif;">
   <div style="flex: 2; min-width: 400px; position: relative;">
@@ -649,21 +641,36 @@ html`
         <path d="M 350 80 Q 380 120 420 120" fill="none" stroke="#E0F7FA" stroke-width="${(freshwaterInput/20) + (tempIncrease)}" opacity="0.8" stroke-dasharray="5 5" class="current-path"/>
       ` : ''}
 
-      <!-- Warm Surface Current (Gulf Stream) -->
+      <!-- Warm Surface Current (Gulf Stream): flows left→right (Americas → North Atlantic) -->
       <path d="M 60 160 Q 250 140 400 140" fill="none" stroke="#FF4500" stroke-width="${amocStrength/8 + 2}" opacity="0.8"/>
       <path d="M 60 160 Q 250 140 400 140" fill="none" stroke="#FFF" stroke-width="${amocStrength/15 + 1}" class="current-path"/>
-      <text x="180" y="130" fill="#FF4500" font-size="14" font-weight="bold">Warm Surface Current</text>
+      <!-- Direction arrow: pointing right -->
+      <polygon points="245,134 258,140 245,146" fill="#FF4500" opacity="0.95"/>
+      <text x="155" y="130" fill="#FF4500" font-size="13" font-weight="bold">Warm Surface Current →</text>
       
       <!-- Sinking Region -->
       <ellipse cx="400" cy="200" rx="${amocStrength/4 + 10}" ry="${amocStrength/2 + 20}" fill="#4169E1" opacity="0.6"/>
       <text x="400" y="205" fill="white" font-size="12" font-weight="bold" text-anchor="middle">Sinking</text>
       <path d="M 400 140 L 400 260" fill="none" stroke="#FFF" stroke-width="${amocStrength/15 + 1}" class="current-path"/>
+      <!-- Direction arrow: pointing down -->
+      <polygon points="395,202 400,215 405,202" fill="white" opacity="0.85"/>
       
-      <!-- Cold Deep Current -->
+      <!-- Cold Deep Current: path drawn right→left (North Atlantic → Americas/Equator) -->
+      <!-- Using 'current-path' (dashoffset 40→0) marches dashes FORWARD = right→left ✓ -->
       <path d="M 400 260 Q 250 280 60 260" fill="none" stroke="#00BFFF" stroke-width="${amocStrength/8 + 2}" opacity="0.8"/>
-      <path d="M 400 260 Q 250 280 60 260" fill="none" stroke="#FFF" stroke-width="${amocStrength/15 + 1}" class="current-path-reverse"/>
-      <text x="180" y="295" fill="#00BFFF" font-size="14" font-weight="bold">Cold Deep Current</text>
-      
+      <path d="M 400 260 Q 250 280 60 260" fill="none" stroke="#FFF" stroke-width="${amocStrength/15 + 1}" class="current-path"/>
+      <!-- Direction arrow: pointing left -->
+      <polygon points="255,273 242,279 255,285" fill="#00BFFF" opacity="0.95"/>
+      <text x="155" y="300" fill="#00BFFF" font-size="13" font-weight="bold">← Cold Deep Current</text>
+
+      <!-- Upwelling (Americas/Equator side): cold deep water rises back to surface -->
+      <!-- Path drawn bottom→top so 'current-path' animates upward ✓ -->
+      <path d="M 60 260 L 60 160" fill="none" stroke="#00BFFF" stroke-width="${amocStrength/8 + 2}" opacity="0.8"/>
+      <path d="M 60 260 L 60 160" fill="none" stroke="#FFF" stroke-width="${amocStrength/15 + 1}" class="current-path"/>
+      <!-- Direction arrow: pointing up -->
+      <polygon points="54,178 60,165 66,178" fill="#00BFFF" opacity="0.95"/>
+      <text x="65" y="215" fill="#00BFFF" font-size="11" font-weight="bold">Upwelling</text>
+
       <!-- Labels -->
       <text x="20" y="30" fill="white" font-size="14" font-weight="bold">Equator</text>
       <text x="400" y="30" fill="white" font-size="14" font-weight="bold">North Atlantic</text>
@@ -700,6 +707,7 @@ html`
 </div>
 `
 ```
+
 
 ```{ojs}
 //| echo: false
@@ -1790,6 +1798,259 @@ You now have the knowledge to explain:
 7. **Learning from the past** helps us prepare for and potentially prevent future disasters
 :::
 
+```{=html}
+<div id="clovis-sort-wrapper" style="font-family: 'Inter', sans-serif; max-width: 720px; margin: 30px auto;">
+  <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.4); padding: 28px 30px 24px; color: white;">
+
+    <div style="text-align: center; margin-bottom: 20px;">
+      <div style="font-size: 2em; margin-bottom: 6px;">🧩</div>
+      <h3 style="margin: 0 0 6px; font-size: 1.25em; color: #f6e05e; letter-spacing: 0.5px;">Card Sort: The Clovis &amp; the Younger Dryas</h3>
+      <p style="color: #a0aec0; font-size: 0.88em; margin: 0; line-height: 1.5;">Drag and drop the cards into the correct chronological order to show what caused the collapse of the Clovis people during the Younger Dryas.</p>
+    </div>
+
+    <ul id="clovis-sort-list" style="list-style: none; padding: 0; margin: 0 0 20px;"></ul>
+
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <button onclick="checkClovisOrder()" style="background: linear-gradient(135deg, #f6e05e, #ed8936); color: #1a202c; border: none; padding: 11px 28px; border-radius: 10px; font-weight: 700; font-size: 0.95em; cursor: pointer; box-shadow: 0 4px 15px rgba(246,224,94,0.3);">✅ Check My Order</button>
+      <button onclick="resetClovisSort()" style="background: rgba(255,255,255,0.12); color: #e2e8f0; border: 2px solid rgba(255,255,255,0.25); padding: 11px 28px; border-radius: 10px; font-weight: 600; font-size: 0.95em; cursor: pointer;">🔀 Shuffle Again</button>
+    </div>
+
+    <div id="clovis-feedback" style="margin-top: 18px; display: none;"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const correctOrder = [
+    "Orbital factors shifted",
+    "Increased solar radiation reaching the northern hemisphere in the summer",
+    "Temperatures increased",
+    "Positive feedback loops in the form of greenhouse gases and decreasing albedo amplified temperature increase",
+    "Ice caps melted",
+    "The AMOC slowed down or even stopped",
+    "Energy circulation of the ocean stopped",
+    "The northern hemisphere received less heat from the equator",
+    "The northern hemisphere cooled quickly",
+    "Warm air built up in the southern hemisphere",
+    "Warm air eventually moved from the southern hemisphere to the northern hemisphere",
+    "Temperatures increased dramatically",
+    "Flooding increased on coastal regions as sea level rose from melted glaciers",
+    "Food supply was impacted by dramatic climatic warming and cooling in quick succession",
+    "The Clovis people as a population were not able to survive"
+  ];
+
+  // Phase label and accent color for each card
+  const phaseInfo = [
+    { label: "🌍 Orbital", color: "#6b46c1" },
+    { label: "🌍 Orbital", color: "#6b46c1" },
+    { label: "🌡️ Initial Warming", color: "#c05621" },
+    { label: "🌡️ Initial Warming", color: "#c05621" },
+    { label: "🌡️ Initial Warming", color: "#c05621" },
+    { label: "🌊 AMOC Collapse", color: "#2b6cb0" },
+    { label: "🌊 AMOC Collapse", color: "#2b6cb0" },
+    { label: "🌊 AMOC Collapse", color: "#2b6cb0" },
+    { label: "🌊 AMOC Collapse", color: "#2b6cb0" },
+    { label: "💨 Hemispheric Shift", color: "#276749" },
+    { label: "💨 Hemispheric Shift", color: "#276749" },
+    { label: "💥 Consequences", color: "#9b2c2c" },
+    { label: "💥 Consequences", color: "#9b2c2c" },
+    { label: "💥 Consequences", color: "#9b2c2c" },
+    { label: "💀 Collapse", color: "#553c9a" }
+  ];
+
+  function shuffle(arr) {
+    const a = arr.map((text, i) => ({ text, idx: i }));
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function buildList() {
+    const list = document.getElementById('clovis-sort-list');
+    list.innerHTML = '';
+    const shuffled = shuffle(correctOrder);
+    shuffled.forEach(({ text }) => {
+      const li = document.createElement('li');
+      li.draggable = true;
+      li.dataset.text = text;
+      li.style.cssText = [
+        'display:flex', 'align-items:center', 'gap:10px',
+        'background:rgba(255,255,255,0.07)', 'border:2px solid rgba(255,255,255,0.15)',
+        'border-radius:10px', 'padding:10px 14px', 'margin-bottom:7px',
+        'cursor:grab', 'transition:background 0.2s,border-color 0.2s,opacity 0.2s',
+        'user-select:none', 'font-size:0.88em', 'line-height:1.45', 'color:#e2e8f0'
+      ].join(';');
+
+      // Drag handle
+      const handle = document.createElement('span');
+      handle.textContent = '⠿';
+      handle.style.cssText = 'font-size:1.2em;color:rgba(255,255,255,0.35);flex-shrink:0;cursor:grab;';
+
+      // Position badge
+      const badge = document.createElement('span');
+      badge.className = 'cs-badge';
+      badge.style.cssText = 'background:rgba(255,255,255,0.14);border-radius:6px;padding:2px 8px;font-size:0.78em;font-weight:700;flex-shrink:0;color:#f6e05e;min-width:24px;text-align:center;';
+
+      // Text
+      const txt = document.createElement('span');
+      txt.textContent = text;
+      txt.style.flex = '1';
+
+      li.appendChild(handle);
+      li.appendChild(badge);
+      li.appendChild(txt);
+      list.appendChild(li);
+    });
+
+    refreshBadges();
+    initDrag();
+    document.getElementById('clovis-feedback').style.display = 'none';
+    // Reset all card styles
+    list.querySelectorAll('li').forEach(li => {
+      li.style.background = 'rgba(255,255,255,0.07)';
+      li.style.borderColor = 'rgba(255,255,255,0.15)';
+    });
+  }
+
+  function refreshBadges() {
+    document.querySelectorAll('#clovis-sort-list li').forEach((li, i) => {
+      const b = li.querySelector('.cs-badge');
+      if (b) b.textContent = i + 1;
+    });
+  }
+
+  let dragSrc = null;
+
+  function initDrag() {
+    const list = document.getElementById('clovis-sort-list');
+
+    list.querySelectorAll('li').forEach(li => {
+
+      li.addEventListener('dragstart', function (e) {
+        dragSrc = this;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', this.dataset.text);
+        setTimeout(() => { this.style.opacity = '0.35'; }, 0);
+      });
+
+      li.addEventListener('dragend', function () {
+        this.style.opacity = '1';
+        list.querySelectorAll('li').forEach(el => {
+          el.style.borderColor = 'rgba(255,255,255,0.15)';
+          el.style.borderStyle = 'solid';
+        });
+        refreshBadges();
+      });
+
+      li.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        if (this !== dragSrc) {
+          list.querySelectorAll('li').forEach(el => {
+            el.style.borderColor = 'rgba(255,255,255,0.15)';
+            el.style.borderStyle = 'solid';
+          });
+          this.style.borderColor = '#f6e05e';
+          this.style.borderStyle = 'dashed';
+        }
+        return false;
+      });
+
+      li.addEventListener('dragleave', function () {
+        this.style.borderColor = 'rgba(255,255,255,0.15)';
+        this.style.borderStyle = 'solid';
+      });
+
+      li.addEventListener('drop', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        if (dragSrc && this !== dragSrc) {
+          const all = [...list.querySelectorAll('li')];
+          const si = all.indexOf(dragSrc);
+          const ti = all.indexOf(this);
+          if (si < ti) list.insertBefore(dragSrc, this.nextSibling);
+          else list.insertBefore(dragSrc, this);
+        }
+        this.style.borderColor = 'rgba(255,255,255,0.15)';
+        this.style.borderStyle = 'solid';
+        refreshBadges();
+        return false;
+      });
+
+      // Touch support
+      li.addEventListener('touchstart', function (e) {
+        dragSrc = this;
+        this.style.opacity = '0.5';
+      }, { passive: true });
+
+      li.addEventListener('touchend', function (e) {
+        this.style.opacity = '1';
+        refreshBadges();
+      }, { passive: true });
+
+      li.addEventListener('touchmove', function (e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const target = document.elementFromPoint(touch.clientX, touch.clientY);
+        const targetLi = target && target.closest('#clovis-sort-list li');
+        if (targetLi && targetLi !== dragSrc) {
+          const all = [...list.querySelectorAll('li')];
+          const si = all.indexOf(dragSrc);
+          const ti = all.indexOf(targetLi);
+          if (si < ti) list.insertBefore(dragSrc, targetLi.nextSibling);
+          else list.insertBefore(dragSrc, targetLi);
+          refreshBadges();
+        }
+      }, { passive: false });
+    });
+  }
+
+  window.checkClovisOrder = function () {
+    const list = document.getElementById('clovis-sort-list');
+    const items = [...list.querySelectorAll('li')];
+    let correct = 0;
+
+    items.forEach((li, i) => {
+      const isCorrect = li.dataset.text === correctOrder[i];
+      if (isCorrect) {
+        correct++;
+        li.style.background = 'rgba(72,187,120,0.2)';
+        li.style.borderColor = '#48bb78';
+        li.style.borderStyle = 'solid';
+      } else {
+        li.style.background = 'rgba(252,129,129,0.18)';
+        li.style.borderColor = '#fc8181';
+        li.style.borderStyle = 'solid';
+      }
+    });
+
+    const pct = Math.round((correct / correctOrder.length) * 100);
+    const emoji = pct === 100 ? '🎉' : pct >= 80 ? '💪' : pct >= 50 ? '🤔' : '📚';
+    const msg = pct === 100
+      ? 'Outstanding! You correctly sequenced all 15 events leading to the collapse of the Clovis people.'
+      : `You got <strong style="color:#48bb78">${correct} of ${correctOrder.length}</strong> cards in the right position. Cards in <span style="color:#48bb78">green</span> are correct; move the <span style="color:#fc8181">red</span> ones and try again!`;
+
+    const fb = document.getElementById('clovis-feedback');
+    fb.style.display = 'block';
+    fb.innerHTML = `
+      <div style="background:rgba(255,255,255,0.1);border-radius:12px;padding:16px 20px;text-align:center;">
+        <div style="font-size:2em;margin-bottom:6px;">${emoji}</div>
+        <div style="font-size:1.15em;font-weight:700;color:#f6e05e;margin-bottom:6px;">${pct}% in Correct Position</div>
+        <div style="color:#e2e8f0;font-size:0.88em;line-height:1.5;">${msg}</div>
+      </div>`;
+  };
+
+  window.resetClovisSort = function () {
+    buildList();
+  };
+
+  buildList();
+})();
+</script>
+```
+
 ```{ojs}
 //| echo: false
 {
@@ -2124,6 +2385,142 @@ You now have the knowledge to explain:
       ],
       correct: 1,
       explanation: "AMOC currently keeps Europe roughly 5–10°C warmer than it would otherwise be at its latitude. If AMOC weakened significantly, less warm tropical water would reach the North Atlantic, causing cooling in Europe and the northeastern US — even as greenhouse gas warming continues globally. The Younger Dryas is the best historical example of exactly this pattern."
+    },
+    {
+      q: "Historically, massive volcanic eruptions have injected large amounts of ash and sulfur dioxide into the upper atmosphere. How do these emissions primarily affect Earth's global temperature in the years immediately following the eruption?",
+      hint: "Think about what happens when a thick cloud blocks the sun on a hot summer day.",
+      options: [
+        "A) They increase the greenhouse effect, leading to rapid global warming.",
+        "B) They reflect incoming solar radiation back into space, causing a temporary decrease in global temperatures.",
+        "C) They destroy the ozone layer, allowing more ultraviolet radiation to reach the surface and warm the planet.",
+        "D) They increase the absorption of heat by the oceans, leading to warmer coastal climates."
+      ],
+      correct: 1,
+      feedback: [
+        "While volcanoes do release carbon dioxide, the immediate and dominant effect of a massive eruption is caused by aerosols that block sunlight.",
+        "Ash and sulfur dioxide act as reflective aerosols in the atmosphere, increasing Earth's albedo and causing short-term global cooling.",
+        "Although some volcanic gases can interact with ozone, this is not the primary mechanism that alters global temperatures post-eruption.",
+        "Volcanic aerosols block solar energy from reaching the Earth's surface, which would actually cool the oceans slightly rather than heat them."
+      ]
+    },
+    {
+      q: "If astronomical data indicated a prolonged period of unusually low solar activity (fewer sunspots and lower solar irradiance) lasting for several decades, what would be the most likely impact on Earth's climate system?",
+      hint: "Consider the relationship between the energy output of the sun and the amount of heat Earth receives.",
+      options: [
+        "A) A prolonged decrease in global average temperatures due to less energy entering Earth's system.",
+        "B) A significant increase in greenhouse gas concentrations.",
+        "C) A rapid melting of polar ice caps due to shifts in ocean currents.",
+        "D) No noticeable change, as solar activity does not affect Earth's climate."
+      ],
+      correct: 0,
+      feedback: [
+        "Lower solar irradiance means less solar energy reaches the Earth, which naturally leads to a cooling trend in the climate.",
+        "Changes in solar activity do not directly produce or increase the concentration of greenhouse gases in the atmosphere.",
+        "A decrease in solar energy would generally promote the expansion of ice caps, not their melting.",
+        "Solar activity is one of the foundational drivers of Earth's climate system; changes in the sun's output directly impact our temperatures."
+      ]
+    },
+    {
+      q: "During periods of global cooling, ice sheets and glaciers begin to expand toward the equator. How does this expansion affect the global climate?",
+      hint: "Remember the concept of 'albedo' and how light-colored surfaces interact with incoming sunlight.",
+      options: [
+        "A) The growing ice absorbs more heat from the atmosphere, causing the cooling trend to reverse.",
+        "B) The expanded ice cover increases Earth's overall albedo, reflecting more sunlight and accelerating the cooling trend.",
+        "C) The ice releases trapped greenhouse gases, which eventually warms the planet.",
+        "D) The ice decreases the amount of cloud cover, leading to increased solar radiation reaching the surface."
+      ],
+      correct: 1,
+      feedback: [
+        "Ice is highly reflective, not absorbent, so it does not pull heat from the atmosphere to warm the planet.",
+        "This is a classic positive feedback loop: cooling creates more ice, which reflects more sunlight, which causes even more cooling.",
+        "While melting permafrost can release greenhouse gases, the expansion of ice typically traps gases rather than releasing them.",
+        "Ice cover does not directly decrease global cloud cover in a way that would offset its massive reflective properties."
+      ]
+    },
+    {
+      q: "During the early Industrial Revolution, the burning of coal released large amounts of black soot into the atmosphere, much of which settled on nearby glaciers. What effect did this soot have on the glaciers and the local climate?",
+      hint: "Think about why wearing a black shirt on a sunny day makes you feel hotter than wearing a white shirt.",
+      options: [
+        "A) The soot increased the glaciers' albedo, causing them to reflect more sunlight and grow larger.",
+        "B) The soot insulated the glaciers, protecting them from warm air and slowing their melting.",
+        "C) The soot decreased the glaciers' albedo, causing them to absorb more sunlight and melt more rapidly.",
+        "D) The soot chemically reacted with the ice to produce carbon dioxide, cooling the immediate atmosphere."
+      ],
+      correct: 2,
+      feedback: [
+        "Black soot is dark, so it lowers albedo rather than increasing it.",
+        "While a very thick layer of debris can insulate ice, soot particles absorb sunlight and transfer that heat directly to the ice.",
+        "Dark soot lowers the reflectivity (albedo) of the white ice, causing it to absorb solar energy and melt faster.",
+        "Soot does not chemically react with frozen water to produce carbon dioxide."
+      ]
+    },
+    {
+      q: "Historical records show that during sudden, extended periods of regional cooling, some ancient agricultural societies experienced severe population declines. Which of the following is the most direct cause of these declines?",
+      hint: "Consider how temperature changes directly affect a society's ability to produce its own food.",
+      options: [
+        "A) An increase in sea levels flooding coastal farming communities.",
+        "B) Shortened growing seasons and frequent summer frosts leading to widespread crop failures.",
+        "C) Increased competition for tropical lands as people migrated toward the equator.",
+        "D) Warmer ocean waters disrupting traditional fishing grounds."
+      ],
+      correct: 1,
+      feedback: [
+        "Global cooling typically causes water to be locked up in glaciers, lowering sea levels, not raising them.",
+        "Cooler overall temperatures dramatically reduce the time available for crops to mature, leading to starvation and societal collapse.",
+        "While migration might happen eventually, the direct, immediate cause of the population decline is the failure of their local food sources.",
+        "During a period of regional or global cooling, ocean waters would generally cool down, not warm up."
+      ]
+    },
+    {
+      q: "In historical instances where regional temperatures dropped significantly over a century, indigenous populations often had to adapt to survive. If an agrarian (farming) society experienced such a cooling shift, what would be their most likely adaptation?",
+      hint: "If you can no longer grow your food reliably, how else must you acquire it to survive?",
+      options: [
+        "A) Developing heat-resistant crops.",
+        "B) Shifting their economy entirely to the export of timber.",
+        "C) Transitioning from farming to a heavier reliance on hunting and foraging as crops repeatedly fail.",
+        "D) Building larger coastal settlements to take advantage of rising sea levels."
+      ],
+      correct: 2,
+      feedback: [
+        "Since the climate is cooling, heat-resistant crops would not help them survive.",
+        "While possible, exporting timber doesn't solve the immediate crisis of feeding their population when crops fail.",
+        "When agriculture becomes unreliable due to a changing climate, societies historically revert to hunting, fishing, and foraging to prevent starvation.",
+        "Cooling periods typically result in dropping sea levels as water is trapped in expanding glaciers."
+      ]
+    },
+    {
+      q: "The natural carbon cycle constantly moves carbon between the atmosphere, biosphere, and hydrosphere. Why do human emissions from burning fossil fuels have such a profound impact on global temperatures, despite being smaller than some natural carbon fluxes?",
+      hint: "Think about the difference between moving money between your checking and savings accounts versus winning the lottery and adding entirely new money to your bank.",
+      options: [
+        "A) Fossil fuels release a heavier type of carbon dioxide that traps more heat than natural carbon dioxide.",
+        "B) Human emissions add 'new' carbon into the active carbon cycle that had been locked away underground, overwhelming natural carbon sinks.",
+        "C) The carbon from fossil fuels destroys ozone, allowing more solar energy to reach the Earth's surface.",
+        "D) Burning fossil fuels directly heats the atmosphere through combustion, rather than through the greenhouse effect."
+      ],
+      correct: 1,
+      feedback: [
+        "Carbon dioxide molecules trap heat exactly the same way regardless of whether they come from a natural or human source.",
+        "Natural cycles are generally in balance. Burning fossil fuels takes carbon that was safely stored in the lithosphere and introduces it to the atmosphere, breaking that balance.",
+        "Carbon dioxide is a greenhouse gas that traps outgoing heat; it does not destroy the ozone layer.",
+        "The direct heat from combustion is microscopic compared to the long-term heat trapped by the resulting greenhouse gases."
+      ]
+    },
+    {
+      q: "Paleoclimatology data shows that Earth's climate has changed many times in the past due to natural factors. Which piece of evidence best supports the scientific consensus that the current warming trend is primarily caused by human activity?",
+      hint: "Look for the factor that aligns perfectly with human industrial history and diverges from natural, long-term cycles.",
+      options: [
+        "A) The current warming is accompanied by an increase in volcanic activity worldwide.",
+        "B) The amount of incoming solar radiation has steadily increased over the last 150 years.",
+        "C) The rate of warming closely correlates with the exponential increase in greenhouse gas concentrations since the Industrial Revolution.",
+        "D) Earth's orbit is currently in a phase that brings it closer to the sun during the Northern Hemisphere's summer."
+      ],
+      correct: 2,
+      feedback: [
+        "Global volcanic activity has not significantly increased, and volcanoes generally cause short-term cooling, not long-term warming.",
+        "Solar irradiance has fluctuated but has actually shown a slight cooling trend in recent decades, contradicting the rapid global temperature increase.",
+        "The unprecedented spike in both temperatures and atmospheric CO₂ starting in the 1800s provides the clearest evidence of anthropogenic climate change.",
+        "Orbital cycles (Milankovitch cycles) operate on scales of tens of thousands of years and do not explain the rapid warming seen in the last century."
+      ]
     }
   ];
 
@@ -2143,6 +2540,19 @@ You now have the knowledge to explain:
     const card = wrap.append("div").attr("class", "pf-question-card");
     card.append("div").attr("class", "pf-q-meta").text(`Question ${qi + 1} of ${questions.length}`);
     card.append("div").attr("class", "pf-q-text").text(q.q);
+
+    if (q.hint) {
+      const hintDetails = card.append("details").style("margin", "6px 0 10px 0");
+      hintDetails.append("summary")
+        .style("cursor", "pointer").style("color", "#ed8936")
+        .style("font-weight", "600").style("font-size", "0.9em")
+        .text("💡 Show Hint");
+      hintDetails.append("div")
+        .style("margin-top", "6px").style("padding", "8px 12px")
+        .style("background", "#fffbeb").style("border-radius", "6px")
+        .style("font-style", "italic").style("font-size", "0.9em")
+        .text(q.hint);
+    }
 
     const feedbackDiv = card.append("div").attr("class", "pf-feedback-box");
 
@@ -2169,12 +2579,13 @@ You now have the knowledge to explain:
         });
 
         // Show feedback
+        const feedbackText = q.feedback ? q.feedback[oi] : q.explanation;
         feedbackDiv
           .classed("pf-fb-correct", isCorrect)
           .classed("pf-fb-wrong", !isCorrect)
           .html(
             `<strong>${isCorrect ? "✅ Correct!" : `❌ Not quite — the correct answer is: <em>${q.options[q.correct]}</em>`}</strong><br><br>` +
-            q.explanation
+            feedbackText
           );
 
         // Update score banner
