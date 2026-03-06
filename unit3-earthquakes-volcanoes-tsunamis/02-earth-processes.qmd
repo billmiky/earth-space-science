@@ -17,6 +17,190 @@ Earth's internal processes drive plate tectonics, which shape our planet's surfa
 2. How does the pattern of earthquakes relate to plate boundaries?
 3. What surface processes and landforms result from the tectonic plate movements you're seeing?
 4. Can you identify any major fault zones or subduction zones based on earthquake clusters?
+::: 
+
+## Major Earthquakes in History
+
+This spinning globe shows the locations of the most powerful and deadly earthquakes ever recorded. Watch as it rotates to reveal how earthquakes cluster around **tectonic plate boundaries** — particularly the Pacific Ring of Fire, the Alpine-Himalayan Belt, and mid-ocean ridges.
+
+<div style="display:flex; gap: 16px; margin: 0.5em 0 1.2em 0; flex-wrap: wrap; font-size:0.88em; align-items:center;">
+  <span style="display:flex;align-items:center;gap:6px;"><span style="background:#ff2200;width:14px;height:14px;border-radius:50%;display:inline-block;border:1.5px solid #fff;box-shadow:0 0 5px #ff2200;"></span> M 9.0+</span>
+  <span style="display:flex;align-items:center;gap:6px;"><span style="background:#ff5500;width:12px;height:12px;border-radius:50%;display:inline-block;border:1.5px solid #fff;box-shadow:0 0 4px #ff5500;"></span> M 8.5–8.9</span>
+  <span style="display:flex;align-items:center;gap:6px;"><span style="background:#ff8800;width:10px;height:10px;border-radius:50%;display:inline-block;border:1.5px solid #fff;box-shadow:0 0 4px #ff8800;"></span> M 8.0–8.4</span>
+  <span style="display:flex;align-items:center;gap:6px;"><span style="background:#ffbb00;width:8px;height:8px;border-radius:50%;display:inline-block;border:1.5px solid #fff;box-shadow:0 0 3px #ffbb00;"></span> M 7.5–7.9</span>
+  <span style="display:flex;align-items:center;gap:6px;"><span style="background:#ffdd00;width:6px;height:6px;border-radius:50%;display:inline-block;border:1.5px solid #fff;"></span> M 6.5–7.4</span>
+</div>
+
+```{ojs}
+//| echo: false
+d3 = require("d3@7")
+topojson = require("topojson-client@3")
+```
+
+```{ojs}
+//| echo: false
+world = FileAttachment("../world-110m.json").json()
+```
+
+```{ojs}
+//| echo: false
+majorEarthquakes = [
+  // M 9.0+
+  {name: "Valdivia, Chile",        year: 1960, lat: -38.14, lon:  -73.41, magnitude: 9.5},
+  {name: "Alaska, USA",            year: 1964, lat:  60.91, lon: -147.34, magnitude: 9.2},
+  {name: "Sumatra-Andaman",        year: 2004, lat:   3.30, lon:   95.98, magnitude: 9.1},
+  {name: "Tōhoku, Japan",          year: 2011, lat:  38.30, lon:  142.37, magnitude: 9.0},
+  {name: "Kamchatka, Russia",      year: 1952, lat:  52.76, lon:  159.99, magnitude: 9.0},
+  // M 8.5–8.9
+  {name: "Ecuador",                year: 1906, lat:   1.00, lon:  -81.50, magnitude: 8.8},
+  {name: "Concepción, Chile",      year: 2010, lat: -35.85, lon:  -72.72, magnitude: 8.8},
+  {name: "Rat Islands, Alaska",    year: 1965, lat:  51.21, lon:  178.50, magnitude: 8.7},
+  {name: "Assam-Tibet",            year: 1950, lat:  28.40, lon:   96.70, magnitude: 8.6},
+  {name: "Sumatra",                year: 2005, lat:   2.09, lon:   97.11, magnitude: 8.6},
+  {name: "Sumatra (offshore)",     year: 2012, lat:   2.31, lon:   93.06, magnitude: 8.6},
+  // M 7.5–8.4
+  {name: "San Francisco, USA",     year: 1906, lat:  37.78, lon: -122.52, magnitude: 7.9},
+  {name: "Kantō, Japan",           year: 1923, lat:  35.45, lon:  139.10, magnitude: 7.9},
+  {name: "Sichuan, China",         year: 2008, lat:  31.02, lon:  103.37, magnitude: 7.9},
+  {name: "Mexico City",            year: 2017, lat:  18.35, lon: -102.18, magnitude: 8.2},
+  {name: "Tangshan, China",        year: 1976, lat:  39.60, lon:  118.07, magnitude: 7.5},
+  {name: "İzmit, Turkey",          year: 1999, lat:  40.76, lon:   29.97, magnitude: 7.6},
+  {name: "Kashmir",                year: 2005, lat:  34.52, lon:   73.58, magnitude: 7.6},
+  {name: "Nepal",                  year: 2015, lat:  28.15, lon:   84.71, magnitude: 7.8},
+  {name: "Ecuador",                year: 2016, lat:   0.38, lon:  -79.94, magnitude: 7.8},
+  {name: "Palu, Indonesia",        year: 2018, lat:  -0.26, lon:  119.85, magnitude: 7.5},
+  {name: "Turkey-Syria",           year: 2023, lat:  37.17, lon:   37.09, magnitude: 7.8},
+  // M 6.5–7.4
+  {name: "Ashgabat, Turkmenistan", year: 1948, lat:  37.88, lon:   58.55, magnitude: 7.3},
+  {name: "Northridge, USA",        year: 1994, lat:  34.21, lon: -118.54, magnitude: 6.7},
+  {name: "Kobe, Japan",            year: 1995, lat:  34.58, lon:  135.02, magnitude: 6.9},
+  {name: "Bam, Iran",              year: 2003, lat:  29.10, lon:   58.35, magnitude: 6.6},
+  {name: "Haiti",                  year: 2010, lat:  18.44, lon:  -72.57, magnitude: 7.0},
+  {name: "Albania",                year: 2019, lat:  41.51, lon:   19.53, magnitude: 6.4}
+]
+```
+
+```{ojs}
+//| echo: false
+chart = {
+  const width = 620;
+  const height = 620;
+  const speed = 0.004;
+  const sphere = {type: "Sphere"};
+  const graticule = d3.geoGraticule10();
+  const context = DOM.context2d(width, height);
+  const projection = d3.geoOrthographic()
+    .fitExtent([[4, 4], [width - 4, height - 4]], sphere);
+  const path = d3.geoPath(projection, context);
+  const land = topojson.feature(world, world.objects.land);
+
+  // Convert a hex color to an rgba() string with given alpha
+  const hexRgba = (hex, a) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r},${g},${b},${a})`;
+  };
+
+  // Color by magnitude
+  const magColor = mag => {
+    if (mag >= 9.0) return "#ff2200";
+    if (mag >= 8.5) return "#ff5500";
+    if (mag >= 8.0) return "#ff8800";
+    if (mag >= 7.5) return "#ffbb00";
+    return "#ffdd00";
+  };
+
+  while (true) {
+    projection.rotate([speed * performance.now(), -15]);
+    context.clearRect(0, 0, width, height);
+    context.save();
+
+    // Ocean — radial gradient for a lit-globe look
+    context.beginPath();
+    path(sphere);
+    const oceanGrad = context.createRadialGradient(
+      width * 0.42, height * 0.36, width * 0.04,
+      width * 0.50, height * 0.50, width * 0.48
+    );
+    oceanGrad.addColorStop(0, "#4eb8e8");
+    oceanGrad.addColorStop(1, "#0b3d6e");
+    context.fillStyle = oceanGrad;
+    context.fill();
+
+    // Land
+    context.beginPath();
+    path(land);
+    const landGrad = context.createRadialGradient(
+      width * 0.42, height * 0.36, width * 0.04,
+      width * 0.50, height * 0.50, width * 0.48
+    );
+    landGrad.addColorStop(0, "#72c47a");
+    landGrad.addColorStop(1, "#2a6040");
+    context.fillStyle = landGrad;
+    context.fill();
+    context.strokeStyle = "#1e4d31";
+    context.lineWidth = 0.4;
+    context.stroke();
+
+    // Graticule
+    context.beginPath();
+    path(graticule);
+    context.globalAlpha = 0.18;
+    context.strokeStyle = "#ffffff";
+    context.lineWidth = 0.5;
+    context.stroke();
+    context.globalAlpha = 1;
+
+    // Earthquake markers
+    for (const eq of majorEarthquakes) {
+      const coords = projection([eq.lon, eq.lat]);
+      if (coords !== null) {
+        const [x, y] = coords;
+        const size = Math.max(3, (eq.magnitude - 6) * 4.5);
+        const color = magColor(eq.magnitude);
+
+        // Outer glow
+        const glow = context.createRadialGradient(x, y, 0, x, y, size * 2.8);
+        glow.addColorStop(0, hexRgba(color, 0.55));
+        glow.addColorStop(1, hexRgba(color, 0));
+        context.beginPath();
+        context.arc(x, y, size * 2.8, 0, 2 * Math.PI);
+        context.fillStyle = glow;
+        context.fill();
+
+        // Core dot
+        context.beginPath();
+        context.arc(x, y, size, 0, 2 * Math.PI);
+        context.globalAlpha = 0.92;
+        context.fillStyle = color;
+        context.fill();
+        context.globalAlpha = 1;
+        context.strokeStyle = "rgba(255,255,255,0.85)";
+        context.lineWidth = 0.9;
+        context.stroke();
+      }
+    }
+
+    // Globe outline
+    context.beginPath();
+    path(sphere);
+    context.lineWidth = 1.5;
+    context.strokeStyle = "#0a2a45";
+    context.stroke();
+
+    context.restore();
+    yield context.canvas;
+  }
+}
+```
+
+::: {.check-understanding}
+### 🌐 Spinning Globe Analysis
+1. Which ocean basin appears to have the highest concentration of major earthquakes?
+2. Can you spot the **Pacific Ring of Fire** as the globe rotates? What tectonic process causes this belt of activity?
+3. Notice the earthquakes in southern Asia (Turkey, Iran, Kashmir, Nepal). What belt of tectonic activity do these belong to?
+4. The 1960 Valdivia earthquake (Chile, M9.5) is the largest ever recorded. What does its location tell you about why it was so powerful?
 :::
 
 ## Coming Soon

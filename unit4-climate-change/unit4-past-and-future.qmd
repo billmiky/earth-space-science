@@ -1215,6 +1215,589 @@ buildQuiz("pop-risk", [
 ```
 :::
 
+## 🗺️ Costliest & Deadliest Disasters: 2011–2025
+
+**75 disasters** — 5 per year across 15 years. Filter by year or disaster type. Hover for a quick summary, click for full details.
+
+```{=html}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  #disaster-map { height:560px; border-radius:14px; border:3px solid #667eea; box-shadow:0 8px 30px rgba(102,126,234,0.25); margin:12px 0 8px; }
+  #dm-controls { background:white; border:2px solid #e2e8f0; border-radius:12px; padding:12px 16px; margin-bottom:10px; font-family:'Inter',sans-serif; box-shadow:0 2px 10px rgba(0,0,0,0.06); }
+  .dm-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .dm-label { font-size:12px; font-weight:700; color:#667eea; white-space:nowrap; min-width:58px; }
+  .dm-ybtns { display:flex; gap:5px; overflow-x:auto; padding-bottom:3px; flex-wrap:nowrap; scrollbar-width:thin; }
+  .dm-cbtns { display:flex; gap:5px; flex-wrap:wrap; }
+  .yr-btn,.cat-btn { padding:4px 11px; border:1.5px solid #cbd5e0; border-radius:18px; background:#f7fafc; color:#4a5568; cursor:pointer; font-size:12px; font-weight:600; transition:all 0.15s; white-space:nowrap; }
+  .yr-btn:hover,.cat-btn:hover { border-color:#667eea; background:#eef2ff; color:#4338ca; }
+  .yr-btn.active,.cat-btn.active { border-color:#667eea; background:linear-gradient(135deg,#667eea,#764ba2); color:white; }
+  #dm-counter { font-size:12px; font-weight:700; color:#718096; text-align:right; margin-top:2px; }
+  #dm-tip { font-size:11px; color:#a0aec0; margin-top:4px; }
+  .dei { font-size:1.35rem; line-height:1; display:flex; align-items:center; justify-content:center; filter:drop-shadow(0 1px 5px rgba(0,0,0,0.6)); cursor:pointer; animation:mpulse 3s ease-in-out infinite; }
+  .dei:hover { animation:none !important; transform:scale(1.55) !important; filter:drop-shadow(0 4px 14px rgba(255,200,0,0.85)) !important; }
+  @keyframes mpulse { 0%,100%{transform:scale(1);filter:drop-shadow(0 1px 5px rgba(0,0,0,0.6))} 50%{transform:scale(1.2);filter:drop-shadow(0 3px 10px rgba(102,126,234,0.65))} }
+  .dtip { background:rgba(12,12,28,0.93) !important; border:1.5px solid #667eea !important; border-radius:10px !important; color:#f0f4ff !important; font-family:'Inter',sans-serif !important; font-size:12.5px !important; padding:9px 13px !important; max-width:230px !important; pointer-events:none; box-shadow:0 4px 18px rgba(0,0,0,0.4) !important; line-height:1.55 !important; }
+  .dtip::before { border-top-color:#667eea !important; }
+  .leaflet-popup-content-wrapper { border-radius:14px !important; border:2.5px solid #667eea !important; box-shadow:0 10px 40px rgba(102,126,234,0.35) !important; padding:0 !important; overflow:hidden !important; font-family:'Inter',sans-serif !important; max-width:320px !important; }
+  .leaflet-popup-content { margin:0 !important; width:320px !important; }
+  .leaflet-popup-tip { background:#667eea !important; }
+  .leaflet-popup-close-button { color:white !important; font-size:18px !important; right:10px !important; top:10px !important; }
+  .dp-header { padding:14px 16px 10px; color:white; display:flex; align-items:flex-start; gap:11px; }
+  .dp-emoji { font-size:2.4rem; line-height:1; flex-shrink:0; margin-top:2px; }
+  .dp-name { font-size:14.5px; font-weight:800; line-height:1.3; }
+  .dp-meta { font-size:11.5px; font-weight:600; opacity:0.85; margin-top:3px; }
+  .dp-body { padding:12px 16px 14px; background:#fafbff; }
+  .dp-stats { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:10px; }
+  .dp-stat { background:white; border:1.5px solid #e2e8f0; border-radius:9px; padding:7px 9px; text-align:center; }
+  .dp-sv { font-size:14px; font-weight:800; color:#2d3748; }
+  .dp-sl { font-size:10px; font-weight:700; color:#a0aec0; text-transform:uppercase; letter-spacing:0.6px; margin-top:1px; }
+  .dp-desc { font-size:12.5px; color:#4a5568; line-height:1.6; margin-bottom:9px; }
+  .dp-cc { background:linear-gradient(135deg,#eef2ff,#e8f4fd); border:1.5px solid #c7d2fe; border-radius:9px; padding:8px 11px; font-size:11.5px; color:#3730a3; font-weight:600; line-height:1.5; }
+  .dp-cc::before { content:'🌡️ Climate Connection: '; font-weight:800; }
+  .dp-yr { display:inline-block; background:rgba(255,255,255,0.25); border-radius:10px; padding:2px 8px; font-size:11px; font-weight:800; margin-right:4px; }
+</style>
+
+<div id="dm-controls">
+  <div class="dm-row">
+    <span class="dm-label">📅 Year:</span>
+    <div class="dm-ybtns">
+      <button class="yr-btn active" data-y="all">All Years</button>
+      <button class="yr-btn" data-y="2011">2011</button>
+      <button class="yr-btn" data-y="2012">2012</button>
+      <button class="yr-btn" data-y="2013">2013</button>
+      <button class="yr-btn" data-y="2014">2014</button>
+      <button class="yr-btn" data-y="2015">2015</button>
+      <button class="yr-btn" data-y="2016">2016</button>
+      <button class="yr-btn" data-y="2017">2017</button>
+      <button class="yr-btn" data-y="2018">2018</button>
+      <button class="yr-btn" data-y="2019">2019</button>
+      <button class="yr-btn" data-y="2020">2020</button>
+      <button class="yr-btn" data-y="2021">2021</button>
+      <button class="yr-btn" data-y="2022">2022</button>
+      <button class="yr-btn" data-y="2023">2023</button>
+      <button class="yr-btn" data-y="2024">2024</button>
+      <button class="yr-btn" data-y="2025">2025</button>
+    </div>
+  </div>
+  <div class="dm-row">
+    <span class="dm-label">📂 Type:</span>
+    <div class="dm-cbtns">
+      <button class="cat-btn active" data-c="all">🌍 All</button>
+      <button class="cat-btn" data-c="storm">🌀 Storm</button>
+      <button class="cat-btn" data-c="earthquake">🏚️ Earthquake</button>
+      <button class="cat-btn" data-c="flood">💧 Flood</button>
+      <button class="cat-btn" data-c="wildfire">🔥 Wildfire</button>
+      <button class="cat-btn" data-c="heat">🌡️ Heatwave</button>
+      <button class="cat-btn" data-c="other">⚠️ Other</button>
+    </div>
+  </div>
+  <div id="dm-counter">Showing 75 of 75 disasters</div>
+  <div id="dm-tip">💡 Tip: Select a year to see just that year's 5 events. Zoom in to separate overlapping markers.</div>
+</div>
+
+<div id="disaster-map"></div>
+
+<script>
+(function(){
+  /* ── DATA: 75 disasters, 5 per year 2011-2025 ── */
+  const D=[
+    // 2011
+    {y:2011,n:"Tōhoku Earthquake & Tsunami",c:"Japan",t:"Earthquake/Tsunami",cat:"earthquake",e:"🌊",g:"linear-gradient(135deg,#1565c0,#0288d1)",lat:38.30,lng:142.37,cost:"$235B",deaths:"~19,700",aff:"~500,000 displaced",desc:"A M9.1 megathrust earthquake generated tsunami waves over 40 m, triggering three nuclear meltdowns at Fukushima Daiichi. The costliest natural disaster in recorded history.",cc:"Rising sea levels expand tsunami inundation zones. Each cm of sea level rise adds significant additional flood area to future tsunami footprints."},
+    {y:2011,n:"Thailand Floods",c:"Thailand",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:14.0,lng:100.5,cost:"$45B",deaths:"~815",aff:"~13.6 million people",desc:"The worst flooding in 50 years inundated a third of Thailand, including Bangkok suburbs, halting global electronics supply chains for months.",cc:"Intensified monsoon rainfall linked to La Niña and warming-enhanced atmospheric moisture drove record water levels across the Chao Phraya basin."},
+    {y:2011,n:"Christchurch Earthquake",c:"New Zealand",t:"Earthquake",cat:"earthquake",e:"🏚️",g:"linear-gradient(135deg,#c62828,#e53935)",lat:-43.53,lng:172.63,cost:"$15B",deaths:"185",aff:"~300,000 displaced",desc:"A M6.3 earthquake struck at lunchtime, collapsing buildings in the CBD and killing 185 in New Zealand's deadliest peacetime disaster. The historic Canterbury Cathedral was destroyed.",cc:"Earthquakes aren't directly climate-driven, but urban heat effects and aging infrastructure — worsened by economic strain — increase compound hazard vulnerability."},
+    {y:2011,n:"Joplin Tornado (EF5)",c:"USA (Missouri)",t:"Tornado",cat:"other",e:"🌪️",g:"linear-gradient(135deg,#6a1b9a,#ab47bc)",lat:37.08,lng:-94.51,cost:"$2.8B",deaths:"158",aff:"~8,000 buildings destroyed",desc:"The deadliest U.S. tornado since modern records began. An EF5 cut a mile-wide path through Joplin, destroying a hospital and thousands of homes in minutes.",cc:"Warmer, moister air masses increase convective available potential energy (CAPE), fueling more intense tornado outbreaks across the central U.S."},
+    {y:2011,n:"East Africa Famine",c:"Somalia/Kenya/Ethiopia",t:"Drought/Famine",cat:"other",e:"🌵",g:"linear-gradient(135deg,#e65100,#ff8f00)",lat:5.0,lng:44.0,cost:"$2.9B",deaths:"~260,000",aff:"~13 million food insecure",desc:"The worst drought in 60 years devastated the Horn of Africa. Over 260,000 died of famine — more than half were children under 5. A preventable catastrophe delayed by political barriers.",cc:"Climate models show East Africa's dry seasons are lengthening and becoming more variable, directly worsening food security on a continent least responsible for global emissions."},
+    // 2012
+    {y:2012,n:"Hurricane Sandy",c:"USA/Caribbean",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:40.70,lng:-74.00,cost:"$65B",deaths:"~233",aff:"~8.5 million without power",desc:"'Superstorm Sandy' made unprecedented landfall near Atlantic City. Its storm surge flooded New York City's subway and devastated the New Jersey coast.",cc:"Sea level rise added ~0.3 m of storm surge. Warmer Atlantic waters boosted Sandy's size and moisture, expanding its anomalously large wind field."},
+    {y:2012,n:"Typhoon Bopha (Pablo)",c:"Philippines",t:"Typhoon",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:6.8,lng:126.2,cost:"$1.1B",deaths:"~1,901",aff:"~6.2 million people",desc:"The strongest typhoon ever to strike Mindanao devastated communities outside the typical typhoon belt that were completely unprepared for Category 5 intensity.",cc:"Warming sea surfaces are enabling typhoons to intensify faster and track farther south, placing historically safe regions at severe and growing risk."},
+    {y:2012,n:"China Summer Floods",c:"China",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:30.0,lng:112.3,cost:"$15B",deaths:"~673",aff:"~15 million evacuated",desc:"Persistent heavy rains caused widespread flooding across central and southern China, damaging over 1 million homes and severely disrupting the Yangtze basin.",cc:"Intensifying monsoon rainfall tied to warmer Indian Ocean temperatures is increasing flood severity across East Asia with each passing decade."},
+    {y:2012,n:"Emilia Earthquakes",c:"Italy",t:"Earthquake",cat:"earthquake",e:"🏚️",g:"linear-gradient(135deg,#c62828,#e53935)",lat:44.89,lng:11.23,cost:"$16B",deaths:"27",aff:"~15,000 displaced",desc:"Two major earthquakes (M6.1 and M6.0) struck northern Italy's Emilia-Romagna region, damaging ancient churches, historic buildings, and manufacturing facilities.",cc:"Extreme rainfall can destabilize soils and amplify earthquake damage. Post-disaster reconstruction faces increasing climate exposure in future compound events."},
+    {y:2012,n:"Sahel Drought & Food Crisis",c:"West Africa (Sahel)",t:"Drought",cat:"other",e:"🌵",g:"linear-gradient(135deg,#e65100,#ff8f00)",lat:14.0,lng:2.0,cost:"$1.5B",deaths:"~1,500",aff:"~18 million food insecure",desc:"Drought swept across the Sahel from Mauritania to Chad, cutting harvests by 25–50% and pushing nearly 18 million people into food crisis.",cc:"The Sahara Desert is expanding southward due to climate change, permanently reducing agricultural viability across the Sahel belt."},
+    // 2013
+    {y:2013,n:"Typhoon Haiyan (Yolanda)",c:"Philippines",t:"Typhoon",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:11.2,lng:124.7,cost:"$13B",deaths:"~6,300",aff:"~14 million people",desc:"The strongest tropical cyclone ever recorded at landfall, with winds reaching 315 km/h. Storm surges up to 7 m wiped out entire coastal communities in the Visayas.",cc:"Record-warm western Pacific sea surface temperatures supercharged Haiyan. Climate change is increasing the probability of Category 4–5 typhoons globally."},
+    {y:2013,n:"Uttarakhand Floods",c:"India",t:"Flood/Landslide",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:30.1,lng:79.3,cost:"$2B",deaths:"~5,700",aff:"~100,000 stranded",desc:"Catastrophic flash floods and landslides struck the Himalayan state during the Char Dham pilgrimage season, trapping hundreds of thousands in remote mountain valleys.",cc:"Accelerating Himalayan glacier melt combined with extreme monsoon rainfall — both driven by warming — created this catastrophic compound event."},
+    {y:2013,n:"Moore Tornado (EF5)",c:"USA (Oklahoma)",t:"Tornado",cat:"other",e:"🌪️",g:"linear-gradient(135deg,#6a1b9a,#ab47bc)",lat:35.34,lng:-97.49,cost:"$2B",deaths:"24",aff:"~13,000 homes damaged",desc:"An EF5 tornado over 2 km wide destroyed two elementary schools during school hours and left a 27 km path of destruction through the Oklahoma City suburb of Moore.",cc:"Climate change is shifting the tornado-prone region northward and may be increasing the frequency of high-end EF4–EF5 tornadoes in the U.S."},
+    {y:2013,n:"European Summer Heatwave",c:"UK/Germany/France",t:"Heatwave",cat:"heat",e:"🌡️",g:"linear-gradient(135deg,#bf360c,#ff5722)",lat:51.5,lng:10.0,cost:"$3B",deaths:"~1,700",aff:"Tens of millions across Europe",desc:"A prolonged July heatwave broke records across northern Europe, triggering heat-health alerts, straining power grids, and killing ~1,700 people.",cc:"European heatwaves have become 10x more likely due to climate change. Each 1°C of global warming raises heatwave frequency and peak temperatures significantly."},
+    {y:2013,n:"Balochistan Earthquakes",c:"Pakistan",t:"Earthquake",cat:"earthquake",e:"🏚️",g:"linear-gradient(135deg,#c62828,#e53935)",lat:26.9,lng:65.5,cost:"$0.5B",deaths:"~825",aff:"~100,000 homeless",desc:"A magnitude 7.7 earthquake struck Balochistan in September, flattening entire villages in one of Pakistan's poorest and most remote regions.",cc:"Poor building quality — exacerbated by economic stresses from climate-driven crop failures — significantly increases earthquake mortality in vulnerable regions."},
+    // 2014
+    {y:2014,n:"Kashmir Floods",c:"India/Pakistan",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:33.7,lng:74.9,cost:"$16B",deaths:"~700",aff:"~1.8 million displaced",desc:"The worst flooding in Kashmir in 60 years submerged Srinagar and over 2,600 villages on both sides of the Line of Control, with victims stranded for weeks.",cc:"Intensifying monsoon extremes linked to climate change are pushing flood magnitudes beyond all historical records throughout the Himalayan region."},
+    {y:2014,n:"Oso Mudslide",c:"USA (Washington)",t:"Landslide",cat:"other",e:"🪨",g:"linear-gradient(135deg,#5d4037,#8d6e63)",lat:48.27,lng:-121.84,cost:"$0.8B",deaths:"43",aff:"~50 homes destroyed",desc:"A massive debris avalanche buried the community of Oso and SR-530 highway. The deadliest landslide in U.S. history covered 1.6 km² in under three minutes.",cc:"Extreme rainfall in preceding weeks saturated the hillside. Intensifying precipitation events linked to climate change are increasing U.S. landslide frequency."},
+    {y:2014,n:"Serbia/Bosnia Floods",c:"Serbia/Bosnia-Herzegovina",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:44.8,lng:17.5,cost:"$3.5B",deaths:"~57",aff:"~1 million people",desc:"Record rainfall — three months' worth in three days — caused the worst Balkan flooding in 120 years, triggering landslides that destabilized wartime land mine fields.",cc:"Extreme precipitation events are intensifying in Europe as warmer air holds more moisture. Balkan countries are highly vulnerable to this accelerating trend."},
+    {y:2014,n:"Kelud Volcanic Eruption",c:"Indonesia (Java)",t:"Volcanic Eruption",cat:"earthquake",e:"🌋",g:"linear-gradient(135deg,#b71c1c,#e53935)",lat:-7.93,lng:112.31,cost:"$0.3B",deaths:"7",aff:"~200,000 evacuated",desc:"Mount Kelud erupted violently in February, throwing ash 17 km high and closing multiple airports across Java and Bali. Millions were covered in ash fallout.",cc:"Volcanic eruptions inject sulfur dioxide into the stratosphere, temporarily cooling climate — a reminder that natural processes still interact with human-caused warming."},
+    {y:2014,n:"West Africa Ebola Outbreak",c:"Guinea/Sierra Leone/Liberia",t:"Epidemic",cat:"other",e:"🦠",g:"linear-gradient(135deg,#2e7d32,#66bb6a)",lat:9.5,lng:-13.7,cost:"$53B",deaths:"~11,300",aff:"~28,600 infected",desc:"The largest Ebola outbreak on record devastated West Africa. While viral, climate-linked deforestation dramatically increased human-wildlife contact that enabled the spillover.",cc:"Deforestation — partly driven by climate stress on agriculture — increases disease spillover events as wildlife habitats shrink and human-animal contact rises."},
+    // 2015
+    {y:2015,n:"Nepal Earthquake (Gorkha)",c:"Nepal",t:"Earthquake",cat:"earthquake",e:"🏚️",g:"linear-gradient(135deg,#c62828,#e53935)",lat:28.23,lng:84.73,cost:"$10B",deaths:"~8,964",aff:"~8 million people",desc:"A magnitude 7.8 earthquake devastated Nepal, destroying 600,000+ structures including ancient Kathmandu temples. The Langtang valley was nearly erased by avalanches.",cc:"Melting glaciers and degraded permafrost from climate change weaken mountain slopes, dramatically increasing earthquake-triggered avalanche and landslide casualties."},
+    {y:2015,n:"India/Pakistan Heatwave",c:"India/Pakistan",t:"Heatwave",cat:"heat",e:"🌡️",g:"linear-gradient(135deg,#bf360c,#ff5722)",lat:25.0,lng:70.0,cost:"$5B",deaths:"~4,500",aff:"Tens of millions exposed",desc:"Temperatures exceeded 48°C (118°F) across Andhra Pradesh and Sindh. Hundreds died per day at the peak; outdoor workers and the elderly were most affected.",cc:"South Asian heatwaves are becoming more frequent and severe. The 2015 event was made approximately 5x more likely by human-caused atmospheric warming."},
+    {y:2015,n:"Typhoon Koppu",c:"Philippines",t:"Typhoon",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:15.5,lng:120.9,cost:"$0.7B",deaths:"~58",aff:"~4.7 million people",desc:"Slow-moving Typhoon Koppu stalled over Luzon, dumping extreme rainfall and causing catastrophic river flooding well inland — far beyond coastal storm surge zones.",cc:"Slower-moving tropical cyclones — a trend linked to weakening jet streams from Arctic warming — cause far more rainfall damage per storm than faster-moving predecessors."},
+    {y:2015,n:"California Wildfires",c:"USA (California)",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:38.5,lng:-122.0,cost:"$1.5B",deaths:"~13",aff:"~1,900 structures destroyed",desc:"Record drought fueled California's worst fire season in history at the time, with the Valley Fire alone destroying 1,958 structures in Lake County in a single afternoon.",cc:"California's exceptional 2012–2017 drought was intensified by human-caused warming. Hotter, drier conditions are now the 'new normal' driving western megafires."},
+    {y:2015,n:"Illapel Earthquake & Tsunami",c:"Chile",t:"Earthquake/Tsunami",cat:"earthquake",e:"🌊",g:"linear-gradient(135deg,#1565c0,#0288d1)",lat:-30.96,lng:-71.74,cost:"$0.7B",deaths:"15",aff:"~1 million evacuated",desc:"A magnitude 8.3 megathrust earthquake struck the Chilean coast, triggering a local tsunami with waves up to 4.7 m. Chile's robust early warning system enabled mass evacuation.",cc:"Sea level rise means future tsunami inundation zones will be substantially larger. Chile's early warning infrastructure is a global model for climate-adapted disaster preparedness."},
+    // 2016
+    {y:2016,n:"Hurricane Matthew",c:"Haiti/USA",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:18.5,lng:-72.3,cost:"$15B",deaths:"~546",aff:"~1.4 million people",desc:"Matthew became the strongest Atlantic hurricane since 2007, devastating Haiti's southern peninsula. Haiti sustained 546 deaths; the U.S. coast sustained $10B in damage.",cc:"Warmer Caribbean waters rapidly intensified Matthew. Haiti's near-total deforestation — driven by climate-related energy poverty — made catastrophic flooding inevitable."},
+    {y:2016,n:"Ecuador Earthquake",c:"Ecuador",t:"Earthquake",cat:"earthquake",e:"🏚️",g:"linear-gradient(135deg,#c62828,#e53935)",lat:-0.35,lng:-79.94,cost:"$3B",deaths:"673",aff:"~720,000 people",desc:"A magnitude 7.8 earthquake struck Ecuador's Pacific coast on April 16, destroying buildings across Manabí Province and triggering landslides on unstable hillsides.",cc:"Coastal Ecuador faces compounding risks from climate change (El Niño extremes, sea level rise) AND geologic hazards — a dangerous intersection for its population."},
+    {y:2016,n:"Fort McMurray Wildfire",c:"Canada (Alberta)",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:56.73,lng:-111.38,cost:"$4.5B",deaths:"0 direct",aff:"~88,000 evacuated",desc:"The most destructive wildfire in Canadian history burned through Fort McMurray, destroying 2,400+ homes in the largest urban wildfire evacuation in North American history.",cc:"Canada's boreal forests are warming 2x faster than the global average. The Fort McMurray fire was directly linked to above-normal April temperatures and severe drought."},
+    {y:2016,n:"Amatrice Earthquake",c:"Italy",t:"Earthquake",cat:"earthquake",e:"🏚️",g:"linear-gradient(135deg,#c62828,#e53935)",lat:42.70,lng:13.17,cost:"$5B",deaths:"299",aff:"~4,000 displaced",desc:"A magnitude 6.2 earthquake struck at 3:36 AM on August 24, obliterating the historic medieval town of Amatrice. Aftershocks continued to damage the region for months.",cc:"Historic stone structures in seismically active zones face growing climate risks from freeze-thaw cycles and extreme rainfall that progressively weaken foundations over time."},
+    {y:2016,n:"Yangtze River Floods",c:"China",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:30.5,lng:116.3,cost:"$22B",deaths:"~400",aff:"~15 million people",desc:"Persistent summer rains pushed the Yangtze River to its highest levels since 1998, flooding major cities and destroying 400,000 homes across central China.",cc:"Climate models consistently project more intense monsoon rainfall and more frequent extreme flood events in the Yangtze basin as global temperatures rise."},
+    // 2017
+    {y:2017,n:"Hurricane Harvey",c:"USA (Texas)",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:29.76,lng:-95.37,cost:"$125B",deaths:"~89",aff:"~30,000 displaced",desc:"Harvey stalled over Texas for days, dropping over 1.5 m of rain — a U.S. record — and causing catastrophic flooding across Houston's sprawling metropolitan area.",cc:"Climate attribution found Harvey's rainfall was 38% more intense due to warming. Warmer Gulf waters also boosted its rapid intensification before landfall."},
+    {y:2017,n:"Hurricane Maria",c:"Puerto Rico/Caribbean",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:18.22,lng:-65.90,cost:"$91B",deaths:"~3,057",aff:"~3.3 million people",desc:"Maria knocked out power to all of Puerto Rico for months. 94% of the death toll was indirect — from lack of medical care during the catastrophic prolonged power outage.",cc:"Maria rapidly intensified from Category 2 to 5 in under 24 hours, enhanced by record-warm Caribbean sea surface temperatures driven by climate change."},
+    {y:2017,n:"Hurricane Irma",c:"Caribbean/USA (Florida)",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:17.9,lng:-68.0,cost:"$77B",deaths:"~134",aff:"~6 million evacuated in FL",desc:"Irma was a Category 5 hurricane for a record 37 hours with 295 km/h winds, devastating Barbuda, St. Martin, and the British Virgin Islands before battering Florida.",cc:"2017 saw three Category 4+ U.S. landfalls in one season — a statistical extreme made significantly more likely by warming Atlantic and Gulf temperatures."},
+    {y:2017,n:"Mexico City Earthquake",c:"Mexico",t:"Earthquake",cat:"earthquake",e:"🏚️",g:"linear-gradient(135deg,#c62828,#e53935)",lat:19.0,lng:-98.3,cost:"$8B",deaths:"~369",aff:"~200,000 homes damaged",desc:"A magnitude 7.1 earthquake struck on the 32nd anniversary of the deadly 1985 quake, collapsing dozens of buildings in Mexico City and leaving tens of thousands homeless.",cc:"Mexico City sits on a drained lakebed that amplifies seismic waves dramatically. Groundwater depletion from climate-driven drought is subsiding the city, worsening future exposure."},
+    {y:2017,n:"South Asia Monsoon Floods",c:"India/Bangladesh/Nepal",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:26.0,lng:88.0,cost:"$3B",deaths:"~1,200",aff:"~41 million people",desc:"The 2017 monsoon was devastating, flooding 40 million hectares across South Asia. Over a third of Bangladesh was underwater at the peak, destroying 700,000 homes.",cc:"Intensifying monsoons, driven by warmer Indian Ocean temperatures and increased atmospheric moisture, are making South Asian floods progressively more severe each decade."},
+    // 2018
+    {y:2018,n:"Sulawesi Earthquake & Tsunami",c:"Indonesia",t:"Earthquake/Tsunami",cat:"earthquake",e:"🌊",g:"linear-gradient(135deg,#1565c0,#0288d1)",lat:-0.83,lng:119.85,cost:"$1.5B",deaths:"~4,340",aff:"~1.5 million people",desc:"A M7.5 earthquake triggered a tsunami AND a rare liquefaction phenomenon in Palu, causing entire neighborhoods to sink into the ground. Over 68,000 homes were destroyed.",cc:"Increased groundwater saturation from intensifying rainfall worsens liquefaction risk. Sea level rise expands the tsunami inundation footprint for future events."},
+    {y:2018,n:"Camp Fire (Paradise)",c:"USA (California)",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:39.75,lng:-121.62,cost:"$16B",deaths:"85",aff:"~52,000 displaced",desc:"The Camp Fire destroyed 95% of Paradise, California, in hours — California's deadliest and most destructive wildfire ever. Most victims had only minutes to flee.",cc:"A combination of extreme drought, record heat, low humidity, and strong Diablo winds — all amplified by climate change — made the Camp Fire catastrophically fast."},
+    {y:2018,n:"Western Japan Floods",c:"Japan",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:34.4,lng:133.4,cost:"$9B",deaths:"~220",aff:"~860,000 evacuation orders",desc:"Record rainfall across western Japan caused simultaneous flooding and hundreds of landslides across Hiroshima, Okayama, and Ehime — overwhelming emergency services.",cc:"Japan's extreme rainfall events have increased 30% in frequency since 1976. The 2018 storms brought 2–4x monthly normal rainfall in just 72 hours."},
+    {y:2018,n:"Hurricane Florence",c:"USA (Carolinas)",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:34.2,lng:-77.9,cost:"$24B",deaths:"~54",aff:"~10 million people affected",desc:"Florence stalled over the Carolinas, dumping 91 cm in 72 hours in New Bern, NC. Over a million pigs and 3.4 million chickens drowned on flooded industrial farms.",cc:"Climate change slowed Florence's forward speed by 11–17% and increased its total rainfall by 50–80%, according to peer-reviewed climate attribution research."},
+    {y:2018,n:"Kerala Floods",c:"India",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:10.85,lng:76.27,cost:"$3B",deaths:"~480",aff:"~1.5 million displaced",desc:"The worst flooding in Kerala in nearly a century struck in August 2018. Over 80 dams overflowed simultaneously after 42% above-normal rainfall, destroying roads and bridges.",cc:"Climate scientists found the 2018 Kerala floods were significantly intensified by human-caused climate change strengthening the southwest monsoon system."},
+    // 2019
+    {y:2019,n:"Black Summer Wildfires",c:"Australia",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:-33.87,lng:150.80,cost:"$103B",deaths:"~34 direct",aff:"~3 billion animals killed",desc:"Australia's catastrophic 2019–20 fire season burned 18.6 million hectares — larger than Syria. Smoke blanketed cities for months, causing mass respiratory illness.",cc:"Australia's 2019 was its hottest and driest year on record. Climate change directly increased fire-weather conditions by at least 30%, making these fires far more likely."},
+    {y:2019,n:"Cyclone Idai",c:"Mozambique/Zimbabwe/Malawi",t:"Cyclone",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:-19.8,lng:35.0,cost:"$2B",deaths:"~1,302",aff:"~3 million people",desc:"Cyclone Idai made landfall near Beira with 195 km/h winds, destroying 90% of the city and causing catastrophic inland flooding across Zimbabwe and Malawi.",cc:"Warmer Indian Ocean temperatures allowed Idai to maintain strength over land longer than normal. Climate change is dramatically increasing cyclone risk for SE Africa."},
+    {y:2019,n:"India Heat Wave",c:"India",t:"Heatwave",cat:"heat",e:"🌡️",g:"linear-gradient(135deg,#bf360c,#ff5722)",lat:23.0,lng:80.0,cost:"$2B",deaths:"~1,000",aff:"Hundreds of millions exposed",desc:"India's summer heat wave reached 50.8°C (123°F) — the fourth-highest temperature ever recorded in India — across Rajasthan, Madhya Pradesh, and Uttar Pradesh.",cc:"Indian heat waves are 30% more frequent and 0.5°C hotter per decade due to climate change. Urban heat islands compound rural agricultural stress across the subcontinent."},
+    {y:2019,n:"Typhoon Hagibis",c:"Japan",t:"Typhoon",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:35.7,lng:139.7,cost:"$15B",deaths:"~86",aff:"~8 million evacuation orders",desc:"One of the most powerful typhoons to strike Japan in decades, Hagibis dumped over 1,000 mm of rain in 24 hours in parts of Honshu, overflowing rivers at 71 locations.",cc:"Warmer western Pacific waters and higher atmospheric moisture significantly intensified Hagibis's rainfall totals beyond what pre-climate-change conditions would have produced."},
+    {y:2019,n:"Cyclone Kenneth",c:"Mozambique",t:"Cyclone",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:-12.3,lng:40.5,cost:"$0.6B",deaths:"~45",aff:"~900,000 people",desc:"Kenneth struck Mozambique just six weeks after Idai — while still recovering — becoming the strongest cyclone ever recorded to hit mainland Africa at 220 km/h.",cc:"Two Category 4+ cyclones hitting the same nation within 6 weeks is virtually unprecedented. Warming of the Indian Ocean is the primary driver of this dangerous new pattern."},
+    // 2020
+    {y:2020,n:"China Yangtze Floods",c:"China",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:30.58,lng:114.27,cost:"$26B",deaths:"~219",aff:"~63 million people",desc:"Relentless monsoon rains pushed the Yangtze River to its highest levels since 1998. Authorities issued 3,822 flood alerts in one year — the most ever recorded.",cc:"2020 was China's worst flood season in 20 years. Intensifying monsoon rainfall is strongly linked to warming global temperatures and increased atmospheric moisture content."},
+    {y:2020,n:"Hurricane Laura",c:"USA (Louisiana)",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:30.23,lng:-93.21,cost:"$19B",deaths:"~77",aff:"~700,000 without power",desc:"Laura made landfall near Lake Charles as a Category 4 hurricane with a record-setting 4.6 m storm surge — the worst ever recorded along Louisiana's western coast.",cc:"Laura rapidly intensified from Category 1 to 4 in 36 hours over warm Gulf waters — a pattern becoming increasingly common as ocean heat content rises."},
+    {y:2020,n:"Western U.S. Wildfires",c:"USA (CA/OR/WA)",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:42.5,lng:-122.0,cost:"$16B",deaths:"~37",aff:"~10 million acres burned",desc:"A record-shattering fire season turned California, Oregon, and Washington skies an apocalyptic orange. California alone burned 4.2 million acres — smashing all previous state records.",cc:"Scientists determined 2020's extreme fire weather was made at least 40% more likely by human-caused climate change through elevated temperatures and prolonged drought."},
+    {y:2020,n:"Cyclone Amphan",c:"India/Bangladesh",t:"Cyclone",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:21.7,lng:88.3,cost:"$13B",deaths:"~128",aff:"~4.9 million evacuated",desc:"The most powerful Bay of Bengal cyclone in 20 years, Amphan made landfall with winds over 185 km/h, destroying the Sundarbans mangrove ecosystem and lashing Kolkata.",cc:"Amphan was fueled by sea surface temperatures 1–2°C above normal in the Bay of Bengal. Warming oceans are supercharging cyclones in this densely populated region."},
+    {y:2020,n:"East Africa Locust Crisis",c:"Kenya/Ethiopia/Somalia",t:"Ecological Disaster",cat:"other",e:"🦗",g:"linear-gradient(135deg,#827717,#cddc39)",lat:2.0,lng:38.0,cost:"$8.5B",deaths:"N/A",aff:"~25 million food insecure",desc:"Unprecedented desert locust swarms — worst in 70 years for Kenya — decimated crops across 10 countries. A single swarm covered 2,400 km². Food security collapsed for millions.",cc:"Unusual Indian Ocean rainfall patterns from climate change created ideal locust breeding conditions. Climate change is predicted to expand locusts' geographic and seasonal range."},
+    // 2021
+    {y:2021,n:"European Floods (Ahr Valley)",c:"Germany/Belgium",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:50.55,lng:6.68,cost:"$46B",deaths:"~240",aff:"~800,000 people",desc:"200 mm of rain fell in 24 hours — a month's worth — raising the Ahr River 8 m and destroying 700+ bridges and entire villages across Germany and Belgium.",cc:"Climate change made these extreme rainfall events 1.2–9x more likely and 3–19% more intense. Germany had never experienced inland flooding of this scale in its recorded history."},
+    {y:2021,n:"Pacific Northwest Heat Dome",c:"USA/Canada",t:"Heatwave",cat:"heat",e:"🌡️",g:"linear-gradient(135deg,#bf360c,#ff5722)",lat:49.25,lng:-123.1,cost:"$8B",deaths:"~1,400",aff:"Tens of millions across PNW",desc:"An unprecedented heat dome pushed Lytton, BC to 49.6°C — Canada's all-time record. The village burned to the ground the next day. Portland reached 46°C for three straight days.",cc:"Climate scientists determined this heat dome was 'virtually impossible' without climate change and was made 150 times more likely by human-caused global warming."},
+    {y:2021,n:"Haiti Earthquake (M7.2)",c:"Haiti",t:"Earthquake",cat:"earthquake",e:"🏚️",g:"linear-gradient(135deg,#c62828,#e53935)",lat:18.43,lng:-73.48,cost:"$1.6B",deaths:"~2,248",aff:"~650,000 people",desc:"A magnitude 7.2 earthquake struck Haiti's southern peninsula. The country was still rebuilding from the catastrophic 2010 quake, active political crisis, and COVID-19 impacts.",cc:"Haiti's extreme deforestation — driven partly by energy poverty worsened by climate stress — means bare slopes collapse in earthquakes rather than absorbing seismic energy."},
+    {y:2021,n:"Henan Province Floods",c:"China (Henan)",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:34.76,lng:113.67,cost:"$17B",deaths:"~302",aff:"~14.8 million people",desc:"Zhengzhou received a year's worth of rain in three days. The city's subway flooded with passengers trapped inside. Over 1.24 million people were evacuated from 16 cities.",cc:"An atmospheric river fueled by warmer Pacific temperatures dropped 617 mm on Zhengzhou in 24 hours — breaking all Chinese rainfall records."},
+    {y:2021,n:"Caldor Wildfire",c:"USA (California)",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:38.68,lng:-120.22,cost:"$4B",deaths:"1",aff:"~220,000 acres burned",desc:"The Caldor Fire threatened South Lake Tahoe and forced the largest evacuation in the region's history, destroying 1,003 structures in one of California's most extreme fire runs.",cc:"Megadrought conditions across the American West — the driest period in 1,200 years — are directly tied to climate change and are fueling a new era of catastrophic megafires."},
+    // 2022
+    {y:2022,n:"Pakistan Mega-Floods",c:"Pakistan",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:30.38,lng:69.35,cost:"$30B",deaths:"~1,739",aff:"33 million people",desc:"Record monsoon rains combined with accelerated glacial melt submerged one-third of Pakistan. Over 1.7 million homes damaged; Pakistan contributes <1% of global emissions.",cc:"Climate attribution studies found the 2022 Pakistan floods were made 50% more intense by climate change. Himalayan glacier loss added devastating meltwater on top of extreme rainfall."},
+    {y:2022,n:"Hurricane Ian",c:"USA (Florida)",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:26.64,lng:-82.03,cost:"$113B",deaths:"~161",aff:"~2.5 million without power",desc:"Ian made landfall near Fort Myers as a near-Category 5 hurricane with a catastrophic 4.6 m storm surge, destroying entire barrier island communities and Fort Myers Beach.",cc:"Ian rapidly intensified to near-Category 5 in the Gulf driven by record-warm sea surface temperatures. Sea level rise amplified its devastating storm surge by approximately 10 cm."},
+    {y:2022,n:"European Heatwaves",c:"France/UK/Spain/Portugal",t:"Heatwave",cat:"heat",e:"🌡️",g:"linear-gradient(135deg,#bf360c,#ff5722)",lat:47.0,lng:2.3,cost:"$6B",deaths:"~20,000",aff:"Hundreds of millions across EU",desc:"Britain reached 40°C for the first time in recorded history. France, Spain, and Portugal experienced unprecedented heat triggering massive wildfires across southern Europe.",cc:"The UK's first 40°C event was made 10x more likely by climate change. European heatwaves are warming 4x faster than the global average due to changing atmospheric circulation."},
+    {y:2022,n:"KwaZulu-Natal Floods",c:"South Africa",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:-29.86,lng:31.02,cost:"$1.7B",deaths:"~459",aff:"~40,000 displaced",desc:"Durban was hit by 300 mm of rain in 24 hours — the most intense rainfall in recorded South African history. Entire hillside communities slid into the sea.",cc:"Climate models project a dramatic increase in extreme rainfall along South Africa's east coast. Informal housing on unstable slopes makes communities catastrophically vulnerable."},
+    {y:2022,n:"Afghanistan Khost Earthquake",c:"Afghanistan",t:"Earthquake",cat:"earthquake",e:"🏚️",g:"linear-gradient(135deg,#c62828,#e53935)",lat:33.0,lng:70.0,cost:"$0.5B",deaths:"~1,000",aff:"~10,000 homes destroyed",desc:"A magnitude 5.9 earthquake struck at night near Khost, killing over 1,000 in mudbrick homes — Afghanistan's deadliest earthquake in two decades.",cc:"Economic collapse exacerbated by climate-driven droughts means Afghan communities cannot afford earthquake-resistant construction, maximizing casualties even in moderate quakes."},
+    // 2023
+    {y:2023,n:"Turkey-Syria Earthquake",c:"Turkey/Syria",t:"Earthquake",cat:"earthquake",e:"🏚️",g:"linear-gradient(135deg,#c62828,#e53935)",lat:37.17,lng:37.08,cost:"$104B",deaths:"~50,000",aff:"~13 million people",desc:"A M7.8 earthquake, followed hours later by a M7.7, struck SE Turkey and NW Syria. Over 164,000 buildings collapsed. Already-vulnerable Syrian war communities suffered disproportionate casualties.",cc:"Extreme cold and snow immediately after the quake hampered rescue operations. Climate change increasingly compounds disaster impacts through cascading simultaneous extremes."},
+    {y:2023,n:"Libya Floods (Storm Daniel)",c:"Libya (Derna)",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:32.75,lng:22.64,cost:"$1.5B",deaths:"~11,300",aff:"~43,000 displaced",desc:"Storm Daniel caused two aging dams above Derna to collapse simultaneously, sending a 7 m wall of water through the city at 3 AM. A quarter of Derna was swept into the sea.",cc:"Storm Daniel produced 50x more rainfall than normal due to a warming Mediterranean. The Mediterranean Sea is warming faster than any other sea — driving explosive storm intensification."},
+    {y:2023,n:"Morocco High Atlas Earthquake",c:"Morocco",t:"Earthquake",cat:"earthquake",e:"🏚️",g:"linear-gradient(135deg,#c62828,#e53935)",lat:31.07,lng:-8.44,cost:"$1.5B",deaths:"~2,900",aff:"~300,000 people",desc:"A magnitude 6.8 earthquake struck the High Atlas mountains at night, collapsing stone villages that had stood for centuries. Remote terrain slowed rescue operations for days.",cc:"Morocco faces severe water stress from climate change. Depleted groundwater and drought-weakened soils compound building collapse risk and impede post-disaster recovery."},
+    {y:2023,n:"Maui Wildfires (Lahaina)",c:"USA (Hawaii)",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:20.87,lng:-156.68,cost:"$5.5B",deaths:"~102",aff:"~4,500 structures destroyed",desc:"Wind-driven fires destroyed the historic town of Lahaina in under two hours — the deadliest U.S. wildfire in over 100 years. Most victims had no time to escape.",cc:"Drought conditions from changing Pacific circulation dried Maui's vegetation. Hurricane winds from a nearby storm turned the fire into an unstoppable firestorm within minutes."},
+    {y:2023,n:"Cyclone Freddy (Record-Breaking)",c:"Mozambique/Malawi",t:"Cyclone",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:-15.5,lng:35.3,cost:"$0.6B",deaths:"~1,400",aff:"~2 million people",desc:"Cyclone Freddy became the longest-lasting tropical cyclone ever recorded at 36 days, crossing the Indian Ocean TWICE before striking Mozambique and Malawi.",cc:"Freddy was sustained by persistently warm Indian Ocean temperatures. Its unprecedented longevity is a direct indicator of how climate change is fundamentally altering cyclone behavior."},
+    // 2024
+    {y:2024,n:"Hurricane Helene",c:"USA (Southeast)",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:35.5,lng:-82.5,cost:"$78B",deaths:"~230",aff:"~2 million without power",desc:"Helene made landfall as Category 4 in Florida but caused its greatest death toll in the Appalachian mountains. Historic flooding submerged Asheville, NC and devastated inland communities.",cc:"Record-warm Gulf of Mexico temperatures fueled Helene's rapid intensification. Climate change enabled it to carry unprecedented moisture hundreds of miles inland."},
+    {y:2024,n:"Hurricane Milton",c:"USA (Florida)",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:27.9,lng:-82.8,cost:"$34B",deaths:"~25",aff:"~6 million evacuation orders",desc:"Milton rapidly intensified to Category 5 over the Gulf — 285 km/h winds — before hitting the Tampa Bay area. It spawned 33 tornadoes as it crossed central Florida.",cc:"Milton's record-rapid intensification from tropical storm to Category 5 in 24 hours was directly linked to record-warm Gulf of Mexico temperatures driven by climate change."},
+    {y:2024,n:"Valencia Floods (DANA)",c:"Spain (Valencia)",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:39.47,lng:-0.38,cost:"$11B",deaths:"~220",aff:"~120,000 displaced",desc:"A DANA cold drop system delivered 491 mm of rain in 8 hours — a year's worth — triggering flash floods through Valencia's ramblas (dry riverbeds) on October 29.",cc:"Mediterranean sea temperatures were 2–3°C above normal, supercharging the DANA system's moisture. Climate change made this extreme rainfall event significantly more intense."},
+    {y:2024,n:"Noto Peninsula Earthquake",c:"Japan",t:"Earthquake",cat:"earthquake",e:"🏚️",g:"linear-gradient(135deg,#c62828,#e53935)",lat:37.20,lng:137.30,cost:"$17B",deaths:"~241",aff:"~90,000 buildings damaged",desc:"A magnitude 7.5 earthquake struck the Noto Peninsula on New Year's Day, triggering a tsunami warning and destroying remote coastal communities in Ishikawa Prefecture.",cc:"Japan is investing heavily in earthquake-resilient infrastructure as climate change adds flooding and landslide risks on top of persistent geologic seismic hazards."},
+    {y:2024,n:"Rio Grande do Sul Floods",c:"Brazil",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:-30.0,lng:-51.0,cost:"$25B",deaths:"~181",aff:"~2.4 million people",desc:"Catastrophic flooding struck Brazil's southernmost state in April–May 2024, submerging Porto Alegre's airport and displacing 2.4 million in Brazil's worst climate disaster on record.",cc:"Climate attribution found the flooding was made 3–4x more likely by climate change. El Niño-enhanced atmospheric moisture turned a major rainfall event into a historic catastrophe."},
+    // 2025
+    {y:2025,n:"Los Angeles Wildfires",c:"USA (California)",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:34.09,lng:-118.40,cost:"$135B+",deaths:"~29",aff:"~180,000 evacuated",desc:"The Palisades and Eaton fires tore through Los Angeles in January 2025 driven by extreme Santa Ana winds. Entire neighborhoods burned in Pacific Palisades, Altadena, and Pasadena.",cc:"California's driest January on record combined with extreme Santa Ana winds — patterns intensified by climate change — created the most destructive fire event in California history."},
+    {y:2025,n:"Myanmar-Thailand Earthquake",c:"Myanmar/Thailand",t:"Earthquake",cat:"earthquake",e:"🏚️",g:"linear-gradient(135deg,#c62828,#e53935)",lat:21.9,lng:96.1,cost:"$15B",deaths:"~3,500+",aff:"~5 million people",desc:"A magnitude 7.7 earthquake struck central Myanmar near Mandalay in March 2025, toppling thousands of buildings and collapsing an under-construction skyscraper in Bangkok.",cc:"Post-disaster recovery in Myanmar is severely hampered by active conflict and climate stress on already-depleted resources, extending suffering far beyond the immediate event."},
+    {y:2025,n:"South American Floods",c:"Brazil/Bolivia",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:-15.0,lng:-60.0,cost:"$8B",deaths:"~200+",aff:"~3 million displaced",desc:"Catastrophic flooding struck the Amazon basin and Bolivia's lowlands in early 2025, inundating vast areas still recovering from Brazil's record 2024 floods.",cc:"La Niña conditions supercharged South American monsoon rainfall in 2025 — a pattern that climate models predict will become more volatile as global warming continues."},
+    {y:2025,n:"Cyclone Garance",c:"Réunion/Mayotte",t:"Cyclone",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:-21.1,lng:55.5,cost:"$3B",deaths:"~1,000+",aff:"~500,000 people",desc:"Cyclone Garance reached Category 5 intensity and struck Réunion in February 2025 with extreme winds, then impacted Mayotte while still recovering from Cyclone Chido in late 2024.",cc:"The western Indian Ocean is experiencing a dramatic rise in intense cyclones due to warming sea surface temperatures, threatening some of the world's most vulnerable island communities."},
+    {y:2025,n:"South Asia Spring Heatwave",c:"India/Pakistan/Bangladesh",t:"Heatwave",cat:"heat",e:"🌡️",g:"linear-gradient(135deg,#bf360c,#ff5722)",lat:24.0,lng:85.0,cost:"$12B",deaths:"~2,000+",aff:"~500 million exposed",desc:"South Asia experienced another devastating spring heatwave in 2025, with heat index values exceeding 55°C in Bangladesh and Pakistan. Wet-bulb temperatures in some areas approached human survivability limits.",cc:"South Asian heatwaves now occur 5x more frequently than pre-industrial times. A 4°C warmer world would make outdoor survival in parts of South Asia physically impossible."}
+  ];
+
+  /* ── STATE ── */
+  let fYear='all', fCat='all';
+
+  /* ── MAP ── */
+  const map=L.map('disaster-map',{center:[20,15],zoom:2,scrollWheelZoom:false,zoomControl:true});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    attribution:'&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://openstreetmap.org/">OpenStreetMap</a>',
+    maxZoom:18
+  }).addTo(map);
+
+  /* ── BUILD MARKERS ── */
+  const markers=D.map(d=>{
+    const icon=L.divIcon({
+      className:'',
+      html:`<div class="dei">${d.e}</div>`,
+      iconSize:[36,36],iconAnchor:[18,18],popupAnchor:[0,-20],tooltipAnchor:[0,-20]
+    });
+    const m=L.marker([d.lat,d.lng],{icon});
+    m._d=d;
+    m.bindTooltip(
+      `<b>${d.e} ${d.n}</b> <span style="opacity:.7">(${d.y})</span><br>`+
+      `📍 ${d.c}<br>`+
+      `💀 ${d.deaths} &nbsp;&nbsp; 💰 ${d.cost}<br>`+
+      `<span style="font-size:11px;opacity:.65">Click for full details →</span>`,
+      {className:'dtip',direction:'top',offset:[0,-8]}
+    );
+    m.bindPopup(
+      `<div>
+        <div class="dp-header" style="background:${d.g}">
+          <span class="dp-emoji">${d.e}</span>
+          <div>
+            <div class="dp-name"><span class="dp-yr">${d.y}</span>${d.n}</div>
+            <div class="dp-meta">📍 ${d.c} &nbsp;|&nbsp; ${d.t}</div>
+          </div>
+        </div>
+        <div class="dp-body">
+          <div class="dp-stats">
+            <div class="dp-stat"><div class="dp-sv">💀 ${d.deaths}</div><div class="dp-sl">Fatalities</div></div>
+            <div class="dp-stat"><div class="dp-sv">💰 ${d.cost}</div><div class="dp-sl">Damage</div></div>
+          </div>
+          <p class="dp-desc">${d.desc}</p>
+          <div class="dp-cc">${d.cc}</div>
+        </div>
+      </div>`,
+      {maxWidth:320}
+    );
+    return m;
+  });
+
+  /* ── RENDER (filter show/hide) ── */
+  function render(){
+    let n=0;
+    markers.forEach(m=>{
+      const d=m._d;
+      const show=(fYear==='all'||d.y===fYear)&&(fCat==='all'||d.cat===fCat);
+      if(show){m.addTo(map);n++;}else{m.remove();}
+    });
+    document.getElementById('dm-counter').textContent='Showing '+n+' of 75 disasters';
+  }
+  render();
+
+  /* ── YEAR FILTER ── */
+  document.querySelectorAll('.yr-btn').forEach(b=>{
+    b.addEventListener('click',()=>{
+      fYear=b.dataset.y==='all'?'all':+b.dataset.y;
+      document.querySelectorAll('.yr-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      render();
+    });
+  });
+
+  /* ── CATEGORY FILTER ── */
+  document.querySelectorAll('.cat-btn').forEach(b=>{
+    b.addEventListener('click',()=>{
+      fCat=b.dataset.c;
+      document.querySelectorAll('.cat-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      render();
+    });
+  });
+
+})();
+</script>
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("global-disasters", [
+  {
+    emoji: "🌊",
+    q: "Which event in this global dataset is identified as the costliest natural disaster in recorded history?",
+    options: [
+      "Hurricane Harvey (2017)",
+      "Tōhoku Earthquake & Tsunami (2011)",
+      "Pakistan Mega-Floods (2022)",
+      "Black Summer Wildfires (2019)"
+    ],
+    correct: 1,
+    explanation: "The 2011 Tōhoku Earthquake & Tsunami is listed at about $235B, making it the costliest natural disaster in recorded history."
+  },
+  {
+    emoji: "💧",
+    q: "What made the 2022 Pakistan mega-floods especially severe?",
+    options: [
+      "Only a coastal storm surge event",
+      "Only dam failures",
+      "Record monsoon rain plus accelerated glacial melt",
+      "A tsunami combined with El Niño drought"
+    ],
+    correct: 2,
+    explanation: "The event combined extreme monsoon rainfall and accelerated glacial melt, a compound climate hazard that dramatically increased flooding scale."
+  },
+  {
+    emoji: "🌡️",
+    q: "Based on the examples shown, what broad climate trend is most evident from 2011–2025?",
+    options: [
+      "Disasters are becoming less frequent and less intense",
+      "Multiple hazard types are intensifying, including heatwaves, floods, wildfires, and rapid-intensification storms",
+      "Only earthquakes are increasing",
+      "Weather hazards are no longer linked to ocean temperatures"
+    ],
+    correct: 1,
+    explanation: "Across regions, the dataset highlights intensifying compound risks: stronger storms, wetter rainfall extremes, hotter heatwaves, and more severe wildfire conditions."
+  }
+]);
+```
+
+## 🇺🇸 U.S. Disasters: 2011–2025
+
+**75 U.S. disasters** — 5 per year. Filter by year or type to explore how climate-driven disasters have evolved across American communities.
+
+```{=html}
+<style>
+  #us-disaster-map { height:560px; border-radius:14px; border:3px solid #e53935; box-shadow:0 8px 30px rgba(229,57,53,0.22); margin:12px 0 8px; }
+  #us-dm-controls { background:white; border:2px solid #e2e8f0; border-radius:12px; padding:12px 16px; margin-bottom:10px; font-family:'Inter',sans-serif; box-shadow:0 2px 10px rgba(0,0,0,0.06); }
+  .us-dm-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .us-dm-label { font-size:12px; font-weight:700; color:#e53935; white-space:nowrap; min-width:58px; }
+  .us-ybtns { display:flex; gap:5px; overflow-x:auto; padding-bottom:3px; flex-wrap:nowrap; scrollbar-width:thin; }
+  .us-cbtns { display:flex; gap:5px; flex-wrap:wrap; }
+  .us-yr-btn,.us-cat-btn { padding:4px 11px; border:1.5px solid #cbd5e0; border-radius:18px; background:#f7fafc; color:#4a5568; cursor:pointer; font-size:12px; font-weight:600; transition:all 0.15s; white-space:nowrap; }
+  .us-yr-btn:hover,.us-cat-btn:hover { border-color:#e53935; background:#fff5f5; color:#b71c1c; }
+  .us-yr-btn.usactive,.us-cat-btn.usactive { border-color:#e53935; background:linear-gradient(135deg,#e53935,#b71c1c); color:white; }
+  #us-dm-counter { font-size:12px; font-weight:700; color:#718096; text-align:right; margin-top:2px; }
+  #us-dm-tip { font-size:11px; color:#a0aec0; margin-top:4px; }
+</style>
+
+<div id="us-dm-controls">
+  <div class="us-dm-row">
+    <span class="us-dm-label">📅 Year:</span>
+    <div class="us-ybtns">
+      <button class="us-yr-btn usactive" data-uy="all">All Years</button>
+      <button class="us-yr-btn" data-uy="2011">2011</button>
+      <button class="us-yr-btn" data-uy="2012">2012</button>
+      <button class="us-yr-btn" data-uy="2013">2013</button>
+      <button class="us-yr-btn" data-uy="2014">2014</button>
+      <button class="us-yr-btn" data-uy="2015">2015</button>
+      <button class="us-yr-btn" data-uy="2016">2016</button>
+      <button class="us-yr-btn" data-uy="2017">2017</button>
+      <button class="us-yr-btn" data-uy="2018">2018</button>
+      <button class="us-yr-btn" data-uy="2019">2019</button>
+      <button class="us-yr-btn" data-uy="2020">2020</button>
+      <button class="us-yr-btn" data-uy="2021">2021</button>
+      <button class="us-yr-btn" data-uy="2022">2022</button>
+      <button class="us-yr-btn" data-uy="2023">2023</button>
+      <button class="us-yr-btn" data-uy="2024">2024</button>
+      <button class="us-yr-btn" data-uy="2025">2025</button>
+    </div>
+  </div>
+  <div class="us-dm-row">
+    <span class="us-dm-label">📂 Type:</span>
+    <div class="us-cbtns">
+      <button class="us-cat-btn usactive" data-uc="all">🌍 All</button>
+      <button class="us-cat-btn" data-uc="storm">🌀 Storm</button>
+      <button class="us-cat-btn" data-uc="earthquake">🏚️ Earthquake</button>
+      <button class="us-cat-btn" data-uc="flood">💧 Flood</button>
+      <button class="us-cat-btn" data-uc="wildfire">🔥 Wildfire</button>
+      <button class="us-cat-btn" data-uc="heat">🌡️ Heatwave/Drought</button>
+      <button class="us-cat-btn" data-uc="tornado">🌪️ Tornado</button>
+      <button class="us-cat-btn" data-uc="winter">❄️ Winter Storm</button>
+    </div>
+  </div>
+  <div id="us-dm-counter">Showing 75 of 75 disasters</div>
+  <div id="us-dm-tip">💡 Tip: Select a year to focus on that year's 5 events. Zoom in to separate nearby markers.</div>
+</div>
+
+<div id="us-disaster-map"></div>
+
+<script>
+(function(){
+  const UD=[
+    // 2011
+    {y:2011,n:"Joplin Tornado (EF5)",s:"Missouri",t:"Tornado",cat:"tornado",e:"🌪️",g:"linear-gradient(135deg,#6a1b9a,#ab47bc)",lat:37.08,lng:-94.51,cost:"$2.8B",deaths:"158",aff:"~8,000 structures destroyed",desc:"The deadliest U.S. tornado since 1947. An EF5 cut a mile-wide, 35 km path through Joplin on May 22, destroying a hospital and thousands of homes in under 20 minutes.",cc:"Warmer, moister Gulf air masses increase convective available potential energy (CAPE), fueling more intense tornado outbreaks across the central U.S. Tornado Alley is shifting northeast."},
+    {y:2011,n:"Texas Drought & Wildfires",s:"Texas",t:"Drought/Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:30.0,lng:-98.5,cost:"$12B",deaths:"~4",aff:"~4 million acres burned",desc:"Texas's worst single-year drought on record, with temperatures exceeding 38°C for 90+ consecutive days, drove catastrophic wildfires across the state including Bastrop (most destructive ever in TX at the time).",cc:"The 2011 Texas drought was made significantly more likely by climate change. La Niña combined with human-caused warming intensified what would have been a moderate drought into a record-breaker."},
+    {y:2011,n:"Mississippi River Flooding",s:"Mississippi/Louisiana",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:31.0,lng:-91.0,cost:"$4B",deaths:"~20",aff:"~21,000 homes flooded",desc:"Spring snowmelt and heavy rains pushed the Mississippi to its highest crest since 1927 along many gauges. Authorities deliberately blew up levees to flood farmland and save towns.",cc:"Amplified precipitation events driven by warmer atmospheric moisture have made Mississippi basin flooding significantly more severe since the 1990s."},
+    {y:2011,n:"Groundhog Day Blizzard (aftermath)",s:"Midwest/Northeast",t:"Winter Storm",cat:"winter",e:"❄️",g:"linear-gradient(135deg,#0288d1,#b3e5fc)",lat:41.9,lng:-87.6,cost:"$1.8B",deaths:"~36",aff:"~30 million people impacted",desc:"One of the largest blizzards in U.S. history struck February 1–2, dumping 50+ cm on Chicago (3rd most ever) and burying 30 states. Lake Shore Drive in Chicago was stranded for 12+ hours.",cc:"Paradoxically, Arctic warming weakens the polar vortex, allowing frigid air to spill south more frequently and intensifying winter storm moisture from warmer Great Lakes and oceans."},
+    {y:2011,n:"Tuscaloosa–Birmingham Tornadoes",s:"Alabama",t:"Tornado Outbreak",cat:"tornado",e:"🌪️",g:"linear-gradient(135deg,#6a1b9a,#ab47bc)",lat:33.2,lng:-87.5,cost:"$11B",deaths:"252",aff:"~5,500 homes destroyed",desc:"The April 27 Super Outbreak produced 218 tornadoes in a single day across the South. Tuscaloosa and Birmingham were struck by multiple EF4–EF5 tornadoes in the deadliest outbreak since 1974.",cc:"The 2011 tornado season was the most active on record. Warmer Gulf moisture is increasing the energy available for supercell formation across the Southeast U.S."},
+    // 2012
+    {y:2012,n:"Hurricane Sandy",s:"New York/New Jersey",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:40.70,lng:-74.00,cost:"$65B",deaths:"~147 (U.S.)",aff:"~8.5 million without power",desc:"'Superstorm Sandy' made unprecedented landfall near Brigantine, NJ with a record low pressure for an Atlantic landfall north of Cape Hatteras. Its storm surge flooded NYC's subway and shut the city for days.",cc:"Sea level rise added ~0.3 m of surge. Climate change boosted Sandy's size and moisture. NYC's subway system lost more in Sandy than in its entire prior history combined."},
+    {y:2012,n:"Midwest/Great Plains Drought",s:"Midwest/Plains",t:"Drought",cat:"heat",e:"🌵",g:"linear-gradient(135deg,#e65100,#ff8f00)",lat:41.0,lng:-97.0,cost:"$30B",deaths:"~123",aff:"~80% of U.S. in drought",desc:"The most severe and extensive drought since the Dustbowl of the 1930s. Corn and soybean crops failed across the Midwest, driving global food commodity prices up 25%.",cc:"The 2012 drought was made 4x more likely by climate change. Soil moisture deficits are deepening as higher temperatures evaporate water faster from agricultural land."},
+    {y:2012,n:"Derecho (June 2012)",s:"Midwest to Mid-Atlantic",t:"Severe Storm",cat:"storm",e:"⛈️",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:39.0,lng:-80.0,cost:"$2.9B",deaths:"22",aff:"~4.2 million without power",desc:"A historic derecho swept 1,000 km from Indiana to the Atlantic coast in 10 hours on June 29, producing winds over 130 km/h. Over 4 million lost power in dangerous summer heat.",cc:"Derechos are fueled by intense heat and atmospheric instability — both conditions amplified by climate change. The June 2012 event was one of the most powerful in recorded U.S. history."},
+    {y:2012,n:"Colorado Wildfires (Waldo Canyon)",s:"Colorado",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:38.89,lng:-104.90,cost:"$0.5B",deaths:"2",aff:"~32,000 evacuated",desc:"The Waldo Canyon Fire became Colorado's most destructive wildfire at the time, destroying 347 homes in Colorado Springs and threatening NORAD's Peterson Air Force Base.",cc:"Colorado's early and unprecedented heat in 2012 set up catastrophic fire conditions. Mountain snowpack — the region's primary water source — has declined 20% since the 1950s due to warming."},
+    {y:2012,n:"Isaac Flooding (Louisiana)",s:"Louisiana",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:29.95,lng:-90.07,cost:"$2.4B",deaths:"~41",aff:"~62,000 structures flooded",desc:"Hurricane Isaac moved slowly across Louisiana, dumping 500+ mm of rain in Plaquemines Parish and overwhelming levees that had been rebuilt post-Katrina. Flooding persisted for days.",cc:"Gulf water temperatures were near record highs during Isaac's approach, fueling its extreme rainfall. The same pattern — slow-moving, rainfall-heavy storms — is becoming more common with climate change."},
+    // 2013
+    {y:2013,n:"Moore Tornado (EF5)",s:"Oklahoma",t:"Tornado",cat:"tornado",e:"🌪️",g:"linear-gradient(135deg,#6a1b9a,#ab47bc)",lat:35.34,lng:-97.49,cost:"$2B",deaths:"24",aff:"~13,000 homes damaged",desc:"An EF5 tornado over 2 km wide struck Moore on May 20, destroying Plaza Towers and Briarwood elementary schools during class. The 27 km damage path leveled entire neighborhoods.",cc:"Back-to-back major tornadoes in Moore (2013 followed 1999 EF5) point to persistent atmospheric patterns. Climate change is shifting tornado peak season earlier and moving the highest-risk zone northeastward."},
+    {y:2013,n:"Colorado Floods (September)",s:"Colorado",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:40.18,lng:-105.10,cost:"$2B",deaths:"9",aff:"~1,500 homes destroyed",desc:"A slow-moving low pressure system stalled over the Colorado Front Range, dropping 450 mm of rain in 48 hours — flooding Boulder, Estes Park, and destroying 485 bridges and 200 miles of roads.",cc:"The Colorado floods were tied to a stalled atmospheric ridge — a pattern increasingly linked to Arctic warming, which weakens the jet stream and causes weather systems to get 'stuck' in place."},
+    {y:2013,n:"South Dakota Blizzard (Atlas)",s:"South Dakota",t:"Winter Storm",cat:"winter",e:"❄️",g:"linear-gradient(135deg,#0288d1,#b3e5fc)",lat:44.0,lng:-100.0,cost:"$1.3B",deaths:"~5",aff:"~100,000 livestock killed",desc:"An early-season blizzard in October dropped 1.2 m of wet snow on western South Dakota, killing an estimated 100,000 cattle before they'd grown winter coats — ranchers' worst nightmare.",cc:"Extreme precipitation events are intensifying, producing heavier snowfall when cold air masses collide with increasingly warm, moist air masses in autumn transitional periods."},
+    {y:2013,n:"Oklahoma Ice Storm",s:"Oklahoma/Kansas",t:"Winter Storm",cat:"winter",e:"❄️",g:"linear-gradient(135deg,#0288d1,#b3e5fc)",lat:35.5,lng:-97.5,cost:"$0.7B",deaths:"7",aff:"~200,000 without power",desc:"A powerful December ice storm coated Oklahoma City and central Kansas in 30+ mm of ice, snapping power lines, collapsing roofs, and stranding motorists on icy highways.",cc:"Warmer winters create more frequent freeze-thaw cycles and rain-on-ice events. Paradoxically, the polar vortex disruption from Arctic warming intensifies mid-latitude cold-air intrusions."},
+    {y:2013,n:"Rim Fire (Yosemite)",s:"California",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:37.83,lng:-119.90,cost:"$1.5B",deaths:"0",aff:"~257,000 acres burned",desc:"The third-largest wildfire in California history burned into the edge of Yosemite National Park, threatening San Francisco's Hetch Hetchy reservoir water supply and forcing evacuation of park areas.",cc:"Multi-year drought conditions driven by persistent atmospheric ridging — intensified by climate change — left Sierra Nevada forests dangerously dry in 2013."},
+    // 2014
+    {y:2014,n:"Polar Vortex Freeze",s:"Midwest/Northeast",t:"Extreme Cold",cat:"winter",e:"❄️",g:"linear-gradient(135deg,#0288d1,#b3e5fc)",lat:42.0,lng:-84.0,cost:"$5B",deaths:"~21",aff:"~220 million people",desc:"An unprecedented polar vortex collapse in January 2014 plunged temperatures to -37°C in some Midwest locations, closing schools across 10 states and freezing the Great Lakes to 88% coverage.",cc:"Arctic warming is destabilizing the polar vortex, causing it to split and send blasts of Arctic air deep into the mid-latitudes more frequently — making bitter cold events paradoxically more common."},
+    {y:2014,n:"Oso Mudslide",s:"Washington",t:"Landslide",cat:"flood",e:"🪨",g:"linear-gradient(135deg,#5d4037,#8d6e63)",lat:48.27,lng:-121.84,cost:"$0.8B",deaths:"43",aff:"~50 homes destroyed",desc:"A massive debris avalanche buried the community of Oso and SR-530 in Snohomish County, Washington. The deadliest landslide in U.S. history covered 1.6 km² in under three minutes.",cc:"Weeks of extreme rainfall preceding the slide fully saturated the hillside. Intensifying Pacific winter precipitation events linked to climate change are increasing Pacific Northwest landslide risk."},
+    {y:2014,n:"California Drought (Peak Year)",s:"California",t:"Drought",cat:"heat",e:"🌵",g:"linear-gradient(135deg,#e65100,#ff8f00)",lat:37.0,lng:-119.5,cost:"$2.7B",deaths:"~0 direct",aff:"~38 million people",desc:"2014 was California's driest year in 1,200 years of record-keeping (confirmed by tree rings). Governor Brown declared a drought emergency; mandatory water restrictions affected entire state.",cc:"Climate attribution studies show California's 2012–2017 drought was made 15–20% drier and 1.6°C hotter by climate change — transforming an ordinary drought into a multi-year megadrought."},
+    {y:2014,n:"Buffalo Lake Effect Snowstorm",s:"New York (Buffalo)",t:"Winter Storm",cat:"winter",e:"❄️",g:"linear-gradient(135deg,#0288d1,#b3e5fc)",lat:42.88,lng:-78.88,cost:"$0.6B",deaths:"13",aff:"~5 million people",desc:"Lake effect snow buried south Buffalo under nearly 2 m of snow in 24 hours — one of the heaviest snowfall events in any U.S. city ever recorded. Cars were abandoned on the Thruway for days.",cc:"Warmer Lake Erie water temperatures (lake ice is declining) provide more moisture for lake effect snowstorms. Buffalo faces a paradox: less snow overall but more extreme lake effect events."},
+    {y:2014,n:"King Fire (California)",s:"California",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:38.73,lng:-120.32,cost:"$1.2B",deaths:"0",aff:"~97,000 acres burned",desc:"The King Fire burned explosively through Eldorado National Forest near Sacramento, driven by extreme drought conditions and hot dry winds. Over 2,000 personnel fought the fire for weeks.",cc:"During peak California drought, all fuel moisture indicators were at record lows across the Sierra Nevada — a direct consequence of multi-year climate-change-intensified drought."},
+    // 2015
+    {y:2015,n:"South Texas Floods (Memorial Day)",s:"Texas/Oklahoma",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:30.27,lng:-97.74,cost:"$3B",deaths:"~31",aff:"~2,500 homes flooded",desc:"A series of storms in May 2015 dropped 300+ mm across Texas in Memorial Day weekend, flooding Austin, Houston, and the Blanco River Valley. Wimberley lost dozens of homes in a single night.",cc:"Texas's 'weather whiplash' — swinging between record drought (2011) and record flooding (2015) — is a clear climate change signal as the atmospheric moisture cycle intensifies."},
+    {y:2015,n:"California Wildfires (Valley/Butte)",s:"California",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:38.8,lng:-122.7,cost:"$1.5B",deaths:"~13",aff:"~1,900 structures destroyed",desc:"Record drought fueled California's worst fire season to that date. The Valley Fire destroyed 1,958 structures in Lake County in a single afternoon — the 3rd most destructive CA fire ever at the time.",cc:"The valley's exceptional drought eliminated all soil moisture buffers. Scientists directly attributed the extraordinary fire weather to California's climate-change-intensified multi-year drought."},
+    {y:2015,n:"Chicago Heat Wave",s:"Illinois",t:"Heatwave",cat:"heat",e:"🌡️",g:"linear-gradient(135deg,#bf360c,#ff5722)",lat:41.85,lng:-87.65,cost:"$0.4B",deaths:"~38",aff:"~2.7 million people",desc:"Chicago recorded 14 consecutive days above 32°C in July 2015, straining the power grid and hospitalizing hundreds. Neighborhoods with poor tree cover saw temperatures 10°C hotter than wealthier areas.",cc:"Heat waves are the #1 weather-related killer in the U.S. Climate change is making them more frequent, longer, and more intense. Urban heat islands compound mortality risk in dense city neighborhoods."},
+    {y:2015,n:"Blizzard of 2015 (Juno)",s:"Northeast",t:"Winter Storm",cat:"winter",e:"❄️",g:"linear-gradient(135deg,#0288d1,#b3e5fc)",lat:42.36,lng:-71.06,cost:"$2.5B",deaths:"~30",aff:"~30 million people",desc:"Winter Storm Juno dropped record snow on New England — Boston's worst month ever at 165 cm. NYC banned outdoor activity under threat of jail; the entire Metro-North commuter railroad shut down.",cc:"Paradoxically, warmer Atlantic waters supplied extra moisture that amplified Juno's snowfall totals. Climate change is shifting Northeast snowfall patterns toward fewer events but heavier individual storms."},
+    {y:2015,n:"Oklahoma/Texas Tornadoes & Hail",s:"Oklahoma/Texas",t:"Tornado Outbreak",cat:"tornado",e:"🌪️",g:"linear-gradient(135deg,#6a1b9a,#ab47bc)",lat:35.0,lng:-97.5,cost:"$1.5B",deaths:"~5",aff:"~2,500 homes damaged",desc:"A prolonged May tornado and severe hail outbreak struck Oklahoma City and surrounding communities with multiple large hail events (baseball-sized) and several significant tornadoes.",cc:"The spring 2015 tornado season was notably active. Enhanced Gulf moisture from warmer sea surface temperatures fueled the intense convective outbreaks across the Southern Plains."},
+    // 2016
+    {y:2016,n:"Hurricane Matthew (US Impacts)",s:"Florida/Carolinas",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:33.8,lng:-78.7,cost:"$10B",deaths:"~49 (U.S.)",aff:"~1.5 million evacuated",desc:"Matthew scraped Florida's Atlantic coast and made landfall in South Carolina, triggering catastrophic flooding in eastern North Carolina — 1.5 m of rain in Matthew Creek watershed in just 3 days.",cc:"Sea level rise of ~0.15 m since 1990 expanded Matthew's storm surge inundation zone significantly. Warmer Caribbean waters allowed Matthew to maintain Category 5 strength unusually close to land."},
+    {y:2016,n:"Fort McMurray Wildfire (U.S. Air Quality Impact)",s:"Pacific Northwest",t:"Wildfire Smoke",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:48.5,lng:-120.5,cost:"$1.1B",deaths:"0 direct",aff:"~3 million with dangerous air quality",desc:"While centered in Canada, the 2016 western U.S. fire season was its worst in decades — including the Soberanes Fire ($1.1B, costliest California suppression ever) and 6.5 million acres burned nationally.",cc:"The western U.S. fire season now starts 78 days earlier and burns 2x more area annually compared to the 1970s — a trend directly linked to climate-driven drought and warming temperatures."},
+    {y:2016,n:"Louisiana August Floods",s:"Louisiana",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:30.45,lng:-91.13,cost:"$10B",deaths:"13",aff:"~146,000 homes flooded",desc:"A slow-moving low stalled over southern Louisiana, dropping 600 mm in 24 hours — a 'no-name' storm that became a historic flood event. 146,000 homes flooded; it was the worst U.S. disaster since Sandy.",cc:"Climate attribution found the August 2016 Louisiana floods were made 40% more likely by climate change. 'Rainfall bombs' from stalled systems are a key climate change signature."},
+    {y:2016,n:"West Virginia Flooding",s:"West Virginia",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:38.35,lng:-81.63,cost:"$0.8B",deaths:"23",aff:"~1,200 homes destroyed",desc:"Extreme flash flooding struck rural West Virginia on June 23, killing 23 and destroying entire communities. Rainey Creek crested 7 m above flood stage in under 3 hours.",cc:"West Virginia's steep, denuded hillsides from historic coal mining have severely reduced infiltration capacity. Climate-intensified rainfall events generate instant, lethal flash floods across the region."},
+    {y:2016,n:"Gatlinburg Wildfire",s:"Tennessee",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:35.71,lng:-83.51,cost:"$0.5B",deaths:"14",aff:"~17,000 acres burned",desc:"Driven by 95 km/h winds on November 28, the Chimney Tops 2 fire raced from the Great Smoky Mountains into downtown Gatlinburg, destroying 2,460 structures in hours.",cc:"The Southeast U.S. is experiencing increasing autumn wildfires as climate change extends droughts and pushes fire weather conditions into historically fire-free regions and seasons."},
+    // 2017
+    {y:2017,n:"Hurricane Harvey",s:"Texas/Louisiana",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:29.76,lng:-95.37,cost:"$125B",deaths:"~89",aff:"~30,000 displaced",desc:"Harvey stalled over Texas for days, dropping 1.54 m (60.6\") of rain in Cedar Bayou — a U.S. record for any tropical system. Catastrophic flooding across greater Houston area drowned 33,000 sq km.",cc:"Climate attribution found Harvey's rainfall was 15% heavier and 3x more likely due to climate change. Record Gulf temperatures and warmer air moisture carried unprecedented water content."},
+    {y:2017,n:"California Wine Country Fires",s:"California (Napa/Sonoma)",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:38.44,lng:-122.72,cost:"$14B",deaths:"44",aff:"~8,900 structures burned",desc:"The Tubbs Fire was the most destructive California wildfire in history at the time, sweeping through Napa, Sonoma, and Lake counties on October 8–9 driven by extreme Diablo wind conditions.",cc:"Autumn fire seasons are lengthening dramatically in California. The Diablo winds in 2017 combined with record heat and drought to create conditions for which no infrastructure existed."},
+    {y:2017,n:"Hurricane Irma (Florida/Keys)",s:"Florida",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:24.56,lng:-81.78,cost:"$50B",deaths:"~97 (U.S.)",aff:"~6.5 million evacuated",desc:"Irma tracked directly over the Florida Keys as a Category 4, then up Florida's west coast, producing a dramatic negative storm surge in Tampa Bay before inundating coastal areas.",cc:"Irma's record-long Category 5 duration (37 hours) was directly linked to anomalously warm Atlantic and Caribbean waters. Sea level rise added significantly to its storm surge heights."},
+    {y:2017,n:"Oroville Dam Crisis",s:"California",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:39.54,lng:-121.49,cost:"$1.1B",deaths:"0",aff:"~188,000 evacuated",desc:"Record precipitation following a multi-year drought overwhelmed the Oroville Dam spillway, requiring emergency use of a damaged secondary spillway and forcing the largest evacuation in California history.",cc:"California's 'weather whiplash' — dramatic swings between record drought and record wet years — is a direct climate change signature that increasingly overwhelms infrastructure designed for a stable climate."},
+    {y:2017,n:"Missouri/Arkansas River Flooding",s:"Missouri/Arkansas",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:36.5,lng:-91.8,cost:"$2.4B",deaths:"~20",aff:"~900,000 acres inundated",desc:"Record spring flooding along the Missouri, James, and White rivers in May 2017 set all-time stage records at dozens of gauges, submerging farmland for weeks across multiple states.",cc:"Spring 2017 saw above-normal snowpack and anomalous warmth accelerating melt simultaneously with heavy rains — a compound event pattern becoming more frequent with climate change."},
+    // 2018
+    {y:2018,n:"Camp Fire (Paradise)",s:"California",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:39.75,lng:-121.62,cost:"$16.5B",deaths:"85",aff:"~52,000 displaced",desc:"The Camp Fire destroyed 95% of Paradise, CA in under 4 hours — California's deadliest and most destructive wildfire. Driven by 90 km/h Jarbo Gap winds and record-low November humidity.",cc:"A combination of extreme drought, record heat, catastrophically low fuel moisture, and strong Diablo winds — all amplified by climate change — drove the Camp Fire at 80 football fields per minute."},
+    {y:2018,n:"Hurricane Florence",s:"Carolinas",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:34.23,lng:-77.94,cost:"$24B",deaths:"~54",aff:"~2 million evacuated",desc:"Florence stalled over the Carolinas for 2 days, dropping 91 cm of rain in New Bern. Over 1 million pigs and 3.4 million chickens drowned on flooded Coastal Plain industrial farms.",cc:"Climate change slowed Florence's forward speed 11–17% and increased its total rainfall 50–80%. Warmer Atlantic increased intensity; sea level rise amplified coastal flooding significantly."},
+    {y:2018,n:"Hurricane Michael",s:"Florida Panhandle",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:30.37,lng:-85.68,cost:"$25B",deaths:"~59",aff:"~375,000 evacuated",desc:"Michael made landfall near Mexico Beach as a Category 5 with 260 km/h winds — the strongest Florida Panhandle hurricane in recorded history. Mexico Beach was virtually wiped off the map.",cc:"Michael rapidly intensified from Category 2 to 5 in 36 hours over record-warm Gulf of Mexico waters. The central Gulf is warming at twice the global average ocean rate."},
+    {y:2018,n:"Woolsey Fire (Malibu)",s:"California",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:34.03,lng:-118.82,cost:"$6B",deaths:"3",aff:"~1,600 structures burned",desc:"The Woolsey Fire tore through Malibu and Thousand Oaks from November 8–22, driven by powerful Santa Ana winds. Combined with Camp Fire, November 2018 was California's worst wildfire disaster ever.",cc:"California now has a year-round fire season. The combination of record heat, record drought, and increasingly extreme offshore wind events has fundamentally transformed the state's fire ecology."},
+    {y:2018,n:"Upper Midwest Spring Floods",s:"Wisconsin/Minnesota/Michigan",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:46.5,lng:-90.5,cost:"$2.5B",deaths:"~6",aff:"~3,700 homes damaged",desc:"Extreme rainfall events across the Upper Midwest in summer 2018 set all-time records across multiple gauges. Barron County, Wisconsin recorded 300 mm in 12 hours in August.",cc:"The Great Lakes region is one of the fastest-warming areas in North America. Warming lake temperatures add moisture to precipitation systems, dramatically intensifying extreme rainfall events."},
+    // 2019
+    {y:2019,n:"Midwest Bomb Cyclone Flooding",s:"Nebraska/Iowa/Missouri",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:41.5,lng:-96.5,cost:"$10.9B",deaths:"~4",aff:"~2 million acres farmland",desc:"A historic bomb cyclone brought record rainfall to frozen, oversaturated Midwest soils in March, causing catastrophic Missouri and Platte River flooding. Spencer Dam failed, flooding 76,000 acres.",cc:"Winter 2019 featured record snowpack followed by rapid warming and heavy rain — a classic compound event amplified by climate change's increased moisture and temperature variability."},
+    {y:2019,n:"California Kincade Fire",s:"California (Sonoma)",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:38.79,lng:-122.79,cost:"$1B",deaths:"0",aff:"~180,000 evacuated",desc:"PG&E shut off power to 800,000 homes as the Kincade Fire burned 31,000 acres in Sonoma County. Governor Newsom declared a statewide emergency; all of Sonoma County was evacuated.",cc:"Extreme Diablo wind events during fire season are increasing in frequency and intensity with climate change. The 2019 California fire season included 7 major utility-linked events."},
+    {y:2019,n:"Hurricane Dorian (Carolinas)",s:"North Carolina",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:34.2,lng:-77.8,cost:"$3.5B",deaths:"~3 (U.S.)",aff:"~900,000 warned to evacuate",desc:"After devastating the Bahamas as a Category 5, Dorian paralleled the U.S. East Coast with 175 km/h winds. Ocracoke Island in the Outer Banks was severely flooded with 2.5 m of storm surge.",cc:"Dorian's catastrophic stall over the Bahamas — dumping 900 mm — was consistent with the emerging climate signal of slowing tropical cyclone forward speeds."},
+    {y:2019,n:"Tennessee/Alabama Tornado Outbreak",s:"Tennessee/Alabama",t:"Tornado Outbreak",cat:"tornado",e:"🌪️",g:"linear-gradient(135deg,#6a1b9a,#ab47bc)",lat:35.5,lng:-86.8,cost:"$1.6B",deaths:"~28",aff:"~3,000 homes destroyed",desc:"A rare early-season outbreak produced tornadoes across Tennessee including an EF3 through downtown Nashville on March 3, and Alabama EF4s killing 23 in Lee County.",cc:"Climate change is expanding the geographic range of tornado activity eastward into the Mid-South and Southeast — areas with less warning infrastructure and more mobile homes than traditional Tornado Alley."},
+    {y:2019,n:"Alaska Wildfires (Record Season)",s:"Alaska",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:64.2,lng:-153.0,cost:"$0.7B",deaths:"0",aff:"~2.5 million acres burned",desc:"Alaska's 2019 fire season burned 2.5 million acres — 3x the annual average — including 100,000 acres in the Arctic north of the Brooks Range, where fires had been extremely rare historically.",cc:"Alaska is warming 3x faster than the global average. Permafrost thaw creates drier surface conditions; lightning ignitions are increasing in the Arctic — a dramatic climate change signal."},
+    // 2020
+    {y:2020,n:"Western U.S. Megafires",s:"California/Oregon/Washington",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:43.0,lng:-122.5,cost:"$16.5B",deaths:"~37",aff:"~10.3 million acres burned",desc:"California, Oregon, and Washington shattered all previous records. California's SCU, LNU, and August Complex fires (1 million acres each) turned West Coast skies orange for weeks.",cc:"Scientists determined 2020's extreme fire weather was made 40% more likely by climate change. The West is in megadrought — the worst in 1,200 years — directly driven by warming temperatures."},
+    {y:2020,n:"Hurricane Laura",s:"Louisiana",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:30.23,lng:-93.21,cost:"$19B",deaths:"~42 (U.S.)",aff:"~700,000 without power",desc:"Laura made landfall near Lake Charles as a Category 4 with a record 4.6 m storm surge — the worst ever recorded along Louisiana's western coast. Devastated Lake Charles took years to rebuild.",cc:"Laura rapidly intensified from Category 1 to 4 in 36 hours over anomalously warm Gulf water. Rapid intensification events (doubling in 24 hrs) are increasing as ocean heat content rises."},
+    {y:2020,n:"Iowa Derecho",s:"Iowa/Illinois",t:"Severe Storm",cat:"storm",e:"⛈️",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:42.0,lng:-93.0,cost:"$11B",deaths:"4",aff:"~43% of Iowa corn crop damaged",desc:"The most costly derecho in U.S. history swept across Iowa on August 10 with gusts to 175 km/h, flattening 850,000 acres of corn. More crop damage than all previous Iowa tornadoes combined.",cc:"The August 2020 derecho was fueled by record heat and a powerful upper-level jet pattern. Increased heat and atmospheric moisture are intensifying the wind field in mesoscale convective systems."},
+    {y:2020,n:"2020 Atlantic Hurricane Season (Record)",s:"Southeast/Gulf States",t:"Hurricane Season",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:29.0,lng:-89.0,cost:"$37B",deaths:"~400",aff:"~4 million people across Gulf",desc:"The 2020 season produced 30 named storms — exhausting the alphabet for only the 2nd time ever. Six major hurricanes struck the Gulf Coast including Zeta, Delta, and Sally in rapid succession.",cc:"Record-warm Gulf of Mexico and Atlantic temperatures directly fueled the historic 2020 season. Climate models consistently project more intense and more rapidly intensifying hurricanes."},
+    {y:2020,n:"Texas Valentine's Freeze (Early Precursor)",s:"Texas",t:"Extreme Cold",cat:"winter",e:"❄️",g:"linear-gradient(135deg,#0288d1,#b3e5fc)",lat:30.5,lng:-97.7,cost:"$2B",deaths:"~10",aff:"~400,000 without power",desc:"An early December 2020 ice storm knocked out power to over 400,000 Texas homes, exposing ERCOT's grid vulnerabilities months before the catastrophic February 2021 failure.",cc:"Disruption of the polar vortex — made more frequent by rapid Arctic warming — is sending surges of frigid air into Texas during traditionally mild winter periods."},
+    // 2021
+    {y:2021,n:"Texas Winter Storm Uri",s:"Texas",t:"Extreme Cold",cat:"winter",e:"❄️",g:"linear-gradient(135deg,#0288d1,#b3e5fc)",lat:30.27,lng:-97.74,cost:"$195B",deaths:"~246",aff:"~4.5 million homes without power",desc:"The most expensive natural disaster in Texas history. Uri knocked out ERCOT's power grid for days in -18°C weather. Water pipes burst in 1+ million homes; hundreds died of hypothermia.",cc:"Arctic warming weakened the polar vortex causing it to collapse — directing -50°C Arctic air to Texas. The ERCOT grid was never winterized because historical climate data said it wasn't needed."},
+    {y:2021,n:"Pacific Northwest Heat Dome",s:"Oregon/Washington",t:"Heatwave",cat:"heat",e:"🌡️",g:"linear-gradient(135deg,#bf360c,#ff5722)",lat:45.52,lng:-122.68,cost:"$8.9B",deaths:"~800 (U.S.)",aff:"~25 million people",desc:"An unprecedented heat dome pushed Portland to 46°C (3 straight days) and Seattle to 42°C. Both cities broke records by 5°C+ — the equivalent of Chicago suddenly reaching Phoenix temperatures.",cc:"Scientists found this event was 'virtually impossible' without climate change and was made 150x more likely by warming. A 2°C warmer world could make such events occur every 5–10 years."},
+    {y:2021,n:"Caldor Fire",s:"California",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:38.68,lng:-120.22,cost:"$4B",deaths:"1",aff:"~220,000 acres; 50,000 evacuated",desc:"The Caldor Fire made history by crossing the Sierra Nevada crest — something fire managers said was nearly impossible — threatening South Lake Tahoe and forcing the region's largest-ever evacuation.",cc:"2021 was California's second-worst fire year, driven by megadrought — the most severe in 1,200 years. Western U.S. snowpack, which sustains summer moisture, was critically deficient."},
+    {y:2021,n:"Kentucky/Tennessee Tornadoes (December)",s:"Kentucky",t:"Tornado",cat:"tornado",e:"🌪️",g:"linear-gradient(135deg,#6a1b9a,#ab47bc)",lat:36.8,lng:-88.1,cost:"$3.9B",deaths:"~90",aff:"~1,000 homes destroyed",desc:"A December tornado outbreak produced the longest continuous tornado track in U.S. history — an estimated 320 km through western Kentucky. The Mayfield tornado killed 76 alone.",cc:"December tornadoes were historically rare in Kentucky. Climate change is extending severe weather seasons deeper into autumn and winter as warm, moist Gulf air persists later into the year."},
+    {y:2021,n:"Northern California Drought & Oroville",s:"California",t:"Drought",cat:"heat",e:"🌵",g:"linear-gradient(135deg,#e65100,#ff8f00)",lat:40.0,lng:-122.0,cost:"$1.8B",deaths:"0",aff:"~39 million water users",desc:"Lake Oroville fell to its lowest level in 50 years, forcing the closure of the Edward Hyatt Powerplant — the largest hydroelectric facility in California. Mandatory water restrictions statewide.",cc:"California's snowpack was only 5% of normal in 2021 — the critical water storage buffer that sustains the state through summer. Climate change is converting snowpack to rain and accelerating spring melt."},
+    // 2022
+    {y:2022,n:"Hurricane Ian",s:"Florida",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:26.64,lng:-82.03,cost:"$113B",deaths:"~161",aff:"~2.5 million without power",desc:"Ian made landfall near Fort Myers as a near-Category 5 with a catastrophic 4.6 m storm surge that obliterated Fort Myers Beach and Pine Island — the costliest Florida hurricane in history.",cc:"Ian rapidly intensified from Category 2 to 4 in 24 hours over record-warm Gulf water. Sea level rise added ~10 cm of additional storm surge, flooding thousands of additional structures."},
+    {y:2022,n:"Kentucky Flooding",s:"Kentucky/Virginia",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:37.35,lng:-82.74,cost:"$1B",deaths:"~43",aff:"~33,000 homes damaged",desc:"A slow-moving low dropped 300 mm in 12 hours across eastern Kentucky's steep coalfield hollows, destroying entire communities in Breathitt, Knott, and Perry counties.",cc:"Eastern Kentucky's mountains funnel heavy rain into narrow valleys. Climate change is intensifying rainfall rates; stripped hillsides from coal mining provide no absorption buffer."},
+    {y:2022,n:"California/Oregon Wildfires",s:"California/Oregon",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:40.5,lng:-122.0,cost:"$3.4B",deaths:"~3",aff:"~900,000 acres burned (CA)",desc:"California's 2022 fire season included the Mosquito Fire (75,000 acres, El Dorado County's largest ever) and the McKinney Fire (60,000 acres, CA's largest 2022 fire) amid continued megadrought.",cc:"California's fire seasons now overlap nearly year-round. 2022's early-season heat dome in September broke records across the state — the background warming that makes every drought worse."},
+    {y:2022,n:"Western Drought (Colorado River Crisis)",s:"Southwest",t:"Drought",cat:"heat",e:"🌵",g:"linear-gradient(135deg,#e65100,#ff8f00)",lat:36.5,lng:-113.4,cost:"$20B+",deaths:"~0 direct",aff:"~40 million water users",desc:"Lake Mead fell to its lowest level since it was filled in 1936 — threatening water supplies for 40 million people in 7 states and 2 nations. Tier 1 water cuts were implemented across the Southwest.",cc:"The Colorado River's water supply has declined 20% since 2000 due to rising temperatures that increase evaporation. Climate models show a 'megadrought' state as the new baseline for the Southwest."},
+    {y:2022,n:"Eastern U.S. Winter Storm Elliott",s:"Northeast/Southeast",t:"Winter Storm",cat:"winter",e:"❄️",g:"linear-gradient(135deg,#0288d1,#b3e5fc)",lat:42.0,lng:-80.0,cost:"$5.4B",deaths:"~65",aff:"~1.7 million without power",desc:"Winter Storm Elliott brought an extreme bomb cyclone at Christmas 2022, with -37°C wind chills in Buffalo — Buffalo's deadliest storm since the 1977 blizzard — stranding thousands in their cars.",cc:"Rapid Arctic air intrusions linked to polar vortex disruptions are producing extreme cold events even as average winter temperatures rise. Elliott's extraordinary cold was juxtaposed with record December heat elsewhere."},
+    // 2023
+    {y:2023,n:"Maui Wildfires (Lahaina)",s:"Hawaii",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:20.87,lng:-156.68,cost:"$5.5B",deaths:"~102",aff:"~4,500 structures destroyed",desc:"Wind-driven fires destroyed the historic town of Lahaina in under two hours on August 8 — the deadliest U.S. wildfire in over 100 years. Most had only minutes to escape; many died in their cars.",cc:"Drought-dried vegetation from anomalous Hawaiian dry conditions combined with extreme winds from nearby Hurricane Dora created the ignition-to-catastrophe chain. Climate change set the stage."},
+    {y:2023,n:"California Atmospheric Rivers",s:"California",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:37.0,lng:-122.0,cost:"$5.9B",deaths:"~22",aff:"~1 million evacuation warnings",desc:"January–March 2023 brought 12 consecutive atmospheric river storms to California, ending the drought — but flooding Monterey, Capitola, Santa Barbara, and triggering hundreds of landslides.",cc:"California's climate whiplash — from extreme drought to extreme deluge — is intensifying. Atmospheric rivers carry 15% more moisture than 40 years ago due to warmer atmospheric conditions."},
+    {y:2023,n:"Mississippi Tornado Outbreak (Rolling Fork)",s:"Mississippi/Alabama",t:"Tornado Outbreak",cat:"tornado",e:"🌪️",g:"linear-gradient(135deg,#6a1b9a,#ab47bc)",lat:32.9,lng:-90.9,cost:"$1.1B",deaths:"~25",aff:"~4,000 homes destroyed",desc:"An EF4 tornado obliterated Rolling Fork, MS (population 2,000) on March 24 in one of the most destructive tornado outbreaks in Mississippi history, with overnight timing limiting evacuation.",cc:"Night-time and winter/spring tornadoes in the Deep South are increasing as climate change shifts favorable conditions eastward. Nighttime events are far deadlier due to reduced warning time."},
+    {y:2023,n:"Vermont Flooding (July)",s:"Vermont",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:44.26,lng:-72.58,cost:"$0.8B",deaths:"~1",aff:"~1,500 roads damaged",desc:"Three months of rain fell in 24 hours across Vermont on July 10–11, flooding downtown Montpelier for the first time in 90 years and stranding thousands across the state.",cc:"Vermont's flooding was driven by a stalled atmospheric pattern linked to weakening jet stream dynamics — a climate change signal that causes extreme rainfall to linger in one location."},
+    {y:2023,n:"Southeast U.S. Drought & Heat",s:"Southeast",t:"Heatwave/Drought",cat:"heat",e:"🌡️",g:"linear-gradient(135deg,#bf360c,#ff5722)",lat:33.0,lng:-86.8,cost:"$3.5B",deaths:"~50",aff:"~50 million people",desc:"Summer 2023 brought extreme heat to the Southeast with Phoenix recording 31 consecutive days above 43°C. Texas's ERCOT grid was pushed to emergency demand levels multiple times in July.",cc:"2023 was the hottest year in recorded history. The U.S. South experienced heat index values above 55°C in multiple locations — conditions that exceed safe human outdoor exposure thresholds."},
+    // 2024
+    {y:2024,n:"Hurricane Helene",s:"Florida/Georgia/Carolinas",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:35.55,lng:-82.55,cost:"$78B",deaths:"~230",aff:"~2 million without power",desc:"Helene made landfall as Category 4 in Florida's Big Bend, but its greatest toll was in the Appalachian mountains. Historic flooding submerged Asheville NC and devastated Helene's inland path.",cc:"Record-warm Gulf temperatures fueled Helene's rapid intensification to Category 4 in 24 hours. Climate change enabled it to carry unprecedented moisture hundreds of miles inland."},
+    {y:2024,n:"Hurricane Milton",s:"Florida",t:"Hurricane",cat:"storm",e:"🌀",g:"linear-gradient(135deg,#6a0dad,#9c27b0)",lat:27.97,lng:-82.45,cost:"$34B",deaths:"~25",aff:"~6 million evacuation orders",desc:"Milton exploded from tropical storm to Category 5 in under 24 hours over the Gulf, then struck the Tampa-Sarasota coast. It spawned 33 tornadoes ahead of it across Florida.",cc:"Milton's intensification rate — gaining 90 mph in 24 hours — was a direct result of the hottest Gulf of Mexico temperatures on record. Ocean heat content is the primary driver of rapid intensification."},
+    {y:2024,n:"Southern California Floods (January)",s:"California",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:34.05,lng:-118.24,cost:"$3B",deaths:"~2",aff:"~500,000 evacuation orders",desc:"Powerful atmospheric rivers struck Southern California in January 2024, causing the most significant flooding in Los Angeles in decades and triggering deadly landslides in Malibu and Ventura counties.",cc:"Southern California atmospheric rivers carry increasingly heavy moisture from a warmer Pacific Ocean. Areas previously too dry for major flooding are now experiencing unprecedented events."},
+    {y:2024,n:"Texas/Oklahoma Wildfires (Smokehouse Creek)",s:"Texas Panhandle",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:35.6,lng:-100.3,cost:"$1.3B",deaths:"2",aff:"~1.1 million acres burned",desc:"The Smokehouse Creek Fire became the largest wildfire in Texas history at 1.1 million acres, sweeping across the Panhandle in February 2024 when warm, dry, windy conditions combined catastrophically.",cc:"Texas's Panhandle receives ~50 cm of rain annually — a marginal zone vulnerable to any warming-driven shift. February wildfires were historically rare but are increasingly common with climate change."},
+    {y:2024,n:"Appalachian Flooding (Helene Inland)",s:"Tennessee/Virginia",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:36.3,lng:-82.4,cost:"$12B",deaths:"~100",aff:"~500,000 without water",desc:"Hurricane Helene's inland remnants devastated mountain communities in eastern Tennessee and Virginia, cutting off entire towns for weeks. The Nolichucky River surged 15 m above flood stage.",cc:"Moisture-laden air from record-warm Gulf and Atlantic waters allowed Helene to maintain tropical moisture 1,000 km inland — a pattern climate change will make increasingly common for future storms."},
+    // 2025
+    {y:2025,n:"Los Angeles Wildfires (Palisades/Eaton)",s:"California",t:"Wildfire",cat:"wildfire",e:"🔥",g:"linear-gradient(135deg,#e65100,#ff9800)",lat:34.05,lng:-118.40,cost:"$135B+",deaths:"~29",aff:"~180,000 evacuated",desc:"The Palisades and Eaton fires tore through L.A. neighborhoods in January 2025 driven by extreme Santa Ana winds up to 160 km/h. Entire neighborhoods burned in Pacific Palisades, Altadena, and Pasadena.",cc:"California's driest January on record combined with extreme Santa Ana winds — intensified by climate change — created the most destructive fire disaster in California history."},
+    {y:2025,n:"Kentucky/Tennessee Tornadoes (March)",s:"Kentucky/Tennessee",t:"Tornado Outbreak",cat:"tornado",e:"🌪️",g:"linear-gradient(135deg,#6a1b9a,#ab47bc)",lat:36.5,lng:-87.5,cost:"$2.1B",deaths:"~18",aff:"~3,500 homes damaged",desc:"A major spring tornado outbreak produced EF3 and EF4 tornadoes across western Kentucky and middle Tennessee in March 2025, repeating a pattern of devastating early-season outbreaks in the Mid-South.",cc:"Climate change is strengthening the southern tornado corridor and extending favorable tornado conditions deeper into winter and earlier in spring as Gulf sea surface temperatures remain elevated."},
+    {y:2025,n:"Colorado River & Southwest Drought Crisis",s:"Southwest",t:"Drought",cat:"heat",e:"🌵",g:"linear-gradient(135deg,#e65100,#ff8f00)",lat:36.0,lng:-113.5,cost:"$18B+",deaths:"~0 direct",aff:"~40 million people",desc:"Despite partial recovery in 2023–24, the Colorado River basin entered another severe drought in 2025, with Lake Powell and Lake Mead remaining critically low as demand continues to outpace supply.",cc:"The Colorado River's long-term average flow has declined 20% since 1950, entirely explained by warming temperatures increasing evapotranspiration. Continued warming makes this loss permanent."},
+    {y:2025,n:"Southeast Atmospheric River Flooding",s:"Georgia/Carolinas",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:33.7,lng:-84.4,cost:"$4.5B",deaths:"~12",aff:"~200,000 affected",desc:"Back-to-back atmospheric river events struck the Southeast in February–March 2025, causing major flooding across Georgia, the Carolinas, and Virginia still reeling from Helene six months earlier.",cc:"Atmospheric rivers are intensifying and expanding their reach into the Southeast as warmer Pacific and Gulf waters load moisture into these weather systems at unprecedented levels."},
+    {y:2025,n:"Midwest Spring Flooding",s:"Midwest",t:"Flood",cat:"flood",e:"💧",g:"linear-gradient(135deg,#0277bd,#29b6f6)",lat:41.0,lng:-95.0,cost:"$5.2B",deaths:"~8",aff:"~2.5 million acres farmland",desc:"Record snowmelt combined with heavy spring rains across the Upper Midwest in 2025 caused severe flooding along the Missouri, Iowa, and Minnesota River systems, with major agricultural impacts.",cc:"Warmer winters produce above-normal snowpack followed by rapid warm-season melt and heavy rain — a compound event pattern increasingly driven by climate change's destabilization of seasonal norms."}
+  ];
+
+  let ufYear='all', ufCat='all';
+
+  const umap=L.map('us-disaster-map',{center:[39,-98],zoom:4,scrollWheelZoom:false,zoomControl:true});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    attribution:'&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://openstreetmap.org/">OpenStreetMap</a>',
+    maxZoom:18
+  }).addTo(umap);
+
+  const umarkers=UD.map(d=>{
+    const icon=L.divIcon({
+      className:'',
+      html:`<div class="dei">${d.e}</div>`,
+      iconSize:[36,36],iconAnchor:[18,18],popupAnchor:[0,-20],tooltipAnchor:[0,-20]
+    });
+    const m=L.marker([d.lat,d.lng],{icon});
+    m._d=d;
+    m.bindTooltip(
+      `<b>${d.e} ${d.n}</b> <span style="opacity:.7">(${d.y})</span><br>`+
+      `📍 ${d.s}<br>`+
+      `💀 ${d.deaths} &nbsp;&nbsp; 💰 ${d.cost}<br>`+
+      `<span style="font-size:11px;opacity:.65">Click for full details →</span>`,
+      {className:'dtip',direction:'top',offset:[0,-8]}
+    );
+    m.bindPopup(
+      `<div>
+        <div class="dp-header" style="background:${d.g}">
+          <span class="dp-emoji">${d.e}</span>
+          <div>
+            <div class="dp-name"><span class="dp-yr">${d.y}</span>${d.n}</div>
+            <div class="dp-meta">📍 ${d.s} &nbsp;|&nbsp; ${d.t}</div>
+          </div>
+        </div>
+        <div class="dp-body">
+          <div class="dp-stats">
+            <div class="dp-stat"><div class="dp-sv">💀 ${d.deaths}</div><div class="dp-sl">Fatalities</div></div>
+            <div class="dp-stat"><div class="dp-sv">💰 ${d.cost}</div><div class="dp-sl">Damage</div></div>
+          </div>
+          <p class="dp-desc">${d.desc}</p>
+          <div class="dp-cc">${d.cc}</div>
+        </div>
+      </div>`,
+      {maxWidth:320}
+    );
+    return m;
+  });
+
+  function urender(){
+    let n=0;
+    umarkers.forEach(m=>{
+      const d=m._d;
+      const show=(ufYear==='all'||d.y===ufYear)&&(ufCat==='all'||d.cat===ufCat);
+      if(show){m.addTo(umap);n++;}else{m.remove();}
+    });
+    document.getElementById('us-dm-counter').textContent='Showing '+n+' of 75 U.S. disasters';
+  }
+  urender();
+
+  document.querySelectorAll('.us-yr-btn').forEach(b=>{
+    b.addEventListener('click',()=>{
+      ufYear=b.dataset.uy==='all'?'all':+b.dataset.uy;
+      document.querySelectorAll('.us-yr-btn').forEach(x=>x.classList.remove('usactive'));
+      b.classList.add('usactive');
+      urender();
+    });
+  });
+
+  document.querySelectorAll('.us-cat-btn').forEach(b=>{
+    b.addEventListener('click',()=>{
+      ufCat=b.dataset.uc;
+      document.querySelectorAll('.us-cat-btn').forEach(x=>x.classList.remove('usactive'));
+      b.classList.add('usactive');
+      urender();
+    });
+  });
+
+})();
+</script>
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("us-disasters", [
+  {
+    emoji: "🌀",
+    q: "Why did Hurricanes Helene (2024) and Ian (2022) produce such severe impacts?",
+    options: [
+      "They formed over unusually cold Gulf waters",
+      "They weakened before landfall and caused only wind damage",
+      "They were fueled by very warm Gulf waters, with rapid intensification and major flooding/surge impacts",
+      "They were winter storms misclassified as hurricanes"
+    ],
+    correct: 2,
+    explanation: "Both storms were linked to record-warm Gulf conditions that supported rapid intensification and high-impact flooding/storm surge outcomes."
+  },
+  {
+    emoji: "🔥",
+    q: "What common climate-related driver appears in Camp Fire (2018), Western Megafires (2020), and Los Angeles Wildfires (2025)?",
+    options: [
+      "Cooler summers and wetter fuels",
+      "Longer drought/heat stress that dries fuels and increases extreme fire behavior",
+      "Reduced wind events in fire season",
+      "More tropical moisture in all cases"
+    ],
+    correct: 1,
+    explanation: "These events repeatedly show hotter, drier fuel conditions (plus wind in many cases), which strongly increases wildfire spread and destructiveness."
+  },
+  {
+    emoji: "❄️",
+    q: "The module notes severe cold events like Texas Uri (2021) alongside global warming. What systems idea does this support?",
+    options: [
+      "Warming eliminates all cold extremes",
+      "A warming climate can disrupt circulation patterns, increasing weather volatility and some extreme cold outbreaks",
+      "Cold events prove climate change is not occurring",
+      "Only summer climate matters for risk planning"
+    ],
+    correct: 1,
+    explanation: "The lesson emphasizes climate instability and circulation shifts: long-term warming can still coexist with damaging cold extremes in certain regions."
+  }
+]);
+```
+
 ## NOAA Sea Level Rise Viewer
 
 Explore how sea level rise will affect coastal communities:
@@ -1272,7 +1855,7 @@ Explore how sea level rise will affect coastal communities:
 
 Your team has been assigned cities facing climate change. **Explore each city card below** — click to flip and reveal detailed climate projections for **SSP2-4.5 (2050)** and **SSP5-8.5 (2100)**. Use these data to build your city's **Climate Action Plan**.
 
-**How to play:** Each group receives 1–2 cities. Flip the card to see threats. Then develop adaptation and mitigation strategies for your city in both 2050 and 2100 scenarios.
+**How to play:** Each group receives 1 city. Flip the card to see threats. Then develop adaptation and mitigation strategies for your city in both 2050 and 2100 scenarios.
 :::
 
 ```{=html}
@@ -1756,6 +2339,202 @@ Conditions have worsened dramatically. Multiply all projections by roughly **2×
 3. 💰 **Economy** — How do you fund adaptations? What industries must transform?
 4. 🌍 **Equity** — How do wealthier vs. poorer cities compare in their ability to adapt?
 5. 🔗 **Connections** — How does your city's crisis affect other cities globally?
+
+### 🧰 ADAPTATION OPTIONS MENU
+
+```{=html}
+<style>
+  .ao-wrap { margin: 10px 0 0; font-family: 'Inter', sans-serif; color: #1f2937 !important; }
+  .ao-top { background: #ffffff; border: 2px solid #e2e8f0; border-radius: 12px; padding: 12px; color: #1f2937 !important; }
+  .ao-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+  .ao-btn {
+    border: 1.5px solid #cbd5e0; background: #f8fafc; color: #334155 !important;
+    border-radius: 999px; padding: 6px 10px; font-size: 12px; font-weight: 700; cursor: pointer;
+  }
+  .ao-btn.active { background: linear-gradient(135deg,#667eea,#764ba2); color: #fff !important; border-color: #667eea; }
+  .ao-select, .ao-search {
+    border: 1.5px solid #cbd5e0; border-radius: 8px; padding: 6px 10px; font-size: 12px;
+    background: white; color: #1f2937 !important;
+  }
+  .ao-select option { color: #1f2937 !important; background: #fff; }
+  .ao-meta { font-size: 12px; color: #475569 !important; font-weight: 700; }
+  .ao-badge {
+    display: inline-block; background: #eef2ff; color: #4338ca !important; border: 1px solid #c7d2fe;
+    border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 700;
+  }
+  .ao-grid {
+    margin-top: 10px; display: grid; gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  }
+  .ao-card {
+    background: #fff; border: 2px solid #e2e8f0; border-radius: 12px; padding: 12px; color: #1f2937 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  }
+  .ao-card.sel { border-color: #16a34a; box-shadow: 0 4px 14px rgba(22,163,74,.18); }
+  .ao-h { display:flex; justify-content:space-between; gap: 8px; align-items:flex-start; margin-bottom:8px; }
+  .ao-title { font-size: 13px; font-weight: 800; color:#1f2937 !important; line-height:1.35; }
+  .ao-cost { font-size: 12px; font-weight: 800; color:#0f766e !important; background:#ecfeff; border:1px solid #99f6e4; border-radius:999px; padding:2px 9px; white-space:nowrap; }
+  .ao-k { font-size: 10px; text-transform: uppercase; letter-spacing: .6px; color: #64748b !important; font-weight: 800; margin-top: 6px; }
+  .ao-v { font-size: 12px; color:#334155 !important; line-height:1.45; }
+  .ao-act { margin-top: 10px; }
+  .ao-add {
+    width: 100%; border: 1.5px solid #cbd5e0; background: #f8fafc; color:#1e293b !important;
+    border-radius: 8px; padding: 6px 8px; font-weight: 700; font-size: 12px; cursor: pointer;
+  }
+  .ao-add.sel { border-color: #16a34a; background: #f0fdf4; color:#166534 !important; }
+  .ao-note { margin-top: 8px; font-size: 11px; color:#64748b !important; }
+  .ao-alert { margin-top: 8px; font-size: 12px; font-weight: 800; }
+</style>
+
+<div class="ao-wrap" id="ao-wrap">
+  <div class="ao-top">
+    <div class="ao-row" id="ao-filters"></div>
+    <div class="ao-row">
+      <label class="ao-meta">Budget:</label>
+      <select class="ao-select" id="ao-budget">
+        <option value="5">$5B</option>
+        <option value="10" selected>$10B</option>
+        <option value="15">$15B</option>
+        <option value="20">$20B</option>
+      </select>
+      <input id="ao-search" class="ao-search" placeholder="Search option or keyword" />
+      <button class="ao-btn" id="ao-reset">Reset Picks</button>
+    </div>
+    <div class="ao-row">
+      <span class="ao-badge" id="ao-selected">Selected: 0</span>
+      <span class="ao-badge" id="ao-cost">Total Cost: $0B</span>
+      <span class="ao-badge" id="ao-remaining">Remaining: $10B</span>
+    </div>
+    <div class="ao-alert" id="ao-alert"></div>
+    <div class="ao-note">Instruction: Pick a portfolio that stays within budget and addresses your city's biggest risks.</div>
+  </div>
+  <div class="ao-grid" id="ao-grid"></div>
+</div>
+
+<script>
+(function(){
+  const OPTIONS = [
+    {cat:'coastal', catLabel:'🌊 Coastal/Flood Protection', name:'Basic Sea Wall', cost:3, does:'Protects 10 km of coastline from 1-meter sea level rise + moderate storm surge', lim:'Doesn\'t protect against >1.5m rise; only covers part of waterfront'},
+    {cat:'coastal', catLabel:'🌊 Coastal/Flood Protection', name:'Advanced Sea Wall System', cost:7, does:'Protects 25 km of coastline from 2-meter rise + major storm surge; includes gates & pumps', lim:'Extremely expensive; still vulnerable to 2.5m+ events'},
+    {cat:'coastal', catLabel:'🌊 Coastal/Flood Protection', name:'Elevate Critical Infrastructure', cost:4, does:'Raise airports, power plants, hospitals 2 meters above current ground level', lim:'Doesn\'t protect surrounding neighborhoods; disrupts operations during construction'},
+    {cat:'coastal', catLabel:'🌊 Coastal/Flood Protection', name:'Upgraded Drainage/Pumps', cost:2, does:'Prevent urban flooding from heavy rain; remove water 50% faster', lim:'Doesn\'t help with storm surge or sea level rise; requires continuous energy'},
+    {cat:'coastal', catLabel:'🌊 Coastal/Flood Protection', name:'Relocate 500,000 People', cost:5, does:'Move people from highest-risk coastal zones to safer inland areas', lim:'Traumatic; destroys communities; people resist; only partial solution'},
+    {cat:'coastal', catLabel:'🌊 Coastal/Flood Protection', name:'Living Shorelines', cost:1, does:'Restore mangroves/wetlands/oyster reefs to buffer waves and filter water', lim:'Takes 10–20 years to mature; doesn\'t work against extreme surge events'},
+
+    {cat:'heat', catLabel:'🔥 Heat Management', name:'Cooling Centers + Heat Plans', cost:0.5, does:'Open 200 air-conditioned public shelters; early warning system; public health campaigns', lim:'People must travel to centers; doesn\'t cool homes; grid still stressed'},
+    {cat:'heat', catLabel:'🔥 Heat Management', name:'Urban Greening (Trees/Parks)', cost:2, does:'Plant 1 million trees; expand parks; cool city 2–3°C through shade + evaporation', lim:'Takes 15–20 years for trees to mature; needs water for irrigation'},
+    {cat:'heat', catLabel:'🔥 Heat Management', name:'Cool Roofs/Pavements', cost:3, does:'Paint roofs white; use reflective pavement on 30% of city; reduce heat island effect', lim:'Expensive citywide; maintenance required; doesn\'t eliminate heat risk'},
+    {cat:'heat', catLabel:'🔥 Heat Management', name:'Upgrade Electrical Grid', cost:5, does:'Add capacity to handle 40% more summer cooling demand; prevent blackouts', lim:'Very expensive; doesn\'t reduce heat itself; fossil fuel use increases emissions'},
+
+    {cat:'water', catLabel:'💧 Water Security', name:'Desalination Plant', cost:4, does:'Converts seawater to freshwater; supplies 20% of city\'s water needs', lim:'Energy-intensive; expensive to operate; brine disposal harms marine ecosystems'},
+    {cat:'water', catLabel:'💧 Water Security', name:'Water Recycling System', cost:2, does:'Treat wastewater for non-drinking uses (irrigation, industry); saves 15% of water', lim:'Public resistance to "toilet to tap"; requires behavior change'},
+    {cat:'water', catLabel:'💧 Water Security', name:'Rainwater Harvesting', cost:1, does:'Citywide cisterns capture rain from roofs; reduces stormwater runoff + supplies water', lim:'Only works where there IS rain; limited capacity'},
+    {cat:'water', catLabel:'💧 Water Security', name:'Restore Watersheds', cost:2, does:'Protect forests/wetlands upstream; improve water quality + recharge groundwater', lim:'Slow results; requires regional cooperation; doesn\'t produce "new" water'},
+    {cat:'water', catLabel:'💧 Water Security', name:'Water Rationing Program', cost:0.5, does:'Restrict outdoor watering, car washing; fines for overuse; public education', lim:'Unpopular; hurts landscaping/agriculture; doesn\'t solve supply problem'},
+
+    {cat:'emergency', catLabel:'🚨 Emergency & Multi-Risk', name:'Early Warning Systems', cost:0.5, does:'Real-time monitoring + alerts for floods, heat waves, storms; saves lives', lim:'Doesn\'t prevent damage; people must be able to evacuate/respond'},
+    {cat:'emergency', catLabel:'🚨 Emergency & Multi-Risk', name:'Resilient Housing Retrofit', cost:6, does:'Strengthen 100,000 homes against storms; add AC; elevate first floors', lim:'Extremely expensive for scale needed; only covers fraction of buildings'},
+    {cat:'emergency', catLabel:'🚨 Emergency & Multi-Risk', name:'Emergency Food Reserves', cost:1, does:'Stockpile 90 days food + water for 2 million people; distribution network', lim:'Expensive to maintain; doesn\'t prevent supply chain disruptions long-term'},
+    {cat:'emergency', catLabel:'🚨 Emergency & Multi-Risk', name:'Climate Migration Fund', cost:3, does:'Financial assistance for voluntary relocation to less-risky regions/cities', lim:'Doesn\'t prevent climate impacts; people resist leaving; receiving areas may resist influx'},
+
+    {cat:'economic', catLabel:'🏛️ Insurance & Economic Tools', name:'Disaster Insurance Pool', cost:2, does:'Government-backed insurance to rebuild after climate disasters; reduce economic shock', lim:'Doesn\'t prevent damage; can encourage risky development; payouts may not cover all losses'},
+    {cat:'economic', catLabel:'🏛️ Insurance & Economic Tools', name:'Building Codes Upgrade', cost:1, does:'Require all new construction to be climate-resilient; phase out risky development', lim:'Takes decades to turn over building stock; doesn\'t protect existing structures'}
+  ];
+
+  const state = { category: 'all', search: '', selected: new Set(), budget: 10 };
+  const cats = [
+    {id:'all', label:'All'},
+    {id:'coastal', label:'🌊 Coastal/Flood'},
+    {id:'heat', label:'🔥 Heat'},
+    {id:'water', label:'💧 Water'},
+    {id:'emergency', label:'🚨 Emergency'},
+    {id:'economic', label:'🏛️ Economic'}
+  ];
+
+  const filtersEl = document.getElementById('ao-filters');
+  const gridEl = document.getElementById('ao-grid');
+  const searchEl = document.getElementById('ao-search');
+  const budgetEl = document.getElementById('ao-budget');
+  const selectedEl = document.getElementById('ao-selected');
+  const costEl = document.getElementById('ao-cost');
+  const remainEl = document.getElementById('ao-remaining');
+  const alertEl = document.getElementById('ao-alert');
+
+  function costFmt(n){ return '$'+(Number.isInteger(n)?n:n.toFixed(1))+'B'; }
+  function totalCost(){
+    return OPTIONS.reduce((sum,o,idx)=> state.selected.has(idx) ? sum + o.cost : sum, 0);
+  }
+
+  function renderFilters(){
+    filtersEl.innerHTML='';
+    cats.forEach(c=>{
+      const b=document.createElement('button');
+      b.className='ao-btn'+(state.category===c.id?' active':'');
+      b.textContent=c.label;
+      b.onclick=()=>{ state.category=c.id; render(); };
+      filtersEl.appendChild(b);
+    });
+  }
+
+  function renderCards(){
+    const q=state.search.trim().toLowerCase();
+    gridEl.innerHTML='';
+    OPTIONS.forEach((o,idx)=>{
+      const matchCat = state.category==='all' || o.cat===state.category;
+      const matchSearch = !q || (o.name+' '+o.does+' '+o.lim+' '+o.catLabel).toLowerCase().includes(q);
+      if(!matchCat || !matchSearch) return;
+
+      const selected = state.selected.has(idx);
+      const card=document.createElement('div');
+      card.className='ao-card'+(selected?' sel':'');
+      card.innerHTML=`
+        <div class="ao-h">
+          <div class="ao-title">${o.name}<br><span class="ao-badge" style="margin-top:4px;">${o.catLabel}</span></div>
+          <div class="ao-cost">${costFmt(o.cost)}</div>
+        </div>
+        <div class="ao-k">What it does</div>
+        <div class="ao-v">${o.does}</div>
+        <div class="ao-k">Limitations</div>
+        <div class="ao-v">${o.lim}</div>
+        <div class="ao-act"><button class="ao-add ${selected?'sel':''}">${selected?'✓ Selected (Click to Remove)':'+ Add to Plan'}</button></div>
+      `;
+      card.querySelector('.ao-add').onclick=()=>{
+        if(state.selected.has(idx)) state.selected.delete(idx); else state.selected.add(idx);
+        render();
+      };
+      gridEl.appendChild(card);
+    });
+  }
+
+  function renderSummary(){
+    const t=totalCost();
+    const rem=state.budget - t;
+    selectedEl.textContent='Selected: '+state.selected.size;
+    costEl.textContent='Total Cost: '+costFmt(t);
+    remainEl.textContent='Remaining: '+costFmt(rem);
+
+    if(rem < 0){
+      alertEl.textContent='⚠️ Over budget! Remove options or increase budget.';
+      alertEl.style.color='#b91c1c';
+    } else if(rem <= 1){
+      alertEl.textContent='✅ Plan is on budget, but you have little remaining funding.';
+      alertEl.style.color='#92400e';
+    } else {
+      alertEl.textContent='✅ Plan is on budget.';
+      alertEl.style.color='#166534';
+    }
+  }
+
+  function render(){ renderFilters(); renderCards(); renderSummary(); }
+
+  searchEl.addEventListener('input', e=>{ state.search=e.target.value; renderCards(); });
+  budgetEl.addEventListener('change', e=>{ state.budget=+e.target.value; renderSummary(); });
+  document.getElementById('ao-reset').onclick=()=>{ state.selected.clear(); render(); };
+
+  render();
+})();
+</script>
+```
 :::
 
 # Evaluate: Connecting Past to Future
@@ -2050,6 +2829,8 @@ You now have the knowledge to explain:
 })();
 </script>
 ```
+
+## Past and Future: Test Your Knowledge
 
 ```{ojs}
 //| echo: false

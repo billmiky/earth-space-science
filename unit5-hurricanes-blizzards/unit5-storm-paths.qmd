@@ -776,6 +776,677 @@ viewof warmingScenario = Inputs.range([0, 4], {label: "Global warming (°C above
 🌍 As the planet warms, the jet stream and storm tracks are projected to shift **poleward** — changing which regions get storms and how intense they are! 🌍
 :::
 
+# Elaborate: ENSO — The Pacific's Weather Remote Control
+
+::: {.elaborate-box}
+## 🌊 El Niño–Southern Oscillation (ENSO)
+
+ENSO is a **cyclical shift in Pacific Ocean temperatures and wind patterns** that reorganizes storm tracks, precipitation, and hurricane activity across the entire planet. It is the single most powerful short-term driver of global weather variability — and climate change is making it more extreme.
+:::
+
+```{=html}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+  /* ─── Phase Selector ─── */
+  #enso-app { font-family:'Inter',sans-serif; max-width:940px; margin:0 auto; }
+  #enso-phase-btns { display:flex; gap:10px; justify-content:center; margin-bottom:18px; flex-wrap:wrap; }
+  .enso-btn {
+    padding:10px 26px; border-radius:30px; border:2.5px solid #cbd5e0;
+    background:#f7fafc; color:#4a5568; font-size:14px; font-weight:700;
+    cursor:pointer; transition:all 0.2s; font-family:'Inter',sans-serif;
+  }
+  .enso-btn:hover { transform:translateY(-2px); box-shadow:0 4px 14px rgba(0,0,0,0.12); }
+  .enso-btn.ep-active { color:white; border-color:transparent; box-shadow:0 4px 18px rgba(0,0,0,0.2); }
+
+  /* ─── Phase Banner ─── */
+  #enso-banner {
+    border-radius:16px; padding:20px 24px; margin-bottom:16px;
+    color:white; display:flex; align-items:flex-start; gap:18px;
+    transition:background 0.5s ease;
+  }
+  #enso-banner-emoji { font-size:3.2rem; flex-shrink:0; line-height:1; }
+  #enso-banner-title { font-family:'Space Grotesk',sans-serif; font-size:1.7em; font-weight:800; margin-bottom:4px; }
+  #enso-banner-sub { font-size:14px; opacity:0.9; line-height:1.6; }
+  #enso-oni { display:inline-block; background:rgba(255,255,255,0.22); border-radius:20px; padding:3px 12px; font-size:12px; font-weight:800; margin-top:6px; }
+
+  /* ─── Pacific Canvas ─── */
+  #enso-pacific-wrap { position:relative; margin:0 0 16px 0; }
+  #enso-canvas { width:100%; border-radius:14px; border:2px solid #e2e8f0; display:block; box-shadow:0 4px 20px rgba(0,0,0,0.1); }
+  #enso-canvas-label { text-align:center; font-size:11px; color:#718096; margin-top:4px; }
+
+  /* ─── Impact Grid ─── */
+  #enso-impacts { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin-bottom:16px; }
+  .ei-card {
+    border-radius:12px; border:2px solid #e2e8f0; padding:12px 14px;
+    background:white; transition:transform 0.15s, box-shadow 0.15s;
+  }
+  .ei-card:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,0.1); }
+  .ei-region { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#a0aec0; margin-bottom:4px; }
+  .ei-icon { font-size:1.6rem; margin-bottom:4px; }
+  .ei-label { font-size:13px; font-weight:700; color:#2d3748; margin-bottom:3px; }
+  .ei-desc { font-size:11.5px; color:#718096; line-height:1.5; }
+  .ei-wet { border-left:4px solid #3b82f6; }
+  .ei-dry { border-left:4px solid #f59e0b; }
+  .ei-warm { border-left:4px solid #ef4444; }
+  .ei-cool { border-left:4px solid #06b6d4; }
+  .ei-storm { border-left:4px solid #8b5cf6; }
+  .ei-calm { border-left:4px solid #10b981; }
+
+  /* ─── Historical Chart ─── */
+  #enso-chart-wrap { background:white; border-radius:14px; border:2px solid #e2e8f0; padding:16px 18px; margin-bottom:16px; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+  #enso-chart-title { font-size:13px; font-weight:800; color:#4a5568; margin-bottom:10px; }
+  #enso-chart { width:100%; height:110px; display:block; }
+
+  /* ─── Mechanism Stepper ─── */
+  #enso-stepper { background:white; border-radius:14px; border:2px solid #e2e8f0; padding:16px 18px; margin-bottom:16px; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+  #enso-step-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  #enso-step-title { font-size:13px; font-weight:800; color:#4a5568; }
+  #enso-step-btns { display:flex; gap:6px; }
+  .esb { padding:5px 14px; border-radius:20px; border:1.5px solid #cbd5e0; background:#f7fafc; color:#4a5568; font-size:12px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; }
+  .esb:hover { border-color:#667eea; background:#eef2ff; color:#4338ca; }
+  #enso-steps { display:flex; gap:0; overflow:hidden; }
+  .enso-step { min-width:100%; padding:12px 14px; box-sizing:border-box; transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+  .es-num { display:inline-block; width:24px; height:24px; border-radius:50%; background:linear-gradient(135deg,#667eea,#764ba2); color:white; font-size:11px; font-weight:800; text-align:center; line-height:24px; margin-right:8px; }
+  .es-name { font-size:14px; font-weight:800; color:#2d3748; }
+  .es-body { font-size:13px; color:#4a5568; margin-top:8px; line-height:1.65; }
+  .es-note { display:inline-block; margin-top:8px; background:linear-gradient(135deg,#eef2ff,#e8f4fd); border:1.5px solid #c7d2fe; border-radius:8px; padding:6px 10px; font-size:11.5px; color:#3730a3; font-weight:600; }
+  #enso-step-dots { display:flex; gap:6px; justify-content:center; margin-top:10px; }
+  .esd { width:8px; height:8px; border-radius:50%; background:#e2e8f0; transition:background 0.2s; }
+  .esd.esd-active { background:linear-gradient(135deg,#667eea,#764ba2); }
+  #enso-step-progress { font-size:11px; color:#a0aec0; text-align:right; }
+</style>
+
+<div id="enso-app">
+
+  <!-- Phase Selector -->
+  <div id="enso-phase-btns">
+    <button class="enso-btn ep-active" data-phase="neutral" style="background:linear-gradient(135deg,#4facfe,#00f2fe);border-color:transparent;color:white;">🌊 Neutral</button>
+    <button class="enso-btn" data-phase="elnino">🔴 El Niño</button>
+    <button class="enso-btn" data-phase="lanina">🔵 La Niña</button>
+  </div>
+
+  <!-- Phase Banner -->
+  <div id="enso-banner">
+    <div id="enso-banner-emoji">🌊</div>
+    <div>
+      <div id="enso-banner-title">Neutral / Normal Conditions</div>
+      <div id="enso-banner-sub">Trade winds blow west along the equator, piling warm water in the western Pacific near Indonesia. Cold, nutrient-rich water upwells off Peru. The Walker Circulation runs normally.</div>
+      <div id="enso-oni">ONI: −0.4 to +0.4°C</div>
+    </div>
+  </div>
+
+  <!-- Pacific Cross-Section Canvas -->
+  <div id="enso-pacific-wrap">
+    <canvas id="enso-canvas" height="240"></canvas>
+    <div id="enso-canvas-label">Equatorial Pacific cross-section — West (Indonesia) ← → East (South America). Drag the slider to animate.</div>
+  </div>
+
+  <!-- Animated Intensity Slider -->
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;font-family:'Inter',sans-serif;">
+    <span style="font-size:12px;font-weight:700;color:#718096;white-space:nowrap;">Intensity:</span>
+    <input type="range" id="enso-intensity" min="0" max="100" value="60" style="flex:1;accent-color:#667eea;">
+    <span id="enso-intensity-label" style="font-size:12px;font-weight:700;color:#667eea;min-width:60px;text-align:right;">Moderate</span>
+  </div>
+
+  <!-- Global Impact Cards -->
+  <div id="enso-impacts"></div>
+
+  <!-- Historical ONI Chart -->
+  <div id="enso-chart-wrap">
+    <div id="enso-chart-title">📊 ONI (Oceanic Niño Index) — Monthly Record 1950–2025 | Click a bar to jump to that event</div>
+    <canvas id="enso-chart" height="110"></canvas>
+  </div>
+
+  <!-- Mechanism Stepper -->
+  <div id="enso-stepper">
+    <div id="enso-step-header">
+      <div id="enso-step-title">🔬 Step-by-step Mechanism</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div id="enso-step-progress"></div>
+        <div id="enso-step-btns">
+          <button class="esb" id="esb-prev">← Prev</button>
+          <button class="esb" id="esb-next">Next →</button>
+        </div>
+      </div>
+    </div>
+    <div id="enso-steps-viewport" style="overflow:hidden;position:relative;">
+      <div id="enso-steps"></div>
+    </div>
+    <div id="enso-step-dots"></div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  /* ═══════════════════════════════════════════════
+     DATA
+  ═══════════════════════════════════════════════ */
+  const PHASES = {
+    neutral: {
+      emoji: '🌊',
+      title: 'Neutral / Normal Conditions',
+      sub: 'Trade winds blow west along the equator, piling warm water in the western Pacific near Indonesia. Cold, nutrient-rich water upwells off Peru. The Walker Circulation runs at normal strength.',
+      oni: 'ONI: −0.4 to +0.4°C',
+      btnGrad: 'linear-gradient(135deg,#4facfe,#00f2fe)',
+      bannerGrad: 'linear-gradient(135deg,#0277bd,#0288d1)',
+      warmPool: 0.5,       // 0=far west, 1=far east
+      thermoclineAngle: 0, // degrees
+      windStrength: 0.7,
+      impacts: [
+        {region:'Western Pacific',icon:'🌧️',label:'Normal Rainfall',desc:'Indonesia & Australia receive typical monsoon rainfall.',cls:'ei-wet'},
+        {region:'Eastern Pacific',icon:'🐟',label:'Strong Upwelling',desc:'Cold nutrient-rich water supports large fish populations off Peru.',cls:'ei-cool'},
+        {region:'Atlantic Basin',icon:'🌀',label:'Average Hurricane Season',desc:'Atlantic wind shear is at typical levels — moderate season expected.',cls:'ei-storm'},
+        {region:'North America',icon:'🌤️',label:'Near-Normal Winters',desc:'Jet stream follows a typical path; precipitation near average.',cls:'ei-calm'},
+        {region:'East Africa',icon:'🌦️',label:'Average Rainfall',desc:'East Africa receives near-normal seasonal precipitation.',cls:'ei-wet'},
+        {region:'South Asia',icon:'🌧️',label:'Normal Monsoon',desc:'Indian Ocean monsoon tracks its typical seasonal pattern.',cls:'ei-wet'},
+      ],
+      steps: [
+        {n:'1',name:'Trade Winds Blow West',body:'Normally, <strong>easterly trade winds</strong> blow from South America toward Asia along the equatorial Pacific. This wind is driven by the temperature difference between warm western and cool eastern Pacific.',note:'Key driver: Pressure difference between warm west Pacific and cool east Pacific.'},
+        {n:'2',name:'Warm Water Pools in the West',body:'The trade winds push warm surface water westward, causing it to "pile up" near Indonesia and Australia. The western Pacific warm pool reaches temperatures of <strong>28–30°C</strong>.',note:'The warm pool can be up to 60 cm higher than the eastern Pacific surface.'},
+        {n:'3',name:'Cold Upwelling Off Peru',body:'As warm surface water moves west, cold water from the deep ocean <strong>upwells</strong> along the coast of South America, keeping the eastern Pacific cool and nutrient-rich.',note:'Peru\'s anchovy fishery — one of the world\'s largest — depends on this upwelling.'},
+        {n:'4',name:'The Walker Circulation',body:'Rising air over the warm western Pacific, westward flow aloft, sinking air over the cool eastern Pacific, and surface trade winds back west — this loop is called the <strong>Walker Circulation</strong>.',note:'George Walker first described this system in 1924 while studying Indian monsoon failures.'},
+        {n:'5',name:'Teleconnections',body:'The Walker Circulation links weather patterns around the globe. The pressure difference between Darwin, Australia and Tahiti (the <strong>Southern Oscillation Index</strong>) measures this system\'s strength.',note:'A high SOI = La Niña conditions; a low SOI = El Niño conditions.'},
+      ]
+    },
+    elnino: {
+      emoji: '🔴',
+      title: 'El Niño — The Warm Phase',
+      sub: 'Trade winds weaken or reverse. Warm water surges east across the Pacific. Sea surface temperatures off Peru rise 0.5–3°C or more above normal, disrupting global weather patterns.',
+      oni: 'ONI: ≥ +0.5°C (Strong: ≥ +1.5°C)',
+      btnGrad: 'linear-gradient(135deg,#ef4444,#f97316)',
+      bannerGrad: 'linear-gradient(135deg,#b71c1c,#e53935)',
+      warmPool: 0.82,
+      thermoclineAngle: 8,
+      windStrength: 0.2,
+      impacts: [
+        {region:'Western Pacific',icon:'🌵',label:'Drought & Wildfires',desc:'Indonesia, Australia & Philippines suffer severe drought. 2015–16 saw massive peatland fires across Borneo.',cls:'ei-dry'},
+        {region:'Eastern Pacific',icon:'🌡️',label:'Warm Sea Surface',desc:'Sea surface temperatures off Peru rise 2–4°C, killing fish and disrupting the entire food web.',cls:'ei-warm'},
+        {region:'Atlantic Basin',icon:'😌',label:'Suppressed Hurricanes',desc:'Increased upper-level wind shear over the Atlantic inhibits hurricane formation. Fewer/weaker Atlantic storms.',cls:'ei-calm'},
+        {region:'Southern U.S.',icon:'💧',label:'Wetter / Flooding',desc:'Southern tier from California to Florida sees above-normal winter rainfall. 1997–98: California floods.',cls:'ei-wet'},
+        {region:'Northern U.S. / Canada',icon:'☀️',label:'Warmer/Drier Winters',desc:'The northern tier experiences mild, dry winters. Great Lakes ice cover is reduced dramatically.',cls:'ei-dry'},
+        {region:'South America',icon:'🌊',label:'Coastal Flooding & Fish Die-off',desc:'Peru and Ecuador face catastrophic flooding; collapse of the anchovy fishery. Named "El Niño" by Peruvian fishermen.',cls:'ei-wet'},
+        {region:'East Africa',icon:'🌧️',label:'Heavy Rains & Flooding',desc:'East Africa (Kenya, Somalia, Ethiopia) receives well-above-normal rainfall. 2019–20 saw massive flooding.',cls:'ei-wet'},
+        {region:'South Asia',icon:'☁️',label:'Weakened Monsoon',desc:'India and Southeast Asia receive below-normal monsoon rainfall, risking drought and agricultural failure.',cls:'ei-dry'},
+      ],
+      steps: [
+        {n:'1',name:'Trade Winds Weaken',body:'Every 2–7 years, the trade winds weaken — sometimes triggered by a burst of westerly winds. Without the eastward push from trade winds, warm water begins to slosh back east.',note:'The exact trigger is still actively researched. Westerly wind bursts in the western Pacific are key initiators.'},
+        {n:'2',name:'Warm Water Surges Eastward',body:'A downwelling Kelvin wave — an ocean wave that travels at the thermocline level — propagates eastward at 2–3 m/s, carrying warm water across the entire Pacific basin in 2–3 months.',note:'Kelvin waves are trapped to the equator by Earth\'s rotation — they can only travel east along the equator.'},
+        {n:'3',name:'Eastern Pacific Warms',body:'When the Kelvin wave arrives off South America, it deepens the thermocline and <strong>suppresses upwelling</strong>. Sea surface temperatures rise 0.5–3°C above normal, sometimes much more.',note:'1997–98 El Niño SST anomalies reached +5°C in some areas — the strongest ever recorded at that time.'},
+        {n:'4',name:'Walker Circulation Reverses',body:'With warm water now in the east, convection (rising air) shifts eastward too. The Walker Circulation slows or reverses, fundamentally reorganizing global atmospheric pressure patterns.',note:'The Southern Oscillation Index (SOI) drops sharply negative during El Niño events.'},
+        {n:'5',name:'Global Teleconnections Activate',body:'The shifted convection alters the jet stream globally through <strong>Rossby waves</strong>. These atmospheric waves propagate poleward, changing storm tracks across North America, Africa, South Asia, and beyond.',note:'El Niño events cost the global economy an estimated $35 billion on average and cause 23,000+ deaths per event.'},
+        {n:'6',name:'Self-Limiting Feedback',body:'As warm water in the east cools (by releasing heat to the atmosphere) and the ocean adjusts, trade winds gradually recover. The system typically returns to neutral — or overshoots to La Niña.',note:'El Niño events typically last 9–12 months, peaking in boreal winter (Nov–Jan).'},
+      ]
+    },
+    lanina: {
+      emoji: '🔵',
+      title: 'La Niña — The Cool Phase',
+      sub: 'Trade winds strengthen beyond normal, pushing even more warm water west. The eastern Pacific cools below average. La Niña is essentially an amplified version of normal conditions.',
+      oni: 'ONI: ≤ −0.5°C (Strong: ≤ −1.5°C)',
+      btnGrad: 'linear-gradient(135deg,#2563eb,#06b6d4)',
+      bannerGrad: 'linear-gradient(135deg,#1565c0,#0288d1)',
+      warmPool: 0.18,
+      thermoclineAngle: -9,
+      windStrength: 1.0,
+      impacts: [
+        {region:'Western Pacific',icon:'🌊',label:'Enhanced Rainfall / Flooding',desc:'Indonesia, Philippines, and Australia see above-normal rainfall. 2010–11 La Niña caused Queensland\'s worst floods.',cls:'ei-wet'},
+        {region:'Eastern Pacific',icon:'🧊',label:'Enhanced Upwelling',desc:'Stronger trade winds intensify cold water upwelling off Peru, benefiting fisheries but dropping SSTs.',cls:'ei-cool'},
+        {region:'Atlantic Basin',icon:'🌀',label:'More Active Hurricane Season',desc:'Reduced upper-level wind shear favors hurricane development. 2010 La Niña produced 19 named storms.',cls:'ei-storm'},
+        {region:'Southern U.S.',icon:'☀️',label:'Drought & Wildfires',desc:'Southern California, Texas, and the Gulf States tend to be drier than normal. Texas 2011 drought was La Niña–driven.',cls:'ei-dry'},
+        {region:'Pacific Northwest / Great Plains',icon:'🌧️',label:'Wetter / Cooler Winters',desc:'The northern tier of the U.S. and Canada see increased snowpack and precipitation.',cls:'ei-wet'},
+        {region:'South America',icon:'🌵',label:'Drought in SE South America',desc:'Argentina, Uruguay, and southern Brazil experience below-normal rainfall and agricultural stress.',cls:'ei-dry'},
+        {region:'East Africa',icon:'☁️',label:'Below-Normal Rainfall',desc:'East Africa tends to be drier during La Niña, increasing drought and food insecurity risk.',cls:'ei-dry'},
+        {region:'South Asia',icon:'🌧️',label:'Enhanced Monsoon',desc:'India and Southeast Asia receive above-normal monsoon rainfall, with flooding risks in some areas.',cls:'ei-wet'},
+      ],
+      steps: [
+        {n:'1',name:'Strengthened Trade Winds',body:'After an El Niño, or independently, the trade winds intensify beyond their normal strength. This is often a rebound from the El Niño phase — the ocean and atmosphere overcorrect.',note:'The transition from El Niño to La Niña typically occurs within 6–12 months.'},
+        {n:'2',name:'Warm Water Piles Up Even More in the West',body:'Stronger trades push even more warm water toward Indonesia and Australia, making the western Pacific warm pool deeper and warmer than normal.',note:'Sea level in the western Pacific can be 15–20 cm higher than the eastern Pacific during strong La Niña.'},
+        {n:'3',name:'Enhanced Upwelling in the East',body:'The stronger wind stress on the ocean surface intensifies upwelling along South America, dragging even colder, deeper water to the surface than during neutral conditions.',note:'The thermocline (boundary between warm surface and cold deep water) tilts strongly — shallow in the east, deep in the west.'},
+        {n:'4',name:'Walker Circulation Accelerates',body:'With enhanced east-west temperature contrast, the Walker Circulation strengthens — rising air over the western Pacific intensifies, driving stronger convection and more rainfall over Indonesia and Australia.',note:'SOI rises sharply positive during La Niña, indicating lower pressure at Darwin vs. Tahiti.'},
+        {n:'5',name:'Atlantic Hurricane Enhancement',body:'A stronger Walker Circulation reduces upper-level winds over the Atlantic (less wind shear), creating favorable conditions for hurricane formation and intensification.',note:'La Niña years account for a disproportionate share of catastrophic Atlantic hurricane seasons.'},
+        {n:'6',name:'Global Weather Reorganized',body:'Like El Niño but mirrored: dry where El Niño is wet, wet where El Niño is dry. North America\'s storm track shifts northward, bringing drought to the South and storms to the Pacific Northwest.',note:'La Niña events can last 1–3 years — often longer than El Niño events.'},
+      ]
+    }
+  };
+
+  /* ─── Historical ONI data (simplified annual averages, representative values) ─── */
+  const ONI_DATA = [
+    // [year, ONI anomaly]
+    [1950,-1.4],[1951,0.7],[1952,0.1],[1953,0.5],[1954,-1.2],[1955,-1.6],
+    [1956,-0.8],[1957,1.2],[1958,0.7],[1959,0.1],[1960,-0.4],[1961,-0.0],
+    [1962,-0.4],[1963,0.7],[1964,-0.9],[1965,1.3],[1966,0.1],[1967,-0.5],
+    [1968,0.7],[1969,0.9],[1970,-1.0],[1971,-1.3],[1972,1.8],[1973,-1.8],
+    [1974,-1.1],[1975,-1.3],[1976,0.8],[1977,0.6],[1978,0.0],[1979,0.2],
+    [1980,0.5],[1981,0.4],[1982,2.0],[1983,1.1],[1984,-0.6],[1985,-0.9],
+    [1986,1.2],[1987,1.6],[1988,-1.7],[1989,-0.8],[1990,0.4],[1991,0.8],
+    [1992,0.6],[1993,0.4],[1994,0.6],[1995,-0.7],[1996,-0.5],[1997,2.4],
+    [1998,-1.4],[1999,-1.2],[2000,-0.8],[2001,-0.1],[2002,1.0],[2003,0.5],
+    [2004,0.6],[2005,-0.5],[2006,0.8],[2007,-1.3],[2008,-0.8],[2009,1.0],
+    [2010,-1.4],[2011,-1.2],[2012,0.2],[2013,-0.4],[2014,0.3],[2015,2.3],
+    [2016,0.4],[2017,-0.8],[2018,0.9],[2019,-0.6],[2020,-1.3],[2021,-1.0],
+    [2022,-0.9],[2023,1.9],[2024,0.2],[2025,-0.6]
+  ];
+
+  /* ═══════════════════════════════════════════════
+     STATE
+  ═══════════════════════════════════════════════ */
+  let currentPhase = 'neutral';
+  let currentStep = 0;
+  let intensity = 60;
+  let animFrame = null;
+  let waveOffset = 0;
+
+  /* ═══════════════════════════════════════════════
+     HELPERS
+  ═══════════════════════════════════════════════ */
+  function lerp(a,b,t){ return a+(b-a)*t; }
+  function clamp(v,lo,hi){ return Math.max(lo,Math.min(hi,v)); }
+
+  /* ═══════════════════════════════════════════════
+     CANVAS: Pacific Cross-Section
+  ═══════════════════════════════════════════════ */
+  const canvas = document.getElementById('enso-canvas');
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas(){
+    const w = canvas.parentElement.offsetWidth;
+    canvas.width = w;
+    canvas.height = 240;
+  }
+
+  function drawPacific(){
+    resizeCanvas();
+    const p = PHASES[currentPhase];
+    const W = canvas.width, H = canvas.height;
+    const t = intensity/100;
+
+    // Background ocean gradient
+    const oceanGrad = ctx.createLinearGradient(0,0,0,H);
+    oceanGrad.addColorStop(0,'#0c2a4a');
+    oceanGrad.addColorStop(1,'#041628');
+    ctx.fillStyle = oceanGrad;
+    ctx.fillRect(0,0,W,H);
+
+    // Land masses
+    function drawLand(x,w,label){
+      const lg = ctx.createLinearGradient(0,0,0,H*0.22);
+      lg.addColorStop(0,'#2d5a27');
+      lg.addColorStop(1,'#1a3a16');
+      ctx.fillStyle = lg;
+      ctx.fillRect(x,0,w,H*0.22);
+      ctx.fillStyle = '#a8d5a2';
+      ctx.font = `bold ${Math.max(10,W*0.018)}px Inter,sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText(label, x+w/2, H*0.12);
+    }
+    drawLand(0, W*0.12, 'INDONESIA');
+    drawLand(W*0.88, W*0.12, 'PERU');
+
+    // Warm pool — position varies by phase + intensity
+    const poolX = lerp(W*0.12, W*0.85, lerp(p.warmPool*0.6, p.warmPool, t));
+    const poolW = W * lerp(0.3, 0.5, t);
+
+    // Sea surface temperature color gradient
+    for(let x=W*0.12; x<W*0.88; x+=2){
+      const frac = (x - W*0.12)/(W*0.76);
+      // Distance from warm pool center
+      const distFromPool = Math.abs(x - poolX)/poolW;
+      const warmth = clamp(1 - distFromPool, 0, 1);
+      const temp = lerp(15, 30, warmth);
+      const r = Math.round(lerp(0, 255, warmth));
+      const g = Math.round(lerp(120, 180, 1-warmth*0.5));
+      const b = Math.round(lerp(200, 50, warmth));
+      ctx.fillStyle = `rgb(${r},${g},${b})`;
+      ctx.fillRect(x, H*0.22, 2, H*0.12);
+    }
+
+    // Thermocline (dashed line — tilted by phase)
+    const tcAngle = p.thermoclineAngle * t * Math.PI/180;
+    const tcMidY = H * 0.55;
+    ctx.setLineDash([8,5]);
+    ctx.strokeStyle = 'rgba(0,200,255,0.7)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    const tcWest = tcMidY - Math.sin(tcAngle)*(W*0.38);
+    const tcEast = tcMidY + Math.sin(tcAngle)*(W*0.38);
+    ctx.moveTo(W*0.12, tcWest);
+    ctx.lineTo(W*0.88, tcEast);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Thermocline label
+    ctx.fillStyle = 'rgba(0,200,255,0.9)';
+    ctx.font = `${Math.max(9,W*0.012)}px Inter,sans-serif`;
+    ctx.textAlign = 'left';
+    ctx.fillText('thermocline', W*0.14, tcWest - 6);
+
+    // Deep cold water below thermocline
+    const coldGrad = ctx.createLinearGradient(0, tcMidY, 0, H);
+    coldGrad.addColorStop(0,'rgba(0,100,180,0.3)');
+    coldGrad.addColorStop(1,'rgba(0,30,80,0.5)');
+    ctx.fillStyle = coldGrad;
+    ctx.fillRect(W*0.12, tcMidY+4, W*0.76, H - tcMidY - 4);
+
+    // Upwelling arrow (east coast) — stronger in La Niña, suppressed in El Niño
+    const upwellStrength = currentPhase==='elnino' ? (1-t)*0.4 : currentPhase==='lanina' ? 0.5+t*0.5 : 0.5;
+    if(upwellStrength > 0.1){
+      const ux = W*0.84;
+      const arrowH = H*0.18*upwellStrength;
+      ctx.strokeStyle = `rgba(0,210,230,${upwellStrength*0.9})`;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(ux, H*0.55);
+      ctx.lineTo(ux, H*0.55 - arrowH);
+      ctx.stroke();
+      // arrowhead
+      ctx.beginPath();
+      ctx.moveTo(ux, H*0.55 - arrowH);
+      ctx.lineTo(ux-6, H*0.55 - arrowH + 10);
+      ctx.lineTo(ux+6, H*0.55 - arrowH + 10);
+      ctx.closePath();
+      ctx.fillStyle = `rgba(0,210,230,${upwellStrength*0.9})`;
+      ctx.fill();
+      ctx.fillStyle = 'rgba(0,210,230,0.8)';
+      ctx.font = `${Math.max(8,W*0.012)}px Inter,sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('upwelling', ux, H*0.55 - arrowH - 6);
+    }
+
+    // Animated trade wind arrows
+    const ws = p.windStrength * t * 0.7 + p.windStrength * 0.3;
+    const numArrows = 5;
+    const arrowY = H * 0.16;
+    for(let i=0;i<numArrows;i++){
+      const baseX = W*0.15 + (W*0.7/numArrows)*i;
+      const offset = ((waveOffset * (currentPhase==='elnino'?-1:1)) % (W*0.7/numArrows));
+      const ax = (baseX + offset + W*0.76) % (W*0.76) + W*0.12;
+      const len = 30 * ws;
+      const dir = currentPhase==='elnino' && t>0.5 ? 1 : -1; // reverse in strong El Niño
+      ctx.strokeStyle = `rgba(255,255,200,${ws*0.8})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(ax, arrowY);
+      ctx.lineTo(ax + dir*len, arrowY);
+      ctx.stroke();
+      // arrowhead
+      ctx.beginPath();
+      ctx.moveTo(ax + dir*len, arrowY);
+      ctx.lineTo(ax + dir*len - dir*8, arrowY - 5);
+      ctx.lineTo(ax + dir*len - dir*8, arrowY + 5);
+      ctx.closePath();
+      ctx.fillStyle = `rgba(255,255,200,${ws*0.8})`;
+      ctx.fill();
+    }
+
+    // Wind label
+    ctx.fillStyle = 'rgba(255,255,200,0.9)';
+    ctx.font = `bold ${Math.max(9,W*0.012)}px Inter,sans-serif`;
+    ctx.textAlign = 'center';
+    const windLabel = currentPhase==='elnino' && t>0.6 ? '← Reversed/Weak Trades' : '← Trade Winds (Easterlies)';
+    ctx.fillText(windLabel, W*0.5, arrowY - 12);
+
+    // Warm pool / SST label
+    const sst = currentPhase==='elnino' ? (28+t*2.5).toFixed(1) : currentPhase==='lanina' ? (28-t*1.5).toFixed(1) : '28.5';
+    ctx.fillStyle = 'rgba(255,160,80,0.95)';
+    ctx.font = `bold ${Math.max(10,W*0.014)}px Inter,sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText(`🌡️ ${sst}°C`, poolX, H*0.36);
+
+    // Phase label overlay
+    ctx.fillStyle = 'rgba(255,255,255,0.12)';
+    ctx.fillRect(W*0.12, H*0.88, W*0.76, H*0.1);
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.font = `${Math.max(10,W*0.013)}px Inter,sans-serif`;
+    ctx.textAlign = 'left';
+    ctx.fillText('🌏 West (Warm)', W*0.15, H*0.95);
+    ctx.textAlign = 'right';
+    ctx.fillText('East (Cold/Upwelling) 🌎', W*0.85, H*0.95);
+  }
+
+  function animLoop(){
+    waveOffset = (waveOffset + 0.8) % 1000;
+    drawPacific();
+    animFrame = requestAnimationFrame(animLoop);
+  }
+
+  /* ═══════════════════════════════════════════════
+     IMPACT CARDS
+  ═══════════════════════════════════════════════ */
+  function renderImpacts(){
+    const p = PHASES[currentPhase];
+    const container = document.getElementById('enso-impacts');
+    container.innerHTML = p.impacts.map(imp=>`
+      <div class="ei-card ${imp.cls}">
+        <div class="ei-region">${imp.region}</div>
+        <div class="ei-icon">${imp.icon}</div>
+        <div class="ei-label">${imp.label}</div>
+        <div class="ei-desc">${imp.desc}</div>
+      </div>`).join('');
+  }
+
+  /* ═══════════════════════════════════════════════
+     BANNER
+  ═══════════════════════════════════════════════ */
+  function renderBanner(){
+    const p = PHASES[currentPhase];
+    const banner = document.getElementById('enso-banner');
+    banner.style.background = p.bannerGrad;
+    document.getElementById('enso-banner-emoji').textContent = p.emoji;
+    document.getElementById('enso-banner-title').textContent = p.title;
+    document.getElementById('enso-banner-sub').textContent = p.sub;
+    document.getElementById('enso-oni').textContent = p.oni;
+  }
+
+  /* ═══════════════════════════════════════════════
+     STEPPER
+  ═══════════════════════════════════════════════ */
+  function renderStepper(){
+    const steps = PHASES[currentPhase].steps;
+    const container = document.getElementById('enso-steps');
+    container.style.display = 'flex';
+    container.style.transition = 'transform 0.4s cubic-bezier(0.4,0,0.2,1)';
+    container.innerHTML = steps.map((s,i)=>`
+      <div class="enso-step" style="min-width:100%;box-sizing:border-box;">
+        <span class="es-num">${s.n}</span><span class="es-name">${s.name}</span>
+        <div class="es-body">${s.body}</div>
+        <div class="es-note">${s.note}</div>
+      </div>`).join('');
+    // dots
+    const dots = document.getElementById('enso-step-dots');
+    dots.innerHTML = steps.map((_,i)=>`<div class="esd ${i===currentStep?'esd-active':''}"></div>`).join('');
+    updateStepView();
+  }
+
+  function updateStepView(){
+    const steps = PHASES[currentPhase].steps;
+    document.getElementById('enso-steps').style.transform = `translateX(-${currentStep*100}%)`;
+    document.querySelectorAll('.esd').forEach((d,i)=>{
+      d.classList.toggle('esd-active', i===currentStep);
+    });
+    document.getElementById('enso-step-progress').textContent = `${currentStep+1} / ${steps.length}`;
+  }
+
+  document.getElementById('esb-next').addEventListener('click',()=>{
+    const n = PHASES[currentPhase].steps.length;
+    currentStep = (currentStep+1) % n;
+    updateStepView();
+  });
+  document.getElementById('esb-prev').addEventListener('click',()=>{
+    const n = PHASES[currentPhase].steps.length;
+    currentStep = (currentStep-1+n) % n;
+    updateStepView();
+  });
+
+  /* ═══════════════════════════════════════════════
+     HISTORICAL ONI CHART
+  ═══════════════════════════════════════════════ */
+  const chartCanvas = document.getElementById('enso-chart');
+  const cctx = chartCanvas.getContext('2d');
+
+  function drawOniChart(){
+    const W = chartCanvas.parentElement.offsetWidth - 36;
+    chartCanvas.width = W;
+    chartCanvas.height = 110;
+    const CH = chartCanvas.height;
+    const PAD = {l:36, r:10, t:10, b:20};
+    const dW = (W-PAD.l-PAD.r) / ONI_DATA.length;
+    const maxV = 2.6;
+
+    cctx.clearRect(0,0,W,CH);
+
+    // Zero line
+    const zeroY = PAD.t + (CH-PAD.t-PAD.b)/2;
+    cctx.strokeStyle = '#cbd5e0';
+    cctx.lineWidth = 1;
+    cctx.setLineDash([4,3]);
+    cctx.beginPath();
+    cctx.moveTo(PAD.l,zeroY);
+    cctx.lineTo(W-PAD.r,zeroY);
+    cctx.stroke();
+    cctx.setLineDash([]);
+
+    // ±0.5 threshold lines
+    [0.5,-0.5].forEach(v=>{
+      const y = zeroY - v*((CH-PAD.t-PAD.b)/2)/maxV;
+      cctx.strokeStyle = 'rgba(150,150,150,0.35)';
+      cctx.lineWidth = 1;
+      cctx.setLineDash([2,4]);
+      cctx.beginPath();
+      cctx.moveTo(PAD.l,y); cctx.lineTo(W-PAD.r,y);
+      cctx.stroke();
+      cctx.setLineDash([]);
+    });
+
+    // Bars
+    ONI_DATA.forEach(([yr,v],i)=>{
+      const x = PAD.l + i*dW;
+      const barH = Math.abs(v)*(CH-PAD.t-PAD.b)/2/maxV;
+      const y = v>=0 ? zeroY-barH : zeroY;
+      const isNino = v >= 0.5;
+      const isNina = v <= -0.5;
+      cctx.fillStyle = isNino ? `rgba(239,68,68,0.85)` : isNina ? `rgba(37,99,235,0.85)` : 'rgba(150,150,150,0.55)';
+      cctx.fillRect(x, y, Math.max(dW-1,1), barH);
+    });
+
+    // Y labels
+    cctx.fillStyle = '#718096';
+    cctx.font = '9px Inter,sans-serif';
+    cctx.textAlign = 'right';
+    [2,1,0,-1,-2].forEach(v=>{
+      const y = zeroY - v*(CH-PAD.t-PAD.b)/2/maxV;
+      cctx.fillText(v===0?'0':v>0?`+${v}`:v, PAD.l-3, y+3);
+    });
+
+    // X labels (every 10 years)
+    cctx.textAlign = 'center';
+    ONI_DATA.forEach(([yr,v],i)=>{
+      if(yr%10===0){
+        const x = PAD.l + i*dW + dW/2;
+        cctx.fillText(yr, x, CH-4);
+      }
+    });
+
+    // Legend
+    cctx.fillStyle = 'rgba(239,68,68,0.85)';
+    cctx.fillRect(PAD.l,4,10,8);
+    cctx.fillStyle = '#4a5568'; cctx.font='9px Inter,sans-serif'; cctx.textAlign='left';
+    cctx.fillText('El Niño',PAD.l+13,11);
+    cctx.fillStyle='rgba(37,99,235,0.85)';
+    cctx.fillRect(PAD.l+52,4,10,8);
+    cctx.fillStyle='#4a5568';
+    cctx.fillText('La Niña',PAD.l+65,11);
+  }
+
+  // Click on chart to highlight a year
+  chartCanvas.addEventListener('click', e=>{
+    const rect = chartCanvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left) * (chartCanvas.width/rect.width);
+    const PAD_L = 36, dW = (chartCanvas.width-46)/ONI_DATA.length;
+    const idx = Math.floor((x-PAD_L)/dW);
+    if(idx>=0 && idx<ONI_DATA.length){
+      const [yr,v] = ONI_DATA[idx];
+      const phase = v>=0.5?'elnino':v<=-0.5?'lanina':'neutral';
+      setPhase(phase);
+      // show year tooltip briefly
+      const tip = document.createElement('div');
+      tip.style.cssText='position:fixed;background:#2d3748;color:white;padding:5px 10px;border-radius:8px;font-size:12px;font-weight:700;pointer-events:none;z-index:9999;transition:opacity 0.4s;';
+      tip.textContent = `${yr}: ONI = ${v>0?'+':''}${v}°C`;
+      document.body.appendChild(tip);
+      const cr = chartCanvas.getBoundingClientRect();
+      tip.style.left = (cr.left + x*(cr.width/chartCanvas.width) - 40)+'px';
+      tip.style.top = (cr.top - 36)+'px';
+      setTimeout(()=>{ tip.style.opacity='0'; setTimeout(()=>tip.remove(),400); }, 1800);
+    }
+  });
+
+  /* ═══════════════════════════════════════════════
+     PHASE CHANGE
+  ═══════════════════════════════════════════════ */
+  function setPhase(phase){
+    currentPhase = phase;
+    currentStep = 0;
+    // Update buttons
+    document.querySelectorAll('.enso-btn').forEach(b=>{
+      const active = b.dataset.phase === phase;
+      b.classList.toggle('ep-active', active);
+      if(active){
+        b.style.background = PHASES[phase].btnGrad;
+        b.style.borderColor = 'transparent';
+        b.style.color = 'white';
+      } else {
+        b.style.background = '#f7fafc';
+        b.style.borderColor = '#cbd5e0';
+        b.style.color = '#4a5568';
+      }
+    });
+    renderBanner();
+    renderImpacts();
+    renderStepper();
+  }
+
+  document.querySelectorAll('.enso-btn').forEach(b=>{
+    b.addEventListener('click',()=>setPhase(b.dataset.phase));
+  });
+
+  /* ═══════════════════════════════════════════════
+     INTENSITY SLIDER
+  ═══════════════════════════════════════════════ */
+  const slider = document.getElementById('enso-intensity');
+  const sliderLabel = document.getElementById('enso-intensity-label');
+  slider.addEventListener('input',()=>{
+    intensity = +slider.value;
+    const labels = ['Weak','Weak-Moderate','Moderate','Strong','Very Strong'];
+    sliderLabel.textContent = labels[Math.floor(intensity/20)] || 'Very Strong';
+  });
+
+  /* ═══════════════════════════════════════════════
+     INIT
+  ═══════════════════════════════════════════════ */
+  setPhase('neutral');
+  drawOniChart();
+  animLoop();
+
+  window.addEventListener('resize',()=>{
+    drawPacific();
+    drawOniChart();
+  });
+
+})();
+</script>
+```
+
+::: {.key-idea}
+### 🔑 Key Connections: ENSO and Storm Paths
+
+- **El Niño → fewer Atlantic hurricanes** (increased wind shear) but **more Eastern Pacific hurricanes**
+- **La Niña → more Atlantic hurricanes** (reduced wind shear) — 2005, 2010, 2020 seasons were all La Niña years
+- **El Niño → southern U.S. jet stream dips south**, steering storms across the Gulf States into Florida
+- **La Niña → jet stream shifts north**, routing storms across the Pacific Northwest and Great Plains
+- ENSO cycles every **2–7 years** and account for ~30% of year-to-year weather variability
+- Climate change is projected to make **extreme El Niño and La Niña events more frequent** as the Pacific Ocean warms
+:::
+
 # Evaluate: Storm Path Analysis
 
 ::: {.evaluate-box}
