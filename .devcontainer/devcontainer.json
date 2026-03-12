@@ -1,6 +1,6 @@
 {
-  "name": "Earth & Space Science Textbook",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "name": "Quarto Textbook Workspace",
+  "image": "mcr.microsoft.com/devcontainers/python:3",
   "features": {
     "ghcr.io/rocker-org/devcontainer-features/quarto-cli:1": {}
   },
@@ -9,8 +9,11 @@
       "extensions": [
         "quarto.quarto",
         "github.copilot",
-        "github.copilot-chat"
+        "github.copilot-chat",
+        "ms-python.python",
+        "ms-toolsai.jupyter"
       ]
     }
-  }
+  },
+  "postCreateCommand": "pip install jupyter -r requirements.txt"
 }

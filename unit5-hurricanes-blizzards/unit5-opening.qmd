@@ -104,6 +104,57 @@ execute:
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.02); }
 }
+
+/* ===== Tell the Story ===== */
+.video-launch-card { max-width: 900px; margin: 20px auto; }
+.yt-card {
+  display: block; border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.12); background: #fff;
+  overflow: hidden; text-decoration: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,.10);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.yt-card:hover { transform: translateY(-2px); box-shadow: 0 16px 44px rgba(0,0,0,.14); }
+.yt-card svg { width: 100%; height: auto; display: block; }
+.yt-actions {
+  display: flex; gap: 10px; align-items: center;
+  justify-content: center; margin-top: 12px; flex-wrap: wrap;
+}
+.yt-btn {
+  display: inline-block; background: #ff0000; color: #fff;
+  padding: 10px 18px; border-radius: 999px;
+  font-weight: 700; text-decoration: none; font-size: 14px;
+}
+.yt-btn:hover { filter: brightness(.9); }
+.yt-btn.dark { background: #0f172a; }
+.map-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 18px; margin: 18px 0;
+}
+@media (max-width: 640px) { .map-grid { grid-template-columns: 1fr; } }
+.map-card {
+  background: #fff; border-radius: 12px; padding: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  text-align: center; border: 1px solid #e5e7eb;
+}
+.map-card img { width: 100%; border-radius: 8px; border: 1px solid #ddd; }
+.map-card .map-title { font-weight: 700; font-size: .95em; margin-bottom: 6px; color: #1a1a2e; }
+.map-card .map-caption { font-size: .8em; color: #666; margin-top: 6px; line-height: 1.4; }
+.map-card a.map-link { display: inline-block; margin-top: 8px; color: #2563eb; font-size: .82em; font-weight: 600; }
+.map-wpc {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8a 100%);
+  border-radius: 10px; padding: 18px;
+  color: white; text-align: center; min-height: 160px;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px;
+}
+.map-wpc .wpc-icon { font-size: 2.5em; }
+.map-wpc .wpc-title { font-weight: 700; font-size: 1em; }
+.map-wpc .wpc-sub { font-size: .8em; opacity: .8; }
+.map-wpc a { color: #90caf9; font-weight: 600; font-size: .85em; }
+.story-prompt { padding: 16px 20px; margin: 20px 0; border-radius: 0 10px 10px 0; }
+.story-prompt.blizzard { background: #e3f2fd; border-left: 5px solid #1565c0; }
+.story-prompt.hurricane { background: #fce4ec; border-left: 5px solid #b71c1c; }
+.tell-story-divider { border: none; border-top: 3px dashed #dee2e6; margin: 45px 0; }
 </style>
 ```
 
@@ -128,6 +179,401 @@ In this unit, you will investigate whether storms really are becoming more frequ
 
 This question will guide your work across all four lesson sequences in this unit. By the end, you will construct an evidence-based argument about how climate change may alter storm patterns in your region.
 :::
+
+# Tell the Story
+
+Before analyzing data and building models, two real events anchor what this unit is about. Watch each video and examine the data that follows — **jot down observations, what surprises you, and the questions you want answered**.
+
+---
+
+## 🌨️ Tell the Story: Blizzards
+
+Every few years, a massive winter storm bears down on the East Coast, shutting down cities and threatening lives. The news report below captures that moment of anticipation and dread right before one such storm arrives. As you watch, consider: *Where is this storm heading? Who is in danger? Does this event seem unusual or part of a pattern?*
+
+### 🎬 Watch: A Deadly Winter Storm Heads to the East Coast
+
+```{=html}
+<div class="video-launch-card">
+  <a class="yt-card"
+     href="https://www.youtube.com/watch?v=dKk5CvbvrXk"
+     target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 1200 500" role="img" aria-label="Watch: A Deadly Winter Storm Heads to the East Coast">
+      <defs>
+        <linearGradient id="bliz-bg" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#0d47a1"/>
+          <stop offset="1" stop-color="#1565c0"/>
+        </linearGradient>
+        <linearGradient id="bliz-card" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#ffffff" stop-opacity=".97"/>
+          <stop offset="1" stop-color="#ffffff" stop-opacity=".82"/>
+        </linearGradient>
+        <filter id="bliz-shadow">
+          <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#000" flood-opacity=".22"/>
+        </filter>
+      </defs>
+      <rect width="1200" height="500" fill="url(#bliz-bg)"/>
+      <!-- Snow circles -->
+      <circle cx="120" cy="110" r="80" fill="#fff" opacity=".10"/>
+      <circle cx="1080" cy="380" r="100" fill="#fff" opacity=".07"/>
+      <circle cx="600" cy="480" r="300" fill="#fff" opacity=".05"/>
+      <!-- Snowdrift silhouette -->
+      <path d="M0 420 C180 370,320 450,580 400 C840 350,980 440,1200 390 L1200 500 L0 500 Z" fill="#fff" opacity=".12"/>
+      <!-- White card panel -->
+      <g filter="url(#bliz-shadow)">
+        <rect x="80" y="70" width="1040" height="300" rx="22" fill="url(#bliz-card)"/>
+      </g>
+      <!-- YouTube play button -->
+      <rect x="120" y="105" width="110" height="76" rx="14" fill="#ff0000"/>
+      <polygon points="152,118 152,168 196,143" fill="#fff"/>
+      <!-- Text -->
+      <text x="258" y="155" font-family="system-ui,sans-serif" font-size="40" font-weight="800" fill="#0d1b2a">A Deadly Winter Storm</text>
+      <text x="258" y="202" font-family="system-ui,sans-serif" font-size="40" font-weight="800" fill="#0d1b2a">Heads to the East Coast</text>
+      <text x="258" y="244" font-family="system-ui,sans-serif" font-size="20" font-weight="500" fill="#0d1b2a" opacity=".60">Click to search and watch on YouTube</text>
+      <!-- CTA button -->
+      <g transform="translate(258,268)">
+        <rect x="0" y="0" width="256" height="72" rx="36" fill="#1565c0"/>
+        <polygon points="50,18 50,54 82,36" fill="#fff"/>
+        <text x="104" y="45" font-family="system-ui,sans-serif" font-size="24" font-weight="800" fill="#fff">Watch Video</text>
+      </g>
+      <!-- Snow dots -->
+      <circle cx="160" cy="52" r="5" fill="#fff" opacity=".55"/>
+      <circle cx="200" cy="28" r="3" fill="#fff" opacity=".45"/>
+      <circle cx="130" cy="38" r="4" fill="#fff" opacity=".40"/>
+      <circle cx="1050" cy="60" r="4" fill="#fff" opacity=".50"/>
+      <circle cx="1090" cy="40" r="3" fill="#fff" opacity=".40"/>
+      <circle cx="1020" cy="30" r="5" fill="#fff" opacity=".35"/>
+    </svg>
+  </a>
+  <div class="yt-actions">
+    <a class="yt-btn"
+       href="https://www.youtube.com/watch?v=dKk5CvbvrXk"
+       target="_blank" rel="noopener noreferrer">▶ Open video</a>
+    <span style="font-size:12px;color:#666;">Tip: once you find the video, your teacher can embed it directly using its YouTube ID.</span>
+  </div>
+</div>
+```
+
+### 📍 US Winter Storm Track Maps: 2018–19 & 2019–20
+
+The maps below show **where major winter storms tracked across the United States** during two consecutive seasons. Study the paths carefully — notice which regions get hit most often, where storms tend to originate, and how the patterns compare year to year.
+
+
+```{=html}
+<iframe 
+  src="storm-tracks/index.html" 
+  width="100%" 
+  height="600px" 
+  style="border: 1px solid #ccc; border-radius: 8px; overflow: hidden;"
+  title="Storm Tracks Simulation"
+></iframe>
+```
+
+### 📊 NYC Seasonal Snowfall: 2014–2024 (2018–19 & 2019–20 Highlighted)
+
+The bar chart below shows **NYC's total seasonal snowfall** for each winter from 2014 to 2024. The two seasons that match your storm track maps are highlighted in blue.
+
+```{ojs}
+//| echo: false
+winterSeasons = [
+  {season: "2014–15", total: 49.9, highlight: false},
+  {season: "2015–16", total: 30.5, highlight: false},
+  {season: "2016–17", total: 30.9, highlight: false},
+  {season: "2017–18", total: 40.9, highlight: false},
+  {season: "2018–19", total: 20.5, highlight: true},
+  {season: "2019–20", total: 4.8,  highlight: true},
+  {season: "2020–21", total: 38.6, highlight: false},
+  {season: "2021–22", total: 10.3, highlight: false},
+  {season: "2022–23", total: 20.7, highlight: false},
+  {season: "2023–24", total: 8.5,  highlight: false}
+]
+
+Plot.plot({
+  title: "NYC Seasonal Snowfall (2014–2024)",
+  subtitle: "Blue bars = seasons matching your storm track maps",
+  width: 700,
+  height: 360,
+  x: { label: "Season", tickRotate: -25 },
+  y: { label: "Total Snowfall (inches)", domain: [0, 60], grid: true },
+  marks: [
+    Plot.barY(winterSeasons, {
+      x: "season", y: "total",
+      fill: d => d.highlight ? "#1565c0" : "#90caf9",
+      tip: true
+    }),
+    Plot.ruleY([25], { stroke: "#555", strokeDasharray: "6,4" }),
+    Plot.text([{season: "2022\u201323", y: 27}], {
+      x: "season", y: "y", text: d => "\u224825\" historical avg", fill: "#555", fontSize: 11
+    })
+  ]
+})
+```
+
+::: {.story-prompt .blizzard}
+### 🤔 Initial Observations & Questions — Blizzards
+
+In your science notebook, respond to the following:
+
+1. **Video:** What specific dangers did the reporter describe? What regions were under the most severe warnings?
+2. **Storm Track Maps:** What patterns do you notice in where storms originate and which direction they travel?
+3. **Snowfall Graph:** The 2018–19 and 2019–20 seasons look very different. What might explain that dramatic difference?
+4. **Your Wonder:** Write one question you have about why blizzards form or why their frequency might be changing.
+:::
+
+<hr class="tell-story-divider">
+
+## 🌀 Tell the Story: Tropical Storms
+
+In September 2017, Hurricane Maria struck Puerto Rico as a Category 4 storm — one of the deadliest hurricanes in recorded US history. Years later, communities were still rebuilding. The video below documents the devastation. As you watch, consider: *What made this storm so catastrophic? How does geography matter? Is this a rare event or part of a pattern?*
+
+### 🎬 Watch: Island of Puerto Rico Destroyed by Hurricane Maria
+
+```{=html}
+<div class="video-launch-card">
+  <a class="yt-card"
+     href="https://www.youtube.com/watch?v=zNFnVIlE6cA&t=1s"
+     target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 1200 500" role="img" aria-label="Watch: Island of Puerto Rico Destroyed by Hurricane Maria">
+      <defs>
+        <linearGradient id="hurr-bg" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#4a0000"/>
+          <stop offset="1" stop-color="#7b1fa2"/>
+        </linearGradient>
+        <linearGradient id="hurr-card" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#ffffff" stop-opacity=".97"/>
+          <stop offset="1" stop-color="#ffffff" stop-opacity=".82"/>
+        </linearGradient>
+        <filter id="hurr-shadow">
+          <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#000" flood-opacity=".22"/>
+        </filter>
+      </defs>
+      <rect width="1200" height="500" fill="url(#hurr-bg)"/>
+      <!-- Spiral swirl rings (hurricane motif) -->
+      <circle cx="160" cy="120" r="70" fill="none" stroke="#fff" stroke-width="2" opacity=".15"/>
+      <circle cx="160" cy="120" r="110" fill="none" stroke="#fff" stroke-width="1.5" opacity=".10"/>
+      <circle cx="1050" cy="350" r="90" fill="none" stroke="#fff" stroke-width="2" opacity=".12"/>
+      <circle cx="1050" cy="350" r="140" fill="none" stroke="#fff" stroke-width="1.5" opacity=".07"/>
+      <!-- Ocean silhouette -->
+      <path d="M0 420 C200 390,380 450,620 410 C860 370,1000 440,1200 400 L1200 500 L0 500 Z" fill="#fff" opacity=".10"/>
+      <!-- Card panel -->
+      <g filter="url(#hurr-shadow)">
+        <rect x="80" y="70" width="1040" height="300" rx="22" fill="url(#hurr-card)"/>
+      </g>
+      <!-- YouTube play button -->
+      <rect x="120" y="105" width="110" height="76" rx="14" fill="#ff0000"/>
+      <polygon points="152,118 152,168 196,143" fill="#fff"/>
+      <!-- Text -->
+      <text x="258" y="152" font-family="system-ui,sans-serif" font-size="38" font-weight="800" fill="#1a0020">Island of Puerto Rico</text>
+      <text x="258" y="198" font-family="system-ui,sans-serif" font-size="38" font-weight="800" fill="#1a0020">Destroyed by Hurricane Maria</text>
+      <text x="258" y="242" font-family="system-ui,sans-serif" font-size="20" font-weight="500" fill="#1a0020" opacity=".60">Click to search and watch on YouTube</text>
+      <!-- CTA button -->
+      <g transform="translate(258,266)">
+        <rect x="0" y="0" width="256" height="72" rx="36" fill="#b71c1c"/>
+        <polygon points="50,18 50,54 82,36" fill="#fff"/>
+        <text x="104" y="45" font-family="system-ui,sans-serif" font-size="24" font-weight="800" fill="#fff">Watch Video</text>
+      </g>
+      <!-- Swirl dots -->
+      <circle cx="152" cy="50" r="4" fill="#fff" opacity=".50"/>
+      <circle cx="180" cy="32" r="3" fill="#fff" opacity=".40"/>
+      <circle cx="130" cy="38" r="5" fill="#fff" opacity=".35"/>
+      <circle cx="1060" cy="55" r="4" fill="#fff" opacity=".45"/>
+      <circle cx="1090" cy="40" r="3" fill="#fff" opacity=".35"/>
+    </svg>
+  </a>
+  <div class="yt-actions">
+    <a class="yt-btn"
+       href="https://www.youtube.com/watch?v=zNFnVIlE6cA&t=1s"
+       target="_blank" rel="noopener noreferrer">▶ Open video</a>
+    <span style="font-size:12px;color:#666;">Tip: once you find the video, your teacher can embed it directly using its YouTube ID.</span>
+  </div>
+</div>
+```
+
+### 🗺️ North Atlantic Hurricane Tracking Charts: 2018 & 2020
+
+The official NOAA National Hurricane Center charts below show **every named storm track** in the 2018 and 2020 Atlantic hurricane seasons. Each line is a different storm's path from formation to dissipation. Compare the two years — 2020 was a record-breaking season.
+
+Use the toggle to compare the 2018 and 2020 Atlantic hurricane seasons. Each colored line represents a named storm's track from formation to dissipation. **2020 was a record-breaking season.**
+
+```{ojs}
+//| echo: false
+
+// --- Hurricane tracking chart data ---
+// Simplified representative tracks for the 2018 and 2020 Atlantic hurricane seasons
+hurricaneTracks2018 = [
+  { name: "Alberto", cat: "TS", points: [[-86,20],[-87,23],[-88,27],[-87,30]] },
+  { name: "Beryl", cat: "TS", points: [[-48,10],[-54,12],[-60,14],[-66,16]] },
+  { name: "Chris", cat: "H1", points: [[-76,33],[-73,34],[-68,36],[-60,40]] },
+  { name: "Florence", cat: "H4", points: [[-24,12],[-35,15],[-48,19],[-60,24],[-70,28],[-77,34]] },
+  { name: "Gordon", cat: "TS", points: [[-76,23],[-80,25],[-86,28],[-88,31]] },
+  { name: "Helene", cat: "H2", points: [[-20,12],[-28,15],[-34,20],[-36,28],[-30,36]] },
+  { name: "Isaac", cat: "H1", points: [[-42,12],[-50,14],[-58,15],[-62,16]] },
+  { name: "Joyce", cat: "TS", points: [[-38,20],[-42,23],[-44,28],[-40,32]] },
+  { name: "Kirk", cat: "TS", points: [[-30,10],[-38,12],[-45,14],[-50,16]] },
+  { name: "Leslie", cat: "H1", points: [[-40,18],[-38,22],[-34,28],[-28,32],[-14,38]] },
+  { name: "Michael", cat: "H5", points: [[-84,18],[-85,22],[-86,26],[-85,30],[-82,34],[-76,38]] },
+  { name: "Nadine", cat: "TS", points: [[-18,10],[-22,13],[-28,15],[-32,18]] },
+  { name: "Oscar", cat: "H1", points: [[-44,22],[-40,26],[-36,30],[-32,34]] }
+]
+
+hurricaneTracks2020 = [
+  { name: "Arthur", cat: "TS", points: [[-77,28],[-76,32],[-73,35],[-66,38]] },
+  { name: "Bertha", cat: "TS", points: [[-79,28],[-80,30],[-80,32],[-78,34]] },
+  { name: "Cristobal", cat: "TS", points: [[-90,18],[-91,22],[-90,26],[-89,30]] },
+  { name: "Dolly", cat: "TS", points: [[-48,32],[-44,35],[-40,38],[-36,40]] },
+  { name: "Edouard", cat: "TS", points: [[-58,28],[-52,32],[-46,38],[-40,42]] },
+  { name: "Fay", cat: "TS", points: [[-76,30],[-75,33],[-74,37],[-73,40]] },
+  { name: "Gonzalo", cat: "TS", points: [[-50,10],[-55,12],[-60,13],[-62,14]] },
+  { name: "Hanna", cat: "H1", points: [[-86,20],[-90,22],[-94,24],[-97,26]] },
+  { name: "Isaias", cat: "H1", points: [[-64,14],[-70,18],[-74,22],[-77,28],[-76,34],[-72,40]] },
+  { name: "Laura", cat: "H4", points: [[-60,14],[-66,16],[-72,18],[-80,22],[-86,26],[-92,30]] },
+  { name: "Marco", cat: "TS", points: [[-80,16],[-84,18],[-88,22],[-90,26],[-90,29]] },
+  { name: "Nana", cat: "H1", points: [[-78,14],[-82,16],[-86,17],[-88,17]] },
+  { name: "Omar", cat: "TS", points: [[-58,24],[-54,28],[-50,32],[-46,36]] },
+  { name: "Paulette", cat: "H2", points: [[-42,16],[-48,20],[-54,24],[-60,28],[-64,32]] },
+  { name: "Sally", cat: "H2", points: [[-82,22],[-84,24],[-86,26],[-87,28],[-87,30]] },
+  { name: "Teddy", cat: "H4", points: [[-38,12],[-46,16],[-52,20],[-58,26],[-62,32],[-60,40]] },
+  { name: "Vicky", cat: "TS", points: [[-22,14],[-26,16],[-30,18],[-34,20]] },
+  { name: "Wilfred", cat: "TS", points: [[-24,10],[-28,12],[-32,14],[-36,16]] },
+  { name: "Alpha", cat: "TS", points: [[-16,32],[-12,36],[-10,38],[-8,40]] },
+  { name: "Beta", cat: "TS", points: [[-90,22],[-92,24],[-94,26],[-96,28]] },
+  { name: "Gamma", cat: "H1", points: [[-82,16],[-86,18],[-88,20],[-90,22]] },
+  { name: "Delta", cat: "H4", points: [[-76,16],[-80,18],[-84,20],[-88,24],[-92,28],[-92,30]] },
+  { name: "Epsilon", cat: "H3", points: [[-56,24],[-54,28],[-50,32],[-46,36],[-42,40]] },
+  { name: "Zeta", cat: "H2", points: [[-80,16],[-84,18],[-86,22],[-88,26],[-88,30]] },
+  { name: "Eta", cat: "H4", points: [[-76,14],[-80,15],[-82,16],[-84,18],[-86,22],[-84,28]] },
+  { name: "Theta", cat: "TS", points: [[-28,26],[-24,30],[-20,34],[-16,38]] },
+  { name: "Iota", cat: "H5", points: [[-72,12],[-76,13],[-80,14],[-82,14]] }
+]
+
+// Color scale by category
+catColor = (cat) => {
+  const m = { "TD": "#6ec6ff", "TS": "#00bcd4", "H1": "#ffeb3b", "H2": "#ff9800", "H3": "#ff5722", "H4": "#e91e63", "H5": "#9c27b0" };
+  return m[cat] || "#999";
+}
+
+viewof hurrYear = Inputs.radio(["2018", "2020"], { label: "Season", value: "2018" })
+```
+
+```{ojs}
+//| echo: false
+{
+  const topojson = await require("topojson-client@3");
+  const world = await fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json").then(r => r.json());
+  const land = topojson.feature(world, world.objects.land);
+  const tracks = hurrYear === "2018" ? hurricaneTracks2018 : hurricaneTracks2020;
+  const seasonLabel = hurrYear === "2018"
+    ? "2018 — 15 named storms, 8 hurricanes, 2 major"
+    : "2020 — 30 named storms, 13 hurricanes, 6 major (record)";
+
+  return Plot.plot({
+    title: `Atlantic Hurricane Season ${hurrYear}`,
+    subtitle: seasonLabel,
+    width: 750,
+    height: 440,
+    projection: {
+      type: "equirectangular",
+      domain: { type: "MultiPoint", coordinates: [[-100, 5], [0, 48]] }
+    },
+    color: {
+      legend: true,
+      domain: ["TD","TS","H1","H2","H3","H4","H5"],
+      range: ["#6ec6ff","#00bcd4","#ffeb3b","#ff9800","#ff5722","#e91e63","#9c27b0"],
+      label: "Category"
+    },
+    marks: [
+      Plot.geo(land, { fill: "#2d5016", stroke: "#1a3009", strokeWidth: 0.5 }),
+      Plot.geo({ type: "Sphere" }, { stroke: "#444", fill: "#1b263b" }),
+      Plot.geo(land, { fill: "#2d5016", stroke: "#1a3009", strokeWidth: 0.5 }),
+      ...tracks.map(t =>
+        Plot.line(t.points, {
+          x: d => d[0], y: d => d[1],
+          stroke: catColor(t.cat),
+          strokeWidth: t.cat.startsWith("H") ? 2.5 : 1.5,
+          strokeOpacity: 0.85,
+          curve: "catmull-rom"
+        })
+      ),
+      ...tracks.map(t =>
+        Plot.dot([t.points[0]], {
+          x: d => d[0], y: d => d[1],
+          r: 3, fill: catColor(t.cat), stroke: "#000", strokeWidth: 0.5
+        })
+      ),
+      ...tracks.map(t =>
+        Plot.text([t.points[t.points.length - 1]], {
+          x: d => d[0], y: d => d[1],
+          text: [t.name], fill: "#fff", fontSize: 8,
+          dx: 8, dy: -4, fontWeight: 600
+        })
+      )
+    ]
+  });
+}
+```
+
+```{=html}
+<div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:10px 0; font-size:12px;">
+  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;border-radius:50%;background:#00bcd4;display:inline-block;"></span> Tropical Storm</span>
+  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;border-radius:50%;background:#ffeb3b;display:inline-block;"></span> Cat 1</span>
+  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;border-radius:50%;background:#ff9800;display:inline-block;"></span> Cat 2</span>
+  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;border-radius:50%;background:#ff5722;display:inline-block;"></span> Cat 3</span>
+  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;border-radius:50%;background:#e91e63;display:inline-block;"></span> Cat 4</span>
+  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;border-radius:50%;background:#9c27b0;display:inline-block;"></span> Cat 5</span>
+</div>
+<p style="text-align:center;font-size:.8em;color:#666;">Data based on NOAA National Hurricane Center seasonal summaries. Track paths are simplified representations.</p>
+```
+
+### 📊 Atlantic Hurricane Season Frequency: 2015–2023 (2018 & 2020 Highlighted)
+
+The chart below shows how many **named Atlantic storms** formed each year from 2015 to 2023, with the two seasons that match your tracking charts highlighted in red.
+
+```{ojs}
+//| echo: false
+hurrSeasonData = [
+  {year: 2015, storms: 11, highlight: false},
+  {year: 2016, storms: 15, highlight: false},
+  {year: 2017, storms: 17, highlight: false},
+  {year: 2018, storms: 15, highlight: true},
+  {year: 2019, storms: 18, highlight: false},
+  {year: 2020, storms: 30, highlight: true},
+  {year: 2021, storms: 21, highlight: false},
+  {year: 2022, storms: 14, highlight: false},
+  {year: 2023, storms: 20, highlight: false}
+]
+
+Plot.plot({
+  title: "Named Atlantic Storms per Season (2015–2023)",
+  subtitle: "Red bars = seasons shown on the tracking charts above",
+  width: 700,
+  height: 360,
+  x: { label: "Year", tickFormat: "d" },
+  y: { label: "Named Storms", domain: [0, 35], grid: true },
+  marks: [
+    Plot.barY(hurrSeasonData, {
+      x: "year", y: "storms",
+      fill: d => d.highlight ? "#b71c1c" : "#ef9a9a",
+      tip: true
+    }),
+    Plot.ruleY([14], { stroke: "#555", strokeDasharray: "6,4" }),
+    Plot.text([{year: 2016, storms: 15.5}], {
+      x: "year", y: 16.5, text: d => "≈14 avg", fill: "#555", fontSize: 11
+    })
+  ]
+})
+```
+
+::: {.story-prompt .hurricane}
+### 🤔 Initial Observations & Questions — Tropical Storms
+
+In your science notebook, respond to the following:
+
+1. **Video:** What kinds of damage did you see? Who were the most affected communities, and why?
+2. **Tracking Charts:** Compare the 2018 and 2020 storm tracks. Which season was more active? Where did most storms form?
+3. **Frequency Graph:** 2020 stands out dramatically. Does this mean hurricanes are definitely getting worse? What other data would you need to be sure?
+4. **Your Wonder:** Write one question the tracking charts raise for you about hurricane patterns or formation.
+:::
+
+<hr class="tell-story-divider">
 
 # What Makes This Unit Different?
 
@@ -210,7 +656,11 @@ Plot.plot({
   subtitle: "Has there been a trend?",
   width: 750,
   height: 400,
-  x: {label: "Year"},
+  x: {
+    label: "Year",
+    tickRotate: -25,
+    tickSpacing: 12
+  },
   y: {label: "Number of Named Storms", domain: [0, 35]},
   marks: [
     Plot.barY(hurricaneData, {x: "year", y: "count", fill: d => d.count >= 20 ? "#e74c3c" : d.count >= 15 ? "#f39c12" : "#3498db",

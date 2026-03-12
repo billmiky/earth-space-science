@@ -576,136 +576,269 @@ The **Atlantic Meridional Overturning Circulation (AMOC)** is a massive system o
 
 ```{ojs}
 //| echo: false
-viewof salinityLevel = Inputs.range([30, 38], {
-  step: 0.5,
-  value: 35,
-  label: "North Atlantic Salinity (ppt):"
-})
-```
+{
+  // === CONFIGURATION ===
+  const scenarios = {
+    "Present Day": { salinity: 35, temp: 1, freshwater: 10 },
+    "Last Glacial Maximum": { salinity: 36, temp: -8, freshwater: 0 },
+    "Younger Dryas Trigger": { salinity: 33, temp: 0, freshwater: 90 },
+    "Future (High Emissions)": { salinity: 34, temp: 4, freshwater: 70 }
+  };
+  const initialScenario = "Present Day";
 
-```{ojs}
-//| echo: false
-viewof tempIncrease = Inputs.range([0, 5], {
-  step: 0.5,
-  value: 0,
-  label: "Global Temp Increase (°C):"
-})
-```
+  // === STATE ===
+  let state = {
+    salinity: scenarios[initialScenario].salinity,
+    temp: scenarios[initialScenario].temp,
+    freshwater: scenarios[initialScenario].freshwater
+  };
 
-```{ojs}
-//| echo: false
-viewof freshwaterInput = Inputs.range([0, 100], {
-  step: 10,
-  value: 0,
-  label: "Freshwater Input (ice melt, %):"
-})
-```
-
-```{ojs}
-//| echo: false
-effectiveSalinity = salinityLevel - (freshwaterInput * 0.05) - (tempIncrease * 0.8)
-amocStrength = Math.max(0, Math.min(100, (effectiveSalinity - 30) * 12.5))
-sinkingRate = amocStrength > 70 ? "Strong" : amocStrength > 40 ? "Moderate" : amocStrength > 15 ? "Weak" : "Collapsed"
-
-animDuration = amocStrength > 0 ? (200 / amocStrength).toFixed(1) : 0
-
-html`
-<style>
-  @keyframes flow {
-    from { stroke-dashoffset: 40; }
-    to { stroke-dashoffset: 0; }
-  }
-  .current-path {
-    stroke-dasharray: 10 10;
-    animation: flow ${animDuration}s linear infinite;
-  }
-  ${amocStrength === 0 ? '.current-path { animation: none; }' : ''}
-</style>
-<div style="display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0; font-family: 'Inter', sans-serif;">
-  <div style="flex: 2; min-width: 400px; position: relative;">
-    <svg width="100%" height="350" viewBox="0 0 500 350" style="background: linear-gradient(180deg, #87CEEB 0%, #4682B4 40%, #000080 100%); border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.15);">
-      
-      <!-- Landmasses -->
-      <path d="M 0 150 Q 30 140 50 150 L 50 350 L 0 350 Z" fill="#8B4513" opacity="0.8"/>
-      <text x="10" y="140" fill="white" font-size="12" font-weight="bold">Americas</text>
-      
-      <path d="M 420 120 Q 460 110 500 130 L 500 350 L 420 350 Z" fill="#8B4513" opacity="0.8"/>
-      <text x="430" y="110" fill="white" font-size="12" font-weight="bold">Europe</text>
-      
-      <!-- Ice Sheet (Greenland) -->
-      <path d="M 350 20 Q 400 10 450 30 L 450 100 Q 400 90 350 80 Z" fill="white" opacity="${Math.max(0, 1 - (tempIncrease/10) - (freshwaterInput/200))}"/>
-      <text x="380" y="50" fill="#333" font-size="12" font-weight="bold">Greenland Ice</text>
-
-      <!-- Meltwater -->
-      ${freshwaterInput > 0 || tempIncrease > 0 ? `
-        <path d="M 350 80 Q 380 120 420 120" fill="none" stroke="#E0F7FA" stroke-width="${(freshwaterInput/20) + (tempIncrease)}" opacity="0.8" stroke-dasharray="5 5" class="current-path"/>
-      ` : ''}
-
-      <!-- Warm Surface Current (Gulf Stream): flows left→right (Americas → North Atlantic) -->
-      <path d="M 60 160 Q 250 140 400 140" fill="none" stroke="#FF4500" stroke-width="${amocStrength/8 + 2}" opacity="0.8"/>
-      <path d="M 60 160 Q 250 140 400 140" fill="none" stroke="#FFF" stroke-width="${amocStrength/15 + 1}" class="current-path"/>
-      <!-- Direction arrow: pointing right -->
-      <polygon points="245,134 258,140 245,146" fill="#FF4500" opacity="0.95"/>
-      <text x="155" y="130" fill="#FF4500" font-size="13" font-weight="bold">Warm Surface Current →</text>
-      
-      <!-- Sinking Region -->
-      <ellipse cx="400" cy="200" rx="${amocStrength/4 + 10}" ry="${amocStrength/2 + 20}" fill="#4169E1" opacity="0.6"/>
-      <text x="400" y="205" fill="white" font-size="12" font-weight="bold" text-anchor="middle">Sinking</text>
-      <path d="M 400 140 L 400 260" fill="none" stroke="#FFF" stroke-width="${amocStrength/15 + 1}" class="current-path"/>
-      <!-- Direction arrow: pointing down -->
-      <polygon points="395,202 400,215 405,202" fill="white" opacity="0.85"/>
-      
-      <!-- Cold Deep Current: path drawn right→left (North Atlantic → Americas/Equator) -->
-      <!-- Using 'current-path' (dashoffset 40→0) marches dashes FORWARD = right→left ✓ -->
-      <path d="M 400 260 Q 250 280 60 260" fill="none" stroke="#00BFFF" stroke-width="${amocStrength/8 + 2}" opacity="0.8"/>
-      <path d="M 400 260 Q 250 280 60 260" fill="none" stroke="#FFF" stroke-width="${amocStrength/15 + 1}" class="current-path"/>
-      <!-- Direction arrow: pointing left -->
-      <polygon points="255,273 242,279 255,285" fill="#00BFFF" opacity="0.95"/>
-      <text x="155" y="300" fill="#00BFFF" font-size="13" font-weight="bold">← Cold Deep Current</text>
-
-      <!-- Upwelling (Americas/Equator side): cold deep water rises back to surface -->
-      <!-- Path drawn bottom→top so 'current-path' animates upward ✓ -->
-      <path d="M 60 260 L 60 160" fill="none" stroke="#00BFFF" stroke-width="${amocStrength/8 + 2}" opacity="0.8"/>
-      <path d="M 60 260 L 60 160" fill="none" stroke="#FFF" stroke-width="${amocStrength/15 + 1}" class="current-path"/>
-      <!-- Direction arrow: pointing up -->
-      <polygon points="54,178 60,165 66,178" fill="#00BFFF" opacity="0.95"/>
-      <text x="65" y="215" fill="#00BFFF" font-size="11" font-weight="bold">Upwelling</text>
-
-      <!-- Labels -->
-      <text x="20" y="30" fill="white" font-size="14" font-weight="bold">Equator</text>
-      <text x="400" y="30" fill="white" font-size="14" font-weight="bold">North Atlantic</text>
-    </svg>
-  </div>
+  // === UI & SVG SETUP ===
+  const container = html`
+<div style="font-family: 'Inter', sans-serif; margin: 20px 0;">
   
-  <div style="flex: 1; min-width: 250px; padding: 25px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 5px solid ${amocStrength < 30 ? '#e53e3e' : amocStrength < 60 ? '#d69e2e' : '#38a169'};">
-    <h3 style="margin-top: 0; color: #2d3748; font-family: 'Space Grotesk', sans-serif;">AMOC Status</h3>
+  <!-- CONTROLS -->
+  <div style="background: #f7f9fc; border-radius: 12px; padding: 16px 22px; border: 1px solid #e2e8f0; margin-bottom: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px 24px;">
     
-    <div style="margin-bottom: 15px;">
-      <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-        <span style="color: #4a5568; font-weight: 600;">Flow Strength:</span>
-        <span style="font-weight: bold; color: ${amocStrength < 30 ? '#e53e3e' : '#2d3748'};">${amocStrength.toFixed(0)}%</span>
-      </div>
-      <div style="width: 100%; background: #edf2f7; border-radius: 4px; height: 8px; overflow: hidden;">
-        <div style="height: 100%; width: ${amocStrength}%; background: ${amocStrength < 30 ? '#e53e3e' : amocStrength < 60 ? '#d69e2e' : '#38a169'}; transition: width 0.3s ease;"></div>
-      </div>
+    <div>
+      <label style="font-weight: 600; font-size: 0.9em; color: #4a5568;">Load a Scenario:</label>
+      <div id="scenario-buttons" style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;"></div>
     </div>
 
-    <p style="margin: 10px 0; color: #4a5568;"><strong>Sinking Rate:</strong> ${sinkingRate}</p>
-    <p style="margin: 10px 0; color: #4a5568;"><strong>Effective Salinity:</strong> ${effectiveSalinity.toFixed(1)} ppt</p>
-    
-    <div style="margin-top: 20px; padding: 15px; background: ${amocStrength < 30 ? '#fff5f5' : amocStrength < 60 ? '#fffff0' : '#f0fff4'}; border-radius: 8px; border: 1px solid ${amocStrength < 30 ? '#feb2b2' : amocStrength < 60 ? '#fef08a' : '#bbf7d0'};">
-      <strong style="display: block; margin-bottom: 5px; color: ${amocStrength < 30 ? '#c53030' : amocStrength < 60 ? '#b45309' : '#22543d'};">
-        ${amocStrength < 30 ? '⚠️ Critical Warning' : amocStrength < 60 ? '⚡ Weakening Detected' : '✅ Stable Circulation'}
-      </strong>
-      <span style="font-size: 0.9em; color: #4a5568;">
-        ${amocStrength < 30 ? 'AMOC is near collapse. Severe cooling expected in Northern Europe and disrupted global weather patterns.' : 
-          amocStrength < 60 ? 'Reduced heat transport to the North Atlantic. Regional climate impacts beginning.' : 
-          'Normal heat transport maintaining mild European climate.'}
-      </span>
+    <div id="sliders">
+      <div class="slider-container" style="margin-bottom: 8px;">
+        <label for="salinity-slider" style="font-size:0.9em; color:#333;">North Atlantic Salinity (ppt): <span id="salinity-value" style="font-weight:bold;"></span></label>
+        <input type="range" id="salinity-slider" min="30" max="38" step="0.5" style="width:100%;">
+      </div>
+      <div class="slider-container" style="margin-bottom: 8px;">
+        <label for="temp-slider" style="font-size:0.9em; color:#333;">Global Temp Anomaly (°C): <span id="temp-value" style="font-weight:bold;"></span></label>
+        <input type="range" id="temp-slider" min="-10" max="5" step="0.5" style="width:100%;">
+      </div>
+      <div class="slider-container">
+        <label for="freshwater-slider" style="font-size:0.9em; color:#333;">Freshwater Input (ice melt, %): <span id="freshwater-value" style="font-weight:bold;"></span></label>
+        <input type="range" id="freshwater-slider" min="0" max="100" step="10" style="width:100%;">
+      </div>
     </div>
   </div>
-</div>
-`
+
+  <!-- SIMULATION & STATUS -->
+  <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+    
+    <!-- SVG VISUALIZATION -->
+    <div style="flex: 2; min-width: 400px; position: relative;">
+      <svg width="100%" height="350" viewBox="0 0 500 350" style="border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.15);">
+        <defs>
+            <linearGradient id="ocean-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#87CEEB" />
+                <stop offset="40%" stop-color="#4682B4" />
+                <stop offset="100%" stop-color="#000080" />
+            </linearGradient>
+            <linearGradient id="temp-overlay-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop id="temp-grad-start" offset="0%" stop-color="rgba(0,0,255,0)" />
+                <stop id="temp-grad-end" offset="100%" stop-color="rgba(0,0,255,0)" />
+            </linearGradient>
+        </defs>
+        
+        <rect width="500" height="350" fill="url(#ocean-gradient)"/>
+        <rect id="temp-overlay" width="500" height="350" fill="url(#temp-overlay-gradient)"/>
+        
+        <!-- Landmasses -->
+        <path d="M 0 150 Q 30 140 50 150 L 50 350 L 0 350 Z" fill="#8B4513" opacity="0.8"/><text x="10" y="140" fill="white" font-size="12" font-weight="bold">Americas</text>
+        <path d="M 420 120 Q 460 110 500 130 L 500 350 L 420 350 Z" fill="#8B4513" opacity="0.8"/><text x="430" y="110" fill="white" font-size="12" font-weight="bold">Europe</text>
+        <path id="ice-sheet" d="M 350 20 Q 400 10 450 30 L 450 100 Q 400 90 350 80 Z" fill="white"/><text x="380" y="50" fill="#333" font-size="12" font-weight="bold">Greenland Ice</text>
+        
+        <!-- Current Paths -->
+        <path id="warm-current-path" d="M 60 160 Q 250 140 400 140" fill="none" stroke="#FF4500" stroke-width="8" opacity="0.6"/>
+        <path id="sinking-path" d="M 400 140 V 260" fill="none" stroke-width="8" stroke="white" opacity="0.3"/>
+        <path id="cold-current-path" d="M 400 260 Q 250 280 60 260" fill="none" stroke="#00BFFF" stroke-width="8" opacity="0.6"/>
+        <path id="upwelling-path" d="M 60 260 V 160" fill="none" stroke-width="8" stroke="#00BFFF" opacity="0.6"/>
+        
+        <!-- Flow Animation Particles -->
+        <g id="flow-particles"></g>
+        
+        <!-- Meltwater -->
+        <path id="meltwater-path" d="M 350 80 Q 380 120 420 120" fill="none" stroke="#E0F7FA" opacity="0.8" stroke-dasharray="5 5"/>
+
+        <!-- Labels and Arrows -->
+        <g id="current-labels">
+            <polygon points="245,134 258,140 245,146" fill="#FF4500" opacity="0.95"/>
+            <text x="155" y="130" fill="#FF4500" font-size="13" font-weight="bold">Warm Surface Current →</text>
+            <ellipse id="sinking-ellipse" cx="400" cy="200" fill="#4169E1" opacity="0.6"/>
+            <text x="400" y="205" fill="white" font-size="12" font-weight="bold" text-anchor="middle">Sinking</text>
+            <polygon points="395,202 400,215 405,202" fill="white" opacity="0.85"/>
+            <polygon points="255,273 242,279 255,285" fill="#00BFFF" opacity="0.95"/>
+            <text x="155" y="300" fill="#00BFFF" font-size="13" font-weight="bold">← Cold Deep Current</text>
+            <polygon points="54,178 60,165 66,178" fill="#00BFFF" opacity="0.95"/>
+            <text x="65" y="215" fill="#00BFFF" font-size="11" font-weight="bold">Upwelling</text>
+        </g>
+        
+        <!-- Collapse Overlay -->
+        <g id="collapse-group" style="visibility: hidden;">
+            <rect width="500" height="350" fill="rgba(0,20,80,0.7)"/>
+            <text x="250" y="175" text-anchor="middle" fill="white" font-size="48" font-weight="bold">COLLAPSED</text>
+        </g>
+        
+        <!-- Static Labels -->
+        <text x="20" y="30" fill="white" font-size="14" font-weight="bold">Equator</text>
+        <text x="400" y="30" fill="white" font-size="14" font-weight="bold">North Atlantic</text>
+      </svg>
+    </div>
+    
+    <!-- STATUS PANEL -->
+    <div id="status-panel" style="flex: 1; min-width: 250px; padding: 25px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+       <h3 style="margin-top: 0; color: #2d3748; font-family: 'Space Grotesk', sans-serif;">AMOC Status</h3>
+       <div style="margin-bottom: 15px;">
+           <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+               <span style="color: #4a5568; font-weight: 600;">Flow Strength:</span>
+               <span id="flow-strength-value" style="font-weight: bold;"></span>
+           </div>
+           <div style="width: 100%; background: #edf2f7; border-radius: 4px; height: 8px; overflow: hidden;">
+               <div id="flow-strength-bar" style="height: 100%; transition: width 0.3s ease, background 0.3s ease;"></div>
+           </div>
+       </div>
+       <p style="margin: 10px 0; color: #4a5568;"><strong>Sinking Rate:</strong> <span id="sinking-rate-value"></span></p>
+       <p style="margin: 10px 0; color: #4a5568;"><strong>Effective Salinity:</strong> <span id="eff-salinity-value"></span> ppt</p>
+       <div id="status-message" style="margin-top: 20px; padding: 15px; border-radius: 8px; border: 1px solid;">
+           <strong id="status-title" style="display: block; margin-bottom: 5px;"></strong>
+           <span id="status-text" style="font-size: 0.9em; color: #4a5568;"></span>
+       </div>
+    </div>
+  </div>
+</div>`;
+  
+  // === ELEMENT REFERENCES ===
+  const sliders = {
+    salinity: container.querySelector("#salinity-slider"),
+    temp: container.querySelector("#temp-slider"),
+    freshwater: container.querySelector("#freshwater-slider")
+  };
+  const values = {
+    salinity: container.querySelector("#salinity-value"),
+    temp: container.querySelector("#temp-value"),
+    freshwater: container.querySelector("#freshwater-value")
+  };
+  const svg = {
+    iceSheet: container.querySelector("#ice-sheet"),
+    meltwater: container.querySelector("#meltwater-path"),
+    tempOverlay: container.querySelector("#temp-overlay"),
+    collapseGroup: container.querySelector("#collapse-group"),
+    flowParticles: container.querySelector("#flow-particles"),
+    currentLabels: container.querySelector("#current-labels"),
+    sinkingEllipse: container.querySelector("#sinking-ellipse")
+  };
+  const status = {
+    panel: container.querySelector("#status-panel"),
+    strengthValue: container.querySelector("#flow-strength-value"),
+    strengthBar: container.querySelector("#flow-strength-bar"),
+    sinkingRate: container.querySelector("#sinking-rate-value"),
+    effSalinity: container.querySelector("#eff-salinity-value"),
+    message: container.querySelector("#status-message"),
+    title: container.querySelector("#status-title"),
+    text: container.querySelector("#status-text")
+  };
+
+  // === LOGIC ===
+  const update = () => {
+    for (const key in state) {
+      sliders[key].value = state[key];
+      values[key].textContent = state[key];
+    }
+    
+    const effectiveSalinity = state.salinity - (state.freshwater * 0.05) - (state.temp * 0.8);
+    const amocStrength = Math.max(0, Math.min(100, (effectiveSalinity - 30) * 12.5));
+    const sinkingRate = amocStrength > 70 ? "Strong" : amocStrength > 40 ? "Moderate" : amocStrength > 15 ? "Weak" : "Collapsed";
+    
+    svg.iceSheet.style.opacity = Math.max(0, 1 - (state.temp / 5) - (state.freshwater / 200));
+    svg.meltwater.style.strokeWidth = state.freshwater > 0 || state.temp > 0 ? (state.freshwater / 20) + Math.max(0, state.temp) : 0;
+    
+    const tempRatio = Math.min(1, Math.max(0, (state.temp + 10) / 15));
+    const blue = [66, 133, 244]; const red = [219, 68, 55];
+    const mix = blue.map((b, i) => b * (1 - tempRatio) + red[i] * tempRatio);
+    container.querySelector("#temp-grad-start").setAttribute("stop-color", `rgba(${mix[0]}, ${mix[1]}, ${mix[2]}, 0)`);
+    container.querySelector("#temp-grad-end").setAttribute("stop-color", `rgba(${mix[0]}, ${mix[1]}, ${mix[2]}, 0.25)`);
+    
+    const isCollapsed = amocStrength <= 1;
+    svg.collapseGroup.style.visibility = isCollapsed ? "visible" : "hidden";
+    svg.currentLabels.style.opacity = isCollapsed ? 0 : 1;
+    svg.flowParticles.style.opacity = isCollapsed ? 0 : 1;
+
+    const strengthColor = amocStrength < 30 ? '#e53e3e' : amocStrength < 60 ? '#d69e2e' : '#38a169';
+    status.panel.style.borderTop = `5px solid ${strengthColor}`;
+    status.strengthValue.textContent = `${amocStrength.toFixed(0)}%`;
+    status.strengthValue.style.color = amocStrength < 30 ? strengthColor : '#2d3748';
+    status.strengthBar.style.width = `${amocStrength}%`;
+    status.strengthBar.style.background = strengthColor;
+    status.sinkingRate.textContent = sinkingRate;
+    status.effSalinity.textContent = effectiveSalinity.toFixed(1);
+
+    if (amocStrength < 30) {
+      status.message.style.background = '#fff5f5'; status.message.style.borderColor = '#feb2b2';
+      status.title.textContent = '⚠️ Critical Warning'; status.title.style.color = '#c53030';
+      status.text.textContent = 'AMOC is near collapse. Severe cooling expected in Northern Europe and disrupted global weather patterns.';
+    } else if (amocStrength < 60) {
+      status.message.style.background = '#fffff0'; status.message.style.borderColor = '#fef08a';
+      status.title.textContent = '⚡ Weakening Detected'; status.title.style.color = '#b45309';
+      status.text.textContent = 'Reduced heat transport to the North Atlantic. Regional climate impacts beginning.';
+    } else {
+      status.message.style.background = '#f0fff4'; status.message.style.borderColor = '#bbf7d0';
+      status.title.textContent = '✅ Stable Circulation'; status.title.style.color = '#22543d';
+      status.text.textContent = 'Normal heat transport maintaining mild European climate.';
+    }
+
+    svg.sinkingEllipse.setAttribute("rx", amocStrength / 4 + 10);
+    svg.sinkingEllipse.setAttribute("ry", amocStrength / 2 + 20);
+    
+    svg.flowParticles.innerHTML = '';
+    if (!isCollapsed) {
+        const animDuration = 100 / (amocStrength + 5);
+        const paths = ["warm-current-path", "sinking-path", "cold-current-path", "upwelling-path"];
+        const colors = ["#FFC107", "#FFFFFF", "#81D4FA", "#81D4FA"];
+        
+        paths.forEach((pathId, i) => {
+            const pathElement = container.querySelector('#' + pathId);
+            if (!pathElement) return;
+            const d = pathElement.getAttribute("d");
+
+            for (let j = 0; j < 5; j++) {
+                const particle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                particle.setAttribute("r", "3");
+                particle.setAttribute("fill", colors[i]);
+                const anim = document.createElementNS("http://www.w3.org/2000/svg", "animateMotion");
+                anim.setAttribute("dur", `${animDuration}s`);
+                anim.setAttribute("begin", `${j * animDuration / 5}s`);
+                anim.setAttribute("repeatCount", "indefinite");
+                anim.setAttribute("path", d);
+                particle.appendChild(anim);
+                svg.flowParticles.appendChild(particle);
+            }
+        });
+    }
+  };
+
+  const scenarioContainer = container.querySelector("#scenario-buttons");
+  for (const name in scenarios) {
+    const button = document.createElement("button");
+    button.textContent = name;
+    button.style = "padding: 6px 12px; border: 1px solid #cbd5e0; border-radius: 18px; background: #fff; cursor: pointer; font-size: 0.85em; transition: all 0.2s;";
+    button.onmouseover = () => { button.style.borderColor = '#667eea'; button.style.background = '#eef2ff'; };
+    button.onmouseout = () => { button.style.borderColor = '#cbd5e0'; button.style.background = '#fff'; };
+    button.onclick = () => {
+      state = scenarios[name];
+      update();
+    };
+    scenarioContainer.appendChild(button);
+  }
+
+  for (const key in sliders) {
+    sliders[key].oninput = (e) => {
+      state[key] = parseFloat(e.target.value);
+      update();
+    };
+  }
+
+  update();
+  return container;
+}
 ```
 
 
@@ -1796,6 +1929,826 @@ buildQuiz("us-disasters", [
     explanation: "The lesson emphasizes climate instability and circulation shifts: long-term warming can still coexist with damaging cold extremes in certain regions."
   }
 ]);
+```
+
+## 📈 U.S. Billion-Dollar Disaster Annual Cost: 1980–2024
+
+Total CPI-adjusted (2024 dollars) cost of all qualifying billion-dollar weather and climate events per year — based on NOAA NCEI data. 403 confirmed events totaling **$2.92 trillion** between 1980–2024.
+
+```{=html}
+<style>
+  .bdchart-wrap {
+    background: #fff;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 20px 24px 14px;
+    margin: 20px 0 28px;
+    box-shadow: 0 6px 24px rgba(229,57,53,0.10);
+    font-family: 'Inter', sans-serif;
+  }
+  .bdchart-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.05em;
+    font-weight: 800;
+    color: #b71c1c;
+    margin: 0 0 2px;
+  }
+  .bdchart-sub {
+    font-size: 0.82em;
+    color: #718096;
+    margin: 0 0 14px;
+  }
+  .bdchart-canvas-wrap {
+    position: relative;
+    height: 380px;
+  }
+  .bdchart-legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    font-size: 0.80em;
+    color: #4a5568;
+  }
+  .bdchart-legend span { display: flex; align-items: center; gap: 6px; }
+  .bdchart-legend .leg-line {
+    display: inline-block; width: 28px; height: 3px; border-radius: 2px;
+  }
+  .bdchart-legend .leg-dash {
+    display: inline-block; width: 28px; height: 0;
+    border-top: 3px dashed #fb8c00;
+  }
+  .bdchart-source {
+    font-size: 0.73em;
+    color: #a0aec0;
+    margin: 10px 0 0;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 8px;
+  }
+  .bdchart-callouts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .bdchart-pill {
+    font-size: 0.73em;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    cursor: default;
+  }
+  .bdchart-pill.tc   { background: #fce4ec; color: #c62828; }
+  .bdchart-pill.fire { background: #fff3e0; color: #e65100; }
+  .bdchart-pill.dry  { background: #fff9c4; color: #f57f17; }
+  .bdchart-pill.mix  { background: #ede7f6; color: #4527a0; }
+</style>
+
+<div class="bdchart-wrap">
+  <div class="bdchart-title">U.S. Billion-Dollar Disaster Annual Cost (CPI-Adjusted, 2024 $)</div>
+  <div class="bdchart-sub">Source: NOAA NCEI Billion-Dollar Weather &amp; Climate Disasters — 1980–2024</div>
+  <div class="bdchart-canvas-wrap">
+    <canvas id="bdDisasterChart"></canvas>
+  </div>
+  <div class="bdchart-legend">
+    <span><span class="leg-line" style="background:#e53935;"></span> Annual Total Cost</span>
+    <span><span class="leg-dash"></span> 5-Year Running Average</span>
+    <span style="color:#e53935;">● Notable Peak Year</span>
+  </div>
+  <div class="bdchart-callouts">
+    <span class="bdchart-pill dry">🌵 1988: Drought $54.6B</span>
+    <span class="bdchart-pill tc">🌀 1992: Hurricane Andrew $80.1B</span>
+    <span class="bdchart-pill tc">🌀 2004: Active Hurricanes $92.3B</span>
+    <span class="bdchart-pill tc">🌀 2005: Katrina + Rita + Wilma $268.5B</span>
+    <span class="bdchart-pill tc">🌀 2008: Hurricane Ike $94.1B</span>
+    <span class="bdchart-pill mix">⚡ 2011: Joplin + Drought $97.1B</span>
+    <span class="bdchart-pill mix">🌊 2012: Sandy + Drought $158.9B</span>
+    <span class="bdchart-pill tc">🌀 2017: Harvey+Irma+Maria $400B</span>
+    <span class="bdchart-pill tc">🌀 2022: Hurricane Ian $185.6B</span>
+    <span class="bdchart-pill tc">🌀 2024: Helene + Milton $182.7B</span>
+  </div>
+  <div class="bdchart-source">
+    NOAA NCEI U.S. Billion-Dollar Weather and Climate Disasters (2025) · <a href="https://www.ncei.noaa.gov/access/billions/" target="_blank" style="color:#0277bd;">https://www.ncei.noaa.gov/access/billions/</a> · DOI: 10.25921/stkw-7w73 · All values CPI-adjusted to 2024 dollars · 403 total events, $2.92 trillion total.
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+<script>
+(function(){
+  // Annual totals CPI-adjusted to 2024 dollars (NOAA NCEI, Jan 2025 release)
+  const years = [1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,
+                 1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,
+                 2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,
+                 2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,
+                 2020,2021,2022,2023,2024];
+  const costs  = [45.7, 3.5,15.1,26.9, 3.3,22.6, 7.8, 0.0,54.6,40.3,
+                  14.6,19.6,80.1,65.7,16.4,35.6,23.3,15.2,40.3,24.5,
+                  15.5,21.8,27.2,38.4,92.3,268.5,25.2,18.8,94.1,19.8,
+                  20.2,97.1,158.9,32.3,25.4,31.0,58.2,400.0,116.1,55.5,
+                 121.2,165.0,185.6,93.3,182.7];
+  const avg5   = [null,null,null,null,18.9,14.3,15.1,12.1,17.7,25.1,
+                  23.5,25.8,41.8,44.1,39.3,43.5,44.2,31.2,26.2,27.8,
+                  23.8,23.5,25.9,25.5,39.0,89.6,90.3,88.6,99.8,85.3,
+                  35.6,50.0,78.0,65.7,66.8,68.9,61.2,109.4,126.1,132.2,
+                 150.2,171.6,128.7,124.1,149.6];
+  const numEvents=[3,2,5,4,2,7,3,0,1,6,4,4,7,5,6,7,6,3,11,5,
+                   5,3,6,7,6,6,8,5,12,9,7,18,11,10,10,11,14,19,16,14,
+                  22,20,18,28,27];
+  const notes={
+    1988:'Drought & Heat Wave',
+    1992:'Hurricane Andrew',
+    2004:'Active Hurricane Season',
+    2005:'Katrina · Rita · Wilma',
+    2008:'Hurricane Ike',
+    2011:'Joplin Tornado + Drought',
+    2012:'Superstorm Sandy + Drought',
+    2017:'Harvey · Irma · Maria',
+    2022:'Hurricane Ian',
+    2024:'Helene · Milton'
+  };
+
+  const pointBg  = years.map(y => y in notes ? '#b71c1c' : 'rgba(229,57,53,0.6)');
+  const pointR   = years.map(y => y in notes ? 7 : 3);
+  const pointHov = years.map(y => y in notes ? 10 : 6);
+
+  const canvas = document.getElementById('bdDisasterChart');
+  const ctx    = canvas.getContext('2d');
+
+  // Gradient fill
+  const grad = ctx.createLinearGradient(0, 0, 0, 380);
+  grad.addColorStop(0,   'rgba(229,57,53,0.25)');
+  grad.addColorStop(0.6, 'rgba(229,57,53,0.06)');
+  grad.addColorStop(1,   'rgba(229,57,53,0.00)');
+
+  // Annotation objects for peak labels
+  const annotations = {};
+  const labelYears = [2005, 2017, 2012, 2022, 2024];
+  const labelOffsets = { 2005:-28, 2017:-28, 2012:18, 2022:18, 2024:-28 };
+  labelYears.forEach(yr => {
+    const idx = years.indexOf(yr);
+    annotations['lbl_'+yr] = {
+      type: 'label',
+      xValue: yr,
+      yValue: costs[idx],
+      content: ['$'+costs[idx].toFixed(0)+'B'],
+      backgroundColor: 'rgba(183,28,28,0.85)',
+      color: '#fff',
+      font: { size: 10, weight: 'bold' },
+      padding: { x: 5, y: 3 },
+      borderRadius: 4,
+      yAdjust: labelOffsets[yr],
+    };
+  });
+
+  // Decade shading bands
+  const decadeBands = [
+    {x0:1980,x1:1989,color:'rgba(200,200,200,0.07)',label:'1980s'},
+    {x0:1990,x1:1999,color:'rgba(100,149,237,0.06)',label:'1990s'},
+    {x0:2000,x1:2009,color:'rgba(255,165,0,0.06)',label:'2000s'},
+    {x0:2010,x1:2019,color:'rgba(255,69,0,0.07)',label:'2010s'},
+    {x0:2020,x1:2024,color:'rgba(180,0,0,0.09)',label:'2020s'},
+  ];
+  decadeBands.forEach((b,i) => {
+    annotations['band_'+i]={
+      type:'box', xMin:b.x0-0.5, xMax:b.x1+0.5,
+      yMin:0, yMax:'max',
+      backgroundColor:b.color,
+      borderWidth:0
+    };
+    annotations['blbl_'+i]={
+      type:'label', xValue:(b.x0+b.x1)/2, yValue:0,
+      content:[b.label],
+      yAdjust:-10,
+      color:'rgba(100,100,100,0.55)',
+      font:{size:9,weight:'600'},
+      backgroundColor:'transparent'
+    };
+  });
+
+  Chart.register(window['chartjs-plugin-annotation']);
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [
+        {
+          label: 'Annual Total Cost (Billions)',
+          data: costs,
+          borderColor: '#e53935',
+          backgroundColor: grad,
+          borderWidth: 2,
+          fill: true,
+          tension: 0.25,
+          pointBackgroundColor: pointBg,
+          pointBorderColor: pointBg,
+          pointRadius: pointR,
+          pointHoverRadius: pointHov,
+          pointHoverBackgroundColor: '#b71c1c',
+          order: 2
+        },
+        {
+          label: '5-Year Running Average',
+          data: avg5,
+          borderColor: '#fb8c00',
+          backgroundColor: 'transparent',
+          borderWidth: 2.5,
+          borderDash: [6,3],
+          fill: false,
+          tension: 0.4,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: '#fb8c00',
+          order: 1
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode:'index', intersect:false },
+      plugins: {
+        tooltip: {
+          backgroundColor: 'rgba(30,30,30,0.92)',
+          titleFont: { size:13, weight:'700' },
+          bodyFont:  { size:12 },
+          padding: 12,
+          callbacks: {
+            title: items => 'Year: ' + items[0].label,
+            label: item => {
+              const yr  = parseInt(item.label);
+              const idx = years.indexOf(yr);
+              if (item.datasetIndex === 0) {
+                const n = numEvents[idx];
+                const v = item.parsed.y;
+                const noteTxt = notes[yr] ? '  📌 ' + notes[yr] : '';
+                return [`  💰 Total: $${v.toFixed(1)}B`, `  📊 Events: ${n}${noteTxt}`];
+              }
+              const v = item.parsed.y;
+              return v != null ? `  📈 5-Yr Avg: $${v.toFixed(1)}B` : '  📈 5-Yr Avg: —';
+            }
+          }
+        },
+        legend: {
+          display: false
+        },
+        annotation: { annotations }
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Year',
+            font: { family:'Inter', size:12, weight:'600' },
+            color: '#4a5568'
+          },
+          grid: { color:'rgba(0,0,0,0.05)' },
+          ticks: { maxTicksLimit:16, font:{ size:10 }, color:'#718096' }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Total Cost (Billions, 2024 $)',
+            font: { family:'Inter', size:12, weight:'600' },
+            color: '#4a5568'
+          },
+          beginAtZero: true,
+          grid: { color:'rgba(0,0,0,0.05)' },
+          ticks: {
+            callback: v => '$' + v + 'B',
+            font: { size:10 },
+            color: '#718096'
+          }
+        }
+      }
+    }
+  });
+})();
+</script>
+```
+
+## 🌍 Human Displacement by Disasters (IDMC GRID 2025)
+
+When disasters strike, millions of people are forced to flee their homes — often multiple times. The data below draws from the [**IDMC Global Report on Internal Displacement 2025**](https://www.internal-displacement.org/global-report/grid2025/), the authoritative source on internal displacement worldwide.
+
+```{=html}
+<style>
+/* ─── shared layout ─── */
+.idmc-section {
+  font-family: 'Inter', sans-serif;
+  margin: 0 0 36px;
+}
+.idmc-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.08em;
+  font-weight: 800;
+  color: #1a365d;
+  margin: 0 0 2px;
+}
+.idmc-sub {
+  font-size: 0.80em;
+  color: #718096;
+  margin: 0 0 14px;
+}
+.idmc-source {
+  font-size: 0.72em;
+  color: #a0aec0;
+  margin-top: 9px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 7px;
+}
+.idmc-card {
+  background: #fff;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px 24px 14px;
+  box-shadow: 0 4px 18px rgba(26,54,93,0.08);
+}
+/* ─── stat pills ─── */
+.idmc-stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 20px 0 28px;
+}
+.idmc-stat {
+  flex: 1 1 180px;
+  background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+  color: white;
+  border-radius: 14px;
+  padding: 18px 20px 14px;
+  box-shadow: 0 4px 16px rgba(26,54,93,0.18);
+}
+.idmc-stat.orange { background: linear-gradient(135deg, #c05621 0%, #dd6b20 100%); box-shadow: 0 4px 16px rgba(192,86,33,0.20); }
+.idmc-stat.teal   { background: linear-gradient(135deg, #234e52 0%, #2c7a7b 100%); box-shadow: 0 4px 16px rgba(44,122,123,0.20); }
+.idmc-stat.red    { background: linear-gradient(135deg, #742a2a 0%, #c53030 100%); box-shadow: 0 4px 16px rgba(197,48,48,0.20); }
+.idmc-stat .sv    { font-family: 'Space Grotesk', sans-serif; font-size: 2em; font-weight: 800; line-height: 1; }
+.idmc-stat .sl    { font-size: 0.78em; opacity: 0.88; margin-top: 4px; line-height: 1.35; }
+/* ─── chart containers ─── */
+.idmc-chart-h { position: relative; height: 340px; }
+.idmc-chart-h-sm { position: relative; height: 280px; }
+/* ─── two-col grid ─── */
+.idmc-grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 0 0 28px;
+}
+@media (max-width: 700px) { .idmc-grid2 { grid-template-columns: 1fr; } }
+/* ─── regional map ─── */
+#idmc-region-map {
+  height: 420px;
+  border-radius: 14px;
+  border: 2px solid #bee3f8;
+  box-shadow: 0 4px 18px rgba(26,54,93,0.10);
+  margin: 14px 0;
+}
+.idmc-region-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 8px 0 0;
+  font-size: 0.78em;
+  color: #4a5568;
+}
+.idmc-region-legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.idmc-region-legend .dot {
+  width: 13px; height: 13px; border-radius: 50%;
+  display: inline-block; flex-shrink: 0;
+}
+/* ─── callout quote ─── */
+.idmc-quote {
+  background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%);
+  border-left: 5px solid #2b6cb0;
+  padding: 16px 20px;
+  border-radius: 0 12px 12px 0;
+  margin: 20px 0;
+  font-style: italic;
+  font-size: 0.95em;
+  color: #1a365d;
+}
+.idmc-quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.82em; color: #4a5568; }
+</style>
+
+<!-- ══════════════════════════════════════════════════
+     HEADLINE STATS
+═══════════════════════════════════════════════════ -->
+<div class="idmc-stats-row">
+  <div class="idmc-stat">
+    <div class="sv">45.8M</div>
+    <div class="sl">Disaster displacements globally in 2024 — the highest since monitoring began (2008)</div>
+  </div>
+  <div class="idmc-stat orange">
+    <div class="sv">8.4M</div>
+    <div class="sl">US displacements from Hurricanes Helene & Milton alone (2024 record high for the US)</div>
+  </div>
+  <div class="idmc-stat teal">
+    <div class="sv">83.4M</div>
+    <div class="sl">People living in internal displacement worldwide at end of 2024 — more than double 2018</div>
+  </div>
+  <div class="idmc-stat red">
+    <div class="sv">163</div>
+    <div class="sl">Countries and territories that recorded disaster displacements in 2024</div>
+  </div>
+</div>
+
+<div class="idmc-quote">
+  "The nearly 45.8 million disaster displacements recorded across 163 countries and territories last year was the highest figure since we began monitoring displacement in 2008."
+  <cite>— IDMC Global Report on Internal Displacement (GRID) 2025</cite>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     CHART 1 — Global disaster displacements trend
+═══════════════════════════════════════════════════ -->
+<div class="idmc-section">
+  <div class="idmc-card">
+    <div class="idmc-title">📈 Global Disaster Displacements: 2008–2024</div>
+    <div class="idmc-sub">Number of forced movements recorded per year worldwide (millions). Same person displaced multiple times = counted multiple times.</div>
+    <div class="idmc-chart-h">
+      <canvas id="idmcTrendChart"></canvas>
+    </div>
+    <div class="idmc-source">
+      Source: IDMC Global Internal Displacement Database (GIDD) · GRID 2025 · <a href="https://www.internal-displacement.org/global-report/grid2025/" target="_blank" style="color:#2b6cb0;">internal-displacement.org/global-report/grid2025</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     CHARTS 2+3 — Side-by-side: disaster type breakdown &
+     US annual displacement
+═══════════════════════════════════════════════════ -->
+<div class="idmc-grid2">
+  <!-- Disaster type donut -->
+  <div class="idmc-section" style="margin:0;">
+    <div class="idmc-card" style="height:100%; box-sizing:border-box;">
+      <div class="idmc-title">🌐 2024 Global Displacements by Type</div>
+      <div class="idmc-sub">Share of 45.8 million disaster displacements by hazard type</div>
+      <div class="idmc-chart-h-sm">
+        <canvas id="idmcTypeChart"></canvas>
+      </div>
+      <div class="idmc-source">Source: IDMC GRID 2025</div>
+    </div>
+  </div>
+  <!-- US displacement bar -->
+  <div class="idmc-section" style="margin:0;">
+    <div class="idmc-card" style="height:100%; box-sizing:border-box;">
+      <div class="idmc-title">🇺🇸 U.S. Disaster Displacements: 2008–2024</div>
+      <div class="idmc-sub">Annual displacements (millions of movements) — US is consistently among the world's highest</div>
+      <div class="idmc-chart-h-sm">
+        <canvas id="idmcUSChart"></canvas>
+      </div>
+      <div class="idmc-source">Source: IDMC GRID 2025 / GIDD · United States</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     CHART 4 — Regional breakdown map (Leaflet bubbles)
+═══════════════════════════════════════════════════ -->
+<div class="idmc-section">
+  <div class="idmc-card">
+    <div class="idmc-title">🗺️ Disaster Displacements by World Region — 2024</div>
+    <div class="idmc-sub">Bubble size = millions of disaster displacements. Click any bubble for regional details.</div>
+    <div id="idmc-region-map"></div>
+    <div class="idmc-region-legend">
+      <span><span class="dot" style="background:#e53e3e;"></span> The Americas (9.5M)</span>
+      <span><span class="dot" style="background:#dd6b20;"></span> Sub-Saharan Africa (7.8M)</span>
+      <span><span class="dot" style="background:#d69e2e;"></span> East Asia &amp; Pacific (20.1M)</span>
+      <span><span class="dot" style="background:#38a169;"></span> South Asia (3.5M)</span>
+      <span><span class="dot" style="background:#3182ce;"></span> Middle East &amp; N. Africa (1.2M)</span>
+      <span><span class="dot" style="background:#805ad5;"></span> Europe &amp; Central Asia (3.7M)</span>
+    </div>
+    <div class="idmc-source">Source: IDMC GRID 2025 regional overviews · Values are disaster-triggered displacements (movements)</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     CHART 5 — Conflict vs Disaster IDPs stacked bar
+═══════════════════════════════════════════════════ -->
+<div class="idmc-section">
+  <div class="idmc-card">
+    <div class="idmc-title">📊 People Living in Displacement: Conflict vs. Disasters (2018–2024)</div>
+    <div class="idmc-sub">Total IDPs (stock) at year-end — those who have not yet achieved a durable solution. Disaster IDPs are often undercounted relative to movements because most return home.</div>
+    <div class="idmc-chart-h">
+      <canvas id="idmcIDPChart"></canvas>
+    </div>
+    <div class="idmc-source">
+      Source: IDMC GIDD · GRID 2025 · <a href="https://www.internal-displacement.org/database/displacement-data/" target="_blank" style="color:#2b6cb0;">internal-displacement.org/database</a> · IDP stock = snapshot at year-end, not movements.
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // ── Chart 1: Global disaster displacement trend 2008–2024 ──
+  // Source: IDMC GIDD / GRID reports (millions of movements)
+  const trendYears = [2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024];
+  const trendDis   = [21.0,16.5,42.0,14.9,32.4,21.0,19.3,27.5,24.4,30.6,28.0,25.8,30.7,23.7,32.6,26.4,45.8];
+  // 5-yr running avg
+  const trendAvg = trendDis.map((_,i) => {
+    if(i < 4) return null;
+    const sl = trendDis.slice(i-4,i+1);
+    return sl.reduce((a,b)=>a+b,0)/5;
+  });
+
+  const tCtx = document.getElementById('idmcTrendChart').getContext('2d');
+  const tGrad = tCtx.createLinearGradient(0,0,0,340);
+  tGrad.addColorStop(0,'rgba(43,108,176,0.25)');
+  tGrad.addColorStop(1,'rgba(43,108,176,0.01)');
+
+  new Chart(tCtx, {
+    type: 'line',
+    data: {
+      labels: trendYears,
+      datasets: [
+        {
+          label: 'Disaster Displacements (Millions)',
+          data: trendDis,
+          borderColor: '#2b6cb0',
+          backgroundColor: tGrad,
+          borderWidth: 2.5,
+          fill: true,
+          tension: 0.3,
+          pointBackgroundColor: trendYears.map(y => (y===2024||y===2010||y===2012) ? '#c53030' : 'rgba(43,108,176,0.7)'),
+          pointRadius: trendYears.map(y => (y===2024||y===2010||y===2012) ? 7 : 4),
+          pointHoverRadius: 8,
+          order: 2
+        },
+        {
+          label: '5-Year Average',
+          data: trendAvg,
+          borderColor: '#f6ad55',
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          borderDash: [6,3],
+          fill: false,
+          tension: 0.4,
+          pointRadius: 0,
+          pointHoverRadius: 6,
+          order: 1
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode:'index', intersect:false },
+      plugins: {
+        legend: { position:'top', labels:{ font:{size:11}, boxWidth:22 } },
+        tooltip: {
+          backgroundColor:'rgba(20,20,40,0.90)',
+          callbacks: {
+            label: item => item.raw != null
+              ? `  ${item.dataset.label}: ${item.raw.toFixed(1)}M`
+              : null
+          }
+        },
+        annotation: {
+          annotations: {
+            lbl2024: { type:'label', xValue:2024, yValue:45.8,
+              content:['Record 45.8M'], yAdjust:-20,
+              backgroundColor:'rgba(197,48,48,0.85)', color:'#fff',
+              font:{size:10,weight:'bold'}, padding:{x:5,y:3}, borderRadius:4 },
+            lbl2010: { type:'label', xValue:2010, yValue:42.0,
+              content:['Haiti EQ'], yAdjust:-20,
+              backgroundColor:'rgba(100,100,100,0.75)', color:'#fff',
+              font:{size:10}, padding:{x:5,y:3}, borderRadius:4 },
+          }
+        }
+      },
+      scales: {
+        x: { grid:{color:'rgba(0,0,0,0.04)'}, ticks:{font:{size:10},color:'#718096'} },
+        y: {
+          beginAtZero: true,
+          title:{ display:true, text:'Displacements (Millions)', font:{size:11,weight:'600'}, color:'#4a5568' },
+          grid:{ color:'rgba(0,0,0,0.04)' },
+          ticks:{ callback:v=>v+'M', font:{size:10}, color:'#718096' }
+        }
+      }
+    }
+  });
+
+  // ── Chart 2: 2024 global disaster displacements by type ──
+  // Source: IDMC GRID 2025 (estimated breakdown from report)
+  const typeCtx = document.getElementById('idmcTypeChart').getContext('2d');
+  new Chart(typeCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Storms & Cyclones','Floods','Wildfires','Other / Geophysical'],
+      datasets: [{
+        data: [26.1, 16.4, 1.8, 1.5],
+        backgroundColor: ['#2b6cb0','#3182ce','#e53e3e','#805ad5'],
+        hoverOffset: 10,
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position:'bottom', labels:{ font:{size:10}, boxWidth:14, padding:10 } },
+        tooltip: {
+          callbacks: {
+            label: item => `  ${item.label}: ${item.raw}M (${(item.raw/45.8*100).toFixed(0)}%)`
+          }
+        }
+      }
+    }
+  });
+
+  // ── Chart 3: US disaster displacements 2008–2024 ──
+  // Source: IDMC GIDD — United States (millions)
+  const usYears = [2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024];
+  const usDis   = [2.5, 0.4, 0.4, 4.0, 3.5, 1.1, 1.0, 1.5, 1.3, 4.4, 1.7, 0.9, 1.3, 1.2, 0.9, 0.9, 11.0];
+  const usBg    = usDis.map((v,i) => usYears[i]===2024 ? '#c53030' : usYears[i]===2017||usYears[i]===2011 ? '#dd6b20' : '#3182ce');
+  const usCtx   = document.getElementById('idmcUSChart').getContext('2d');
+  new Chart(usCtx, {
+    type: 'bar',
+    data: {
+      labels: usYears,
+      datasets: [{
+        label: 'US Disaster Displacements (M)',
+        data: usDis,
+        backgroundColor: usBg,
+        borderRadius: 5,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display:false },
+        tooltip: {
+          callbacks: {
+            title: items => 'Year: ' + items[0].label,
+            label: item => {
+              const yr = usYears[item.dataIndex];
+              const notes = {
+                2024:'Helene (3.2M) + Milton (5.2M) + others',
+                2017:'Harvey (2.2M) + Irma (1.4M)',
+                2011:'Joplin + Gulf tornadoes',
+                2012:'Hurricane Sandy'
+              };
+              return [`  Displacements: ${item.raw.toFixed(1)}M`, notes[yr] ? '  📌 ' + notes[yr] : ''].filter(Boolean);
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid:{display:false}, ticks:{font:{size:9},color:'#718096', maxRotation:45} },
+        y: {
+          beginAtZero:true,
+          title:{ display:true, text:'Displacements (Millions)', font:{size:10,weight:'600'}, color:'#4a5568' },
+          grid:{ color:'rgba(0,0,0,0.04)' },
+          ticks:{ callback:v=>v+'M', font:{size:10}, color:'#718096' }
+        }
+      }
+    }
+  });
+
+  // ── Chart 5: IDP stock stacked bar 2018–2024 ──
+  // Source: IDMC GIDD (millions of people living in displacement at year-end)
+  const idpYears    = [2018,2019,2020,2021,2022,2023,2024];
+  const idpConflict = [34.5,36.5,42.5,51.0,57.5,68.3,73.5];
+  const idpDisaster = [5.0, 5.4, 5.9, 5.7, 7.3, 7.7,  9.8];
+  const idpCtx = document.getElementById('idmcIDPChart').getContext('2d');
+  new Chart(idpCtx, {
+    type: 'bar',
+    data: {
+      labels: idpYears,
+      datasets: [
+        {
+          label: 'Conflict & Violence IDPs',
+          data: idpConflict,
+          backgroundColor: '#fc8181',
+          borderRadius: 4,
+          borderSkipped: false,
+          stack: 'a'
+        },
+        {
+          label: 'Disaster IDPs',
+          data: idpDisaster,
+          backgroundColor: '#4299e1',
+          borderRadius: 4,
+          borderSkipped: false,
+          stack: 'a'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position:'top', labels:{ font:{size:11}, boxWidth:18 } },
+        tooltip: {
+          mode: 'index',
+          callbacks: {
+            title: items => 'Year-end ' + items[0].label,
+            label: item => `  ${item.dataset.label}: ${item.raw.toFixed(1)}M`,
+            footer: items => {
+              const total = items.reduce((a,b) => a + b.raw, 0);
+              return `  Total IDPs: ${total.toFixed(1)}M`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { stacked:true, grid:{display:false}, ticks:{font:{size:11}, color:'#4a5568'} },
+        y: {
+          stacked: true,
+          title:{ display:true, text:'People (Millions)', font:{size:11,weight:'600'}, color:'#4a5568' },
+          grid:{ color:'rgba(0,0,0,0.05)' },
+          ticks:{ callback:v=>v+'M', font:{size:10}, color:'#718096' }
+        }
+      }
+    }
+  });
+
+  // ── Regional bubble map (Leaflet) ──
+  const regionData = [
+    {
+      name: 'The Americas',
+      dis: 9.5, idp: 7.8,
+      lat: 10, lng: -80,
+      color: '#e53e3e',
+      detail: '9.5M displacements · US record year (11M): Helene + Milton. Brazil flooding, Caribbean storms.'
+    },
+    {
+      name: 'Sub-Saharan Africa',
+      dis: 7.8, idp: 5650000/1e6,
+      lat: 5, lng: 20,
+      color: '#dd6b20',
+      detail: '7.8M disaster displacements · East Africa flooding, West Africa storms. All 23 countries that had conflict also had disasters.'
+    },
+    {
+      name: 'East Asia & Pacific',
+      dis: 20.1, idp: 1.2,
+      lat: 20, lng: 120,
+      color: '#d69e2e',
+      detail: '20.1M displacements — largest regional total. Philippines alone: 9M (record). China, Bangladesh tropical storms.'
+    },
+    {
+      name: 'South Asia',
+      dis: 3.5, idp: 0.9,
+      lat: 25, lng: 80,
+      color: '#38a169',
+      detail: '3.5M displacements · Flooding in India, Bangladesh, Pakistan, Nepal.'
+    },
+    {
+      name: 'Middle East & N. Africa',
+      dis: 1.2, idp: 0.3,
+      lat: 26, lng: 42,
+      color: '#3182ce',
+      detail: '1.2M disaster displacements · Mostly floods in Morocco, Libya aftermath, Gulf heat events.'
+    },
+    {
+      name: 'Europe & Central Asia',
+      dis: 3.7, idp: 0.5,
+      lat: 50, lng: 20,
+      color: '#805ad5',
+      detail: '3.7M displacements · Valencia Spain floods (November 2024, deadliest in European history). Central Asian floods.'
+    }
+  ];
+
+  const rmap = L.map('idmc-region-map', {
+    center: [15, 15], zoom: 2, scrollWheelZoom: false, zoomControl: true
+  });
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+    maxZoom: 8
+  }).addTo(rmap);
+
+  regionData.forEach(r => {
+    const radius = Math.sqrt(r.dis) * 22;
+    const circle = L.circleMarker([r.lat, r.lng], {
+      radius: Math.max(radius, 10),
+      fillColor: r.color,
+      color: '#fff',
+      weight: 2,
+      fillOpacity: 0.75
+    }).addTo(rmap);
+    circle.bindTooltip(
+      `<b>${r.name}</b><br>🌪️ ${r.dis}M displacements`,
+      { className:'dtip', direction:'top' }
+    );
+    circle.bindPopup(
+      `<div style="font-family:Inter,sans-serif;max-width:260px;">
+        <b style="color:${r.color};font-size:1.05em;">${r.name}</b><br>
+        <span style="font-size:1.3em;font-weight:800;">${r.dis}M</span>
+        <span style="font-size:0.8em;color:#718096;"> disaster displacements (2024)</span>
+        <p style="font-size:0.83em;margin:8px 0 0;color:#2d3748;">${r.detail}</p>
+      </div>`,
+      { maxWidth: 280 }
+    );
+  });
+})();
+</script>
 ```
 
 ## NOAA Sea Level Rise Viewer
