@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Fronts Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            background: linear-gradient(to bottom, #87CEEB 0%, #e0f6ff 60%, #8b4513 100%); /* Sky to ground */
+        }
+        .btn-active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        .btn-inactive {
+            background-color: white;
+            color: #475569;
+            border-color: #cbd5e1;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-6 flex justify-center">
+
+    <div class="max-w-4xl w-full bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
+        
+        <!-- Header & Controls -->
+        <div class="p-6 border-b border-slate-200 bg-slate-50">
+            <h1 class="text-2xl font-bold text-slate-800 mb-4">Interactive Weather Fronts</h1>
+            <div class="flex flex-wrap gap-3" id="controls">
+                <button onclick="setFront('cold')" id="btn-cold" class="px-4 py-2 rounded-md border font-semibold transition-colors btn-active shadow-sm text-sm">Cold Front</button>
+                <button onclick="setFront('warm')" id="btn-warm" class="px-4 py-2 rounded-md border font-semibold transition-colors btn-inactive shadow-sm hover:bg-slate-50 text-sm">Warm Front</button>
+                <button onclick="setFront('stationary')" id="btn-stationary" class="px-4 py-2 rounded-md border font-semibold transition-colors btn-inactive shadow-sm hover:bg-slate-50 text-sm">Stationary Front</button>
+                <button onclick="setFront('occluded')" id="btn-occluded" class="px-4 py-2 rounded-md border font-semibold transition-colors btn-inactive shadow-sm hover:bg-slate-50 text-sm">Occluded Front</button>
+            </div>
+        </div>
+
+        <!-- Canvas Area -->
+        <div class="p-6 bg-slate-100 flex justify-center relative">
+            <canvas id="simCanvas" width="800" height="450"></canvas>
+            
+            <!-- Legend overlay -->
+            <div class="absolute top-8 left-8 bg-white/90 p-3 rounded shadow-sm text-xs space-y-2 border border-slate-200 pointer-events-none">
+                <div class="flex items-center gap-2"><div class="w-4 h-4 bg-blue-500 rounded-sm opacity-80"></div> <span class="font-semibold text-slate-700">Cold Air (High Density)</span></div>
+                <div class="flex items-center gap-2"><div class="w-4 h-4 bg-red-500 rounded-sm opacity-80"></div> <span class="font-semibold text-slate-700">Warm Air (Low Density)</span></div>
+                <div class="flex items-center gap-2"><div class="w-4 h-4 bg-purple-500 rounded-sm opacity-80"></div> <span class="font-semibold text-slate-700">Cool Air (Med Density)</span></div>
+            </div>
+        </div>
+
+        <!-- Info Panel -->
+        <div class="p-6 bg-white grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-1">
+                <h3 class="text-xs uppercase tracking-wider font-bold text-slate-400 mb-2">Mechanism</h3>
+                <p id="info-desc" class="text-slate-700 text-sm leading-relaxed">
+                    <!-- Populated by JS -->
+                </p>
+            </div>
+            <div>
+                <h3 class="text-xs uppercase tracking-wider font-bold text-slate-400 mb-2">Cloud Cover</h3>
+                <p id="info-clouds" class="text-slate-700 text-sm leading-relaxed">
+                    <!-- Populated by JS -->
+                </p>
+            </div>
+            <div>
+                <h3 class="text-xs uppercase tracking-wider font-bold text-slate-400 mb-2">Weather Conditions</h3>
+                <p id="info-weather" class="text-slate-700 text-sm leading-relaxed">
+                    <!-- Populated by JS -->
+                </p>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Front Data Content
+    const frontData = {
+        cold: {
+            desc: "A cold front forms when a rapidly moving cold, dense air mass wedges under a warmer, lighter air mass. The heavy cold air acts like a bulldozer, forcing the warm air to rise steeply and rapidly.",
+            clouds: "Towering Cumulonimbus clouds build vertically right along and just ahead of the front due to the rapid upward push of warm, moist air.",
+            weather: "Characterized by sudden, heavy showers, thunderstorms, and gusty winds. As the front passes, temperatures drop significantly, skies clear, and pressure rises."
+        },
+        warm: {
+            desc: "A warm front forms when a warm, less dense air mass overtakes a colder, denser air mass. Because it is lighter, the warm air gently slides up and over the cold air wedge at a shallow angle.",
+            clouds: "A widespread sequence of clouds ahead of the front: Cirrus (high), followed by Altostratus (mid), thickening into flat, widespread Nimbostratus (low) clouds.",
+            weather: "Produces steady, light-to-moderate precipitation over a broad area lasting several hours to days. After it passes, weather becomes milder and more humid."
+        },
+        stationary: {
+            desc: "Occurs when a cold air mass and a warm air mass meet, but neither is strong enough to move the other. The boundary remains mostly stalled, with winds blowing parallel to the front.",
+            clouds: "Similar to a warm front but prolonged. Extensive layers of Stratus and Altocumulus clouds blanket the boundary region.",
+            weather: "Results in extended periods of gloomy weather, continuous light rain, or prolonged cloudiness lingering over the same area for days."
+        },
+        occluded: {
+            desc: "Forms in a mature cyclone when a fast-moving cold front completely overtakes a slower warm front. The warm air mass is completely lifted off the ground, pinched between two cooler air masses.",
+            clouds: "A complex mix of cloud types. You will often see a combination of towering Cumulonimbus embedded within widespread Nimbostratus clouds.",
+            weather: "Brings a variety of precipitation—often widespread, steady rain followed by heavy showers or storms, accompanied by shifting winds."
+        }
+    };
+
+    let currentFront = 'cold';
+    let animationTime = 0;
+    let particles = [];
+
+    // Initialize particles for rain
+    function initParticles() {
+        particles = [];
+        for(let i=0; i<150; i++) {
+            particles.push({
+                x: Math.random() * 800,
+                y: Math.random() * 450,
+                vx: (Math.random() - 0.5) * 2,
+                vy: Math.random() * 5 + 5,
+                life: Math.random()
+            });
+        }
+    }
+    initParticles();
+
+    function setFront(type) {
+        currentFront = type;
+        animationTime = 0; // reset animation
+        
+        // Update Buttons
+        ['cold', 'warm', 'stationary', 'occluded'].forEach(f => {
+            const btn = document.getElementById(`btn-${f}`);
+            if(f === type) {
+                btn.classList.remove('btn-inactive');
+                btn.classList.add('btn-active');
+            } else {
+                btn.classList.remove('btn-active');
+                btn.classList.add('btn-inactive');
+            }
+        });
+
+        // Update Text
+        document.getElementById('info-desc').innerText = frontData[type].desc;
+        document.getElementById('info-clouds').innerText = frontData[type].clouds;
+        document.getElementById('info-weather').innerText = frontData[type].weather;
+    }
+
+    // Utility: Draw Polygon
+    function drawPolygon(points, fillColor) {
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        for(let i=1; i<points.length; i++) {
+            ctx.lineTo(points[i].x, points[i].y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+    }
+
+    // Utility: Draw Cloud
+    function drawCloud(cx, cy, scale, type, opacity=1) {
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.scale(scale, scale);
+        ctx.globalAlpha = opacity;
+        
+        if (type === 'cumulonimbus') {
+            // Tall, dark base
+            ctx.fillStyle = '#64748b'; // dark gray base
+            ctx.beginPath();
+            ctx.arc(0, 0, 40, 0, Math.PI * 2);
+            ctx.arc(-30, -10, 30, 0, Math.PI * 2);
+            ctx.arc(30, -10, 30, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#94a3b8'; // mid gray
+            ctx.beginPath();
+            ctx.arc(0, -40, 45, 0, Math.PI * 2);
+            ctx.arc(-20, -60, 35, 0, Math.PI * 2);
+            ctx.arc(20, -50, 40, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#cbd5e1'; // light top (anvil)
+            ctx.beginPath();
+            ctx.arc(10, -90, 50, 0, Math.PI * 2);
+            ctx.arc(-20, -80, 40, 0, Math.PI * 2);
+            ctx.arc(40, -80, 30, 0, Math.PI * 2);
+            ctx.fill();
+            
+        } else if (type === 'stratus') {
+            // Wide, flat
+            ctx.fillStyle = '#94a3b8';
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 100, 20, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#cbd5e1';
+            ctx.beginPath();
+            ctx.ellipse(10, -10, 90, 15, 0, 0, Math.PI * 2);
+            ctx.fill();
+        } else if (type === 'cirrus') {
+            // Wispy
+            ctx.strokeStyle = '#f8fafc';
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(-40, 0); ctx.quadraticCurveTo(0, -10, 40, 10);
+            ctx.moveTo(-30, 15); ctx.quadraticCurveTo(10, 5, 50, 25);
+            ctx.stroke();
+        }
+
+        ctx.restore();
+    }
+
+    // Utility: Draw Arrow
+    function drawArrow(x, y, angle, color) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(0, -5);
+        ctx.lineTo(30, -5);
+        ctx.lineTo(30, -12);
+        ctx.lineTo(45, 0);
+        ctx.lineTo(30, 12);
+        ctx.lineTo(30, 5);
+        ctx.lineTo(0, 5);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+    }
+
+    // Update Rain Particles
+    function updateRain(minX, maxX, intensity) {
+        ctx.strokeStyle = 'rgba(150, 200, 255, 0.6)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        
+        particles.forEach(p => {
+            // Only draw particles within the rain zone
+            if (p.x > minX && p.x < maxX) {
+                // Randomly skip drawing based on intensity (0 to 1)
+                if (Math.random() < intensity) {
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p.x + p.vx, p.y + p.vy * 1.5);
+                }
+            }
+            
+            p.x += p.vx;
+            p.y += p.vy;
+            
+            if (p.y > 400 || p.x < 0 || p.x > 800) {
+                p.x = minX + Math.random() * (maxX - minX);
+                p.y = 0;
+            }
+        });
+        ctx.stroke();
+    }
+
+    // Ground drawing
+    function drawGround() {
+        ctx.fillStyle = '#8b4513';
+        ctx.fillRect(0, 400, 800, 50);
+        ctx.fillStyle = '#654321';
+        ctx.fillRect(0, 410, 800, 40);
+    }
+
+    // --- Render Functions for Each Front ---
+
+    function renderColdFront(progress) {
+        // Move from x=100 to x=600
+        const fx = 100 + progress * 500; 
+        
+        // Warm Air (Background)
+        drawPolygon([{x:0, y:0}, {x:800, y:0}, {x:800, y:400}, {x:0, y:400}], 'rgba(239, 68, 68, 0.2)'); // Light Red
+        
+        // Cold Air Wedge (Steep slope)
+        drawPolygon([
+            {x: 0, y: 400}, 
+            {x: fx, y: 400}, // Leading edge surface
+            {x: fx - 100, y: 100}, // Steep slope backwards
+            {x: 0, y: 100}
+        ], 'rgba(59, 130, 246, 0.6)'); // Blue
+
+        // Labels & Arrows
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 16px Inter';
+        if (fx > 150) ctx.fillText('COLD AIR', fx/2 - 40, 350);
+        ctx.fillStyle = '#b91c1c';
+        ctx.fillText('WARM AIR', fx + 100, 350);
+
+        drawArrow(fx - 150, 300, 0, '#1d4ed8'); // Cold moving right
+        drawArrow(fx + 20, 350, -Math.PI/2.5, '#dc2626'); // Warm rising sharply
+        
+        // Clouds & Rain
+        drawCloud(fx - 20, 250, 1.2, 'cumulonimbus');
+        updateRain(fx - 80, fx + 20, 1.0); // Heavy rain right at front
+    }
+
+    function renderWarmFront(progress) {
+        // Move from x=100 to x=500 (surface front position)
+        const fx = 100 + progress * 400;
+
+        // Warm Air (Background)
+        drawPolygon([{x:0, y:0}, {x:800, y:0}, {x:800, y:400}, {x:0, y:400}], 'rgba(239, 68, 68, 0.3)');
+        
+        // Cold Air Wedge (Retreating right, gentle slope)
+        drawPolygon([
+            {x: fx, y: 400}, 
+            {x: 800, y: 400}, 
+            {x: 800, y: 0}, 
+            {x: fx + 400, y: 0} // Gentle slope forwards
+        ], 'rgba(59, 130, 246, 0.6)');
+
+        // Labels & Arrows
+        ctx.fillStyle = '#b91c1c';
+        ctx.font = 'bold 16px Inter';
+        ctx.fillText('WARM AIR', fx/2, 350);
+        ctx.fillStyle = 'white';
+        if (fx < 600) ctx.fillText('COLD AIR', fx + 150, 350);
+
+        drawArrow(fx - 50, 300, -Math.PI/8, '#dc2626'); // Warm rising gently
+        drawArrow(fx + 250, 350, 0, '#1d4ed8'); // Cold retreating right
+        
+        // Clouds & Rain
+        drawCloud(fx + 100, 150, 1.5, 'stratus');
+        drawCloud(fx + 250, 100, 1.2, 'stratus', 0.8);
+        drawCloud(fx + 400, 50, 1, 'cirrus');
+        
+        updateRain(fx, fx + 300, 0.4); // Widespread light rain ahead of front
+    }
+
+    function renderStationaryFront(progress) {
+        const fx = 400 + Math.sin(progress * Math.PI * 4) * 20; // Slight wobble
+
+        drawPolygon([{x: fx, y: 400}, {x: 800, y: 400}, {x: 800, y: 0}, {x: fx + 50, y: 0}], 'rgba(239, 68, 68, 0.3)');
+        drawPolygon([{x: 0, y: 400}, {x: fx, y: 400}, {x: fx + 50, y: 0}, {x: 0, y: 0}], 'rgba(59, 130, 246, 0.6)');
+
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 16px Inter';
+        ctx.fillText('COLD AIR', 150, 200);
+        ctx.fillStyle = '#b91c1c';
+        ctx.fillText('WARM AIR', 600, 200);
+
+        // Arrows showing parallel movement (into/out of screen concept, simplified to opposing here)
+        drawArrow(250, 250, 0, '#1d4ed8'); 
+        drawArrow(550, 250, Math.PI, '#dc2626'); 
+
+        drawCloud(fx, 150, 1.2, 'stratus');
+        drawCloud(fx + 50, 100, 1, 'stratus');
+        drawCloud(fx - 50, 180, 0.8, 'cumulonimbus');
+
+        updateRain(fx - 100, fx + 100, 0.6); // Steady rain at boundary
+    }
+
+    function renderOccludedFront(progress) {
+        const fx = 150 + progress * 400; // Point of occlusion at surface
+
+        // Coldest Air (Left, advancing fast)
+        drawPolygon([
+            {x: 0, y: 400}, 
+            {x: fx, y: 400}, 
+            {x: fx - 80, y: 150}, 
+            {x: 0, y: 150}
+        ], 'rgba(59, 130, 246, 0.7)'); // Deep Blue
+
+        // Cool Air (Right, slower)
+        drawPolygon([
+            {x: fx, y: 400}, 
+            {x: 800, y: 400}, 
+            {x: 800, y: 150}, 
+            {x: fx + 120, y: 150}
+        ], 'rgba(139, 92, 246, 0.6)'); // Purple (Cool air)
+
+        // Warm Air (Aloft, pinched)
+        drawPolygon([
+            {x: fx - 80, y: 150}, 
+            {x: fx, y: 400}, // Touches surface right at the pin point temporarily
+            {x: fx + 120, y: 150},
+            {x: 800, y: 0},
+            {x: 0, y: 0}
+        ], 'rgba(239, 68, 68, 0.4)'); // Red aloft
+
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 14px Inter';
+        if(fx > 100) ctx.fillText('COLD AIR', fx/2 - 30, 350);
+        ctx.fillText('COOL AIR', fx + 100, 350);
+        ctx.fillStyle = '#b91c1c';
+        ctx.fillText('WARM AIR (LIFTED)', fx - 50, 80);
+
+        drawArrow(fx - 120, 280, 0, '#1d4ed8');
+        drawArrow(fx, 200, -Math.PI/2, '#dc2626'); // Warm air pushed straight up
+
+        drawCloud(fx, 120, 1.2, 'cumulonimbus');
+        drawCloud(fx + 100, 100, 1.3, 'stratus');
+
+        updateRain(fx - 50, fx + 150, 0.7);
+    }
+
+    // Main Animation Loop
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Loop progress from 0 to 1 over 12 seconds
+        animationTime += 16; // roughly 60fps
+        const loopDuration = 12000;
+        const progress = (animationTime % loopDuration) / loopDuration;
+
+        switch(currentFront) {
+            case 'cold': renderColdFront(progress); break;
+            case 'warm': renderWarmFront(progress); break;
+            case 'stationary': renderStationaryFront(progress); break;
+            case 'occluded': renderOccludedFront(progress); break;
+        }
+
+        drawGround();
+        requestAnimationFrame(animate);
+    }
+
+    // Initialize
+    setFront('cold');
+    animate();
+
+</script>
+</body>
+</html>

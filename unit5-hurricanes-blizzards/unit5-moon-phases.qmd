@@ -1,0 +1,516 @@
+---
+title: "Unit 5: Moon Phases"
+subtitle: "How does the moon contribute to storm severity?"
+author: "Earth & Space Science"
+format:
+  html:
+    toc: false
+    toc-depth: 3
+    number-sections: true
+    code-fold: true
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+  color: white;
+  padding: 25px; 
+  margin: 20px 0; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  border: none;
+}
+.engage-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+
+.explore-box { 
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
+  color: white;
+  padding: 25px; 
+  margin: 20px 0; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+}
+
+.explain-box { 
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
+  color: #1a1a1a;
+  padding: 25px; 
+  margin: 20px 0; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+}
+
+.elaborate-box { 
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); 
+  color: #1a1a1a;
+  padding: 25px; 
+  margin: 20px 0; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);
+}
+
+.check-understanding { 
+  background: linear-gradient(to right, #667eea, #764ba2);
+  color: white;
+  padding: 20px; 
+  margin: 20px 0;
+  border-radius: 12px;
+  border-left: 6px solid #fff;
+}
+
+.key-idea { 
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 20px; 
+  margin: 20px 0;
+  border-radius: 12px;
+  border-left: 8px solid #ff6b6b;
+  font-size: 1.1em;
+}
+
+.lab-activity { 
+  background: linear-gradient(to bottom, #ffeaa7, #fdcb6e);
+  border: 4px solid #e17055; 
+  padding: 25px; 
+  margin: 25px 0; 
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.pe-badge { 
+  display: inline-block; 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white; 
+  padding: 8px 16px; 
+  border-radius: 20px; 
+  font-size: 13px; 
+  font-weight: 800;
+  margin: 5px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.big-question {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.5em;
+  font-weight: 800;
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 30px 0 20px 0;
+  text-align: center;
+  animation: slideIn 0.8s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mind-blown {
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  color: white;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 15px;
+  font-size: 1.3em;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
+}
+
+.student-task {
+  background: #fff3e0;
+  border-left: 5px solid #ff9800;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 0 10px 10px 0;
+}
+
+h1 { 
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 2.8em !important;
+  margin-top: 40px !important;
+}
+
+h2 { 
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 700 !important;
+  color: #2c3e50 !important;
+}
+</style>
+```
+
+<span class="pe-badge">HS-ESS1-7</span> <span class="pe-badge">Time: 7 Days</span>
+
+<div class="big-question">🌙 Moon Phases, Tides & Storm Severity 🌊</div>
+
+# Engage: The Investigative Phenomenon
+
+::: {.engage-box}
+## 🌊 Hurricane Sandy & the Spring Tide
+
+<div style="font-size: 1.3em; font-weight: 700; text-align: center; margin: 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+Hurricane Sandy created historic flooding in New York City on a high spring tide.
+</div>
+
+**October 29, 2012 — "Superstorm Sandy":**
+
+- 🌀 Sandy made landfall near Atlantic City, NJ as a post-tropical cyclone with hurricane-force winds
+- 🌊 **Record storm surge** of nearly 14 feet at Battery Park, Manhattan
+- 🌙 The storm arrived during a **spring high tide** — when the Sun, Moon, and Earth were nearly aligned
+- 🏚️ Massive flooding across Lower Manhattan, subway tunnels, and coastal Brooklyn & Queens
+- 💰 Over **$70 billion** in damages — one of the costliest storms in US history
+
+### The Key Question:
+Would the flooding have been as catastrophic if Sandy had arrived during a **neap tide** instead? What role did the **moon** play in making this storm so devastating?
+
+### 🤔 Driving Questions:
+- What are some reasons that some storms are **worse** than others?
+- How do the **relative positions** of the Moon, Earth, and Sun create moon phases?
+- What is the connection between moon phases and **tides**?
+- How can **spring tides** make storm surges more dangerous?
+:::
+
+```{ojs}
+//| echo: false
+import {chart, viewof year, viewof locale} from "@mbostock/phases-of-the-moon"
+viewof year
+viewof locale
+chart
+```
+
+::: {.student-task}
+### 📝 What Do You Already Know?
+
+Before we investigate, discuss with your group:
+
+1. Why do we see **different shapes** (phases) of the moon throughout the month?
+2. What causes **tides** — why does the ocean rise and fall twice a day?
+3. Have you heard the terms "spring tide" or "neap tide"? What do you think they mean?
+4. How could the **timing** of a storm's arrival (relative to tides) affect how bad the flooding is?
+:::
+
+::: {.student-task}
+### 🔍 Pattern Recognition: Moon Phase Images
+
+Your teacher will present a series of moon phase images taken over the course of a month.
+
+1. **Observe:** What patterns do you notice in how the illuminated portion of the moon changes?
+2. **Diagram Model:** Create an initial diagram showing the positions of the Earth, Sun, and Moon that you think could explain these patterns. Label what phase each position would produce.
+3. **Share:** Compare your model with another group's. What's similar? What's different?
+:::
+
+# Explore 1: Modeling Moon Phases
+
+::: {.explore-box}
+## 🔬 Investigation: Why Does the Moon's Appearance Change?
+
+The moon doesn't produce its own light — it reflects sunlight. As the moon orbits Earth, we see different amounts of its illuminated surface depending on the relative positions of the Sun, Earth, and Moon.
+
+**Your task:** Use a 3-D moon phases model and a moon phase simulator to look for patterns that explain what causes moon phases.
+:::
+
+## The Lunar Cycle
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot")
+d3 = require("d3@7")
+```
+
+The moon completes one full orbit around Earth approximately every **29.5 days** (a synodic month). During this cycle, we observe a predictable sequence of phases.
+
+```{ojs}
+//| echo: false
+moonPhases = [
+  {day: 0, phase: "New Moon", illumination: 0, icon: "🌑"},
+  {day: 3.7, phase: "Waxing Crescent", illumination: 12.5, icon: "🌒"},
+  {day: 7.4, phase: "First Quarter", illumination: 50, icon: "🌓"},
+  {day: 11.1, phase: "Waxing Gibbous", illumination: 87.5, icon: "🌔"},
+  {day: 14.8, phase: "Full Moon", illumination: 100, icon: "🌕"},
+  {day: 18.5, phase: "Waning Gibbous", illumination: 87.5, icon: "🌖"},
+  {day: 22.1, phase: "Third Quarter", illumination: 50, icon: "🌗"},
+  {day: 25.8, phase: "Waning Crescent", illumination: 12.5, icon: "🌘"},
+  {day: 29.5, phase: "New Moon", illumination: 0, icon: "🌑"}
+]
+
+Plot.plot({
+  title: "Moon Illumination Through One Lunar Cycle",
+  subtitle: "The moon takes ~29.5 days to complete one full cycle of phases",
+  width: 700,
+  height: 360,
+  x: {label: "Day of Lunar Cycle", domain: [0, 30]},
+  y: {label: "Illumination (%)", domain: [0, 110]},
+  marks: [
+    Plot.areaY(moonPhases, {x: "day", y: "illumination", fill: "#c0c0c0", fillOpacity: 0.2, curve: "natural"}),
+    Plot.lineY(moonPhases, {x: "day", y: "illumination", stroke: "#555", strokeWidth: 2.5, curve: "natural"}),
+    Plot.dot(moonPhases, {x: "day", y: "illumination", r: 8, fill: d => d.illumination > 50 ? "#f1c40f" : "#555", stroke: "#333", strokeWidth: 1.5}),
+    Plot.text(moonPhases, {x: "day", y: "illumination", text: "icon", dy: -22, fontSize: 20}),
+    Plot.text(moonPhases.filter(d => d.day === 0 || d.day === 7.4 || d.day === 14.8 || d.day === 22.1), 
+      {x: "day", y: "illumination", text: "phase", dy: 25, fontSize: 10, fontWeight: 600})
+  ]
+})
+```
+
+::: {.lab-activity}
+### 🧪 Hands-On: 3-D Moon Phases Model
+
+**Materials:** Lamp (Sun), Styrofoam ball on a stick (Moon), your head (Earth)
+
+1. Stand in the center of the room with the lamp shining from one direction
+2. Hold the ball at arm's length and slowly rotate your body counterclockwise
+3. At **8 positions** (every 45°), stop and sketch what the illuminated ball looks like from your perspective
+4. Label each position with the correct moon phase name
+
+**Record in your notebook:**
+- At which position is the ball fully lit? Fully dark?
+- Why does the same half of the ball always face the lamp?
+- How does your viewing angle change what you see?
+:::
+
+::: {.student-task}
+### 📝 Explore 1 Observations
+
+After working with the 3-D model and simulator:
+
+1. What **causes** the moon to appear to change shape? (Hint: it's about geometry, not shadows from Earth.)
+2. Sketch the Sun-Earth-Moon positions for: New Moon, First Quarter, Full Moon, Third Quarter.
+3. Why is the Full Moon always **opposite** the Sun in the sky?
+:::
+
+# Explain 1: Understanding Moon Phases
+
+::: {.explain-box}
+## 💡 Making Sense: The Geometry of Moon Phases
+
+Now let's formalize what you discovered. Moon phases result from the **changing geometry** of the Sun-Earth-Moon system as seen from Earth.
+:::
+
+::: {.key-idea}
+**Key Idea:** Moon phases are caused by the changing relative positions of the Moon, Earth, and Sun. The Moon always has one half illuminated by the Sun — the phase we see depends on our **viewing angle** from Earth as the Moon orbits.
+:::
+
+## How the Phases Work
+
+| Phase | Sun-Earth-Moon Geometry | What We See |
+|-------|------------------------|-------------|
+| 🌑 **New Moon** | Moon is between Earth and Sun | Dark — illuminated side faces away from us |
+| 🌓 **First Quarter** | Moon is 90° from Sun (right) | Right half illuminated |
+| 🌕 **Full Moon** | Earth is between Moon and Sun | Fully illuminated — we see the entire lit side |
+| 🌗 **Third Quarter** | Moon is 90° from Sun (left) | Left half illuminated |
+
+Between these **quarter phases**, we see the transitional crescent and gibbous phases as the illuminated fraction gradually changes.
+
+::: {.student-task}
+### 📝 Evaluate & Refine Your Model
+
+1. **Read** the provided text on moon phases and watch the assigned video
+2. **Compare** the scientific explanation to your initial diagram model from the Engage section
+3. **Revise** your diagram — correct any misconceptions and add labels explaining *why* each phase occurs based on the geometry
+4. **Common Misconception Check:** Moon phases are NOT caused by Earth's shadow on the Moon! (That's an eclipse.) Phases are caused by our changing viewing angle.
+:::
+
+# Explore 2: Connecting Moon Phases to Tides
+
+::: {.explore-box}
+## 🔬 Investigation: What Causes Tides — and Do Moon Phases Matter?
+
+You've figured out why we see moon phases. Now let's investigate whether there's a connection between the moon's position and the **tides** — the daily rise and fall of the ocean.
+:::
+
+## Daily Tide Patterns: NYC Battery Park (October 2012)
+
+The graph below shows actual tide data from Battery Park, Manhattan, during the week before and during Hurricane Sandy's landfall. Notice the two high tides and two low tides each day — and how their heights change throughout the month.
+
+```{ojs}
+//| echo: false
+// Simulated tide data for NYC Battery Park, October 2012
+// Simplified to show the key spring/neap pattern
+tideData = {
+  const data = [];
+  for (let day = 1; day <= 31; day++) {
+    for (let hour = 0; hour < 24; hour += 0.5) {
+      const t = (day - 1) * 24 + hour;
+      // Semi-diurnal tide (~12.42 hr period)
+      const semidiurnal = Math.cos(2 * Math.PI * t / 12.42);
+      // Spring-neap cycle (~14.75 day period) — spring tides around day 15 (full moon) and day 29 (new moon)
+      const springNeap = 1 + 0.35 * Math.cos(2 * Math.PI * (day - 15) / 14.75);
+      const height = semidiurnal * springNeap * 2.5 + 0.3;
+      data.push({
+        day: day + hour/24,
+        height: Math.round(height * 100) / 100,
+        date: `Oct ${day}`
+      });
+    }
+  }
+  return data;
+}
+
+Plot.plot({
+  title: "NYC Tide Heights — October 2012",
+  subtitle: "Notice how high tides get higher and lower throughout the month",
+  width: 720,
+  height: 380,
+  x: {label: "Day of October", domain: [1, 31]},
+  y: {label: "Tide Height (feet)", domain: [-4, 4]},
+  marks: [
+    Plot.lineY(tideData, {x: "day", y: "height", stroke: "#2980b9", strokeWidth: 1.2}),
+    Plot.ruleY([0], {stroke: "#999", strokeDasharray: "4,4"}),
+    // Mark Full Moon (~Oct 15) and New Moon (~Oct 29)
+    Plot.ruleX([15], {stroke: "#f1c40f", strokeWidth: 2, strokeDasharray: "6,3"}),
+    Plot.ruleX([29], {stroke: "#555", strokeWidth: 2, strokeDasharray: "6,3"}),
+    Plot.text([{x: 15, y: 3.7}], {x: "x", y: "y", text: d => "🌕 Full Moon", fontSize: 11, fontWeight: 600}),
+    Plot.text([{x: 29, y: 3.7}], {x: "x", y: "y", text: d => "🌑 New Moon", fontSize: 11, fontWeight: 600}),
+    // Highlight Sandy landfall
+    Plot.ruleX([29.5], {stroke: "#e74c3c", strokeWidth: 3}),
+    Plot.text([{x: 29.5, y: -3.5}], {x: "x", y: "y", text: d => "⬆ Sandy landfall", fill: "#e74c3c", fontSize: 11, fontWeight: 700})
+  ]
+})
+```
+
+::: {.student-task}
+### 📝 Graphing & Pattern Analysis
+
+Study the tide graph above and answer:
+
+1. How many high tides and low tides occur each day? What is the approximate time between consecutive high tides?
+2. Are all high tides the same height? When are the **highest** high tides? When are the **lowest** high tides?
+3. Look at the dates of the Full Moon (🌕 Oct 15) and New Moon (🌑 Oct 29). How do these relate to the tide heights?
+4. Hurricane Sandy made landfall on **October 29** — right at a New Moon. What was happening to the tides at that time?
+:::
+
+## Spring Tides vs. Neap Tides
+
+```{ojs}
+//| echo: false
+tidalRange = [
+  {phase: "New Moon\n(Spring Tide)", high: 3.4, low: -3.2, type: "spring", icon: "🌑"},
+  {phase: "First Quarter\n(Neap Tide)", high: 2.0, low: -1.8, type: "neap", icon: "🌓"},
+  {phase: "Full Moon\n(Spring Tide)", high: 3.4, low: -3.2, type: "spring", icon: "🌕"},
+  {phase: "Third Quarter\n(Neap Tide)", high: 2.0, low: -1.8, type: "neap", icon: "🌗"}
+]
+
+Plot.plot({
+  title: "Spring Tides vs. Neap Tides: Tidal Range by Moon Phase",
+  subtitle: "Spring tides (Sun-Moon aligned) produce much larger tidal swings",
+  width: 600,
+  height: 380,
+  x: {label: "Moon Phase", domain: tidalRange.map(d => d.phase)},
+  y: {label: "Tide Height (feet)", domain: [-4, 4]},
+  color: {legend: true, domain: ["Spring Tide", "Neap Tide"], range: ["#e74c3c", "#3498db"]},
+  marks: [
+    Plot.barY(tidalRange, {x: "phase", y: "high", fill: d => d.type === "spring" ? "#e74c3c" : "#3498db", tip: true}),
+    Plot.barY(tidalRange, {x: "phase", y: "low", fill: d => d.type === "spring" ? "#e74c3c" : "#3498db", fillOpacity: 0.5}),
+    Plot.ruleY([0], {stroke: "#333", strokeWidth: 1.5}),
+    Plot.text(tidalRange, {x: "phase", y: d => d.high + 0.4, text: "icon", fontSize: 22})
+  ]
+})
+```
+
+::: {.student-task}
+### 📝 Explore 2 Observations
+
+1. During which moon phases are the tides **most extreme** (biggest difference between high and low)?
+2. During which moon phases are the tides **most moderate**?
+3. What do you think is happening with gravity when the Sun, Moon, and Earth are **aligned** vs. at **right angles**?
+:::
+
+# Explain 2: The Moon-Tide Connection
+
+::: {.explain-box}
+## 💡 Making Sense: Why Moon Phases Control Tides
+
+Now let's connect what you've learned about moon phases to the gravitational forces that drive tides.
+:::
+
+::: {.key-idea}
+**Key Idea:** The Moon's gravitational pull creates a tidal bulge in Earth's oceans. When the Sun and Moon are **aligned** (New Moon or Full Moon), their gravitational forces combine to produce **spring tides** — extra-high highs and extra-low lows. When they're at **right angles** (Quarter Moons), they partially cancel, producing smaller **neap tides**.
+:::
+
+## Spring Tides (New & Full Moon)
+
+At **New Moon** and **Full Moon**, the Sun, Earth, and Moon are approximately aligned:
+
+- The Sun's and Moon's gravitational pulls **add together**
+- This produces **spring tides**: the highest high tides and the lowest low tides
+- The tidal range is at its **maximum**
+
+## Neap Tides (Quarter Moons)
+
+At **First Quarter** and **Third Quarter**, the Sun and Moon are at roughly 90° relative to Earth:
+
+- The Sun's pull partially **counteracts** the Moon's pull
+- This produces **neap tides**: moderate highs and moderate lows
+- The tidal range is at its **minimum**
+
+::: {.student-task}
+### 📝 Evaluate & Refine
+
+1. **Read** the provided text and watch the assigned video on tides and moon phases
+2. **Create a diagram model** showing:
+   - The Earth-Sun-Moon positions during a spring tide
+   - The Earth-Sun-Moon positions during a neap tide
+   - Where the tidal bulges form in each case
+   - Label the gravitational forces at work
+3. **Explain in writing:** Why did Hurricane Sandy's arrival during a spring tide make the flooding worse?
+:::
+
+# Elaborate: Applying Moon Phase Knowledge to Eclipses
+
+::: {.elaborate-box}
+## 🌗 Testing Your Understanding: Solar & Lunar Eclipses
+
+If you truly understand the geometry of the Sun-Earth-Moon system, you should be able to explain a related phenomenon: **eclipses**. This section tests and extends your thinking.
+:::
+
+## The Eclipse Connection
+
+Eclipses occur when the Sun, Earth, and Moon are **precisely** aligned — not just approximately aligned as during normal New and Full Moons.
+
+::: {.student-task}
+### 📝 Applying Your Model
+
+Use your understanding of the Sun-Earth-Moon geometry to answer:
+
+1. **Solar Eclipse:** During which moon phase does a solar eclipse occur? Draw the alignment. Why doesn't a solar eclipse happen every New Moon?
+
+2. **Lunar Eclipse:** During which moon phase does a lunar eclipse occur? Draw the alignment. Why doesn't a lunar eclipse happen every Full Moon?
+
+3. **The Tilted Orbit:** The Moon's orbit is tilted about 5° relative to Earth's orbit around the Sun. How does this explain why eclipses are rare even though New and Full Moons happen every month?
+:::
+
+::: {.key-idea}
+**Connection to Storms:** Eclipses are rare, but spring tides happen **every 2 weeks** (at every New Moon and Full Moon). This means there are regular, predictable windows when coastal flooding from storm surges will be especially dangerous. Understanding this cycle helps meteorologists and emergency managers issue better warnings.
+:::
+
+# Connecting Back: Sandy and the Spring Tide
+
+::: {.mind-blown}
+🌊 Hurricane Sandy arrived on October 29, 2012 — during a New Moon spring tide. The already-elevated tide added roughly 1–2 extra feet to the storm surge, turning a devastating flood into a **historic catastrophe**. Moon cycles drive tides, which influence storm flooding.
+:::
+
+::: {.check-understanding}
+### 🔗 Putting It All Together
+
+Now that you understand how moon phases drive tidal cycles:
+
+1. **Explain** in 3–4 sentences how the Moon's position contributed to the severity of Hurricane Sandy's flooding.
+
+2. **Predict:** If a major hurricane were approaching NYC during a **Third Quarter Moon** (neap tide) instead of a New Moon (spring tide), how would the flooding compare? Use specific tidal range numbers to support your answer.
+
+3. **Connect to Climate Change:** Spring tides are a natural cycle — they happen regardless of climate change. But **sea levels are rising** due to warming oceans and melting ice. How might rising sea levels make future spring-tide storm surges **even worse** than Sandy?
+
+4. **Big Picture:** What are some reasons that some storms are worse than others? List at least three factors, including what you learned in this sequence about tides.
+:::
+
+::: {.key-idea}
+**What You Figured Out:** Moon cycles drive tides, which influence storm flooding. The relative positions of the Moon, Earth, and Sun create predictable cyclic patterns of moon phases and corresponding spring/neap tidal cycles. When a powerful storm arrives during a spring high tide, the combined water levels can be catastrophic. Understanding these natural cycles is essential for predicting and preparing for storm impacts — and once you layer in climate change scenarios (rising sea levels, warmer oceans), the risks only grow.
+:::
