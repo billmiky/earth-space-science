@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winter Storm Snowfall Tracker</title>
+    
+    <!-- Load React, ReactDOM, and Babel for in-browser compilation -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* Hide scrollbar for cleaner iframe embedding but keep functionality */
+        .hide-scrollbar::-webkit-scrollbar {
+            height: 8px;
+        }
+        .hide-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .hide-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .hide-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 m-0 p-0">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- Inline SVG Icons (Replacing lucide-react for standalone HTML) ---
+        const Info = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>;
+        const Calendar = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>;
+        const Filter = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>;
+        const Snowflake = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="2" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="22"/><path d="m20 16-4-4 4-4"/><path d="m4 8 4 4-4 4"/><path d="m16 4-4 4-4-4"/><path d="m8 20 4-4 4 4"/></svg>;
+        const Wind = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>;
+        const Activity = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg>;
+
+        // --- Data ---
+        const CATEGORIES = {
+            'WS': { label: 'Winter Storm', range: '0-30 pts', bgClass: 'bg-cyan-300', textClass: 'text-cyan-800' },
+            'Cat1': { label: 'Category 1', range: '31-45 pts', bgClass: 'bg-yellow-100', textClass: 'text-yellow-800' },
+            'Cat2': { label: 'Category 2', range: '46-60 pts', bgClass: 'bg-yellow-400', textClass: 'text-yellow-900' },
+            'Cat3': { label: 'Category 3', range: '61-75 pts', bgClass: 'bg-orange-400', textClass: 'text-orange-900' },
+            'Cat4': { label: 'Category 4', range: '76-100 pts', bgClass: 'bg-orange-600', textClass: 'text-white' },
+            'Cat5': { label: 'Category 5', range: '>100 pts', bgClass: 'bg-red-500', textClass: 'text-white' },
+        };
+
+        const DATA_2018_2019 = {
+            months: ['November', 'December', 'January', 'February', 'March', 'April', 'May'],
+            storms: [
+                { name: 'Avery', category: 'Cat2', x: 5, w: 2 },
+                { name: 'Bruce', category: 'Cat3', x: 12, w: 3 },
+                { name: 'Carter', category: 'Cat2', x: 20, w: 2 },
+                { name: 'Diego', category: 'Cat1', x: 26, w: 3 },
+                { name: 'Eboni', category: 'Cat2', x: 32, w: 2 },
+                { name: 'Fisher', category: 'WS', x: 38, w: 1 },
+                { name: 'Gia', category: 'Cat2', x: 42, w: 2 },
+                { name: 'Harper', category: 'Cat3', x: 48, w: 2 },
+                { name: 'Indra', category: 'Cat1', x: 51, w: 2 },
+                { name: 'Jayden', category: 'Cat1', x: 53, w: 1.5 },
+                { name: 'Kai', category: 'Cat2', x: 55, w: 2 },
+                { name: 'Lucian', category: 'Cat2', x: 57, w: 2 },
+                { name: 'Maya', category: 'Cat3', x: 59, w: 3 },
+                { name: 'Nadia', category: 'Cat2', x: 61, w: 2 },
+                { name: 'Oren', category: 'Cat2', x: 63, w: 2 },
+                { name: 'Petra', category: 'Cat2', x: 66, w: 2 },
+                { name: 'Quiana', category: 'Cat3', x: 68, w: 2 },
+                { name: 'Ryan', category: 'Cat1', x: 70, w: 1.5 },
+                { name: 'Scott', category: 'Cat3', x: 72, w: 2 },
+                { name: 'Taylor', category: 'WS', x: 74, w: 2 },
+                { name: 'Ulmer', category: 'Cat2', x: 78, w: 2 },
+                { name: 'Vaughn', category: 'Cat1', x: 81, w: 1.5 },
+                { name: 'Wesley', category: 'Cat4', x: 88, w: 4 },
+                { name: 'Xyler', category: 'WS', x: 95, w: 1.5 },
+            ]
+        };
+
+        const DATA_2019_2020 = {
+            months: ['October', 'November', 'December', 'January', 'February', 'March', 'April'],
+            storms: [
+                { name: 'Aubrey', category: 'Cat2', x: 10, w: 3 },
+                { name: 'Bessie', category: 'Cat1', x: 18, w: 1.5 },
+                { name: 'Caleb', category: 'Cat2', x: 24, w: 2 },
+                { name: 'Dorothy', category: 'Cat3', x: 30, w: 3 },
+                { name: 'Ezekiel', category: 'Cat5', x: 33, w: 5 },
+                { name: 'Finley', category: 'Cat3', x: 42, w: 2 },
+                { name: 'Gage', category: 'Cat3', x: 48, w: 3 },
+                { name: 'Henry', category: 'Cat2', x: 52, w: 2 },
+                { name: 'Isaiah', category: 'Cat1', x: 58, w: 2 },
+                { name: 'Jacob', category: 'Cat2', x: 63, w: 2 },
+                { name: 'Kade', category: 'Cat3', x: 68, w: 3 },
+                { name: 'Lamont', category: 'WS', x: 70, w: 1.5 },
+                { name: 'Mabel', category: 'Cat1', x: 72, w: 2 },
+                { name: 'Nash', category: 'WS', x: 76, w: 2 },
+                { name: 'Odell', category: 'Cat2', x: 80, w: 2 },
+                { name: 'Pearl', category: 'Cat1', x: 88, w: 2 },
+                { name: 'Quincy', category: 'WS', x: 90, w: 1.5 },
+                { name: 'Ruth', category: 'WS', x: 94, w: 1.5 },
+                { name: 'Sadie', category: 'Cat1', x: 98, w: 2 },
+            ]
+        };
+
+        // --- Main App Component ---
+        function App() {
+            const [season, setSeason] = useState('2018-2019');
+            const [activeFilter, setActiveFilter] = useState('All');
+            const [hoveredStorm, setHoveredStorm] = useState(null);
+            const [animationTrigger, setAnimationTrigger] = useState(0);
+
+            const currentData = season === '2018-2019' ? DATA_2018_2019 : DATA_2019_2020;
+
+            useEffect(() => {
+                setAnimationTrigger(prev => prev + 1);
+                setHoveredStorm(null);
+            }, [season, activeFilter]);
+
+            const getPointsFromCategory = (cat) => {
+                const rangeStr = CATEGORIES[cat].range;
+                if (rangeStr.includes('>')) return '100+';
+                const parts = rangeStr.replace(' pts', '').split('-');
+                return Math.floor((parseInt(parts[0]) + parseInt(parts[1])) / 2); 
+            };
+
+            return (
+                <div className="flex flex-col items-center py-3 px-3">
+                    <div className="w-full max-w-5xl bg-white rounded-2xl shadow-sm p-4 mb-3 border border-slate-200">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-3">
+                            <div>
+                                <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2 text-slate-900">
+                                    <Snowflake className="w-8 h-8 text-blue-500" />
+                                    Winter Storm Snowfall Tracker
+                                </h1>
+                                <p className="text-slate-500 mt-1 flex items-center gap-1 text-sm">
+                                    <Info className="w-4 h-4" /> The length of each bar indicates how long the storm lasted.
+                                </p>
+                            </div>
+                            
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => setSeason('2018-2019')}
+                                    className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${season === '2018-2019' ? 'bg-blue-600 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'}`}
+                                >
+                                    <Calendar className="w-4 h-4" /> 2018 - 2019
+                                </button>
+                                <button
+                                    onClick={() => setSeason('2019-2020')}
+                                    className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${season === '2019-2020' ? 'bg-blue-600 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'}`}
+                                >
+                                    <Calendar className="w-4 h-4" /> 2019 - 2020
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 flex-wrap pt-4 border-t border-slate-100">
+                            <Filter className="w-4 h-4 text-slate-400 mr-2" />
+                            <span className="text-sm font-medium text-slate-500 mr-2">Filter Severity:</span>
+                            <button
+                                onClick={() => setActiveFilter('All')}
+                                className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${activeFilter === 'All' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                            >
+                                All Storms
+                            </button>
+                            {Object.entries(CATEGORIES).map(([key, data]) => (
+                                <button
+                                    key={key}
+                                    onClick={() => setActiveFilter(key)}
+                                    className={`px-3 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 
+                                        ${activeFilter === key ? 'ring-2 ring-offset-2 ring-slate-400' : 'opacity-80 hover:opacity-100'} 
+                                        ${data.bgClass} ${data.textClass}`}
+                                >
+                                    {data.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="w-full max-w-5xl bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden relative flex flex-col">
+                        <div className="bg-slate-900 text-white flex items-center px-4 py-2 shadow-inner shrink-0 z-10 relative" style={{minHeight:'52px'}}>
+                            {hoveredStorm ? (
+                                <div className="flex items-center justify-between w-full animate-in fade-in zoom-in-95 duration-200">
+                                    <div className="flex items-center gap-4">
+                                        <div className={`w-12 h-12 rounded-full flex items-center justify-center ${CATEGORIES[hoveredStorm.category].bgClass} ${CATEGORIES[hoveredStorm.category].textClass} shadow-lg border-2 border-white/20`}>
+                                            <Wind className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-bold leading-tight">{hoveredStorm.name}</h3>
+                                            <p className="text-slate-300 text-sm">{CATEGORIES[hoveredStorm.category].label}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-6 text-right">
+                                        <div>
+                                            <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold">Duration Focus</p>
+                                            <p className="font-mono text-lg font-medium">Width Index: {hoveredStorm.w}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold">Est. Snowfall</p>
+                                            <p className="font-mono text-lg font-medium text-blue-300">~{getPointsFromCategory(hoveredStorm.category)} pts</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="flex items-center gap-3 text-slate-400 w-full justify-center">
+                                    <Activity className="w-5 h-5 animate-pulse" />
+                                    <p>Hover over a storm bar on the timeline to view details</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="w-full overflow-x-auto overflow-y-auto pb-2 hide-scrollbar" style={{maxHeight:'420px'}}>
+                            <div className="min-w-[800px] p-4 pt-10 relative bg-[#e2e8f0] bg-opacity-40">
+                                <div className="absolute inset-0 left-8 right-32 top-12 bottom-12 flex justify-between pointer-events-none">
+                                    {currentData.months.map((month, i) => (
+                                        <div key={month} className="h-full border-l border-slate-300 relative flex-1">
+                                            <div className="absolute -bottom-8 left-0 -translate-x-1/2 text-sm font-medium text-slate-600 bg-white/50 px-2 py-0.5 rounded backdrop-blur-sm">
+                                                {month}
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <div className="h-full border-l border-slate-300 relative"></div>
+                                </div>
+
+                                <h2 className="absolute top-2 left-4 text-sm font-bold text-slate-800 bg-white/70 px-2 py-0.5 rounded backdrop-blur-md shadow-sm z-10">
+                                    {season} Winter Snowfall Total (pts = inches of snow)
+                                </h2>
+
+                                <div 
+                                    key={animationTrigger} 
+                                    className="relative w-full h-auto mt-6 mr-24"
+                                    style={{ minHeight: `${currentData.storms.length * 22 + 30}px` }}
+                                >
+                                    {currentData.storms.map((storm, index) => {
+                                        const isVisible = activeFilter === 'All' || activeFilter === storm.category;
+                                        const isHovered = hoveredStorm?.name === storm.name;
+                                        
+                                        return (
+                                            <div
+                                                key={storm.name}
+                                                className={`absolute flex items-center transition-all duration-500 ease-out cursor-pointer
+                                                    ${isVisible ? 'opacity-100' : 'opacity-10 pointer-events-none'}`}
+                                                style={{
+                                                    top: `${index * 22}px`,
+                                                    left: `${storm.x}%`,
+                                                    animation: `slideIn 0.5s ease-out ${index * 0.05}s both`
+                                                }}
+                                                onMouseEnter={() => setHoveredStorm(storm)}
+                                                onMouseLeave={() => setHoveredStorm(null)}
+                                            >
+                                                <div 
+                                                    className={`h-4 rounded-sm transition-all duration-200 
+                                                        ${CATEGORIES[storm.category].bgClass} 
+                                                        ${isHovered ? 'ring-2 ring-slate-900 ring-offset-1 scale-y-125 z-20' : 'hover:scale-y-110 shadow-sm'}`}
+                                                    style={{ 
+                                                        width: `${storm.w * 10}px`,
+                                                        minWidth: '12px' 
+                                                    }}
+                                                />
+                                                <span 
+                                                    className={`ml-2 text-xs font-semibold transition-colors duration-200
+                                                        ${isHovered ? 'text-slate-900 font-bold scale-110 origin-left' : 'text-slate-600'}`}
+                                                    style={{ textShadow: '0 1px 2px rgba(255,255,255,0.8)' }}
+                                                >
+                                                    {storm.name}
+                                                </span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white border-t border-slate-200 p-3 grid grid-cols-2 md:grid-cols-3 gap-y-2 gap-x-4 text-xs">
+                            {Object.entries(CATEGORIES).map(([key, data]) => (
+                                <div key={key} className="flex items-center gap-3">
+                                    <div className={`w-4 h-4 rounded shadow-sm ${data.bgClass}`} />
+                                    <span className="text-slate-600 font-medium">
+                                        {data.label} <span className="text-slate-400 font-normal">({data.range})</span>
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // --- Render ---
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

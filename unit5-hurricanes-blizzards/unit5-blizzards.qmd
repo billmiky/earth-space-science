@@ -470,6 +470,59 @@ function buildQuiz(id, questions) {
 
 ```{ojs}
 //| echo: false
+function buildUnitQuiz(id, title, questions) {
+  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const header = html`<div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border-radius:14px 14px 0 0;padding:18px 24px;">
+    <div style="font-size:1.1em;font-weight:700;display:flex;align-items:center;gap:8px;"><span style="font-size:1.2em;">📝</span> ${title}</div>
+    <div style="font-size:0.85em;opacity:0.85;margin-top:4px;">Select an answer for each question.</div>
+  </div>`;
+  const body = html`<div style="border:1.5px solid #c7d2fe;border-top:none;border-radius:0 0 14px 14px;overflow:hidden;background:#f8f9ff;padding:16px;"></div>`;
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#667eea";btn.style.background="#f0f0ff"; }};
+      btn.onmouseout  = () => { if(!card.dataset.answered){ btn.style.borderColor="#e2e8f0";btn.style.background="#fff"; }};
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        // First give all buttons a neutral "not chosen" style (fully opaque, not disabled)
+        card.querySelectorAll("button").forEach(b => {
+          b.style.cursor="default"; b.onmouseover=null; b.onmouseout=null;
+          b.style.borderColor="#e2e8f0"; b.style.background="#f8fafc"; b.style.color="#475569";
+        });
+        if(oi === qq.correct){
+          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";btn.style.color="#276749";btn.style.fontWeight="700";
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";btn.style.color="#9b2c2c";btn.style.fontWeight="700";
+          const correctBtn = card.querySelectorAll("button")[qq.correct];
+          correctBtn.style.borderColor="#48bb78";correctBtn.style.background="#f0fff4";correctBtn.style.color="#276749";correctBtn.style.fontWeight="700";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";fb.style.borderRadius="8px";
+      };
+      card.appendChild(btn);
+    });
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  outer.appendChild(header);
+  outer.appendChild(body);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
 // Interactive pressure-wind model
 viewof surfaceTemp = Inputs.range([20, 115], {label: "Surface Temperature (°F)", step: 5, value: 62})
 ```
@@ -2159,7 +2212,7 @@ buildQuiz("climate-paradox", [
     fb.style.display = 'block';
     fb.style.background = correct ? 'rgba(0,184,148,0.2)' : 'rgba(214,48,49,0.2)';
     fb.style.border = '1px solid ' + (correct ? '#00b894' : '#e17055');
-    fb.innerHTML = '<strong>' + (correct ? '✅ Correct! ' : '❌ That's a ' + card.type + '! ') + '</strong>' + card.explanation;
+    fb.innerHTML = '<strong>' + (correct ? '✅ Correct! ' : '❌ That\'s a ' + card.type + '! ') + '</strong>' + card.explanation;
     document.getElementById('bmf-myth').disabled = true;
     document.getElementById('bmf-fact').disabled = true;
     document.getElementById('bmf-myth').style.opacity = (choice === 'Myth') ? '1' : '0.5';
@@ -2198,7 +2251,7 @@ Test your complete understanding of the blizzard formation model from wind to cl
 
 ```{ojs}
 //| echo: false
-buildQuiz("blizzard-unit-quiz", [
+buildUnitQuiz("blizzard-unit-quiz", "🧠 Comprehensive Unit Quiz", [
   {
     q: "What is the FUNDAMENTAL cause of all surface wind?",
     options: [
@@ -2259,6 +2312,94 @@ buildQuiz("blizzard-unit-quiz", [
     ],
     correct: 1,
     explanation: "The polar jet stream is maintained by the temperature contrast between cold polar and warm tropical air. Arctic amplification weakens this contrast, slowing and waving the jet stream. Deeper Rossby wave troughs can send Arctic air deep into the southern US. When this frigid air encounters a moisture-laden atmosphere (thanks to warm oceans), catastrophic blizzards can result — exactly the conditions that made Winter Storm Jonas possible."
+  },
+  {
+    q: "What is the official National Weather Service (NWS) definition of a blizzard?",
+    options: [
+      "Any storm that drops more than 12 inches of snow in 24 hours",
+      "Sustained 35+ mph winds AND visibility under ¼ mile due to snow or blowing snow for at least 3 consecutive hours",
+      "Temperatures below 10°F combined with any snowfall",
+      "A winter storm watch upgraded to a warning by the NWS"
+    ],
+    correct: 1,
+    explanation: "Heavy snow alone is NOT a blizzard. You need the trifecta: 35+ mph sustained winds, visibility reduced to under ¼ mile by falling or blowing snow, and both conditions lasting at least 3 continuous hours. A storm can produce 2 feet of snow and still not be a blizzard if wind speeds are low."
+  },
+  {
+    q: "Due to the Coriolis Effect, surface winds spiral INTO a Northern Hemisphere low-pressure center in which direction?",
+    options: [
+      "Clockwise — same as water draining in a bathtub",
+      "Counterclockwise — deflected to the right as it flows inward",
+      "Directly inward with no rotation — the Coriolis Effect only applies at high altitude",
+      "Outward and clockwise — away from the low-pressure center"
+    ],
+    correct: 1,
+    explanation: "In the Northern Hemisphere, the Coriolis Effect deflects moving air to the RIGHT. As air rushes inward toward a low, those rightward deflections produce a counterclockwise spin. This is why all Northern Hemisphere lows (hurricanes, mid-latitude cyclones, blizzard-producing storms) rotate counterclockwise. Southern Hemisphere lows spin clockwise."
+  },
+  {
+    q: "Along a WARM front (warm air advancing over cold air), what type of precipitation and cloud sequence is typically observed?",
+    options: [
+      "Sudden, violent thunderstorms with large hail along a sharp narrow band",
+      "Gradual, widespread precipitation — high cirrus clouds hours in advance, then thickening stratus clouds, then steady rain or snow",
+      "Clear skies immediately followed by a brief snow squall",
+      "Only freezing rain, because warm air cannot produce snowfall"
+    ],
+    correct: 1,
+    explanation: "Warm fronts have a very gentle slope — warm air glides slowly up and over cold air across hundreds of miles. This gradual lifting produces layered stratus clouds that thicken over 12–24 hours before precipitation begins. The sequence is: cirrus → cirrostratus → altostratus → nimbostratus → steady precipitation. Contrast with cold fronts, which are steep and produce short, violent weather."
+  },
+  {
+    q: "Why do the HEAVIEST snowfalls usually occur at temperatures between 25–32°F rather than at -10°F?",
+    options: [
+      "Snowflakes can only form above 20°F; below that, precipitation falls as sleet",
+      "Very cold Arctic air is extremely dry and holds almost no moisture — heavy snow requires air near 32°F combined with a nearby warm moisture source",
+      "Wind speeds are always higher at -10°F, which prevents snow from accumulating",
+      "At temperatures below 20°F, precipitation freezes before leaving the cloud"
+    ],
+    correct: 1,
+    explanation: "The Clausius-Clapeyron equation tells us that colder air holds exponentially LESS water vapor. Air at -10°F is essentially a desert in terms of moisture content. The biggest snowstorms combine two air masses: cold enough to freeze precipitation (25–32°F is 'optimal snow-making temperature') AND close to a warm, moist source like the Gulf of Mexico or Atlantic Ocean. Deep Arctic cold alone never produces historic snowfall totals."
+  },
+  {
+    q: "What is a 'nor'easter' and why does the northeastern US coastline make it especially dangerous?",
+    options: [
+      "A wind that blows from the northeast — harmless because it comes off cold land",
+      "A mid-latitude cyclone that tracks up the East Coast, drawing in moist Atlantic air while cold Arctic air moves in from inland — creating extreme precipitation near the coast",
+      "A blizzard caused when Canadian Arctic air masses cross the Great Lakes",
+      "A special name for any winter storm that occurs in New England"
+    ],
+    correct: 1,
+    explanation: "Nor'easters track northeast along the Atlantic Coast, with their centers just offshore. This geometry is deadly: the low pulls warm moist Atlantic air over the coast from the south/southeast while cold polar air charges in from the west and north. The resulting collision zone sits right over the most densely populated coastline in the US. The warm Atlantic (heated by the Gulf Stream) provides enormous moisture, and the pressure gradient between offshore low and inland high produces the powerful 'nor'easter' winds that gave the storm type its name."
+  },
+  {
+    q: "How does a mid-latitude cyclone eventually die? What is this process called?",
+    options: [
+      "It runs out of moisture when it moves over land — called 'land dissipation'",
+      "The cold front catches up to the warm front, lifting all warm air off the surface — this 'occlusion' eliminates the temperature contrast that powered the storm",
+      "High pressure systems absorb the low, reversing wind direction",
+      "Jet stream winds shear the storm apart once it reaches a certain size"
+    ],
+    correct: 1,
+    explanation: "Mid-latitude cyclones are powered by the temperature contrast between warm and cold air masses. Cold fronts move faster than warm fronts, so eventually the cold front overtakes the warm front — this is called OCCLUSION. Once the warm sector air is fully lifted off the surface, there is no more warm vs. cold boundary to draw energy from. The pressure gradient weakens, the system 'fills,' and the storm dissipates. All mid-latitude cyclones eventually die by this process."
+  },
+  {
+    q: "What differentiates SLEET from FREEZING RAIN in terms of atmospheric temperature layers?",
+    options: [
+      "Sleet is larger drops; freezing rain is smaller drops — size is the only difference",
+      "Sleet refreezes into an ice pellet before hitting the ground (warm layer aloft, cold layer below); freezing rain stays liquid until it contacts below-freezing surfaces",
+      "Sleet only occurs above 32°F; freezing rain only occurs below 10°F",
+      "Both are identical — 'sleet' and 'freezing rain' are regional names for the same precipitation"
+    ],
+    correct: 1,
+    explanation: "Both forms need an above-freezing layer aloft to melt snowflakes into rain, with a sub-freezing layer near the surface. The difference: with SLEET the surface cold layer is THICK enough that drops refreeze into ice pellets before landing. With FREEZING RAIN the surface cold layer is too THIN to refreeze the drop — it lands as supercooled liquid and instantly freezes on contact with roads, trees, and power lines. Freezing rain is often more destructive than snow because of the heavy ice coating it produces."
+  },
+  {
+    q: "The polar jet stream acts as a boundary between cold polar and warm tropical air. When it is 'amplified' into large north-south meanders (Rossby waves), what happens to weather patterns?",
+    options: [
+      "Weather systems move faster across the country, giving less time for storms to intensify",
+      "Cold Arctic air can plunge far south into normally mild regions while warm air surges far north — and slow-moving troughs can 'stall,' causing extended extreme weather events",
+      "The jet stream blocks moisture from the Gulf of Mexico, reducing snowfall potential",
+      "Amplified meanders only affect summer weather — winter patterns are unaffected"
+    ],
+    correct: 1,
+    explanation: "A 'zonal' (west-to-east) jet stream keeps cold air locked in the north and mild air in the south, with relatively fast-moving storm systems. An 'amplified' or 'meridional' jet stream with large Rossby waves sends Arctic air deep into the Gulf Coast states while warm air surges into the Arctic. Crucially, amplified patterns move SLOWLY — a trough can lock in place for days or weeks, causing prolonged cold snaps, extended blizzards, or persistent ice storms. Arctic amplification from climate change is linked to more frequent amplified jet stream patterns."
   }
 ])
 ```
