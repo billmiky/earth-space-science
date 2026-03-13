@@ -172,10 +172,11 @@ This interactive globe uses the Globe.gl library (built on Three.js) to show the
   <!-- Loading indicator -->
   <div id="quake-loading" style="text-align:center; color:#aaa; font-size:13px; min-height:18px; margin-bottom:6px;"></div>
 
-  <div style="border-radius:16px; overflow:hidden; box-shadow:0 15px 35px rgba(0,0,0,0.25);">
-    <div id="quake-globe" style="width:100%; height:560px; background:#050a12;"></div>
+  <div style="border-radius:16px; overflow:hidden; box-shadow:0 15px 35px rgba(0,0,0,0.25); display:flex; justify-content:center;">
+    <div id="quake-globe" style="width:100%; height:560px; background:#a8c8e8;"></div>
   </div>
 
+  <style>#quake-globe canvas { display:block !important; margin:0 auto !important; }</style>
   <p style="text-align:center; font-size:0.78em; color:#888; margin-top:8px;">
     Data: USGS Earthquake Hazards Program · Drag to rotate · Scroll to zoom · Hover a spike to pause &amp; inspect
   </p>
@@ -261,8 +262,8 @@ function loadQuakes(mode) {
   if (!el || typeof Globe === 'undefined') { setTimeout(initGlobe, 150); return; }
 
   _quakeGlobe = Globe()(el)
-    .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
-    .backgroundColor('#050a12')
+    .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-day.jpg')
+    .backgroundColor('#a8c8e8')
     // centre on the Pacific Ring of Fire, slight zoom-in
     .pointOfView({ lat: 20, lng: -160, altitude: 1.8 });
 
@@ -270,6 +271,179 @@ function loadQuakes(mode) {
   _quakeGlobe.controls().autoRotateSpeed = 0.8;
 
   loadQuakes('recent');
+})();
+</script>
+```
+
+### 🌋 Volcanic Eruptions on a 3D Globe
+
+This globe shows notable volcanic eruptions from recorded (and geological) history. Each volcano is shown as a **pulsing ring** — the ring size, speed, and color all scale with the **Volcanic Explosivity Index (VEI)**, a logarithmic scale where each step is ~10× more powerful than the last.
+
+```{=html}
+<div style="max-width: 900px; margin: 30px auto;">
+
+  <!-- Filter buttons -->
+  <div style="display:flex; gap:10px; margin-bottom:10px; justify-content:center; flex-wrap:wrap;">
+    <button id="vbtn-all"   onclick="filterVolcanoes('all')"   style="padding:8px 20px; border-radius:999px; border:none; cursor:pointer; font-weight:700; font-size:13px; background:#e17055; color:#fff; box-shadow:0 2px 8px rgba(225,112,85,0.4);">🌋 All Notable Eruptions</button>
+    <button id="vbtn-major" onclick="filterVolcanoes('major')" style="padding:8px 20px; border-radius:999px; border:none; cursor:pointer; font-weight:700; font-size:13px; background:#2d3436; color:#ccc;">💥 VEI 5+ Major Eruptions</button>
+    <button id="vbtn-super" onclick="filterVolcanoes('super')" style="padding:8px 20px; border-radius:999px; border:none; cursor:pointer; font-weight:700; font-size:13px; background:#2d3436; color:#ccc;">🔥 VEI 7+ Supervolcanoes</button>
+  </div>
+
+  <!-- VEI Legend -->
+  <div style="display:flex; gap:6px; justify-content:center; margin-bottom:12px; flex-wrap:wrap; font-family:system-ui,sans-serif; font-size:12px; font-weight:700;">
+    <span style="background:#ffd700; color:#333; padding:4px 12px; border-radius:999px;">VEI 2-3 Minor</span>
+    <span style="background:#ff8c00; color:#fff; padding:4px 12px; border-radius:999px;">VEI 4 Large</span>
+    <span style="background:#e8001d; color:#fff; padding:4px 12px; border-radius:999px;">VEI 5 Very Large</span>
+    <span style="background:#8b0000; color:#fff; padding:4px 12px; border-radius:999px;">VEI 6 Colossal</span>
+    <span style="background:#4b0000; color:#fff; padding:4px 12px; border-radius:999px;">VEI 7-8 Mega / Super</span>
+  </div>
+
+  <!-- Loading indicator -->
+  <div id="volcano-loading" style="text-align:center; color:#aaa; font-size:13px; min-height:18px; margin-bottom:6px;"></div>
+
+  <div style="border-radius:16px; overflow:hidden; box-shadow:0 15px 35px rgba(0,0,0,0.25); display:flex; justify-content:center;">
+    <div id="volcano-globe" style="width:100%; height:580px; background:#a8c8e8;"></div>
+  </div>
+
+  <style>#volcano-globe canvas { display:block !important; margin:0 auto !important; }</style>
+  <p style="text-align:center; font-size:0.78em; color:#888; margin-top:8px;">
+    Smithsonian GVP / USGS data · Drag to rotate · Scroll to zoom · Hover a ring center to inspect
+  </p>
+</div>
+
+<script>
+var _volcanoGlobe = null;
+
+var _volcanoAllData = [
+  // VEI 8 — Supervolcanoes
+  {name:"Toba",               country:"Indonesia",          lat: 2.68,  lng:  98.83, vei:8, year:-72000,    deaths:"Unknown — may have reduced human population to ~10,000"},
+  {name:"Yellowstone (last)", country:"USA",                lat:44.43,  lng:-110.67, vei:8, year:-640000,   deaths:"Prehistoric"},
+  // VEI 7
+  {name:"Tambora",            country:"Indonesia",          lat:-8.25,  lng: 117.99, vei:7, year:1815,      deaths:"~92,000 (eruption + famine)"},
+  {name:"Samalas / Rinjani",  country:"Indonesia",          lat:-8.42,  lng: 116.47, vei:7, year:1257,      deaths:"Unknown — likely triggered a global cold spell"},
+  {name:"Mazama (Crater Lake)",country:"USA",               lat:42.94,  lng:-122.12, vei:7, year:-5677,     deaths:"Prehistoric"},
+  // VEI 6
+  {name:"Krakatoa",           country:"Indonesia",          lat:-6.10,  lng: 105.42, vei:6, year:1883,      deaths:"~36,000"},
+  {name:"Pinatubo",           country:"Philippines",        lat:15.14,  lng: 120.35, vei:6, year:1991,      deaths:"~800"},
+  {name:"Novarupta",          country:"USA (Alaska)",       lat:58.27,  lng:-155.16, vei:6, year:1912,      deaths:"0"},
+  {name:"Santa María",        country:"Guatemala",          lat:14.76,  lng: -91.55, vei:6, year:1902,      deaths:"~6,000"},
+  {name:"Quizapu",            country:"Chile",              lat:-35.65, lng: -70.57, vei:6, year:1932,      deaths:"0"},
+  // VEI 5
+  {name:"Mt. St. Helens",     country:"USA",                lat:46.19,  lng:-122.19, vei:5, year:1980,      deaths:"57"},
+  {name:"Hunga Tonga",        country:"Tonga",              lat:-20.54, lng:-175.39, vei:5, year:2022,      deaths:"~6"},
+  {name:"Vesuvius (79 AD)",   country:"Italy",              lat:40.82,  lng:  14.43, vei:5, year:79,        deaths:"~1,500–20,000"},
+  {name:"El Chichón",         country:"Mexico",             lat:17.36,  lng: -93.23, vei:5, year:1982,      deaths:"~2,000"},
+  {name:"Hudson",             country:"Chile",              lat:-45.90, lng: -72.97, vei:5, year:1991,      deaths:"0"},
+  {name:"Sarychev Peak",      country:"Russia",             lat:48.09,  lng: 153.18, vei:5, year:2009,      deaths:"0"},
+  {name:"Láscar",             country:"Chile",              lat:-23.37, lng: -67.73, vei:5, year:1993,      deaths:"0"},
+  // VEI 4
+  {name:"Eyjafjallajökull",   country:"Iceland",            lat:63.63,  lng: -19.62, vei:4, year:2010,      deaths:"0"},
+  {name:"Merapi",             country:"Indonesia",          lat:-7.54,  lng: 110.44, vei:4, year:2010,      deaths:"~353"},
+  {name:"Kelud",              country:"Indonesia",          lat:-7.93,  lng: 112.31, vei:4, year:2014,      deaths:"~7"},
+  {name:"Sinabung",           country:"Indonesia",          lat: 3.17,  lng:  98.39, vei:4, year:2014,      deaths:"17"},
+  {name:"Ruapehu",            country:"New Zealand",        lat:-39.28, lng: 175.57, vei:4, year:1996,      deaths:"0"},
+  {name:"Soufrière Hills",    country:"Montserrat",         lat:16.72,  lng: -62.18, vei:4, year:1995,      deaths:"19"},
+  {name:"Sakurajima",         country:"Japan",              lat:31.58,  lng: 130.66, vei:4, year:1914,      deaths:"35"},
+  {name:"Galeras",            country:"Colombia",           lat: 1.22,  lng: -77.36, vei:4, year:1993,      deaths:"9"},
+  {name:"Popocatépetl",       country:"Mexico",             lat:19.02,  lng: -98.62, vei:4, year:2023,      deaths:"0"},
+  {name:"Tavurvur / Rabaul",  country:"Papua New Guinea",   lat:-4.24,  lng: 152.20, vei:4, year:1994,      deaths:"~5"},
+  // VEI 2-3
+  {name:"Etna",               country:"Italy",              lat:37.75,  lng:  15.00, vei:3, year:2023,      deaths:"0"},
+  {name:"Stromboli",          country:"Italy",              lat:38.79,  lng:  15.21, vei:3, year:2019,      deaths:"1"},
+  {name:"Kīlauea",            country:"USA (Hawaii)",       lat:19.42,  lng:-155.29, vei:3, year:2018,      deaths:"0"},
+  {name:"Nyiragongo",         country:"DR Congo",           lat:-1.52,  lng:  29.25, vei:3, year:2021,      deaths:"32"},
+  {name:"Cotopaxi",           country:"Ecuador",            lat:-0.68,  lng: -78.44, vei:3, year:2022,      deaths:"0"},
+  {name:"Erta Ale",           country:"Ethiopia",           lat:13.60,  lng:  40.67, vei:2, year:2017,      deaths:"0"}
+];
+
+// ── colour by VEI ────────────────────────────────────────────────────────────
+function veiColor(vei) {
+  if (vei >= 8) return '75,0,0';
+  if (vei >= 7) return '139,0,0';
+  if (vei >= 6) return '180,0,10';
+  if (vei >= 5) return '232,0,29';
+  if (vei >= 4) return '255,140,0';
+  if (vei >= 3) return '255,165,0';
+  return '255,215,0';
+}
+
+// ── ring parameters scale with VEI ──────────────────────────────────────────
+function veiMaxRadius(vei)         { return 2 + vei * 2.8; }
+function veiPropagationSpeed(vei)  { return 0.8 + vei * 0.45; }
+function veiRepeatPeriod(vei)      { return Math.max(4500 - vei * 400, 1200); }
+
+// ── button state ─────────────────────────────────────────────────────────────
+function setActiveVBtn(mode) {
+  var active   = 'padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:#e17055;color:#fff;box-shadow:0 2px 8px rgba(225,112,85,0.4);';
+  var inactive = 'padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:#2d3436;color:#ccc;';
+  document.getElementById('vbtn-all').style.cssText   = mode === 'all'   ? active : inactive;
+  document.getElementById('vbtn-major').style.cssText = mode === 'major' ? active : inactive;
+  document.getElementById('vbtn-super').style.cssText = mode === 'super' ? active : inactive;
+}
+
+// ── apply dataset to globe ───────────────────────────────────────────────────
+function applyVolcanoData(data) {
+  _volcanoGlobe
+    // pulsing rings — visual centrepiece
+    .ringsData(data)
+    .ringLat(function(d) { return d.lat; })
+    .ringLng(function(d) { return d.lng; })
+    .ringColor(function(d) {
+      var rgb = veiColor(d.vei);
+      return function(t) { return 'rgba(' + rgb + ',' + (Math.sqrt(1 - t) * 0.85) + ')'; };
+    })
+    .ringMaxRadius(function(d)        { return veiMaxRadius(d.vei); })
+    .ringPropagationSpeed(function(d) { return veiPropagationSpeed(d.vei); })
+    .ringRepeatPeriod(function(d)     { return veiRepeatPeriod(d.vei); })
+    // small static dots as hover targets
+    .pointsData(data)
+    .pointLat(function(d) { return d.lat; })
+    .pointLng(function(d) { return d.lng; })
+    .pointAltitude(0.01)
+    .pointRadius(function(d) { return 0.18 + (d.vei - 2) * 0.06; })
+    .pointColor(function(d) { return 'rgba(' + veiColor(d.vei) + ',0.95)'; })
+    .pointLabel(function(d) {
+      var yearStr = d.year < 0
+        ? Math.abs(d.year).toLocaleString() + ' years ago'
+        : (d.year < 1000 ? d.year + ' AD' : d.year);
+      return '<div style="background:rgba(0,0,0,0.85);padding:9px 13px;border-radius:6px;color:#fff;font-family:system-ui,sans-serif;font-size:13px;line-height:1.7;">'
+        + '<strong style="font-size:15px;">🌋 ' + d.name + '</strong><br/>'
+        + d.country + ' — ' + yearStr + '<br/>'
+        + 'VEI: <strong>' + d.vei + '</strong> &nbsp;|&nbsp; Deaths: ' + d.deaths
+        + '</div>';
+    });
+}
+
+// ── filter + apply ───────────────────────────────────────────────────────────
+function filterVolcanoes(mode) {
+  setActiveVBtn(mode);
+  var data = _volcanoAllData.filter(function(d) {
+    if (mode === 'major') return d.vei >= 5;
+    if (mode === 'super') return d.vei >= 7;
+    return true;
+  });
+  applyVolcanoData(data);
+}
+
+// ── initialise ───────────────────────────────────────────────────────────────
+(function initVolcanoGlobe() {
+  var el = document.getElementById('volcano-globe');
+  if (!el || typeof Globe === 'undefined') { setTimeout(initVolcanoGlobe, 150); return; }
+
+  _volcanoGlobe = Globe()(el)
+    .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-day.jpg')
+    .backgroundColor('#a8c8e8')
+    .pointOfView({ lat: 10, lng: 120, altitude: 1.8 });
+
+  _volcanoGlobe.controls().autoRotate = true;
+  _volcanoGlobe.controls().autoRotateSpeed = 0.6;
+
+  // pause rotation on hover
+  _volcanoGlobe.onPointHover(function(pt) {
+    _volcanoGlobe.controls().autoRotate = !pt;
+  });
+
+  filterVolcanoes('all');
 })();
 </script>
 ```

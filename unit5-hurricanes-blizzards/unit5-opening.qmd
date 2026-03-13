@@ -688,6 +688,234 @@ Take a moment to study the graph above. In your notebook, write down:
 4. **What additional data** would you want to see to answer the unit driving question?
 :::
 
+## 🌥️ Global Cloud Cover by Season
+
+Where the atmosphere is most active, you see clouds. Three patterns drive almost everything in this unit: the **Intertropical Convergence Zone (ITCZ)**, **mid-latitude storm tracks** (where blizzards live), and **monsoon systems**. All three shift with the seasons — and that shift is exactly why hurricane season and blizzard season fall when they do.
+
+Toggle through the four seasons and look for:
+- Where cloud cover is **thickest** (most active storms / deepest convection)
+- Which latitudes are **clearest** (subtropical deserts, sinking air zones)
+- How the cloud bands connect to **when and where** hurricanes and blizzards strike
+
+```{=html}
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+
+<div style="max-width:920px; margin:30px auto; font-family:system-ui,sans-serif;">
+
+  <!-- Season tab buttons -->
+  <div style="display:flex; gap:10px; margin-bottom:10px; justify-content:center; flex-wrap:wrap;">
+    <button id="cbtn-DJF" onclick="showCloudSeason('DJF')" style="padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:#1565c0;color:#fff;box-shadow:0 2px 8px rgba(21,101,192,0.4);">❄️ DJF — Winter</button>
+    <button id="cbtn-MAM" onclick="showCloudSeason('MAM')" style="padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:#e0e0e0;color:#555;">🌱 MAM — Spring</button>
+    <button id="cbtn-JJA" onclick="showCloudSeason('JJA')" style="padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:#e0e0e0;color:#555;">☀️ JJA — Summer</button>
+    <button id="cbtn-SON" onclick="showCloudSeason('SON')" style="padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:#e0e0e0;color:#555;">🍂 SON — Fall</button>
+  </div>
+
+  <!-- Season description -->
+  <div id="cloud-info" style="background:#f0f4ff;border-left:5px solid #1565c0;padding:12px 16px;border-radius:0 10px 10px 0;font-size:0.92em;line-height:1.6;margin-bottom:10px;min-height:56px;"></div>
+
+  <!-- Map canvas -->
+  <div style="border-radius:16px;overflow:hidden;box-shadow:0 15px 35px rgba(0,0,0,0.2);position:relative;background:#1b4f8c;">
+    <canvas id="cloud-map" width="900" height="450" style="display:block;width:100%;"></canvas>
+    <div id="cloud-map-loading" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(255,255,255,0.9);font-weight:700;font-size:15px;text-shadow:1px 1px 4px rgba(0,0,0,0.8);pointer-events:none;">Loading map…</div>
+  </div>
+
+  <!-- Legend -->
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px;font-size:12px;font-weight:600;color:#555;">
+    <span>Clear sky</span>
+    <div style="width:200px;height:14px;border-radius:7px;background:linear-gradient(to right,#2a6096,rgba(255,255,255,0.95));border:1px solid #bbb;"></div>
+    <span>Dense clouds</span>
+  </div>
+  <p style="text-align:center;font-size:0.78em;color:#888;margin-top:6px;">
+    Modeled seasonal climatology (ISCCP/MODIS) · Equirectangular projection — all regions visible simultaneously
+  </p>
+</div>
+
+<script>
+(function () {
+  var CLOUD_SEASON_INFO = {
+    DJF: { color: '#1565c0', label: '❄️ December–January–February (Northern Winter)',
+      desc: '<strong>Blizzard season.</strong> North Atlantic and Pacific storm tracks are at peak strength (40–65°N) — this is when nor\'easters and blizzards hammer the US East Coast. The ITCZ sits near or just south of the equator. Subtropical deserts are at their driest and clearest.' },
+    MAM: { color: '#2e7d32', label: '🌱 March–April–May (Northern Spring)',
+      desc: '<strong>Transition season.</strong> Mid-latitude storm tracks weaken as the temperature contrast between poles and tropics decreases. The ITCZ migrates northward. Blizzard risk drops rapidly. The Atlantic hurricane season hasn\'t started yet.' },
+    JJA: { color: '#e65100', label: '☀️ June–July–August (Northern Summer)',
+      desc: '<strong>Monsoon + early hurricane season.</strong> The South Asian and West African monsoons produce some of the heaviest cloud cover on Earth. The ITCZ is at its northernmost extent. Atlantic hurricane season begins — warm tropical oceans fuel developing storms. NH mid-latitude storm tracks are at minimum.' },
+    SON: { color: '#6a1b9a', label: '🍂 September–October–November (Northern Fall)',
+      desc: '<strong>Peak hurricane season + blizzard ramp-up.</strong> September is historically the most active month for Atlantic hurricanes — the Caribbean and Gulf of Mexico are very active. Mid-latitude storm tracks strengthen again as winter returns.' }
+  };
+
+  var _worldLand = null;
+  var _currentSeason = 'DJF';
+
+  // ── Cloud fraction model (lat-row base + fast pixel corrections) ──────────
+
+  function cfRowBase(lat, S) {
+    var b = 0.50;
+    var itczLat = { DJF: -5, MAM: 4, JJA: 10, SON: 3 }[S];
+    b += 0.40 * Math.exp(-0.5 * Math.pow((lat - itczLat) / 9,  2));
+    var nhLat  = { DJF: 56, MAM: 52, JJA: 57, SON: 54 }[S];
+    var nhStrg = { DJF: 0.27, MAM: 0.20, JJA: 0.11, SON: 0.22 }[S];
+    b += nhStrg * Math.exp(-0.5 * Math.pow((lat - nhLat) / 11, 2));
+    b += 0.24   * Math.exp(-0.5 * Math.pow((lat + 52)   / 10, 2)); // Southern Ocean
+    var nhSub = { DJF: 25, MAM: 27, JJA: 30, SON: 27 }[S];
+    b -= 0.20   * Math.exp(-0.5 * Math.pow((lat - nhSub) / 8,  2)); // NH subtropical dry
+    b -= 0.17   * Math.exp(-0.5 * Math.pow((lat + 25)   / 8,  2)); // SH subtropical dry
+    if (S === 'DJF' && lat > 65) b -= 0.10; // Arctic winter dry
+    if (lat < -75)               b -= 0.10; // Antarctic plateau
+    return b;
+  }
+
+  function cfPixel(lat, lng, S, base) {
+    var cf = base;
+    if (lat >  12 && lat <  35 && lng >  -10 && lng <  58)  cf -= 0.22; // Sahara / Arabian
+    if (lat >  22 && lat <  38 && lng > -118 && lng < -100)  cf -= S === 'DJF' ? 0.04 : 0.14; // SW USA / Baja
+    if (lat > -32 && lat < -16 && lng >  -76 && lng <  -65)  cf -= 0.18; // Atacama
+    if (lat > -35 && lat < -16 && lng >  114 && lng <  145)  cf -= 0.14; // Australian outback
+    if (S === 'JJA' && lat >  5 && lat <  30 && lng >  65  && lng <  130) cf += 0.32; // S Asian monsoon
+    if (S === 'JJA' && lat >  5 && lat <  20 && lng > -18  && lng <   30) cf += 0.25; // W African monsoon
+    if (S === 'JJA' && lat > 20 && lat <  40 && lng >  110 && lng <  145) cf += 0.17; // E Asian Meiyu
+    if (S === 'SON' && lat >  0 && lat <  20 && lng >   65 && lng <  115) cf += 0.18; // monsoon retreat
+    if ((S === 'JJA' || S === 'SON') && lat > 8 && lat < 22 && lng > -100 && lng < -60) cf += 0.18; // Caribbean
+    if (S === 'JJA' && lat > 25 && lat < 42 && lng > -130 && lng < -120) cf += 0.18; // CA marine stratus
+    if (lat > -28 && lat <  -3 && lng >  -84 && lng <  -72)  cf += 0.19; // Humboldt / Peru stratus
+    if (lat > -28 && lat < -10 && lng >    7 && lng <   18)  cf += 0.17; // Benguela stratus
+    if ((S === 'DJF' || S === 'SON') && lat > 40 && lat < 65 && lng > -50 && lng < -10) cf += 0.10; // N Atlantic belt
+    return Math.max(0.06, Math.min(0.92, cf));
+  }
+
+  // ── Draw topojson geometry onto canvas 2D ctx ────────────────────────────
+
+  function drawGeo(ctx, W, H, feature) {
+    var geom = (feature && feature.geometry !== undefined) ? feature.geometry : feature;
+    if (!geom) return;
+    function rings(poly) {
+      poly.forEach(function (ring) {
+        ring.forEach(function (pt, i) {
+          var x = ((pt[0] + 180) / 360) * W;
+          var y = ((90 - pt[1]) / 180) * H;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.closePath();
+      });
+    }
+    if      (geom.type === 'MultiPolygon')    geom.coordinates.forEach(rings);
+    else if (geom.type === 'Polygon')         rings(geom.coordinates);
+    else if (geom.type === 'GeometryCollection') geom.geometries.forEach(function (g) { drawGeo(ctx, W, H, { geometry: g }); });
+    else if (feature.type === 'FeatureCollection') feature.features.forEach(function (f) { drawGeo(ctx, W, H, f); });
+  }
+
+  // ── Full map render ─────────────────────────────────────────────────────
+
+  function drawCloudMap(season) {
+    var canvas = document.getElementById('cloud-map');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+
+    // 1. Ocean background
+    var grad = ctx.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0,   '#0a2e5e');
+    grad.addColorStop(0.5, '#1b4f8c');
+    grad.addColorStop(1,   '#0a2e5e');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // 2. Land masses
+    if (_worldLand) {
+      ctx.fillStyle   = '#3d6b2a';
+      ctx.strokeStyle = '#2a4d1a';
+      ctx.lineWidth   = 0.4;
+      ctx.beginPath();
+      drawGeo(ctx, W, H, _worldLand);
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    // 3. Cloud alpha layer (ImageData — no cross-origin, no CORS)
+    var imgd = ctx.createImageData(W, H);
+    var px   = imgd.data;
+    for (var row = 0; row < H; row++) {
+      var lat  = 90 - (row / H) * 180;
+      var base = cfRowBase(lat, season);
+      for (var col = 0; col < W; col++) {
+        var lng  = (col / W) * 360 - 180;
+        var cf   = cfPixel(lat, lng, season, base);
+        var a    = Math.round(Math.pow(Math.max(cf - 0.10, 0) / 0.90, 0.65) * 220);
+        var i4   = (row * W + col) * 4;
+        px[i4]   = 255; px[i4+1] = 255; px[i4+2] = 255; px[i4+3] = a;
+      }
+    }
+    // blit via an offscreen canvas — saves on reflow
+    var cc = document.createElement('canvas');
+    cc.width = W; cc.height = H;
+    cc.getContext('2d').putImageData(imgd, 0, 0);
+    ctx.drawImage(cc, 0, 0);
+
+    // 4. Reference latitude lines
+    var refLines = [
+      { lat:  66.5, label: 'Arctic Circle (66.5°N)',      color: 'rgba(200,230,255,0.65)', dash: [4,3] },
+      { lat:  23.5, label: 'Tropic of Cancer (23.5°N)',   color: 'rgba(255,230,140,0.75)', dash: [6,4] },
+      { lat:   0,   label: 'Equator',                     color: 'rgba(255,255,255,0.85)', dash: []    },
+      { lat: -23.5, label: 'Tropic of Capricorn (23.5°S)',color: 'rgba(255,230,140,0.75)', dash: [6,4] },
+      { lat: -66.5, label: 'Antarctic Circle (66.5°S)',   color: 'rgba(200,230,255,0.65)', dash: [4,3] }
+    ];
+    ctx.font = '10px system-ui,sans-serif';
+    refLines.forEach(function (ref) {
+      var y = Math.round((90 - ref.lat) / 180 * H) + 0.5;
+      ctx.setLineDash(ref.dash);
+      ctx.strokeStyle = ref.color;
+      ctx.lineWidth   = ref.dash.length ? 0.8 : 1.3;
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = ref.color;
+      ctx.fillText(ref.label, 4, y - 3);
+    });
+  }
+
+  // ── Button / info panel update + redraw ───────────────────────────────────
+
+  window.showCloudSeason = function (season) {
+    _currentSeason = season;
+    var colors = { DJF: '#1565c0', MAM: '#2e7d32', JJA: '#e65100', SON: '#6a1b9a' };
+    ['DJF','MAM','JJA','SON'].forEach(function (s) {
+      var btn = document.getElementById('cbtn-' + s);
+      if (!btn) return;
+      var col = colors[s];
+      btn.style.cssText = (s === season)
+        ? 'padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:' + col + ';color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.25);'
+        : 'padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:#e0e0e0;color:#555;';
+    });
+    var si   = CLOUD_SEASON_INFO[season];
+    var info = document.getElementById('cloud-info');
+    if (info) { info.innerHTML = '<strong>' + si.label + '</strong><br/>' + si.desc; info.style.borderColor = si.color; }
+    drawCloudMap(season);
+  };
+
+  // ── Init: draw immediately, load land in background ────────────────────
+
+  function waitForTopojson(cb) {
+    if (typeof topojson !== 'undefined') { cb(); return; }
+    setTimeout(function () { waitForTopojson(cb); }, 80);
+  }
+
+  waitForTopojson(function () {
+    // Show clouds first (no land yet)
+    window.showCloudSeason('DJF');
+    var loading = document.getElementById('cloud-map-loading');
+    if (loading) loading.textContent = '';
+
+    // Load land outlines, then redraw with them
+    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json')
+      .then(function (r) { return r.json(); })
+      .then(function (world) {
+        _worldLand = topojson.feature(world, world.objects.land);
+        drawCloudMap(_currentSeason);
+      })
+      .catch(function () { /* silently continue without land outlines */ });
+  });
+})();
+</script>
+```
+
 # Connecting to Unit 4
 
 In Unit 4, you learned that:
