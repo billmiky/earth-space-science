@@ -149,6 +149,131 @@ Plot.plot({
 })
 ```
 
+### 🌍 Earthquakes on a 3D Globe
+
+This interactive globe uses the Globe.gl library (built on Three.js) to show the locations of recent earthquakes. The spike height, radius, and color scale with magnitude so you can quickly spot the biggest events.
+
+```{=html}
+<!-- Load Globe.gl UMD bundle -->
+<script src="https://unpkg.com/globe.gl@2.23.0/dist/globe.gl.min.js"></script>
+
+<div style="max-width: 900px; margin: 30px auto;">
+
+  <!-- Mode toggle buttons -->
+  <div style="display:flex; gap:10px; margin-bottom:12px; justify-content:center;">
+    <button id="btn-recent"   onclick="loadQuakes('recent')"   style="padding:8px 20px; border-radius:999px; border:none; cursor:pointer; font-weight:700; font-size:13px; background:#e17055; color:#fff; box-shadow:0 2px 8px rgba(225,112,85,0.4);">
+      🕐 Recent (M ≥ 3.0)
+    </button>
+    <button id="btn-strongest" onclick="loadQuakes('strongest')" style="padding:8px 20px; border-radius:999px; border:none; cursor:pointer; font-weight:700; font-size:13px; background:#2d3436; color:#ccc;">
+      💥 Top 200 Strongest of All Time
+    </button>
+  </div>
+
+  <!-- Loading indicator -->
+  <div id="quake-loading" style="text-align:center; color:#aaa; font-size:13px; min-height:18px; margin-bottom:6px;"></div>
+
+  <div style="border-radius:16px; overflow:hidden; box-shadow:0 15px 35px rgba(0,0,0,0.25);">
+    <div id="quake-globe" style="width:100%; height:560px; background:#050a12;"></div>
+  </div>
+
+  <p style="text-align:center; font-size:0.78em; color:#888; margin-top:8px;">
+    Data: USGS Earthquake Hazards Program · Drag to rotate · Scroll to zoom · Hover a spike to pause &amp; inspect
+  </p>
+</div>
+
+<script>
+var _quakeGlobe = null;
+
+// ── colour scale: yellow → orange → dark-red by magnitude ──────────────────
+function magColor(mag) {
+  var t = Math.min(Math.max((mag - 3) / 5.5, 0), 1);
+  var r = Math.round(255 + (139 - 255) * t);
+  var g = Math.round(235 + (0   - 235) * t);
+  var b = Math.round(59  + (0   -  59) * t);
+  return 'rgb(' + r + ',' + g + ',' + b + ')';
+}
+
+// ── update button styles ────────────────────────────────────────────────────
+function setActiveBtn(mode) {
+  var activeStyle  = 'padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:#e17055;color:#fff;box-shadow:0 2px 8px rgba(225,112,85,0.4);';
+  var inactiveStyle = 'padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:#2d3436;color:#ccc;';
+  document.getElementById('btn-recent').style.cssText    = mode === 'recent'   ? activeStyle : inactiveStyle;
+  document.getElementById('btn-strongest').style.cssText = mode === 'strongest' ? activeStyle : inactiveStyle;
+}
+
+// ── apply data to the existing globe instance ───────────────────────────────
+function applyPoints(points) {
+  _quakeGlobe
+    .pointsData(points)
+    .pointAltitude(function(d) { return Math.max((d.mag - 2.5) * 0.045, 0.01); })
+    .pointRadius(function(d)   { return Math.max((d.mag - 2.5) * 0.13,  0.1);  })
+    .pointColor(function(d)    { return magColor(d.mag); })
+    .onPointHover(function(pt) {
+      // pause rotation while hovering a point, resume when cursor leaves
+      _quakeGlobe.controls().autoRotate = !pt;
+    })
+    .pointLabel(function(d) {
+      var yr = d.year ? (' — ' + d.year) : (' — ' + new Date(d.time).toLocaleDateString());
+      return '<div style="background:rgba(0,0,0,0.82);padding:9px 13px;border-radius:6px;color:#fff;font-family:system-ui,sans-serif;font-size:13px;line-height:1.6;">'
+        + '<strong style="font-size:15px;">Mag ' + d.mag.toFixed(1) + '</strong>' + yr + '<br/>'
+        + d.place + '<br/>'
+        + 'Depth: ' + d.depth + ' km'
+        + '</div>';
+    });
+}
+
+// ── fetch & load a dataset ──────────────────────────────────────────────────
+function loadQuakes(mode) {
+  setActiveBtn(mode);
+  var loading = document.getElementById('quake-loading');
+  loading.textContent = 'Loading…';
+
+  var url = mode === 'recent'
+    ? 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minmagnitude=3&limit=200&orderby=time'
+    : 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minmagnitude=7&limit=200&orderby=magnitude&starttime=1900-01-01';
+
+  fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      loading.textContent = '';
+      return data.features.map(function(f) {
+        return {
+          lat:   f.geometry.coordinates[1],
+          lng:   f.geometry.coordinates[0],
+          depth: f.geometry.coordinates[2],
+          mag:   f.properties.mag,
+          place: f.properties.place,
+          time:  f.properties.time,
+          year:  mode === 'strongest' ? new Date(f.properties.time).getFullYear() : null
+        };
+      });
+    })
+    .then(applyPoints)
+    .catch(function(err) {
+      loading.textContent = 'Failed to load data. Check your connection.';
+      console.error('Earthquake fetch failed:', err);
+    });
+}
+
+// ── initialise globe, then load default dataset ─────────────────────────────
+(function initGlobe() {
+  var el = document.getElementById('quake-globe');
+  if (!el || typeof Globe === 'undefined') { setTimeout(initGlobe, 150); return; }
+
+  _quakeGlobe = Globe()(el)
+    .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
+    .backgroundColor('#050a12')
+    // centre on the Pacific Ring of Fire, slight zoom-in
+    .pointOfView({ lat: 20, lng: -160, altitude: 1.8 });
+
+  _quakeGlobe.controls().autoRotate = true;
+  _quakeGlobe.controls().autoRotateSpeed = 0.8;
+
+  loadQuakes('recent');
+})();
+</script>
+```
+
 ::: {.key-idea}
 ### 🎯 The Big Mystery
 

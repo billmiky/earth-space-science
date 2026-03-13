@@ -2279,5 +2279,423 @@
       "Unit 5: More Hurricanes & Blizzards in NYC?",
       "<span class='chapter-number'>27</span>  <span class='chapter-title'>Unit 5: Moon Phases</span>"
     ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-opening.html",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-opening.html",
+    "title": "14  Unit 3: Opening — The Krakatoa Enigma",
+    "section": "",
+    "text": "15 The Anchor Phenomenon\nUnit 3 Time: 2 Days\nCode\nPlot = require(\"@observablehq/plot\")\nd3 = require(\"d3@7\")\nCode\neruptionData = [\n  {name: \"Mt. St. Helens (1980)\", vei: 5, deaths: 57, ejecta: 1, color: \"#74b9ff\"},\n  {name: \"Pinatubo (1991)\", vei: 6, deaths: 800, ejecta: 10, color: \"#0984e3\"},\n  {name: \"Krakatoa (1883)\", vei: 6, deaths: 36000, ejecta: 25, color: \"#e17055\"},\n  {name: \"Tambora (1815)\", vei: 7, deaths: 92000, ejecta: 160, color: \"#d63031\"},\n  {name: \"Toba (74,000 ya)\", vei: 8, deaths: 0, ejecta: 2800, color: \"#636e72\"}\n]\n\nPlot.plot({\n  title: \"Volcanic Eruptions by Scale (VEI = Volcanic Explosivity Index)\",\n  subtitle: \"Each VEI level is ~10x more powerful than the previous\",\n  width: 700,\n  height: 300,\n  marginLeft: 180,\n  x: {label: \"Material ejected (km³) — log scale\", type: \"log\", grid: true},\n  y: {label: null},\n  marks: [\n    Plot.barX(eruptionData, {\n      x: \"ejecta\",\n      y: \"name\",\n      fill: \"color\",\n      rx: 8,\n      sort: {y: \"x\"}\n    ,\n        tip: true}),\n    Plot.text(eruptionData, {\n      x: \"ejecta\",\n      y: \"name\",\n      text: d =&gt; `VEI ${d.vei} — ${d.ejecta} km³`,\n      dx: 25,\n      fontSize: 11,\n      fontWeight: \"bold\"\n    })\n  ]\n})",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Unit 3: Opening — The Krakatoa Enigma</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-opening.html#krakatoa-august-27-1883",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-opening.html#krakatoa-august-27-1883",
+    "title": "14  Unit 3: Opening — The Krakatoa Enigma",
+    "section": "15.1 💥 Krakatoa, August 27, 1883",
+    "text": "15.1 💥 Krakatoa, August 27, 1883\n\nThe loudest sound in recorded history. The explosion was heard 4,800 km away — like hearing a bomb in New York from London.\n\nWhat happened:\n\n🌋 The volcanic island of Krakatoa (Indonesia) exploded with a force of 200 megatons — 10,000 times the Hiroshima bomb\n🌊 Tsunamis up to 30 meters high killed over 36,000 people on nearby islands\n🌡️ Ash and sulfur ejected into the stratosphere lowered global temperatures by 1.2°C for a year\n🎨 The ash created brilliant red sunsets worldwide for months — scientists believe Edvard Munch’s painting The Scream was inspired by the sky\n💨 The pressure wave circled the globe 7 times, detected on barometers everywhere\n🔊 The sound wave traveled at 1,200 km/h and ruptured eardrums 60 km away",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Unit 3: Opening — The Krakatoa Enigma</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-opening.html#where-do-disasters-strike",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-opening.html#where-do-disasters-strike",
+    "title": "14  Unit 3: Opening — The Krakatoa Enigma",
+    "section": "16.1 Where Do Disasters Strike?",
+    "text": "16.1 Where Do Disasters Strike?\n\n\nCode\nhazardData = [\n  {type: \"Earthquakes (M6+, 2000-2023)\", location: \"Pacific Ring of Fire\", percent: 81, color: \"#e17055\"},\n  {type: \"Earthquakes (M6+, 2000-2023)\", location: \"Alpine-Himalayan Belt\", percent: 15, color: \"#fdcb6e\"},\n  {type: \"Earthquakes (M6+, 2000-2023)\", location: \"Rest of world\", percent: 4, color: \"#dfe6e9\"},\n  {type: \"Active Volcanoes\", location: \"Pacific Ring of Fire\", percent: 75, color: \"#e17055\"},\n  {type: \"Active Volcanoes\", location: \"Mid-ocean ridges\", percent: 15, color: \"#0984e3\"},\n  {type: \"Active Volcanoes\", location: \"Hotspots (Hawaii, etc.)\", percent: 10, color: \"#2ecc71\"}\n]\n\nPlot.plot({\n  title: \"Where Do Natural Hazards Occur?\",\n  subtitle: \"The Ring of Fire dominates — but why?\",\n  width: 700,\n  height: 300,\n  marginLeft: 200,\n  x: {label: \"Percentage of global total (%)\", grid: true, domain: [0, 100]},\n  y: {label: null},\n  fy: {label: null},\n  marks: [\n    Plot.barX(hazardData, {\n      x: \"percent\",\n      y: \"location\",\n      fy: \"type\",\n      fill: \"color\",\n      rx: 5\n    ,\n        tip: true}),\n    Plot.text(hazardData, {\n      x: \"percent\",\n      y: \"location\",\n      fy: \"type\",\n      text: d =&gt; d.percent + \"%\",\n      dx: 15,\n      fontSize: 12,\n      fontWeight: \"bold\"\n    })\n  ]\n})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n16.1.1 🌍 Earthquakes on a 3D Globe\nThis interactive globe uses the Globe.gl library (built on Three.js) to show the locations of recent earthquakes. The spike height, radius, and color scale with magnitude so you can quickly spot the biggest events.\n\n\n\n\n\n  \n  \n    \n      🕐 Recent (M ≥ 3.0)\n    \n    \n      💥 Top 200 Strongest of All Time\n    \n  \n\n  \n  \n\n  \n    \n  \n\n  \n    Data: USGS Earthquake Hazards Program · Drag to rotate · Scroll to zoom · Hover a spike to pause & inspect\n  \n\n\n\n\n\n16.1.2 🎯 The Big Mystery\nEarthquakes, volcanoes, and tsunamis don’t happen randomly. They cluster along narrow bands that wrap around the planet. These bands mark the edges of tectonic plates — the giant puzzle pieces of Earth’s surface.\nIn this unit, we’ll figure out:\n\nWhat’s inside Earth that drives these violent events\nWhy disasters cluster along specific belts\nWhat makes the plates move\nWhether we can predict and prepare for these hazards\n\n\n\n16.1.3 📝 Initial Model\nDraw an initial model that explains:\n\nWhy do volcanoes, earthquakes, and tsunamis happen in certain locations?\nWhat’s happening beneath Earth’s surface to cause these events?\nWhy did Krakatoa explode so violently?\n\nDon’t worry about being “right” — this is your starting model. We’ll revise it as we learn more.\n\n\n16.1.4 📋 Driving Question Board\nWrite at least 3 questions you want answered during this unit. Here are some starters:\n\nWhy are there so many volcanoes around the Pacific Ocean?\nWhat causes an earthquake?\nCould a supervolcano like Toba erupt again?\nHow do we know what’s inside Earth if we’ve never drilled more than 12 km?\nWhy do some volcanoes explode violently while others flow gently?\nCan we predict earthquakes? Why or why not?",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Unit 3: Opening — The Krakatoa Enigma</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html",
+    "title": "15  Earth’s Interior",
+    "section": "",
+    "text": "16 🔥 Engage — The Deepest Hole\nHS-ESS2-1 HS-ESS2-3 7–8 Days\nCode\nPlot = require(\"@observablehq/plot\")\nd3 = require(\"d3@7\")\nCode\ndepthData = [\n  {item: \"Deepest ocean (Mariana Trench)\", depth: 11, color: \"#0984e3\"},\n  {item: \"Kola Superdeep Borehole\", depth: 12.3, color: \"#636e72\"},\n  {item: \"Deepest mine (Mponeng, SA)\", depth: 4, color: \"#fdcb6e\"},\n  {item: \"Continental crust thickness\", depth: 35, color: \"#dfe6e9\"},\n  {item: \"Oceanic crust thickness\", depth: 7, color: \"#74b9ff\"},\n  {item: \"Upper mantle\", depth: 410, color: \"#e17055\"},\n  {item: \"Lower mantle\", depth: 2900, color: \"#d63031\"},\n  {item: \"Outer core\", depth: 5100, color: \"#f39c12\"},\n  {item: \"Inner core (center of Earth)\", depth: 6371, color: \"#fdcb6e\"}\n]\n\nPlot.plot({\n  title: \"How Deep Have We Gone? (km below surface)\",\n  subtitle: \"Log scale — we've barely scratched the surface\",\n  width: 700,\n  height: 350,\n  marginLeft: 250,\n  x: {label: \"Depth (km) — log scale\", type: \"log\", grid: true},\n  y: {label: null},\n  marks: [\n    Plot.barX(depthData, {\n      x: \"depth\",\n      y: \"item\",\n      fill: \"color\",\n      rx: 8,\n      sort: {y: \"x\"}\n    ,\n        tip: true}),\n    Plot.text(depthData, {\n      x: \"depth\",\n      y: \"item\",\n      text: d =&gt; d.depth.toLocaleString() + \" km\",\n      dx: 20,\n      fontSize: 11,\n      fontWeight: \"bold\"\n    })\n  ]\n})",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#the-kola-superdeep-borehole",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#the-kola-superdeep-borehole",
+    "title": "15  Earth’s Interior",
+    "section": "16.1 The Kola Superdeep Borehole",
+    "text": "16.1 The Kola Superdeep Borehole\nThe deepest hole ever drilled is the Kola Superdeep Borehole in Russia — 12,262 meters (12.3 km) deep. It took 24 years (1970–1994) to drill.\nThe result? They barely scratched the surface.\nEarth’s radius is 6,371 km. The Kola borehole reached only 0.2% of the way to the center. It’s like scratching the skin of an apple.\nSo how do we know what’s inside Earth if we’ve never been there?\nThe answer: earthquakes. Every earthquake sends seismic waves through the entire planet. By analyzing how these waves travel, speed up, slow down, bend, and reflect, we can build a detailed picture of Earth’s interior — like an X-ray of the planet.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#earthquakes-as-earths-x-ray-machine",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#earthquakes-as-earths-x-ray-machine",
+    "title": "15  Earth’s Interior",
+    "section": "17.1 Earthquakes as Earth’s X-Ray Machine",
+    "text": "17.1 Earthquakes as Earth’s X-Ray Machine\nWhen an earthquake occurs, it produces two main types of seismic waves that travel through Earth’s interior. These waves behave differently depending on what material they pass through.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#p-waves-vs.-s-waves",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#p-waves-vs.-s-waves",
+    "title": "15  Earth’s Interior",
+    "section": "17.2 P-Waves vs. S-Waves",
+    "text": "17.2 P-Waves vs. S-Waves\n\n\nCode\n{\n  const svg = d3.create(\"svg\")\n    .attr(\"width\", 700)\n    .attr(\"height\", 380)\n    .attr(\"viewBox\", \"0 0 700 380\");\n\n  svg.append(\"text\").attr(\"x\", 350).attr(\"y\", 25).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 18).attr(\"font-weight\", \"bold\").text(\"Two Types of Seismic Waves\");\n\n  // P-wave\n  svg.append(\"rect\").attr(\"x\", 20).attr(\"y\", 50).attr(\"width\", 320).attr(\"height\", 280)\n    .attr(\"rx\", 15).attr(\"fill\", \"#e17055\").attr(\"opacity\", 0.1);\n  svg.append(\"text\").attr(\"x\", 180).attr(\"y\", 80).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 16).attr(\"font-weight\", \"bold\").attr(\"fill\", \"#e17055\").text(\"P-Waves (Primary)\");\n  \n  svg.append(\"text\").attr(\"x\", 180).attr(\"y\", 110).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 13).text(\"Push-pull (compression)\");\n  svg.append(\"text\").attr(\"x\", 180).attr(\"y\", 135).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 20).text(\"→ ← → ← → ← → ←\");\n  \n  const pProps = [\n    \"⚡ Fastest (6–14 km/s)\",\n    \"✅ Travel through solids AND liquids\",\n    \"📏 Direction: same as wave travel\",\n    \"🥇 Arrive first at seismometers\"\n  ];\n  pProps.forEach((p, i) =&gt; {\n    svg.append(\"text\").attr(\"x\", 40).attr(\"y\", 175 + i * 30).attr(\"font-size\", 12).text(p);\n  });\n\n  // S-wave\n  svg.append(\"rect\").attr(\"x\", 360).attr(\"y\", 50).attr(\"width\", 320).attr(\"height\", 280)\n    .attr(\"rx\", 15).attr(\"fill\", \"#0984e3\").attr(\"opacity\", 0.1);\n  svg.append(\"text\").attr(\"x\", 520).attr(\"y\", 80).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 16).attr(\"font-weight\", \"bold\").attr(\"fill\", \"#0984e3\").text(\"S-Waves (Secondary)\");\n  \n  svg.append(\"text\").attr(\"x\", 520).attr(\"y\", 110).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 13).text(\"Side-to-side (shear)\");\n  svg.append(\"text\").attr(\"x\", 520).attr(\"y\", 135).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 20).text(\"∿∿∿∿∿∿∿∿∿∿\");\n  \n  const sProps = [\n    \"🐢 Slower (3.5–7.5 km/s)\",\n    \"❌ CANNOT travel through liquids\",\n    \"📏 Direction: perpendicular to travel\",\n    \"🥈 Arrive second at seismometers\"\n  ];\n  sProps.forEach((p, i) =&gt; {\n    svg.append(\"text\").attr(\"x\", 380).attr(\"y\", 175 + i * 30).attr(\"font-size\", 12).text(p);\n  });\n\n  // Key insight\n  svg.append(\"rect\").attr(\"x\", 100).attr(\"y\", 340).attr(\"width\", 500).attr(\"height\", 30)\n    .attr(\"rx\", 15).attr(\"fill\", \"#d63031\");\n  svg.append(\"text\").attr(\"x\", 350).attr(\"y\", 360).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 13).attr(\"font-weight\", \"bold\").attr(\"fill\", \"white\")\n    .text(\"🔑 S-waves can't pass through liquid → this reveals Earth's liquid outer core!\");\n\n  return svg.node();\n}",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#wave-speed-changes-with-depth",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#wave-speed-changes-with-depth",
+    "title": "15  Earth’s Interior",
+    "section": "17.3 Wave Speed Changes with Depth",
+    "text": "17.3 Wave Speed Changes with Depth\nSeismic wave speeds change as they pass through different materials. Denser materials = faster waves.\n\n\nCode\nwaveSpeedData = [\n  {depth: 0, pSpeed: 6.0, sSpeed: 3.5, layer: \"Crust\"},\n  {depth: 35, pSpeed: 8.1, sSpeed: 4.5, layer: \"Upper Mantle\"},\n  {depth: 200, pSpeed: 8.5, sSpeed: 4.6, layer: \"Upper Mantle\"},\n  {depth: 400, pSpeed: 9.5, sSpeed: 5.1, layer: \"Transition Zone\"},\n  {depth: 660, pSpeed: 10.3, sSpeed: 5.6, layer: \"Lower Mantle\"},\n  {depth: 1000, pSpeed: 11.4, sSpeed: 6.2, layer: \"Lower Mantle\"},\n  {depth: 2000, pSpeed: 12.8, sSpeed: 7.0, layer: \"Lower Mantle\"},\n  {depth: 2900, pSpeed: 13.7, sSpeed: 7.3, layer: \"Lower Mantle\"},\n  {depth: 2901, pSpeed: 8.1, sSpeed: 0, layer: \"Outer Core (liquid!)\"},\n  {depth: 3500, pSpeed: 9.5, sSpeed: 0, layer: \"Outer Core\"},\n  {depth: 4500, pSpeed: 10.3, sSpeed: 0, layer: \"Outer Core\"},\n  {depth: 5100, pSpeed: 11.0, sSpeed: 0, layer: \"Outer Core\"},\n  {depth: 5150, pSpeed: 11.3, sSpeed: 3.6, layer: \"Inner Core (solid!)\"},\n  {depth: 6000, pSpeed: 11.2, sSpeed: 3.7, layer: \"Inner Core\"},\n  {depth: 6371, pSpeed: 11.3, sSpeed: 3.7, layer: \"Inner Core\"}\n]\n\nPlot.plot({\n  title: \"Seismic Wave Speed vs. Depth\",\n  subtitle: \"The dramatic drop in P-wave speed and disappearance of S-waves reveals the liquid outer core\",\n  width: 700,\n  height: 450,\n  grid: true,\n  x: {label: \"Depth (km)\", domain: [0, 6371]},\n  y: {label: \"Wave speed (km/s)\", domain: [0, 15]},\n  color: {legend: true},\n  marks: [\n    // Layer shading\n    Plot.rectY([{x1: 0, x2: 35, label: \"Crust\",\n        tip: true}], {x1: \"x1\", x2: \"x2\", y1: 0, y2: 15, fill: \"#dfe6e9\", fillOpacity: 0.3}),\n    Plot.rectY([{x1: 35, x2: 2900,\n        tip: true}], {x1: \"x1\", x2: \"x2\", y1: 0, y2: 15, fill: \"#e17055\", fillOpacity: 0.1}),\n    Plot.rectY([{x1: 2900, x2: 5150,\n        tip: true}], {x1: \"x1\", x2: \"x2\", y1: 0, y2: 15, fill: \"#f39c12\", fillOpacity: 0.15}),\n    Plot.rectY([{x1: 5150, x2: 6371,\n        tip: true}], {x1: \"x1\", x2: \"x2\", y1: 0, y2: 15, fill: \"#fdcb6e\", fillOpacity: 0.2}),\n    // P-wave line\n    Plot.line(waveSpeedData, {x: \"depth\", y: \"pSpeed\", stroke: \"#e17055\", strokeWidth: 3, curve: \"natural\",\n        tip: true}),\n    Plot.dot(waveSpeedData, {x: \"depth\", y: \"pSpeed\", fill: \"#e17055\", r: 3,\n        tip: true}),\n    // S-wave line\n    Plot.line(waveSpeedData, {x: \"depth\", y: \"sSpeed\", stroke: \"#0984e3\", strokeWidth: 3, curve: \"natural\",\n        tip: true}),\n    Plot.dot(waveSpeedData.filter(d =&gt; d.sSpeed &gt; 0), {x: \"depth\", y: \"sSpeed\", fill: \"#0984e3\", r: 3,\n        tip: true}),\n    // Labels\n    Plot.text([{x: 1500, y: 14}], {x: \"x\", y: \"y\", text: d =&gt; \"P-waves\", fill: \"#e17055\", fontSize: 14, fontWeight: \"bold\"}),\n    Plot.text([{x: 1500, y: 8}], {x: \"x\", y: \"y\", text: d =&gt; \"S-waves\", fill: \"#0984e3\", fontSize: 14, fontWeight: \"bold\"}),\n    Plot.text([{x: 4000, y: 1.5}], {x: \"x\", y: \"y\", text: d =&gt; \"S-waves = 0\\n(LIQUID!)\", fill: \"#d63031\", fontSize: 12, fontWeight: \"bold\"}),\n    // Boundary markers\n    Plot.ruleX([2900], {stroke: \"#d63031\", strokeWidth: 2, strokeDasharray: \"5,3\"}),\n    Plot.ruleX([5150], {stroke: \"#f39c12\", strokeWidth: 2, strokeDasharray: \"5,3\"})\n  ]\n})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n17.3.1 💡 How Seismic Waves Reveal Earth’s Interior\n\nP-waves drop sharply at 2,900 km → material changes from solid to liquid (mantle → outer core)\nS-waves disappear entirely from 2,900 to 5,150 km → outer core is liquid (S-waves can’t travel through liquid)\nS-waves reappear below 5,150 km → inner core is solid again\nWave speeds increase with depth in the mantle → denser material = faster waves\n\nThis is how we know Earth has a liquid outer core and solid inner core — without ever going there!",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#why-is-earth-layered",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#why-is-earth-layered",
+    "title": "15  Earth’s Interior",
+    "section": "18.1 Why Is Earth Layered?",
+    "text": "18.1 Why Is Earth Layered?\nWhen Earth was young (~4.5 billion years ago), it was almost entirely molten. In this liquid state, dense materials (iron, nickel) sank to the center while lighter materials (silicon, oxygen, aluminum) floated to the surface. This process is called differentiation.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#earths-layers-by-density",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#earths-layers-by-density",
+    "title": "15  Earth’s Interior",
+    "section": "18.2 Earth’s Layers by Density",
+    "text": "18.2 Earth’s Layers by Density\n\n\nCode\nviewof layerView = Inputs.select(\n  [\"By Composition\", \"By Physical Properties\"],\n  {label: \"View Earth's layers:\"}\n)\n\n\n\n\n\n\n\n\n\nCode\n{\n  const compLayers = [\n    {layer: \"Inner Core\", depth: \"5,150–6,371 km\", thickness: 1221, density: \"12.8–13.1\", composition: \"Solid iron & nickel\", temp: \"5,400°C\", color: \"#fdcb6e\"},\n    {layer: \"Outer Core\", depth: \"2,900–5,150 km\", thickness: 2250, density: \"9.9–12.2\", composition: \"Liquid iron & nickel\", temp: \"4,400–5,400°C\", color: \"#f39c12\"},\n    {layer: \"Lower Mantle\", depth: \"660–2,900 km\", thickness: 2240, density: \"4.4–5.6\", composition: \"Silicate rock (Mg, Fe)\", temp: \"1,900–3,700°C\", color: \"#d63031\"},\n    {layer: \"Upper Mantle\", depth: \"35–660 km\", thickness: 625, density: \"3.3–4.4\", composition: \"Silicate rock (olivine)\", temp: \"500–1,900°C\", color: \"#e17055\"},\n    {layer: \"Crust\", depth: \"0–35 km\", thickness: 35, density: \"2.7–3.0\", composition: \"Granite (cont.) / Basalt (ocean)\", temp: \"0–500°C\", color: \"#dfe6e9\"}\n  ];\n\n  const physLayers = [\n    {layer: \"Inner Core (solid)\", depth: \"5,150–6,371 km\", thickness: 1221, density: \"12.8–13.1\", composition: \"Rigid solid — immense pressure keeps iron solid despite extreme heat\", temp: \"5,400°C\", color: \"#fdcb6e\"},\n    {layer: \"Outer Core (liquid)\", depth: \"2,900–5,150 km\", thickness: 2250, density: \"9.9–12.2\", composition: \"Liquid iron — convection here generates Earth's magnetic field\", temp: \"4,400–5,400°C\", color: \"#f39c12\"},\n    {layer: \"Mesosphere (rigid mantle)\", depth: \"660–2,900 km\", thickness: 2240, density: \"4.4–5.6\", composition: \"Solid but slowly flows over millions of years\", temp: \"1,900–3,700°C\", color: \"#d63031\"},\n    {layer: \"Asthenosphere (ductile)\", depth: \"100–660 km\", thickness: 560, density: \"3.3–3.6\", composition: \"Partially molten — plates 'float' and slide on this layer\", temp: \"1,300–1,900°C\", color: \"#e17055\"},\n    {layer: \"Lithosphere (rigid)\", depth: \"0–100 km\", thickness: 100, density: \"2.7–3.4\", composition: \"Rigid crust + upper mantle — the tectonic plates\", temp: \"0–1,300°C\", color: \"#dfe6e9\"}\n  ];\n\n  const layers = layerView === \"By Composition\" ? compLayers : physLayers;\n\n  const div = d3.create(\"div\");\n  layers.forEach(l =&gt; {\n    const card = div.append(\"div\").style(\"padding\", \"15px\").style(\"margin\", \"10px 0\")\n      .style(\"border-radius\", \"12px\").style(\"border-left\", `6px solid ${l.color}`)\n      .style(\"background\", `${l.color}15`);\n    card.append(\"h4\").style(\"margin\", \"0 0 8px 0\").style(\"color\", l.color).text(l.layer);\n    card.append(\"p\").style(\"margin\", \"3px 0\").html(`&lt;strong&gt;Depth:&lt;/strong&gt; ${l.depth} | &lt;strong&gt;Density:&lt;/strong&gt; ${l.density} g/cm³`);\n    card.append(\"p\").style(\"margin\", \"3px 0\").html(`&lt;strong&gt;Temperature:&lt;/strong&gt; ${l.temp}`);\n    card.append(\"p\").style(\"margin\", \"3px 0\").text(l.composition);\n  });\n  return div.node();\n}\n\n\n\n\n\n\n\n\n🧠 Earth’s inner core is as hot as the surface of the Sun (5,400°C) — but it’s SOLID because the pressure at the center is 3.6 million times atmospheric pressure. Pressure can keep things solid even at insane temperatures.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#the-density-sorting-experiment",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#the-density-sorting-experiment",
+    "title": "15  Earth’s Interior",
+    "section": "19.1 The Density Sorting Experiment",
+    "text": "19.1 The Density Sorting Experiment\nWhen Earth was molten, gravity sorted materials by density — like oil floating on water, but on a planetary scale.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#connecting-the-interior-to-the-surface",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#connecting-the-interior-to-the-surface",
+    "title": "15  Earth’s Interior",
+    "section": "20.1 Connecting the Interior to the Surface",
+    "text": "20.1 Connecting the Interior to the Surface\nEarth’s interior doesn’t just sit there — it actively drives surface processes through the rock cycle, volcanism, and plate tectonics.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#demonstrating-your-understanding",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html#demonstrating-your-understanding",
+    "title": "15  Earth’s Interior",
+    "section": "21.1 Demonstrating Your Understanding",
+    "text": "21.1 Demonstrating Your Understanding",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html",
+    "title": "16  Surface Features & Plate Boundaries",
+    "section": "",
+    "text": "17 🔥 Engage — The Pattern on the Map\nHS-ESS1-5 HS-ESS2-1 7–8 Days\nCode\nPlot = require(\"@observablehq/plot\")\nd3 = require(\"d3@7\")\nCode\nearthquakeLocations = {\n  const quakes = [];\n  // Ring of Fire (Pacific)\n  for (let i = 0; i &lt; 80; i++) {\n    const angle = (i / 80) * Math.PI * 1.5 - Math.PI * 0.75;\n    quakes.push({\n      lon: -170 + 90 * Math.cos(angle) + (Math.random() - 0.5) * 8,\n      lat: 10 + 40 * Math.sin(angle) + (Math.random() - 0.5) * 5,\n      mag: 5 + Math.random() * 3,\n      region: \"Ring of Fire\"\n    });\n  }\n  // Mid-Atlantic Ridge\n  for (let i = 0; i &lt; 30; i++) {\n    quakes.push({\n      lon: -30 + (Math.random() - 0.5) * 10,\n      lat: -50 + i * 4 + (Math.random() - 0.5) * 3,\n      mag: 4 + Math.random() * 2,\n      region: \"Mid-Atlantic Ridge\"\n    });\n  }\n  // Alpine-Himalayan Belt\n  for (let i = 0; i &lt; 30; i++) {\n    quakes.push({\n      lon: -10 + i * 5 + (Math.random() - 0.5) * 5,\n      lat: 30 + (Math.random() - 0.5) * 8 + Math.sin(i * 0.3) * 5,\n      mag: 5 + Math.random() * 3,\n      region: \"Alpine-Himalayan Belt\"\n    });\n  }\n  return quakes;\n}\n\nPlot.plot({\n  title: \"Global Earthquake Distribution (Simulated)\",\n  subtitle: \"Earthquakes cluster along plate boundaries — they're not random!\",\n  width: 700,\n  height: 400,\n  projection: {type: \"equirectangular\"},\n  color: {legend: true, domain: [\"Ring of Fire\", \"Mid-Atlantic Ridge\", \"Alpine-Himalayan Belt\"], range: [\"#d63031\", \"#0984e3\", \"#f39c12\"]},\n  marks: [\n    Plot.geo({type: \"Sphere\"}, {stroke: \"#dfe6e9\", fill: \"#f0f3f4\"}),\n    Plot.dot(earthquakeLocations, {\n      x: \"lon\",\n      y: \"lat\",\n      r: d =&gt; d.mag * 0.5,\n      fill: \"region\",\n      fillOpacity: 0.6,\n      stroke: \"white\",\n      strokeWidth: 0.5\n    ,\n        tip: true})\n  ]\n})",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Surface Features & Plate Boundaries</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#earthquakes-arent-random",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#earthquakes-arent-random",
+    "title": "16  Surface Features & Plate Boundaries",
+    "section": "17.1 Earthquakes Aren’t Random",
+    "text": "17.1 Earthquakes Aren’t Random\nWhen we plot every major earthquake and volcanic eruption on a world map, an incredible pattern emerges: they don’t occur randomly. They form narrow bands that wrap around the planet, outlining the edges of about 15 major tectonic plates.\nThese patterns are the key to understanding plate tectonics — the unifying theory of geology.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Surface Features & Plate Boundaries</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#three-ways-plates-interact",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#three-ways-plates-interact",
+    "title": "16  Surface Features & Plate Boundaries",
+    "section": "18.1 Three Ways Plates Interact",
+    "text": "18.1 Three Ways Plates Interact\nTectonic plates move relative to each other in three fundamental ways. The type of interaction determines what geological features and hazards occur.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Surface Features & Plate Boundaries</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#the-proof-that-plates-move",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#the-proof-that-plates-move",
+    "title": "16  Surface Features & Plate Boundaries",
+    "section": "19.1 The Proof That Plates Move",
+    "text": "19.1 The Proof That Plates Move\nIn the 1960s, scientists discovered a pattern in the ocean floor that proved plates move apart at mid-ocean ridges: magnetic stripes.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Surface Features & Plate Boundaries</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#magnetic-striping-evidence",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#magnetic-striping-evidence",
+    "title": "16  Surface Features & Plate Boundaries",
+    "section": "19.2 Magnetic Striping Evidence",
+    "text": "19.2 Magnetic Striping Evidence\nWhen lava erupts at a mid-ocean ridge and solidifies, iron minerals in the rock align with Earth’s magnetic field — like tiny compass needles frozen in place. Since Earth’s magnetic field reverses every few hundred thousand years, the rock records alternating “stripes” of normal and reversed polarity.\n\n\nCode\n{\n  const svg = d3.create(\"svg\")\n    .attr(\"width\", 700)\n    .attr(\"height\", 300)\n    .attr(\"viewBox\", \"0 0 700 300\");\n\n  svg.append(\"text\").attr(\"x\", 350).attr(\"y\", 25).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 16).attr(\"font-weight\", \"bold\").text(\"Magnetic Striping at a Mid-Ocean Ridge\");\n\n  // Ridge center\n  svg.append(\"line\").attr(\"x1\", 350).attr(\"y1\", 50).attr(\"x2\", 350).attr(\"y2\", 230)\n    .attr(\"stroke\", \"#d63031\").attr(\"stroke-width\", 3).attr(\"stroke-dasharray\", \"5,3\");\n  svg.append(\"text\").attr(\"x\", 350).attr(\"y\", 250).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 12).attr(\"font-weight\", \"bold\").attr(\"fill\", \"#d63031\").text(\"Ridge axis\");\n\n  // Stripes (symmetric)\n  const stripeWidth = 30;\n  const stripes = [\n    {offset: 0, color: \"#2d3436\", label: \"Normal\", age: \"0\"},\n    {offset: 1, color: \"#dfe6e9\", label: \"Reversed\", age: \"0.8\"},\n    {offset: 2, color: \"#2d3436\", label: \"Normal\", age: \"1.8\"},\n    {offset: 3, color: \"#dfe6e9\", label: \"Reversed\", age: \"2.6\"},\n    {offset: 4, color: \"#2d3436\", label: \"Normal\", age: \"3.6\"}\n  ];\n\n  stripes.forEach(s =&gt; {\n    // Right side\n    svg.append(\"rect\")\n      .attr(\"x\", 352 + s.offset * stripeWidth)\n      .attr(\"y\", 60)\n      .attr(\"width\", stripeWidth - 2)\n      .attr(\"height\", 160)\n      .attr(\"fill\", s.color)\n      .attr(\"opacity\", 0.8);\n    // Left side (mirror)\n    svg.append(\"rect\")\n      .attr(\"x\", 348 - (s.offset + 1) * stripeWidth)\n      .attr(\"y\", 60)\n      .attr(\"width\", stripeWidth - 2)\n      .attr(\"height\", 160)\n      .attr(\"fill\", s.color)\n      .attr(\"opacity\", 0.8);\n  });\n\n  // Age labels\n  svg.append(\"text\").attr(\"x\", 350).attr(\"y\", 280).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 11).attr(\"fill\", \"#636e72\").text(\"← Older                    Youngest                    Older →\");\n\n  // Arrows\n  svg.append(\"text\").attr(\"x\", 250).attr(\"y\", 140).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 24).text(\"⬅\");\n  svg.append(\"text\").attr(\"x\", 450).attr(\"y\", 140).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 24).text(\"➡\");\n\n  // Legend\n  svg.append(\"rect\").attr(\"x\", 20).attr(\"y\", 60).attr(\"width\", 15).attr(\"height\", 15).attr(\"fill\", \"#2d3436\");\n  svg.append(\"text\").attr(\"x\", 40).attr(\"y\", 73).attr(\"font-size\", 11).text(\"Normal polarity\");\n  svg.append(\"rect\").attr(\"x\", 20).attr(\"y\", 85).attr(\"width\", 15).attr(\"height\", 15).attr(\"fill\", \"#dfe6e9\").attr(\"stroke\", \"#636e72\");\n  svg.append(\"text\").attr(\"x\", 40).attr(\"y\", 98).attr(\"font-size\", 11).text(\"Reversed polarity\");\n\n  return svg.node();\n}\n\n\n\n\n\n\n\n\n19.2.1 💡 Why Magnetic Stripes Are Proof\n\nThe stripes are perfectly symmetric on both sides of the ridge\nThe same pattern appears at every mid-ocean ridge worldwide\nRocks get older with distance from the ridge (confirmed by dating)\nThe pattern matches known magnetic reversal timelines\n\nThis is irrefutable evidence that new ocean floor is being created at ridges and pushed outward — seafloor spreading.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Surface Features & Plate Boundaries</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#seafloor-age-data",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#seafloor-age-data",
+    "title": "16  Surface Features & Plate Boundaries",
+    "section": "19.3 Seafloor Age Data",
+    "text": "19.3 Seafloor Age Data\n\n\nCode\nseafloorAge = [\n  {distance: 0, age: 0, direction: \"East\"},\n  {distance: 50, age: 2, direction: \"East\"},\n  {distance: 100, age: 5, direction: \"East\"},\n  {distance: 200, age: 10, direction: \"East\"},\n  {distance: 500, age: 25, direction: \"East\"},\n  {distance: 1000, age: 50, direction: \"East\"},\n  {distance: 2000, age: 100, direction: \"East\"},\n  {distance: 3500, age: 180, direction: \"East\"},\n  {distance: 0, age: 0, direction: \"West\"},\n  {distance: -50, age: 2, direction: \"West\"},\n  {distance: -100, age: 5, direction: \"West\"},\n  {distance: -200, age: 10, direction: \"West\"},\n  {distance: -500, age: 25, direction: \"West\"},\n  {distance: -1000, age: 50, direction: \"West\"},\n  {distance: -2000, age: 100, direction: \"West\"},\n  {distance: -3500, age: 180, direction: \"West\"}\n]\n\nPlot.plot({\n  title: \"Ocean Floor Age vs. Distance from Mid-Atlantic Ridge\",\n  subtitle: \"Rock age increases symmetrically with distance — proving seafloor spreading\",\n  width: 700,\n  height: 350,\n  grid: true,\n  x: {label: \"Distance from ridge (km, negative = west)\"},\n  y: {label: \"Rock age (million years)\"},\n  color: {legend: true, domain: [\"East\", \"West\"], range: [\"#e17055\", \"#0984e3\"]},\n  marks: [\n    Plot.line(seafloorAge.filter(d =&gt; d.direction === \"East\"), {x: \"distance\", y: \"age\", stroke: \"#e17055\", strokeWidth: 3,\n        tip: true}),\n    Plot.line(seafloorAge.filter(d =&gt; d.direction === \"West\"), {x: \"distance\", y: \"age\", stroke: \"#0984e3\", strokeWidth: 3,\n        tip: true}),\n    Plot.dot(seafloorAge, {x: \"distance\", y: \"age\", fill: \"direction\", r: 4,\n        tip: true}),\n    Plot.ruleX([0], {stroke: \"#d63031\", strokeWidth: 2, strokeDasharray: \"5,3\"})\n  ]\n})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n🧠 The oldest ocean floor is only about 200 million years old — compare that to continental rocks that are up to 4 billion years old! Ocean floor is constantly being created at ridges and destroyed at subduction zones. The entire ocean floor is recycled every ~200 million years.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Surface Features & Plate Boundaries</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#wegeners-wild-idea-that-turned-out-to-be-right",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#wegeners-wild-idea-that-turned-out-to-be-right",
+    "title": "16  Surface Features & Plate Boundaries",
+    "section": "20.1 Wegener’s Wild Idea (That Turned Out To Be Right)",
+    "text": "20.1 Wegener’s Wild Idea (That Turned Out To Be Right)\nIn 1912, Alfred Wegener proposed that all continents were once joined in a supercontinent called Pangaea. He was ridiculed by other scientists for decades — but he was right.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Surface Features & Plate Boundaries</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#evidence-for-continental-drift",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#evidence-for-continental-drift",
+    "title": "16  Surface Features & Plate Boundaries",
+    "section": "20.2 Evidence for Continental Drift",
+    "text": "20.2 Evidence for Continental Drift\n\n\nCode\nviewof driftEvidence = Inputs.select(\n  [\"Coastline fit\", \"Fossil distribution\", \"Rock types match\", \"Glacial evidence\", \"All evidence\"],\n  {label: \"Explore evidence type:\"}\n)\n\n\n\n\n\n\n\n\n\nCode\n{\n  const evidence = {\n    \"Coastline fit\": {\n      desc: \"The coastlines of South America and Africa fit together like puzzle pieces. When we match the continental shelves (not just the shorelines), the fit is nearly perfect.\",\n      strength: \"Visual and geometric — continental shelves match within 50 km\",\n      counterarg: \"Could be coincidence\",\n      verdict: \"Suggestive but not conclusive alone\"\n    },\n    \"Fossil distribution\": {\n      desc: \"Identical fossils of land animals (Lystrosaurus, Cynognathus) and plants (Glossopteris) are found on continents now separated by thousands of kilometers of ocean. These organisms couldn't have swum across.\",\n      strength: \"Multiple species, same time period, on separate continents\",\n      counterarg: \"Maybe land bridges existed?\",\n      verdict: \"Strong evidence — too many species match across too many continents\"\n    },\n    \"Rock types match\": {\n      desc: \"Mountain chains and rock formations that end abruptly at one coastline continue on another continent. The Appalachian Mountains (USA) match the Caledonian Mountains (Scotland/Scandinavia).\",\n      strength: \"Same age, composition, and structure across ocean basins\",\n      counterarg: \"Similar conditions could produce similar rocks\",\n      verdict: \"Strong — the match is too precise to be coincidence\"\n    },\n    \"Glacial evidence\": {\n      desc: \"300-million-year-old glacial deposits are found in South America, Africa, India, and Australia. These places are now tropical! The scratches on rocks (striations) point away from a common center — which was the South Pole when they were joined.\",\n      strength: \"Glacial striations point to a single ice center that only works if continents were joined\",\n      counterarg: \"None convincing\",\n      verdict: \"Very strong — no alternative explanation works\"\n    },\n    \"All evidence\": {\n      desc: \"All four lines of evidence converge on the same conclusion: continents were once joined and have drifted apart. This is now confirmed by GPS measurements showing plates moving 2-10 cm per year.\",\n      strength: \"Multiple independent lines of evidence + direct GPS measurements\",\n      counterarg: \"None — plate tectonics is one of the best-supported theories in science\",\n      verdict: \"The theory of plate tectonics is as well-supported as evolution or gravity\"\n    }\n  };\n\n  const e = evidence[driftEvidence];\n  const div = d3.create(\"div\");\n  div.append(\"h3\").style(\"color\", \"#e17055\").style(\"font-family\", \"Space Grotesk\").text(driftEvidence);\n  div.append(\"p\").style(\"font-size\", \"1.1em\").text(e.desc);\n  \n  const grid = div.append(\"div\").style(\"display\", \"flex\").style(\"gap\", \"10px\").style(\"flex-wrap\", \"wrap\");\n  \n  const s1 = grid.append(\"div\").style(\"flex\", \"1\").style(\"min-width\", \"180px\")\n    .style(\"background\", \"#e8f5e9\").style(\"padding\", \"12px\").style(\"border-radius\", \"8px\");\n  s1.append(\"strong\").text(\"✅ Strength: \");\n  s1.append(\"span\").text(e.strength);\n\n  const s2 = grid.append(\"div\").style(\"flex\", \"1\").style(\"min-width\", \"180px\")\n    .style(\"background\", \"#fff3e0\").style(\"padding\", \"12px\").style(\"border-radius\", \"8px\");\n  s2.append(\"strong\").text(\"🤔 Counter: \");\n  s2.append(\"span\").text(e.counterarg);\n\n  div.append(\"div\").style(\"background\", \"#ffecd2\").style(\"padding\", \"12px\").style(\"border-radius\", \"8px\")\n    .style(\"border-left\", \"4px solid #e17055\").style(\"margin-top\", \"10px\")\n    .html(`&lt;strong&gt;Verdict:&lt;/strong&gt; ${e.verdict}`);\n\n  return div.node();\n}",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Surface Features & Plate Boundaries</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#not-everything-happens-at-plate-boundaries",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#not-everything-happens-at-plate-boundaries",
+    "title": "16  Surface Features & Plate Boundaries",
+    "section": "21.1 Not Everything Happens at Plate Boundaries",
+    "text": "21.1 Not Everything Happens at Plate Boundaries\nMost geological activity occurs at plate boundaries — but not all of it. The Adirondack Mountains in New York State are far from any plate boundary, yet they’re still rising.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Surface Features & Plate Boundaries</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#intraplate-features",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#intraplate-features",
+    "title": "16  Surface Features & Plate Boundaries",
+    "section": "21.2 Intraplate Features",
+    "text": "21.2 Intraplate Features\n\n\n\n\n\n\n\n\n\nFeature\nLocation\nPlate Boundary?\nExplanation\n\n\n\n\nAdirondack Mountains\nNew York\nNo — middle of North American Plate\nCrustal rebound from ancient orogeny; hot spot beneath\n\n\nHawaiian Islands\nPacific Ocean\nNo — middle of Pacific Plate\nMantle plume (hotspot) beneath moving plate\n\n\nYellowstone\nWyoming\nNo — middle of North American Plate\nMantle plume creating a supervolcano\n\n\nNew Madrid Seismic Zone\nMissouri\nNo — middle of North American Plate\nAncient failed rift — weakness in the crust\n\n\n\n\n21.2.1 💡 The Big Picture\nPlate tectonics explains ~95% of earthquakes and volcanic eruptions. The other ~5% occur at intraplate locations due to:\n\nHotspots/mantle plumes — columns of hot rock rising from deep in the mantle\nAncient weaknesses — old rifts or fault zones that can reactivate\nCrustal rebound — the crust still adjusting from ancient tectonic events\nStress transmitted through the plate from distant boundaries",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Surface Features & Plate Boundaries</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#putting-plate-tectonics-together",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html#putting-plate-tectonics-together",
+    "title": "16  Surface Features & Plate Boundaries",
+    "section": "22.1 Putting Plate Tectonics Together",
+    "text": "22.1 Putting Plate Tectonics Together",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Surface Features & Plate Boundaries</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html",
+    "title": "17  Energy & Matter in Earth’s Interior",
+    "section": "",
+    "text": "18 🔥 Engage — The Great Rift Valley\nHS-ESS2-3 HS-ESS3-1 7–8 Days\nCode\nPlot = require(\"@observablehq/plot\")\nd3 = require(\"d3@7\")\nCode\nriftData = [\n  {location: \"Red Sea (already open)\", width: 350, rate: 15, stage: \"Ocean forming\", color: \"#0984e3\"},\n  {location: \"Afar Triangle (Ethiopia)\", width: 50, rate: 20, stage: \"Active rifting\", color: \"#d63031\"},\n  {location: \"Main Ethiopian Rift\", width: 80, rate: 6, stage: \"Active rifting\", color: \"#e17055\"},\n  {location: \"Kenya Rift (Lake Turkana)\", width: 60, rate: 4, stage: \"Active rifting\", color: \"#e17055\"},\n  {location: \"Tanzania (Lake Tanganyika)\", width: 50, rate: 2, stage: \"Early rifting\", color: \"#f39c12\"},\n  {location: \"Mozambique\", width: 30, rate: 1, stage: \"Early rifting\", color: \"#fdcb6e\"}\n]\n\nPlot.plot({\n  title: \"East African Rift: Spreading Rate (mm/year)\",\n  subtitle: \"The rift is fastest in the north where it's oldest — the Red Sea is already an ocean!\",\n  width: 700,\n  height: 300,\n  marginLeft: 220,\n  x: {label: \"Spreading rate (mm/year)\", grid: true},\n  y: {label: null},\n  marks: [\n    Plot.barX(riftData, {\n      x: \"rate\",\n      y: \"location\",\n      fill: \"color\",\n      rx: 8\n    ,\n        tip: true}),\n    Plot.text(riftData, {\n      x: \"rate\",\n      y: \"location\",\n      text: d =&gt; `${d.rate} mm/yr — ${d.stage}`,\n      dx: 15,\n      fontSize: 11,\n      fontWeight: \"bold\"\n    })\n  ]\n})",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Energy & Matter in Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#africa-is-splitting-apart",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#africa-is-splitting-apart",
+    "title": "17  Energy & Matter in Earth’s Interior",
+    "section": "18.1 Africa Is Splitting Apart",
+    "text": "18.1 Africa Is Splitting Apart\nThe East African Rift Valley is one of the most dramatic geological features on Earth. Right now, the African continent is being torn in two along a 6,000-km crack that runs from the Red Sea through Ethiopia, Kenya, Tanzania, and Mozambique.\nIn about 10 million years, East Africa will separate from the rest of the continent, creating a new ocean.\nThe question: What force is powerful enough to rip a continent apart? The answer lies deep beneath our feet.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Energy & Matter in Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#the-engine-inside-earth-convection",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#the-engine-inside-earth-convection",
+    "title": "17  Energy & Matter in Earth’s Interior",
+    "section": "19.1 The Engine Inside Earth: Convection",
+    "text": "19.1 The Engine Inside Earth: Convection\nWhen you heat a pot of water on a stove, the water at the bottom gets hot, becomes less dense, and rises. At the top, it cools, becomes denser, and sinks. This circular flow is called convection, and it’s the same process that drives plate tectonics.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Energy & Matter in Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#how-convection-works",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#how-convection-works",
+    "title": "17  Energy & Matter in Earth’s Interior",
+    "section": "19.2 How Convection Works",
+    "text": "19.2 How Convection Works\n\n\nCode\n{\n  const svg = d3.create(\"svg\")\n    .attr(\"width\", 700)\n    .attr(\"height\", 400)\n    .attr(\"viewBox\", \"0 0 700 400\");\n\n  svg.append(\"text\").attr(\"x\", 350).attr(\"y\", 25).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 18).attr(\"font-weight\", \"bold\").text(\"Mantle Convection Drives Plate Tectonics\");\n\n  // Mantle\n  svg.append(\"rect\").attr(\"x\", 50).attr(\"y\", 50).attr(\"width\", 600).attr(\"height\", 280)\n    .attr(\"rx\", 5).attr(\"fill\", \"#e17055\").attr(\"opacity\", 0.2);\n  \n  // Convection cells\n  const drawCell = (cx, cy, r) =&gt; {\n    // Rising (hot)\n    svg.append(\"line\").attr(\"x1\", cx).attr(\"y1\", cy + r).attr(\"x2\", cx).attr(\"y2\", cy - r)\n      .attr(\"stroke\", \"#d63031\").attr(\"stroke-width\", 3).attr(\"marker-end\", \"url(#arrowRed)\");\n    \n    // Spreading at top\n    svg.append(\"line\").attr(\"x1\", cx).attr(\"y1\", cy - r).attr(\"x2\", cx + r * 0.8).attr(\"y2\", cy - r + 10)\n      .attr(\"stroke\", \"#e17055\").attr(\"stroke-width\", 2).attr(\"marker-end\", \"url(#arrowOrange)\");\n    svg.append(\"line\").attr(\"x1\", cx).attr(\"y1\", cy - r).attr(\"x2\", cx - r * 0.8).attr(\"y2\", cy - r + 10)\n      .attr(\"stroke\", \"#e17055\").attr(\"stroke-width\", 2).attr(\"marker-end\", \"url(#arrowOrange)\");\n\n    // Sinking (cool)\n    svg.append(\"line\").attr(\"x1\", cx + r * 0.8).attr(\"y1\", cy - r + 20).attr(\"x2\", cx + r * 0.8).attr(\"y2\", cy + r - 10)\n      .attr(\"stroke\", \"#0984e3\").attr(\"stroke-width\", 3).attr(\"marker-end\", \"url(#arrowBlue)\");\n    svg.append(\"line\").attr(\"x1\", cx - r * 0.8).attr(\"y1\", cy - r + 20).attr(\"x2\", cx - r * 0.8).attr(\"y2\", cy + r - 10)\n      .attr(\"stroke\", \"#0984e3\").attr(\"stroke-width\", 3).attr(\"marker-end\", \"url(#arrowBlue)\");\n  };\n\n  // Arrow markers\n  const defs = svg.append(\"defs\");\n  [\"Red\", \"Blue\", \"Orange\"].forEach((color, i) =&gt; {\n    const fills = [\"#d63031\", \"#0984e3\", \"#e17055\"];\n    defs.append(\"marker\").attr(\"id\", `arrow${color}`).attr(\"viewBox\", \"0 0 10 10\")\n      .attr(\"refX\", 5).attr(\"refY\", 5).attr(\"markerWidth\", 6).attr(\"markerHeight\", 6)\n      .attr(\"orient\", \"auto-start-reverse\")\n      .append(\"path\").attr(\"d\", \"M 0 0 L 10 5 L 0 10 z\").attr(\"fill\", fills[i]);\n  });\n\n  drawCell(200, 200, 100);\n  drawCell(500, 200, 100);\n\n  // Labels\n  svg.append(\"text\").attr(\"x\", 200).attr(\"y\", 200).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 12).attr(\"font-weight\", \"bold\").attr(\"fill\", \"#d63031\").text(\"🔥 Hot rock\");\n  svg.append(\"text\").attr(\"x\", 200).attr(\"y\", 215).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 11).attr(\"fill\", \"#d63031\").text(\"RISES\");\n  svg.append(\"text\").attr(\"x\", 500).attr(\"y\", 200).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 12).attr(\"font-weight\", \"bold\").attr(\"fill\", \"#d63031\").text(\"🔥 Hot rock\");\n  svg.append(\"text\").attr(\"x\", 500).attr(\"y\", 215).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 11).attr(\"fill\", \"#d63031\").text(\"RISES\");\n\n  // Plate representations on top\n  svg.append(\"rect\").attr(\"x\", 50).attr(\"y\", 50).attr(\"width\", 290).attr(\"height\", 30)\n    .attr(\"fill\", \"#636e72\").attr(\"opacity\", 0.7);\n  svg.append(\"rect\").attr(\"x\", 360).attr(\"y\", 50).attr(\"width\", 290).attr(\"height\", 30)\n    .attr(\"fill\", \"#636e72\").attr(\"opacity\", 0.7);\n  svg.append(\"text\").attr(\"x\", 195).attr(\"y\", 70).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 11).attr(\"fill\", \"white\").attr(\"font-weight\", \"bold\").text(\"← Plate A\");\n  svg.append(\"text\").attr(\"x\", 505).attr(\"y\", 70).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 11).attr(\"fill\", \"white\").attr(\"font-weight\", \"bold\").text(\"Plate B →\");\n\n  // Divergent boundary\n  svg.append(\"text\").attr(\"x\", 350).attr(\"y\", 55).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 20).text(\"🌋\");\n  svg.append(\"text\").attr(\"x\", 350).attr(\"y\", 45).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 10).attr(\"font-weight\", \"bold\").attr(\"fill\", \"#d63031\").text(\"Ridge\");\n\n  // Core at bottom\n  svg.append(\"rect\").attr(\"x\", 50).attr(\"y\", 330).attr(\"width\", 600).attr(\"height\", 50)\n    .attr(\"rx\", 5).attr(\"fill\", \"#f39c12\").attr(\"opacity\", 0.4);\n  svg.append(\"text\").attr(\"x\", 350).attr(\"y\", 360).attr(\"text-anchor\", \"middle\")\n    .attr(\"font-size\", 13).attr(\"font-weight\", \"bold\").attr(\"fill\", \"#f39c12\").text(\"🔥 Hot Core — Heat Source\");\n\n  return svg.node();\n}\n\n\n\n\n\n\n\n\n19.2.1 💡 Mantle Convection\nThe mantle isn’t liquid — it’s solid rock. But over millions of years, it flows like a very thick fluid (think: glacial ice or silly putty). This slow convection:\n\nHot rock rises from near the core (less dense when hot)\nSpreads laterally beneath the lithosphere, dragging plates along\nCools at the surface and becomes denser\nSinks back down at subduction zones\nRepeat — a convection cycle takes ~100-200 million years",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Energy & Matter in Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#where-does-all-the-heat-come-from",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#where-does-all-the-heat-come-from",
+    "title": "17  Energy & Matter in Earth’s Interior",
+    "section": "20.1 Where Does All the Heat Come From?",
+    "text": "20.1 Where Does All the Heat Come From?\nEarth’s interior produces about 47 terawatts of heat (47 × 10¹² watts). That’s like 3 million nuclear power plants running continuously. Where does it all come from?",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Energy & Matter in Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#the-double-edged-sword",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#the-double-edged-sword",
+    "title": "17  Energy & Matter in Earth’s Interior",
+    "section": "21.1 The Double-Edged Sword",
+    "text": "21.1 The Double-Edged Sword\nPlate boundaries and volcanic regions are both extremely dangerous and extremely valuable. The same processes that cause devastating earthquakes also create the mineral deposits, fertile soils, and geothermal energy that human civilizations depend on.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Energy & Matter in Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#benefits-of-living-near-plate-boundaries",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#benefits-of-living-near-plate-boundaries",
+    "title": "17  Energy & Matter in Earth’s Interior",
+    "section": "21.2 Benefits of Living Near Plate Boundaries",
+    "text": "21.2 Benefits of Living Near Plate Boundaries\n\n\nCode\nbenefitsData = [\n  {benefit: \"Geothermal energy\", desc: \"Iceland gets 87% of heating from geothermal\", value: 9, color: \"#d63031\"},\n  {benefit: \"Fertile volcanic soil\", desc: \"Java (Indonesia) is one of most productive agricultural regions\", value: 8, color: \"#2ecc71\"},\n  {benefit: \"Mineral deposits\", desc: \"Gold, copper, silver concentrate near volcanic zones\", value: 8, color: \"#f39c12\"},\n  {benefit: \"Hot springs & tourism\", desc: \"Yellowstone, Rotorua (NZ), Blue Lagoon (Iceland)\", value: 6, color: \"#0984e3\"},\n  {benefit: \"Diamonds\", desc: \"Brought to surface by deep volcanic pipes (kimberlites)\", value: 5, color: \"#a29bfe\"},\n  {benefit: \"Obsidian & building stone\", desc: \"Volcanic rock used in construction for millennia\", value: 4, color: \"#636e72\"}\n]\n\nPlot.plot({\n  title: \"Benefits of Geological Activity\",\n  subtitle: \"Tectonic forces create incredible resources — but at a cost\",\n  width: 700,\n  height: 300,\n  marginLeft: 200,\n  x: {label: \"Economic/Social Value (relative)\", grid: true, domain: [0, 10]},\n  y: {label: null},\n  marks: [\n    Plot.barX(benefitsData, {\n      x: \"value\",\n      y: \"benefit\",\n      fill: \"color\",\n      rx: 8,\n      sort: {y: \"-x\"}\n    ,\n        tip: true}),\n    Plot.text(benefitsData, {\n      x: \"value\",\n      y: \"benefit\",\n      text: \"desc\",\n      dx: 10,\n      textAnchor: \"start\",\n      fontSize: 10\n    })\n  ]\n})",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Energy & Matter in Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#risks-vs.-benefits-comparison",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#risks-vs.-benefits-comparison",
+    "title": "17  Energy & Matter in Earth’s Interior",
+    "section": "21.3 Risks vs. Benefits Comparison",
+    "text": "21.3 Risks vs. Benefits Comparison\n\n\nCode\nviewof selectedRegion = Inputs.select(\n  [\"Indonesia\", \"Japan\", \"Iceland\", \"California\", \"Italy\"],\n  {label: \"Explore a region:\"}\n)\n\n\n\n\n\n\n\n\n\nCode\n{\n  const regions = {\n    \"Indonesia\": {\n      boundary: \"Convergent (subduction)\",\n      hazards: [\"Explosive volcanoes (Krakatoa, Tambora)\", \"M8+ earthquakes\", \"Tsunamis (2004 Indian Ocean)\", \"Lahars & pyroclastic flows\"],\n      benefits: [\"Most fertile farmland in SE Asia\", \"Rich mineral deposits (gold, copper)\", \"Geothermal potential (27 GW)\", \"Volcanic island tourism\"],\n      pop: \"274 million people\",\n      verdict: \"Extremely high risk AND reward — 17,500 islands on the Ring of Fire\"\n    },\n    \"Japan\": {\n      boundary: \"Convergent (triple junction!)\",\n      hazards: [\"M9 earthquakes (2011 Tōhoku)\", \"Tsunamis\", \"Volcanic eruptions (Mt. Fuji)\", \"Nuclear risk (Fukushima)\"],\n      benefits: [\"Geothermal energy (23 GW potential)\", \"Hot springs (onsen culture)\", \"Rich mineral deposits\", \"Volcanic soil for agriculture\"],\n      pop: \"125 million people\",\n      verdict: \"Most seismically active developed nation — but advanced engineering saves lives\"\n    },\n    \"Iceland\": {\n      boundary: \"Divergent (Mid-Atlantic Ridge)\",\n      hazards: [\"Volcanic eruptions (Eyjafjallajökull 2010)\", \"Glacial outburst floods (jökulhlaups)\", \"Lava flows\"],\n      benefits: [\"87% of heating from geothermal\", \"100% renewable electricity\", \"Tourism (Blue Lagoon, geysers)\", \"Volcanic soil greenhouses\"],\n      pop: \"380,000 people\",\n      verdict: \"Best example of humans successfully harnessing tectonic energy\"\n    },\n    \"California\": {\n      boundary: \"Transform (San Andreas Fault)\",\n      hazards: [\"M7-8 earthquakes (1906, 1989, 1994)\", \"Ground shaking & liquefaction\", \"Landslides\", \"Surface rupture\"],\n      benefits: [\"Gold deposits (Gold Rush!)\", \"Rich agricultural valleys\", \"Oil & natural gas\", \"Mediterranean climate from plate-driven topography\"],\n      pop: \"39 million people\",\n      verdict: \"Transform faults create fewer benefits than convergent — risk concentrated in major cities\"\n    },\n    \"Italy\": {\n      boundary: \"Convergent (Africa pushing into Europe)\",\n      hazards: [\"Volcanic eruptions (Vesuvius, Etna, Stromboli)\", \"M6-7 earthquakes\", \"Tsunamis\", \"Landslides\"],\n      benefits: [\"Volcanic soil for wine regions\", \"Geothermal energy (Larderello)\", \"Marble & building stone\", \"Hot springs & tourism\"],\n      pop: \"59 million people\",\n      verdict: \"Vesuvius destroyed Pompeii in 79 CE — and 3 million people live in its shadow today\"\n    }\n  };\n\n  const r = regions[selectedRegion];\n  const div = d3.create(\"div\");\n  div.append(\"h3\").style(\"color\", \"#e17055\").style(\"font-family\", \"Space Grotesk\").text(`${selectedRegion} — ${r.boundary}`);\n  div.append(\"p\").html(`&lt;strong&gt;Population at risk:&lt;/strong&gt; ${r.pop}`);\n  \n  const grid = div.append(\"div\").style(\"display\", \"flex\").style(\"gap\", \"15px\").style(\"flex-wrap\", \"wrap\");\n  \n  const riskCard = grid.append(\"div\").style(\"flex\", \"1\").style(\"min-width\", \"250px\")\n    .style(\"background\", \"#fff5f5\").style(\"padding\", \"15px\").style(\"border-radius\", \"10px\")\n    .style(\"border-left\", \"4px solid #d63031\");\n  riskCard.append(\"h4\").style(\"margin-top\", \"0\").style(\"color\", \"#d63031\").text(\"⚠️ Hazards\");\n  const ul1 = riskCard.append(\"ul\");\n  r.hazards.forEach(h =&gt; ul1.append(\"li\").text(h));\n\n  const benCard = grid.append(\"div\").style(\"flex\", \"1\").style(\"min-width\", \"250px\")\n    .style(\"background\", \"#f0fff0\").style(\"padding\", \"15px\").style(\"border-radius\", \"10px\")\n    .style(\"border-left\", \"4px solid #2ecc71\");\n  benCard.append(\"h4\").style(\"margin-top\", \"0\").style(\"color\", \"#2ecc71\").text(\"✅ Benefits\");\n  const ul2 = benCard.append(\"ul\");\n  r.benefits.forEach(b =&gt; ul2.append(\"li\").text(b));\n\n  div.append(\"div\").style(\"background\", \"#ffecd2\").style(\"padding\", \"12px\").style(\"border-radius\", \"8px\")\n    .style(\"border-left\", \"4px solid #e17055\").style(\"margin-top\", \"10px\")\n    .html(`&lt;strong&gt;Bottom line:&lt;/strong&gt; ${r.verdict}`);\n\n  return div.node();\n}\n\n\n\n\n\n\n\n\n21.3.1 💡 Why People Live in Danger Zones\nAbout 500 million people live within potential exposure range of active volcanoes. Why?\n\nVolcanic soil is incredibly fertile — ash breaks down into nutrient-rich soil\nMineral wealth concentrates near tectonic boundaries\nGeothermal energy is cheap and abundant\nHistorical roots — civilizations were founded in these areas thousands of years ago\nShort memory — major eruptions may be centuries apart; people forget\n\nThe challenge isn’t avoiding plate boundaries — it’s learning to live safely near them.",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Energy & Matter in Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#connecting-energy-matter-and-motion",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html#connecting-energy-matter-and-motion",
+    "title": "17  Energy & Matter in Earth’s Interior",
+    "section": "22.1 Connecting Energy, Matter, and Motion",
+    "text": "22.1 Connecting Energy, Matter, and Motion",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Energy & Matter in Earth's Interior</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-closing.html",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-closing.html",
+    "title": "18  Performance Task: Natural Hazard Risk Assessment",
+    "section": "",
+    "text": "19 The Challenge\nHS-ESS1-5 HS-ESS2-1 HS-ESS2-3 HS-ESS3-1 Performance Task\nYour task is to select a real location near a plate boundary and develop a scientific argument about whether the natural hazard risks at that location outweigh the benefits — or vice versa.\nThis is not a question with one right answer. What matters is the quality of your evidence and reasoning.\nCode\nPlot = require(\"@observablehq/plot\")\nd3 = require(\"d3@7\")",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Performance Task: Natural Hazard Risk Assessment</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-closing.html#chapter-1-earths-interior",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-closing.html#chapter-1-earths-interior",
+    "title": "18  Performance Task: Natural Hazard Risk Assessment",
+    "section": "20.1 Chapter 1: Earth’s Interior",
+    "text": "20.1 Chapter 1: Earth’s Interior\n\nKey Evidence Available:\n\nEarth has a layered structure: crust, mantle, outer core, inner core\nWe know this from seismic wave analysis (P-waves and S-waves)\nThe mantle is solid but flows slowly over millions of years\nEarth’s layers formed through density differentiation — denser materials sank to the center\nProcesses deep inside Earth ultimately cause surface events",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Performance Task: Natural Hazard Risk Assessment</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-closing.html#chapter-2-plate-boundaries-surface-features",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-closing.html#chapter-2-plate-boundaries-surface-features",
+    "title": "18  Performance Task: Natural Hazard Risk Assessment",
+    "section": "20.2 Chapter 2: Plate Boundaries & Surface Features",
+    "text": "20.2 Chapter 2: Plate Boundaries & Surface Features\n\nKey Evidence Available:\n\nThree types of boundaries: divergent (pull apart), convergent (push together), transform (slide past)\nEarthquakes cluster along plate boundaries — not random\nSeafloor spreading creates new crust at mid-ocean ridges\nSubduction zones produce the most violent volcanic eruptions\nEvidence for plate motion: magnetic striping, fossil distribution, continent shapes, seafloor ages\nSome features (like the Adirondacks) exist far from boundaries — remnants of ancient tectonic events",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Performance Task: Natural Hazard Risk Assessment</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-closing.html#chapter-3-energy-matter",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-closing.html#chapter-3-energy-matter",
+    "title": "18  Performance Task: Natural Hazard Risk Assessment",
+    "section": "20.3 Chapter 3: Energy & Matter",
+    "text": "20.3 Chapter 3: Energy & Matter\n\nKey Evidence Available:\n\nEarth’s interior produces 47 terawatts of heat (radioactive decay + primordial heat + core crystallization)\nConvection in the mantle is the engine that drives plate motion\nThe same tectonic processes that cause hazards also create resources: fertile soil, minerals, geothermal energy\nAbout 500 million people live near active volcanoes worldwide\nRisk and benefit are often inseparable at plate boundaries",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Performance Task: Natural Hazard Risk Assessment</span>"
+    ]
+  },
+  {
+    "objectID": "unit3-earthquakes-volcanoes-tsunamis/unit3-closing.html#the-framework",
+    "href": "unit3-earthquakes-volcanoes-tsunamis/unit3-closing.html#the-framework",
+    "title": "18  Performance Task: Natural Hazard Risk Assessment",
+    "section": "22.1 The Framework",
+    "text": "22.1 The Framework\nUse the Claim–Evidence–Reasoning framework to build your argument:\n\n22.1.1 📌 CLAIM (1-2 sentences)\nMake a clear, debatable statement. Does the hazard risk at your chosen location outweigh the benefits, or do the benefits justify the risk?\nExample format: “The benefits of living in [location] [do/do not] outweigh the natural hazard risks because…”\n\n\n22.1.2 📊 EVIDENCE (3-5 specific pieces)\nUse evidence from ALL THREE chapters plus the risk assessment tool:\n\nFrom Chapter 1 (Earth’s Interior): What’s happening beneath this location? What tectonic processes cause the hazards?\nFrom Chapter 2 (Plate Boundaries): What type of boundary? What evidence supports plate motion here?\nFrom Chapter 3 (Energy & Matter): What energy drives the hazards? What resources does this activity create?\nFrom the Risk Tool: Specific hazard/benefit scores and historical data\n\n\n\n22.1.3 🧠 REASONING (3-5 sentences)\nConnect your evidence to your claim using scientific principles:\n\nHow do the tectonic processes at this boundary create both hazards AND resources?\nWhy is the benefit-to-risk ratio what it is for this location?\nConsider: Can engineering and preparation change the risk level? (Think Japan vs. Nepal)\nAddress the counterargument — what would someone who disagrees say?",
+    "crumbs": [
+      "Unit 3: Earthquakes, Volcanoes, & Tsunamis",
+      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Performance Task: Natural Hazard Risk Assessment</span>"
+    ]
   }
 ]

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMOC Climate Simulator</title>
+  <!-- Tailwind CSS for styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons for iconography -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    /* Custom Scrollbar for the impacts panel */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 1); 
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(51, 65, 85, 1); 
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(71, 85, 105, 1); 
+    }
+
+    /* Animation definition for ocean currents */
+    @keyframes dash {
+      to {
+        stroke-dashoffset: -100;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-200 font-sans p-4 md:p-6 lg:p-8 selection:bg-cyan-900 min-h-screen">
+
+  <!-- Header -->
+  <header class="max-w-7xl mx-auto mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-6">
+    <div>
+      <h1 class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-300 to-teal-400">
+        AMOC Climate Simulator
+      </h1>
+      <p class="text-slate-400 mt-2 max-w-2xl">
+        Explore the cascading global climate impacts of the Atlantic Meridional Overturning Circulation.
+      </p>
+    </div>
+    
+    <!-- State Selector / Slider -->
+    <div class="w-full md:w-auto bg-slate-900 p-4 rounded-xl border border-slate-800 flex flex-col items-center">
+      <label class="text-sm uppercase tracking-wider text-slate-400 font-semibold mb-3">
+        Simulate AMOC Status
+      </label>
+      <input 
+        type="range" 
+        id="amoc-slider"
+        min="0" 
+        max="2" 
+        step="1" 
+        value="0"
+        class="w-64 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-400"
+      />
+      <div class="flex justify-between w-64 mt-2 text-xs font-medium text-slate-500">
+        <span id="label-normal" class="text-cyan-400 transition-colors">Normal</span>
+        <span id="label-slowing" class="transition-colors">Slowing</span>
+        <span id="label-collapsed" class="transition-colors">Collapsed</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <!-- Left Column: Interactive Map -->
+    <div class="lg:col-span-2 relative bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl flex items-center justify-center min-h-[500px] md:min-h-[600px]">
+      
+      <!-- Status Overlay -->
+      <div class="absolute top-4 left-4 z-10 bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-lg border border-slate-700/50 flex items-center gap-3 shadow-lg">
+        <div id="status-dot" class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></div>
+        <span id="status-text" class="font-semibold tracking-wide text-sm">System State: Normal</span>
+      </div>
+
+      <svg 
+        viewBox="0 0 800 600" 
+        class="w-full h-full object-contain"
+        style="filter: drop-shadow(0px 0px 20px rgba(0,0,0,0.5));"
+      >
+        <defs>
+          <linearGradient id="warmCurrent" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#ef4444" />
+            <stop offset="50%" stop-color="#f97316" />
+            <stop offset="100%" stop-color="#fbbf24" />
+          </linearGradient>
+          <linearGradient id="coldCurrent" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#60a5fa" />
+            <stop offset="50%" stop-color="#3b82f6" />
+            <stop offset="100%" stop-color="#1d4ed8" />
+          </linearGradient>
+
+          <!-- Climate Anomaly Overlays (Radial Gradients) -->
+          <radialGradient id="coldAnomaly" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(59, 130, 246, 0.4)" />
+            <stop offset="100%" stop-color="rgba(59, 130, 246, 0)" />
+          </radialGradient>
+          <radialGradient id="heatAnomaly" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(239, 68, 68, 0.4)" />
+            <stop offset="100%" stop-color="rgba(239, 68, 68, 0)" />
+          </radialGradient>
+          <radialGradient id="dryAnomaly" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(217, 119, 6, 0.5)" />
+            <stop offset="100%" stop-color="rgba(217, 119, 6, 0)" />
+          </radialGradient>
+        </defs>
+
+        <!-- Stylized Continents -->
+        <g class="fill-slate-800 stroke-slate-700 stroke-2 transition-colors duration-1000">
+          <path d="M -50,-50 L 350,-50 L 300,50 L 250,150 L 200,250 L 120,280 L 80,320 L -50,320 Z" />
+          <path d="M 50,350 L 150,350 L 200,400 L 280,450 L 300,500 L 220,650 L -50,650 Z" />
+          <path d="M 450,-50 L 850,-50 L 850,220 L 700,220 L 620,180 L 520,120 L 480,50 Z" />
+          <path d="M 420,280 L 550,280 L 680,260 L 850,350 L 850,650 L 550,650 L 480,450 L 440,350 Z" />
+          <!-- Greenland -->
+          <path id="greenland" d="M 320,-50 L 420,-50 L 400,80 L 300,50 Z" class="transition-colors duration-1000" />
+        </g>
+
+        <!-- Climate Anomaly Visualizations (fade in based on state) -->
+        <g style="transition: opacity 1s ease-in-out;">
+          <circle id="europe-cold" cx="550" cy="100" r="0" fill="url(#coldAnomaly)" style="opacity: 0; transition: all 1s ease-in-out;" />
+          <circle id="south-heat" cx="350" cy="450" r="0" fill="url(#heatAnomaly)" style="opacity: 0; transition: all 1s ease-in-out;" />
+          <circle id="sahel-dry" cx="500" cy="320" r="0" fill="url(#dryAnomaly)" style="opacity: 0; transition: all 1s ease-in-out;" />
+          <circle id="amazon-dry" cx="180" cy="420" r="0" fill="url(#dryAnomaly)" style="opacity: 0; transition: all 1s ease-in-out;" />
+        </g>
+
+        <!-- AMOC Currents Layer -->
+        <g id="currents-layer" style="opacity: 1; transition: opacity 1s ease-in-out;">
+          <!-- Warm Surface Current -->
+          <path 
+            d="M 280,480 Q 200,350 180,280 Q 150,200 240,150 Q 320,100 450,120 Q 520,100 550,50" 
+            fill="none" 
+            stroke="url(#warmCurrent)" 
+            stroke-width="8"
+            stroke-linecap="round"
+            class="drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+          />
+          <path 
+            id="warm-dashed"
+            d="M 280,480 Q 200,350 180,280 Q 150,200 240,150 Q 320,100 450,120 Q 520,100 550,50" 
+            fill="none" 
+            stroke="#fff" 
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-dasharray="10 15"
+            style="animation: dash 2s linear infinite;"
+          />
+
+          <!-- Cold Deep Current -->
+          <path 
+            d="M 520,40 Q 450,120 380,200 Q 340,300 360,450 Q 380,550 400,650" 
+            fill="none" 
+            stroke="url(#coldCurrent)" 
+            stroke-width="6"
+            stroke-linecap="round"
+            class="drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]"
+          />
+          <path 
+            id="cold-dashed"
+            d="M 520,40 Q 450,120 380,200 Q 340,300 360,450 Q 380,550 400,650" 
+            fill="none" 
+            stroke="#fff" 
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-dasharray="10 15"
+            style="animation: dash 2s linear infinite reverse;"
+          />
+        </g>
+
+        <!-- Region Markers -->
+        <g class="font-sans text-xs font-bold" fill="#fff">
+          <circle cx="200" cy="180" r="4" class="fill-blue-400" />
+          <text x="210" y="185" class="drop-shadow-md">US East Coast</text>
+
+          <circle cx="520" cy="90" r="4" class="fill-green-400" />
+          <text x="530" y="95" class="drop-shadow-md">Western Europe</text>
+
+          <circle cx="480" cy="320" r="4" class="fill-yellow-400" />
+          <text x="490" y="325" class="drop-shadow-md">Sahel Region</text>
+
+          <circle cx="180" cy="420" r="4" class="fill-emerald-400" />
+          <text x="190" y="425" class="drop-shadow-md">Amazon Basin</text>
+
+          <circle cx="360" cy="520" r="4" class="fill-red-400" />
+          <text x="370" y="525" class="drop-shadow-md">South Atlantic</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Right Column: Data Panels -->
+    <div class="lg:col-span-1 flex flex-col gap-6 h-full max-h-[600px]">
+      
+      <!-- Main Info Card -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl transition-all duration-500 shrink-0">
+        <h2 class="text-xl font-bold flex items-center gap-2 mb-4 text-white">
+          <i data-lucide="info" class="text-cyan-400"></i>
+          Current Dynamics
+        </h2>
+        <p id="desc-text" class="text-slate-300 leading-relaxed text-sm md:text-base transition-opacity duration-300">
+          The Atlantic Meridional Overturning Circulation (AMOC) is functioning normally. Warm surface waters travel north, release heat to the atmosphere (keeping Europe mild), become dense, and sink, returning south as cold deep currents.
+        </p>
+      </div>
+
+      <!-- Regional Impacts Grid -->
+      <div class="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+        <h3 class="text-sm uppercase tracking-widest text-slate-500 font-semibold mb-4 px-2">Regional Impacts</h3>
+        <div id="impact-cards" class="flex flex-col gap-4">
+          <!-- Cards injected via JavaScript -->
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Application Logic -->
+  <script>
+    const amocData = {
+      0: {
+        state: "Normal",
+        description: "The Atlantic Meridional Overturning Circulation (AMOC) is functioning normally. Warm surface waters travel north, release heat to the atmosphere (keeping Europe mild), become dense, and sink, returning south as cold deep currents.",
+        speed: "2s",
+        opacity: 1,
+        regions: {
+          europe: { temp: "±0°C", desc: "Mild, temperate winters.", icon: "thermometer", color: "text-green-400" },
+          naEast: { seaLevel: "Base", desc: "Stable sea levels and weather.", icon: "waves", color: "text-blue-400" },
+          sahel: { rain: "Normal", desc: "Reliable seasonal monsoons.", icon: "cloud-rain", color: "text-teal-400" },
+          amazon: { status: "Stable", desc: "Healthy rainforest rainfall.", icon: "droplets", color: "text-emerald-400" },
+          southAtl: { temp: "±0°C", desc: "Normal heat distribution.", icon: "thermometer", color: "text-green-400" }
+        }
+      },
+      1: {
+        state: "Slowing Down",
+        description: "Freshwater from melting Greenland ice sheets disrupts the sinking of cold water. The AMOC weakens. Less heat is transported north, and water begins to 'pile up' along the US East Coast.",
+        speed: "8s",
+        opacity: 0.6,
+        regions: {
+          europe: { temp: "-2°C to -4°C", desc: "Noticeably colder winters, increased storms.", icon: "thermometer-snowflake", color: "text-blue-300" },
+          naEast: { seaLevel: "+15 to 20cm", desc: "Accelerated sea level rise, coastal flooding.", icon: "waves", color: "text-orange-400" },
+          sahel: { rain: "Reduced", desc: "Weaker monsoons, early signs of drought.", icon: "cloud-lightning", color: "text-yellow-400" },
+          amazon: { status: "Drying", desc: "Longer dry seasons emerge.", icon: "alert-triangle", color: "text-yellow-500" },
+          southAtl: { temp: "+1°C to +2°C", desc: "Heat begins accumulating in the south.", icon: "flame", color: "text-orange-400" }
+        }
+      },
+      2: {
+        state: "Collapsed",
+        description: "The AMOC has completely stopped. A massive tipping point has been crossed. The Northern Hemisphere is plunged into extreme cold, while the Southern Hemisphere overheats. Global weather systems are severely disrupted.",
+        speed: "0s",
+        opacity: 0.1,
+        regions: {
+          europe: { temp: "-5°C to -10°C", desc: "Severe freezing, ice expansion, agricultural collapse.", icon: "thermometer-snowflake", color: "text-indigo-400" },
+          naEast: { seaLevel: "+50cm", desc: "Devastating dynamic sea level rise.", icon: "alert-triangle", color: "text-red-500" },
+          sahel: { rain: "Drought", desc: "Monsoons fail entirely. Severe famine conditions.", icon: "wind", color: "text-amber-600" },
+          amazon: { status: "Dieback", desc: "Rainforest transitions to savanna.", icon: "flame", color: "text-red-500" },
+          southAtl: { temp: "+3°C to +5°C", desc: "Dangerous overheating of southern oceans.", icon: "flame", color: "text-red-500" }
+        }
+      }
+    };
+
+    const regionalStructure = [
+      { title: "Western Europe", key: "europe", label: "Temperature Anomaly" },
+      { title: "US East Coast", key: "naEast", label: "Dynamic Sea Level" },
+      { title: "Sahel (West Africa)", key: "sahel", label: "Rainfall Status" },
+      { title: "Amazon Basin", key: "amazon", label: "Ecosystem Status" },
+      { title: "Southern Hemisphere", key: "southAtl", label: "Ocean Heat Accumulation" }
+    ];
+
+    function updateSimulator() {
+      const slider = document.getElementById('amoc-slider');
+      const stateVal = parseInt(slider.value);
+      const data = amocData[stateVal];
+
+      // Update Header Data
+      document.getElementById('status-text').innerText = `System State: ${data.state}`;
+      document.getElementById('desc-text').innerText = data.description;
+
+      // Update Slider Label Colors
+      document.getElementById('label-normal').className = stateVal === 0 ? "text-cyan-400 transition-colors" : "text-slate-500 transition-colors";
+      document.getElementById('label-slowing').className = stateVal === 1 ? "text-yellow-400 transition-colors" : "text-slate-500 transition-colors";
+      document.getElementById('label-collapsed').className = stateVal === 2 ? "text-red-500 transition-colors" : "text-slate-500 transition-colors";
+
+      // Update Status Dot
+      const dot = document.getElementById('status-dot');
+      if (stateVal === 0) dot.className = "w-3 h-3 rounded-full bg-cyan-400 animate-pulse";
+      else if (stateVal === 1) dot.className = "w-3 h-3 rounded-full bg-yellow-400 animate-pulse";
+      else dot.className = "w-3 h-3 rounded-full bg-red-500";
+
+      // Update Map Graphics
+      document.getElementById('greenland').className.baseVal = stateVal > 0 ? "fill-blue-900/40 transition-colors duration-1000" : "transition-colors duration-1000";
+      
+      const updateAnomaly = (id, radiusWhen1, radiusWhen2) => {
+        const el = document.getElementById(id);
+        el.setAttribute('r', stateVal === 2 ? radiusWhen2 : stateVal === 1 ? radiusWhen1 : "0");
+        el.style.opacity = stateVal > 0 ? 1 : 0;
+      };
+
+      updateAnomaly('europe-cold', "80", "150");
+      updateAnomaly('south-heat', "100", "200");
+      updateAnomaly('sahel-dry', "60", "120");
+      updateAnomaly('amazon-dry', "60", "120");
+
+      // Update Currents
+      document.getElementById('currents-layer').style.opacity = data.opacity;
+      const warm = document.getElementById('warm-dashed');
+      const cold = document.getElementById('cold-dashed');
+      
+      if (stateVal < 2) {
+        warm.style.animation = `dash ${data.speed} linear infinite`;
+        cold.style.animation = `dash ${data.speed} linear infinite reverse`;
+      } else {
+        warm.style.animation = 'none';
+        cold.style.animation = 'none';
+      }
+
+      // Generate Impact Cards
+      const cardsContainer = document.getElementById('impact-cards');
+      cardsContainer.innerHTML = ''; // Clear existing cards
+
+      regionalStructure.forEach(region => {
+        const rData = data.regions[region.key];
+        // Determine primary metric to show based on what key exists
+        const metric = rData.temp || rData.seaLevel || rData.rain || rData.status;
+        
+        const bgClass = stateVal === 2 ? 'bg-slate-800/80 border-slate-700' : 
+                        stateVal === 1 ? 'bg-slate-800/50 border-slate-700/50' : 
+                        'bg-slate-900 border-slate-800';
+
+        const cardHTML = `
+          <div class="p-4 rounded-xl border ${bgClass} transition-all duration-500 hover:border-slate-600">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="font-semibold text-slate-200">${region.title}</h4>
+              <i data-lucide="${rData.icon}" class="${rData.color} transition-colors duration-500 w-5 h-5"></i>
+            </div>
+            <div class="mb-3">
+              <span class="text-2xl font-bold ${rData.color} transition-colors duration-500">${metric}</span>
+              <span class="block text-xs text-slate-500 uppercase tracking-wide mt-1">${region.label}</span>
+            </div>
+            <p class="text-sm text-slate-400">${rData.desc}</p>
+          </div>
+        `;
+        cardsContainer.innerHTML += cardHTML;
+      });
+
+      // Render the newly injected Lucide icons
+      lucide.createIcons();
+    }
+
+    // Initialize application on load
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('amoc-slider').addEventListener('input', updateSimulator);
+      updateSimulator(); // Set initial state
+    });
+  </script>
+</body>
+</html>
