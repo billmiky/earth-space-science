@@ -782,6 +782,613 @@ windChart = {
 Did you know? In real weather systems, wind doesn't flow in a perfectly straight line from high to low pressure. Because the Earth is spinning, the Coriolis Effect causes the wind to curve (to the right in the Northern Hemisphere, and left in the Southern Hemisphere). However, the primary driving force of the wind is always this pressure difference!
 :::
 
+## Atmospheric Convection Currents
+
+This interactive simulation demonstrates how thermal differences create pressure zones and drive wind patterns in the troposphere. Adjust the temperatures of the land masses to observe the resulting changes in air density and wind currents.
+
+```{ojs}
+//|   echo: false
+
+//| panel: input
+//| layout-ncol: 2
+viewof leftTemp = Inputs.range([0, 100], {value: 20, step: 1, label: "Left Land Temperature"})
+viewof rightTemp = Inputs.range([0, 100], {value: 80, step: 1, label: "Right Land Temperature"})
+
+
+//| label: convection-canvas
+chart = {
+  // 1. Setup Canvas
+  const canvas = document.createElement('canvas');
+  const WIDTH = 800;
+  const HEIGHT = 600;
+  canvas.width = WIDTH;
+  canvas.height = HEIGHT;
+  canvas.style.width = "100%";
+  canvas.style.maxWidth = "800px";
+  canvas.style.height = "auto";
+  canvas.style.border = "1px solid #e2e8f0";
+  canvas.style.borderRadius = "0.5rem";
+  canvas.style.backgroundColor = "#fff";
+  
+  const ctx = canvas.getContext('2d');
+
+  // 2. Constants & Helpers
+  const LEFT_X = 200;
+  const RIGHT_X = 600;
+  const TOP_Y = 120;
+  const BOTTOM_Y_BASE = 360;
+
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const getEarthY = (x) => 400 - 30 * Math.sin((x / WIDTH) * Math.PI);
+
+  const getWindPos = (t, direction) => {
+    let x, y, angle;
+    let pathT = direction > 0 ? t : (4 - t) % 4;
+
+    if (pathT < 1) {
+      x = lerp(LEFT_X, RIGHT_X, pathT);
+      y = getEarthY(x) - 30;
+      angle = 0;
+    } else if (pathT < 2) {
+      const localT = pathT - 1;
+      x = RIGHT_X;
+      y = lerp(getEarthY(RIGHT_X) - 30, TOP_Y, localT);
+      angle = -Math.PI / 2;
+    } else if (pathT < 3) {
+      const localT = pathT - 2;
+      x = lerp(RIGHT_X, LEFT_X, localT);
+      y = TOP_Y - 20 * Math.sin((x / WIDTH) * Math.PI); 
+      angle = Math.PI;
+    } else {
+      const localT = pathT - 3;
+      x = LEFT_X;
+      y = lerp(TOP_Y, getEarthY(LEFT_X) - 30, localT);
+      angle = Math.PI / 2;
+    }
+
+    if (direction < 0) angle += Math.PI;
+    return { x, y, angle };
+  };
+
+  const drawArrow = (ctx, x, y, angle, color) => {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.beginPath();
+    ctx.moveTo(-15, -5);
+    ctx.lineTo(5, -5);
+    ctx.lineTo(5, -10);
+    ctx.lineTo(15, 0);
+    ctx.lineTo(5, 10);
+    ctx.lineTo(5, 5);
+    ctx.lineTo(-15, 5);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.restore();
+  };
+
+  // 3. Particle System State
+  const createParticles = (count) => Array.from({ length: count }, () => ({
+    x: Math.random() * 140 + 5,
+    y: Math.random() * 140 + 5,
+    vx: (Math.random() - 0.5) * 2,
+    vy: (Math.random() - 0.5) * 2,
+  }));
+  
+  const leftParticles = createParticles(200);
+  const rightParticles = createParticles(200);
+  let windOffset = 0;
+  let animationFrameId;
+
+  // 4. Main Animation Loop
+  function render() {
+    // Read directly from the DOM elements to prevent reactive re-evaluation of the cell,
+    // which would cause the canvas/particles to reset every time the slider moves.
+    const lTemp = viewof leftTemp.value;
+    const rTemp = viewof rightTemp.value;
+    
+    const tempDiff = rTemp - lTemp;
+    const windSpeed = Math.abs(tempDiff) * 0.0003; 
+    const direction = Math.sign(tempDiff);
+    
+    windOffset = (windOffset + windSpeed) % 4;
+
+    // --- Draw Sky ---
+    ctx.fillStyle = '#f0f9ff';
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    
+    const skyGradient = ctx.createLinearGradient(0, 0, 0, 400);
+    skyGradient.addColorStop(0, '#bae6fd');
+    skyGradient.addColorStop(1, '#e0f2fe');
+    ctx.fillStyle = skyGradient;
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+    // --- Draw Upper Troposphere ---
+    ctx.beginPath();
+    for (let x = 0; x <= WIDTH; x += 10) {
+      const y = TOP_Y - 40 - 20 * Math.sin((x / WIDTH) * Math.PI);
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = '#94a3b8';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([10, 10]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    
+    ctx.fillStyle = '#64748b';
+    ctx.font = '14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Upper Troposphere = cool', WIDTH / 2, TOP_Y - 70);
+
+    // --- Draw Auras ---
+    const drawAura = (x, y, temp) => {
+      const gradient = ctx.createRadialGradient(x, y, 10, x, y, 120);
+      if (temp > 50) {
+        const intensity = (temp - 50) / 50;
+        gradient.addColorStop(0, `rgba(239, 68, 68, ${intensity * 0.6})`);
+      } else {
+        const intensity = (50 - temp) / 50;
+        gradient.addColorStop(0, `rgba(59, 130, 246, ${intensity * 0.6})`);
+      }
+      gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(x, y, 120, 0, Math.PI * 2);
+      ctx.fill();
+    };
+    
+    drawAura(LEFT_X, getEarthY(LEFT_X), lTemp);
+    drawAura(RIGHT_X, getEarthY(RIGHT_X), rTemp);
+
+    // --- Draw Earth Surface ---
+    ctx.beginPath();
+    for (let x = 0; x <= WIDTH; x += 5) {
+      if (x === 0) ctx.moveTo(x, getEarthY(x));
+      else ctx.lineTo(x, getEarthY(x));
+    }
+    ctx.lineTo(WIDTH, HEIGHT);
+    ctx.lineTo(0, HEIGHT);
+    ctx.closePath();
+    ctx.fillStyle = '#22c55e';
+    ctx.fill();
+    ctx.strokeStyle = '#166534';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+    
+    // --- Draw Wind Arrows ---
+    if (Math.abs(tempDiff) > 2) {
+      const arrowCount = 12;
+      for (let i = 0; i < arrowCount; i++) {
+        const t = (windOffset + (i / arrowCount) * 4) % 4;
+        const pos = getWindPos(t, direction);
+        
+        let color = '#94a3b8';
+        if (direction > 0) {
+          if (t > 0.5 && t < 1.5) color = '#ef4444'; 
+          if (t > 2.5 && t < 3.5) color = '#3b82f6'; 
+        } else {
+          if (t > 2.5 && t < 3.5) color = '#ef4444'; 
+          if (t > 0.5 && t < 1.5) color = '#3b82f6'; 
+        }
+        drawArrow(ctx, pos.x, pos.y, pos.angle, color);
+      }
+    }
+
+    // --- Draw Text Labels ---
+    ctx.font = 'bold 14px sans-serif';
+    ctx.textAlign = 'center';
+    
+    const drawSideLabels = (x, temp, isLeft) => {
+      const isWarm = temp > 50;
+      const yBase = getEarthY(x);
+      
+      ctx.fillStyle = isWarm ? '#7f1d1d' : '#1e3a8a';
+      ctx.fillText(`Land is ${isWarm ? 'warmer' : 'cooler'} here`, x, yBase + 25);
+      
+      if (Math.abs(tempDiff) > 2) {
+        const isHighPressure = (isLeft && direction > 0) || (!isLeft && direction < 0);
+        ctx.fillStyle = isHighPressure ? '#1d4ed8' : '#b91c1c';
+        ctx.fillText(`${isHighPressure ? 'High' : 'Low'} pressure`, x - 50, yBase - 40);
+        ctx.fillText(isHighPressure ? 'Cool sinking air' : 'Warm rising air', x, yBase - 120);
+      } else {
+         ctx.fillStyle = '#334155';
+         ctx.fillText('Equal pressure', x - 40, yBase - 40);
+      }
+    };
+
+    drawSideLabels(LEFT_X, lTemp, true);
+    drawSideLabels(RIGHT_X, rTemp, false);
+
+    ctx.fillStyle = '#334155';
+    ctx.textAlign = 'left';
+    ctx.fillText('Troposphere }', 20, (TOP_Y + BOTTOM_Y_BASE)/2);
+
+    // --- Draw Magnifying Particle Boxes ---
+    const drawBox = (boxX, boxY, targetX, targetY, temp, particlesArr) => {
+      const boxSize = 130;
+      
+      ctx.beginPath();
+      ctx.moveTo(boxX, boxY);
+      ctx.lineTo(targetX - 20, targetY);
+      ctx.lineTo(boxX + boxSize, boxY);
+      ctx.moveTo(boxX + boxSize, boxY);
+      ctx.lineTo(targetX + 20, targetY);
+      ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(boxX, boxY, boxSize, boxSize);
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(boxX, boxY, boxSize, boxSize);
+
+      const densityCount = Math.floor(180 - temp * 1.5); 
+      const speedMultiplier = 0.2 + (temp / 100) * 1.5;
+
+      for (let i = 0; i < densityCount; i++) {
+        const p = particlesArr[i];
+        p.x += p.vx * speedMultiplier;
+        p.y += p.vy * speedMultiplier;
+        
+        if (p.x < 4 || p.x > boxSize - 4) p.vx *= -1;
+        if (p.y < 4 || p.y > boxSize - 4) p.vy *= -1;
+        
+        p.x = Math.max(4, Math.min(boxSize - 4, p.x));
+        p.y = Math.max(4, Math.min(boxSize - 4, p.y));
+
+        ctx.beginPath();
+        ctx.arc(boxX + p.x, boxY + p.y, 4, 0, Math.PI * 2);
+        
+        const gradient = ctx.createRadialGradient(
+          boxX + p.x - 1, boxY + p.y - 1, 0,
+          boxX + p.x, boxY + p.y, 4
+        );
+        gradient.addColorStop(0, '#ffffff');
+        gradient.addColorStop(1, '#000000');
+        ctx.fillStyle = gradient;
+        ctx.fill();
+      }
+    };
+
+    drawBox(LEFT_X - 65, 440, LEFT_X, getEarthY(LEFT_X) - 5, lTemp, leftParticles);
+    drawBox(RIGHT_X - 65, 440, RIGHT_X, getEarthY(RIGHT_X) - 5, rTemp, rightParticles);
+
+    // Loop
+    animationFrameId = requestAnimationFrame(render);
+  }
+
+  // 5. Start Animation & Cleanup Handler
+  render();
+  invalidation.then(() => cancelAnimationFrame(animationFrameId));
+
+  // 6. Yield Canvas to Document
+  return canvas;
+}
+```
+
+## Land & Sea Breeze Simulator
+
+```{=html}
+<div id="lsb-sim" style="font-family:'Inter',system-ui,sans-serif; max-width:900px; margin:24px auto; border-radius:16px; overflow:hidden; box-shadow:0 8px 40px rgba(0,0,0,0.18); background:#fff;">
+
+  <!-- Header -->
+  <div style="background:#0f172a; color:white; padding:18px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+    <div>
+      <div style="font-size:1.15em; font-weight:700; display:flex; align-items:center; gap:8px;">💨 Land &amp; Sea Breeze Simulator</div>
+      <div style="color:#94a3b8; font-size:0.83em; margin-top:4px;">Observe how temperature differences between the land and ocean drive coastal winds.</div>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px; background:#1e293b; padding:8px 18px; border-radius:999px; border:1px solid #334155;">
+      <div id="lsb-time-display" style="font-size:1.35em; font-family:monospace; font-weight:700; color:#fbbf24; min-width:90px; text-align:center;">2:00 PM</div>
+      <div style="width:1px; height:24px; background:#475569;"></div>
+      <button id="lsb-play-btn" onclick="window.lsbTogglePlay()" title="Play/Pause" style="background:none; border:none; color:white; cursor:pointer; font-size:1.2em; padding:4px 8px; border-radius:50%;">▶</button>
+      <button onclick="window.lsbReset()" title="Reset to 2 PM" style="background:none; border:none; color:#94a3b8; cursor:pointer; font-size:1.1em; padding:4px 8px; border-radius:50%;">↺</button>
+    </div>
+  </div>
+
+  <!-- Slider -->
+  <div style="padding:12px 24px 8px; background:#f1f5f9; border-bottom:1px solid #e2e8f0;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span style="font-size:1.1em;">🌙</span>
+      <input id="lsb-slider" type="range" min="0" max="24" step="0.1" value="14" oninput="window.lsbSlide(this.value)" style="flex:1; height:6px; accent-color:#4338ca; cursor:pointer;">
+      <span style="font-size:1.1em;">☀️</span>
+    </div>
+    <div style="display:flex; justify-content:space-between; font-size:0.75em; color:#64748b; font-weight:600; margin-top:4px; padding:0 2px;">
+      <span>Midnight</span><span>6 AM</span><span>Noon</span><span>6 PM</span><span>Midnight</span>
+    </div>
+  </div>
+
+  <!-- SVG Viewport -->
+  <div style="width:100%; overflow:hidden;">
+    <svg id="lsb-svg" viewBox="0 0 1000 500" style="display:block; width:100%; height:auto;" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="lsb-sky-grad" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+          <stop id="lsb-sky-stop1" offset="0%" stop-color="#60a5fa"/>
+          <stop id="lsb-sky-stop2" offset="100%" stop-color="#a5f3fc"/>
+        </linearGradient>
+        <radialGradient id="lsb-sun-glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#fef08a" stop-opacity="1"/>
+          <stop offset="60%" stop-color="#fbbf24" stop-opacity="0.7"/>
+          <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <!-- Sky -->
+      <rect width="1000" height="500" fill="url(#lsb-sky-grad)"/>
+
+      <!-- Sun -->
+      <g id="lsb-sun-g" transform="translate(-100,500)">
+        <circle r="40" fill="url(#lsb-sun-glow)" opacity="0.7"/>
+        <circle r="20" fill="#fef08a"/>
+        <circle r="14" fill="#fffde7"/>
+      </g>
+
+      <!-- Moon -->
+      <g id="lsb-moon-g" transform="translate(-100,500)">
+        <circle r="18" fill="#e2e8f0"/>
+        <circle id="lsb-moon-shadow" cx="6" cy="-4" r="14" fill="#1e1b4b" opacity="0.6"/>
+      </g>
+
+      <!-- Wind: Sea Breeze -->
+      <g id="lsb-wind-sea" opacity="0">
+        <line x1="800" y1="420" x2="200" y2="420" stroke="white" stroke-width="4" stroke-dasharray="15 15" stroke-linecap="round" opacity="0.75">
+          <animate attributeName="stroke-dashoffset" values="30;0" dur="2s" repeatCount="indefinite"/>
+        </line>
+        <polygon points="190,420 212,410 212,430" fill="white" opacity="0.85"/>
+        <line x1="150" y1="400" x2="150" y2="110" stroke="#fca5a5" stroke-width="4" stroke-dasharray="15 15" stroke-linecap="round" opacity="0.75">
+          <animate attributeName="stroke-dashoffset" values="30;0" dur="2s" repeatCount="indefinite"/>
+        </line>
+        <polygon points="150,98 140,120 160,120" fill="#fca5a5" opacity="0.85"/>
+        <line x1="200" y1="80" x2="800" y2="80" stroke="white" stroke-width="3" stroke-dasharray="15 15" stroke-linecap="round" opacity="0.45">
+          <animate attributeName="stroke-dashoffset" values="30;0" dur="2s" repeatCount="indefinite"/>
+        </line>
+        <polygon points="812,80 790,70 790,90" fill="white" opacity="0.6"/>
+        <line x1="850" y1="110" x2="850" y2="400" stroke="#93c5fd" stroke-width="4" stroke-dasharray="15 15" stroke-linecap="round" opacity="0.75">
+          <animate attributeName="stroke-dashoffset" values="30;0" dur="2s" repeatCount="indefinite"/>
+        </line>
+        <polygon points="850,412 840,390 860,390" fill="#93c5fd" opacity="0.85"/>
+      </g>
+
+      <!-- Wind: Land Breeze -->
+      <g id="lsb-wind-land" opacity="0">
+        <line x1="200" y1="420" x2="800" y2="420" stroke="white" stroke-width="4" stroke-dasharray="15 15" stroke-linecap="round" opacity="0.75">
+          <animate attributeName="stroke-dashoffset" values="30;0" dur="2s" repeatCount="indefinite"/>
+        </line>
+        <polygon points="812,420 790,410 790,430" fill="white" opacity="0.85"/>
+        <line x1="850" y1="400" x2="850" y2="110" stroke="#fca5a5" stroke-width="4" stroke-dasharray="15 15" stroke-linecap="round" opacity="0.75">
+          <animate attributeName="stroke-dashoffset" values="30;0" dur="2s" repeatCount="indefinite"/>
+        </line>
+        <polygon points="850,98 840,120 860,120" fill="#fca5a5" opacity="0.85"/>
+        <line x1="800" y1="80" x2="200" y2="80" stroke="white" stroke-width="3" stroke-dasharray="15 15" stroke-linecap="round" opacity="0.45">
+          <animate attributeName="stroke-dashoffset" values="30;0" dur="2s" repeatCount="indefinite"/>
+        </line>
+        <polygon points="188,80 210,70 210,90" fill="white" opacity="0.6"/>
+        <line x1="150" y1="110" x2="150" y2="400" stroke="#93c5fd" stroke-width="4" stroke-dasharray="15 15" stroke-linecap="round" opacity="0.75">
+          <animate attributeName="stroke-dashoffset" values="30;0" dur="2s" repeatCount="indefinite"/>
+        </line>
+        <polygon points="150,412 140,390 160,390" fill="#93c5fd" opacity="0.85"/>
+      </g>
+
+      <!-- Land (left) -->
+      <rect id="lsb-land-rect" x="0" y="378" width="500" height="122" fill="#4ade80"/>
+      <rect x="0" y="374" width="500" height="8" rx="3" fill="#166534" opacity="0.6"/>
+      <!-- Trees -->
+      <polygon points="80,370 65,390 95,390" fill="#15803d" opacity="0.9"/>
+      <polygon points="80,356 60,376 100,376" fill="#166534" opacity="0.85"/>
+      <polygon points="150,372 138,388 162,388" fill="#15803d" opacity="0.8"/>
+      <polygon points="320,370 308,388 332,388" fill="#166534" opacity="0.8"/>
+      <polygon points="320,356 304,374 336,374" fill="#15803d" opacity="0.85"/>
+      <!-- House -->
+      <rect x="390" y="366" width="34" height="22" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1.5"/>
+      <polygon points="388,366 407,351 426,366" fill="#b91c1c" opacity="0.9"/>
+      <rect x="399" y="372" width="10" height="16" fill="#fef9c3" opacity="0.9"/>
+
+      <!-- Ocean (right) -->
+      <rect id="lsb-ocean-rect" x="500" y="378" width="500" height="122" fill="#2563eb" opacity="0.85"/>
+      <rect x="500" y="374" width="500" height="8" rx="0" fill="#1d4ed8" opacity="0.6"/>
+      <!-- Waves -->
+      <path d="M 510 394 Q 530 389 550 394 Q 570 399 590 394 Q 610 389 630 394" stroke="white" stroke-width="2" fill="none" opacity="0.3"/>
+      <path d="M 640 404 Q 660 399 680 404 Q 700 409 720 404 Q 740 399 760 404" stroke="white" stroke-width="2" fill="none" opacity="0.25"/>
+      <path d="M 760 394 Q 780 389 800 394 Q 820 399 840 394 Q 860 389 880 394" stroke="white" stroke-width="2" fill="none" opacity="0.3"/>
+
+      <!-- Temp labels -->
+      <text id="lsb-land-temp-txt" x="250" y="430" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="sans-serif">20.0°C</text>
+      <text x="250" y="448" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="11" font-family="sans-serif">Land Temp</text>
+      <text id="lsb-sea-temp-txt" x="750" y="430" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="sans-serif">20.0°C</text>
+      <text x="750" y="448" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="11" font-family="sans-serif">Ocean Temp</text>
+
+      <!-- Pressure labels -->
+      <text id="lsb-land-pressure" x="250" y="348" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="sans-serif" opacity="0">LOW ↑</text>
+      <text id="lsb-sea-pressure" x="750" y="348" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="sans-serif" opacity="0">HIGH ↓</text>
+
+      <!-- Status pill -->
+      <rect x="330" y="16" width="340" height="40" rx="20" fill="white" fill-opacity="0.93" stroke="#e2e8f0" stroke-width="1.5"/>
+      <text id="lsb-status-txt" x="500" y="41" text-anchor="middle" font-size="14" font-weight="700" fill="#334155" font-family="sans-serif">Calm / Transitioning</text>
+
+      <!-- Surface wind arrow -->
+      <g id="lsb-surface-arrow" opacity="0">
+        <rect x="420" y="283" width="160" height="54" rx="27" fill="rgba(0,0,0,0.25)"/>
+        <text x="500" y="306" text-anchor="middle" fill="white" font-size="11" font-weight="bold" font-family="sans-serif" letter-spacing="1">SURFACE WIND</text>
+        <text id="lsb-arrow-symbol" x="500" y="330" text-anchor="middle" fill="white" font-size="24" font-family="sans-serif">←</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Info Panel -->
+  <div style="padding:20px 28px; display:flex; gap:16px; align-items:flex-start; border-top:1px solid #e2e8f0; background:#fff;">
+    <div id="lsb-info-icon" style="width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1.4em; background:#dbeafe; color:#1d4ed8;">ℹ️</div>
+    <div style="flex:1;">
+      <div style="font-weight:700; font-size:1.05em; margin-bottom:8px;" id="lsb-info-title">What's happening?</div>
+      <div id="lsb-info-body" style="color:#475569; font-size:0.92em; line-height:1.65;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  let lsbTime = 14;
+  let lsbPlaying = false;
+  let lsbInterval = null;
+
+  const formatTime = (t) => {
+    const h = Math.floor(t) % 24;
+    const m = Math.floor((t - Math.floor(t)) * 60);
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const dh = h % 12 === 0 ? 12 : h % 12;
+    return `${dh}:${m.toString().padStart(2, '0')} ${ampm}`;
+  };
+
+  const getSkyColors = (t) => {
+    if (t < 4)  return ['#0f0e35', '#141624'];
+    if (t < 6)  return ['#1e1b4b', '#4c1d95'];
+    if (t < 8)  return ['#fb923c', '#fcd34d'];
+    if (t < 16) return ['#60a5fa', '#a5f3fc'];
+    if (t < 18) return ['#f97316', '#fda4af'];
+    if (t < 20) return ['#1e1b4b', '#581c87'];
+    return ['#0f0e35', '#141624'];
+  };
+
+  function update() {
+    const t = lsbTime;
+    const landTemp = 20 + 12 * Math.sin((t - 8) * (Math.PI / 12));
+    const seaTemp  = 20 + 3  * Math.sin((t - 10) * (Math.PI / 12));
+    const diff = landTemp - seaTemp;
+    const breezeType = diff > 1 ? 'sea' : diff < -1 ? 'land' : 'calm';
+    const strength = Math.min(Math.abs(diff) / 10, 1);
+    const animDur = `${Math.max(0.5, 3 - strength * 2).toFixed(1)}s`;
+
+    document.getElementById('lsb-time-display').textContent = formatTime(t);
+    document.getElementById('lsb-slider').value = t;
+
+    // Sky gradient
+    const [c1, c2] = getSkyColors(t);
+    document.getElementById('lsb-sky-stop1').setAttribute('stop-color', c1);
+    document.getElementById('lsb-sky-stop2').setAttribute('stop-color', c2);
+
+    // Sun
+    const sunG = document.getElementById('lsb-sun-g');
+    if (t >= 5 && t <= 19) {
+      const p = (t - 5) / 14;
+      sunG.setAttribute('transform', `translate(${p * 1000},${450 - Math.sin(p * Math.PI) * 350})`);
+    } else {
+      sunG.setAttribute('transform', 'translate(-100,500)');
+    }
+
+    // Moon
+    const moonG = document.getElementById('lsb-moon-g');
+    if (t >= 17 || t <= 7) {
+      const p = t >= 17 ? (t - 17) / 14 : (t + 7) / 14;
+      moonG.setAttribute('transform', `translate(${p * 1000},${450 - Math.sin(p * Math.PI) * 350})`);
+      document.getElementById('lsb-moon-shadow').setAttribute('fill', (c1.startsWith('#0') || c1.startsWith('#1')) ? '#0a0922' : 'transparent');
+    } else {
+      moonG.setAttribute('transform', 'translate(-100,500)');
+    }
+
+    // Land/Ocean colors
+    const lBright = 30 + Math.max(0, Math.sin((t - 6) * (Math.PI / 12))) * 20;
+    const lHue = 100 - (landTemp - 10) * 1.5;
+    document.getElementById('lsb-land-rect').setAttribute('fill', `hsl(${lHue},50%,${lBright}%)`);
+    const sBright = 38 + Math.max(0, Math.sin((t - 6) * (Math.PI / 12))) * 14;
+    document.getElementById('lsb-ocean-rect').setAttribute('fill', `hsl(210,80%,${sBright}%)`);
+
+    // Temp labels
+    document.getElementById('lsb-land-temp-txt').textContent = `${landTemp.toFixed(1)}°C`;
+    document.getElementById('lsb-sea-temp-txt').textContent  = `${seaTemp.toFixed(1)}°C`;
+
+    // Wind groups
+    const seaG  = document.getElementById('lsb-wind-sea');
+    const landG = document.getElementById('lsb-wind-land');
+    seaG.setAttribute('opacity',  breezeType === 'sea'  ? strength.toFixed(2) : '0');
+    landG.setAttribute('opacity', breezeType === 'land' ? strength.toFixed(2) : '0');
+    if (breezeType !== 'calm') {
+      (breezeType === 'sea' ? seaG : landG).querySelectorAll('animate').forEach(a => a.setAttribute('dur', animDur));
+    }
+
+    // Pressure labels
+    const lp = document.getElementById('lsb-land-pressure');
+    const sp = document.getElementById('lsb-sea-pressure');
+    if (breezeType !== 'calm') {
+      lp.setAttribute('opacity', '0.9'); sp.setAttribute('opacity', '0.9');
+      if (breezeType === 'sea') {
+        lp.textContent = 'LOW ↑';  lp.setAttribute('fill', '#fca5a5');
+        sp.textContent = 'HIGH ↓'; sp.setAttribute('fill', '#93c5fd');
+      } else {
+        lp.textContent = 'HIGH ↓'; lp.setAttribute('fill', '#93c5fd');
+        sp.textContent = 'LOW ↑';  sp.setAttribute('fill', '#fca5a5');
+      }
+    } else {
+      lp.setAttribute('opacity', '0'); sp.setAttribute('opacity', '0');
+    }
+
+    // Status pill
+    const statusText  = { sea: '🌊 Sea Breeze Active', land: '🏔️ Land Breeze Active', calm: '⚖️ Calm / Transitioning' };
+    const statusColor = { sea: '#2563eb', land: '#16a34a', calm: '#64748b' };
+    const txt = document.getElementById('lsb-status-txt');
+    txt.textContent = statusText[breezeType];
+    txt.setAttribute('fill', statusColor[breezeType]);
+
+    // Surface arrow
+    const arrowG = document.getElementById('lsb-surface-arrow');
+    arrowG.setAttribute('opacity', breezeType === 'calm' ? '0' : '0.9');
+    document.getElementById('lsb-arrow-symbol').textContent = breezeType === 'sea' ? '←' : '→';
+
+    // Info panel
+    const iconBg    = { sea: '#dbeafe', land: '#dcfce7', calm: '#f1f5f9' };
+    const iconColor = { sea: '#1d4ed8', land: '#166534', calm: '#64748b' };
+    const iconEmoji = { sea: '🌊', land: '🏔️', calm: '⚖️' };
+    const el = document.getElementById('lsb-info-icon');
+    el.textContent = iconEmoji[breezeType];
+    el.style.background = iconBg[breezeType];
+    el.style.color = iconColor[breezeType];
+    document.getElementById('lsb-info-title').textContent = `What's happening at ${formatTime(t)}?`;
+
+    const bodyEl = document.getElementById('lsb-info-body');
+    if (breezeType === 'sea') {
+      bodyEl.innerHTML = '<p style="margin:0 0 8px"><strong>The mechanism:</strong> During the day, the sun heats the land surface much faster than the ocean (water has a higher specific heat capacity).</p>' +
+        '<p style="margin:0 0 8px">Because the land is hot, the air above it warms up, expands, and <strong>rises</strong>, creating an area of <strong>low pressure</strong> over the land.</p>' +
+        '<p style="margin:0">The cooler, denser air over the ocean (relatively <strong>high pressure</strong>) rushes inland to fill the void. This refreshing daytime wind blowing from the sea to the land is called a <strong>Sea Breeze</strong>.</p>';
+    } else if (breezeType === 'land') {
+      bodyEl.innerHTML = '<p style="margin:0 0 8px"><strong>The mechanism:</strong> At night, the land loses its heat to the atmosphere very rapidly, while the ocean holds onto its heat much longer.</p>' +
+        '<p style="margin:0 0 8px">Now, the ocean is relatively warmer than the land. The air above the water warms and <strong>rises</strong>, creating a <strong>low pressure</strong> zone over the sea.</p>' +
+        '<p style="margin:0">The cooler, denser air from over the land (now <strong>high pressure</strong>) flows outward over the ocean. This nighttime wind blowing from land to sea is called a <strong>Land Breeze</strong>.</p>';
+    } else {
+      bodyEl.innerHTML = '<p style="margin:0 0 8px"><strong>The mechanism:</strong> The temperatures of the land and the ocean are currently very close to equal.</p>' +
+        '<p style="margin:0">Because there is no significant temperature difference, there is no major pressure difference either. This results in relatively <strong>calm</strong> conditions. This usually happens briefly during the morning and evening transitions.</p>';
+    }
+  }
+
+  window.lsbTogglePlay = function () {
+    lsbPlaying = !lsbPlaying;
+    document.getElementById('lsb-play-btn').textContent = lsbPlaying ? '⏸' : '▶';
+    if (lsbPlaying) {
+      lsbInterval = setInterval(() => { lsbTime = (lsbTime + 0.1) % 24; update(); }, 50);
+    } else {
+      clearInterval(lsbInterval);
+    }
+  };
+
+  window.lsbReset = function () {
+    lsbTime = 14; lsbPlaying = false; clearInterval(lsbInterval);
+    document.getElementById('lsb-play-btn').textContent = '▶';
+    update();
+  };
+
+  window.lsbSlide = function (val) {
+    lsbTime = parseFloat(val); lsbPlaying = false; clearInterval(lsbInterval);
+    document.getElementById('lsb-play-btn').textContent = '▶';
+    update();
+  };
+
+  update();
+})();
+</script>
+```
+
 ::: {.key-idea}
 ### 💡 Key Concept: What Drives Wind
 
@@ -1607,6 +2214,296 @@ When two air masses with different properties meet, they don't mix easily. The b
 
 ```{=html}
 <iframe src="weatherfronts.html" width="100%" height="900px" style="border:none;"></iframe>
+```
+
+## Modeling Frontal Boundaries: Cloud Formation & Precipitation
+
+This simulation helps you visualize what happens at the molecular level when a cold, dry air mass collides with a warm, moist air mass (a cold front).
+
+Guided Activity Tasks:
+
+- Advance the Cold Front using the slider below.
+- Observe how the dense, cold air wedges underneath the warmer air.
+- Watch the magnifying boxes to see how the behavior of air and water molecules changes as the warm air is forced upward and cools.
+- Use these observations to create your cause-and-effect model explaining cloud formation and precipitation!
+
+```{ojs}
+//| echo: false
+viewof frontProgress = Inputs.range([0, 100], {value: 0, step: 0.5, label: "Advance Cold Front (Time)"})
+```
+
+```{ojs}
+//| echo: false
+frontalChart = {
+  // 1. Setup Canvas
+  const canvas = document.createElement('canvas');
+  const WIDTH = 800;
+  const HEIGHT = 500;
+  canvas.width = WIDTH;
+  canvas.height = HEIGHT;
+  canvas.style.width = "100%";
+  canvas.style.maxWidth = "800px";
+  canvas.style.height = "auto";
+  canvas.style.border = "1px solid #e2e8f0";
+  canvas.style.borderRadius = "0.5rem";
+  canvas.style.backgroundColor = "#fff";
+  
+  const ctx = canvas.getContext('2d');
+
+  // 2. Constants & Helpers
+  const lerp = (a, b, t) => a + (b - a) * t;
+
+  const drawCurvedArrow = (ctx, startX, startY, cpX, cpY, endX, endY, color) => {
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.quadraticCurveTo(cpX, cpY, endX, endY);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 4;
+    ctx.stroke();
+    
+    // arrowhead
+    const angle = Math.atan2(endY - cpY, endX - cpX);
+    ctx.save();
+    ctx.translate(endX, endY);
+    ctx.rotate(angle);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-12, -7);
+    ctx.lineTo(-12, 7);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.restore();
+  };
+
+  const drawCloud = (ctx, x, y, progress) => {
+    if (progress <= 5) return;
+    
+    // Cloud grows and darkens as progress increases
+    const scale = Math.min(1.2, progress / 40);
+    const darkness = Math.max(0, (progress - 40) / 60); 
+    
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(scale, scale);
+    
+    const r = 255 - darkness * 120;
+    const g = 255 - darkness * 120;
+    const b = 255 - darkness * 110;
+    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${Math.min(0.9, scale)})`;
+    
+    ctx.beginPath();
+    ctx.arc(0, 0, 45, 0, Math.PI * 2);
+    ctx.arc(-35, 10, 35, 0, Math.PI * 2);
+    ctx.arc(35, 10, 35, 0, Math.PI * 2);
+    ctx.arc(-20, -25, 40, 0, Math.PI * 2);
+    ctx.arc(20, -25, 40, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  };
+
+  // 3. Particle System State
+  const createParticles = (count, isWater = false) => Array.from({ length: count }, () => ({
+    x: Math.random() * 120 + 5,
+    y: Math.random() * 120 + 5,
+    vx: (Math.random() - 0.5) * 2,
+    vy: (Math.random() - 0.5) * 2,
+    isWater
+  }));
+  
+  const coldParticles = createParticles(180, false); // Dense, no water
+  const warmParticles = [...createParticles(70, false), ...createParticles(40, true)]; // Less dense, holds water vapor
+  const cloudParticles = [...createParticles(70, false), ...createParticles(40, true)]; // Will cool and condense
+  
+  const raindrops = Array.from({length: 120}, () => ({
+    x: Math.random() * 120, 
+    y: Math.random() * 400,
+    speed: Math.random() * 4 + 6
+  }));
+
+  let animationFrameId;
+
+  // 4. Main Animation Loop
+  function render() {
+    const progress = viewof frontProgress.value;
+    const cloudX = frontX - 80;
+    const cloudY = 150;
+
+    // --- Draw Sky ---
+    const skyGradient = ctx.createLinearGradient(0, 0, 0, 450);
+    skyGradient.addColorStop(0, '#bae6fd');
+    skyGradient.addColorStop(1, '#e0f2fe');
+    ctx.fillStyle = skyGradient;
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+    // --- Draw Ground ---
+    ctx.fillStyle = '#22c55e';
+    ctx.fillRect(0, 450, WIDTH, 50);
+    ctx.strokeStyle = '#166534';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(0, 450);
+    ctx.lineTo(WIDTH, 450);
+    ctx.stroke();
+
+    // --- Draw Warm Air Mass Background ---
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.05)';
+    ctx.beginPath();
+    ctx.moveTo(frontX, 450);
+    ctx.lineTo(frontX - 250, 100);
+    ctx.lineTo(WIDTH, 100);
+    ctx.lineTo(WIDTH, 450);
+    ctx.fill();
+
+    // --- Draw Cold Air Wedge ---
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.25)';
+    ctx.beginPath();
+    ctx.moveTo(0, 450);
+    ctx.lineTo(frontX, 450);
+    ctx.lineTo(frontX - 250, 100);
+    ctx.lineTo(0, 100);
+    ctx.closePath();
+    ctx.fill();
+    
+    // Front Boundary Line
+    ctx.strokeStyle = '#2563eb';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(frontX, 450);
+    ctx.lineTo(frontX - 250, 100);
+    ctx.stroke();
+
+    // --- Draw Text Labels ---
+    ctx.fillStyle = '#1e3a8a';
+    ctx.font = 'bold 18px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText("Cold, Dry Air", Math.max(80, frontX - 180), 400);
+
+    ctx.fillStyle = '#991b1b';
+    ctx.fillText("Warm, Moist Air", Math.min(WIDTH - 100, frontX + 120), 400);
+
+    // --- Draw Wind Arrows (Rising Warm Air) ---
+    if (progress > 5) {
+      drawCurvedArrow(ctx, frontX + 30, 420, frontX - 20, 300, frontX - 80, 200, 'rgba(239, 68, 68, 0.7)');
+      drawCurvedArrow(ctx, frontX + 90, 420, frontX + 40, 300, frontX - 20, 200, 'rgba(239, 68, 68, 0.7)');
+    }
+
+    // --- Draw Cloud ---
+    drawCloud(ctx, cloudX, cloudY, progress);
+
+    // --- Draw Rain ---
+    if (progress > 50) {
+      const rainIntensity = (progress - 50) / 50;
+      ctx.strokeStyle = 'rgba(37, 99, 235, 0.6)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      raindrops.forEach((r, i) => {
+        if (i > rainIntensity * 120) return;
+        
+        let actualX = cloudX - 60 + r.x; 
+        let actualY = cloudY + 30 + r.y;
+        
+        if (actualY > 450) {
+            r.y = 0;
+            r.x = Math.random() * 120;
+        } else {
+            ctx.moveTo(actualX, actualY);
+            ctx.lineTo(actualX - 4, actualY + 12);
+            r.y += r.speed;
+            r.x -= 1; // Slight angle leftwards
+        }
+      });
+      ctx.stroke();
+    }
+
+    // --- Draw Magnifying Particle Boxes ---
+    const drawBox = (boxX, boxY, targetX, targetY, title, temp, particlesArr, isCloudBox = false) => {
+      const boxSize = 130;
+      
+      // Target Lines
+      ctx.beginPath();
+      ctx.moveTo(boxX + boxSize/2, boxY + boxSize/2);
+      ctx.lineTo(targetX, targetY);
+      ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+      ctx.setLineDash([4, 4]);
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Box Background
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(boxX, boxY, boxSize, boxSize);
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(boxX, boxY, boxSize, boxSize);
+
+      // Title
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(title, boxX + boxSize/2, boxY - 8);
+
+      // Particle Physics
+      const speedMultiplier = Math.max(0.1, 0.2 + (temp / 100) * 1.5);
+      const clumping = isCloudBox ? Math.max(0, (progress - 30) / 70) : 0; 
+
+      for (let i = 0; i < particlesArr.length; i++) {
+        const p = particlesArr[i];
+        
+        if (p.isWater && isCloudBox) {
+            // Water molecules clump together in the cloud (condensation)
+            p.vx += (boxSize/2 - p.x) * clumping * 0.004;
+            p.vy += (boxSize/2 - p.y) * clumping * 0.004;
+            p.x += p.vx * (1 - clumping * 0.5); 
+            p.y += p.vy * (1 - clumping * 0.5);
+        } else {
+            p.x += p.vx * speedMultiplier;
+            p.y += p.vy * speedMultiplier;
+        }
+        
+        // Bounce off walls
+        if (p.x < 4 || p.x > boxSize - 4) p.vx *= -1;
+        if (p.y < 4 || p.y > boxSize - 4) p.vy *= -1;
+        
+        // Clamp bounds
+        p.x = Math.max(4, Math.min(boxSize - 4, p.x));
+        p.y = Math.max(4, Math.min(boxSize - 4, p.y));
+
+        // Render Particle
+        ctx.beginPath();
+        ctx.arc(boxX + p.x, boxY + p.y, p.isWater ? 4 : 2.5, 0, Math.PI * 2);
+        
+        if (p.isWater) {
+             const grad = ctx.createRadialGradient(boxX + p.x, boxY + p.y, 0, boxX + p.x, boxY + p.y, 4);
+             grad.addColorStop(0, '#93c5fd'); 
+             grad.addColorStop(1, '#2563eb'); 
+             ctx.fillStyle = grad;
+        } else {
+             ctx.fillStyle = '#475569'; 
+        }
+        ctx.fill();
+      }
+    };
+
+    const cloudTemp = 80 - (progress * 0.6); // Cools down as it gets pushed higher
+
+    // Left Box (Cold Air Wedge)
+    drawBox(20, 300, frontX - 150, 380, "Cold, Dry Air (Dense)", 20, coldParticles);
+    
+    // Right Box (Warm Moist Air)
+    drawBox(650, 300, frontX + 100, 380, "Warm, Moist Air", 80, warmParticles);
+    
+    // Top Box (Rising, Cooling Air / Cloud formation)
+    drawBox(335, 10, cloudX, cloudY, "Cooling & Condensing", cloudTemp, cloudParticles, true);
+
+    animationFrameId = requestAnimationFrame(render);
+  }
+
+  // 5. Start Animation & Cleanup Handler
+  render();
+  invalidation.then(() => cancelAnimationFrame(animationFrameId));
+
+  return canvas;
+}
 ```
 
 ::: {.student-task}
