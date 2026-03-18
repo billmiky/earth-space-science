@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring and Neap Tides Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        canvas {
+            background-color: #020617;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+            max-width: 100%;
+            height: auto;
+            touch-action: none;
+        }
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #38bdf8;
+            cursor: pointer;
+            margin-top: -8px;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #334155;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-6">
+
+    <div class="max-w-4xl w-full">
+        <div class="text-center mb-6">
+            <h1 class="text-3xl font-bold text-sky-400 mb-2">Tidal Forces: Spring vs Neap Tides</h1>
+            <p class="text-slate-400 text-sm md:text-base">
+                Observe how the gravitational forces of the Moon and Sun combine to create Earth's tidal bulges.
+            </p>
+        </div>
+
+        <div class="relative flex justify-center w-full mb-6">
+            <canvas id="simCanvas" width="900" height="500"></canvas>
+            
+            <div class="absolute top-4 left-4 bg-slate-900/80 p-4 rounded-lg border border-slate-700 pointer-events-none backdrop-blur-sm">
+                <div class="text-sm text-slate-400 font-semibold tracking-wider uppercase mb-1">Current State</div>
+                <div id="phaseText" class="text-xl font-bold text-white">New Moon</div>
+                <div id="tideText" class="text-lg font-bold text-sky-400 mt-1">Spring Tide</div>
+            </div>
+        </div>
+
+        <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-700">
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                
+                <button id="playPauseBtn" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold py-3 px-8 rounded-full transition-colors w-full md:w-auto flex-shrink-0 flex items-center justify-center gap-2">
+                    <svg id="playIcon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    <svg id="pauseIcon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    <span id="btnText">Pause Simulation</span>
+                </button>
+
+                <div class="flex-grow w-full">
+                    <div class="flex justify-between text-xs text-slate-400 mb-2 font-medium">
+                        <span>New Moon</span>
+                        <span>First Qtr</span>
+                        <span>Full Moon</span>
+                        <span>Third Qtr</span>
+                        <span>New Moon</span>
+                    </div>
+                    <input type="range" id="moonAngleSlider" min="0" max="360" value="0" step="0.5">
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-slate-800/50 p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-sky-400 font-bold mb-2 flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-sky-400 inline-block"></span>
+                    Spring Tides
+                </h3>
+                <p class="text-sm text-slate-300">
+                    Occur during <strong>New Moon</strong> and <strong>Full Moon</strong> phases. The Earth, Moon, and Sun are aligned (syzygy). Their gravitational pulls combine, creating the highest high tides and lowest low tides (a very pronounced tidal bulge).
+                </p>
+            </div>
+            <div class="bg-slate-800/50 p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-orange-400 font-bold mb-2 flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-orange-400 inline-block"></span>
+                    Neap Tides
+                </h3>
+                <p class="text-sm text-slate-300">
+                    Occur during <strong>First Quarter</strong> and <strong>Third Quarter</strong> moon phases. The Moon and Sun are at right angles to each other. The Sun's gravitational pull partially cancels out the Moon's pull, resulting in moderate tides (a more circular bulge).
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const moonAngleSlider = document.getElementById('moonAngleSlider');
+        const phaseText = document.getElementById('phaseText');
+        const tideText = document.getElementById('tideText');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const btnText = document.getElementById('btnText');
+
+        let isPlaying = true;
+        let moonAngle = 0;
+        const moonSpeed = 0.005;
+        
+        const earthX = canvas.width * 0.35;
+        const earthY = canvas.height / 2;
+        const sunX = canvas.width * 0.9;
+        const sunY = canvas.height / 2;
+        
+        const earthRadius = 35;
+        const orbitRadius = 150;
+        const moonRadius = 12;
+        const sunRadius = 60;
+
+        const moonBulgeForce = 22; 
+        const sunBulgeForce = 10;
+
+        const stars = [];
+        for (let i = 0; i < 150; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 1.5,
+                alpha: Math.random()
+            });
+        }
+
+        function drawBackground() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+                ctx.fill();
+            });
+        }
+
+        function drawSun() {
+            const gradient = ctx.createRadialGradient(sunX, sunY, sunRadius * 0.1, sunX, sunY, sunRadius * 3);
+            gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+            gradient.addColorStop(0.1, "rgba(255, 230, 100, 1)");
+            gradient.addColorStop(0.3, "rgba(255, 150, 0, 0.4)");
+            gradient.addColorStop(1, "rgba(255, 100, 0, 0)");
+
+            ctx.beginPath();
+            ctx.arc(sunX, sunY, sunRadius * 3, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
+            ctx.fillStyle = "#FFD700";
+            ctx.fill();
+
+            ctx.fillStyle = "white";
+            ctx.font = "bold 16px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("Sun", sunX, sunY + sunRadius + 25);
+        }
+
+        function drawDashedLines(mx, my) {
+            ctx.save();
+            ctx.setLineDash([5, 5]);
+            ctx.lineWidth = 1.5;
+            
+            ctx.beginPath();
+            ctx.moveTo(earthX, earthY);
+            ctx.lineTo(sunX, sunY);
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(earthX, earthY);
+            ctx.lineTo(mx, my);
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+            ctx.stroke();
+            
+            ctx.restore();
+        }
+
+        function drawEarthAndTides(moonAngleRad) {
+            ctx.beginPath();
+            for (let angle = 0; angle <= Math.PI * 2; angle += 0.05) {
+                let r = earthRadius + 
+                        moonBulgeForce * Math.pow(Math.cos(angle - moonAngleRad), 2) + 
+                        sunBulgeForce * Math.pow(Math.cos(angle - 0), 2);
+                
+                let x = earthX + r * Math.cos(angle);
+                let y = earthY + r * Math.sin(angle);
+                
+                if (angle === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            
+            ctx.fillStyle = "rgba(56, 189, 248, 0.4)";
+            ctx.fill();
+            ctx.strokeStyle = "rgba(56, 189, 248, 0.8)";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(earthX, earthY, earthRadius, 0, Math.PI * 2);
+            ctx.fillStyle = "#1e3a8a";
+            ctx.fill();
+            
+            const earthGrd = ctx.createRadialGradient(earthX - 10, earthY - 10, 5, earthX, earthY, earthRadius);
+            earthGrd.addColorStop(0, "rgba(96, 165, 250, 0.8)");
+            earthGrd.addColorStop(1, "rgba(0, 0, 0, 0.4)");
+            ctx.fillStyle = earthGrd;
+            ctx.fill();
+
+            ctx.fillStyle = "white";
+            ctx.font = "bold 16px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("Earth", earthX - 60, earthY + 5);
+        }
+
+        function drawMoon(mx, my) {
+            ctx.beginPath();
+            ctx.arc(earthX, earthY, orbitRadius, 0, Math.PI * 2);
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(mx, my, moonRadius, 0, Math.PI * 2);
+            ctx.fillStyle = "#94a3b8";
+            ctx.fill();
+
+            const moonGrd = ctx.createRadialGradient(mx + moonRadius * 0.4, my, moonRadius * 0.1, mx, my, moonRadius);
+            moonGrd.addColorStop(0, "#ffffff");
+            moonGrd.addColorStop(0.6, "#64748b");
+            moonGrd.addColorStop(1, "#1e293b");
+            
+            ctx.beginPath();
+            ctx.arc(mx, my, moonRadius, 0, Math.PI * 2);
+            ctx.fillStyle = moonGrd;
+            ctx.fill();
+
+            ctx.fillStyle = "white";
+            ctx.font = "14px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("Moon", mx, my - moonRadius - 8);
+        }
+
+        function updateUI(degrees) {
+            let phase = "";
+            let tide = "";
+            let tideColor = "";
+
+            let deg = (degrees % 360 + 360) % 360; 
+
+            if (deg >= 345 || deg < 15) {
+                phase = "New Moon";
+                tide = "Spring Tide";
+                tideColor = "text-sky-400";
+            } else if (deg >= 75 && deg < 105) {
+                phase = "First Quarter";
+                tide = "Neap Tide";
+                tideColor = "text-orange-400";
+            } else if (deg >= 165 && deg < 195) {
+                phase = "Full Moon";
+                tide = "Spring Tide";
+                tideColor = "text-sky-400";
+            } else if (deg >= 255 && deg < 285) {
+                phase = "Third Quarter";
+                tide = "Neap Tide";
+                tideColor = "text-orange-400";
+            } else {
+                if (deg > 15 && deg < 75) phase = "Waxing Crescent";
+                else if (deg > 105 && deg < 165) phase = "Waxing Gibbous";
+                else if (deg > 195 && deg < 255) phase = "Waning Gibbous";
+                else if (deg > 285 && deg < 345) phase = "Waning Crescent";
+                
+                tide = "Normal Tide";
+                tideColor = "text-slate-400";
+            }
+
+            phaseText.innerText = phase;
+            tideText.innerText = tide;
+            tideText.className = `text-lg font-bold mt-1 ${tideColor}`;
+        }
+
+        function animate() {
+            if (isPlaying) {
+                moonAngle -= moonSpeed; 
+                if (moonAngle < -Math.PI * 2) {
+                    moonAngle += Math.PI * 2;
+                }
+                
+                let currentDeg = (-moonAngle * 180 / Math.PI) % 360;
+                moonAngleSlider.value = currentDeg;
+                updateUI(currentDeg);
+            }
+
+            const mx = earthX + orbitRadius * Math.cos(moonAngle);
+            const my = earthY + orbitRadius * Math.sin(moonAngle);
+
+            drawBackground();
+            drawSun();
+            drawDashedLines(mx, my);
+            drawEarthAndTides(moonAngle);
+            drawMoon(mx, my);
+
+            requestAnimationFrame(animate);
+        }
+
+        playPauseBtn.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+                btnText.innerText = "Pause Simulation";
+                playPauseBtn.classList.replace('bg-green-500', 'bg-sky-500');
+                playPauseBtn.classList.replace('hover:bg-green-400', 'hover:bg-sky-400');
+            } else {
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+                btnText.innerText = "Play Simulation";
+                playPauseBtn.classList.replace('bg-sky-500', 'bg-green-500');
+                playPauseBtn.classList.replace('hover:bg-sky-400', 'hover:bg-green-400');
+            }
+        });
+
+        moonAngleSlider.addEventListener('input', (e) => {
+            isPlaying = false;
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+            btnText.innerText = "Play Simulation";
+            playPauseBtn.classList.replace('bg-sky-500', 'bg-green-500');
+            playPauseBtn.classList.replace('hover:bg-sky-400', 'hover:bg-green-400');
+
+            let degrees = parseFloat(e.target.value);
+            moonAngle = -degrees * (Math.PI / 180);
+            updateUI(degrees);
+        });
+
+        updateUI(0);
+        animate();
+    </script>
+</body>
+</html>

@@ -714,7 +714,7 @@ buildQuiz("tide-chart-quiz", "🌊 Check Your Understanding — NYC Tide Heights
 
 ---
 
-# Explain 2: Spring vs. Neap Tides
+## Explain 2: Spring vs. Neap Tides
 
 ```{ojs}
 //| echo: false
@@ -765,6 +765,88 @@ buildQuiz("spring-neap-quiz", "⚖️ Check Your Understanding — Spring vs. Ne
   }
 ])
 ```
+
+## Interactive Simulation: Visualizing Spring and Neap Tides
+
+```{=html}
+<div style="margin: 28px 0;">
+  <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 2px solid #334155; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4);">
+    <div style="background: #0f172a; border-bottom: 1px solid #1e293b; padding: 14px 20px; display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 1.3rem; font-weight: 800; background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🌊 Spring vs. Neap Tides Simulator</span>
+    </div>
+    <iframe
+      src="spring-neap-simulation.html"
+      width="100%"
+      height="1000"
+      style="display: block; border: none;"
+      title="Spring and Neap Tides Interactive Simulation"
+      loading="lazy"
+    ></iframe>
+  </div>
+</div>
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("spring-neap-sim-quiz", "🌊 Simulation Check — Spring vs. Neap Tides", [
+  {
+    q: "Pause the simulation at New Moon (slider all the way to the left). What does the shape of the water (blue glow) around Earth look like, and why?",
+    options: [
+      "A) Nearly circular — the Sun and Moon pull in opposite directions, balancing out",
+      "B) Strongly elongated toward the Sun — only the Sun's gravity matters at New Moon",
+      "C) Strongly elongated toward and away from the Moon — Sun and Moon gravity combine in the same direction",
+      "D) Compressed inward — gravitational pulls squeeze the ocean during New Moon"
+    ],
+    correct: 2,
+    explanation: "At New Moon, the Moon is between Earth and the Sun. Both the Moon's gravity and the Sun's gravity pull in the same direction (syzygy), so their tidal forces combine to create the most elongated, pronounced bulge — a spring tide."
+  },
+  {
+    q: "Move the slider to First Quarter (~90°). How does the water bulge shape change compared to New Moon, and why?",
+    options: [
+      "A) The bulge becomes even larger because the Moon is now farther from the Sun",
+      "B) The bulge shape becomes more circular — the Moon and Sun pull at right angles, partially offsetting each other",
+      "C) There is no bulge at all during First Quarter because tidal forces cancel completely",
+      "D) The bulge points directly toward the Sun at First Quarter"
+    ],
+    correct: 1,
+    explanation: "At First Quarter, the Moon is 90° from the Sun–Earth line. The Moon's tidal bulge runs in one direction while the Sun's runs perpendicular to it. These competing pulls partially cancel, producing a more circular, less pronounced bulge — this is a neap tide."
+  },
+  {
+    q: "Compare the simulation's water bulge at Full Moon vs. New Moon. What do you observe, and what does this tell you about tides?",
+    options: [
+      "A) Full Moon bulge is smaller — the Moon is on the opposite side so its pull is weaker",
+      "B) Full Moon has no bulge — the Sun blocks the Moon's gravity",
+      "C) Both phases show a similarly large elongated bulge, confirming that spring tides occur at both New and Full Moon",
+      "D) The Full Moon bulge is larger than New Moon because the Moon is closer to Earth"
+    ],
+    correct: 2,
+    explanation: "At Full Moon, Earth is between the Moon and Sun. Even though the Moon has 'passed' Earth, its tidal pull still acts in alignment with the Sun's pull, creating the same strong spring tide as New Moon. Both phases show similarly large, elongated bulges."
+  },
+  {
+    q: "During which two positions on the slider does the simulation show a 'Neap Tide' label?",
+    options: [
+      "A) New Moon (0°) and Full Moon (180°)",
+      "B) First Quarter (~90°) and Third Quarter (~270°)",
+      "C) Waxing Crescent (~45°) and Waning Crescent (~315°)",
+      "D) Waxing Gibbous (~135°) and Waning Gibbous (~225°)"
+    ],
+    correct: 1,
+    explanation: "The simulation labels Neap Tides at First Quarter (~90°) and Third Quarter (~270°) — the two positions where the Moon is at a right angle to the Earth–Sun line. In this geometry, the Sun and Moon's gravitational pulls work at cross-purposes, reducing the tidal range."
+  },
+  {
+    q: "Using the simulation, what is the term for the alignment of Earth, Moon, and Sun that causes spring tides?",
+    options: [
+      "A) Quadrature — when Sun, Earth, and Moon form a right angle",
+      "B) Syzygy — when the Sun, Earth, and Moon are roughly in a straight line",
+      "C) Aphelion — when Earth is farthest from the Sun",
+      "D) Perigee — when the Moon is closest to Earth"
+    ],
+    correct: 1,
+    explanation: "Syzygy describes the nearly straight-line alignment of three celestial bodies. This occurs at both New Moon and Full Moon, when the combined gravitational pulls of the Moon and Sun amplify the tidal bulge to produce spring tides — exactly what the simulation shows."
+  }
+])
+```
+
 
 ---
 
