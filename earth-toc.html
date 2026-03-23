@@ -1,0 +1,9 @@
+<div id="float-toc-btn" onclick="window.floatTocToggle()" role="button" aria-label="Toggle book navigation" title="Toggle book navigation">🌍</div>
+<script>
+(function() {
+  window.floatTocToggle = function() {
+    var isOpen = document.body.classList.toggle('sidebar-open');
+    document.getElementById('float-toc-btn').classList.toggle('toc-open', isOpen);
+  };
+})();
+</script>

@@ -593,3 +593,90 @@ pre {
     print-color-adjust: exact;
   }
 }
+
+/* ================================================================= */
+/* EARTH TOC TOGGLE BUTTON (textbook-wide)                            */
+/* ================================================================= */
+
+/* Hide sidebar by default on desktop; Quarto/Bootstrap handle mobile */
+@media (min-width: 992px) {
+  #quarto-sidebar {
+    display: none !important;
+  }
+  body.sidebar-open #quarto-sidebar {
+    display: flex !important;
+  }
+}
+
+@keyframes earthGlow {
+  0%,100% { box-shadow: 0 6px 28px rgba(13,27,42,0.7), 0 0 0 0 rgba(100,200,255,0); }
+  50%     { box-shadow: 0 6px 28px rgba(13,27,42,0.7), 0 0 0 10px rgba(100,200,255,0.18); }
+}
+#float-toc-btn {
+  position: fixed;
+  top: 80px;
+  left: 16px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(100,200,255,0.35);
+  background: linear-gradient(145deg, #0d1b2a 0%, #1a3a5c 55%, #0a1628 100%);
+  font-size: 1.7em;
+  cursor: pointer;
+  z-index: 9999;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  animation: earthGlow 2.8s ease-in-out infinite;
+  user-select: none;
+}
+#float-toc-btn:hover  { transform: scale(1.13) rotate(10deg); animation: none; box-shadow: 0 10px 40px rgba(100,200,255,0.45); }
+#float-toc-btn.toc-open { transform: scale(1.08) rotate(18deg); animation: none; box-shadow: 0 10px 45px rgba(100,200,255,0.5); }
+
+/* ================================================================= */
+/* QUIZ JUMP BUTTON (textbook-wide)                                   */
+/* ================================================================= */
+
+@keyframes quizFlash {
+  0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 8px 40px rgba(118, 75, 162, 0.9), 0 0 0 8px rgba(102, 126, 234, 0.22); }
+}
+.quiz-jump-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white !important;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 800;
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none !important;
+  animation: quizFlash 1.6s ease-in-out infinite;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  vertical-align: middle;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.quiz-jump-btn:hover {
+  animation: none;
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a42a0 100%);
+  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.65);
+  transform: scale(1.07);
+  color: white !important;
+  text-decoration: none !important;
+}
+
+/* ================================================================= */
+/* FULL-WIDTH CONTENT when sidebar is hidden                          */
+/* ================================================================= */
+
+@media (min-width: 992px) {
+  body.docked:not(.sidebar-open) .page-columns {
+    grid-template-columns: [screen-start] 1.5em [screen-start-inset page-start page-start-inset body-start-outset body-start body-content-start] minmax(500px, calc(1000px - 3em)) [body-content-end] 1.5em [body-end body-end-outset page-end-inset page-end screen-end] !important;
+  }
+}
