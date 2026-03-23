@@ -162,12 +162,44 @@ h2 {
   font-weight: 700 !important;
   color: #27ae60 !important;
 }
+
+@keyframes quizFlash {
+  0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(255, 87, 34, 0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 8px 40px rgba(255, 87, 34, 0.85), 0 0 0 8px rgba(255, 87, 34, 0.12); }
+}
+.quiz-jump-btn {
+  display: block;
+  width: fit-content;
+  margin: 20px auto 30px auto;
+  padding: 16px 40px;
+  background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
+  color: white !important;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.15em;
+  font-weight: 800;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  text-decoration: none !important;
+  animation: quizFlash 1.6s ease-in-out infinite;
+  letter-spacing: 0.5px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.quiz-jump-btn:hover {
+  animation: none;
+  background: linear-gradient(135deg, #e64a19 0%, #f57c00 100%);
+  box-shadow: 0 8px 30px rgba(255, 87, 34, 0.55);
+  transform: scale(1.07);
+  color: white !important;
+}
 </style>
 ```
 
 <span class="pe-badge">HS-ESS2-8</span> <span class="pe-badge">Time: 6–11 Days</span>
 
 <div class="big-question">🗺️ Why Do Storms Follow the Paths They Do? 🗺️</div>
+
+<a class="quiz-jump-btn" href="#storm-quiz">🧠 Jump to Quiz &amp; Assessment ↓</a>
 
 # Engage: The Investigative Phenomenon
 
@@ -1453,7 +1485,7 @@ ENSO is a **cyclical shift in Pacific Ocean temperatures and wind patterns** tha
 ## ✅ Assessment: Explaining Storm Trajectories
 :::
 
-::: {.quiz-section}
+::: {.quiz-section #storm-quiz}
 ### 🧠 Check Your Understanding
 
 **Question 1:** The prevailing westerlies that steer storms across the mid-latitudes are ultimately caused by:
