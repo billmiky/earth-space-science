@@ -2628,90 +2628,302 @@ Blizzards are produced by powerful **mid-latitude cyclones** — large low-press
 
 ```{ojs}
 //| echo: false
-viewof cycloneStage = Inputs.range([1, 4], {label: "Cyclone Life Stage", step: 1, value: 1})
-```
-
-```{ojs}
-//| echo: false
 {
-  const width = 750;
-  const height = 450;
-  const svg = d3.create("svg").attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`);
-  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#f0f4ff").attr("rx", 10);
-
-  const stages = [
-    {title: "Stage 1: Stationary Front", desc: "A boundary between cold polar air and warm tropical air sits in place. Winds blow in opposite directions on each side."},
-    {title: "Stage 2: Wave Development", desc: "A kink develops in the front. Warm air begins to push north while cold air pushes south. A low-pressure center forms at the bend."},
-    {title: "Stage 3: Mature Cyclone", desc: "The low deepens. Warm front extends northeast, cold front extends southwest. Counter-clockwise rotation brings heavy precip. This is when blizzard conditions occur!"},
-    {title: "Stage 4: Occlusion & Decay", desc: "The cold front catches the warm front, lifting all warm air off the surface. The storm weakens as energy is cut off."}
+  // ── helpers ───────────────────────────────────────────────────────────
+  const _lerp = (a,b,t) => a+(b-a)*t;
+  const _bPt = (t,p0,p1,p2) => ({
+    x:(1-t)**2*p0.x+2*(1-t)*t*p1.x+t*t*p2.x,
+    y:(1-t)**2*p0.y+2*(1-t)*t*p1.y+t*t*p2.y
+  });
+  const _bTan = (t,p0,p1,p2) => {
+    const dx=2*(1-t)*(p1.x-p0.x)+2*t*(p2.x-p1.x);
+    const dy=2*(1-t)*(p1.y-p0.y)+2*t*(p2.y-p1.y);
+    const n=Math.sqrt(dx*dx+dy*dy)||1; return {x:dx/n,y:dy/n};
+  };
+  const _KF = [
+    {p:0,  L:{x:.5,y:.5},   T:{x:.5,y:.5},   coldEnd:{x:0,y:.5},   coldCtrl:{x:.25,y:.5},  warmEnd:{x:1,y:.5},   warmCtrl:{x:.75,y:.5},  occCtrl:{x:.5,y:.5},   pressure:1010,
+     desc:"Stationary Front Stage: Cold air to the north and warm air to the south flow parallel to the boundary in opposite directions. There is no active weather development yet."},
+    {p:20, L:{x:.5,y:.45},  T:{x:.5,y:.45},  coldEnd:{x:0,y:.6},   coldCtrl:{x:.3,y:.6},   warmEnd:{x:1,y:.4},   warmCtrl:{x:.7,y:.35},  occCtrl:{x:.5,y:.45},  pressure:1004,
+     desc:"Incipient Wave Stage: A perturbation (kink) forms on the front. A localized low-pressure center develops. Cold air starts pushing south (cold front), and warm air pushes north (warm front)."},
+    {p:50, L:{x:.55,y:.35}, T:{x:.55,y:.35}, coldEnd:{x:.1,y:.9},  coldCtrl:{x:.35,y:.7},  warmEnd:{x:.9,y:.25}, warmCtrl:{x:.8,y:.45},  occCtrl:{x:.55,y:.35}, pressure:992,
+     desc:"Mature Stage (Open Wave): The cyclone is fully developed with well-defined cold and warm fronts. A clear 'warm sector' exists between them. Central pressure drops rapidly, creating strong winds."},
+    {p:80, L:{x:.6,y:.25},  T:{x:.68,y:.45}, coldEnd:{x:.25,y:1},  coldCtrl:{x:.45,y:.8},  warmEnd:{x:1,y:.3},   warmCtrl:{x:.9,y:.5},   occCtrl:{x:.62,y:.35}, pressure:988,
+     desc:"Occluded Stage: The faster-moving cold front catches up to the warm front, lifting the warm air completely off the ground near the center. This forms an occluded front. The storm reaches peak intensity."},
+    {p:100,L:{x:.65,y:.2},  T:{x:.85,y:.6},  coldEnd:{x:.4,y:1},   coldCtrl:{x:.65,y:.9},  warmEnd:{x:1,y:.45},  warmCtrl:{x:.95,y:.55}, occCtrl:{x:.7,y:.3},   pressure:998,
+     desc:"Dissipation Stage: The low-pressure center is entirely surrounded by cold air. Cut off from its warm air energy source (the temperature gradient), the cyclone slowly weakens and spins down."}
   ];
+  const _getState = (p) => {
+    let kf1=_KF[0], kf2=_KF[_KF.length-1];
+    for(let i=0;i<_KF.length-1;i++) if(p>=_KF[i].p&&p<=_KF[i+1].p){kf1=_KF[i];kf2=_KF[i+1];break;}
+    const t=(p-kf1.p)/((kf2.p-kf1.p)||1);
+    const s={desc:p<90?kf1.desc:_KF[4].desc, pressure:_lerp(kf1.pressure,kf2.pressure,t)};
+    for(const k of['L','T','coldEnd','coldCtrl','warmEnd','warmCtrl','occCtrl'])
+      s[k]={x:_lerp(kf1[k].x,kf2[k].x,t),y:_lerp(kf1[k].y,kf2[k].y,t)};
+    return s;
+  };
 
-  const stage = stages[cycloneStage - 1];
-  svg.append("text").attr("x", 375).attr("y", 30).attr("text-anchor", "middle").attr("font-size", 20).attr("font-weight", "bold").text(stage.title);
+  // ── state ─────────────────────────────────────────────────────────────
+  let prog=0, playing=false, raf=null, lastT=null;
+  const lay={airMasses:true,precipitation:true,fronts:true,winds:true,isobars:true};
 
-  const cx = 375, cy = 230;
+  // ── DOM ───────────────────────────────────────────────────────────────
+  const root = document.createElement('div');
+  root.style.cssText='width:100%;font-family:system-ui,sans-serif;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;background:#f8fafc;';
 
-  if (cycloneStage === 1) {
-    // Stationary front
-    svg.append("rect").attr("x", 50).attr("y", 60).attr("width", 650).attr("height", 160).attr("fill", "#74b9ff").attr("opacity", 0.3).attr("rx", 8);
-    svg.append("rect").attr("x", 50).attr("y", 220).attr("width", 650).attr("height", 160).attr("fill", "#ff7675").attr("opacity", 0.3).attr("rx", 8);
-    svg.append("line").attr("x1", 50).attr("y1", 220).attr("x2", 700).attr("y2", 220).attr("stroke", "#6c5ce7").attr("stroke-width", 4);
-    svg.append("text").attr("x", 375).attr("y", 150).attr("text-anchor", "middle").attr("font-size", 22).attr("fill", "#0984e3").text("❄️ Cold Polar Air (cP) →");
-    svg.append("text").attr("x", 375).attr("y", 300).attr("text-anchor", "middle").attr("font-size", 22).attr("fill", "#d63031").text("← 🔥 Warm Tropical Air (mT)");
-  } else if (cycloneStage === 2) {
-    svg.append("rect").attr("x", 50).attr("y", 60).attr("width", 650).attr("height", 140).attr("fill", "#74b9ff").attr("opacity", 0.3).attr("rx", 8);
-    svg.append("rect").attr("x", 50).attr("y", 250).attr("width", 650).attr("height", 140).attr("fill", "#ff7675").attr("opacity", 0.3).attr("rx", 8);
-    svg.append("path").attr("d", "M 100,220 Q 375,140 650,220").attr("stroke", "#0984e3").attr("stroke-width", 3).attr("fill", "none");
-    svg.append("path").attr("d", "M 100,220 Q 375,300 650,220").attr("stroke", "#d63031").attr("stroke-width", 3).attr("fill", "none");
-    svg.append("circle").attr("cx", 375).attr("cy", 220).attr("r", 20).attr("fill", "none").attr("stroke", "#e74c3c").attr("stroke-width", 3);
-    svg.append("text").attr("x", 375).attr("y", 225).attr("text-anchor", "middle").attr("font-size", 16).attr("font-weight", "bold").attr("fill", "#e74c3c").text("L");
-    svg.append("text").attr("x", 250).attr("y", 140).attr("text-anchor", "middle").attr("font-size", 16).attr("fill", "#0984e3").text("❄️ Cold air pushes south");
-    svg.append("text").attr("x", 500).attr("y", 320).attr("text-anchor", "middle").attr("font-size", 16).attr("fill", "#d63031").text("🔥 Warm air pushes north");
-  } else if (cycloneStage === 3) {
-    // Mature cyclone with rotation
-    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 100).attr("fill", "none").attr("stroke", "#6c5ce7").attr("stroke-width", 2).attr("stroke-dasharray", "5,3");
-    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 25).attr("fill", "#e74c3c").attr("opacity", 0.3);
-    svg.append("text").attr("x", cx).attr("y", cy + 7).attr("text-anchor", "middle").attr("font-size", 22).attr("font-weight", "bold").attr("fill", "#e74c3c").text("L");
-    // Cold front (trailing SW)
-    svg.append("line").attr("x1", cx).attr("y1", cy).attr("x2", cx - 120).attr("y2", cy + 100).attr("stroke", "#0984e3").attr("stroke-width", 4);
-    for (let i = 1; i <= 4; i++) {
-      const fx = cx - i * 30;
-      const fy = cy + i * 25;
-      svg.append("polygon").attr("points", `${fx},${fy} ${fx-6},${fy+10} ${fx+6},${fy+10}`).attr("fill", "#0984e3");
-    }
-    // Warm front (extending NE)
-    svg.append("line").attr("x1", cx).attr("y1", cy).attr("x2", cx + 140).attr("y2", cy - 50).attr("stroke", "#d63031").attr("stroke-width", 4);
-    for (let i = 1; i <= 5; i++) {
-      svg.append("circle").attr("cx", cx + i * 28).attr("cy", cy - i * 10).attr("r", 5).attr("fill", "#d63031");
-    }
-    // CCW rotation arrow
-    svg.append("text").attr("x", cx + 110).attr("y", cy + 10).attr("font-size", 14).attr("fill", "#6c5ce7").text("↺ CCW");
-    // Labels
-    svg.append("text").attr("x", cx - 160).attr("y", cy + 130).attr("font-size", 14).attr("font-weight", "bold").attr("fill", "#0984e3").text("Cold Front");
-    svg.append("text").attr("x", cx + 130).attr("y", cy - 70).attr("font-size", 14).attr("font-weight", "bold").attr("fill", "#d63031").text("Warm Front");
-    // Blizzard zone
-    svg.append("rect").attr("x", cx - 170).attr("y", cy - 80).attr("width", 130).attr("height", 50).attr("fill", "#dfe6e9").attr("rx", 8).attr("stroke", "#2d3436");
-    svg.append("text").attr("x", cx - 105).attr("y", cy - 55).attr("text-anchor", "middle").attr("font-size", 13).attr("font-weight", "bold").text("🌨️ BLIZZARD");
-    svg.append("text").attr("x", cx - 105).attr("y", cy - 40).attr("text-anchor", "middle").attr("font-size", 10).text("ZONE");
-    // Precipitation zones
-    svg.append("text").attr("x", cx + 40).attr("y", cy - 90).attr("font-size", 18).text("🌧️");
-    svg.append("text").attr("x", cx - 80).attr("y", cy - 30).attr("font-size", 22).text("❄️");
-    svg.append("text").attr("x", cx - 40).attr("y", cy + 80).attr("font-size", 18).text("⛈️");
-  } else {
-    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 80).attr("fill", "none").attr("stroke", "#b2bec3").attr("stroke-width", 2).attr("stroke-dasharray", "3,3");
-    svg.append("text").attr("x", cx).attr("y", cy + 7).attr("text-anchor", "middle").attr("font-size", 22).attr("font-weight", "bold").attr("fill", "#b2bec3").text("L");
-    svg.append("line").attr("x1", cx - 80).attr("y1", cy + 60).attr("x2", cx + 100).attr("y2", cy - 60).attr("stroke", "#6c5ce7").attr("stroke-width", 4);
-    svg.append("text").attr("x", cx).attr("y", cy + 120).attr("text-anchor", "middle").attr("font-size", 14).attr("fill", "#636e72").text("Occluded front — warm air fully lifted");
-    svg.append("text").attr("x", cx).attr("y", cy + 145).attr("text-anchor", "middle").attr("font-size", 14).attr("fill", "#636e72").text("Storm loses energy source and dissipates");
-    svg.append("text").attr("x", cx).attr("y", cy - 100).attr("text-anchor", "middle").attr("font-size", 30).text("☁️");
+  // Header
+  const hdr = document.createElement('div');
+  hdr.style.cssText='background:#1e293b;color:white;padding:13px 18px;display:flex;align-items:center;justify-content:space-between;';
+
+  const hdrLeft = document.createElement('div');
+  hdrLeft.innerHTML='<div style="font-size:15px;font-weight:700;">🌪️ Mid-Latitude Cyclone</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">Interactive Cyclogenesis Model</div>';
+
+  const hdrBtns = document.createElement('div');
+  hdrBtns.style.cssText='display:flex;align-items:center;gap:8px;';
+
+  const resetBtn = document.createElement('button');
+  resetBtn.title='Reset'; resetBtn.textContent='↺';
+  resetBtn.style.cssText='background:none;border:none;color:#94a3b8;cursor:pointer;font-size:20px;padding:4px 7px;line-height:1;';
+
+  const playBtn = document.createElement('button');
+  playBtn.textContent='▶';
+  playBtn.style.cssText='background:#3b82f6;border:none;color:white;border-radius:50%;width:38px;height:38px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;';
+
+  const endBtn = document.createElement('button');
+  endBtn.title='Skip to End'; endBtn.textContent='⏭';
+  endBtn.style.cssText='background:none;border:none;color:#94a3b8;cursor:pointer;font-size:18px;padding:4px 7px;line-height:1;';
+
+  hdrBtns.append(resetBtn, playBtn, endBtn);
+  hdr.append(hdrLeft, hdrBtns);
+  root.appendChild(hdr);
+
+  // Slider row
+  const slRow = document.createElement('div');
+  slRow.style.cssText='background:white;padding:10px 18px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:10px;';
+  const slLbl1 = document.createElement('span');
+  slLbl1.textContent='Stationary'; slLbl1.style.cssText='font-size:11px;color:#64748b;white-space:nowrap;';
+  const slider = document.createElement('input');
+  slider.type='range'; slider.min=0; slider.max=100; slider.step=0.5; slider.value=0;
+  slider.style.cssText='flex:1;accent-color:#3b82f6;height:6px;cursor:pointer;';
+  const slLbl2 = document.createElement('span');
+  slLbl2.textContent='Dissipating'; slLbl2.style.cssText='font-size:11px;color:#64748b;white-space:nowrap;';
+  slRow.append(slLbl1, slider, slLbl2);
+  root.appendChild(slRow);
+
+  // Lower: sidebar + canvas
+  const lower = document.createElement('div');
+  lower.style.cssText='display:flex;width:100%;';
+
+  // Sidebar
+  const sidebar = document.createElement('div');
+  sidebar.style.cssText='width:190px;flex-shrink:0;background:white;border-right:1px solid #e2e8f0;padding:12px;display:flex;flex-direction:column;gap:8px;';
+
+  const layTitle = document.createElement('div');
+  layTitle.textContent='Display Layers';
+  layTitle.style.cssText='font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;';
+  sidebar.appendChild(layTitle);
+
+  const layDefs=[
+    {key:'airMasses',label:'Air Masses',color:'#f97316'},
+    {key:'precipitation',label:'Precipitation',color:'#22c55e'},
+    {key:'fronts',label:'Fronts',color:'#3b82f6'},
+    {key:'winds',label:'Wind Vectors',color:'#64748b'},
+    {key:'isobars',label:'Isobars',color:'#94a3b8'},
+  ];
+  const layBtns={};
+  function styleLB(btn,active){
+    btn.style.background=active?'#eff6ff':'white';
+    btn.style.borderColor=active?'#bfdbfe':'#e2e8f0';
+    btn.style.fontWeight=active?'600':'400';
+  }
+  for(const ld of layDefs){
+    const btn=document.createElement('button');
+    btn.style.cssText=`width:100%;text-align:left;padding:6px 9px;border-radius:7px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:7px;border:1.5px solid #e2e8f0;background:white;color:#334155;`;
+    btn.innerHTML=`<span style="width:9px;height:9px;border-radius:2px;background:${ld.color};flex-shrink:0;"></span>${ld.label}`;
+    layBtns[ld.key]=btn;
+    styleLB(btn,lay[ld.key]);
+    btn.addEventListener('click',()=>{lay[ld.key]=!lay[ld.key];styleLB(btn,lay[ld.key]);});
+    sidebar.appendChild(btn);
   }
 
-  // Description
-  svg.append("foreignObject").attr("x", 50).attr("y", 380).attr("width", 650).attr("height", 60)
-    .append("xhtml:div").style("font-size", "13px").style("text-align", "center").style("color", "#2d3436")
-    .text(stage.desc);
+  const infoBox = document.createElement('div');
+  infoBox.style.cssText='background:#eff6ff;border:1px solid #dbeafe;border-radius:8px;padding:10px;font-size:11px;color:#334155;line-height:1.55;margin-top:4px;';
+  sidebar.appendChild(infoBox);
+  lower.appendChild(sidebar);
 
-  return svg.node();
+  // Canvas
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText='flex:1;display:block;background:#e0f2fe;min-height:460px;';
+  lower.appendChild(canvas);
+  root.appendChild(lower);
+
+  // ── draw ──────────────────────────────────────────────────────────────
+  function draw(){
+    const cw=canvas.clientWidth, ch=canvas.clientHeight;
+    if(!cw||!ch) return;
+    if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
+    const ctx=canvas.getContext('2d');
+    const s=_getState(prog);
+    const sc=pt=>({x:pt.x*cw,y:pt.y*ch});
+    const Lp=sc(s.L),Tp=sc(s.T),ce=sc(s.coldEnd),cc=sc(s.coldCtrl),we=sc(s.warmEnd),wc=sc(s.warmCtrl),oc=sc(s.occCtrl);
+    ctx.clearRect(0,0,cw,ch);
+
+    // Air masses
+    if(lay.airMasses){
+      ctx.fillStyle='#e0f2fe'; ctx.fillRect(0,0,cw,ch);
+      ctx.beginPath(); ctx.moveTo(Tp.x,Tp.y);
+      ctx.quadraticCurveTo(wc.x,wc.y,we.x,we.y);
+      if(we.y<ch) ctx.lineTo(cw,ch);
+      ctx.lineTo(ce.x,ch); ctx.lineTo(ce.x,ce.y);
+      ctx.quadraticCurveTo(cc.x,cc.y,Tp.x,Tp.y);
+      ctx.fillStyle='#ffedd5'; ctx.fill();
+      const lbl=(text,desc,x,y,col)=>{
+        ctx.fillStyle=col;ctx.font='bold 26px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(text,x,y);ctx.font='11px sans-serif';ctx.fillText(desc,x,y+21);
+      };
+      if(prog<5){
+        lbl('cP','Continental Polar',cw*.5,ch*.22,'#0284c7');
+        lbl('mT','Maritime Tropical',cw*.5,ch*.75,'#c2410c');
+      } else {
+        lbl('cP','Continental Polar',Math.max(45,Math.min(ce.x-50,cw*.18)),Math.max(45,Math.min(Lp.y+85,ch*.5)),'#0284c7');
+        lbl('mT','Maritime Tropical',Math.min(cw-65,Tp.x+(we.x-Tp.x)*.4),Math.min(ch-40,Math.max(Tp.y+105,we.y+45)),'#c2410c');
+        lbl('mP','Maritime Polar',Math.min(cw-65,we.x-65),Math.max(40,Tp.y-85),'#0369a1');
+      }
+    }
+
+    // Precipitation
+    if(lay.precipitation){
+      const band=(p0,p1,p2,wLim,side,fill)=>{
+        const steps=30,pts=[],offs=[];
+        for(let i=0;i<=steps;i++){
+          const t_=i/steps,pt=_bPt(t_,p0,p1,p2),tn=_bTan(t_,p0,p1,p2);
+          pts.push(pt);
+          const tap=Math.sin(t_*Math.PI),w=wLim*(.3+.7*tap);
+          offs.push({x:pt.x+(-tn.y*side)*w,y:pt.y+(tn.x*side)*w});
+        }
+        ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y);
+        for(let i=1;i<=steps;i++) ctx.lineTo(pts[i].x,pts[i].y);
+        for(let i=steps;i>=0;i--) ctx.lineTo(offs[i].x,offs[i].y);
+        ctx.closePath(); ctx.fillStyle=fill; ctx.fill();
+      };
+      if(prog<5){
+        band(ce,Lp,we,40,-1,'rgba(74,222,128,.4)');
+      } else {
+        band(Tp,wc,we,90,-1,'rgba(74,222,128,.5)');
+        band(Tp,cc,ce,30,1,'rgba(22,163,74,.7)');
+        const inten=Math.sin(prog/100*Math.PI);
+        if(prog>10){ctx.beginPath();ctx.ellipse(Lp.x-10,Lp.y-10,60*inten+20,45*inten+20,Math.PI/4,0,Math.PI*2);ctx.fillStyle='rgba(74,222,128,.6)';ctx.fill();}
+        if(prog>55){band(Lp,oc,Tp,60,1,'rgba(74,222,128,.6)');band(Lp,oc,Tp,60,-1,'rgba(74,222,128,.6)');}
+      }
+    }
+
+    // Isobars
+    if(lay.isobars){
+      ctx.strokeStyle='rgba(0,0,0,.15)'; ctx.lineWidth=1;
+      const inten=Math.sin(prog/100*Math.PI), n=3+Math.floor(inten*5);
+      for(let i=1;i<=n;i++){ctx.beginPath();ctx.ellipse(Lp.x,Lp.y,i*40*(1-inten*.2),i*35*(1-inten*.3),Math.PI/8,0,Math.PI*2);ctx.stroke();}
+    }
+
+    // Fronts
+    if(lay.fronts){
+      const sym=(x,y,ang,type)=>{
+        ctx.save(); ctx.translate(x,y); ctx.rotate(ang); ctx.beginPath();
+        if(type==='cold'){ctx.moveTo(-8,0);ctx.lineTo(8,0);ctx.lineTo(0,14);ctx.fillStyle='#2563eb';}
+        else if(type==='warm'){ctx.arc(0,0,8,Math.PI,0);ctx.fillStyle='#dc2626';}
+        else if(type==='occ-cold'){ctx.moveTo(-8,0);ctx.lineTo(8,0);ctx.lineTo(0,14);ctx.fillStyle='#9333ea';}
+        else if(type==='occ-warm'){ctx.arc(0,0,8,Math.PI,0);ctx.fillStyle='#9333ea';}
+        ctx.fill(); ctx.restore();
+      };
+      const fp=(p0,p1,p2,col,sType,spacing,isOcc)=>{
+        ctx.strokeStyle=col; ctx.lineWidth=3;
+        ctx.beginPath(); ctx.moveTo(p0.x,p0.y); ctx.quadraticCurveTo(p1.x,p1.y,p2.x,p2.y); ctx.stroke();
+        let d=0,tog=false;
+        for(let i=1;i<30;i++){
+          const t_=i/30,pt=_bPt(t_,p0,p1,p2),pp=_bPt((i-1)/30,p0,p1,p2);
+          d+=Math.sqrt((pt.x-pp.x)**2+(pt.y-pp.y)**2);
+          if(d>spacing){
+            const tn=_bTan(t_,p0,p1,p2);
+            let ang=Math.atan2(tn.y,tn.x);
+            if(sType==='cold') ang+=Math.PI/2;
+            else if(sType==='warm') ang-=Math.PI/2;
+            else ang+=Math.PI/2;
+            let cur=sType;
+            if(isOcc){cur=tog?'occ-cold':'occ-warm';tog=!tog;}
+            sym(pt.x,pt.y,ang,cur); d=0;
+          }
+        }
+      };
+      if(prog<5){
+        ctx.strokeStyle='#6b7280'; ctx.lineWidth=3;
+        ctx.beginPath(); ctx.moveTo(ce.x,ce.y); ctx.lineTo(we.x,we.y); ctx.stroke();
+      } else {
+        fp(Tp,cc,ce,'#2563eb','cold',50,false);
+        fp(Tp,wc,we,'#dc2626','warm',50,false);
+        if(prog>55) fp(Lp,oc,Tp,'#9333ea','occ',35,true);
+      }
+      if(prog>5){
+        ctx.fillStyle='#ef4444'; ctx.font='bold 22px sans-serif';
+        ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.strokeStyle='rgba(255,255,255,.8)'; ctx.lineWidth=4;
+        ctx.strokeText('L',Lp.x,Lp.y-14); ctx.fillText('L',Lp.x,Lp.y-14);
+        ctx.fillStyle='#1f2937'; ctx.font='11px sans-serif';
+        ctx.fillText(`${Math.round(s.pressure)} mb`,Lp.x,Lp.y+9);
+      }
+    }
+
+    // Winds
+    if(lay.winds){
+      ctx.strokeStyle='rgba(75,85,99,.4)'; ctx.fillStyle='rgba(75,85,99,.6)'; ctx.lineWidth=1.5;
+      const grid=40;
+      for(let x=grid/2;x<cw;x+=grid){
+        for(let y=grid/2;y<ch;y+=grid){
+          const dx=x-Lp.x,dy=y-Lp.y,dist=Math.sqrt(dx*dx+dy*dy);
+          let wAng=0,wSpd=0;
+          if(prog<10){wAng=y<Lp.y?Math.PI:0;wSpd=10;}
+          else{
+            const inten=Math.sin(prog/100*Math.PI);
+            wAng=Math.atan2(dy,dx)-Math.PI/2-.35;
+            wSpd=dist<300?(dist/300)*20*inten+5:5;
+            if(dist<40) wSpd=dist/8;
+          }
+          if(wSpd>2){
+            const al=Math.min(wSpd,25),ex=x+Math.cos(wAng)*al,ey=y+Math.sin(wAng)*al;
+            ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(ex,ey); ctx.stroke();
+            const ha=Math.PI/6,hl=4;
+            ctx.beginPath(); ctx.moveTo(ex,ey);
+            ctx.lineTo(ex-hl*Math.cos(wAng-ha),ey-hl*Math.sin(wAng-ha));
+            ctx.lineTo(ex-hl*Math.cos(wAng+ha),ey-hl*Math.sin(wAng+ha));
+            ctx.closePath(); ctx.fill();
+          }
+        }
+      }
+    }
+
+    infoBox.textContent = s.desc;
+  }
+
+  // ── animation loop ────────────────────────────────────────────────────
+  function loop(t){
+    if(playing){
+      if(lastT!=null){
+        prog=Math.min(100,prog+(t-lastT)*0.005);
+        slider.value=prog;
+        if(prog>=100){playing=false;playBtn.textContent='▶';}
+      }
+      lastT=t;
+    }
+    draw();
+    raf=requestAnimationFrame(loop);
+  }
+  raf=requestAnimationFrame(loop);
+  invalidation.then(()=>cancelAnimationFrame(raf));
+
+  // ── events ────────────────────────────────────────────────────────────
+  slider.oninput=()=>{prog=+slider.value;playing=false;playBtn.textContent='▶';};
+  playBtn.onclick=()=>{playing=!playing;playBtn.textContent=playing?'⏸':'▶';if(playing)lastT=null;};
+  resetBtn.onclick=()=>{prog=0;slider.value=0;playing=false;playBtn.textContent='▶';};
+  endBtn.onclick=()=>{prog=100;slider.value=100;playing=false;playBtn.textContent='▶';};
+
+  return root;
 }
 ```
 
