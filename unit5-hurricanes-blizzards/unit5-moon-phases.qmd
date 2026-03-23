@@ -147,12 +147,12 @@ h2 {
 }
 
 @keyframes quizFlash {
-  0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(255, 87, 34, 0.4); }
-  50% { transform: scale(1.05); box-shadow: 0 8px 40px rgba(255, 87, 34, 0.85), 0 0 0 8px rgba(255, 87, 34, 0.12); }
+  0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 8px 40px rgba(118, 75, 162, 0.9), 0 0 0 8px rgba(102, 126, 234, 0.22); }
 }
 .quiz-jump-btn {
   display: inline-block;
-  background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white !important;
   padding: 8px 16px;
   border-radius: 20px;
@@ -166,13 +166,13 @@ h2 {
   letter-spacing: 1px;
   text-transform: uppercase;
   vertical-align: middle;
-  box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .quiz-jump-btn:hover {
   animation: none;
-  background: linear-gradient(135deg, #e64a19 0%, #f57c00 100%);
-  box-shadow: 0 8px 30px rgba(255, 87, 34, 0.55);
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a42a0 100%);
+  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.65);
   transform: scale(1.07);
   color: white !important;
   text-decoration: none !important;
@@ -217,9 +217,20 @@ h2 {
   window.floatTocToggle=function(){
     var b=document.getElementById('float-toc-btn');
     var toggle=document.querySelector('[data-bs-target=".quarto-sidebar-collapse-item"]');
-    if(toggle){toggle.click();}
-    b.classList.toggle('toc-open');
+    if(toggle){
+      toggle.click();
+      setTimeout(function(){
+        var isOpen=toggle.getAttribute('aria-expanded')==='true';
+        b.classList.toggle('toc-open',isOpen);
+      },60);
+    }
   };
+  window.addEventListener('load',function(){
+    setTimeout(function(){
+      var toggle=document.querySelector('[data-bs-target=".quarto-sidebar-collapse-item"]');
+      if(toggle&&toggle.getAttribute('aria-expanded')==='true'){toggle.click();}
+    },80);
+  });
 })();
 </script>
 
