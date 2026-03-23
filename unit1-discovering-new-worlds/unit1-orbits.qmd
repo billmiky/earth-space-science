@@ -59,6 +59,82 @@ Plot = require("@observablehq/plot")
 d3 = require("d3@7")
 ```
 
+```{ojs}
+//| echo: false
+buildQuiz = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="margin:18px 0 24px 0;text-align:center;">
+    <button style="
+      display:inline-flex;align-items:center;gap:7px;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      color:#fff;border:none;padding:9px 22px;border-radius:50px;
+      font-size:.95em;font-weight:700;cursor:pointer;
+      box-shadow:0 3px 12px rgba(102,126,234,.45);
+      transition:transform .15s,box-shadow .15s;"
+      onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 5px 18px rgba(102,126,234,.55)'"
+      onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 3px 12px rgba(102,126,234,.45)'"
+    >
+      <span style="font-size:1.1em;">📝</span> ${title}
+      <span class="chevron" style="transition:transform .3s;">▼</span>
+    </button>
+    <div class="quiz-body" style="
+      max-height:0;opacity:0;overflow:hidden;
+      transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin-top .3s ease;
+      margin-top:0;text-align:left;">
+      <button class="close-btn" style="
+        display:block;margin:0 auto 10px auto;
+        background:rgba(102,126,234,.12);color:#667eea;border:none;
+        padding:5px 18px;border-radius:50px;font-size:.85em;
+        font-weight:600;cursor:pointer;">Hide Quiz</button>
+      <p style="text-align:center;color:#718096;font-style:italic;font-size:.9em;margin-bottom:12px;">
+        Select an answer for each question.</p>
+    </div>
+  </div>`;
+  const toggle = outer.querySelector("button");
+  const chevron = toggle.querySelector(".chevron");
+  const body   = outer.querySelector(".quiz-body");
+  const closeBtn = body.querySelector(".close-btn");
+  function expand(){  body.style.maxHeight="2000px";body.style.opacity="1";body.style.marginTop="14px";chevron.style.transform="rotate(180deg)"; }
+  function collapse(){ body.style.maxHeight="0";body.style.opacity="0";body.style.marginTop="0";chevron.style.transform="rotate(0)"; }
+  toggle.onclick = () => body.style.maxHeight === "0px" || body.style.maxHeight === "" ? expand() : collapse();
+  closeBtn.onclick = collapse;
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;">${qi+1}. ${qq.q}</p>`;
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#667eea";btn.style.background="#f0f0ff"; }};
+      btn.onmouseout  = () => { if(!card.dataset.answered){ btn.style.borderColor="#e2e8f0";btn.style.background="#fff"; }};
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => { b.style.cursor="default"; b.onmouseover=null; b.onmouseout=null; });
+        if(oi === qq.correct){
+          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";
+          card.querySelectorAll("button")[qq.correct].style.borderColor="#48bb78";
+          card.querySelectorAll("button")[qq.correct].style.background="#f0fff4";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";
+      };
+      card.appendChild(btn);
+    });
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  return outer;
+}
+```
+
 # Explore 1: Patterns in Solar System Data
 
 ::: {.explore-box}
@@ -130,14 +206,29 @@ Where:
 This means: **if you know how long a planet takes to orbit its star, you can calculate its distance.** This is exactly how we figure out exoplanet orbits — we measure the period and calculate the distance!
 :::
 
-::: {.student-task}
-### 📝 Test Kepler's Third Law
-
-1. Use the data to verify: for Earth, $T = 1$ year and $a = 1$ AU. Does $1^2 = 1^3$? ✅
-2. For Mars: $T = 1.881$ years. Calculate $T^2 = ?$ Then calculate $a^3$ where $a = 1.524$. Do they match?
-3. For Comet Borrelly: period = 6.85 years. Use Kepler's Third Law to predict its average distance. Does it match the graph?
-4. Why does this pattern exist? (Hint: it's related to gravity — farther objects feel weaker gravitational pull)
-:::
+```{ojs}
+//| echo: false
+buildQuiz("kepler-law-quiz", "📌 Check Your Understanding — Kepler's Third Law", [
+  {
+    q: "Mars has an orbital period of 1.881 years and a distance of 1.524 AU. Does Kepler's Third Law (T² = a³) hold? Calculate T² and a³.",
+    options: ["T² = 3.54, a³ = 3.54 — Yes, they match!", "T² = 1.88, a³ = 1.52 — No, they don't match", "T² = 3.54, a³ = 4.57 — Close but not exact", "T² = 2.0, a³ = 2.0 — Only works for Earth"],
+    correct: 0,
+    explanation: "T² = 1.881² = 3.538 and a³ = 1.524³ = 3.540. They match almost perfectly! This elegant relationship holds for every object orbiting the Sun."
+  },
+  {
+    q: "Comet Borrelly has an orbital period of 6.85 years. Using T² = a³, what is its average distance from the Sun?",
+    options: ["About 2.3 AU", "About 3.6 AU", "About 6.85 AU", "About 46.9 AU"],
+    correct: 1,
+    explanation: "T² = 6.85² = 46.9. Then a = ³√46.9 ≈ 3.6 AU. Kepler's Third Law lets us calculate distance from period alone — essential for analyzing exoplanets we can't directly observe."
+  },
+  {
+    q: "Why is Kepler's Third Law especially useful for studying exoplanets?",
+    options: ["It tells us the planet's mass", "It lets us calculate orbital distance from the period, which we can measure via transit timing", "It determines the planet's atmospheric composition", "It predicts whether the planet has moons"],
+    correct: 1,
+    explanation: "For exoplanets, we can measure the orbital period by timing how often the planet transits (crosses in front of) its star. Kepler's Third Law then gives us the distance — and distance determines whether the planet is in the habitable zone."
+  }
+])
+```
 
 # Explain 1: The Habitable Zone
 
@@ -225,14 +316,29 @@ viewof starLum = Inputs.range([0.01, 10], {label: "Star luminosity (× Sun):", s
 }
 ```
 
-::: {.student-task}
-### 📝 Habitable Zone Exploration
-
-1. For our Sun (luminosity = 1.0×), what is the habitable zone range? Where does Earth fall?
-2. Increase the star's luminosity to 5×. How does the habitable zone shift?
-3. Decrease to 0.1× (a dim red dwarf). Where is the habitable zone now?
-4. Why is it important that a planet stays **within the habitable zone for its entire orbit** — not just part of it?
-:::
+```{ojs}
+//| echo: false
+buildQuiz("habitable-zone-quiz", "💧 Check Your Understanding — Habitable Zone", [
+  {
+    q: "For a Sun-like star (luminosity = 1.0×), the habitable zone spans approximately 0.95–1.37 AU. Where does Earth (1.0 AU) sit within this range?",
+    options: ["At the very inner edge — almost too hot", "Comfortably within the zone, closer to the inner edge", "At the very outer edge — almost too cold", "Outside the habitable zone entirely"],
+    correct: 1,
+    explanation: "Earth at 1.0 AU sits comfortably within the 0.95–1.37 AU habitable zone, slightly closer to the warm inner boundary. This position allows stable liquid water on the surface."
+  },
+  {
+    q: "If you increase the star's luminosity to 5× the Sun's, what happens to the habitable zone?",
+    options: ["It shrinks to a tiny band very close to the star", "It stays in the same position", "It moves farther from the star (approximately 2.1–3.1 AU)", "It disappears entirely"],
+    correct: 2,
+    explanation: "A brighter star radiates more energy, pushing the habitable zone outward. HZ inner edge = √(5/1.1) ≈ 2.13 AU, outer edge = √(5/0.53) ≈ 3.07 AU. Planets must be farther away to avoid overheating."
+  },
+  {
+    q: "Why must a planet stay within the habitable zone for its ENTIRE orbit, not just part of it?",
+    options: ["Planets can only have water if they never get cold", "Water needs to remain liquid year-round for biochemistry to function continuously", "The habitable zone only applies at perihelion", "Stars change luminosity based on planet position"],
+    correct: 1,
+    explanation: "Life requires persistent liquid water. If a planet swings outside the habitable zone during part of its orbit, surface water could freeze or boil seasonally, preventing the stable conditions needed for sustained biochemistry and life."
+  }
+])
+```
 
 # Explore 2: Orbital Eccentricity
 
@@ -337,15 +443,29 @@ viewof semiMajor = Inputs.range([0.5, 3.0], {label: "Semi-major axis (AU):", ste
 }
 ```
 
-::: {.student-task}
-### 📝 Orbit Analysis
-
-1. Earth's orbit: $e = 0.017$, $a = 1.0$ AU. Set these values. Does Earth stay in the habitable zone? 
-2. Now increase eccentricity to 0.5 (keeping $a = 1.0$). What happens? Could this planet sustain liquid water?
-3. Mars-like orbit: $e = 0.09$, $a = 1.52$. Is Mars in the habitable zone?
-4. **Comet Borrelly** has $e = 0.62$. Explain why its water changes phase during its orbit.
-5. For an exoplanet: what combination of $a$ and $e$ keeps it within the habitable zone for its entire orbit?
-:::
+```{ojs}
+//| echo: false
+buildQuiz("eccentricity-quiz", "🔵 Check Your Understanding — Orbital Eccentricity", [
+  {
+    q: "Earth's orbit has eccentricity e = 0.017 and semi-major axis a = 1.0 AU. Does Earth stay in the habitable zone?",
+    options: ["No — it swings outside during winter", "Yes — with e = 0.017, the orbit is nearly circular and stays well within the HZ all year", "Only during summer months", "It depends on the Moon's position"],
+    correct: 1,
+    explanation: "With e = 0.017, Earth's closest approach (perihelion) is 0.983 AU and farthest (aphelion) is 1.017 AU. Both are well within the 0.95–1.37 AU habitable zone. The nearly circular orbit keeps temperatures remarkably stable."
+  },
+  {
+    q: "If you set eccentricity to 0.5 (keeping a = 1.0 AU), what happens?",
+    options: ["The planet stays within the habitable zone", "The planet swings out to 1.5 AU and in to 0.5 AU — partially or fully exiting the habitable zone", "The orbit becomes perfectly circular", "The planet escapes the star's gravity"],
+    correct: 1,
+    explanation: "With e = 0.5 and a = 1.0 AU: perihelion = 1.0 × (1 − 0.5) = 0.5 AU (too hot!) and aphelion = 1.0 × (1 + 0.5) = 1.5 AU (borderline cold). The planet would experience extreme temperature swings, likely preventing stable liquid water."
+  },
+  {
+    q: "Comet Borrelly has e = 0.62. Why does its water alternate between frozen ice and vaporized gas?",
+    options: ["The comet spins very fast, creating heat", "Chemical reactions on the comet heat and cool the water", "Its highly elliptical orbit takes it from far outside the HZ (frozen) to deep inside (vaporized)", "Solar wind strips water away, then it reforms"],
+    correct: 2,
+    explanation: "With e = 0.62, Borrelly swings between ~1.37 AU (near perihelion, inside the HZ) and ~5.85 AU (far outside). Near the Sun, solar radiation vaporizes surface ice into dramatic jets. Far from the Sun, temperatures plunge and water refreezes."
+  }
+])
+```
 
 # Elaborate: Applying to Exoplanets
 
@@ -400,38 +520,315 @@ Plot.plot({
 })
 ```
 
-# Evaluate: Revise Your Model
+# Chapter Summary
 
-::: {.evaluate-box}
-## ✏️ Include Orbital Features in Your Habitability Model
+| Key Concept | Details |
+|---|---|
+| **Kepler's Third Law** | $T^2 = a^3$ — period and distance are mathematically linked |
+| **Habitable Zone** | Region where liquid water can exist; HZ = $\sqrt{L/1.1}$ to $\sqrt{L/0.53}$ AU |
+| **Eccentricity** | Measures orbit shape (0 = circle, ~1 = very elongated); must be low for habitability |
+| **Earth's orbit** | $a = 1.0$ AU, $e = 0.017$ (nearly circular), stays in HZ year-round |
+| **Comet Borrelly** | $e = 0.62$ — orbit explains water phase changes (frozen ↔ vaporized) |
+| **Exoplanet analysis** | Measure period → calculate distance → check if in HZ with low eccentricity |
 
-Your model should now include three major components:
-1. ☀️ **Star properties** (mass, type, stability, lifespan)
-2. ⭐ **Nucleosynthesis** (can the star produce needed elements?)
-3. 🪐 **Orbital features** (distance, eccentricity, habitable zone)
-:::
+---
 
-::: {.student-task}
-### 📝 Final Model Revision
+# Myth or Fact?
 
-Update your habitability model to include orbital features. A habitable exoplanet needs:
+```{=html}
+<div id="orbit-myths" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%); color:white; padding:30px; border-radius:16px; margin:30px 0; font-family:'Inter',sans-serif; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.8em; margin:0 0 8px 0; background:linear-gradient(135deg,#3498db,#2ecc71); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
+    🪐 Planets & Orbits: Myths vs. Facts
+  </h2>
+  <p style="color:#94a3b8; margin:0 0 20px 0; font-size:0.95em;">Decide whether each statement is a MYTH or a FACT!</p>
+  <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:12px 20px; border-radius:12px; margin-bottom:20px;">
+    <div id="omf-progress" style="color:#94a3b8; font-size:0.9em;">Card 1 of 8</div>
+    <div style="color:#94a3b8; font-size:0.9em;">Score: <span id="omf-score" style="color:#3498db; font-weight:700;">0</span> / <span id="omf-total">0</span></div>
+  </div>
+  <div id="omf-card" style="background:rgba(255,255,255,0.08); border-radius:14px; padding:28px; min-height:100px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:1.1em; font-weight:600; line-height:1.6; border:1.5px solid rgba(255,255,255,0.1);"></div>
+  <div style="display:flex; gap:12px; margin-top:16px;">
+    <button id="omf-myth" onclick="omfAnswer('Myth')" style="flex:1; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#e17055,#d63031); color:white; font-size:1em; font-weight:700; cursor:pointer; box-shadow:0 4px 15px rgba(214,48,49,0.3);">❌ MYTH</button>
+    <button id="omf-fact" onclick="omfAnswer('Fact')" style="flex:1; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#00b894,#00cec9); color:white; font-size:1em; font-weight:700; cursor:pointer; box-shadow:0 4px 15px rgba(0,184,148,0.3);">✅ FACT</button>
+  </div>
+  <div id="omf-feedback" style="margin-top:16px; padding:16px; border-radius:10px; display:none; font-size:0.95em; line-height:1.6;"></div>
+  <button id="omf-next" onclick="omfNext()" style="display:none; margin-top:12px; width:100%; padding:12px; border:2px solid rgba(255,255,255,0.2); border-radius:10px; background:transparent; color:white; font-size:0.95em; font-weight:600; cursor:pointer;">Next Card →</button>
+  <div id="omf-done" style="display:none; text-align:center; padding:20px;">
+    <div style="font-size:2.5em; margin-bottom:10px;">🎉</div>
+    <div style="font-size:1.3em; font-weight:700;">All cards complete!</div>
+    <div style="color:#94a3b8; margin:8px 0;">Final score: <span id="omf-final" style="color:#3498db; font-weight:700;"></span> / 8</div>
+    <button onclick="omfRestart()" style="margin-top:12px; padding:10px 24px; border:2px solid #3498db; border-radius:20px; background:transparent; color:#3498db; font-size:0.9em; cursor:pointer; font-weight:600;">Play Again</button>
+  </div>
+</div>
+<script>
+(function() {
+  var cards = [
+    {
+      text: "Planets orbit the Sun in perfect circles.",
+      type: "Myth",
+      explanation: "All planetary orbits are ellipses, not circles. Earth's orbit is nearly circular (e = 0.017), but many objects have noticeably elliptical orbits. Kepler discovered this in the 1600s, overturning the ancient Greek idea of perfect circular motion."
+    },
+    {
+      text: "Earth is closest to the Sun during Northern Hemisphere summer.",
+      type: "Myth",
+      explanation: "Earth is actually closest to the Sun (perihelion) in January — during Northern Hemisphere winter! Seasons are caused by Earth's 23.5° axial tilt, not by distance from the Sun. The distance varies by only ~3% due to our low eccentricity."
+    },
+    {
+      text: "Kepler's Third Law (T² = a³) applies to any object orbiting any star, not just our Sun.",
+      type: "Fact",
+      explanation: "The generalized form is T² = (4π²/GM)a³, which works for any star mass M. When using solar masses and AU/years, it simplifies to T² = a³/M. This is exactly how astronomers determine exoplanet distances from observed orbital periods."
+    },
+    {
+      text: "A planet with an eccentricity of 0.5 would experience dramatic temperature swings during its orbit.",
+      type: "Fact",
+      explanation: "With e = 0.5, the planet's closest approach is half its average distance, and its farthest point is 1.5× its average distance. Since stellar radiation follows an inverse-square law, the planet receives 9× more energy at perihelion than at aphelion — extreme seasonal swings."
+    },
+    {
+      text: "The habitable zone is the same distance from every star.",
+      type: "Myth",
+      explanation: "The habitable zone depends on stellar luminosity. Dim M-type stars have habitable zones at 0.1–0.2 AU; bright stars push the HZ out to 2–3+ AU. The formula HZ = √(L/threshold) shows the direct dependence on luminosity."
+    },
+    {
+      text: "Scientists can determine an exoplanet's orbital distance by measuring how frequently it passes in front of its star.",
+      type: "Fact",
+      explanation: "The transit method measures the orbital period (time between transits). Kepler's Third Law then converts period to distance: a = (T²)^(1/3). This technique has been used to characterize thousands of exoplanets discovered by the Kepler and TESS missions."
+    },
+    {
+      text: "Comet Borrelly's water changes between ice and vapor because the comet generates internal heat.",
+      type: "Myth",
+      explanation: "Comets don't generate heat. Borrelly's highly elliptical orbit (e = 0.62) carries it from ~5.85 AU (far, cold) to ~1.37 AU (close, warm). Near the Sun, solar radiation vaporizes surface ice into jets. Far away, temperatures drop and water freezes solid again."
+    },
+    {
+      text: "For an exoplanet to support life, it needs both the right orbital distance AND a low eccentricity to stay in the habitable zone year-round.",
+      type: "Fact",
+      explanation: "A planet at the right average distance but with high eccentricity will swing in and out of the habitable zone. Water would alternately boil and freeze each 'year.' Low eccentricity (< ~0.2) ensures the planet receives consistent energy for stable liquid water."
+    }
+  ];
+  var idx = 0, score = 0, answered = 0, cardAnswered = false;
+  function updateCard() {
+    if (idx >= cards.length) {
+      document.getElementById('omf-card').style.display = 'none';
+      document.getElementById('omf-myth').style.display = 'none';
+      document.getElementById('omf-fact').style.display = 'none';
+      document.getElementById('omf-feedback').style.display = 'none';
+      document.getElementById('omf-next').style.display = 'none';
+      document.getElementById('omf-done').style.display = 'block';
+      document.getElementById('omf-final').textContent = score;
+      return;
+    }
+    document.getElementById('omf-card').textContent = cards[idx].text;
+    document.getElementById('omf-progress').textContent = 'Card ' + (idx + 1) + ' of ' + cards.length;
+    document.getElementById('omf-feedback').style.display = 'none';
+    document.getElementById('omf-next').style.display = 'none';
+    document.getElementById('omf-myth').disabled = false;
+    document.getElementById('omf-fact').disabled = false;
+    document.getElementById('omf-myth').style.opacity = '1';
+    document.getElementById('omf-fact').style.opacity = '1';
+    cardAnswered = false;
+  }
+  window.omfAnswer = function(choice) {
+    if (cardAnswered) return;
+    cardAnswered = true;
+    answered++;
+    var card = cards[idx];
+    var correct = (choice === card.type);
+    if (correct) score++;
+    document.getElementById('omf-score').textContent = score;
+    document.getElementById('omf-total').textContent = answered;
+    var fb = document.getElementById('omf-feedback');
+    fb.style.display = 'block';
+    fb.style.background = correct ? 'rgba(0,184,148,0.2)' : 'rgba(214,48,49,0.2)';
+    fb.style.border = '1px solid ' + (correct ? '#00b894' : '#e17055');
+    fb.innerHTML = '<strong>' + (correct ? '✅ Correct! ' : '❌ That\'s a ' + card.type + '! ') + '</strong>' + card.explanation;
+    document.getElementById('omf-myth').disabled = true;
+    document.getElementById('omf-fact').disabled = true;
+    document.getElementById('omf-myth').style.opacity = (choice === 'Myth') ? '1' : '0.5';
+    document.getElementById('omf-fact').style.opacity = (choice === 'Fact') ? '1' : '0.5';
+    document.getElementById('omf-next').style.display = 'block';
+  };
+  window.omfNext = function() { idx++; updateCard(); };
+  window.omfRestart = function() {
+    idx = 0; score = 0; answered = 0;
+    document.getElementById('omf-card').style.display = 'flex';
+    document.getElementById('omf-myth').style.display = 'block';
+    document.getElementById('omf-fact').style.display = 'block';
+    document.getElementById('omf-done').style.display = 'none';
+    document.getElementById('omf-score').textContent = '0';
+    document.getElementById('omf-total').textContent = '0';
+    updateCard();
+  };
+  updateCard();
+})();
+</script>
+```
 
-| Feature | Requirement | Why |
-|---|---|---|
-| Orbital distance | Within habitable zone | Liquid water temperature |
-| Eccentricity | Low (< ~0.2) | Stay in HZ all year |
-| Orbital period | Calculable via Kepler's Law | Confirms distance |
-| Star luminosity | Known | Determines HZ boundaries |
+---
 
-Which exoplanet from the data best meets ALL criteria? Prepare your evidence for the Performance Task!
-:::
+# End-of-Chapter Quiz
 
-::: {.check-understanding}
-### 📋 What You Figured Out
+```{ojs}
+//| echo: false
+function buildOrbitQuiz(id, title, questions) {
+  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const header = html`<div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border-radius:14px 14px 0 0;padding:18px 24px;">
+    <div style="font-size:1.1em;font-weight:700;display:flex;align-items:center;gap:8px;"><span style="font-size:1.2em;">📝</span> ${title}</div>
+    <div style="font-size:0.85em;opacity:0.85;margin-top:4px;">Select an answer for each question.</div>
+  </div>`;
+  const body = html`<div style="border:1.5px solid #c7d2fe;border-top:none;border-radius:0 0 14px 14px;overflow:hidden;background:#f8f9ff;padding:16px;"></div>`;
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#667eea";btn.style.background="#f0f0ff"; }};
+      btn.onmouseout  = () => { if(!card.dataset.answered){ btn.style.borderColor="#e2e8f0";btn.style.background="#fff"; }};
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => {
+          b.style.cursor="default"; b.onmouseover=null; b.onmouseout=null;
+          b.style.borderColor="#e2e8f0"; b.style.background="#f8fafc"; b.style.color="#475569";
+        });
+        if(oi === qq.correct){
+          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";btn.style.color="#276749";btn.style.fontWeight="700";
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";btn.style.color="#9b2c2c";btn.style.fontWeight="700";
+          const correctBtn = card.querySelectorAll("button")[qq.correct];
+          correctBtn.style.borderColor="#48bb78";correctBtn.style.background="#f0fff4";correctBtn.style.color="#276749";correctBtn.style.fontWeight="700";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";fb.style.borderRadius="8px";
+      };
+      card.appendChild(btn);
+    });
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  outer.appendChild(header);
+  outer.appendChild(body);
+  return outer;
+}
+```
 
-- 📐 Kepler's Third Law: $T^2 = a^3$ relates period to distance
-- 💧 The **habitable zone** is where liquid water can exist — determined by star luminosity
-- 🔵 Orbital **eccentricity** determines whether a planet stays in the HZ year-round
-- ☄️ Comet Borrelly's water phase changes are explained by its highly elliptical orbit
-- 🌍 For the performance task: exoplanets need the right distance AND low eccentricity
-:::
+```{ojs}
+//| echo: false
+buildOrbitQuiz("orbit-summative-quiz", "🪐 Summative Quiz — Planets & Orbits", [
+  {
+    q: "Kepler's Third Law states T² = a³. If an exoplanet has an orbital period of 8 years, what is its average distance from its Sun-like star?",
+    options: [
+      "2 AU",
+      "4 AU",
+      "8 AU",
+      "64 AU"
+    ],
+    correct: 1,
+    explanation: "T² = 8² = 64. Then a³ = 64, so a = ∛64 = 4 AU. The planet orbits at 4 times Earth's distance from its star."
+  },
+  {
+    q: "What determines the boundaries of a star's habitable zone?",
+    options: [
+      "The star's mass only",
+      "The star's luminosity (brightness) — more luminous stars push the HZ farther out",
+      "The number of planets orbiting the star",
+      "The star's age"
+    ],
+    correct: 1,
+    explanation: "The habitable zone is where stellar radiation allows liquid water. Inner edge: HZ_in = √(L/1.1) AU; outer edge: HZ_out = √(L/0.53) AU. A star 4× more luminous than the Sun has a habitable zone roughly 2× farther out."
+  },
+  {
+    q: "A planet orbits at 1.0 AU with eccentricity e = 0.3. What are its closest and farthest distances from the star?",
+    options: [
+      "Perihelion = 0.7 AU, Aphelion = 1.3 AU",
+      "Perihelion = 0.97 AU, Aphelion = 1.03 AU",
+      "Perihelion = 0.5 AU, Aphelion = 1.5 AU",
+      "Perihelion = 1.0 AU, Aphelion = 1.0 AU"
+    ],
+    correct: 0,
+    explanation: "Perihelion = a(1 - e) = 1.0(1 - 0.3) = 0.7 AU. Aphelion = a(1 + e) = 1.0(1 + 0.3) = 1.3 AU. With e = 0.3, the planet barely stays within the habitable zone (0.95–1.37 AU for a Sun-like star)."
+  },
+  {
+    q: "Why did Comet Borrelly's water vaporize into jets as it approached the Sun?",
+    options: [
+      "The comet's internal radioactive elements generated heat",
+      "Its highly eccentric orbit (e = 0.62) brought it close enough for solar radiation to vaporize surface ice",
+      "Solar wind chemically reacted with the comet's surface",
+      "The comet collided with asteroids near the Sun"
+    ],
+    correct: 1,
+    explanation: "With e = 0.62, Borrelly's perihelion is ~1.37 AU — close enough for intense solar radiation to sublimate surface ice into dramatic jets of water vapor and dust. At aphelion (~5.85 AU), the water freezes solid again."
+  },
+  {
+    q: "Looking at the exoplanet scatter plot, which planet is flagged 'Too hot' and why?",
+    options: [
+      "Kepler-442b — it's too close to a bright star",
+      "TRAPPIST-1e — it orbits an M-dwarf too closely",
+      "55 Cancri e — it orbits at only 0.015 AU, far inside any habitable zone",
+      "Kepler-16b — it orbits a binary star system"
+    ],
+    correct: 2,
+    explanation: "55 Cancri e orbits at just 0.015 AU with a period of 0.74 days. At that distance, surface temperatures exceed 2,000°C — far too hot for liquid water regardless of eccentricity."
+  },
+  {
+    q: "An exoplanet orbits a star with luminosity 0.12× the Sun. The habitable zone inner edge is at √(0.12/1.1) ≈ 0.33 AU. What does this tiny HZ distance imply?",
+    options: [
+      "The planet must be very far from the star to be habitable",
+      "The planet must orbit very close to the dim star, which may cause tidal locking",
+      "The planet will definitely be habitable because the HZ is well-defined",
+      "The star is too bright for any planet to be habitable"
+    ],
+    correct: 1,
+    explanation: "Dim stars require planets to orbit very close for adequate warmth. At ~0.33 AU, gravitational tidal forces likely lock the planet so one side permanently faces the star (tidally locked), creating extreme temperature differences between the day and night sides."
+  },
+  {
+    q: "For the performance task, which exoplanet has the most Earth-like combination of orbital distance (in HZ) AND low eccentricity?",
+    options: [
+      "55 Cancri e (distance = 0.015 AU, e = 0.17)",
+      "Kepler-452b (distance = 1.046 AU, e = 0.035)",
+      "TRAPPIST-1e (distance = 0.029 AU, e = 0.005)",
+      "Kepler-16b (distance = 0.704 AU, e = 0.007)"
+    ],
+    correct: 1,
+    explanation: "Kepler-452b orbits at 1.046 AU (nearly identical to Earth's 1.0 AU) around a G-type star with luminosity 1.2× the Sun. Its low eccentricity (0.035) keeps it firmly in the habitable zone. It's often called 'Earth's cousin.'"
+  },
+  {
+    q: "How does eccentricity affect a planet's chance of staying in the habitable zone?",
+    options: [
+      "Higher eccentricity is better — the planet samples more temperatures",
+      "Eccentricity doesn't matter as long as average distance is correct",
+      "Lower eccentricity keeps the planet at a more constant distance, maintaining stable temperatures for liquid water",
+      "Only eccentricity = 0 (perfect circle) allows habitability"
+    ],
+    correct: 2,
+    explanation: "Lower eccentricity means smaller variation between perihelion and aphelion distances. A planet with low e stays at a near-constant distance, receiving steady energy. High e causes wild temperature swings that prevent stable liquid water, even if the average distance is 'right.'"
+  },
+  {
+    q: "You discover an exoplanet with orbital period T = 1.5 years around a Sun-like star. Is it likely in the habitable zone?",
+    options: [
+      "Yes — using T² = a³, a = ∛(2.25) ≈ 1.31 AU, which is within the Sun-like HZ (0.95–1.37 AU)",
+      "No — 1.5 years is too long for a habitable orbit",
+      "Cannot determine without knowing the planet's mass",
+      "Only if the eccentricity is exactly zero"
+    ],
+    correct: 0,
+    explanation: "T² = 1.5² = 2.25, so a = ∛2.25 ≈ 1.31 AU. For a Sun-like star, the habitable zone is ~0.95–1.37 AU. At 1.31 AU, the planet sits near the outer edge of the HZ — a promising candidate if eccentricity is low!"
+  },
+  {
+    q: "Which THREE factors must align for an exoplanet to be considered potentially habitable based on orbital analysis?",
+    options: [
+      "Large mass, fast rotation, and many moons",
+      "Correct distance (in HZ), low eccentricity, and a host star with sufficient luminosity for a well-defined HZ",
+      "Close proximity to the star, high eccentricity, and short orbital period",
+      "Circular orbit, no atmosphere, and a binary star system"
+    ],
+    correct: 1,
+    explanation: "All three must work together: (1) orbital distance within the habitable zone, (2) low eccentricity to stay in the HZ year-round, and (3) a host star whose luminosity creates a habitable zone at the right location. Missing any one factor likely prevents stable liquid water."
+  }
+])
+```

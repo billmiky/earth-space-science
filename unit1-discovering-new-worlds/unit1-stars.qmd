@@ -63,6 +63,82 @@ d3 = require("d3@7")
 
 ```{ojs}
 //| echo: false
+buildQuiz = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="margin:18px 0 24px 0;text-align:center;">
+    <button style="
+      display:inline-flex;align-items:center;gap:7px;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      color:#fff;border:none;padding:9px 22px;border-radius:50px;
+      font-size:.95em;font-weight:700;cursor:pointer;
+      box-shadow:0 3px 12px rgba(102,126,234,.45);
+      transition:transform .15s,box-shadow .15s;"
+      onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 5px 18px rgba(102,126,234,.55)'"
+      onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 3px 12px rgba(102,126,234,.45)'"
+    >
+      <span style="font-size:1.1em;">📝</span> ${title}
+      <span class="chevron" style="transition:transform .3s;">▼</span>
+    </button>
+    <div class="quiz-body" style="
+      max-height:0;opacity:0;overflow:hidden;
+      transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin-top .3s ease;
+      margin-top:0;text-align:left;">
+      <button class="close-btn" style="
+        display:block;margin:0 auto 10px auto;
+        background:rgba(102,126,234,.12);color:#667eea;border:none;
+        padding:5px 18px;border-radius:50px;font-size:.85em;
+        font-weight:600;cursor:pointer;">Hide Quiz</button>
+      <p style="text-align:center;color:#718096;font-style:italic;font-size:.9em;margin-bottom:12px;">
+        Select an answer for each question.</p>
+    </div>
+  </div>`;
+  const toggle = outer.querySelector("button");
+  const chevron = toggle.querySelector(".chevron");
+  const body   = outer.querySelector(".quiz-body");
+  const closeBtn = body.querySelector(".close-btn");
+  function expand(){  body.style.maxHeight="2000px";body.style.opacity="1";body.style.marginTop="14px";chevron.style.transform="rotate(180deg)"; }
+  function collapse(){ body.style.maxHeight="0";body.style.opacity="0";body.style.marginTop="0";chevron.style.transform="rotate(0)"; }
+  toggle.onclick = () => body.style.maxHeight === "0px" || body.style.maxHeight === "" ? expand() : collapse();
+  closeBtn.onclick = collapse;
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;">${qi+1}. ${qq.q}</p>`;
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#667eea";btn.style.background="#f0f0ff"; }};
+      btn.onmouseout  = () => { if(!card.dataset.answered){ btn.style.borderColor="#e2e8f0";btn.style.background="#fff"; }};
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => { b.style.cursor="default"; b.onmouseover=null; b.onmouseout=null; });
+        if(oi === qq.correct){
+          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";
+          card.querySelectorAll("button")[qq.correct].style.borderColor="#48bb78";
+          card.querySelectorAll("button")[qq.correct].style.background="#f0fff4";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";
+      };
+      card.appendChild(btn);
+    });
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
 starLifespans = [
   {type: "O-type\n(60 M☉)", mass: 60, lifespan: 0.003, temp: 40000, luminosity: 800000, color: "#6ca0dc", fate: "Supernova → Black hole"},
   {type: "B-type\n(10 M☉)", mass: 10, lifespan: 0.02, temp: 20000, luminosity: 10000, color: "#a0c4ff", fate: "Supernova → Neutron star"},
@@ -106,13 +182,29 @@ Plot.plot({
 })
 ```
 
-::: {.student-task}
-### 📝 Pattern Recognition
-
-1. What's the relationship between a star's **mass** and its **lifespan**?
-2. The red dashed line shows the age of life on Earth (4.6 billion years). Which star types have lifespans **shorter** than this? What does that mean for habitability?
-3. Why might a very low-mass M-type star (70 billion year lifespan!) still not be ideal for life? (Hint: look at luminosity)
-:::
+```{ojs}
+//| echo: false
+buildQuiz("star-lifespan-quiz", "⭐ Check Your Understanding — Star Lifespans", [
+  {
+    q: "What is the relationship between a star's mass and its lifespan?",
+    options: ["Higher mass = longer lifespan", "Higher mass = shorter lifespan (they burn fuel much faster)", "Mass has no effect on lifespan", "Only medium-mass stars have predictable lifespans"],
+    correct: 1,
+    explanation: "More massive stars have stronger gravity compressing their cores, driving fusion at a much faster rate. An O-type star (60 M☉) burns through its fuel in just 3 million years, while a low-mass M-type (0.3 M☉) lasts 70 billion years."
+  },
+  {
+    q: "The red dashed line marks 4.6 billion years (the age of life on Earth). Which star types have lifespans shorter than this?",
+    options: ["Only O-type stars", "O-type and B-type stars", "O-type, B-type, and A-type stars", "All star types except G-type"],
+    correct: 2,
+    explanation: "O-type (3 Myr), B-type (20 Myr), and A-type (1 Gyr) stars all burn out well before 4.6 billion years. Any planet orbiting these stars would not have enough time for complex life to evolve."
+  },
+  {
+    q: "An M-type star lives 70 billion years — far longer than needed for life. Why might it still be problematic for habitability?",
+    options: ["M-type stars are too hot for nearby planets", "M-type stars have very low luminosity, so the habitable zone is extremely close to the star", "M-type stars cannot fuse hydrogen", "M-type stars always explode as supernovae"],
+    correct: 1,
+    explanation: "M-type stars have luminosities as low as 0.01× the Sun's. The habitable zone would be so close that the planet likely becomes tidally locked (one side always facing the star), creating extreme temperature differences."
+  }
+])
+```
 
 # Explore 1: Patterns of Star Stability
 
@@ -257,14 +349,29 @@ Plot.plot({
 })
 ```
 
-::: {.check-understanding}
-### 🤔 Check for Understanding: Reading the Real H-R Diagram
-
-1. The dense diagonal band from upper-left to lower-right is the **Main Sequence**. Why are there far more cool, dim stars (lower-right) than hot, bright ones (upper-left)?
-2. Identify the cluster of stars in the **upper-right** (high luminosity, low temperature). What evolutionary stage are these? Hover a few to check their magnitudes — how do they compare to main-sequence stars?
-3. The sparse group in the **lower-left** (hot but very dim) are white dwarfs. Why are so few visible here compared to main-sequence stars, even though most stars eventually become white dwarfs?
-4. Hover over stars with a B-V of ~0.65 and absolute magnitude near +4.8 — that's where our Sun sits. What temperature does the tooltip report? Does that match the ~5,800 K you'd expect for a G-type star?
-:::
+```{ojs}
+//| echo: false
+buildQuiz("hr-diagram-quiz", "📊 Check Your Understanding — H-R Diagram", [
+  {
+    q: "The dense diagonal band running from upper-left to lower-right is the Main Sequence. Why are there far more cool, dim stars (lower-right) than hot, bright ones (upper-left)?",
+    options: ["Cool stars are closer to Earth so we detect more of them", "Low-mass stars are far more common in the universe AND they live much longer, so more are still shining", "Hot stars are hidden behind dust clouds", "The diagram only sampled nearby stars, which happen to be cool"],
+    correct: 1,
+    explanation: "Low-mass stars are both more commonly formed and far longer-lived. A 0.3 M☉ star lives 70 billion years while a 60 M☉ star lasts only 3 million years. At any given time, many more low-mass stars are still on the main sequence."
+  },
+  {
+    q: "The cluster in the upper-right of the H-R diagram (high luminosity, low temperature) represents which evolutionary stage?",
+    options: ["Young protostars still forming", "Main sequence stars in their prime", "Red Giants — old stars that exhausted core hydrogen and expanded", "White dwarfs cooling down"],
+    correct: 2,
+    explanation: "Stars in the upper-right are Red Giants. When a main-sequence star exhausts its core hydrogen, the core contracts while the outer layers expand enormously, making the star very luminous but with a cool (red) surface."
+  },
+  {
+    q: "Our Sun (B-V ≈ 0.65, magnitude ≈ +4.8) sits in the middle of the Main Sequence. What does this position tell us about its suitability for supporting life?",
+    options: ["It's too dim to support life on nearby planets", "It's a moderately hot, moderately luminous, stable star with a ~10 billion year lifespan — ideal for life", "It's about to leave the main sequence and become a Red Giant", "Its position means it will eventually explode"],
+    correct: 1,
+    explanation: "The Sun's position in the middle main sequence means it has moderate temperature (~5,800 K), moderate luminosity (1 L☉), and a long stable lifespan (~10 Gyr). This 'Goldilocks' position gives planets billions of years of steady energy."
+  }
+])
+```
 
 ::: {.key-idea}
 ### 💡 What the H-R Diagram Tells Us
@@ -342,16 +449,29 @@ viewof starMass = Inputs.range([0.3, 30], {label: "Star mass (solar masses):", s
 }
 ```
 
-::: {.student-task}
-### 📝 Star Mass Investigation
-
-Use the slider to explore stars of different masses:
-
-1. At what mass does a star's lifespan drop below 4.6 billion years (the age of life on Earth)?
-2. What happens to a star's **temperature** and **luminosity** as mass increases?
-3. Stars above ~8 solar masses end as supernovae. Why would this be catastrophic for any orbiting planets?
-4. What range of star masses would you want for an exoplanet's host star? Explain your reasoning.
-:::
+```{ojs}
+//| echo: false
+buildQuiz("star-mass-quiz", "⚖️ Check Your Understanding — Star Mass & Fate", [
+  {
+    q: "Using the slider, at approximately what mass does a star's lifespan drop below 4.6 billion years?",
+    options: ["About 0.5 solar masses", "About 1.2 solar masses", "About 5 solar masses", "About 10 solar masses"],
+    correct: 1,
+    explanation: "At ~1.2 solar masses, the lifespan drops to roughly 4.6 billion years (the age of life on Earth). Stars more massive than this burn out too quickly for complex life to evolve."
+  },
+  {
+    q: "What happens to a star's temperature and luminosity as mass increases?",
+    options: ["Both decrease — massive stars are cooler and dimmer", "Temperature increases but luminosity decreases", "Both increase dramatically — massive stars are much hotter and brighter", "Neither changes; mass only affects lifespan"],
+    correct: 2,
+    explanation: "Luminosity scales as M^3.5 and temperature as M^0.5. A 10 M☉ star is ~3,000× more luminous and nearly twice as hot as the Sun. This extreme output is exactly why massive stars exhaust fuel so quickly."
+  },
+  {
+    q: "Stars above ~8 solar masses end as supernovae. Why is this catastrophic for any orbiting planets?",
+    options: ["The supernova creates a black hole that swallows the planets", "The explosion releases enough energy to vaporize nearby planets and sterilize the surrounding region", "The star shrinks so planets drift away into space", "Supernovae only affect the star itself, not its planets"],
+    correct: 1,
+    explanation: "A supernova releases ~10⁴⁴ joules of energy in seconds — briefly outshining the entire galaxy. This vaporizes inner planets, strips atmospheres from outer ones, and bathes the region in lethal radiation. No planet nearby survives intact."
+  }
+])
+```
 
 # Elaborate: Nucleosynthesis — Stars Build the Elements
 
@@ -407,41 +527,333 @@ Plot.plot({
 })
 ```
 
-<div class="mind-blown">
-⭐ Every atom of carbon in your body, every atom of oxygen you breathe, every atom of iron in your blood — ALL of it was forged inside a star that exploded billions of years ago. You are literally made of star stuff.
+```{ojs}
+//| echo: false
+buildQuiz("nucleosynthesis-quiz", "⚛️ Check Your Understanding — Nucleosynthesis", [
+  {
+    q: "Our Sun (1 solar mass) can fuse hydrogen into helium. What is the heaviest element it will ever produce?",
+    options: ["Iron (Fe)", "Carbon and Oxygen (C, O)", "Silicon (Si)", "Gold (Au)"],
+    correct: 1,
+    explanation: "Stars of ~1 solar mass can only fuse hydrogen into helium on the main sequence, then helium into carbon and oxygen during the Red Giant phase. Creating elements heavier than that requires more massive stars (4+ solar masses)."
+  },
+  {
+    q: "Elements heavier than iron (like gold and uranium) can only be created during which event?",
+    options: ["Normal main-sequence fusion", "Red Giant expansion", "Supernova explosions", "Planetary nebula formation"],
+    correct: 2,
+    explanation: "Fusing iron actually requires energy input rather than releasing it — it's energetically unfavorable. Only the extreme conditions of a supernova (temperatures exceeding billions of degrees) provide enough energy to forge elements heavier than iron."
+  }
+])
+```
+
+# Chapter Summary
+
+| Key Concept | Details |
+|---|---|
+| **Mass–lifespan relationship** | $L_{life} \propto M^{-2.5}$ — more massive = shorter lifespan |
+| **H-R Diagram** | Plots temperature vs. luminosity; Main Sequence = stable hydrogen fusion |
+| **Ideal star for life** | G or K type, 0.5–1.5 M☉, main sequence, lifespan > 4 Gyr |
+| **Supernova threshold** | Stars > 8 M☉ explode — destroying nearby planets |
+| **Nucleosynthesis** | Stars build elements; heavier than iron requires supernovae |
+| **"Star stuff"** | All elements in your body were forged inside ancient stars |
+
+---
+
+# Myth or Fact?
+
+```{=html}
+<div id="star-myths" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%); color:white; padding:30px; border-radius:16px; margin:30px 0; font-family:'Inter',sans-serif; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.8em; margin:0 0 8px 0; background:linear-gradient(135deg,#a29bfe,#fd79a8); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
+    ⭐ Star Life Cycles: Myths vs. Facts
+  </h2>
+  <p style="color:#94a3b8; margin:0 0 20px 0; font-size:0.95em;">Decide whether each statement is a MYTH or a FACT!</p>
+  <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:12px 20px; border-radius:12px; margin-bottom:20px;">
+    <div id="stmf-progress" style="color:#94a3b8; font-size:0.9em;">Card 1 of 8</div>
+    <div style="color:#94a3b8; font-size:0.9em;">Score: <span id="stmf-score" style="color:#a29bfe; font-weight:700;">0</span> / <span id="stmf-total">0</span></div>
+  </div>
+  <div id="stmf-card" style="background:rgba(255,255,255,0.08); border-radius:14px; padding:28px; min-height:100px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:1.1em; font-weight:600; line-height:1.6; border:1.5px solid rgba(255,255,255,0.1);"></div>
+  <div style="display:flex; gap:12px; margin-top:16px;">
+    <button id="stmf-myth" onclick="stmfAnswer('Myth')" style="flex:1; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#e17055,#d63031); color:white; font-size:1em; font-weight:700; cursor:pointer; box-shadow:0 4px 15px rgba(214,48,49,0.3);">❌ MYTH</button>
+    <button id="stmf-fact" onclick="stmfAnswer('Fact')" style="flex:1; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#00b894,#00cec9); color:white; font-size:1em; font-weight:700; cursor:pointer; box-shadow:0 4px 15px rgba(0,184,148,0.3);">✅ FACT</button>
+  </div>
+  <div id="stmf-feedback" style="margin-top:16px; padding:16px; border-radius:10px; display:none; font-size:0.95em; line-height:1.6;"></div>
+  <button id="stmf-next" onclick="stmfNext()" style="display:none; margin-top:12px; width:100%; padding:12px; border:2px solid rgba(255,255,255,0.2); border-radius:10px; background:transparent; color:white; font-size:0.95em; font-weight:600; cursor:pointer;">Next Card →</button>
+  <div id="stmf-done" style="display:none; text-align:center; padding:20px;">
+    <div style="font-size:2.5em; margin-bottom:10px;">🎉</div>
+    <div style="font-size:1.3em; font-weight:700;">All cards complete!</div>
+    <div style="color:#94a3b8; margin:8px 0;">Final score: <span id="stmf-final" style="color:#a29bfe; font-weight:700;"></span> / 8</div>
+    <button onclick="stmfRestart()" style="margin-top:12px; padding:10px 24px; border:2px solid #a29bfe; border-radius:20px; background:transparent; color:#a29bfe; font-size:0.9em; cursor:pointer; font-weight:600;">Play Again</button>
+  </div>
 </div>
+<script>
+(function() {
+  var cards = [
+    {
+      text: "Bigger stars live longer because they have more fuel.",
+      type: "Myth",
+      explanation: "Bigger stars DO have more hydrogen fuel, but they burn it at a vastly faster rate. Luminosity scales as M^3.5, so a 10× more massive star is ~3,000× brighter and exhausts its fuel hundreds of times sooner. A 60 M☉ star lasts only 3 million years vs. 10 billion for our Sun."
+    },
+    {
+      text: "All stars eventually explode as supernovae.",
+      type: "Myth",
+      explanation: "Only stars above ~8 solar masses have enough gravitational pressure to trigger a supernova. Our Sun (1 M☉) will expand into a Red Giant, shed its outer layers as a planetary nebula, and quietly cool as a white dwarf — no explosion."
+    },
+    {
+      text: "Every atom of carbon, oxygen, and iron in your body was originally forged inside a star.",
+      type: "Fact",
+      explanation: "The Big Bang produced only hydrogen, helium, and trace lithium. All heavier elements were created by nuclear fusion in stellar cores or during supernova explosions. Earth's elements — and your body's — came from stars that died before our solar system formed."
+    },
+    {
+      text: "The H-R diagram plots stars by their mass and distance from Earth.",
+      type: "Myth",
+      explanation: "The Hertzsprung-Russell diagram plots stars by surface temperature (x-axis, decreasing left to right) and luminosity (y-axis). Mass and distance are not directly plotted, though mass correlates with a star's position on the main sequence."
+    },
+    {
+      text: "A star on the Main Sequence is in a stable balance between gravity pulling inward and fusion pressure pushing outward.",
+      type: "Fact",
+      explanation: "This balance is called hydrostatic equilibrium. Gravity tries to compress the star, while the energy from fusion creates radiation and thermal pressure pushing outward. As long as hydrogen fuel remains, the star maintains this equilibrium and shines steadily."
+    },
+    {
+      text: "Red Giant stars are hotter than main-sequence stars — that's why they're so luminous.",
+      type: "Myth",
+      explanation: "Red Giants are actually cooler on the surface than many main-sequence stars (hence the red color, ~3,500–4,000 K). They're extremely luminous because they've expanded to enormous sizes — Betelgeuse is ~700× the Sun's diameter. Luminosity depends on both temperature AND surface area."
+    },
+    {
+      text: "Elements heavier than iron can only be created during supernova explosions, not during normal stellar fusion.",
+      type: "Fact",
+      explanation: "Fusing elements heavier than iron requires energy input rather than releasing it. Only the extreme temperatures and neutron flux of a supernova provide enough energy to create elements like gold, platinum, and uranium through rapid neutron capture."
+    },
+    {
+      text: "A G-type or K-type star (0.5–1.5 solar masses) is considered ideal for supporting life on an orbiting planet.",
+      type: "Fact",
+      explanation: "G and K stars balance long lifespan (10–20+ billion years) with sufficient luminosity for a reasonably-sized habitable zone. More massive stars die too quickly; less massive M-type stars have tiny habitable zones that likely tidally lock planets."
+    }
+  ];
+  var idx = 0, score = 0, answered = 0, cardAnswered = false;
+  function updateCard() {
+    if (idx >= cards.length) {
+      document.getElementById('stmf-card').style.display = 'none';
+      document.getElementById('stmf-myth').style.display = 'none';
+      document.getElementById('stmf-fact').style.display = 'none';
+      document.getElementById('stmf-feedback').style.display = 'none';
+      document.getElementById('stmf-next').style.display = 'none';
+      document.getElementById('stmf-done').style.display = 'block';
+      document.getElementById('stmf-final').textContent = score;
+      return;
+    }
+    document.getElementById('stmf-card').textContent = cards[idx].text;
+    document.getElementById('stmf-progress').textContent = 'Card ' + (idx + 1) + ' of ' + cards.length;
+    document.getElementById('stmf-feedback').style.display = 'none';
+    document.getElementById('stmf-next').style.display = 'none';
+    document.getElementById('stmf-myth').disabled = false;
+    document.getElementById('stmf-fact').disabled = false;
+    document.getElementById('stmf-myth').style.opacity = '1';
+    document.getElementById('stmf-fact').style.opacity = '1';
+    cardAnswered = false;
+  }
+  window.stmfAnswer = function(choice) {
+    if (cardAnswered) return;
+    cardAnswered = true;
+    answered++;
+    var card = cards[idx];
+    var correct = (choice === card.type);
+    if (correct) score++;
+    document.getElementById('stmf-score').textContent = score;
+    document.getElementById('stmf-total').textContent = answered;
+    var fb = document.getElementById('stmf-feedback');
+    fb.style.display = 'block';
+    fb.style.background = correct ? 'rgba(0,184,148,0.2)' : 'rgba(214,48,49,0.2)';
+    fb.style.border = '1px solid ' + (correct ? '#00b894' : '#e17055');
+    fb.innerHTML = '<strong>' + (correct ? '✅ Correct! ' : '❌ That\'s a ' + card.type + '! ') + '</strong>' + card.explanation;
+    document.getElementById('stmf-myth').disabled = true;
+    document.getElementById('stmf-fact').disabled = true;
+    document.getElementById('stmf-myth').style.opacity = (choice === 'Myth') ? '1' : '0.5';
+    document.getElementById('stmf-fact').style.opacity = (choice === 'Fact') ? '1' : '0.5';
+    document.getElementById('stmf-next').style.display = 'block';
+  };
+  window.stmfNext = function() { idx++; updateCard(); };
+  window.stmfRestart = function() {
+    idx = 0; score = 0; answered = 0;
+    document.getElementById('stmf-card').style.display = 'flex';
+    document.getElementById('stmf-myth').style.display = 'block';
+    document.getElementById('stmf-fact').style.display = 'block';
+    document.getElementById('stmf-done').style.display = 'none';
+    document.getElementById('stmf-score').textContent = '0';
+    document.getElementById('stmf-total').textContent = '0';
+    updateCard();
+  };
+  updateCard();
+})();
+</script>
+```
 
-# Evaluate: Which Star Can Support Life?
+---
 
-::: {.evaluate-box}
-## ✏️ Construct Your Argument
+# End-of-Chapter Quiz
 
-Using everything you've learned about star life cycles, argue which star in the performance task data set is most likely to support a planet with life.
-:::
+```{ojs}
+//| echo: false
+function buildStarQuiz(id, title, questions) {
+  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const header = html`<div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border-radius:14px 14px 0 0;padding:18px 24px;">
+    <div style="font-size:1.1em;font-weight:700;display:flex;align-items:center;gap:8px;"><span style="font-size:1.2em;">📝</span> ${title}</div>
+    <div style="font-size:0.85em;opacity:0.85;margin-top:4px;">Select an answer for each question.</div>
+  </div>`;
+  const body = html`<div style="border:1.5px solid #c7d2fe;border-top:none;border-radius:0 0 14px 14px;overflow:hidden;background:#f8f9ff;padding:16px;"></div>`;
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#667eea";btn.style.background="#f0f0ff"; }};
+      btn.onmouseout  = () => { if(!card.dataset.answered){ btn.style.borderColor="#e2e8f0";btn.style.background="#fff"; }};
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => {
+          b.style.cursor="default"; b.onmouseover=null; b.onmouseout=null;
+          b.style.borderColor="#e2e8f0"; b.style.background="#f8fafc"; b.style.color="#475569";
+        });
+        if(oi === qq.correct){
+          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";btn.style.color="#276749";btn.style.fontWeight="700";
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";btn.style.color="#9b2c2c";btn.style.fontWeight="700";
+          const correctBtn = card.querySelectorAll("button")[qq.correct];
+          correctBtn.style.borderColor="#48bb78";correctBtn.style.background="#f0fff4";correctBtn.style.color="#276749";correctBtn.style.fontWeight="700";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";fb.style.borderRadius="8px";
+      };
+      card.appendChild(btn);
+    });
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  outer.appendChild(header);
+  outer.appendChild(body);
+  return outer;
+}
+```
 
-::: {.student-task}
-### 📝 Performance Task Connection
-
-1. **Revise your model** to include what you've learned about star stability. What features of a star matter for habitability?
-
-2. **Evaluate these criteria** for each exoplanet's host star:
-
-| Criterion | Why It Matters | Ideal Range |
-|---|---|---|
-| Mass | Determines lifespan and stability | 0.5–1.5 solar masses |
-| Spectral type | Related to temperature and luminosity | G or K type |
-| Lifespan | Must be long enough for life to evolve | > 4 billion years |
-| Stability | No dramatic changes in energy output | Main sequence |
-
-3. **Write your argument:** Which star from the data set is most likely to support life? Use evidence from the H-R diagram, lifespan calculations, and nucleosynthesis patterns.
-:::
-
-::: {.check-understanding}
-### 📋 What You Figured Out
-
-- ⭐ More massive stars burn **faster** and die **younger** (inverse relationship)
-- 📊 The H-R diagram reveals that most stars sit on the **Main Sequence** where they're stable
-- 💥 Stars > 8 solar masses end in **supernovae** — destroying any nearby planets
-- ⚛️ Only massive stars can create elements **heavier than iron** — through supernovae
-- 🌍 For life, we need a star with mass **0.5–1.5 solar masses** (G or K type) for stability
-:::
+```{ojs}
+//| echo: false
+buildStarQuiz("star-summative-quiz", "⭐ Summative Quiz — Star Life Cycles", [
+  {
+    q: "In 1054 CE, a star exploded so violently it was visible in daylight for 23 days. What type of event was this?",
+    options: [
+      "A solar flare from a Sun-like star",
+      "A supernova — the explosive death of a massive star",
+      "A Red Giant shedding its outer layers",
+      "Two stars colliding"
+    ],
+    correct: 1,
+    explanation: "The 1054 event was a supernova — the catastrophic explosion of a star more massive than ~8 solar masses. The remnant, the Crab Nebula, is still visible today as an expanding cloud of gas and a central neutron star."
+  },
+  {
+    q: "A star has a mass of 0.7 solar masses. Using the relationship Lifespan ∝ M^(-2.5), approximately how long will it live on the main sequence?",
+    options: [
+      "About 5 billion years",
+      "About 10 billion years",
+      "About 24 billion years",
+      "About 70 billion years"
+    ],
+    correct: 2,
+    explanation: "Lifespan = 10 / M^2.5 = 10 / 0.7^2.5 ≈ 10 / 0.41 ≈ 24 billion years. K-type stars like this are excellent candidates for hosting habitable planets — they're stable for far longer than our Sun."
+  },
+  {
+    q: "On the H-R diagram, where would you find the most stable, long-lived stars?",
+    options: [
+      "Upper left (hot supergiants)",
+      "Middle of the Main Sequence diagonal band",
+      "Upper right (Red Giants)",
+      "Lower left (White Dwarfs)"
+    ],
+    correct: 1,
+    explanation: "The middle main sequence contains G and K type stars with moderate temperatures, moderate luminosities, and lifespans of 10-20+ billion years. Stars above are too hot/short-lived; Red Giants and White Dwarfs are end-of-life stages."
+  },
+  {
+    q: "What force keeps a main-sequence star from collapsing under its own gravity?",
+    options: [
+      "Centrifugal force from the star's rotation",
+      "Magnetic fields generated in the core",
+      "Outward radiation and gas pressure from nuclear fusion",
+      "Gravitational pull from orbiting planets"
+    ],
+    correct: 2,
+    explanation: "Hydrostatic equilibrium: the outward pressure from fusion energy exactly balances the inward pull of gravity. When a star exhausts its fuel and fusion stops, gravity wins — the core collapses, triggering either a Red Giant expansion or a supernova."
+  },
+  {
+    q: "Which statement about nucleosynthesis is correct?",
+    options: [
+      "All elements up to uranium are produced inside every star",
+      "The Sun can only produce helium; elements heavier than helium require more massive stars",
+      "Elements heavier than iron require supernova conditions to form",
+      "Stars do not produce elements — all elements were created in the Big Bang"
+    ],
+    correct: 2,
+    explanation: "Fusing elements lighter than iron releases energy. But iron fusion requires energy input — it's endothermic. Only the extreme temperatures of a supernova can forge elements heavier than iron (gold, uranium, etc.) through rapid neutron capture."
+  },
+  {
+    q: "You're evaluating an exoplanet orbiting a B-type star (10 solar masses). Why is this a poor candidate for hosting life?",
+    options: [
+      "B-type stars don't emit enough light for photosynthesis",
+      "B-type stars live only ~20 million years — far too short for complex life to evolve",
+      "B-type stars lack hydrogen, so they can't sustain fusion",
+      "B-type stars have no habitable zone"
+    ],
+    correct: 1,
+    explanation: "Complex life on Earth took ~4 billion years to develop. A B-type star (10 M☉) exhausts its fuel in ~20 million years. Even simple life would barely have time to appear before the star leaves the main sequence and potentially explodes."
+  },
+  {
+    q: "Why do astronomers consider the Hipparcos H-R diagram important evidence for stellar evolution theory?",
+    options: [
+      "It shows all stars are identical in temperature and luminosity",
+      "Real star data clusters into predicted groups (Main Sequence, Red Giants, White Dwarfs), confirming theoretical models",
+      "It proves that all stars will eventually become black holes",
+      "It shows stars are randomly distributed with no patterns"
+    ],
+    correct: 1,
+    explanation: "The real Hipparcos data shows stars clustering exactly where theory predicts: a dense Main Sequence band, a Red Giant branch in the upper right, and White Dwarfs in the lower left. This pattern matches models of stellar evolution remarkably well."
+  },
+  {
+    q: "An exoplanet's host star is classified as K-type (0.7 M☉). What is its approximate surface temperature?",
+    options: [
+      "~3,200 K (cool red)",
+      "~4,500 K (warm orange)",
+      "~5,800 K (yellow, like the Sun)",
+      "~20,000 K (hot blue)"
+    ],
+    correct: 1,
+    explanation: "K-type stars have surface temperatures of ~3,900–5,200 K, making them cooler and more orange than our Sun (G-type, ~5,800 K). Their moderate temperature and long lifespan (17+ Gyr) make them excellent candidates for supporting life."
+  },
+  {
+    q: "Which of the following is the correct sequence for a Sun-like star's life cycle?",
+    options: [
+      "Nebula → Main Sequence → Supernova → Black Hole",
+      "Nebula → Main Sequence → Red Giant → White Dwarf",
+      "Nebula → Red Giant → Main Sequence → Neutron Star",
+      "Main Sequence → Nebula → Red Giant → Supernova"
+    ],
+    correct: 1,
+    explanation: "A ~1 M☉ star forms from a nebula, spends ~10 billion years on the Main Sequence fusing hydrogen, expands into a Red Giant when core hydrogen is exhausted, sheds its outer layers, and the remaining core cools as a White Dwarf."
+  },
+  {
+    q: "For the performance task: which combination of star properties would make you MOST confident an exoplanet could support life?",
+    options: [
+      "O-type star, 60 M☉, 40,000 K surface temperature",
+      "G-type star, 1 M☉, main sequence, ~10 Gyr lifespan",
+      "The most luminous star available, regardless of type",
+      "A White Dwarf — they're very stable since fusion has stopped"
+    ],
+    correct: 1,
+    explanation: "A G-type main-sequence star (like our Sun) balances long lifespan (~10 Gyr), stable energy output, and a reasonably-sized habitable zone. O-type stars die too fast; White Dwarfs produce too little energy for a useful habitable zone."
+  }
+])
+```

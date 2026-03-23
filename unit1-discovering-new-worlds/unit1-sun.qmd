@@ -126,6 +126,82 @@ d3 = require("d3@7")
 
 ```{ojs}
 //| echo: false
+buildQuiz = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="margin:18px 0 24px 0;text-align:center;">
+    <button style="
+      display:inline-flex;align-items:center;gap:7px;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      color:#fff;border:none;padding:9px 22px;border-radius:50px;
+      font-size:.95em;font-weight:700;cursor:pointer;
+      box-shadow:0 3px 12px rgba(102,126,234,.45);
+      transition:transform .15s,box-shadow .15s;"
+      onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 5px 18px rgba(102,126,234,.55)'"
+      onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 3px 12px rgba(102,126,234,.45)'"
+    >
+      <span style="font-size:1.1em;">📝</span> ${title}
+      <span class="chevron" style="transition:transform .3s;">▼</span>
+    </button>
+    <div class="quiz-body" style="
+      max-height:0;opacity:0;overflow:hidden;
+      transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin-top .3s ease;
+      margin-top:0;text-align:left;">
+      <button class="close-btn" style="
+        display:block;margin:0 auto 10px auto;
+        background:rgba(102,126,234,.12);color:#667eea;border:none;
+        padding:5px 18px;border-radius:50px;font-size:.85em;
+        font-weight:600;cursor:pointer;">Hide Quiz</button>
+      <p style="text-align:center;color:#718096;font-style:italic;font-size:.9em;margin-bottom:12px;">
+        Select an answer for each question.</p>
+    </div>
+  </div>`;
+  const toggle = outer.querySelector("button");
+  const chevron = toggle.querySelector(".chevron");
+  const body   = outer.querySelector(".quiz-body");
+  const closeBtn = body.querySelector(".close-btn");
+  function expand(){  body.style.maxHeight="2000px";body.style.opacity="1";body.style.marginTop="14px";chevron.style.transform="rotate(180deg)"; }
+  function collapse(){ body.style.maxHeight="0";body.style.opacity="0";body.style.marginTop="0";chevron.style.transform="rotate(0)"; }
+  toggle.onclick = () => body.style.maxHeight === "0px" || body.style.maxHeight === "" ? expand() : collapse();
+  closeBtn.onclick = collapse;
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;">${qi+1}. ${qq.q}</p>`;
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#667eea";btn.style.background="#f0f0ff"; }};
+      btn.onmouseout  = () => { if(!card.dataset.answered){ btn.style.borderColor="#e2e8f0";btn.style.background="#fff"; }};
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => { b.style.cursor="default"; b.onmouseover=null; b.onmouseout=null; });
+        if(oi === qq.correct){
+          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";
+          card.querySelectorAll("button")[qq.correct].style.borderColor="#48bb78";
+          card.querySelectorAll("button")[qq.correct].style.background="#f0fff4";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";
+      };
+      card.appendChild(btn);
+    });
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
 energyComparison = [
   {source: "Sun (per second)", energy: 3.8e26, log: 26.58, color: "#f39c12"},
   {source: "World (per day)", energy: 5.0e17, log: 17.70, color: "#3498db"},
@@ -164,11 +240,23 @@ Plot.plot({
 })
 ```
 
-::: {.student-task}
-### 📝 Initial Claim
-
-Before we investigate, write your best explanation for **how the Sun is able to release energy on such a massive scale.** What process do you think is responsible? We'll come back to this after gathering evidence.
-:::
+```{ojs}
+//| echo: false
+buildQuiz("energy-scale-quiz", "☀️ Check Your Understanding — Solar Energy Scale", [
+  {
+    q: "The Sun's energy output per second is approximately how many times greater than the entire world's daily energy use?",
+    options: ["About 10 times greater", "About 1,000 times greater", "About 1 billion times greater", "They are roughly equal"],
+    correct: 2,
+    explanation: "The Sun outputs ~3.8 × 10²⁶ joules per second, while the world uses ~5 × 10¹⁷ joules per day — a difference of roughly a billion times. No human-scale energy source comes close."
+  },
+  {
+    q: "On the log-scale chart above, each gridline represents what change in energy?",
+    options: ["Doubling the energy", "Adding 100 more joules", "Multiplying by 10 (one order of magnitude)", "Adding 1 billion joules"],
+    correct: 2,
+    explanation: "A logarithmic scale means each step represents a factor of 10. The Sun's bar being ~9 gridlines longer than the human body means it outputs 10⁹ (one billion) times more energy per second."
+  }
+])
+```
 
 # Explore: Investigating Light from the Sun
 
@@ -275,13 +363,29 @@ When light passes through a gas, certain wavelengths get absorbed. Each element 
 }
 ```
 
-::: {.student-task}
-### 📝 Spectral Analysis
-
-1. Compare the Sun's spectrum to the Hydrogen and Helium lab spectra. Which element's lines appear most prominently in the Sun's spectrum?
-2. The Sun is **73% hydrogen and 25% helium** by mass. Why is this important for understanding how the Sun produces energy?
-3. If an exoplanet's star showed a very different spectral pattern — say, mostly iron and carbon — what might that tell you about its ability to support life?
-:::
+```{ojs}
+//| echo: false
+buildQuiz("spectroscopy-quiz", "🔬 Check Your Understanding — Spectroscopy", [
+  {
+    q: "How do scientists determine the Sun's chemical composition without visiting it?",
+    options: ["They collect particles from the solar wind", "They match the Sun's absorption-line pattern to elements tested in labs", "They measure the Sun's mass and infer composition from density", "They send probes into the Sun's corona"],
+    correct: 1,
+    explanation: "Spectroscopy splits sunlight into its component wavelengths. Each element absorbs a unique pattern of wavelengths like a barcode. Matching the Sun's dark absorption lines to lab spectra reveals it is 73% hydrogen and 25% helium."
+  },
+  {
+    q: "The Sun is 73% hydrogen by mass. Why is this composition critical for sustaining life on Earth?",
+    options: ["Hydrogen makes the Sun appear yellow, which plants need", "Hydrogen is the fuel for nuclear fusion — the process that powers the Sun for billions of years", "Hydrogen is lighter than helium, keeping the Sun from collapsing", "Hydrogen reflects more light toward Earth"],
+    correct: 1,
+    explanation: "Hydrogen is the fuel for nuclear fusion. Four hydrogen nuclei fuse into helium, releasing enormous energy. The Sun's vast hydrogen supply allows it to shine steadily for ~10 billion years — long enough for complex life to evolve."
+  },
+  {
+    q: "If an exoplanet's star showed absorption lines dominated by iron and carbon instead of hydrogen, what would that suggest?",
+    options: ["The star is very young and hasn't started fusing yet", "The star is likely near the end of its life and may not be stable enough for life", "Iron and carbon stars burn hotter and are better for life", "The star would have stronger gravity, pulling planets closer"],
+    correct: 1,
+    explanation: "A star dominated by heavy elements like iron has likely depleted most of its hydrogen fuel. Such a star is near the end of its life cycle and may be unstable — a red flag for habitability."
+  }
+])
+```
 
 # Explain: The Sun's Energy Source
 
@@ -380,17 +484,29 @@ viewof sunAge = Inputs.range([0, 12], {label: "Sun's age (billion years):", step
 }
 ```
 
-::: {.student-task}
-### 📝 Explore the Sun's Life
-
-Use the slider to explore the Sun's life from birth to death:
-
-1. At what age does the Sun run out of hydrogen fuel?
-2. What happens to the Sun's **size** when it becomes a Red Giant?
-3. The Sun is currently **4.6 billion years old.** How much of its hydrogen has it used so far?
-4. Why is the fact that the Sun has been **stable** for billions of years so important for life on Earth?
-5. If our Sun were twice as massive, it would burn through fuel **8× faster.** What would that mean for life?
-:::
+```{ojs}
+//| echo: false
+buildQuiz("sun-lifecycle-quiz", "⏱️ Check Your Understanding — The Sun's Life Cycle", [
+  {
+    q: "Using the slider, at approximately what age does the Sun transition from Main Sequence to Red Giant?",
+    options: ["About 5 billion years", "About 10 billion years", "About 7 billion years", "About 12 billion years"],
+    correct: 1,
+    explanation: "The Sun will exhaust its core hydrogen fuel at roughly 10 billion years of age, triggering its expansion into a Red Giant. Since it's currently 4.6 billion years old, it has about 5.4 billion years of stable life left."
+  },
+  {
+    q: "What happens to the Sun's physical size when it becomes a Red Giant?",
+    options: ["It shrinks to a tiny point", "It stays roughly the same size", "It expands enormously — large enough to engulf Earth's orbit", "It splits into two smaller stars"],
+    correct: 2,
+    explanation: "When core hydrogen is exhausted, the Sun's outer layers expand dramatically. As a Red Giant, the Sun will swell to roughly 200× its current radius, likely engulfing Mercury, Venus, and possibly Earth."
+  },
+  {
+    q: "The Sun is currently 4.6 billion years old. Approximately how much of its hydrogen fuel has it consumed?",
+    options: ["About 5%", "About 30%", "About 50%", "About 75%"],
+    correct: 1,
+    explanation: "At 4.6 billion years with a ~10 billion year main-sequence lifespan, the Sun has burned through roughly 30% of its core hydrogen. The fuel gauge in the simulation shows this — plenty of fuel remains for billions more years."
+  }
+])
+```
 
 # Elaborate: Scale of Solar Energy
 
@@ -448,38 +564,316 @@ Plot.plot({
 ☀️ If the Sun ran on coal, it would have burned out in 5,000 years. If it ran on gravitational contraction, it would last 30 million years. Only nuclear fusion — the same process in a hydrogen bomb — explains how the Sun has been shining for 4.6 BILLION years.
 </div>
 
-# Evaluate: Your Model of the Sun
+# Chapter Summary
 
-::: {.evaluate-box}
-## ✏️ Revise Your Habitability Model
+| Key Concept | Details |
+|---|---|
+| **Sun's composition** | 73% hydrogen, 25% helium — determined by spectroscopy |
+| **Energy source** | Nuclear fusion: $4H \rightarrow He + energy$ ($E = mc^2$) |
+| **Energy output** | $3.8 \times 10^{26}$ watts — stable for billions of years |
+| **Sun's age** | 4.6 billion years old, ~5.4 billion years of fuel remaining |
+| **Why only fusion?** | Chemical burning lasts ~5,000 yr; gravitational contraction ~30 Myr. Only fusion explains 4.6 Gyr of steady output |
+| **Sun's fate** | Main Sequence → Red Giant (~10 Gyr) → White Dwarf |
+| **Key tool** | Spectroscopy — absorption lines reveal composition remotely |
 
-Now that you understand how the Sun works, update your model from the Opening. Add what you've learned about:
+---
 
-- The Sun's composition (73% hydrogen, 25% helium)
-- Nuclear fusion as the energy source
-- The Sun's stability over billions of years
-- How spectroscopy provides evidence for the Sun's composition
-:::
+# Myth or Fact?
 
-::: {.student-task}
-### 📝 Model Revision & Prediction
+```{=html}
+<div id="sun-myths" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%); color:white; padding:30px; border-radius:16px; margin:30px 0; font-family:'Inter',sans-serif; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.8em; margin:0 0 8px 0; background:linear-gradient(135deg,#f39c12,#e74c3c); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
+    ☀️ The Sun: Myths vs. Facts
+  </h2>
+  <p style="color:#94a3b8; margin:0 0 20px 0; font-size:0.95em;">Decide whether each statement is a MYTH or a FACT!</p>
+  <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:12px 20px; border-radius:12px; margin-bottom:20px;">
+    <div id="smf-progress" style="color:#94a3b8; font-size:0.9em;">Card 1 of 8</div>
+    <div style="color:#94a3b8; font-size:0.9em;">Score: <span id="smf-score" style="color:#f39c12; font-weight:700;">0</span> / <span id="smf-total">0</span></div>
+  </div>
+  <div id="smf-card" style="background:rgba(255,255,255,0.08); border-radius:14px; padding:28px; min-height:100px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:1.1em; font-weight:600; line-height:1.6; border:1.5px solid rgba(255,255,255,0.1);"></div>
+  <div style="display:flex; gap:12px; margin-top:16px;">
+    <button id="smf-myth" onclick="smfAnswer('Myth')" style="flex:1; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#e17055,#d63031); color:white; font-size:1em; font-weight:700; cursor:pointer; box-shadow:0 4px 15px rgba(214,48,49,0.3);">❌ MYTH</button>
+    <button id="smf-fact" onclick="smfAnswer('Fact')" style="flex:1; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#00b894,#00cec9); color:white; font-size:1em; font-weight:700; cursor:pointer; box-shadow:0 4px 15px rgba(0,184,148,0.3);">✅ FACT</button>
+  </div>
+  <div id="smf-feedback" style="margin-top:16px; padding:16px; border-radius:10px; display:none; font-size:0.95em; line-height:1.6;"></div>
+  <button id="smf-next" onclick="smfNext()" style="display:none; margin-top:12px; width:100%; padding:12px; border:2px solid rgba(255,255,255,0.2); border-radius:10px; background:transparent; color:white; font-size:0.95em; font-weight:600; cursor:pointer;">Next Card →</button>
+  <div id="smf-done" style="display:none; text-align:center; padding:20px;">
+    <div style="font-size:2.5em; margin-bottom:10px;">🎉</div>
+    <div style="font-size:1.3em; font-weight:700;">All cards complete!</div>
+    <div style="color:#94a3b8; margin:8px 0;">Final score: <span id="smf-final" style="color:#f39c12; font-weight:700;"></span> / 8</div>
+    <button onclick="smfRestart()" style="margin-top:12px; padding:10px 24px; border:2px solid #f39c12; border-radius:20px; background:transparent; color:#f39c12; font-size:0.9em; cursor:pointer; font-weight:600;">Play Again</button>
+  </div>
+</div>
+<script>
+(function() {
+  var cards = [
+    {
+      text: "The Sun is on fire — it burns hydrogen gas like a giant furnace.",
+      type: "Myth",
+      explanation: "The Sun doesn't burn fuel chemically. It fuses hydrogen nuclei into helium through nuclear fusion at 15 million °C. Chemical combustion (fire) would exhaust the Sun's fuel in about 5,000 years — fusion sustains it for 10 billion years."
+    },
+    {
+      text: "The Sun converts about 600 million tons of hydrogen into helium every second.",
+      type: "Fact",
+      explanation: "Each second, about 600 million tons of hydrogen fuse into ~596 million tons of helium. The 'missing' 4 million tons of mass convert directly into energy via E = mc². That tiny mass loss produces 3.8 × 10²⁶ watts of power."
+    },
+    {
+      text: "The Sun will eventually explode as a supernova.",
+      type: "Myth",
+      explanation: "Only stars more massive than about 8 solar masses end as supernovae. Our Sun (1 solar mass) will expand into a Red Giant, shed its outer layers as a planetary nebula, and quietly fade as a white dwarf. No explosion."
+    },
+    {
+      text: "Scientists determine the Sun's composition by analyzing patterns of absorbed wavelengths in sunlight (spectroscopy).",
+      type: "Fact",
+      explanation: "Each element absorbs specific wavelengths of light, creating a unique 'barcode' of dark lines in the spectrum. By matching the Sun's absorption lines to elements tested in the lab, scientists confirmed it is 73% hydrogen and 25% helium."
+    },
+    {
+      text: "The Sun has been shining for about 4.6 billion years and has roughly 5 billion years of stable energy left.",
+      type: "Fact",
+      explanation: "The Sun is a middle-aged main-sequence star. Its total main-sequence lifespan is about 10 billion years, so at 4.6 billion years old, it has burned through roughly 30% of its core hydrogen and has plenty of fuel remaining."
+    },
+    {
+      text: "The Sun is the biggest and brightest star in the Milky Way.",
+      type: "Myth",
+      explanation: "The Sun is a medium-sized G-type star — quite ordinary. Stars like Rigel are ~120,000× more luminous, and red supergiants like Betelgeuse are ~700× wider. The Sun only appears brightest because it is the nearest star to Earth."
+    },
+    {
+      text: "If the Sun were powered by burning coal instead of fusion, it would have exhausted its fuel thousands of years ago.",
+      type: "Fact",
+      explanation: "A Sun-sized ball of coal would burn for only about 5,000 years. Gravitational contraction could last ~30 million years. Only nuclear fusion produces enough energy at the right rate for 10 billion years — this was a key puzzle in 19th-century physics."
+    },
+    {
+      text: "The Sun produces energy by splitting heavy atoms apart (nuclear fission).",
+      type: "Myth",
+      explanation: "Nuclear fission splits heavy atoms (like uranium). The Sun uses nuclear fusion — combining light hydrogen nuclei into heavier helium. Fusion releases far more energy per unit mass and is the dominant process in all main-sequence stars."
+    }
+  ];
+  var idx = 0, score = 0, answered = 0, cardAnswered = false;
+  function updateCard() {
+    if (idx >= cards.length) {
+      document.getElementById('smf-card').style.display = 'none';
+      document.getElementById('smf-myth').style.display = 'none';
+      document.getElementById('smf-fact').style.display = 'none';
+      document.getElementById('smf-feedback').style.display = 'none';
+      document.getElementById('smf-next').style.display = 'none';
+      document.getElementById('smf-done').style.display = 'block';
+      document.getElementById('smf-final').textContent = score;
+      return;
+    }
+    document.getElementById('smf-card').textContent = cards[idx].text;
+    document.getElementById('smf-progress').textContent = 'Card ' + (idx + 1) + ' of ' + cards.length;
+    document.getElementById('smf-feedback').style.display = 'none';
+    document.getElementById('smf-next').style.display = 'none';
+    document.getElementById('smf-myth').disabled = false;
+    document.getElementById('smf-fact').disabled = false;
+    document.getElementById('smf-myth').style.opacity = '1';
+    document.getElementById('smf-fact').style.opacity = '1';
+    cardAnswered = false;
+  }
+  window.smfAnswer = function(choice) {
+    if (cardAnswered) return;
+    cardAnswered = true;
+    answered++;
+    var card = cards[idx];
+    var correct = (choice === card.type);
+    if (correct) score++;
+    document.getElementById('smf-score').textContent = score;
+    document.getElementById('smf-total').textContent = answered;
+    var fb = document.getElementById('smf-feedback');
+    fb.style.display = 'block';
+    fb.style.background = correct ? 'rgba(0,184,148,0.2)' : 'rgba(214,48,49,0.2)';
+    fb.style.border = '1px solid ' + (correct ? '#00b894' : '#e17055');
+    fb.innerHTML = '<strong>' + (correct ? '✅ Correct! ' : '❌ That\'s a ' + card.type + '! ') + '</strong>' + card.explanation;
+    document.getElementById('smf-myth').disabled = true;
+    document.getElementById('smf-fact').disabled = true;
+    document.getElementById('smf-myth').style.opacity = (choice === 'Myth') ? '1' : '0.5';
+    document.getElementById('smf-fact').style.opacity = (choice === 'Fact') ? '1' : '0.5';
+    document.getElementById('smf-next').style.display = 'block';
+  };
+  window.smfNext = function() { idx++; updateCard(); };
+  window.smfRestart = function() {
+    idx = 0; score = 0; answered = 0;
+    document.getElementById('smf-card').style.display = 'flex';
+    document.getElementById('smf-myth').style.display = 'block';
+    document.getElementById('smf-fact').style.display = 'block';
+    document.getElementById('smf-done').style.display = 'none';
+    document.getElementById('smf-score').textContent = '0';
+    document.getElementById('smf-total').textContent = '0';
+    updateCard();
+  };
+  updateCard();
+})();
+</script>
+```
 
-1. **Revise your model** to include the Sun's role in making Earth habitable. What specific features of our Sun matter most?
+---
 
-2. **Make a prediction:** As the Sun ages, the ratio of hydrogen to helium changes. What does this mean for:
-   - The Sun's energy output in the far future?
-   - The Sun's eventual fate?
-   - Life on Earth billions of years from now?
+# End-of-Chapter Quiz
 
-3. **Apply to the Performance Task:** If you were evaluating an exoplanet's star, what properties would you want to know? What would be a "red flag" that the star can't support life?
-:::
+```{ojs}
+//| echo: false
+function buildSunQuiz(id, title, questions) {
+  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const header = html`<div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border-radius:14px 14px 0 0;padding:18px 24px;">
+    <div style="font-size:1.1em;font-weight:700;display:flex;align-items:center;gap:8px;"><span style="font-size:1.2em;">📝</span> ${title}</div>
+    <div style="font-size:0.85em;opacity:0.85;margin-top:4px;">Select an answer for each question.</div>
+  </div>`;
+  const body = html`<div style="border:1.5px solid #c7d2fe;border-top:none;border-radius:0 0 14px 14px;overflow:hidden;background:#f8f9ff;padding:16px;"></div>`;
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#667eea";btn.style.background="#f0f0ff"; }};
+      btn.onmouseout  = () => { if(!card.dataset.answered){ btn.style.borderColor="#e2e8f0";btn.style.background="#fff"; }};
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => {
+          b.style.cursor="default"; b.onmouseover=null; b.onmouseout=null;
+          b.style.borderColor="#e2e8f0"; b.style.background="#f8fafc"; b.style.color="#475569";
+        });
+        if(oi === qq.correct){
+          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";btn.style.color="#276749";btn.style.fontWeight="700";
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";btn.style.color="#9b2c2c";btn.style.fontWeight="700";
+          const correctBtn = card.querySelectorAll("button")[qq.correct];
+          correctBtn.style.borderColor="#48bb78";correctBtn.style.background="#f0fff4";correctBtn.style.color="#276749";correctBtn.style.fontWeight="700";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";fb.style.borderRadius="8px";
+      };
+      card.appendChild(btn);
+    });
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  outer.appendChild(header);
+  outer.appendChild(body);
+  return outer;
+}
+```
 
-::: {.check-understanding}
-### 📋 What You Figured Out
-
-- ☀️ The Sun is **73% hydrogen** and **25% helium** — we know this from spectroscopy
-- ⚛️ The Sun produces energy through **nuclear fusion** ($4H → He + energy$)
-- ⏱️ Only fusion explains both the **quantity** and **duration** of solar energy
-- 🌡️ The Sun has been stable for **4.6 billion years** — critical for life
-- 🔮 The Sun will remain stable for **~5 more billion years** before becoming a red giant
-:::
+```{ojs}
+//| echo: false
+buildSunQuiz("sun-summative-quiz", "☀️ Summative Quiz — How the Sun Works", [
+  {
+    q: "What is the Sun's primary energy source?",
+    options: [
+      "Chemical combustion of hydrogen gas",
+      "Gravitational contraction releasing heat",
+      "Nuclear fusion — combining hydrogen nuclei into helium",
+      "Radioactive decay of heavy elements in the core"
+    ],
+    correct: 2,
+    explanation: "The Sun is powered by nuclear fusion in its core, where 4 hydrogen nuclei combine to form 1 helium nucleus. A small amount of mass is converted to energy via E = mc², producing 3.8 × 10²⁶ watts."
+  },
+  {
+    q: "Why is the equation E = mc² relevant to understanding solar energy?",
+    options: [
+      "It shows that the Sun must be moving at the speed of light",
+      "It explains why the Sun is round",
+      "It shows that a tiny loss of mass during fusion converts into an enormous amount of energy",
+      "It measures the gravitational pull between the Sun and Earth"
+    ],
+    correct: 2,
+    explanation: "During fusion, the helium product has 0.7% less mass than the four hydrogen inputs. That 'missing' mass converts to energy. Because c² is so large (9 × 10¹⁶ m²/s²), even a small mass loss produces staggering energy."
+  },
+  {
+    q: "What tool do scientists use to determine the Sun's chemical composition from Earth?",
+    options: [
+      "Radar imaging of the Sun's surface",
+      "Spectroscopy — analyzing absorption line patterns in sunlight",
+      "Measuring the Sun's gravitational pull on planets",
+      "Collecting solar wind particles with satellites"
+    ],
+    correct: 1,
+    explanation: "Spectroscopy splits light into wavelengths. Each element absorbs unique wavelengths, creating dark lines — like a chemical fingerprint. The Sun's spectrum matches hydrogen and helium lab patterns, confirming its 73% H / 25% He composition."
+  },
+  {
+    q: "If a hypothetical energy source could sustain the Sun's luminosity by burning coal, approximately how long would it last?",
+    options: [
+      "About 5,000 years",
+      "About 30 million years",
+      "About 1 billion years",
+      "About 10 billion years"
+    ],
+    correct: 0,
+    explanation: "A Sun-sized ball of coal burning chemically would exhaust its fuel in roughly 5,000 years. This was known as Lord Kelvin's paradox — geologists knew Earth was far older. Only nuclear fusion, discovered in the 20th century, resolves the discrepancy."
+  },
+  {
+    q: "The Sun is currently 4.6 billion years old. Which statement best describes its current status?",
+    options: [
+      "It is near death and about to become a Red Giant",
+      "It is a young star that just started fusing hydrogen",
+      "It is roughly middle-aged, with about 5 billion stable years remaining",
+      "It has already passed through the Red Giant phase"
+    ],
+    correct: 2,
+    explanation: "With a main-sequence lifespan of ~10 billion years, the Sun at 4.6 Gyr is roughly middle-aged. It has consumed about 30% of its core hydrogen and will remain stable for approximately 5.4 billion more years."
+  },
+  {
+    q: "What keeps the Sun from collapsing under its own gravity?",
+    options: [
+      "Its rapid rotation flings material outward",
+      "The outward pressure from fusion energy balances the inward pull of gravity",
+      "The solar wind pushes the outer layers outward",
+      "Earth's gravitational pull holds the Sun in shape"
+    ],
+    correct: 1,
+    explanation: "The Sun exists in hydrostatic equilibrium — the outward radiation and gas pressure from nuclear fusion exactly balances the inward gravitational force. When fusion eventually stops, gravity wins and the core collapses."
+  },
+  {
+    q: "What is the Sun's eventual fate?",
+    options: [
+      "It will explode as a supernova, leaving behind a black hole",
+      "It will expand into a Red Giant, shed its outer layers, and become a white dwarf",
+      "It will split into a binary star system",
+      "It will slowly cool and turn into a gas giant planet"
+    ],
+    correct: 1,
+    explanation: "Stars of ~1 solar mass do not have enough mass for a supernova. The Sun will exhaust its hydrogen, expand into a Red Giant (engulfing the inner planets), eject its outer layers as a planetary nebula, and leave behind a cooling white dwarf."
+  },
+  {
+    q: "Why is the Sun's long-term stability especially important for life on Earth?",
+    options: [
+      "Life needs consistent day/night cycles of exactly 24 hours",
+      "Complex life took billions of years to evolve, requiring a steady energy source over that entire time",
+      "Stable stars produce more oxygen than unstable stars",
+      "Stability means the Sun never produces harmful radiation"
+    ],
+    correct: 1,
+    explanation: "Simple life appeared ~3.8 billion years ago, but complex multicellular life only emerged ~600 million years ago. This required billions of years of stable solar energy. A star that burned out or varied wildly in output would not allow complex life to evolve."
+  },
+  {
+    q: "Examining the energy comparison chart, what does a logarithmic scale reveal that a linear scale would hide?",
+    options: [
+      "That human energy use is nearly zero compared to the Sun",
+      "That all energy sources produce exactly the same output",
+      "The enormous orders-of-magnitude differences between energy sources — from 10⁷ to 10²⁶ joules",
+      "That the Sun and a lightning bolt produce similar energy"
+    ],
+    correct: 2,
+    explanation: "A linear scale would show the Sun's bar stretching far off screen while all other sources appear as invisible slivers. The logarithmic scale compresses this range, letting you compare sources spanning 20 orders of magnitude on a single chart."
+  },
+  {
+    q: "For the performance task: which property of an exoplanet's host star should you check FIRST when evaluating habitability?",
+    options: [
+      "The star's color — bluer stars are always better for life",
+      "Whether the star is on the main sequence with a lifespan > 4 billion years",
+      "The star's distance from Earth",
+      "Whether the star has any planets at all"
+    ],
+    correct: 1,
+    explanation: "A stable main-sequence star with a lifespan longer than ~4 billion years is essential — complex life needs billions of years of steady energy. Very massive stars (blue/hot) burn out too quickly, and non-main-sequence stars are unstable."
+  }
+])
+```
