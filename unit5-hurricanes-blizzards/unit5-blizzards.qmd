@@ -9,7 +9,7 @@ format:
     number-sections: true
     code-fold: true
 execute:
-  echo: true
+  echo: false
   warning: false
 ---
 
@@ -421,15 +421,33 @@ Notice: while seasonal totals trend <em>downward</em>, the 15-yr average of peak
 of any era. The current 2025–26 season already recorded 24.9" in a single month (Feb 2026).
 </p>
 
-::: {.student-task}
-### 📝 Notice & Wonder
-
-Before we dive into the science, take 3 minutes to write:
-
-1. What do you **notice** about Winter Storm Jonas?
-2. What do you **wonder** about how storms like this form?
-3. Have you personally experienced a storm like this? What was it like?
-:::
+```{ojs}
+//| echo: false
+buildQuiz("nyc-snowfall", [
+  {
+    q: "Charts ① and ② show opposite trends in NYC snowfall data. What is the 'winter storm paradox' they reveal?",
+    options: [
+      "Both total snowfall and peak storm intensity are declining due to climate change",
+      "Seasonal snowfall totals are declining, but peak single-storm intensity has risen — fewer but more extreme events",
+      "Winter storms are becoming more frequent and less intense",
+      "The data shows no clear trend; year-to-year variability is too high"
+    ],
+    correct: 1,
+    explanation: "The paradox: fewer mild-to-moderate snow events lower the seasonal total, while the most extreme individual storms are delivering record single-month totals. This matches climate science predictions — warming reduces weak events but can amplify extreme ones by loading the atmosphere with extra moisture."
+  },
+  {
+    q: "The 15-year rolling average of peak monthly snowfall rose sharply after 2000. What physical mechanism best explains this?",
+    options: [
+      "Measurement instruments became more accurate after 2000",
+      "Warmer Atlantic and Gulf sea-surface temperatures supply more water vapor; when cold outbreaks occur they produce heavier single-storm totals",
+      "The Arctic became colder after 2000, sending larger cold air masses south",
+      "Urban heat islands in NYC increased snowfall through cloud-seeding"
+    ],
+    correct: 1,
+    explanation: "Warmer ocean surfaces evaporate more water vapor (Clausius-Clapeyron: ~7% more per °C). When cold outbreaks occur, they tap this extra atmospheric moisture — resulting in heavier snowfall than the same cold event would have produced in earlier decades."
+  }
+])
+```
 
 # Explore: What Causes Wind?
 
@@ -1423,6 +1441,34 @@ chart = {
 </script>
 ```
 
+```{ojs}
+//| echo: false
+buildQuiz("land-sea-breeze", [
+  {
+    q: "In the Land & Sea Breeze Simulator at 2 PM, why does surface wind blow FROM sea TO land?",
+    options: [
+      "The sun heats the ocean faster, causing cold ocean air to push toward land",
+      "Hot land air rises (low pressure), and cooler ocean air (high pressure) flows inland to replace it",
+      "Sea breezes are a night-time phenomenon — during the day wind blows from land to sea",
+      "Ocean water evaporates and pulls surface air outward from the coast"
+    ],
+    correct: 1,
+    explanation: "Sea breeze: land heats faster than water → air above land warms, expands, and RISES → surface LOW pressure over land. Cooler, denser ocean air (HIGH pressure) flows landward to fill the void. This is the identical pressure-gradient mechanism as all surface wind — uneven heating creates pressure differences, air flows HIGH → LOW."
+  },
+  {
+    q: "At midnight, the land temperature drops below the ocean temperature. How does the wind direction change and why?",
+    options: [
+      "Wind continues blowing from sea to land — thermal inertia keeps the pattern going",
+      "Wind reverses to blow from land to sea — now the ocean is warmer, ocean air rises (low pressure), and cooler land air flows outward",
+      "Wind stops completely at night when solar heating ends",
+      "The Coriolis Effect reverses the wind direction after sunset"
+    ],
+    correct: 1,
+    explanation: "Land radiates heat rapidly at night; the ocean retains heat far longer (high specific heat capacity). Now ocean > land temperature → ocean air rises (LOW pressure over water) → cooler land air flows seaward. This LAND BREEZE is driven by the same HIGH-to-LOW pressure rule — just with the temperature differential flipped from daytime."
+  }
+])
+```
+
 ::: {.key-idea}
 ### 💡 Key Concept: What Drives Wind
 
@@ -1433,17 +1479,6 @@ chart = {
 3. Cool air is **more dense** and sinks, creating an area of **high pressure** at the surface.
 4. Air flows from **high pressure → low pressure**. This is wind!
 5. The greater the pressure difference (the **pressure gradient**), the faster the wind.
-:::
-
-::: {.student-task}
-### 📝 Explore Activity
-
-Use the sliders above to investigate:
-
-1. Set the left region to 98°F and the right to 27°F. What happens to wind speed?
-2. Now bring them closer together (62°F and 44°F). How does wind speed change?
-3. What temperature combination creates the strongest wind?
-4. In your own words, explain why uneven heating causes wind.
 :::
 
 ```{ojs}
@@ -2540,17 +2575,6 @@ frontalChart = {
 }
 ```
 
-::: {.student-task}
-### 📝 Front Analysis
-
-Use the dropdown above to explore each front type. For each one, answer:
-
-1. Which air mass is advancing?
-2. What happens to the warm air?
-3. What type of precipitation would you expect (brief and intense, or steady and prolonged)?
-4. Which front type is most associated with blizzards?
-:::
-
 ```{ojs}
 //| echo: false
 buildQuiz("fronts", [
@@ -2758,23 +2782,6 @@ Meteorologists use **surface analysis maps** to track air masses, fronts, and pr
 | Alternating blue/red | Stationary front |
 | Purple line with both | Occluded front |
 | Concentric circles | Isobars — lines of equal pressure (closer = stronger wind) |
-:::
-
-::: {.lab-activity}
-### 🔬 Lab Activity: Track Winter Storm Jonas
-
-Using the NOAA Weather Prediction Center's archived surface analysis maps:
-
-1. Find surface analysis maps for **January 21–24, 2016**
-2. For each day, identify:
-   - Location of the low-pressure center
-   - Types of fronts present
-   - Which air masses are interacting
-   - Where precipitation is falling
-3. Create a **timeline** showing how the storm developed, reached peak intensity, and dissipated
-4. Compare the storm's lifecycle to the mid-latitude cyclone stages above
-
-**Resources:** [NOAA Weather Prediction Center Archive](https://www.wpc.ncep.noaa.gov/dailywxmap/)
 :::
 
 # Explain: Precipitation — Where Does Snow Come From?
@@ -3021,15 +3028,6 @@ Plot.plot({
   ]
 })
 ```
-
-::: {.student-task}
-### 📝 Analyze the Paradox
-
-1. Describe the trend in **extreme snowfall events** over time.
-2. Describe the trend in **average annual snowfall** over time.
-3. How can both trends exist simultaneously? Use what you've learned about atmospheric moisture and the jet stream.
-4. Connect this back to Winter Storm Jonas — what conditions made it possible?
-:::
 
 ```{ojs}
 //| echo: false
@@ -3287,70 +3285,9 @@ buildUnitQuiz("blizzard-unit-quiz", "🧠 Comprehensive Unit Quiz", [
     ],
     correct: 1,
     explanation: "The Clausius-Clapeyron equation tells us that colder air holds exponentially LESS water vapor. Air at -10°F is essentially a desert in terms of moisture content. The biggest snowstorms combine two air masses: cold enough to freeze precipitation (25–32°F is 'optimal snow-making temperature') AND close to a warm, moist source like the Gulf of Mexico or Atlantic Ocean. Deep Arctic cold alone never produces historic snowfall totals."
-  },
-  {
-    q: "What is a 'nor'easter' and why does the northeastern US coastline make it especially dangerous?",
-    options: [
-      "A wind that blows from the northeast — harmless because it comes off cold land",
-      "A mid-latitude cyclone that tracks up the East Coast, drawing in moist Atlantic air while cold Arctic air moves in from inland — creating extreme precipitation near the coast",
-      "A blizzard caused when Canadian Arctic air masses cross the Great Lakes",
-      "A special name for any winter storm that occurs in New England"
-    ],
-    correct: 1,
-    explanation: "Nor'easters track northeast along the Atlantic Coast, with their centers just offshore. This geometry is deadly: the low pulls warm moist Atlantic air over the coast from the south/southeast while cold polar air charges in from the west and north. The resulting collision zone sits right over the most densely populated coastline in the US. The warm Atlantic (heated by the Gulf Stream) provides enormous moisture, and the pressure gradient between offshore low and inland high produces the powerful 'nor'easter' winds that gave the storm type its name."
-  },
-  {
-    q: "How does a mid-latitude cyclone eventually die? What is this process called?",
-    options: [
-      "It runs out of moisture when it moves over land — called 'land dissipation'",
-      "The cold front catches up to the warm front, lifting all warm air off the surface — this 'occlusion' eliminates the temperature contrast that powered the storm",
-      "High pressure systems absorb the low, reversing wind direction",
-      "Jet stream winds shear the storm apart once it reaches a certain size"
-    ],
-    correct: 1,
-    explanation: "Mid-latitude cyclones are powered by the temperature contrast between warm and cold air masses. Cold fronts move faster than warm fronts, so eventually the cold front overtakes the warm front — this is called OCCLUSION. Once the warm sector air is fully lifted off the surface, there is no more warm vs. cold boundary to draw energy from. The pressure gradient weakens, the system 'fills,' and the storm dissipates. All mid-latitude cyclones eventually die by this process."
-  },
-  {
-    q: "What differentiates SLEET from FREEZING RAIN in terms of atmospheric temperature layers?",
-    options: [
-      "Sleet is larger drops; freezing rain is smaller drops — size is the only difference",
-      "Sleet refreezes into an ice pellet before hitting the ground (warm layer aloft, cold layer below); freezing rain stays liquid until it contacts below-freezing surfaces",
-      "Sleet only occurs above 32°F; freezing rain only occurs below 10°F",
-      "Both are identical — 'sleet' and 'freezing rain' are regional names for the same precipitation"
-    ],
-    correct: 1,
-    explanation: "Both forms need an above-freezing layer aloft to melt snowflakes into rain, with a sub-freezing layer near the surface. The difference: with SLEET the surface cold layer is THICK enough that drops refreeze into ice pellets before landing. With FREEZING RAIN the surface cold layer is too THIN to refreeze the drop — it lands as supercooled liquid and instantly freezes on contact with roads, trees, and power lines. Freezing rain is often more destructive than snow because of the heavy ice coating it produces."
-  },
-  {
-    q: "The polar jet stream acts as a boundary between cold polar and warm tropical air. When it is 'amplified' into large north-south meanders (Rossby waves), what happens to weather patterns?",
-    options: [
-      "Weather systems move faster across the country, giving less time for storms to intensify",
-      "Cold Arctic air can plunge far south into normally mild regions while warm air surges far north — and slow-moving troughs can 'stall,' causing extended extreme weather events",
-      "The jet stream blocks moisture from the Gulf of Mexico, reducing snowfall potential",
-      "Amplified meanders only affect summer weather — winter patterns are unaffected"
-    ],
-    correct: 1,
-    explanation: "A 'zonal' (west-to-east) jet stream keeps cold air locked in the north and mild air in the south, with relatively fast-moving storm systems. An 'amplified' or 'meridional' jet stream with large Rossby waves sends Arctic air deep into the Gulf Coast states while warm air surges into the Arctic. Crucially, amplified patterns move SLOWLY — a trough can lock in place for days or weeks, causing prolonged cold snaps, extended blizzards, or persistent ice storms. Arctic amplification from climate change is linked to more frequent amplified jet stream patterns."
   }
 ])
 ```
-
-::: {.lab-activity}
-### 📝 Culminating Task: Blizzard Explanation Model
-
-In your notebook, create a **visual model** (diagram + written explanation) that answers:
-
-**"How did Winter Storm Jonas produce strong enough winds and enough snow to cause significant disruptions?"**
-
-Your model should include:
-1. The **air masses** that interacted (with sources and properties)
-2. The **fronts** that formed and how they caused precipitation
-3. The **mid-latitude cyclone** structure and how it generated strong winds
-4. An explanation of the **energy source** driving the storm
-5. A **claim** about whether storms like Jonas could become more common, supported by evidence about atmospheric moisture and jet stream changes
-
-Use the vocabulary: *pressure gradient, air mass, front, mid-latitude cyclone, adiabatic cooling, condensation, Clausius-Clapeyron, Arctic amplification*
-:::
 
 # Summary: Key Takeaways
 
