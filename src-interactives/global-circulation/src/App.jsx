@@ -319,7 +319,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-full h-screen bg-slate-950 text-slate-200 overflow-hidden font-sans">
+    <div className="flex flex-row w-full bg-slate-950 text-slate-200 overflow-hidden font-sans" style={{height: '580px'}}>
       <div ref={containerRef} className="flex-1 relative border-r border-slate-800 cursor-crosshair" onMouseMove={handleMouseMove} onMouseLeave={() => setHoverZone(null)}>
         <canvas ref={canvasRef} className="absolute inset-0 block" />
         {!hoverZone && (
@@ -329,37 +329,37 @@ export default function App() {
         )}
       </div>
 
-      <div className="w-full md:w-[22rem] flex flex-col bg-slate-900 shadow-2xl z-10 h-full">
-        <div className="p-6 border-b border-slate-800">
-          <h1 className="text-xl font-bold text-white flex items-center gap-2 mb-1"><Wind className="text-blue-400" /> Global Circulation</h1>
+      <div className="w-52 flex-none flex flex-col bg-slate-900 shadow-2xl z-10 h-full">
+        <div className="p-3 border-b border-slate-800">
+          <h1 className="text-base font-bold text-white flex items-center gap-2"><Wind size={14} className="text-blue-400" /> Global Circulation</h1>
           <p className="text-xs text-slate-400">Interactive Atmospheric Model</p>
         </div>
-        <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
-          <div className="space-y-4 bg-slate-800/40 p-4 rounded-xl border border-slate-700/50">
-            <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2"><Layers size={14} /> Display Layers</h2>
+        <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-3">
+          <div className="space-y-2 bg-slate-800/40 p-3 rounded-xl border border-slate-700/50">
+            <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2"><Layers size={12} /> Display</h2>
             <Toggle label="Surface Winds" checked={showWinds} onChange={setShowWinds} color="bg-red-500" />
             <Toggle label="Atmospheric Cells" checked={showCells} onChange={setShowCells} color="bg-blue-500" />
             <Toggle label="Pressure Labels" checked={showLabels} onChange={setShowLabels} color="bg-slate-400" />
           </div>
-          <div className="space-y-4 bg-slate-800/40 p-4 rounded-xl border border-slate-700/50">
+          <div className="space-y-2 bg-slate-800/40 p-3 rounded-xl border border-slate-700/50">
             <div className="flex justify-between items-center">
-              <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2"><Settings size={14} /> Simulation Speed</h2>
+              <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2"><Settings size={12} /> Speed</h2>
               <button onClick={() => setPlaying(!playing)} className="p-1.5 bg-slate-700 hover:bg-slate-600 rounded-lg text-white transition-colors">
                 {playing ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
               </button>
             </div>
             <input type="range" min="0.1" max="3" step="0.1" value={speed} onChange={e => setSpeed(parseFloat(e.target.value))} className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500" />
           </div>
-          <div className="flex-1 min-h-[16rem]">
+          <div className="flex-1">
             {hoverZone ? (
-              <div className="bg-blue-900/20 h-full p-5 rounded-xl border border-blue-500/30 flex flex-col">
-                <h3 className="text-base font-bold text-blue-300 mb-3 border-b border-blue-500/20 pb-2">{ZONE_INFO[hoverZone].title}</h3>
-                <p className="text-sm leading-relaxed text-slate-300">{ZONE_INFO[hoverZone].desc}</p>
+              <div className="bg-blue-900/20 p-3 rounded-xl border border-blue-500/30">
+                <h3 className="text-xs font-bold text-blue-300 mb-2 border-b border-blue-500/20 pb-1">{ZONE_INFO[hoverZone].title}</h3>
+                <p className="text-xs leading-relaxed text-slate-300">{ZONE_INFO[hoverZone].desc}</p>
               </div>
             ) : (
-              <div className="h-full border-2 border-dashed border-slate-800 rounded-xl flex flex-col items-center justify-center text-center p-6 text-slate-500">
-                <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mb-3"><Info size={20} className="opacity-50" /></div>
-                <p className="text-sm">Hover your mouse over the globe to view information about specific atmospheric phenomena.</p>
+              <div className="border-2 border-dashed border-slate-800 rounded-xl flex flex-col items-center justify-center text-center p-4 text-slate-500">
+                <Info size={16} className="opacity-50 mb-2" />
+                <p className="text-xs">Hover over the globe to explore circulation zones.</p>
               </div>
             )}
           </div>

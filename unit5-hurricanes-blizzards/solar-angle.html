@@ -1,538 +1,396 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sun Angle & Solar Heating</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: #0d1b2a;
-    color: #e0e8f0;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 16px;
-  }
-  h2 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #ffd166;
-    text-align: center;
-    margin-bottom: 4px;
-  }
-  .subtitle {
-    font-size: 0.8rem;
-    color: #8ab4c8;
-    text-align: center;
-    margin-bottom: 12px;
-  }
-  .layout {
-    display: flex;
-    gap: 16px;
-    width: 100%;
-    max-width: 800px;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  canvas {
-    border-radius: 10px;
-    cursor: crosshair;
-    touch-action: none;
-    flex-shrink: 0;
-  }
-  .panel {
-    background: #152033;
-    border-radius: 10px;
-    padding: 14px;
-    width: 220px;
-    min-width: 180px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .stat-row {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-  .stat-label {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #6b8fa8;
-  }
-  .stat-value {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #ffd166;
-  }
-  .stat-sub {
-    font-size: 0.75rem;
-    color: #8ab4c8;
-  }
-  .intensity-bar-bg {
-    background: #1e3045;
-    border-radius: 4px;
-    height: 12px;
-    overflow: hidden;
-  }
-  .intensity-bar-fill {
-    height: 100%;
-    border-radius: 4px;
-    transition: width 0.1s ease, background 0.1s ease;
-  }
-  .zone-info {
-    background: #1a2d42;
-    border-radius: 8px;
-    padding: 10px;
-  }
-  .zone-name {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #74c0fc;
-    margin-bottom: 4px;
-  }
-  .zone-desc {
-    font-size: 0.75rem;
-    color: #8ab4c8;
-    line-height: 1.4;
-  }
-  .instruction {
-    font-size: 0.72rem;
-    color: #4a7a96;
-    text-align: center;
-    margin-top: 2px;
-  }
-  .season-btns {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-  .season-btn {
-    flex: 1;
-    padding: 5px 4px;
-    background: #1e3045;
-    border: 1px solid #2a4a65;
-    border-radius: 5px;
-    color: #8ab4c8;
-    font-size: 0.7rem;
-    cursor: pointer;
-    transition: all 0.15s;
-    text-align: center;
-    min-width: 44px;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .season-btn.active {
-    background: #1d3d5e;
-    border-color: #4da6d9;
-    color: #ffd166;
-    font-weight: 600;
-  }
-  .season-btn:hover {
-    background: #1d3d5e;
-    color: #e0e8f0;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore the Effect of the Angle of Incidence on Sun's Energy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; }
+        canvas { 
+            display: block; 
+            touch-action: none;
+        }
+        #canvasWrapper {
+            width: 800px;
+            height: 600px;
+            transform: scale(0.72);
+            transform-origin: top left;
+        }
+        #canvasOuter {
+            width: calc(800px * 0.72);
+            height: calc(600px * 0.72);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+    </style>
 </head>
-<body>
-<h2>☀️ Sun Angle & Solar Heating</h2>
-<p class="subtitle">Drag the dot on the globe to explore how latitude and season affect solar intensity</p>
+<body class="bg-slate-100 text-slate-800 font-sans p-3 flex flex-col">
 
-<div class="layout">
-  <canvas id="cv" width="480" height="420"></canvas>
-  <div class="panel">
-    <div class="stat-row">
-      <div class="stat-label">Selected Latitude</div>
-      <div class="stat-value" id="latVal">0° (Equator)</div>
+    <div class="w-full">
+        <h1 class="text-lg font-bold text-slate-900 mb-1">Sun Angle &amp; Energy Concentration</h1>
+        <p class="text-xs text-slate-500 mb-3">Hover over the sun rays to analyze energy at each latitude. Click to lock a zone.</p>
+
+        <!-- Side-by-side: canvas left, controls right -->
+        <div class="flex flex-row gap-3 items-start">
+
+            <!-- Canvas -->
+            <div id="canvasOuter" class="relative shadow-xl rounded-xl overflow-hidden border border-slate-300 bg-slate-900 flex-none">
+                <div id="canvasWrapper">
+                    <canvas id="simCanvas" width="800" height="600"></canvas>
+                </div>
+            </div>
+
+            <!-- Controls Panel -->
+            <div class="flex flex-col gap-3 flex-1 min-w-0">
+
+                <!-- Zone Analysis -->
+                <div class="bg-white p-3 rounded-xl shadow-md border border-slate-200">
+                    <h3 class="font-bold text-sm text-slate-800 mb-2 border-b border-slate-100 pb-1">Zone Analysis</h3>
+                    <div id="zoneInfoText"></div>
+                </div>
+
+                <!-- Season -->
+                <div class="bg-white p-3 rounded-xl shadow-md border border-slate-200">
+                    <h3 class="font-bold text-sm text-slate-800 mb-2 border-b border-slate-100 pb-1">Season</h3>
+                    <div class="flex flex-col gap-2">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="season" value="March" class="w-3.5 h-3.5">
+                            <span class="text-xs">March (Equinox)</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="season" value="June" checked class="w-3.5 h-3.5">
+                            <span class="text-xs">June (Solstice)</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="season" value="September" class="w-3.5 h-3.5">
+                            <span class="text-xs">September (Equinox)</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="season" value="December" class="w-3.5 h-3.5">
+                            <span class="text-xs">December (Solstice)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Map -->
+                <div class="bg-white p-3 rounded-xl shadow-md border border-slate-200">
+                    <h3 class="font-bold text-sm text-slate-800 mb-2 border-b border-slate-100 pb-1">Map Region</h3>
+                    <select id="mapSelect" class="w-full p-2 text-xs bg-slate-50 border border-slate-300 rounded-lg cursor-pointer">
+                        <option value="Americas">Americas</option>
+                        <option value="EuropeAfrica">Europe / Africa</option>
+                        <option value="AsiaAustralia">Asia / Australia</option>
+                    </select>
+                </div>
+
+                <p class="text-xs text-slate-400">Inspired by Tom Whittaker's Weather Wise (2011).</p>
+            </div>
+        </div>
     </div>
-    <div class="stat-row">
-      <div class="stat-label">Sun Angle</div>
-      <div class="stat-value" id="angleVal">90°</div>
-      <div class="stat-sub">above horizon</div>
-    </div>
-    <div class="stat-row">
-      <div class="stat-label">Relative Solar Intensity</div>
-      <div class="stat-value" id="intensityVal">100%</div>
-      <div class="intensity-bar-bg">
-        <div class="intensity-bar-fill" id="intensityBar" style="width:100%; background:#ffd166;"></div>
-      </div>
-    </div>
 
-    <div class="stat-row">
-      <div class="stat-label">Season</div>
-      <div class="season-btns">
-        <button class="season-btn active" data-dec="0" onclick="setSeason(this)">Mar/Sep<br><span style="font-size:0.65rem">Equinox</span></button>
-        <button class="season-btn" data-dec="23.5" onclick="setSeason(this)">Jun<br><span style="font-size:0.65rem">Solstice</span></button>
-        <button class="season-btn" data-dec="-23.5" onclick="setSeason(this)">Dec<br><span style="font-size:0.65rem">Solstice</span></button>
-      </div>
-    </div>
+    <script>
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
 
-    <div class="zone-info">
-      <div class="zone-name" id="zoneName">Tropical Zone</div>
-      <div class="zone-desc" id="zoneDesc">Direct sunlight year-round creates intense heating, driving upward convection and the Hadley Cell. Warm, wet — home to rainforests.</div>
-    </div>
+        let tiltAngle = -23.5;
+        let currentMap = 'Americas';
+        let hoveredZone = -1;
+        let lockedZone = -1;
 
-    <div class="instruction">🖱 Click or drag anywhere on the globe</div>
-  </div>
-</div>
+        const EARTH_X = 450;
+        const EARTH_Y = 300;
+        const EARTH_R = 220;
+        const NUM_ZONES = 10;
+        const ZONE_HEIGHT = (EARTH_R * 2) / NUM_ZONES;
+        const RAYS_START_X = 50;
+        
+        const mapData = {
+            Americas: [
+                [[70, -160], [70, -60], [55, -55], [45, -60], [30, -80], [15, -90], [10, -85], [10, -75], [15, -80], [25, -90], [50, -125], [60, -140], [70, -160]],
+                [[10, -75], [-5, -35], [-20, -40], [-55, -65], [-55, -75], [-20, -75], [0, -80], [10, -75]],
+                [[80, -20], [80, -60], [60, -45], [60, -30], [80, -20]]
+            ],
+            EuropeAfrica: [
+                [[70, 10], [70, 40], [45, 40], [45, 10], [35, -10], [50, -10], [60, 0], [70, 10]],
+                [[35, -10], [35, 30], [15, 50], [-10, 40], [-35, 20], [-35, 15], [0, 10], [15, -15], [35, -10]],
+                [[60, -5], [50, -5], [50, 0], [60, 0], [60, -5]],
+                [[-15, 45], [-25, 45], [-25, 50], [-15, 50], [-15, 45]]
+            ],
+            AsiaAustralia: [
+                [[70, 40], [70, 170], [60, 170], [40, 140], [20, 110], [10, 105], [5, 100], [15, 90], [10, 75], [25, 65], [45, 40], [70, 40]],
+                [[-10, 115], [-10, 145], [-35, 150], [-35, 115], [-10, 115]],
+                [[45, 140], [30, 130], [35, 140], [45, 145], [45, 140]],
+                [[0, 100], [5, 115], [-10, 140], [-5, 150], [0, 140], [0, 100]]
+            ]
+        };
+        const mapCenters = { Americas: -90, EuropeAfrica: 20, AsiaAustralia: 120 };
 
-<script>
-const cv = document.getElementById('cv');
-const ctx = cv.getContext('2d');
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-let dragLat = 0;      // -90 to 90
-let declination = 0;  // solar declination (season)
-let dragging = false;
+            ctx.shadowBlur = 40;
+            ctx.shadowColor = '#f59e0b';
+            ctx.beginPath(); 
+            ctx.arc(-60, EARTH_Y, 110, 0, 2*Math.PI);
+            ctx.fillStyle = '#fbbf24'; 
+            ctx.fill();
+            ctx.shadowBlur = 0;
 
-// Globe geometry
-const GX = 200, GY = 210, GR = 150;
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(EARTH_X, EARTH_Y, EARTH_R, 0, 2 * Math.PI);
+            ctx.fillStyle = '#0284c7';
+            ctx.fill();
+            ctx.clip();
 
-function setSeason(btn) {
-  document.querySelectorAll('.season-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  declination = parseFloat(btn.dataset.dec);
-  draw();
-}
+            let polys = mapData[currentMap];
+            let cLon = mapCenters[currentMap] * Math.PI / 180;
+            let tiltRad = tiltAngle * Math.PI / 180;
 
-function latToY(lat) {
-  return GY - (lat / 90) * GR;
-}
-function yToLat(y) {
-  return Math.max(-90, Math.min(90, ((GY - y) / GR) * 90));
-}
+            ctx.fillStyle = '#22c55e';
+            ctx.strokeStyle = '#14532d';
+            ctx.lineWidth = 1.5;
 
-function sunAngle(lat, dec) {
-  // Solar elevation at solar noon
-  const angle = 90 - Math.abs(lat - dec);
-  return Math.max(0, Math.min(90, angle));
-}
+            for (let poly of polys) {
+                let avgZ = poly.reduce((sum, pt) => sum + Math.cos(pt[0]*Math.PI/180)*Math.cos(pt[1]*Math.PI/180 - cLon), 0) / poly.length;
+                if (avgZ > -0.2) {
+                    ctx.beginPath();
+                    let first = true;
+                    for (let pt of poly) {
+                        let lat = pt[0] * Math.PI/180;
+                        let lon = pt[1] * Math.PI/180;
+                        let dLon = lon - cLon;
+                        let X0 = Math.cos(lat) * Math.sin(dLon);
+                        let Y0 = Math.sin(lat);
+                        let X1 = X0 * Math.cos(tiltRad) + Y0 * Math.sin(tiltRad);
+                        let Y1 = -X0 * Math.sin(tiltRad) + Y0 * Math.cos(tiltRad);
+                        let cx = EARTH_X + EARTH_R * X1;
+                        let cy = EARTH_Y - EARTH_R * Y1;
+                        if (first) { ctx.moveTo(cx, cy); first = false; }
+                        else { ctx.lineTo(cx, cy); }
+                    }
+                    ctx.fill();
+                    ctx.stroke();
+                }
+            }
 
-function intensity(angle) {
-  return Math.max(0, Math.sin(angle * Math.PI / 180));
-}
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.65)';
+            ctx.fillRect(EARTH_X, EARTH_Y - EARTH_R, EARTH_R, EARTH_R * 2);
 
-function zoneInfo(lat) {
-  const a = Math.abs(lat);
-  if (a <= 23.5) return { name: "🌴 Tropical Zone (0°–23.5°)", desc: "Direct sunlight year-round. Intense heating drives upward convection → Hadley Cell. Warm, wet — home to rainforests and deserts." };
-  if (a <= 35)   return { name: "🏜 Subtropical (23.5°–35°)", desc: "Sinking dry air from Hadley Cell. Low rainfall → world's major deserts (Sahara, Sonoran). High pressure dominates." };
-  if (a <= 60)   return { name: "🌪 Mid-Latitudes (35°–60°)", desc: "Strong temperature contrast. Home to the Ferrel Cell and jet stream. Westerlies steer storms west→east. Where most US weather happens." };
-  return { name: "🧊 Polar Region (60°–90°)", desc: "Very low sun angles mean sunlight spreads across huge areas → minimal heating. Cold, dry air sinks → Polar Cell and polar easterlies." };
-}
+            const latitudes = [
+                { val: 0, name: 'Equator' },
+                { val: 23.5, name: 'Tropic of Cancer' },
+                { val: -23.5, name: 'Tropic of Capricorn' },
+                { val: 66.5, name: 'Arctic Circle' },
+                { val: -66.5, name: 'Antarctic Circle' }
+            ];
 
-function draw() {
-  const w = cv.width, h = cv.height;
-  ctx.clearRect(0, 0, w, h);
+            let labelsToDraw = [];
 
-  // Background
-  ctx.fillStyle = '#0d1b2a';
-  ctx.fillRect(0, 0, w, h);
+            for (let l of latitudes) {
+                let latRad = l.val * Math.PI / 180;
+                let X0_left = -Math.cos(latRad), Y0_left = Math.sin(latRad);
+                let X1_left = X0_left * Math.cos(tiltRad) + Y0_left * Math.sin(tiltRad);
+                let Y1_left = -X0_left * Math.sin(tiltRad) + Y0_left * Math.cos(tiltRad);
+                let X0_right = Math.cos(latRad), Y0_right = Math.sin(latRad);
+                let X1_right = X0_right * Math.cos(tiltRad) + Y0_right * Math.sin(tiltRad);
+                let Y1_right = -X0_right * Math.sin(tiltRad) + Y0_right * Math.cos(tiltRad);
+                let cx_left = EARTH_X + EARTH_R * X1_left;
+                let cy_left = EARTH_Y - EARTH_R * Y1_left;
+                let cx_right = EARTH_X + EARTH_R * X1_right;
+                let cy_right = EARTH_Y - EARTH_R * Y1_right;
+                ctx.beginPath();
+                ctx.moveTo(cx_left, cy_left);
+                ctx.lineTo(cx_right, cy_right);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.setLineDash([4, 4]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                labelsToDraw.push({ text: l.name, x: cx_right + 15, y: cy_right });
+            }
 
-  // ── Space left panel: ray diagram ──────────────────────
-  const sunX = 28;
-  const subsolarY = latToY(declination);
+            ctx.restore();
 
-  // Sun
-  const grad = ctx.createRadialGradient(sunX, GY, 4, sunX, GY, 22);
-  grad.addColorStop(0, '#fff7aa');
-  grad.addColorStop(0.5, '#ffd166');
-  grad.addColorStop(1, 'rgba(255,180,0,0)');
-  ctx.fillStyle = grad;
-  ctx.beginPath();
-  ctx.arc(sunX, GY, 22, 0, Math.PI * 2);
-  ctx.fill();
+            ctx.beginPath();
+            ctx.arc(EARTH_X, EARTH_Y, EARTH_R, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2;
+            ctx.stroke();
 
-  // Draw incoming parallel sun rays (5 evenly spaced across globe height)
-  const numRays = 7;
-  for (let i = 0; i < numRays; i++) {
-    const t = i / (numRays - 1);
-    const rayY = GY - GR + t * 2 * GR;
-    // Only draw if ray hits globe
-    const dy = rayY - GY;
-    if (Math.abs(dy) > GR) continue;
+            ctx.fillStyle = '#cbd5e1';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            for (let label of labelsToDraw) {
+                ctx.fillText(label.text, label.x, label.y);
+            }
 
-    ctx.beginPath();
-    ctx.strokeStyle = 'rgba(255,209,102,0.35)';
-    ctx.lineWidth = 1.5;
-    const hitX = GX - Math.sqrt(GR * GR - dy * dy);
-    ctx.moveTo(sunX + 24, rayY);
-    ctx.lineTo(hitX, rayY);
-    ctx.stroke();
-  }
+            let npX = EARTH_X + EARTH_R * Math.sin(tiltRad);
+            let npY = EARTH_Y - EARTH_R * Math.cos(tiltRad);
+            let spX = EARTH_X - EARTH_R * Math.sin(tiltRad);
+            let spY = EARTH_Y + EARTH_R * Math.cos(tiltRad);
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath(); ctx.arc(npX, npY, 5, 0, 2*Math.PI); ctx.fill();
+            ctx.fillStyle = '#0ea5e9';
+            ctx.beginPath(); ctx.arc(spX, spY, 5, 0, 2*Math.PI); ctx.fill();
 
-  // ── Globe ──────────────────────────────────────────────
-  // Ocean fill
-  const oceanGrad = ctx.createRadialGradient(GX - 40, GY - 40, 10, GX, GY, GR);
-  oceanGrad.addColorStop(0, '#1a6fa8');
-  oceanGrad.addColorStop(1, '#0d3d5e');
-  ctx.fillStyle = oceanGrad;
-  ctx.beginPath();
-  ctx.arc(GX, GY, GR, 0, Math.PI * 2);
-  ctx.fill();
+            const topY = EARTH_Y - EARTH_R;
+            
+            for (let i = 0; i < NUM_ZONES; i++) {
+                let y1 = topY + i * ZONE_HEIGHT;
+                let y2 = topY + (i + 1) * ZONE_HEIGHT;
+                let isActive = (hoveredZone === i) || (lockedZone === i);
 
-  // Latitude zone coloring (heat map overlay)
-  const latBands = [
-    { latMin: -90, latMax: -60, color: 'rgba(100,160,220,0.25)' },
-    { latMin: -60, latMax: -35, color: 'rgba(180,100,220,0.2)' },
-    { latMin: -35, latMax: -23.5, color: 'rgba(255,200,50,0.15)' },
-    { latMin: -23.5, latMax: 23.5, color: 'rgba(255,120,30,0.25)' },
-    { latMin: 23.5, latMax: 35, color: 'rgba(255,200,50,0.15)' },
-    { latMin: 35, latMax: 60, color: 'rgba(180,100,220,0.2)' },
-    { latMin: 60, latMax: 90, color: 'rgba(100,160,220,0.25)' }
-  ];
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(GX, GY, GR, 0, Math.PI * 2);
-  ctx.clip();
-  latBands.forEach(b => {
-    const y1 = latToY(b.latMax);
-    const y2 = latToY(b.latMin);
-    ctx.fillStyle = b.color;
-    ctx.fillRect(GX - GR, y1, GR * 2, y2 - y1);
-  });
-  ctx.restore();
+                let dy1 = y1 - EARTH_Y;
+                let dy2 = y2 - EARTH_Y;
+                let hitX1 = EARTH_X - Math.sqrt(Math.max(0, EARTH_R * EARTH_R - dy1 * dy1));
+                let hitX2 = EARTH_X - Math.sqrt(Math.max(0, EARTH_R * EARTH_R - dy2 * dy2));
+                let startAngle = Math.atan2(dy1, hitX1 - EARTH_X);
+                let endAngle = Math.atan2(dy2, hitX2 - EARTH_X);
 
-  // Latitude lines
-  const latLines = [-60, -30, 0, 30, 60];
-  latLines.forEach(lat => {
-    const ly = latToY(lat);
-    const dy = ly - GY;
-    if (Math.abs(dy) > GR) return;
-    const lx = Math.sqrt(GR * GR - dy * dy);
-    ctx.beginPath();
-    ctx.strokeStyle = lat === 0 ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.2)';
-    ctx.lineWidth = lat === 0 ? 1.5 : 0.8;
-    ctx.setLineDash(lat === 0 ? [] : [4, 4]);
-    ctx.ellipse(GX, ly, lx, lx * 0.18, 0, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.setLineDash([]);
-  });
+                ctx.beginPath();
+                ctx.moveTo(RAYS_START_X, y1);
+                ctx.lineTo(hitX1, y1);
+                ctx.arc(EARTH_X, EARTH_Y, EARTH_R, startAngle, endAngle, true);
+                ctx.lineTo(RAYS_START_X, y2);
+                ctx.closePath();
 
-  // Tropic lines
-  [23.5, -23.5].forEach(lat => {
-    const ly = latToY(lat);
-    const dy = ly - GY;
-    if (Math.abs(dy) > GR) return;
-    const lx = Math.sqrt(GR * GR - dy * dy);
-    ctx.beginPath();
-    ctx.strokeStyle = 'rgba(255,200,50,0.4)';
-    ctx.lineWidth = 1;
-    ctx.setLineDash([6, 3]);
-    ctx.ellipse(GX, ly, lx, lx * 0.18, 0, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.setLineDash([]);
-  });
+                if (isActive) {
+                    ctx.fillStyle = 'rgba(253, 224, 71, 0.4)'; 
+                    ctx.fill();
+                    ctx.strokeStyle = '#fef08a';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.arc(EARTH_X, EARTH_Y, EARTH_R, startAngle, endAngle, true);
+                    ctx.strokeStyle = '#ef4444';
+                    ctx.lineWidth = 5;
+                    ctx.stroke();
+                } else {
+                    ctx.fillStyle = 'rgba(253, 224, 71, 0.05)';
+                    ctx.fill();
+                    ctx.strokeStyle = 'rgba(253, 224, 71, 0.15)';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+            }
 
-  // Globe rim
-  ctx.beginPath();
-  ctx.arc(GX, GY, GR, 0, Math.PI * 2);
-  ctx.strokeStyle = 'rgba(100,180,255,0.3)';
-  ctx.lineWidth = 2;
-  ctx.stroke();
+            updateInfoPanel();
+        }
 
-  // ── Subsolar point (where sun is directly overhead) ────
-  const ssy = latToY(declination);
-  const ssdx = Math.sqrt(Math.max(0, GR * GR - (ssy - GY) * (ssy - GY)));
-  ctx.beginPath();
-  ctx.arc(GX - ssdx + 8, ssy, 5, 0, Math.PI * 2);
-  ctx.fillStyle = '#ffd166';
-  ctx.fill();
-  ctx.font = '10px system-ui';
-  ctx.fillStyle = '#ffd166';
-  ctx.fillText('☀ subsolar', GX - ssdx + 14, ssy + 4);
+        function updateInfoPanel() {
+            const panel = document.getElementById('zoneInfoText');
+            let activeZone = hoveredZone !== -1 ? hoveredZone : lockedZone;
 
-  // ── Selected latitude indicator ───────────────────────
-  const selY = latToY(dragLat);
-  const selDy = selY - GY;
-  if (Math.abs(selDy) <= GR) {
-    const selX = Math.sqrt(GR * GR - selDy * selDy);
+            if (activeZone !== -1) {
+                let y1 = (EARTH_Y - EARTH_R) + activeZone * ZONE_HEIGHT;
+                let y2 = (EARTH_Y - EARTH_R) + (activeZone + 1) * ZONE_HEIGHT;
+                let dy1 = y1 - EARTH_Y;
+                let dy2 = y2 - EARTH_Y;
 
-    // Draw spread-ray footprint at selected latitude
-    const angle = sunAngle(dragLat, declination);
-    const rayAngleRad = (90 - angle) * Math.PI / 180;
-    const beamWidth = 28;
-    const footprintWidth = beamWidth / Math.max(0.05, Math.sin(angle * Math.PI / 180));
+                let startAngle = Math.atan2(dy1, -Math.sqrt(Math.max(0, EARTH_R*EARTH_R - dy1*dy1)));
+                let endAngle = Math.atan2(dy2, -Math.sqrt(Math.max(0, EARTH_R*EARTH_R - dy2*dy2)));
 
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(GX, GY, GR, 0, Math.PI * 2);
-    ctx.clip();
+                let dTheta = startAngle - endAngle;
+                if (dTheta < 0) dTheta += 2 * Math.PI;
 
-    // Footprint rectangle on surface
-    const fx = GX - selX;
-    ctx.fillStyle = 'rgba(255,209,102,0.22)';
-    ctx.fillRect(fx - 4, selY - footprintWidth / 2, 8, footprintWidth);
-    ctx.strokeStyle = 'rgba(255,209,102,0.7)';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(fx - 4, selY - footprintWidth / 2, 8, footprintWidth);
-    ctx.restore();
+                let surfaceWidth = EARTH_R * dTheta;
+                let rayWidth = ZONE_HEIGHT;
+                let concentration = (rayWidth / surfaceWidth) * 100;
 
-    // Highlight latitude line
-    const lx2 = selX;
-    ctx.beginPath();
-    ctx.strokeStyle = '#74c0fc';
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([5, 3]);
-    ctx.ellipse(GX, selY, lx2, lx2 * 0.18, 0, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.setLineDash([]);
+                let textDesc = "";
+                if (concentration >= 95) textDesc = "Peak Concentration. Light directly hits the surface without spreading much.";
+                else if (concentration >= 70) textDesc = "Moderate Concentration. Light starts to spread over a slightly larger area.";
+                else if (concentration >= 40) textDesc = "Low Concentration. Energy is significantly diluted over a large arc.";
+                else textDesc = "Glancing Rays. Very little energy is absorbed over a massive surface area.";
 
-    // Drag handle dot
-    ctx.beginPath();
-    ctx.arc(GX - selX + 6, selY, 8, 0, Math.PI * 2);
-    ctx.fillStyle = '#74c0fc';
-    ctx.fill();
-    ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
+                panel.innerHTML = `
+                    <div class="flex flex-col gap-2">
+                        <div class="flex justify-between items-center text-slate-700 text-xs">
+                            <span>Ray Width:</span>
+                            <span class="font-bold bg-slate-100 px-1.5 py-0.5 rounded">${rayWidth.toFixed(1)} u</span>
+                        </div>
+                        <div class="flex justify-between items-center text-slate-700 text-xs">
+                            <span>Surface Arc:</span>
+                            <span class="font-bold bg-slate-100 px-1.5 py-0.5 rounded">${surfaceWidth.toFixed(1)} u</span>
+                        </div>
+                        <div class="pt-2 border-t border-slate-200">
+                            <div class="text-xs text-slate-400 uppercase tracking-wider font-bold mb-1">Energy Intensity</div>
+                            <div class="text-3xl font-black ${concentration >= 80 ? 'text-red-500' : concentration >= 50 ? 'text-orange-500' : 'text-blue-500'}">
+                                ${concentration.toFixed(0)}%
+                            </div>
+                            <div class="text-xs leading-tight text-slate-600 mt-1">${textDesc}</div>
+                        </div>
+                        ${lockedZone === activeZone ? 
+                            '<div class="text-xs text-green-600 font-semibold mt-1">✓ Locked. Click to unlock.</div>' : 
+                            '<div class="text-xs text-blue-500 italic mt-1">Click to lock.</div>'
+                        }
+                    </div>
+                `;
+            } else {
+                panel.innerHTML = `
+                    <div class="text-slate-500 italic text-xs leading-relaxed">
+                        Hover over a ray to see data.
+                    </div>
+                `;
+            }
+        }
 
-    // Angled ray to selected point
-    ctx.beginPath();
-    ctx.strokeStyle = 'rgba(255,209,102,0.8)';
-    ctx.lineWidth = 2.5;
-    ctx.moveTo(sunX + 24, selY + (declination / 90) * GR - (dragLat / 90) * GR);
-    ctx.lineTo(GX - selX + 4, selY);
-    ctx.stroke();
-  }
+        document.querySelectorAll('input[name="season"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                let s = e.target.value;
+                if (s === 'March' || s === 'September') tiltAngle = 0;
+                else if (s === 'June') tiltAngle = -23.5;
+                else if (s === 'December') tiltAngle = 23.5;
+                draw();
+            });
+        });
 
-  // ── Right panel: energy spread diagram ────────────────
-  const rx = GX + GR + 24;
-  const panelW = w - rx - 10;
+        document.getElementById('mapSelect').addEventListener('change', (e) => {
+            currentMap = e.target.value;
+            draw();
+        });
 
-  // Title
-  ctx.fillStyle = '#8ab4c8';
-  ctx.font = 'bold 11px system-ui';
-  ctx.fillText('Energy Spread', rx, 28);
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
 
-  // Draw beam → surface spread at selected angle
-  const angle = sunAngle(dragLat, declination);
-  const intens = intensity(angle);
-  const beamH = 36;
-  const spreadH = Math.round(beamH / Math.max(0.05, Math.sin(angle * Math.PI / 180)));
-  const clampedSpread = Math.min(spreadH, 300);
+            let found = -1;
+            const topY = EARTH_Y - EARTH_R;
+            const bottomY = EARTH_Y + EARTH_R;
 
-  const bx1 = rx;
-  const bx2 = rx + panelW * 0.55;
-  const bcy = 190;
+            if (y >= topY && y <= bottomY) {
+                let i = Math.floor((y - topY) / ZONE_HEIGHT);
+                let hitX = EARTH_X - Math.sqrt(Math.max(0, EARTH_R * EARTH_R - (y - EARTH_Y) * (y - EARTH_Y)));
+                if (x >= RAYS_START_X && x <= hitX) {
+                    found = i;
+                }
+            }
 
-  // Beam (parallel lines)
-  ctx.strokeStyle = 'rgba(255,209,102,0.7)';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(bx1, bcy - beamH / 2);
-  ctx.lineTo(bx2 - 10, bcy - clampedSpread / 2);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(bx1, bcy + beamH / 2);
-  ctx.lineTo(bx2 - 10, bcy + clampedSpread / 2);
-  ctx.stroke();
+            if (found !== hoveredZone) {
+                hoveredZone = found;
+                draw();
+            }
+        });
 
-  // Fill beam
-  ctx.fillStyle = `rgba(255,209,102,${0.08 + intens * 0.15})`;
-  ctx.beginPath();
-  ctx.moveTo(bx1, bcy - beamH / 2);
-  ctx.lineTo(bx2 - 10, bcy - clampedSpread / 2);
-  ctx.lineTo(bx2 - 10, bcy + clampedSpread / 2);
-  ctx.lineTo(bx1, bcy + beamH / 2);
-  ctx.closePath();
-  ctx.fill();
+        canvas.addEventListener('mouseleave', () => {
+            hoveredZone = -1;
+            draw();
+        });
 
-  // Surface line
-  ctx.strokeStyle = '#3a7d5a';
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(bx2 - 10, bcy - clampedSpread / 2 - 4);
-  ctx.lineTo(bx2 - 10, bcy + clampedSpread / 2 + 4);
-  ctx.stroke();
+        canvas.addEventListener('click', () => {
+            if (hoveredZone !== -1) {
+                lockedZone = hoveredZone;
+            } else {
+                lockedZone = -1;
+            }
+            draw();
+        });
 
-  // Spread bracket label
-  ctx.fillStyle = '#74c0fc';
-  ctx.font = '10px system-ui';
-  ctx.fillText(`÷ ${(1 / Math.max(0.05, intens)).toFixed(1)}x area`, bx2 - 5, bcy - clampedSpread / 2 - 6);
-
-  // Energy intensity color block
-  const r2 = intens;
-  const g2 = intens * 0.6;
-  const b2 = 0.1;
-  ctx.fillStyle = `rgb(${Math.round(60 + 195 * r2)}, ${Math.round(30 + 100 * g2)}, 30)`;
-  ctx.fillRect(bx2 + 4, bcy - 30, 28, 60);
-  ctx.strokeStyle = 'rgba(255,255,255,0.3)';
-  ctx.lineWidth = 1;
-  ctx.strokeRect(bx2 + 4, bcy - 30, 28, 60);
-  ctx.fillStyle = 'white';
-  ctx.font = 'bold 11px system-ui';
-  ctx.save();
-  ctx.translate(bx2 + 18, bcy);
-  ctx.rotate(-Math.PI / 2);
-  ctx.fillText(`${Math.round(intens * 100)}%`, -14, 4);
-  ctx.restore();
-
-  // Angle arc label
-  ctx.fillStyle = '#ffd166';
-  ctx.font = 'bold 12px system-ui';
-  ctx.fillText(`${Math.round(angle)}°`, bx2 - 36, bcy + clampedSpread / 2 + 20);
-  ctx.font = '10px system-ui';
-  ctx.fillStyle = '#8ab4c8';
-  ctx.fillText('sun angle', bx2 - 44, bcy + clampedSpread / 2 + 32);
-
-  // ── Latitude labels on globe ───────────────────────────
-  const labelLats = [90, 60, 30, 0, -30, -60, -90];
-  labelLats.forEach(lat => {
-    const ly = latToY(lat);
-    ctx.fillStyle = lat === 0 ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.4)';
-    ctx.font = lat === 0 ? 'bold 10px system-ui' : '9px system-ui';
-    ctx.textAlign = 'right';
-    ctx.fillText(lat === 0 ? 'EQ' : `${Math.abs(lat)}°${lat > 0 ? 'N' : 'S'}`, GX + GR + 20, ly + 3);
-    ctx.textAlign = 'left';
-  });
-
-  // ── Update panel stats ─────────────────────────────────
-  const latLabel = dragLat === 0 ? '0° (Equator)'
-    : dragLat > 0 ? `${Math.round(dragLat)}°N`
-    : `${Math.round(Math.abs(dragLat))}°S`;
-  document.getElementById('latVal').textContent = latLabel;
-  document.getElementById('angleVal').textContent = `${Math.round(angle)}°`;
-  const pct = Math.round(intens * 100);
-  document.getElementById('intensityVal').textContent = `${pct}%`;
-  const bar = document.getElementById('intensityBar');
-  bar.style.width = pct + '%';
-  bar.style.background = `hsl(${pct * 0.4}, 90%, 55%)`;
-
-  const zi = zoneInfo(dragLat);
-  document.getElementById('zoneName').textContent = zi.name;
-  document.getElementById('zoneDesc').textContent = zi.desc;
-}
-
-function getLatFromEvent(e) {
-  const rect = cv.getBoundingClientRect();
-  const scaleY = cv.height / rect.height;
-  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-  const canvasY = (clientY - rect.top) * scaleY;
-  return yToLat(canvasY);
-}
-
-cv.addEventListener('mousedown', e => { dragging = true; dragLat = getLatFromEvent(e); draw(); });
-cv.addEventListener('mousemove', e => { if (dragging) { dragLat = getLatFromEvent(e); draw(); } });
-window.addEventListener('mouseup', () => { dragging = false; });
-cv.addEventListener('touchstart', e => { e.preventDefault(); dragging = true; dragLat = getLatFromEvent(e); draw(); }, { passive: false });
-cv.addEventListener('touchmove', e => { e.preventDefault(); if (dragging) { dragLat = getLatFromEvent(e); draw(); } }, { passive: false });
-window.addEventListener('touchend', () => { dragging = false; });
-
-// Responsive sizing
-function resize() {
-  const maxW = Math.min(480, window.innerWidth - 260);
-  cv.style.width = maxW + 'px';
-  cv.style.height = (maxW * 420 / 480) + 'px';
-}
-window.addEventListener('resize', resize);
-resize();
-draw();
-</script>
+        draw();
+    </script>
 </body>
 </html>

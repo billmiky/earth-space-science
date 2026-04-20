@@ -336,7 +336,7 @@ To understand storm paths, we need to understand the global circulation of the a
 The Sun doesn't heat Earth evenly. The equator receives far more solar energy per unit area than the poles because of the angle at which sunlight hits the surface.
 
 ```{=html}
-<iframe src="solar-angle.html" width="100%" height="500px" style="border:none; border-radius:12px;" loading="lazy" title="Sun Angle and Solar Heating Interactive"></iframe>
+<iframe src="solar-angle.html" width="100%" height="480px" style="border:none; border-radius:12px;" scrolling="no" loading="lazy" title="Sun Angle and Solar Heating Interactive"></iframe>
 ```
 
 ## 🧪 Air Mass Origins Lab
@@ -352,7 +352,7 @@ Where air masses form determines their character — and their character determi
 This uneven heating drives enormous **convection cells** in the atmosphere — rising warm air near the equator and sinking cool air at higher latitudes. Hover over different latitude bands on the globe below to learn about each zone.
 
 ```{=html}
-<iframe src="global-circulation/index.html" width="100%" height="600px" style="border:none; border-radius:12px;" loading="lazy" title="Global Atmospheric Circulation"></iframe>
+<iframe src="global-circulation/index.html" width="100%" height="590px" style="border:none; border-radius:12px;" loading="lazy" title="Global Atmospheric Circulation"></iframe>
 ```
 
 ```{ojs}
@@ -365,6 +365,206 @@ This uneven heating drives enormous **convection cells** in the atmosphere — r
 
   svg.append("rect").attr("width", width).attr("height", height).attr("fill", "none");
   svg.append("text").attr("x", 1).attr("y", 1).text("");
+
+  return svg.node();
+}
+```
+
+### Atmospheric Cross-Section
+
+The diagram below shows a vertical slice of the atmosphere from equator to pole. Click any cell to learn more.
+
+```{ojs}
+//| echo: false
+viewof selectedCell = Inputs.radio(
+  ["None", "Hadley Cell (0°–30°)", "Ferrel Cell (30°–60°)", "Polar Cell (60°–90°)"],
+  { label: "Highlight cell:", value: "None" }
+)
+```
+
+```{ojs}
+//| echo: false
+{
+  const W = Math.min(width, 720), H = 340;
+  const svg = d3.create("svg")
+    .attr("width", W)
+    .attr("height", H)
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .style("font-family", "sans-serif");
+
+  // Background sky gradient
+  const skyGrad = svg.append("defs").append("linearGradient")
+    .attr("id", "skyGrad").attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", 1);
+  skyGrad.append("stop").attr("offset", "0%").attr("stop-color", "#1e3a5f");
+  skyGrad.append("stop").attr("offset", "100%").attr("stop-color", "#b3d4f5");
+
+  svg.append("rect").attr("width", W).attr("height", H - 40).attr("fill", "url(#skyGrad)").attr("rx", 8);
+
+  // Ground bar
+  const groundGrad = svg.append("defs").append("linearGradient")
+    .attr("id", "groundGrad").attr("x1", 0).attr("y1", 0).attr("x2", 1).attr("y2", 0);
+  groundGrad.append("stop").attr("offset", "0%").attr("stop-color", "#2d7d32");   // equator - tropical
+  groundGrad.append("stop").attr("offset", "40%").attr("stop-color", "#c8b560");  // subtropical - desert
+  groundGrad.append("stop").attr("offset", "70%").attr("stop-color", "#5a8f3c");  // mid-lat
+  groundGrad.append("stop").attr("offset", "100%").attr("stop-color", "#e8f4fd"); // polar ice
+
+  svg.append("rect").attr("x", 0).attr("y", H - 40).attr("width", W).attr("height", 40)
+    .attr("fill", "url(#groundGrad)");
+
+  // Latitude positions (x) — 0° at left, 90° at right
+  const latX = lat => (lat / 90) * W;
+  const groundY = H - 40;
+  const ceilY = 20;
+
+  // Cell data: name, lat range, rise side, color
+  const cells = [
+    { name: "Hadley",  lat1: 0,  lat2: 30, riseLeft: true,  color: "#ef4444", key: "Hadley Cell (0°–30°)" },
+    { name: "Ferrel",  lat1: 30, lat2: 60, riseLeft: false, color: "#f59e0b", key: "Ferrel Cell (30°–60°)" },
+    { name: "Polar",   lat1: 60, lat2: 90, riseLeft: true,  color: "#60a5fa", key: "Polar Cell (60°–90°)" },
+  ];
+
+  // Highlight selected cell
+  cells.forEach(c => {
+    const isSelected = selectedCell === c.key;
+    svg.append("rect")
+      .attr("x", latX(c.lat1))
+      .attr("y", ceilY)
+      .attr("width", latX(c.lat2) - latX(c.lat1))
+      .attr("height", groundY - ceilY)
+      .attr("fill", c.color)
+      .attr("opacity", isSelected ? 0.18 : 0.06)
+      .attr("rx", 2);
+  });
+
+  // Vertical dividers at 30° and 60°
+  [30, 60].forEach(lat => {
+    svg.append("line")
+      .attr("x1", latX(lat)).attr("y1", ceilY)
+      .attr("x2", latX(lat)).attr("y2", groundY)
+      .attr("stroke", "rgba(255,255,255,0.3)")
+      .attr("stroke-width", 1)
+      .attr("stroke-dasharray", "4,4");
+  });
+
+  // Draw circulation arrows for each cell
+  const arrowPath = (c) => {
+    const x1 = latX(c.lat1), x2 = latX(c.lat2);
+    const cx1 = c.riseLeft ? x1 : x2;  // rising column x
+    const cx2 = c.riseLeft ? x2 : x1;  // sinking column x
+    const midX = (x1 + x2) / 2;
+
+    // Rising branch (left of cell if riseLeft)
+    const rise = `M ${cx1},${groundY - 5} L ${cx1},${ceilY + 5}`;
+    // Top horizontal
+    const top = `M ${cx1},${ceilY + 5} Q ${midX},${ceilY - 5} ${cx2},${ceilY + 5}`;
+    // Sinking branch
+    const sink = `M ${cx2},${ceilY + 5} L ${cx2},${groundY - 5}`;
+    // Bottom horizontal
+    const bottom = `M ${cx2},${groundY - 5} Q ${midX},${groundY + 5} ${cx1},${groundY - 5}`;
+
+    return { rise, top, sink, bottom };
+  };
+
+  // Arrow marker
+  svg.append("defs").append("marker")
+    .attr("id", "arr")
+    .attr("viewBox", "0 0 8 8").attr("refX", 4).attr("refY", 4)
+    .attr("markerWidth", 5).attr("markerHeight", 5).attr("orient", "auto")
+    .append("path").attr("d", "M0,0 L8,4 L0,8 Z").attr("fill", "rgba(255,255,255,0.8)");
+
+  cells.forEach(c => {
+    const p = arrowPath(c);
+    const isSelected = selectedCell === c.key;
+    const stroke = isSelected ? c.color : "rgba(255,255,255,0.55)";
+    const sw = isSelected ? 2.5 : 1.5;
+
+    [p.rise, p.top, p.sink, p.bottom].forEach((d, i) => {
+      svg.append("path")
+        .attr("d", d)
+        .attr("stroke", stroke)
+        .attr("stroke-width", sw)
+        .attr("fill", "none")
+        .attr("marker-end", i === 0 || i === 2 ? "url(#arr)" : null)
+        .attr("marker-start", i === 1 || i === 3 ? "url(#arr)" : null);
+    });
+  });
+
+  // Pressure belt labels at ground
+  const pressBelts = [
+    { lat: 0,  label: "Low",  sub: "ITCZ",     color: "#7dd3fc" },
+    { lat: 30, label: "High", sub: "Deserts",  color: "#fca5a5" },
+    { lat: 60, label: "Low",  sub: "Storms",   color: "#7dd3fc" },
+    { lat: 90, label: "High", sub: "Polar",    color: "#fca5a5" },
+  ];
+  pressBelts.forEach(b => {
+    const x = latX(b.lat);
+    svg.append("circle").attr("cx", x).attr("cy", groundY - 12).attr("r", 12)
+      .attr("fill", b.color).attr("opacity", 0.9);
+    svg.append("text").attr("x", x).attr("y", groundY - 8)
+      .attr("text-anchor", "middle").attr("font-size", 9).attr("font-weight", "bold")
+      .attr("fill", "#1e293b").text(b.label);
+    svg.append("text").attr("x", x).attr("y", groundY + 6)
+      .attr("text-anchor", "middle").attr("font-size", 8).attr("fill", "white")
+      .attr("font-weight", "bold").text(b.sub);
+  });
+
+  // Surface wind arrows between pressure belts
+  const winds = [
+    { lat: 15, label: "← Trade Winds", color: "#f87171" },
+    { lat: 45, label: "Westerlies →",  color: "#fbbf24" },
+    { lat: 75, label: "← Polar East.", color: "#93c5fd" },
+  ];
+  winds.forEach(w => {
+    const x = latX(w.lat);
+    svg.append("text").attr("x", x).attr("y", groundY - 28)
+      .attr("text-anchor", "middle").attr("font-size", 9)
+      .attr("fill", w.color).attr("font-weight", "bold").text(w.label);
+  });
+
+  // Cell name labels
+  cells.forEach(c => {
+    const midX = latX((c.lat1 + c.lat2) / 2);
+    svg.append("text").attr("x", midX).attr("y", ceilY + 16)
+      .attr("text-anchor", "middle").attr("font-size", 11).attr("font-weight", "bold")
+      .attr("fill", "white").text(c.name + " Cell");
+  });
+
+  // Latitude tick labels
+  [0, 30, 60, 90].forEach(lat => {
+    svg.append("text").attr("x", latX(lat)).attr("y", H - 1)
+      .attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "white")
+      .attr("font-weight", "bold").text(lat + "°N");
+  });
+
+  // Info box for selected cell
+  const info = {
+    "Hadley Cell (0°–30°)":  { title: "Hadley Cell", body: "Warm, moist air rises at the equator (ITCZ), cools & dries aloft, then sinks at 30°N creating subtropical deserts. Surface flow = NE Trade Winds." },
+    "Ferrel Cell (30°–60°)": { title: "Ferrel Cell",  body: "Driven by its neighbors — not thermally direct. Sinking at 30°, rising at 60°. Surface flow = Westerlies (SW→NE). Steers mid-latitude storms." },
+    "Polar Cell (60°–90°)":  { title: "Polar Cell",   body: "Cold dense air sinks at the poles, flows equatorward, rises at 60° (Polar Front). Surface flow = Polar Easterlies. Collision with Westerlies generates storms." },
+  };
+
+  if (selectedCell !== "None" && info[selectedCell]) {
+    const box = info[selectedCell];
+    const boxX = 8, boxY = ceilY + 30, boxW = W - 16, boxH = 52;
+    svg.append("rect").attr("x", boxX).attr("y", boxY).attr("width", boxW).attr("height", boxH)
+      .attr("fill", "rgba(0,0,0,0.65)").attr("rx", 6).attr("stroke", "rgba(255,255,255,0.2)");
+    svg.append("text").attr("x", boxX + 10).attr("y", boxY + 16)
+      .attr("font-size", 11).attr("font-weight", "bold").attr("fill", "#fff").text(box.title);
+
+    // Word-wrap body text
+    const words = box.body.split(" ");
+    let line = "", lineY = boxY + 31;
+    words.forEach(word => {
+      const test = line + (line ? " " : "") + word;
+      if (test.length > 95) {
+        svg.append("text").attr("x", boxX + 10).attr("y", lineY)
+          .attr("font-size", 9.5).attr("fill", "#cbd5e1").text(line);
+        line = word; lineY += 13;
+      } else { line = test; }
+    });
+    if (line) svg.append("text").attr("x", boxX + 10).attr("y", lineY)
+      .attr("font-size", 9.5).attr("fill", "#cbd5e1").text(line);
+  }
 
   return svg.node();
 }
