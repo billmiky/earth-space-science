@@ -335,161 +335,36 @@ To understand storm paths, we need to understand the global circulation of the a
 
 The Sun doesn't heat Earth evenly. The equator receives far more solar energy per unit area than the poles because of the angle at which sunlight hits the surface.
 
-```{ojs}
-//| echo: false
-{
-  const width = 750;
-  const height = 380;
-  const svg = d3.create("svg").attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`);
+```{=html}
+<iframe src="solar-angle.html" width="100%" height="500px" style="border:none; border-radius:12px;" loading="lazy" title="Sun Angle and Solar Heating Interactive"></iframe>
+```
 
-  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#1a1a2e").attr("rx", 10);
+## 🧪 Air Mass Origins Lab
 
-  // Earth (circle)
-  const cx = 375, cy = 200, r = 140;
-  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", r).attr("fill", "#2980b9");
+Where air masses form determines their character — and their character determines the weather they bring. Use the interactive lab below to investigate how **insolation angle** and **surface type** at each source region combine to produce different air masses.
 
-  // Latitude bands
-  const bands = [
-    {y1: -1, y2: -0.5, label: "60-90°N", color: "#74b9ff", energy: "Low"},
-    {y1: -0.5, y2: 0, label: "30-60°N", color: "#a29bfe", energy: "Medium"},
-    {y1: 0, y2: 0.5, label: "0-30°N", color: "#fdcb6e", energy: "High"},
-    {y1: 0.5, y2: 1, label: "0-30°S", color: "#fdcb6e", energy: "High"}
-  ];
-
-  bands.forEach(b => {
-    const y1 = cy - b.y1 * r;
-    const y2 = cy - b.y2 * r;
-    const x1 = cx - Math.sqrt(r*r - (cy-y1)*(cy-y1)) || cx;
-    const x2 = cx + Math.sqrt(r*r - (cy-y1)*(cy-y1)) || cx;
-    svg.append("line").attr("x1", x1).attr("y1", y1).attr("x2", x2).attr("y2", y1)
-      .attr("stroke", b.color).attr("stroke-width", 1).attr("stroke-dasharray", "3,3");
-  });
-
-  // Sun rays
-  const sunX = 100;
-  const rays = [
-    {y: cy - 100, angle: 30, label: "Spread out → less energy/area", color: "#74b9ff"},
-    {y: cy, angle: 0, label: "Direct → maximum energy/area", color: "#f39c12"},
-    {y: cy + 80, angle: -20, label: "Spread out → less energy/area", color: "#74b9ff"}
-  ];
-
-  svg.append("circle").attr("cx", 50).attr("cy", cy).attr("r", 30).attr("fill", "#f39c12");
-  svg.append("text").attr("x", 50).attr("y", cy + 5).attr("text-anchor", "middle").attr("font-size", 20).text("☀️");
-
-  rays.forEach(ray => {
-    svg.append("line").attr("x1", 90).attr("y1", ray.y).attr("x2", cx - r + 20).attr("y2", ray.y + Math.tan(ray.angle * Math.PI/180) * 200)
-      .attr("stroke", ray.color).attr("stroke-width", 2);
-    svg.append("text").attr("x", cx + r + 20).attr("y", ray.y + 5).attr("font-size", 11).attr("fill", ray.color).text(ray.label);
-  });
-
-  // Energy bar chart on right
-  const barData = [{lat: "Equator", energy: 100}, {lat: "30°", energy: 75}, {lat: "60°", energy: 40}, {lat: "90°", energy: 15}];
-  const barX = 620;
-  barData.forEach((d, i) => {
-    const barW = d.energy * 0.8;
-    const barY = 100 + i * 55;
-    svg.append("rect").attr("x", barX).attr("y", barY).attr("width", barW).attr("height", 30)
-      .attr("fill", d.energy > 60 ? "#f39c12" : "#74b9ff").attr("rx", 4);
-    svg.append("text").attr("x", barX - 5).attr("y", barY + 20).attr("text-anchor", "end").attr("font-size", 11).attr("fill", "white").text(d.lat);
-    svg.append("text").attr("x", barX + barW + 5).attr("y", barY + 20).attr("font-size", 10).attr("fill", "#dfe6e9").text(`${d.energy}%`);
-  });
-
-  svg.append("text").attr("x", 375).attr("y", 370).attr("text-anchor", "middle").attr("font-size", 14).attr("fill", "#dfe6e9").attr("font-weight", "bold")
-    .text("Uneven heating creates a temperature gradient from equator to poles → drives atmospheric circulation");
-
-  return svg.node();
-}
+```{=html}
+<iframe src="air-mass-lab/index.html" width="100%" height="1050px" style="border:none; border-radius:12px;" loading="lazy" title="Air Mass Origins Lab"></iframe>
 ```
 
 ## Convection Cells: Nature's Heat Redistributors
 
-This uneven heating drives enormous **convection cells** in the atmosphere — rising warm air near the equator and sinking cool air at higher latitudes.
+This uneven heating drives enormous **convection cells** in the atmosphere — rising warm air near the equator and sinking cool air at higher latitudes. Hover over different latitude bands on the globe below to learn about each zone.
+
+```{=html}
+<iframe src="global-circulation/index.html" width="100%" height="600px" style="border:none; border-radius:12px;" loading="lazy" title="Global Atmospheric Circulation"></iframe>
+```
 
 ```{ojs}
 //| echo: false
+// placeholder — kept so downstream OJS cells that reference d3 still resolve
 {
-  const width = 750;
-  const height = 500;
+  const width = 1;
+  const height = 1;
   const svg = d3.create("svg").attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`);
 
-  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#f0f4ff").attr("rx", 10);
-  svg.append("text").attr("x", 375).attr("y", 30).attr("text-anchor", "middle").attr("font-size", 20).attr("font-weight", "bold").text("Global Atmospheric Circulation Cells");
-
-  // Earth surface line
-  svg.append("line").attr("x1", 50).attr("y1", 400).attr("x2", 700).attr("y2", 400).attr("stroke", "#2d3436").attr("stroke-width", 3);
-
-  // Latitude labels
-  const lats = [{x: 50, label: "90°N"}, {x: 158, label: "60°N"}, {x: 267, label: "30°N"}, {x: 375, label: "0° (Equator)"}, {x: 483, label: "30°S"}, {x: 592, label: "60°S"}, {x: 700, label: "90°S"}];
-  lats.forEach(l => {
-    svg.append("line").attr("x1", l.x).attr("y1", 395).attr("x2", l.x).attr("y2", 405).attr("stroke", "#2d3436").attr("stroke-width", 2);
-    svg.append("text").attr("x", l.x).attr("y", 420).attr("text-anchor", "middle").attr("font-size", 11).text(l.label);
-  });
-
-  // Hadley Cells (equator to 30°)
-  const drawCell = (x1, x2, y1, y2, color, name, direction) => {
-    svg.append("rect").attr("x", Math.min(x1,x2)).attr("y", y2).attr("width", Math.abs(x2-x1)).attr("height", y1-y2)
-      .attr("fill", color).attr("opacity", 0.15).attr("rx", 5);
-    // Circulation arrows
-    const midX = (x1+x2)/2;
-    const midY = (y1+y2)/2;
-    if (direction === "cw") {
-      svg.append("path").attr("d", `M ${x1+10},${y1-10} L ${x1+10},${y2+10} L ${x2-10},${y2+10} L ${x2-10},${y1-10}`)
-        .attr("stroke", color).attr("stroke-width", 2.5).attr("fill", "none").attr("marker-end", `url(#arrow-${name})`);
-    } else {
-      svg.append("path").attr("d", `M ${x2-10},${y1-10} L ${x2-10},${y2+10} L ${x1+10},${y2+10} L ${x1+10},${y1-10}`)
-        .attr("stroke", color).attr("stroke-width", 2.5).attr("fill", "none").attr("marker-end", `url(#arrow-${name})`);
-    }
-    svg.append("text").attr("x", midX).attr("y", midY).attr("text-anchor", "middle").attr("font-size", 13).attr("font-weight", "bold").attr("fill", color).text(name);
-
-    const defs = svg.select("defs").empty() ? svg.append("defs") : svg.select("defs");
-    defs.append("marker").attr("id", `arrow-${name}`).attr("viewBox", "0 0 10 10").attr("refX", 5).attr("refY", 5)
-      .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
-      .append("path").attr("d", "M 0 0 L 10 5 L 0 10 z").attr("fill", color);
-  };
-
-  // Polar Cell (90-60°N)
-  drawCell(50, 158, 390, 200, "#3498db", "Polar", "cw");
-  // Ferrel Cell (60-30°N)
-  drawCell(158, 267, 390, 150, "#9b59b6", "Ferrel", "ccw");
-  // Hadley Cell (30-0°N)
-  drawCell(267, 375, 390, 100, "#e74c3c", "Hadley", "cw");
-  // Hadley Cell (0-30°S)
-  drawCell(375, 483, 390, 100, "#e74c3c", "Hadley", "ccw");
-  // Ferrel Cell (30-60°S)
-  drawCell(483, 592, 390, 150, "#9b59b6", "Ferrel", "cw");
-  // Polar Cell (60-90°S)
-  drawCell(592, 700, 390, 200, "#3498db", "Polar", "ccw");
-
-  // Surface wind labels
-  const winds = [
-    {x: 104, y: 440, text: "Polar Easterlies", arrow: "←"},
-    {x: 212, y: 440, text: "Westerlies", arrow: "→"},
-    {x: 321, y: 440, text: "Trade Winds (NE)", arrow: "←"},
-    {x: 429, y: 440, text: "Trade Winds (SE)", arrow: "→"},
-    {x: 537, y: 440, text: "Westerlies", arrow: "←"},
-    {x: 646, y: 440, text: "Polar Easterlies", arrow: "→"}
-  ];
-
-  winds.forEach(w => {
-    svg.append("text").attr("x", w.x).attr("y", w.y).attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "#2d3436").text(w.text);
-    svg.append("text").attr("x", w.x).attr("y", w.y + 18).attr("text-anchor", "middle").attr("font-size", 18).attr("fill", "#e74c3c").text(w.arrow);
-  });
-
-  // Rising/sinking labels
-  svg.append("text").attr("x", 375).attr("y", 85).attr("text-anchor", "middle").attr("font-size", 11).attr("fill", "#e74c3c").text("↑ Rising (ITCZ)");
-  svg.append("text").attr("x", 267).attr("y", 85).attr("text-anchor", "middle").attr("font-size", 11).attr("fill", "#e67e22").text("↓ Sinking");
-  svg.append("text").attr("x", 483).attr("y", 85).attr("text-anchor", "middle").attr("font-size", 11).attr("fill", "#e67e22").text("↓ Sinking");
-  svg.append("text").attr("x", 158).attr("y", 140).attr("text-anchor", "middle").attr("font-size", 11).attr("fill", "#3498db").text("↑ Rising");
-  svg.append("text").attr("x", 592).attr("y", 140).attr("text-anchor", "middle").attr("font-size", 11).attr("fill", "#3498db").text("↑ Rising");
-
-  // Jet stream markers
-  svg.append("rect").attr("x", 140).attr("y", 170).attr("width", 36).attr("height", 20).attr("fill", "#f1c40f").attr("rx", 4);
-  svg.append("text").attr("x", 158).attr("y", 185).attr("text-anchor", "middle").attr("font-size", 10).attr("font-weight", "bold").text("JET");
-  svg.append("rect").attr("x", 249).attr("y", 125).attr("width", 36).attr("height", 20).attr("fill", "#f1c40f").attr("rx", 4);
-  svg.append("text").attr("x", 267).attr("y", 140).attr("text-anchor", "middle").attr("font-size", 10).attr("font-weight", "bold").text("JET");
-
-  svg.append("text").attr("x", 375).attr("y", 490).attr("text-anchor", "middle").attr("font-size", 12).attr("fill", "#636e72")
-    .text("NYC sits in the WESTERLIES zone → storms are steered from west/southwest to east/northeast");
+  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "none");
+  svg.append("text").attr("x", 1).attr("y", 1).text("");
 
   return svg.node();
 }
