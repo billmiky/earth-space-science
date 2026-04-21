@@ -92,15 +92,18 @@ export default function App() {
   // Notify the parent page of our rendered height so the iframe auto-resizes
   useEffect(() => {
     const sendHeight = () => {
+      const root = document.getElementById('root');
+      const h = root ? root.getBoundingClientRect().height : document.body.offsetHeight;
       window.parent.postMessage(
-        { type: 'iframeResize', height: document.documentElement.scrollHeight },
+        { type: 'iframeResize', height: Math.ceil(h) },
         '*'
       );
     };
-    sendHeight();
+    // Small delay to let layout settle before measuring
+    const timer = setTimeout(sendHeight, 100);
     const ro = new ResizeObserver(sendHeight);
-    ro.observe(document.body);
-    return () => ro.disconnect();
+    ro.observe(document.getElementById('root') || document.body);
+    return () => { clearTimeout(timer); ro.disconnect(); };
   }, []);
 
   const handleRegionClick = (region) => {
