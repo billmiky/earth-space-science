@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sun, Droplets, Map as MapIcon, Wind, CheckCircle2, Info } from 'lucide-react';
 
 const AIR_MASSES = {
@@ -89,6 +89,20 @@ export default function App() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [completedRegions, setCompletedRegions] = useState([]);
 
+  // Notify the parent page of our rendered height so the iframe auto-resizes
+  useEffect(() => {
+    const sendHeight = () => {
+      window.parent.postMessage(
+        { type: 'iframeResize', height: document.documentElement.scrollHeight },
+        '*'
+      );
+    };
+    sendHeight();
+    const ro = new ResizeObserver(sendHeight);
+    ro.observe(document.body);
+    return () => ro.disconnect();
+  }, []);
+
   const handleRegionClick = (region) => {
     setActiveRegion(region);
     setDeducedTemp('');
@@ -159,13 +173,14 @@ export default function App() {
                   key={region.id}
                   onClick={() => handleRegionClick(region)}
                   title={region.name}
-                  className={`absolute transform -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center transition-all duration-300
-                    ${isActive ? 'w-8 h-8 z-20 bg-blue-600 shadow-lg shadow-blue-500/50 ring-4 ring-blue-200' : 'w-6 h-6 z-10 hover:scale-110'}
-                    ${!isActive && isCompleted ? 'bg-emerald-500' : ''}
-                    ${!isActive && !isCompleted ? 'bg-slate-700' : ''}`}
-                  style={{ left: `${region.x}%`, top: `${region.y}%` }}
+                  style={{ left: `${region.x}%`, top: `${region.y}%`, touchAction: 'manipulation' }}
+                  className={`absolute transform -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center bg-transparent border-none cursor-pointer transition-all duration-300
+                    ${isActive ? 'z-20' : 'z-10'}`}
                 >
-                  {isCompleted ? <CheckCircle2 size={14} className="text-white" /> : <div className="w-2 h-2 bg-white rounded-full" />}
+                  <div className={`rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300
+                    ${isActive ? 'w-9 h-9 bg-blue-600 shadow-lg shadow-blue-500/50 ring-4 ring-blue-200' : `w-6 h-6 hover:scale-110 ${isCompleted ? 'bg-emerald-500' : 'bg-slate-700'}`}`}>
+                    {isCompleted ? <CheckCircle2 size={14} className="text-white" /> : <div className="w-2 h-2 bg-white rounded-full" />}
+                  </div>
                   <span className={`absolute top-full mt-2 whitespace-nowrap px-2 py-1 bg-slate-800 text-white text-xs rounded pointer-events-none transition-opacity ${isActive ? 'opacity-100 z-30' : 'opacity-0'}`}>
                     {region.name}
                   </span>
