@@ -246,6 +246,111 @@ d3 = require("d3@7")
 
 ```{ojs}
 //| echo: false
+function buildQuiz(id, questions) {
+  const outer = html`<div style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const toggle = html`<button style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:2px solid #c7d2fe;border-radius:30px;background:linear-gradient(135deg,#eef2ff 0%,#e8f4fd 100%);color:#4338ca;font-weight:700;font-size:0.95em;cursor:pointer;transition:all 0.25s ease;box-shadow:0 2px 8px rgba(67,56,202,0.12);"><span style="font-size:1.15em;">✅</span><span>Check Your Understanding</span><span class="quiz-chevron" style="display:inline-block;transition:transform 0.3s ease;font-size:0.8em;">▶</span></button>`;
+  const body = html`<div style="display:none; margin-top:12px; border:1.5px solid #c7d2fe; border-radius:14px; overflow:hidden; background:white;"></div>`;
+  const closeBtn = html`<div style="padding:12px 18px; background:#eef2ff; cursor:pointer; display:flex; justify-content:space-between; align-items:center;"><span style="font-weight:600; color:#4338ca;">🧠 Knowledge Check</span><span style="color:#6366f1; font-size:0.85em;">▲ Hide</span></div>`;
+  let isOpen = false;
+  toggle.onclick = () => {
+    isOpen = !isOpen;
+    body.style.display = isOpen ? "block" : "none";
+    toggle.querySelector(".quiz-chevron").style.transform = isOpen ? "rotate(90deg)" : "";
+  };
+  closeBtn.onclick = () => { isOpen = false; body.style.display = "none"; toggle.querySelector(".quiz-chevron").style.transform = ""; };
+  body.appendChild(closeBtn);
+  questions.forEach((q, qi) => {
+    const card = html`<div id="${id}-q${qi}" style="padding:18px 22px; border-top:1px solid #e0e7ff;"></div>`;
+    card.appendChild(html`<div style="font-weight:700; color:#1e1b4b; margin-bottom:12px; line-height:1.5;">${qi+1}. ${q.q}</div>`);
+    const optWrap = html`<div style="display:flex; flex-direction:column; gap:8px;"></div>`;
+    const feedback = html`<div style="margin-top:12px; padding:12px; border-radius:10px; display:none;"></div>`;
+    q.options.forEach((opt, oi) => {
+      const btn = html`<button style="text-align:left; padding:10px 16px; border-radius:10px; border:2px solid #e0e7ff; background:#f5f7ff; cursor:pointer; font-size:0.95em; color:#1e1b4b; transition:all 0.2s;">${opt}</button>`;
+      btn.onmouseenter = () => { if(!btn.disabled) btn.style.background = "#e0e7ff"; };
+      btn.onmouseleave = () => { if(!btn.disabled && !btn.chosen) btn.style.background = "#f5f7ff"; };
+      btn.onclick = () => {
+        card.querySelectorAll("button").forEach(b => { b.disabled = true; b.chosen = false; });
+        btn.chosen = true;
+        const correct = oi === q.correct;
+        btn.style.background = correct ? "#dcfce7" : "#fee2e2";
+        btn.style.borderColor = correct ? "#22c55e" : "#ef4444";
+        if (!correct) {
+          card.querySelectorAll("button")[q.correct].style.background = "#dcfce7";
+          card.querySelectorAll("button")[q.correct].style.borderColor = "#22c55e";
+        }
+        feedback.style.display = "block";
+        feedback.style.background = correct ? "#f0fdf4" : "#fff1f2";
+        feedback.style.borderLeft = `4px solid ${correct ? "#22c55e" : "#ef4444"}`;
+        feedback.innerHTML = `${q.emoji || (correct ? "✅" : "❌")} <strong>${correct ? "Correct!" : "Not quite."}</strong> ${q.explanation}`;
+      };
+      optWrap.appendChild(btn);
+    });
+    card.appendChild(optWrap);
+    card.appendChild(feedback);
+    body.appendChild(card);
+  });
+  outer.appendChild(toggle);
+  outer.appendChild(body);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+function buildUnitQuiz(id, title, questions) {
+  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const header = html`<div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border-radius:14px 14px 0 0;padding:18px 24px;">
+    <div style="font-size:1.1em;font-weight:700;display:flex;align-items:center;gap:8px;"><span style="font-size:1.2em;">📝</span> ${title}</div>
+    <div style="font-size:0.85em;opacity:0.85;margin-top:4px;">Select an answer for each question.</div>
+  </div>`;
+  const body = html`<div style="border:1.5px solid #c7d2fe;border-top:none;border-radius:0 0 14px 14px;overflow:hidden;background:#f8f9ff;padding:16px;"></div>`;
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#667eea";btn.style.background="#f0f0ff"; }};
+      btn.onmouseout  = () => { if(!card.dataset.answered){ btn.style.borderColor="#e2e8f0";btn.style.background="#fff"; }};
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => {
+          b.style.cursor="default"; b.onmouseover=null; b.onmouseout=null;
+          b.style.borderColor="#e2e8f0"; b.style.background="#f8fafc"; b.style.color="#475569";
+        });
+        const fb = card.querySelector(".uq-fb");
+        if(oi === qq.correct){
+          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";btn.style.color="#276749";btn.style.fontWeight="700";
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";btn.style.color="#9b2c2c";btn.style.fontWeight="700";
+          const correctBtn = card.querySelectorAll("button")[qq.correct];
+          correctBtn.style.borderColor="#48bb78";correctBtn.style.background="#f0fff4";correctBtn.style.color="#276749";correctBtn.style.fontWeight="700";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.display="block";fb.style.padding="10px 12px";fb.style.borderRadius="8px";fb.style.marginTop="8px";fb.style.fontSize="0.9em";fb.style.lineHeight="1.5";
+      };
+      card.appendChild(btn);
+    });
+    const fb = document.createElement("div");
+    fb.className = "uq-fb";
+    fb.style.display = "none";
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  outer.appendChild(header);
+  outer.appendChild(body);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
 viewof stormTypeMap = Inputs.radio(
   ["Atlantic Hurricanes", "Northeast Blizzards", "Both"],
   {label: "Show storm tracks:", value: "Both"}
@@ -322,6 +427,34 @@ Despite forming in very different locations and for very different reasons, both
 
 This is NOT a coincidence. Something is **steering** these storms.
 :::
+
+```{ojs}
+//| echo: false
+buildQuiz("storm-tracks-map", [
+  {
+    q: "The storm track map shows that both Atlantic hurricanes (after recurving) and Nor'easters travel from southwest to northeast. What does this reveal?",
+    options: [
+      "It is a coincidence — the two storm types have no connection to each other",
+      "Both storm types are steered by the same mid-latitude westerly winds once they enter the 30°–60°N latitude band",
+      "Ocean tides push both storm types in the same direction along the coast",
+      "Hurricanes and blizzards form in the same location and follow identical paths"
+    ],
+    correct: 1,
+    explanation: "Despite forming by completely different mechanisms, both hurricanes (once they recurve north of ~30°N) and Nor'easters are steered by the prevailing westerlies — the dominant surface winds in the mid-latitudes. This is why both storm types consistently track from SW to NE across the eastern U.S."
+  },
+  {
+    q: "On the map, hurricane tracks show a characteristic curve: they first move westward near the tropics, then curve northeastward as they enter higher latitudes. What drives this recurvature?",
+    options: [
+      "The Gulf Stream ocean current deflects them northeastward",
+      "The Moon's gravity pulls tropical storms poleward",
+      "Near the equator, the trade winds push storms west; once past ~30°N, the westerlies take over and steer them northeast",
+      "Hurricanes run out of warm water and reverse direction"
+    ],
+    correct: 2,
+    explanation: "This classic recurvature reflects the hand-off between two global wind belts. In the tropics (0°–30°N), easterly trade winds push storms westward. Once a hurricane moves north of the subtropical high (around 30°N), it encounters the mid-latitude westerlies — blowing from west to east — which pick up the storm and steer it northeastward. It's the same steering mechanism that moves all mid-latitude weather systems."
+  }
+])
+```
 
 # Explain: The Global Wind Engine
 
@@ -668,16 +801,44 @@ window.addEventListener('message', function(e) {
 </script>
 ```
 
+```{ojs}
+//| echo: false
+buildQuiz("air-mass-origins", [
+  {
+    q: "A cP (continental Polar) air mass forms over northern Canada in January. Which set of properties best describes it?",
+    options: [
+      "Warm and humid — it picks up moisture from Canadian lakes",
+      "Cold and dry — it forms over frozen land far from any ocean moisture source",
+      "Cool and humid — the cold temperatures cause condensation at the surface",
+      "Hot and dry — polar regions have very low humidity and intense sunlight in summer"
+    ],
+    correct: 1,
+    explanation: "'c' = continental (forms over land → dry) and 'P' = polar (cold latitude). Continental Polar air masses are the primary source of cold, dry air that sweeps across the U.S. in winter. They lack moisture because they never pass over a significant water body, so they bring cold, clear conditions rather than heavy snowfall on their own."
+  },
+  {
+    q: "What air mass provides the critical moisture source that fuels major East Coast blizzards and Nor'easters?",
+    options: [
+      "cP — continental Polar air from Canada",
+      "cA — continental Arctic air from the Arctic icecap",
+      "mT — maritime Tropical air from the Gulf of Mexico and western Atlantic",
+      "mP — maritime Polar air from the North Atlantic"
+    ],
+    correct: 2,
+    explanation: "The mT (maritime Tropical) air mass — warm, moisture-laden air from the Gulf of Mexico and subtropical Atlantic — is the fuel for East Coast snowstorms. When this warm, wet air collides with invading cP air at a frontal boundary, the warm air is forced aloft, cools, and precipitates as heavy snow. Without the Gulf moisture, the same cold air mass would produce only light flurries."
+  }
+])
+```
+
 ## Convection Cells: Nature's Heat Redistributors
 
 This uneven heating drives enormous **convection cells** in the atmosphere — rising warm air near the equator and sinking cool air at higher latitudes. Hover over different latitude bands on the globe below to learn about each zone.
 
 ```{=html}
-<iframe src="windbelts.html?v=20260421c" width="100%" style="display:block; max-width:1100px; margin:0 auto; aspect-ratio:750 / 530; height:auto; border:none; border-radius:12px;" loading="lazy" title="Wind Belts Simulation"></iframe>
+<iframe src="windbelts.html?v=20260421d" width="100%" style="display:block; max-width:760px; margin:0 auto 8px auto; aspect-ratio:750 / 530; height:auto; border:none; border-radius:12px;" loading="lazy" title="Wind Belts Simulation"></iframe>
 ```
 
 ```{=html}
-<iframe src="global-circulation/index.html" width="100%" height="590px" style="border:none; border-radius:12px;" loading="lazy" title="Global Atmospheric Circulation"></iframe>
+<iframe src="global-circulation/index.html?v=20260421b" width="100%" height="590px" style="border:none; border-radius:12px;" loading="lazy" title="Global Atmospheric Circulation"></iframe>
 ```
 
 ```{ojs}
@@ -887,6 +1048,34 @@ viewof selectedCell = Inputs.radio(
 **NYC is at ~41°N — right in the Ferrel Cell's westerlies.** This is why storms affecting our city generally move from southwest to northeast!
 :::
 
+```{ojs}
+//| echo: false
+buildQuiz("circulation-cells", [
+  {
+    q: "NYC is at approximately 41°N latitude. Which atmospheric circulation cell directly governs the surface winds that steer storms through the Northeast United States?",
+    options: [
+      "Hadley Cell — the largest and most powerful circulation cell",
+      "Polar Cell — cold dense air sinking from the North Pole",
+      "Ferrel Cell — the mid-latitude cell whose surface westerlies dominate the 30°–60°N band",
+      "Walker Cell — the Pacific Ocean circulation driven by ENSO"
+    ],
+    correct: 2,
+    explanation: "NYC at 41°N sits squarely in the Ferrel Cell (30°–60°N). The surface winds in this cell blow from the southwest — the mid-latitude westerlies. These winds are the 'storm highway' that steers both Nor'easters and recurving hurricanes from southwest to northeast along the East Coast. This is not a coincidence; it is the direct result of global atmospheric circulation."
+  },
+  {
+    q: "The world's great subtropical deserts (Sahara, Arabian, Mojave, Australian Outback) are all found near 30°N or 30°S. What circulation process creates desert conditions at these latitudes?",
+    options: [
+      "Rising air at 30° cools and produces heavy rainfall, washing away all soil nutrients",
+      "The Hadley Cell's sinking air at 30° compresses, warms adiabatically, and inhibits cloud formation and precipitation",
+      "The Coriolis effect deflects rain-bearing clouds away from 30° latitude",
+      "Ocean currents are warm at 30°, so moisture evaporates before it can fall as rain"
+    ],
+    correct: 1,
+    explanation: "The Hadley Cell drives warm moist air upward at the equator (creating the ITCZ's heavy rainfall), then it flows poleward at altitude, cools, and sinks back down at ~30°N and 30°S. This sinking (subsiding) air compresses and warms adiabatically — exactly the opposite of the lifting process that creates clouds. The result: persistent high pressure, cloud-free skies, and very little precipitation. These are called the 'subtropical highs' or 'horse latitudes.'"
+  }
+])
+```
+
 ## The Coriolis Effect: Why Winds Curve
 
 If Earth didn't rotate, winds would blow straight from high to low pressure. But Earth **does** rotate, and this deflects moving air:
@@ -949,6 +1138,34 @@ viewof showCoriolis = Inputs.toggle({label: "Show Coriolis deflection", value: f
 - With Coriolis (NH): wind is deflected **right** → curves clockwise around High pressure, counter-clockwise around Low pressure
 - This is why tropical trade winds blow from the **northeast** (not straight south) and mid-latitude westerlies blow from the **southwest** (not straight north)
 :::
+
+```{ojs}
+//| echo: false
+buildQuiz("coriolis-winds", [
+  {
+    q: "In the Northern Hemisphere, the Coriolis effect deflects moving air to the right. As air rushes inward toward a low-pressure center, what rotation pattern results?",
+    options: [
+      "Clockwise rotation — air is deflected right as it spirals inward",
+      "Counterclockwise rotation — each rightward deflection curves the inward-flowing air into a CCW spiral",
+      "No rotation — the pressure gradient force overpowers the Coriolis effect at low pressure",
+      "Clockwise at the surface, counterclockwise aloft — the two forces cancel at altitude"
+    ],
+    correct: 1,
+    explanation: "Imagine air rushing inward from all directions toward a low. In the Northern Hemisphere, each parcel is deflected to its right. Air coming from the south gets pushed west; air from the north gets pushed east; air from the east gets pushed north — together these rightward deflections create a counterclockwise (cyclonic) spin. This is why ALL Northern Hemisphere low-pressure systems — hurricanes, Nor'easters, blizzard-producers — rotate counterclockwise."
+  },
+  {
+    q: "Without Earth's rotation, air would flow straight from high pressure to low pressure. The Coriolis effect is why trade winds blow from the NORTHEAST in the Northern Hemisphere tropics instead of straight south. Which statement best explains this?",
+    options: [
+      "The trade winds start moving south toward the ITCZ; the Coriolis effect deflects them to the right (westward), making them blow from the northeast",
+      "Oceans in the Northern Hemisphere heat up faster on the east side, pushing winds from east to west",
+      "The Moon's gravity pulls tropical air masses eastward, adding an eastward component to southward flow",
+      "Mountain ranges in the tropics block straight southward flow and redirect it to the northeast"
+    ],
+    correct: 0,
+    explanation: "At the surface in the tropics, air flows toward the low pressure of the ITCZ (roughly southward in the Northern Hemisphere). The Coriolis effect deflects this moving air to the right — which in the Northern Hemisphere means westward. A southward wind deflected right becomes a wind with a westward component: it ends up blowing FROM the northeast (traveling southwest). This is the origin of the northeast trade winds that Columbus used to sail to the Americas."
+  }
+])
+```
 
 ## The Jet Stream: The Storm Highway
 
@@ -1032,6 +1249,34 @@ viewof jetStreamPattern = Inputs.radio(
 - **Stronger temperature gradient** → faster, straighter jet → predictable storm tracks
 - **Weaker gradient (Arctic amplification)** → slower, wavier jet → storms can **stall**, creating extended extreme events
 :::
+
+```{ojs}
+//| echo: false
+buildQuiz("jet-stream", [
+  {
+    q: "The jet stream visualization shows that under 'Wavy Pattern (Blocking),' cold troughs plunge south while warm ridges push north. What weather consequence does this produce for the mid-latitudes?",
+    options: [
+      "Mild, stable weather across all latitudes as temperatures even out",
+      "Faster storm movement, so extreme weather clears quickly",
+      "Cold Arctic air can penetrate deep into the southern U.S., and storms can stall in one location producing prolonged extreme events",
+      "The jet stream disappears entirely during blocking, so no storms can form"
+    ],
+    correct: 2,
+    explanation: "A normal (zonal) jet stream moves storms quickly from west to east. But when the jet develops large meanders — deep troughs and ridges — it slows down. Cold air can plunge far south through the troughs (producing polar vortex outbreaks), and weather systems can become 'blocked,' stalling in one location for days or weeks. This is why some blizzards and heat waves persist far longer than average: the steering mechanism has effectively stalled."
+  },
+  {
+    q: "Arctic amplification refers to the Arctic warming 2–4× faster than the global average. How does this specifically affect the polar jet stream?",
+    options: [
+      "A warmer Arctic creates stronger temperature contrasts, accelerating the jet stream and making storms faster",
+      "The reduced temperature contrast between the Arctic and mid-latitudes weakens the jet stream's speed and makes it develop larger, slower meanders",
+      "Arctic amplification has no measurable effect on the jet stream — they operate independently",
+      "The jet stream shifts to the equator as the Arctic warms, removing storms from the mid-latitudes entirely"
+    ],
+    correct: 1,
+    explanation: "The jet stream is powered by the temperature contrast between cold polar air and warm tropical air — just as a heat engine requires a temperature difference to do work. Arctic amplification reduces this contrast (the poles warm faster than the tropics). A weaker temperature gradient = a less energetic, slower jet stream with larger Rossby wave meanders. This is why climate scientists connect Arctic warming to more frequent 'weather whiplash' — extreme cold outbreaks alternating with warm spells."
+  }
+])
+```
 
 # Elaborate: Precipitation Patterns & Climate Connections
 
@@ -1165,6 +1410,34 @@ viewof warmingScenario = Inputs.range([0, 4], {label: "Global warming (°C above
 ::: {.mind-blown}
 🌍 As the planet warms, the jet stream and storm tracks are projected to shift **poleward** — changing which regions get storms and how intense they are! 🌍
 :::
+
+```{ojs}
+//| echo: false
+buildQuiz("precip-storm-shift", [
+  {
+    q: "The annual precipitation chart shows that regions near 30°N/S (Horse Latitudes) receive far less rainfall than the equator or the mid-latitudes. What atmospheric process explains this dryness?",
+    options: [
+      "Increased solar radiation at 30° evaporates rainfall before it reaches the ground",
+      "The Hadley Cell transports moisture away from 30° toward the equator",
+      "Sinking (subsiding) air in the Hadley Cell compresses and warms adiabatically, inhibiting cloud formation and suppressing precipitation",
+      "Ocean currents near 30° are too cold to supply evaporated moisture to the atmosphere"
+    ],
+    correct: 2,
+    explanation: "The Hadley Cell drives warm air upward at the ITCZ (creating heavy equatorial rain), but that air must come back down somewhere — and it sinks at ~30°N/S. Sinking air is compressed as it descends into higher atmospheric pressure, warming adiabatically. Warm, compressed air has a very high capacity to hold water vapor without condensing — so clouds dissipate and precipitation is suppressed. This is why every major subtropical desert (Sahara, Arabian, Sonoran, Australian Outback) sits near 30°."
+  },
+  {
+    q: "The warming scenario simulator shows storm tracks shifting poleward with increasing temperature. At 4°C of warming, how would NYC's storm exposure most likely change?",
+    options: [
+      "NYC would see more storms as the poleward shift brings tropical storm systems further north",
+      "The storm track bell curve shifts north of NYC, meaning fewer storms hit the city but those that do arrive from a more northerly angle",
+      "Storm tracks would disappear entirely above 40°N as the jet stream weakens",
+      "NYC would experience more westward-tracking storms as the westerlies reverse direction"
+    ],
+    correct: 1,
+    explanation: "When the peak storm track density shifts poleward (northward), regions at the southern edge of the current storm belt — like NYC at 41°N — could see fewer total storm events. However, any storms that do still track through the region may be more intense, because a warmer atmosphere holds more moisture (Clausius-Clapeyron) and warmer oceans supply more energy. The pattern is 'fewer but potentially more extreme' — the same paradox seen in NYC's blizzard data."
+  }
+])
+```
 
 # Elaborate: ENSO — The Pacific's Weather Remote Control
 
@@ -1837,93 +2110,259 @@ ENSO is a **cyclical shift in Pacific Ocean temperatures and wind patterns** tha
 - Climate change is projected to make **extreme El Niño and La Niña events more frequent** as the Pacific Ocean warms
 :::
 
-# Evaluate: Storm Path Analysis
+```{ojs}
+//| echo: false
+buildQuiz("enso-patterns", [
+  {
+    q: "During El Niño, Atlantic hurricane activity typically DECREASES even while Eastern Pacific hurricane activity increases. What causes the Atlantic suppression?",
+    options: [
+      "El Niño cools the Atlantic Ocean, removing the warm water energy hurricanes need",
+      "El Niño shifts the ITCZ north of the Atlantic, preventing tropical disturbances from forming",
+      "El Niño increases upper-level wind shear over the Atlantic, which tears apart developing hurricanes before they can organize",
+      "El Niño makes the Atlantic trade winds stronger, pushing storms away from the U.S. coast"
+    ],
+    correct: 2,
+    explanation: "When El Niño shifts the Walker Circulation, it alters upper-level wind patterns over the Atlantic — creating stronger winds aloft that produce vertical wind shear. Wind shear is a hurricane's enemy: the difference in wind speed/direction between the surface and the upper atmosphere literally rips apart the developing storm's warm core. This is why El Niño years (like 1997–98 and 2023–24) tend to be quiet Atlantic hurricane seasons despite being brutally active in the Eastern Pacific."
+  },
+  {
+    q: "The historical ONI chart shows La Niña conditions in 2010–11. Weather records show the 2010 Atlantic hurricane season had 19 named storms — one of the most active ever. The Pacific Northwest had a wet, stormy winter in 2010–11. How does La Niña explain both observations?",
+    options: [
+      "La Niña is a coincidence — it does not actually affect storm patterns",
+      "La Niña warms the Atlantic and Pacific simultaneously, generating more storms everywhere",
+      "La Niña reduces Atlantic wind shear (favoring hurricanes) AND shifts the jet stream northward, routing more winter storms into the Pacific Northwest — opposite effects from El Niño",
+      "La Niña cools the Pacific Northwest, causing more snow to fall regardless of storm frequency"
+    ],
+    correct: 2,
+    explanation: "La Niña is El Niño's mirror image. Where El Niño suppresses Atlantic hurricanes with increased shear, La Niña reduces that shear — creating favorable conditions for Atlantic hurricane development. And where El Niño steers the jet stream south across the U.S. (wetter South, drier North), La Niña shifts the jet northward — sending more Pacific storm systems into the Northwest. The same Pacific temperature anomaly creates completely different effects in different regions, illustrating the power of ENSO teleconnections."
+  }
+])
+```
+
+# Evaluate: Putting It All Together
 
 ::: {.evaluate-box}
-## ✅ Assessment: Explaining Storm Trajectories
+## ✅ Assessment: Storm Paths, Wind, and Climate
+
+You now have all the pieces to explain why storms follow the paths they do — and how those paths might shift. Let's test your understanding!
 :::
 
-::: {.quiz-section #storm-quiz}
-### 🧠 Check Your Understanding
-
-**Question 1:** The prevailing westerlies that steer storms across the mid-latitudes are ultimately caused by:
-
-```{ojs}
-//| echo: false
-viewof q1_paths = Inputs.radio(
-  ["The Moon's gravitational pull on the atmosphere",
-   "Uneven solar heating between the equator and poles, combined with Earth's rotation",
-   "Ocean currents pushing the air along",
-   "Volcanic eruptions changing the atmosphere"],
-  {label: "Select the best answer:"}
-)
+```{=html}
+<div id="spmf-app" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%); color:white; padding:30px; border-radius:16px; margin:30px 0; font-family:'Inter',sans-serif; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.8em; margin:0 0 8px 0; background:linear-gradient(135deg,#74b9ff,#a29bfe); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
+    🗺️ Storm Paths Myths vs. Facts
+  </h2>
+  <p style="color:#94a3b8; margin:0 0 20px 0; font-size:0.95em;">Think you know global winds and storm tracks? Is each statement a MYTH or a FACT?</p>
+  <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:12px 20px; border-radius:12px; margin-bottom:20px;">
+    <div id="spmf-progress" style="color:#94a3b8; font-size:0.9em;">Card 1 of 10</div>
+    <div style="color:#94a3b8; font-size:0.9em;">Score: <span id="spmf-score" style="color:#74b9ff; font-weight:700;">0</span> / <span id="spmf-total">0</span></div>
+  </div>
+  <div id="spmf-card" style="background:rgba(255,255,255,0.08); border-radius:14px; padding:28px; min-height:100px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:1.1em; font-weight:600; line-height:1.6; border:1.5px solid rgba(255,255,255,0.1);"></div>
+  <div style="display:flex; gap:12px; margin-top:16px;">
+    <button id="spmf-myth" onclick="spmfAnswer('Myth')" style="flex:1; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#e17055,#d63031); color:white; font-size:1em; font-weight:700; cursor:pointer; box-shadow:0 4px 15px rgba(214,48,49,0.3);">❌ MYTH</button>
+    <button id="spmf-fact" onclick="spmfAnswer('Fact')" style="flex:1; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#00b894,#00cec9); color:white; font-size:1em; font-weight:700; cursor:pointer; box-shadow:0 4px 15px rgba(0,184,148,0.3);">✅ FACT</button>
+  </div>
+  <div id="spmf-feedback" style="margin-top:16px; padding:16px; border-radius:10px; display:none; font-size:0.95em; line-height:1.6;"></div>
+  <button id="spmf-next" onclick="spmfNext()" style="display:none; margin-top:12px; width:100%; padding:12px; border:2px solid rgba(255,255,255,0.2); border-radius:10px; background:transparent; color:white; font-size:0.95em; font-weight:600; cursor:pointer;">Next Card →</button>
+  <div id="spmf-done" style="display:none; text-align:center; padding:20px;">
+    <div style="font-size:2.5em; margin-bottom:10px;">🎉</div>
+    <div style="font-size:1.3em; font-weight:700;">Quiz complete!</div>
+    <div style="color:#94a3b8; margin:8px 0;">Final score: <span id="spmf-final" style="color:#74b9ff; font-weight:700;"></span> / 10</div>
+    <button onclick="spmfRestart()" style="margin-top:12px; padding:10px 24px; border:2px solid #74b9ff; border-radius:20px; background:transparent; color:#74b9ff; font-size:0.9em; cursor:pointer; font-weight:600;">Play Again</button>
+  </div>
+</div>
+<script>
+(function() {
+  var cards = [
+    { text: "The Coriolis effect is strong enough to determine which direction water drains in a bathtub or toilet.", type: "Myth", explanation: "The Coriolis effect is far too weak to affect drains — the forces involved are billions of times smaller than those of the water's initial motion and the basin's geometry. It IS strong enough to influence large-scale atmospheric systems (storm rotation) that cover hundreds of miles and exist for days, but completely negligible at the scale of a 5-foot bathtub." },
+    { text: "Trade winds in the tropics blow from east to west — that is, from the northeast in the Northern Hemisphere.", type: "Fact", explanation: "Correct! Air flowing toward the equatorial low (ITCZ) from the subtropics is deflected to the right by the Coriolis effect in the Northern Hemisphere, turning southward flow into northeastward flow — meaning the wind blows FROM the northeast. These are the Northeast Trade Winds that Columbus used to sail to the Americas in 1492." },
+    { text: "The polar jet stream always flows in a smooth, straight band around Earth at a constant latitude of about 60°N.", type: "Myth", explanation: "The jet stream meanders significantly — sometimes sitting at 45°N, sometimes dipping to 30°N or pushing to 70°N. It forms waves (Rossby waves) that can be gentle or extreme. During 'blocking' patterns, these waves become huge, slow-moving ridges and troughs that can lock weather systems in place for weeks. The 'smooth circle at 60°N' is a gross simplification." },
+    { text: "El Niño events tend to suppress Atlantic hurricane activity by increasing upper-level wind shear over the Atlantic.", type: "Fact", explanation: "This is one of ENSO's clearest teleconnections. When the Walker Circulation shifts during El Niño, it alters upper-level winds over the Atlantic — boosting wind shear (the change in wind direction and speed with altitude). Wind shear literally rips developing hurricanes apart before they can organize. El Niño years (1997, 2015, 2023) consistently show below-average Atlantic hurricane seasons." },
+    { text: "The westerlies are the dominant surface winds in the 30°–60° latitude band and blow from west to east.", type: "Fact", explanation: "Yes — the mid-latitude westerlies are the surface expression of the Ferrel Cell. They blow from the southwest in the Northern Hemisphere (westward-to-eastward), which is why all mid-latitude weather systems — including all storms affecting the eastern U.S. — track from west to east. NYC's prevailing wind is from the southwest for this exact reason." },
+    { text: "Storm tracks are essentially random — weather is too chaotic to show any predictable geographic patterns.", type: "Myth", explanation: "Storm tracks are emphatically NOT random. The global atmospheric circulation (Hadley, Ferrel, Polar cells), the jet stream, and the Coriolis effect impose clear, predictable structure on where storms form and where they travel. That's why forecasters can reliably predict that Atlantic hurricanes will curve northeastward when they enter the mid-latitudes, and why Nor'easters consistently track up the coast — not inland or southward." },
+    { text: "Arctic amplification only affects polar wildlife and sea ice — it has no documented impact on mid-latitude U.S. weather.", type: "Myth", explanation: "Multiple lines of evidence connect Arctic amplification to mid-latitude weather extremes. A warmer Arctic reduces the temperature contrast that keeps the polar jet stream tight and fast. A weaker, slower, wavier jet stream can allow polar air to plunge deeper south (polar vortex disruptions) and cause storms to stall. The February 2021 Texas freeze — where temperatures dropped below 0°F in Houston — is a prime example of Arctic amplification's reach." },
+    { text: "A wavier jet stream (during Arctic amplification) means the entire United States experiences colder winters.", type: "Myth", explanation: "A wavier jet creates 'weather whiplash' — alternating extreme cold and warm regions simultaneously. When a deep trough sends Arctic air into Texas, a ridge may simultaneously bring record warmth to Alaska. So a wavier jet doesn't mean uniformly colder winters; it means more extreme contrasts — record cold in some regions at the exact same time as record warmth in others. It's redistribution, not uniform cooling." },
+    { text: "New York City at approximately 41°N latitude is located within the Ferrel Cell's surface westerly wind belt.", type: "Fact", explanation: "The Ferrel Cell governs the 30°–60° latitude band, and NYC at 41°N sits squarely within it. The surface winds in the Ferrel Cell blow from the southwest (westerlies), which is why the dominant storm track across the Northeast runs from southwest to northeast. Any storm that reaches the latitude of NYC is immediately subject to the steering influence of these westerly winds." },
+    { text: "As the planet warms, climate models consistently project that storm tracks will shift poleward, potentially reducing the frequency of mid-latitude storms over populated regions.", type: "Fact", explanation: "This is one of the more robust projections in climate science. As the Arctic warms faster than the tropics, the temperature gradient that drives mid-latitude circulation weakens, and the storm track density shifts toward higher latitudes. Regions currently at the center of storm belts (like the northeast U.S.) may see fewer total storms, but those that do occur may be more intense due to increased atmospheric moisture — the 'fewer but stronger' pattern already visible in several datasets." }
+  ];
+  var idx = 0, score = 0, answered = 0, cardAnswered = false;
+  function updateCard() {
+    if (idx >= cards.length) {
+      document.getElementById('spmf-card').style.display = 'none';
+      document.getElementById('spmf-myth').style.display = 'none';
+      document.getElementById('spmf-fact').style.display = 'none';
+      document.getElementById('spmf-feedback').style.display = 'none';
+      document.getElementById('spmf-next').style.display = 'none';
+      document.getElementById('spmf-done').style.display = 'block';
+      document.getElementById('spmf-final').textContent = score;
+      return;
+    }
+    document.getElementById('spmf-card').textContent = cards[idx].text;
+    document.getElementById('spmf-progress').textContent = 'Card ' + (idx + 1) + ' of ' + cards.length;
+    document.getElementById('spmf-feedback').style.display = 'none';
+    document.getElementById('spmf-next').style.display = 'none';
+    document.getElementById('spmf-myth').disabled = false;
+    document.getElementById('spmf-fact').disabled = false;
+    document.getElementById('spmf-myth').style.opacity = '1';
+    document.getElementById('spmf-fact').style.opacity = '1';
+    cardAnswered = false;
+  }
+  window.spmfAnswer = function(choice) {
+    if (cardAnswered) return;
+    cardAnswered = true;
+    answered++;
+    var card = cards[idx];
+    var correct = (choice === card.type);
+    if (correct) score++;
+    document.getElementById('spmf-score').textContent = score;
+    document.getElementById('spmf-total').textContent = answered;
+    var fb = document.getElementById('spmf-feedback');
+    fb.style.display = 'block';
+    fb.style.background = correct ? 'rgba(0,184,148,0.2)' : 'rgba(214,48,49,0.2)';
+    fb.style.border = '1px solid ' + (correct ? '#00b894' : '#e17055');
+    fb.innerHTML = '<strong>' + (correct ? '✅ Correct! ' : '❌ That\'s a ' + card.type + '! ') + '</strong>' + card.explanation;
+    document.getElementById('spmf-myth').disabled = true;
+    document.getElementById('spmf-fact').disabled = true;
+    document.getElementById('spmf-myth').style.opacity = (choice === 'Myth') ? '1' : '0.5';
+    document.getElementById('spmf-fact').style.opacity = (choice === 'Fact') ? '1' : '0.5';
+    document.getElementById('spmf-next').style.display = 'block';
+  };
+  window.spmfNext = function() { idx++; updateCard(); };
+  window.spmfRestart = function() {
+    idx = 0; score = 0; answered = 0;
+    document.getElementById('spmf-card').style.display = 'flex';
+    document.getElementById('spmf-myth').style.display = 'block';
+    document.getElementById('spmf-fact').style.display = 'block';
+    document.getElementById('spmf-done').style.display = 'none';
+    document.getElementById('spmf-score').textContent = '0';
+    document.getElementById('spmf-total').textContent = '0';
+    updateCard();
+  };
+  updateCard();
+})();
+</script>
 ```
 
-```{ojs}
-//| echo: false
-q1_paths === "Uneven solar heating between the equator and poles, combined with Earth's rotation" ? 
-  html`<div style="background: #d4edda; padding: 12px; border-radius: 8px; border-left: 4px solid #28a745;">✅ <strong>Correct!</strong> Uneven heating drives convection (the Hadley, Ferrel, and Polar cells). Earth's rotation (Coriolis effect) deflects these winds, creating the westerlies in the mid-latitudes.</div>` :
-  q1_paths ? html`<div style="background: #f8d7da; padding: 12px; border-radius: 8px; border-left: 4px solid #dc3545;">❌ Think about what creates pressure differences globally, and what deflects the wind.</div>` : html``
-```
+::: {.evaluate-box}
+### 🧠 Comprehensive Unit Quiz
 
-**Question 2:** Why do both hurricanes (after recurvature) and Nor'easters travel from southwest to northeast?
-
-```{ojs}
-//| echo: false
-viewof q2_paths = Inputs.radio(
-  ["They are pushed by ocean tides",
-   "They are both steered by the mid-latitude westerlies and jet stream",
-   "They generate their own westward momentum",
-   "The Coriolis effect pushes all storms to the northeast"],
-  {label: "Select the best answer:"}
-)
-```
-
-```{ojs}
-//| echo: false
-q2_paths === "They are both steered by the mid-latitude westerlies and jet stream" ? 
-  html`<div style="background: #d4edda; padding: 12px; border-radius: 8px; border-left: 4px solid #28a745;">✅ <strong>Correct!</strong> Once a storm enters the mid-latitudes (30°–60°N), it gets picked up by the westerlies and jet stream, which steer it from southwest to northeast regardless of how it formed.</div>` :
-  q2_paths ? html`<div style="background: #f8d7da; padding: 12px; border-radius: 8px; border-left: 4px solid #dc3545;">❌ Think about what moves air in the 30°–60° latitude band.</div>` : html``
-```
-
-**Question 3:** How might Arctic amplification change storm paths in the future?
-
-```{ojs}
-//| echo: false
-viewof q3_paths = Inputs.radio(
-  ["Storms would stop entirely",
-   "The weakened temperature gradient could slow the jet stream and create more persistent, wavy patterns",
-   "Storms would reverse direction and move east to west",
-   "Arctic amplification has no effect on mid-latitude weather"],
-  {label: "Select the best answer:"}
-)
-```
-
-```{ojs}
-//| echo: false
-q3_paths === "The weakened temperature gradient could slow the jet stream and create more persistent, wavy patterns" ? 
-  html`<div style="background: #d4edda; padding: 12px; border-radius: 8px; border-left: 4px solid #28a745;">✅ <strong>Excellent!</strong> The jet stream's speed depends on the temperature contrast between polar and tropical air. Arctic amplification reduces this contrast, potentially causing the jet to develop larger, slower-moving waves. This means storms can stall and produce prolonged extreme weather.</div>` :
-  q3_paths ? html`<div style="background: #f8d7da; padding: 12px; border-radius: 8px; border-left: 4px solid #dc3545;">❌ Think about what drives the jet stream (temperature gradient) and what happens when the Arctic warms faster than the tropics.</div>` : html``
-```
+Test your complete understanding of storm paths, global winds, and climate connections!
 :::
 
-::: {.lab-activity}
-### 📝 Culminating Task: Storm Path Investigation
-
-Using the concepts from this chapter, write a **scientific explanation** that addresses:
-
-**"Why do blizzards and hurricanes follow the paths they do, and how might those paths change in the future?"**
-
-Your explanation should reference:
-
-1. **Uneven solar heating** and how it creates atmospheric circulation cells
-2. **The Coriolis effect** and how it shapes surface wind patterns
-3. **The jet stream** and its role as a storm highway
-4. **Arctic amplification** and how it may alter the jet stream
-5. A **prediction** about how NYC's storm exposure could change
-
-Support your explanation with at least **three pieces of evidence** from data or diagrams in this chapter.
-:::
+```{ojs}
+//| echo: false
+buildUnitQuiz("storm-paths-unit-quiz", "🧠 Comprehensive Unit Quiz", [
+  {
+    q: "What is the FUNDAMENTAL cause of global atmospheric circulation and all surface wind patterns on Earth?",
+    options: [
+      "Earth's magnetic field creating pressure gradients near the poles",
+      "Uneven solar heating — the equator receives far more energy than the poles, creating temperature and pressure differences that drive air movement",
+      "The Moon's gravitational pull creating tidal forces in the atmosphere",
+      "Ocean evaporation pumping water vapor upward to power the global wind engine"
+    ],
+    correct: 1,
+    explanation: "Everything flows from this: the equator intercepts sunlight at a steep angle (high energy density) while the poles receive sunlight at a shallow angle (spread over more area, less energy). This creates a permanent temperature gradient. Warm equatorial air rises, creating low pressure; cool polar air sinks, creating high pressure. This pressure difference drives air movement — all the wind on Earth traces back to this fundamental imbalance."
+  },
+  {
+    q: "Which atmospheric circulation cell directly controls the prevailing surface winds across New York City (41°N) and the rest of the northeastern United States?",
+    options: [
+      "Hadley Cell — the dominant equatorial convection cell",
+      "Polar Cell — cold air descending from the Arctic",
+      "Ferrel Cell — the mid-latitude cell producing westerly surface winds between 30°–60°N",
+      "Walker Cell — the Pacific equatorial circulation driven by sea surface temperatures"
+    ],
+    correct: 2,
+    explanation: "The Ferrel Cell occupies 30°–60° latitude. Its surface winds blow from the southwest — the mid-latitude westerlies. NYC at 41°N sits squarely within this belt. These westerlies are the 'storm conveyor belt' that steers every Nor'easter, blizzard, and recurving hurricane from southwest to northeast across the eastern U.S. Understanding the Ferrel Cell is the key to explaining why NYC storms always seem to come from the southwest."
+  },
+  {
+    q: "In the Northern Hemisphere, the Coriolis effect deflects moving air to the right. Low-pressure systems in the Northern Hemisphere therefore rotate:",
+    options: [
+      "Clockwise — air deflected right as it spirals inward creates CW rotation",
+      "Counterclockwise — each rightward deflection of inward-flowing air adds up to a CCW spiral",
+      "In alternating directions — clockwise during El Niño, counterclockwise during La Niña",
+      "There is no rotation — the pressure gradient force overpowers Coriolis at the surface"
+    ],
+    correct: 1,
+    explanation: "Picture air rushing from all directions toward a low-pressure center. In the Northern Hemisphere, each moving parcel is deflected to its right. Air flowing in from the south gets pushed west. Air from the north gets pushed east. Air from the east gets pushed north. The net result of all these rightward deflections is a counterclockwise rotation — cyclonic flow. This is why every Northern Hemisphere storm system (hurricanes, mid-latitude cyclones, blizzard-producers) rotates counterclockwise."
+  },
+  {
+    q: "A continental Polar (cP) air mass from Canada provides the cold temperatures for a major Nor'easter, but WHY does the storm produce heavy snowfall rather than just cold, clear weather?",
+    options: [
+      "cP air masses carry large amounts of moisture frozen from Canadian lakes",
+      "The cold cP air itself generates precipitation as it compresses and cools the atmosphere",
+      "A maritime Tropical (mT) air mass from the Gulf of Mexico provides the moisture — when it collides with the cP air at a front, warm moist air is lifted, cooled, and precipitates as snow",
+      "Heavy snowfall requires only very cold temperatures — the cP air alone is sufficient"
+    ],
+    correct: 2,
+    explanation: "Cold air alone does NOT produce heavy snow — it is actually very dry. The heaviest snowstorms require TWO ingredients: (1) cold air below freezing (cP from Canada) to keep precipitation frozen, and (2) abundant moisture (mT from the Gulf/Atlantic) to provide the water vapor. When these collide at a frontal boundary, the warm moist air is forced upward, cools adiabatically, and condenses/freezes as heavy snowfall. Remove the Gulf moisture source and the same cold air produces only light flurries."
+  },
+  {
+    q: "During El Niño, which of the following best describes the combined effect on U.S. weather?",
+    options: [
+      "Wetter everywhere — more moisture in the atmosphere increases precipitation nationwide",
+      "Warmer/drier northern tier (Great Plains, Pacific Northwest), wetter southern tier (Gulf States, California); Atlantic hurricane season suppressed",
+      "Colder/wetter northern tier, drier southern tier; more Atlantic hurricanes due to warmer waters",
+      "El Niño only affects South America and has no significant teleconnections to the continental U.S."
+    ],
+    correct: 1,
+    explanation: "El Niño shifts the subtropical jet stream southward across the U.S., routing more Pacific moisture into the southern tier (California floods, Gulf Coast rain). Meanwhile, the northern U.S. and Great Plains tend toward warmer and drier conditions. In the Atlantic, El Niño increases upper-level wind shear, suppressing hurricane development. The 1997–98 El Niño perfectly illustrates this: California floods, reduced Atlantic hurricane season, mild winter in the northern Plains."
+  },
+  {
+    q: "The jet stream simulation shows 'Wavy Pattern (Blocking)' with deep troughs and ridges. What specific weather hazards does this create for the mid-latitudes?",
+    options: [
+      "Faster storm movement only — storms are more intense but clear out within hours",
+      "Cold Arctic air can plunge far south through troughs while warm air surges north in ridges — AND storms can stall in one location, creating prolonged extreme events",
+      "Blocking eliminates storm formation entirely by disrupting the temperature gradients needed for cyclogenesis",
+      "Only drought is affected — blocking patterns have no influence on cold or winter storm events"
+    ],
+    correct: 1,
+    explanation: "Rossby wave blocking creates two simultaneous hazards. First, spatial: deep troughs can push Arctic air into normally mild regions (e.g., sub-zero temperatures in Texas). Second, temporal: a blocked jet stream moves slowly — weather systems can stall over one area for days or weeks instead of passing through. This turns what would be a 2-day snowstorm into a week-long blizzard, or a 3-day heat wave into a deadly 2-week heat dome. Blocking is why some weather events become catastrophic while otherwise similar events remain routine."
+  },
+  {
+    q: "The global precipitation chart shows that areas near 30°N/S (Sahara, Arabian Desert, Australian Outback) are extremely dry. What is the direct atmospheric cause?",
+    options: [
+      "30° latitudes receive the most direct sunlight, drying out the surface through intense evaporation",
+      "The Coriolis effect deflects moisture-bearing winds away from 30° toward the equator and poles",
+      "The descending branch of the Hadley Cell brings sinking air that compresses, warms adiabatically, and inhibits cloud formation and precipitation",
+      "Ocean currents at 30°N/S are cold, preventing evaporation and reducing moisture in the air"
+    ],
+    correct: 2,
+    explanation: "The Hadley Cell completes a circuit: warm moist air rises at the ITCZ (equatorial rain belt), travels poleward aloft, then SINKS back to the surface near 30°N/S. This sinking (subsiding) air is compressed as it descends into higher atmospheric pressure. Compression warms the air adiabatically — and warmer air can hold more moisture without condensing. The result: persistent high pressure, dissipating clouds, very low precipitation. The 'subtropical high' or 'horse latitudes' are the direct surface signature of this Hadley Cell sinking branch."
+  },
+  {
+    q: "La Niña strengthens the trade winds, cooling the eastern Pacific. Based on the ENSO teleconnections, which pair of outcomes would you expect in the United States during a strong La Niña winter?",
+    options: [
+      "Wetter southern U.S. and fewer Atlantic hurricanes — the opposite of El Niño in both cases",
+      "Drier southern U.S. (drought risk) AND more active Atlantic hurricane season the following summer",
+      "Warmer winter across the entire U.S. and reduced storm activity in all regions",
+      "La Niña has identical effects to El Niño — the direction of the SST anomaly does not matter"
+    ],
+    correct: 1,
+    explanation: "La Niña is El Niño's mirror image in both effects. Where El Niño pushes the jet stream south (wetter Gulf States), La Niña shifts it north (drier South, wetter Pacific Northwest). And where El Niño suppresses Atlantic hurricanes with increased shear, La Niña REDUCES Atlantic shear — creating favorable conditions for hurricane development. The brutal 2010 Atlantic season (19 named storms, including Katia, Igor, and Julia) occurred during La Niña. Texas's catastrophic 2011 drought was also La Niña-driven."
+  },
+  {
+    q: "Arctic amplification describes the Arctic warming 2–4× faster than the global average. Through what mechanism does this specifically affect storm behavior in the mid-latitudes?",
+    options: [
+      "A warmer Arctic melts sea ice, releasing methane that directly heats the mid-latitude troposphere",
+      "The reduced temperature contrast between the Arctic and tropics weakens the polar jet stream, causing it to develop slower, larger Rossby wave meanders that can stall storms and allow polar air to penetrate deep into the mid-latitudes",
+      "Arctic amplification increases evaporation from the Arctic Ocean, supplying extra moisture to mid-latitude storm systems",
+      "The Arctic warming creates a permanent high-pressure center that deflects all mid-latitude storms toward Europe"
+    ],
+    correct: 1,
+    explanation: "The polar jet stream is essentially a thermal wind — it exists because of the temperature contrast between cold polar and warm tropical air. When the Arctic warms faster, this contrast weakens. A weaker contrast = a less energetic jet that slows down and develops larger meanders. These deeper Rossby wave troughs can dip far south, bringing Arctic air into the southern U.S. (polar vortex events). The simultaneous stalling of these patterns means extreme weather lingers rather than moving through. This is the mechanistic link between Arctic warming and mid-latitude weather extremes."
+  },
+  {
+    q: "Climate models project that mid-latitude storm tracks will shift poleward as the planet warms. What does this mean for a city like New York City at 41°N?",
+    options: [
+      "NYC will experience more storms as the poleward shift brings tropical weather patterns northward",
+      "NYC may see fewer total storm events (storm track shifts north of 41°N), but any storms that do still impact the region could be more intense due to higher atmospheric moisture content",
+      "NYC will be unaffected — poleward shifts only change storm tracks by 1–2 degrees of latitude, which is negligible",
+      "Storm tracks will shift toward NYC as they move poleward from the subtropical regions"
+    ],
+    correct: 1,
+    explanation: "If the peak storm track density shifts poleward, regions at the southern edge of the current storm belt — like NYC — could see fewer overall storm events. But 'fewer' does not mean 'weaker.' A warmer atmosphere holds more water vapor (Clausius-Clapeyron: ~7% more per degree of warming), and warmer oceans supply more energy. So any storm that does track over NYC could carry more moisture and produce heavier precipitation than historical events. This 'fewer but more intense' pattern is already visible in the NYC snowfall data — declining seasonal totals but record single-storm amounts in recent decades."
+  }
+])
+```
 
 # Summary: Key Takeaways
 
@@ -1938,3 +2377,4 @@ Support your explanation with at least **three pieces of evidence** from data or
 | **Storm tracks** | Both hurricanes and blizzards are steered by the same global winds |
 
 **Next up:** We'll investigate **how hurricanes form** and why they only occur during certain months. 🌀
+

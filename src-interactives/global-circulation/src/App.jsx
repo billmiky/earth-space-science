@@ -2,12 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Info, Wind, Layers, Settings, Play, Pause } from 'lucide-react';
 
 const WIND_DEFS = [
-  { type: 'NE Trades', l1: 28, l2: 2, curve: -0.3, color: '#f87171', count: 6 },
-  { type: 'SE Trades', l1: -28, l2: -2, curve: -0.3, color: '#f87171', count: 6 },
-  { type: 'Westerlies N', l1: 32, l2: 58, curve: 0.4, color: '#f87171', count: 5 },
-  { type: 'Westerlies S', l1: -32, l2: -58, curve: 0.4, color: '#f87171', count: 5 },
-  { type: 'Polar N', l1: 85, l2: 62, curve: -0.6, color: '#60a5fa', count: 3 },
-  { type: 'Polar S', l1: -85, l2: -62, curve: -0.6, color: '#60a5fa', count: 3 },
+  // Surface wind climatology:
+  // Trades = easterlies (E -> W), Westerlies = westerlies (W -> E), Polar winds = easterlies (E -> W)
+  { type: 'NE Trades', l1: 28, l2: 2, zonalDir: -1, arc: 0.45, color: '#f87171', count: 6 },
+  { type: 'SE Trades', l1: -28, l2: -2, zonalDir: -1, arc: 0.45, color: '#f87171', count: 6 },
+  { type: 'Westerlies N', l1: 32, l2: 58, zonalDir: 1, arc: 0.5, color: '#f87171', count: 5 },
+  { type: 'Westerlies S', l1: -32, l2: -58, zonalDir: 1, arc: 0.5, color: '#f87171', count: 5 },
+  { type: 'Polar N', l1: 85, l2: 62, zonalDir: -1, arc: 0.65, color: '#60a5fa', count: 3 },
+  { type: 'Polar S', l1: -85, l2: -62, zonalDir: -1, arc: 0.65, color: '#60a5fa', count: 3 },
 ];
 
 const CELLS = [
@@ -85,6 +87,15 @@ CELLS.forEach(cell => {
     for (let i = 0; i < 6; i++) cellParticles.push({ cell, side, offsetTime: i / 6 });
   });
 });
+
+const projectToGlobe = (cx, cy, R, latDeg, lonDeg) => {
+  const lat = latDeg * Math.PI / 180;
+  const lon = lonDeg * Math.PI / 180;
+  return {
+    x: cx + R * Math.cos(lat) * Math.sin(lon),
+    y: cy - R * Math.sin(lat)
+  };
+};
 
 export default function App() {
   const canvasRef = useRef(null);
@@ -264,22 +275,30 @@ export default function App() {
   };
 
   const drawSurfaceWind = (ctx, cx, cy, R, arrow, time) => {
-    const y1 = cy - R * Math.sin(arrow.l1 * Math.PI / 180);
-    const x1 = cx + R * Math.cos(arrow.l1 * Math.PI / 180) * arrow.xRatio;
-    const y2 = cy - R * Math.sin(arrow.l2 * Math.PI / 180);
-    const x2 = cx + R * Math.cos(arrow.l2 * Math.PI / 180) * arrow.xRatio + arrow.curve * R * 0.2;
-    const cpX = (x1 + x2) / 2 + arrow.curve * R * 0.5;
-    const cpY = (y1 + y2) / 2;
+    const lonStart = arrow.xRatio * 70;
+    const lonShift = arrow.zonalDir * (14 + arrow.arc * 14);
+    const lonEnd = Math.max(-80, Math.min(80, lonStart + lonShift));
+
+    const p1 = projectToGlobe(cx, cy, R, arrow.l1, lonStart);
+    const p2 = projectToGlobe(cx, cy, R, arrow.l2, lonEnd);
+    const midLat = (arrow.l1 + arrow.l2) / 2;
+    const midLon = lonStart + (lonEnd - lonStart) * 0.55;
+    const cp = projectToGlobe(cx, cy, R, midLat, midLon);
+
     ctx.beginPath();
     ctx.strokeStyle = arrow.color + '22';
     ctx.lineWidth = 1.5;
-    ctx.moveTo(x1, y1);
-    ctx.quadraticCurveTo(cpX, cpY, x2, y2);
+    ctx.moveTo(p1.x, p1.y);
+    ctx.quadraticCurveTo(cp.x, cp.y, p2.x, p2.y);
     ctx.stroke();
+
     const t = (time * 0.3 + arrow.offsetTime) % 1;
-    const px = (1-t)*(1-t)*x1 + 2*(1-t)*t*cpX + t*t*x2;
-    const py = (1-t)*(1-t)*y1 + 2*(1-t)*t*cpY + t*t*y2;
-    const angle = Math.atan2(2*(1-t)*(cpY-y1)+2*t*(y2-cpY), 2*(1-t)*(cpX-x1)+2*t*(x2-cpX));
+    const px = (1 - t) * (1 - t) * p1.x + 2 * (1 - t) * t * cp.x + t * t * p2.x;
+    const py = (1 - t) * (1 - t) * p1.y + 2 * (1 - t) * t * cp.y + t * t * p2.y;
+    const dx = 2 * (1 - t) * (cp.x - p1.x) + 2 * t * (p2.x - cp.x);
+    const dy = 2 * (1 - t) * (cp.y - p1.y) + 2 * t * (p2.y - cp.y);
+    const angle = Math.atan2(dy, dx);
+
     ctx.fillStyle = arrow.color;
     ctx.beginPath();
     ctx.moveTo(px, py);
@@ -321,7 +340,7 @@ export default function App() {
   return (
     <div className="flex flex-row w-full bg-slate-950 text-slate-200 overflow-hidden font-sans" style={{height: '580px'}}>
       <div ref={containerRef} className="flex-1 relative border-r border-slate-800 cursor-crosshair" onMouseMove={handleMouseMove} onMouseLeave={() => setHoverZone(null)}>
-        <canvas ref={canvasRef} className="absolute inset-0 block" />
+        <canvas ref={canvasRef} className="absolute inset-0 block w-full h-full" />
         {!hoverZone && (
           <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-slate-900/60 px-4 py-2 rounded-full border border-slate-700/50 backdrop-blur-sm pointer-events-none text-xs text-slate-400 flex items-center gap-2">
             <Info size={14} /> Hover over latitudes to explore
