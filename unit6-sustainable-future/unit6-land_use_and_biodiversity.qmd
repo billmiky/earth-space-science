@@ -391,6 +391,177 @@ Cities are hotter than natural areas for two main reasons:
 Together, these create an **urban heat island** that can be 5–10°F hotter during the day and up to 22°F hotter at night.
 :::
 
+## 🗺️ NYC Urban Heat Island Map — Explore the Data
+
+Hover over the **colored markers** on the map to see heat vulnerability data for each neighborhood. Darker red areas = hotter temperatures compared to surrounding rural land.
+
+```{ojs}
+//| echo: false
+{
+  const neighborhoods = [
+    {name: "South Bronx",     x: 0.635, y: 0.195, hvi: 5, income: 28000, greenSpace: 6,  deaths: 21, color: "#8B0000"},
+    {name: "East Harlem",     x: 0.570, y: 0.295, hvi: 5, income: 36000, greenSpace: 8,  deaths: 18, color: "#CC2200"},
+    {name: "Upper East Side", x: 0.610, y: 0.360, hvi: 1, income: 138000, greenSpace: 22, deaths: 3, color: "#00AA44"},
+    {name: "Brooklyn Heights",x: 0.510, y: 0.625, hvi: 2, income: 125000, greenSpace: 18, deaths: 5, color: "#22BB66"},
+    {name: "Park Slope",      x: 0.480, y: 0.675, hvi: 1, income: 145000, greenSpace: 25, deaths: 2, color: "#00CC55"},
+    {name: "Brownsville",     x: 0.660, y: 0.680, hvi: 5, income: 31000,  greenSpace: 5,  deaths: 19, color: "#990000"}
+  ];
+
+  const wrapper = html`<div style="position:relative; display:inline-block; width:100%; max-width:780px; font-family: Inter, sans-serif;">
+    <img src="landuse1.png"
+         alt="NYC Urban Heat Island Effect — heat increase vs natural landscape, scale 5–13°F"
+         style="width:100%; display:block; border-radius:14px; box-shadow:0 8px 30px rgba(0,0,0,0.25);" />
+    <svg id="hvi-overlay" viewBox="0 0 100 100" preserveAspectRatio="none"
+         style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;"></svg>
+    <div id="hvi-tooltip" style="
+      position:absolute; display:none; pointer-events:none; z-index:20;
+      background:rgba(10,10,10,0.88); color:#fff; padding:14px 18px;
+      border-radius:10px; font-size:13px; min-width:210px;
+      border-left:4px solid #00b894; backdrop-filter:blur(6px);
+      line-height:1.6; box-shadow:0 4px 20px rgba(0,0,0,0.4);
+    "></div>
+  </div>`;
+
+  const svg   = wrapper.querySelector("#hvi-overlay");
+  const tip   = wrapper.querySelector("#hvi-tooltip");
+  const img   = wrapper.querySelector("img");
+
+  const NS = "http://www.w3.org/2000/svg";
+
+  neighborhoods.forEach(n => {
+    const g = document.createElementNS(NS, "g");
+    g.style.cursor = "pointer";
+
+    // Outer pulse ring
+    const ring = document.createElementNS(NS, "circle");
+    ring.setAttribute("cx", n.x * 100);
+    ring.setAttribute("cy", n.y * 100);
+    ring.setAttribute("r",  "3.2");
+    ring.setAttribute("fill", "none");
+    ring.setAttribute("stroke", n.color);
+    ring.setAttribute("stroke-width", "1");
+    ring.setAttribute("opacity", "0.55");
+
+    // Solid marker
+    const dot = document.createElementNS(NS, "circle");
+    dot.setAttribute("cx", n.x * 100);
+    dot.setAttribute("cy", n.y * 100);
+    dot.setAttribute("r",  "2.2");
+    dot.setAttribute("fill", n.color);
+    dot.setAttribute("stroke", "#fff");
+    dot.setAttribute("stroke-width", "0.6");
+
+    g.appendChild(ring);
+    g.appendChild(dot);
+    svg.appendChild(g);
+
+    const hviBar = Array.from({length: 5}, (_, i) =>
+      `<span style="color:${i < n.hvi ? '#ff6b6b' : '#555'}; font-size:14px;">■</span>`
+    ).join("");
+
+    g.addEventListener("mouseenter", () => {
+      dot.setAttribute("r", "3.0");
+      ring.setAttribute("r", "4.5");
+      tip.style.display = "block";
+      tip.innerHTML = `
+        <strong style="font-size:15px; display:block; margin-bottom:6px;">${n.name}</strong>
+        🌡️ Heat Vulnerability: ${hviBar} ${n.hvi}/5<br/>
+        💀 Heat Deaths: <strong>${n.deaths}</strong> per 100K residents<br/>
+        💵 Median Income: <strong>$${n.income.toLocaleString()}</strong><br/>
+        🌳 Green Space: <strong>${n.greenSpace}%</strong>
+      `;
+    });
+
+    g.addEventListener("mouseleave", () => {
+      dot.setAttribute("r", "2.2");
+      ring.setAttribute("r", "3.2");
+      tip.style.display = "none";
+    });
+
+    g.addEventListener("mousemove", e => {
+      const rect = wrapper.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      tip.style.left = (x + 14 + 210 > rect.width ? x - 224 : x + 14) + "px";
+      tip.style.top  = Math.max(0, y - 20) + "px";
+    });
+  });
+
+  // Legend
+  const legend = html`<div style="
+    display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;
+    font-size:12px; color:#ccc; align-items:center;
+  ">
+    <span style="font-weight:700; color:#eee; margin-right:4px;">Neighborhoods:</span>
+    ${neighborhoods.map(n => `
+      <span style="display:inline-flex; align-items:center; gap:5px; background:#1a1a2e;
+        padding:4px 10px; border-radius:20px; color:#eee;">
+        <span style="width:10px;height:10px;border-radius:50%;background:${n.color};display:inline-block;"></span>
+        ${n.name}
+      </span>
+    `).join("")}
+  </div>`;
+
+  const outer = html`<div style="max-width:780px; margin: 0 auto 24px auto;">${wrapper}${legend}</div>`;
+  return outer;
+}
+```
+
+## 🏙️ Explore NYC Zoning & Land Use — Interactive Map
+
+Use the live **ZoLa** map (NYC Planning Labs) to explore how land is officially zoned across New York City. Toggle layers to see residential, commercial, and manufacturing zones — and compare them to the heat vulnerability patterns above.
+
+```{=html}
+<div style="
+  max-width: 780px;
+  margin: 0 auto 28px auto;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+  border: 2px solid #00b894;
+">
+  <div style="
+    background: linear-gradient(135deg, #00b894 0%, #1e6f5c 100%);
+    color: white;
+    padding: 12px 20px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.05em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  ">
+    <span>🗺️ ZoLa — NYC Zoning &amp; Land Use Map</span>
+    <a href="https://zola.planninglabs.nyc/#9.72/40.7125/-73.733"
+       target="_blank"
+       rel="noopener"
+       style="margin-left:auto; font-size:12px; color:rgba(255,255,255,0.85);
+              text-decoration:none; border:1px solid rgba(255,255,255,0.5);
+              padding:3px 10px; border-radius:20px;">
+      Open full screen ↗
+    </a>
+  </div>
+  <iframe
+    src="https://zola.planninglabs.nyc/#9.72/40.7125/-73.733"
+    width="100%"
+    height="540"
+    style="display:block; border:none;"
+    title="ZoLa — NYC Zoning and Land Use Interactive Map"
+    loading="lazy"
+    allowfullscreen>
+  </iframe>
+  <div style="
+    background:#0d1117; color:#8b949e;
+    padding: 8px 16px; font-size: 12px;
+    font-family: Inter, sans-serif;
+  ">
+    Source: <a href="https://zola.planninglabs.nyc/" target="_blank" rel="noopener"
+      style="color:#00b894;">NYC Planning Labs — ZoLa</a>.
+    Use the layer panel (☰) to toggle zoning districts, land use colors, and building footprints.
+  </div>
+</div>
+```
+
 # Explain 1: Building a Computational Model
 
 ::: {.explain-box}
