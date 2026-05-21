@@ -240,6 +240,271 @@ Plot.plot({
 4. Is this a **coincidence** or a **pattern**? What additional data would you want to see?
 :::
 
+## 🌳 NYC Tree Canopy Cover — Interactive Map
+
+Tree **canopy cover** — the percentage of land shaded by tree leaves — is one of the most direct measures of urban green space. Across NYC's 59 community districts it ranges from under 6% in dense Lower Manhattan to nearly 50% in parts of Staten Island.
+
+- **Hover** over any district to see its name and exact canopy percentage
+- Notice how canopy cover strongly mirrors the income and heat vulnerability patterns above
+- Compare the **South Bronx** (~12%) vs. **Riverdale** (~40%) — same borough, very different outcomes
+
+> *Data: NYC Parks Department 2017 Tree Canopy Assessment. Values shown by community district.*
+
+```{ojs}
+//| echo: false
+canopyCD = [
+  // Manhattan
+  {cd: "101", name: "Financial District/Battery Park City", borough: "Manhattan", pct: 6.1},
+  {cd: "102", name: "Greenwich Village/SoHo", borough: "Manhattan", pct: 8.3},
+  {cd: "103", name: "Lower East Side/Chinatown", borough: "Manhattan", pct: 5.4},
+  {cd: "104", name: "Chelsea/Hell's Kitchen", borough: "Manhattan", pct: 9.2},
+  {cd: "105", name: "Murray Hill/Midtown East", borough: "Manhattan", pct: 7.1},
+  {cd: "106", name: "Clinton/Midtown West", borough: "Manhattan", pct: 8.4},
+  {cd: "107", name: "Upper West Side", borough: "Manhattan", pct: 22.3},
+  {cd: "108", name: "Upper East Side", borough: "Manhattan", pct: 18.7},
+  {cd: "109", name: "Hamilton Heights/Morningside Heights", borough: "Manhattan", pct: 24.1},
+  {cd: "110", name: "Central Harlem", borough: "Manhattan", pct: 15.2},
+  {cd: "111", name: "East Harlem", borough: "Manhattan", pct: 11.8},
+  {cd: "112", name: "Washington Heights/Inwood", borough: "Manhattan", pct: 32.4},
+  // Bronx
+  {cd: "201", name: "Mott Haven/Port Morris", borough: "Bronx", pct: 12.1},
+  {cd: "202", name: "Hunts Point/Longwood", borough: "Bronx", pct: 14.3},
+  {cd: "203", name: "Morrisania/Crotona", borough: "Bronx", pct: 17.6},
+  {cd: "204", name: "Concourse/Highbridge", borough: "Bronx", pct: 19.2},
+  {cd: "205", name: "Morris Heights/Fordham SW", borough: "Bronx", pct: 22.4},
+  {cd: "206", name: "East Tremont/Belmont", borough: "Bronx", pct: 24.8},
+  {cd: "207", name: "Bedford Park/Kingsbridge Heights", borough: "Bronx", pct: 27.3},
+  {cd: "208", name: "Riverdale/Kingsbridge", borough: "Bronx", pct: 40.2},
+  {cd: "209", name: "Soundview/Parkchester", borough: "Bronx", pct: 22.7},
+  {cd: "210", name: "Throgs Neck/Co-op City", borough: "Bronx", pct: 35.1},
+  {cd: "211", name: "Pelham Pkwy/Morris Park", borough: "Bronx", pct: 32.6},
+  {cd: "212", name: "Williamsbridge/Baychester", borough: "Bronx", pct: 38.4},
+  // Brooklyn
+  {cd: "301", name: "Williamsburg/Greenpoint", borough: "Brooklyn", pct: 10.2},
+  {cd: "302", name: "Brooklyn Heights/Fort Greene", borough: "Brooklyn", pct: 14.7},
+  {cd: "303", name: "Bedford-Stuyvesant", borough: "Brooklyn", pct: 18.3},
+  {cd: "304", name: "Bushwick", borough: "Brooklyn", pct: 12.4},
+  {cd: "305", name: "East New York/Starrett City", borough: "Brooklyn", pct: 16.1},
+  {cd: "306", name: "Park Slope/Carroll Gardens", borough: "Brooklyn", pct: 25.4},
+  {cd: "307", name: "Sunset Park", borough: "Brooklyn", pct: 18.9},
+  {cd: "308", name: "Crown Heights North", borough: "Brooklyn", pct: 20.3},
+  {cd: "309", name: "Crown Heights South", borough: "Brooklyn", pct: 24.1},
+  {cd: "310", name: "Bay Ridge/Dyker Heights", borough: "Brooklyn", pct: 26.8},
+  {cd: "311", name: "Bensonhurst/Bath Beach", borough: "Brooklyn", pct: 20.1},
+  {cd: "312", name: "Borough Park", borough: "Brooklyn", pct: 18.4},
+  {cd: "313", name: "Coney Island/Brighton Beach", borough: "Brooklyn", pct: 10.7},
+  {cd: "314", name: "Flatbush/Midwood", borough: "Brooklyn", pct: 22.6},
+  {cd: "315", name: "Sheepshead Bay/Gravesend", borough: "Brooklyn", pct: 26.3},
+  {cd: "316", name: "Brownsville", borough: "Brooklyn", pct: 14.2},
+  {cd: "317", name: "East Flatbush/Rugby", borough: "Brooklyn", pct: 22.1},
+  {cd: "318", name: "Canarsie/Flatlands", borough: "Brooklyn", pct: 28.7},
+  // Queens
+  {cd: "401", name: "Astoria/Long Island City", borough: "Queens", pct: 16.3},
+  {cd: "402", name: "Sunnyside/Woodside", borough: "Queens", pct: 20.1},
+  {cd: "403", name: "Jackson Heights/North Corona", borough: "Queens", pct: 18.4},
+  {cd: "404", name: "Elmhurst/South Corona", borough: "Queens", pct: 22.7},
+  {cd: "405", name: "Ridgewood/Maspeth", borough: "Queens", pct: 24.3},
+  {cd: "406", name: "Rego Park/Forest Hills", borough: "Queens", pct: 28.6},
+  {cd: "407", name: "Flushing/Clearview", borough: "Queens", pct: 26.4},
+  {cd: "408", name: "Fresh Meadows/Hillcrest", borough: "Queens", pct: 30.2},
+  {cd: "409", name: "Woodhaven/Richmond Hill", borough: "Queens", pct: 28.1},
+  {cd: "410", name: "Howard Beach/Ozone Park", borough: "Queens", pct: 24.8},
+  {cd: "411", name: "Bayside/Douglaston/Little Neck", borough: "Queens", pct: 36.4},
+  {cd: "412", name: "Jamaica/Hollis/St. Albans", borough: "Queens", pct: 28.3},
+  {cd: "413", name: "Queens Village/Rosedale", borough: "Queens", pct: 34.7},
+  {cd: "414", name: "The Rockaways", borough: "Queens", pct: 18.2},
+  // Staten Island
+  {cd: "501", name: "St. George/Stapleton", borough: "Staten Island", pct: 36.2},
+  {cd: "502", name: "South Beach/Mid-Island", borough: "Staten Island", pct: 42.8},
+  {cd: "503", name: "Tottenville/Great Kills", borough: "Staten Island", pct: 47.6}
+]
+```
+
+```{ojs}
+//| echo: false
+cdGeo = fetch(
+  "https://data.cityofnewyork.us/api/geospatial/jp9i-3b7y?method=export&type=GeoJSON"
+).then(r => r.json())
+```
+
+```{ojs}
+//| echo: false
+{
+  const width = 680;
+  const height = 520;
+  const cdLookup = Object.fromEntries(canopyCD.map(d => [d.cd, d]));
+
+  // 5-bin threshold scale matching the reference image
+  const colorScale = d3.scaleThreshold()
+    .domain([10, 20, 30, 40])
+    .range(["#d4edda", "#82c58b", "#3a9347", "#1e6f2d", "#0d3d17"]);
+
+  const projection = d3.geoMercator().fitSize([width, height], cdGeo);
+  const pathGen = d3.geoPath().projection(projection);
+
+  // Outer container for relative tooltip positioning
+  const container = document.createElement("div");
+  container.style.cssText = "position:relative;max-width:100%;";
+
+  const svg = d3.create("svg")
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("width", "100%")
+    .style("font-family", "Inter, sans-serif")
+    .style("background", "#c9dff0")
+    .style("border-radius", "12px");
+
+  // Draw each community district
+  const districts = svg.selectAll("path.cd")
+    .data(cdGeo.features)
+    .join("path")
+    .attr("class", "cd")
+    .attr("d", pathGen)
+    .attr("fill", d => {
+      const key = String(parseInt(d.properties.boro_cd ?? "0"));
+      return colorScale(cdLookup[key]?.pct ?? 0);
+    })
+    .attr("stroke", "white")
+    .attr("stroke-width", 0.6)
+    .attr("cursor", "pointer");
+
+  // Hover tooltip
+  const tip = document.createElement("div");
+  tip.style.cssText = [
+    "position:absolute",
+    "background:rgba(10,10,10,0.88)",
+    "color:#fff",
+    "padding:9px 13px",
+    "border-radius:8px",
+    "font-size:13px",
+    "pointer-events:none",
+    "display:none",
+    "max-width:210px",
+    "line-height:1.55",
+    "box-shadow:0 4px 14px rgba(0,0,0,0.45)",
+    "z-index:10"
+  ].join(";");
+  container.appendChild(tip);
+
+  districts
+    .on("mousemove", function(event, d) {
+      const key = String(parseInt(d.properties.boro_cd ?? "0"));
+      const info = cdLookup[key];
+      if (!info) return;
+      d3.select(this).attr("stroke", "#222").attr("stroke-width", 1.8);
+      const rect = container.getBoundingClientRect();
+      tip.style.display = "block";
+      tip.style.left = (event.clientX - rect.left + 14) + "px";
+      tip.style.top  = (event.clientY - rect.top  - 48) + "px";
+      tip.innerHTML =
+        `<strong style="font-size:14px">${info.name}</strong><br>` +
+        `<span style="color:#82c58b">🌳 ${info.pct}% canopy cover</span><br>` +
+        `<span style="color:#aaa;font-size:11px">${info.borough}</span>`;
+    })
+    .on("mouseleave", function() {
+      d3.select(this).attr("stroke", "white").attr("stroke-width", 0.6);
+      tip.style.display = "none";
+    });
+
+  // Legend box
+  const legendItems = [
+    {label: "0 – 10 %",  color: "#d4edda"},
+    {label: "10 – 20 %", color: "#82c58b"},
+    {label: "20 – 30 %", color: "#3a9347"},
+    {label: "30 – 40 %", color: "#1e6f2d"},
+    {label: "40 – 51 %", color: "#0d3d17"}
+  ];
+
+  const lg = svg.append("g").attr("transform", "translate(14,14)");
+  lg.append("rect")
+    .attr("width", 152).attr("height", 148)
+    .attr("rx", 8).attr("fill", "white").attr("opacity", 0.91);
+  lg.append("text")
+    .attr("x", 10).attr("y", 22)
+    .attr("font-size", "12.5px").attr("font-weight", "700").attr("fill", "#111")
+    .text("Canopy Cover, 2017");
+
+  legendItems.forEach((item, i) => {
+    const row = lg.append("g").attr("transform", `translate(10,${36 + i * 22})`);
+    row.append("rect")
+      .attr("width", 16).attr("height", 14).attr("rx", 2)
+      .attr("fill", item.color).attr("stroke", "#999").attr("stroke-width", 0.5);
+    row.append("text")
+      .attr("x", 24).attr("y", 11)
+      .attr("font-size", "12px").attr("fill", "#333")
+      .text(item.label);
+  });
+
+  container.appendChild(svg.node());
+  return container;
+}
+```
+
+::: {.check-understanding}
+### ✅ Check for Understanding
+
+```{ojs}
+//| echo: false
+{
+  const questions = [
+    {
+      q: "Which borough has the LOWEST average tree canopy cover?",
+      choices: ["Staten Island", "The Bronx", "Manhattan", "Queens"],
+      correct: 2,
+      explain: "Manhattan's dense urban core means most community districts have less than 10% canopy — the lowest of any borough."
+    },
+    {
+      q: "A neighborhood has 5% canopy cover. Based on earlier data, what would you predict about its heat-related death rate?",
+      choices: [
+        "Lower than average — less shade means less moisture retention",
+        "Higher than average — low canopy means more heat absorption and less cooling",
+        "About the same — canopy cover doesn't affect temperature",
+        "It depends only on building density"
+      ],
+      correct: 1,
+      explain: "Low canopy = more impervious surfaces, more heat absorption, less evapotranspiration cooling → higher surface temps and more heat stress."
+    }
+  ];
+
+  const div = document.createElement("div");
+  div.style.cssText = "display:flex;flex-direction:column;gap:18px;";
+
+  questions.forEach((item, qi) => {
+    const block = document.createElement("div");
+    block.innerHTML = `<p style="font-weight:700;margin:0 0 8px">${qi + 1}. ${item.q}</p>`;
+    const fb = document.createElement("p");
+    fb.style.cssText = "margin:8px 0 0;padding:10px;border-radius:6px;display:none;font-size:13px;";
+
+    item.choices.forEach((c, ci) => {
+      const btn = document.createElement("button");
+      btn.textContent = c;
+      btn.style.cssText = "display:block;width:100%;text-align:left;margin:4px 0;padding:8px 12px;border-radius:6px;border:1.5px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);color:white;cursor:pointer;font-size:13px;min-height:44px;";
+      btn.onclick = () => {
+        block.querySelectorAll("button").forEach(b => b.disabled = true);
+        if (ci === item.correct) {
+          btn.style.background = "rgba(0,200,100,0.35)";
+          btn.style.border = "1.5px solid #00c864";
+          fb.style.background = "rgba(0,200,100,0.2)";
+          fb.innerHTML = "✅ Correct! " + item.explain;
+        } else {
+          btn.style.background = "rgba(255,80,80,0.3)";
+          btn.style.border = "1.5px solid #ff5050";
+          fb.style.background = "rgba(255,80,80,0.15)";
+          fb.innerHTML = "❌ Not quite. " + item.explain;
+        }
+        fb.style.display = "block";
+      };
+      block.appendChild(btn);
+    });
+
+    block.appendChild(fb);
+    div.appendChild(block);
+  });
+
+  return div;
+}
+```
+:::
+
 # Explore: How Did NYC Get So Hot?
 
 ::: {.explore-box}
