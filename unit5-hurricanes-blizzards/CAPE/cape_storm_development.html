@@ -669,24 +669,126 @@
             <div class="blob" style="width:240px;height:240px;top:38%;left:16%;background:#f97316;opacity:0.07;"></div>
         </div>
         <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1;"></canvas>
-        <div class="content text-center">
-            <p style="font-size:0.8rem;letter-spacing:5px;text-transform:uppercase;color:#5a8060;margin-bottom:1.5rem;" class="reveal">What I Keep Thinking About</p>
-            <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2rem,4.5vw,3.8rem);font-weight:400;margin:0 0 2rem;line-height:1.25;background:linear-gradient(135deg,#4ade80,#facc15,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;" class="reveal">CAPE tells you how much<br>energy <em>could</em> be released.<br>What decides if it <em>actually</em> is?</h2>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;text-align:left;margin-bottom:1.5rem;">
-                <div style="background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.18);border-radius:14px;padding:1.1rem 1.3rem;" class="reveal">
-                    <h3 style="font-size:0.9rem;font-weight:600;color:#4ade80;margin:0 0 0.4rem;">The trigger problem</h3>
-                    <p style="font-size:0.82rem;color:#a8cdb0;line-height:1.5;margin:0;">Days with 4,000+ J/kg CAPE pass without a single storm. A boundary that shifts 50 miles makes the difference between nothing and an EF4. We can barely predict the boundary.<sup class="cite">[7]</sup></p>
+        <div class="content" style="max-width:1200px;">
+            <p style="font-size:0.8rem;letter-spacing:5px;text-transform:uppercase;color:#5a8060;margin-bottom:0.3rem;" class="reveal">What I Keep Thinking About</p>
+            <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.1rem,2vw,1.6rem);font-weight:400;margin:0 0 0.85rem;line-height:1.3;background:linear-gradient(135deg,#4ade80,#facc15,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;" class="reveal">CAPE tells you how much energy <em>could</em> be released. What decides if it <em>actually</em> is?</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;align-items:start;">
+
+                <!-- LEFT: 3 stacked problem cards + closing line -->
+                <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                    <div style="background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.18);border-left:3px solid #4ade80;border-radius:10px;padding:0.85rem 1rem;" class="reveal">
+                        <h3 style="font-size:0.85rem;font-weight:600;color:#4ade80;margin:0 0 0.35rem;">The trigger problem</h3>
+                        <p style="font-size:0.75rem;color:#a8cdb0;line-height:1.5;margin:0;">Days with 4,000+ J/kg CAPE pass without a single storm. A boundary that shifts 50 miles makes the difference between nothing and an EF4. We can barely predict the boundary.<sup class="cite">[7]</sup></p>
+                    </div>
+                    <div style="background:rgba(250,204,21,0.07);border:1px solid rgba(250,204,21,0.18);border-left:3px solid #facc15;border-radius:10px;padding:0.85rem 1rem;" class="reveal">
+                        <h3 style="font-size:0.85rem;font-weight:600;color:#facc15;margin:0 0 0.35rem;">The storm mode problem</h3>
+                        <p style="font-size:0.75rem;color:#a8cdb0;line-height:1.5;margin:0;">Same CAPE, same shear — and one storm becomes a long-track supercell while its neighbor 20 miles away stays disorganized. What tips one into rotation and not the other?</p>
+                    </div>
+                    <div style="background:rgba(249,115,22,0.07);border:1px solid rgba(249,115,22,0.18);border-left:3px solid #f97316;border-radius:10px;padding:0.85rem 1rem;" class="reveal">
+                        <h3 style="font-size:0.85rem;font-weight:600;color:#f97316;margin:0 0 0.35rem;">The climate mode problem</h3>
+                        <p style="font-size:0.75rem;color:#a8cdb0;line-height:1.5;margin:0;">If CAPE increases but shear decreases in a warmer world, are we heading toward more storms or just different storms? The answer affects millions of people in Tornado Alley.</p>
+                    </div>
+                    <p style="font-size:0.74rem;color:#a8cdb0;line-height:1.6;margin:0;" class="reveal">Every time I open a SPC outlook and see the tornado probability hatching, I'm looking at the <strong style="color:#eaf5eb;">intersection of three uncertain ingredients</strong> — and our best models are still sometimes very wrong about which way it breaks.</p>
                 </div>
-                <div style="background:rgba(250,204,21,0.07);border:1px solid rgba(250,204,21,0.18);border-radius:14px;padding:1.1rem 1.3rem;" class="reveal">
-                    <h3 style="font-size:0.9rem;font-weight:600;color:#facc15;margin:0 0 0.4rem;">The storm mode problem</h3>
-                    <p style="font-size:0.82rem;color:#a8cdb0;line-height:1.5;margin:0;">Same CAPE, same shear — and one storm becomes a long-track supercell while its neighbor 20 miles away stays disorganized. What tips one into rotation and not the other?</p>
-                </div>
-                <div style="background:rgba(249,115,22,0.07);border:1px solid rgba(249,115,22,0.18);border-radius:14px;padding:1.1rem 1.3rem;" class="reveal">
-                    <h3 style="font-size:0.9rem;font-weight:600;color:#f97316;margin:0 0 0.4rem;">The climate mode problem</h3>
-                    <p style="font-size:0.82rem;color:#a8cdb0;line-height:1.5;margin:0;">If CAPE increases but shear decreases in a warmer world, are we heading toward more storms or just different storms? The answer affects millions of people in Tornado Alley.</p>
+
+                <!-- RIGHT: 3 inline SVG diagrams -->
+                <div style="display:flex;flex-direction:column;gap:0.6rem;">
+
+                    <!-- Diagram 1: Trigger — boundary misses vs fires -->
+                    <div class="reveal">
+                        <svg viewBox="0 0 380 88" style="width:100%;height:auto;display:block;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);">
+                            <!-- panel divider -->
+                            <line x1="190" y1="0" x2="190" y2="88" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                            <!-- LEFT panel: boundary misses -->
+                            <rect x="24" y="12" width="144" height="48" rx="4" fill="rgba(249,115,22,0.2)" stroke="rgba(249,115,22,0.4)" stroke-width="1"/>
+                            <text x="96" y="24" text-anchor="middle" fill="rgba(249,115,22,0.85)" font-size="6.5" font-family="DM Sans,sans-serif" font-weight="600">4,000 J/kg CAPE</text>
+                            <!-- boundary line arcs below the CAPE zone -->
+                            <path d="M 4,74 Q 52,68 96,72 Q 140,74 184,70" fill="none" stroke="#4ade80" stroke-width="1.5" stroke-dasharray="5,3"/>
+                            <text x="96" y="84" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="7.5" font-family="DM Sans,sans-serif" font-weight="600">Boundary misses</text>
+                            <!-- RIGHT panel: boundary fires -->
+                            <rect x="214" y="12" width="144" height="48" rx="4" fill="rgba(249,115,22,0.2)" stroke="rgba(249,115,22,0.4)" stroke-width="1"/>
+                            <text x="286" y="24" text-anchor="middle" fill="rgba(249,115,22,0.85)" font-size="6.5" font-family="DM Sans,sans-serif" font-weight="600">4,000 J/kg CAPE</text>
+                            <!-- boundary line cuts diagonally through CAPE zone -->
+                            <path d="M 208,58 Q 252,38 292,26 Q 328,18 374,14" fill="none" stroke="#4ade80" stroke-width="1.5" stroke-dasharray="5,3"/>
+                            <!-- 4 lightning bolts along boundary line -->
+                            <polygon points="231,46 227,53 230,53 227,59 234,52 231,52" fill="#facc15" opacity="0.95"/>
+                            <polygon points="259,38 255,45 258,45 255,51 262,44 259,44" fill="#facc15" opacity="0.95"/>
+                            <polygon points="307,24 303,31 306,31 303,37 310,30 307,30" fill="#facc15" opacity="0.95"/>
+                            <polygon points="343,17 339,24 342,24 339,30 346,23 343,23" fill="#facc15" opacity="0.95"/>
+                            <text x="286" y="84" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="7.5" font-family="DM Sans,sans-serif" font-weight="600">Boundary fires</text>
+                        </svg>
+                    </div>
+
+                    <!-- Diagram 2: Supercell vs Pulse storm -->
+                    <div class="reveal">
+                        <svg viewBox="0 0 420 112" style="width:100%;height:auto;display:block;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);">
+                            <!-- panel divider -->
+                            <line x1="210" y1="4" x2="210" y2="112" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                            <!-- LEFT: Supercell (tilted cumulonimbus with anvil) -->
+                            <!-- Anvil top — wide, asymmetric, extends right -->
+                            <path d="M 45,32 Q 70,20 105,22 Q 140,20 160,28 Q 152,38 135,40 Q 115,44 95,42 Q 75,44 56,40 Z" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.32)" stroke-width="1.2"/>
+                            <!-- Body — slightly tilted right -->
+                            <path d="M 66,40 Q 61,54 62,68 Q 63,80 74,86 Q 87,90 102,88 Q 118,90 124,80 Q 129,68 124,54 Q 124,42 118,40 Q 98,36 66,40 Z" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.28)" stroke-width="1.2"/>
+                            <!-- Updraft arrow (green, left side going up) -->
+                            <line x1="56" y1="82" x2="50" y2="44" stroke="#4ade80" stroke-width="1.5"/>
+                            <polygon points="50,40 46,48 54,48" fill="#4ade80"/>
+                            <!-- Rotation arc (yellow, at base) -->
+                            <path d="M 68,96 Q 95,106 122,96" fill="none" stroke="#facc15" stroke-width="1.6"/>
+                            <polygon points="122,96 116,94 118,102" fill="#facc15"/>
+                            <text x="95" y="110" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8.5" font-family="DM Sans,sans-serif" font-weight="600">Supercell</text>
+                            <!-- RIGHT: Pulse storm (shorter, vertical, no anvil) -->
+                            <!-- Rounded cloud top — no anvil -->
+                            <path d="M 268,38 Q 282,26 306,24 Q 330,22 343,30 Q 353,28 358,36 Q 358,46 344,48 Q 320,52 296,50 Q 272,52 268,46 Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.28)" stroke-width="1.2"/>
+                            <!-- Body — vertical, shorter -->
+                            <path d="M 278,48 Q 272,60 273,72 Q 274,84 286,88 Q 298,92 312,88 Q 324,84 325,72 Q 326,60 320,48 Q 302,44 278,48 Z" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.26)" stroke-width="1.2"/>
+                            <!-- Rain falling back down through center (blue dashed) -->
+                            <line x1="291" y1="62" x2="291" y2="92" stroke="rgba(100,160,230,0.6)" stroke-width="1.2" stroke-dasharray="3,3"/>
+                            <line x1="299" y1="60" x2="299" y2="92" stroke="rgba(100,160,230,0.6)" stroke-width="1.2" stroke-dasharray="3,3"/>
+                            <line x1="307" y1="62" x2="307" y2="92" stroke="rgba(100,160,230,0.6)" stroke-width="1.2" stroke-dasharray="3,3"/>
+                            <!-- Down arrow -->
+                            <polygon points="299,92 295,86 303,86" fill="rgba(100,160,230,0.6)"/>
+                            <text x="315" y="110" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="7.5" font-family="DM Sans,sans-serif" font-weight="600">Pulse storm — 30 min.</text>
+                        </svg>
+                        <p style="font-size:0.6rem;text-align:center;color:rgba(168,205,176,0.45);margin:0.15rem 0 0;letter-spacing:2px;text-transform:uppercase;">Same CAPE. Same shear.</p>
+                    </div>
+
+                    <!-- Diagram 3: CAPE ↑ vs Wind Shear ↓ climate projection -->
+                    <div class="reveal">
+                        <svg viewBox="0 0 460 100" style="width:100%;height:auto;display:block;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);">
+                            <!-- x axis -->
+                            <line x1="25" y1="87" x2="315" y2="87" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                            <!-- axis tick marks -->
+                            <line x1="25" y1="87" x2="25" y2="91" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                            <line x1="162" y1="87" x2="162" y2="91" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                            <line x1="315" y1="87" x2="315" y2="91" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                            <!-- year labels -->
+                            <text x="18" y="98" fill="rgba(255,255,255,0.3)" font-size="7" font-family="DM Sans,sans-serif">2025</text>
+                            <text x="155" y="98" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="7" font-family="DM Sans,sans-serif">2060</text>
+                            <text x="308" y="98" fill="rgba(255,255,255,0.3)" font-size="7" font-family="DM Sans,sans-serif">2100</text>
+                            <!-- CAPE rising line (orange) -->
+                            <path d="M 25,78 C 100,74 220,24 315,16" fill="none" stroke="#f97316" stroke-width="2.2"/>
+                            <!-- Wind shear falling line (muted blue) -->
+                            <path d="M 25,16 C 100,24 220,74 315,78" fill="none" stroke="rgba(100,160,230,0.8)" stroke-width="2.2"/>
+                            <!-- Crossing dot at ~2060 (x=162, y=47) -->
+                            <circle cx="162" cy="47" r="4" fill="#facc15" opacity="0.9"/>
+                            <!-- Line labels (before crossing, well-separated) -->
+                            <text x="88" y="64" fill="#f97316" font-size="7" font-family="DM Sans,sans-serif" font-weight="600">CAPE ↑</text>
+                            <text x="78" y="21" fill="rgba(100,160,230,0.9)" font-size="7" font-family="DM Sans,sans-serif" font-weight="600">Wind Shear ↓</text>
+                            <!-- Fork paths from 2100 endpoints -->
+                            <path d="M 315,16 C 333,12 348,9 368,7" fill="none" stroke="#f97316" stroke-width="1.5" stroke-dasharray="4,3"/>
+                            <path d="M 315,78 C 333,82 348,85 368,87" fill="none" stroke="rgba(100,160,230,0.75)" stroke-width="1.5" stroke-dasharray="4,3"/>
+                            <!-- Question marks -->
+                            <text x="370" y="13" fill="#f97316" font-size="10" font-family="DM Sans,sans-serif" font-weight="700">?</text>
+                            <text x="370" y="92" fill="rgba(100,160,230,0.9)" font-size="10" font-family="DM Sans,sans-serif" font-weight="700">?</text>
+                            <!-- Fork labels -->
+                            <text x="383" y="10" fill="rgba(249,115,22,0.7)" font-size="5.8" font-family="DM Sans,sans-serif">More storms,</text>
+                            <text x="383" y="18" fill="rgba(249,115,22,0.7)" font-size="5.8" font-family="DM Sans,sans-serif">fewer supercells?</text>
+                            <text x="383" y="90" fill="rgba(100,160,230,0.65)" font-size="5.8" font-family="DM Sans,sans-serif">Moisture wins?</text>
+                        </svg>
+                    </div>
+
                 </div>
             </div>
-            <p style="font-size:1rem;color:#a8cdb0;line-height:1.7;max-width:720px;margin:0 auto;" class="reveal">Every time I open a SPC outlook and see the tornado probability hatching, I'm looking at the <strong style="color:#eaf5eb;">intersection of three uncertain ingredients</strong> — and our best models are still sometimes very wrong about which way it breaks.</p>
         </div>
     </div>
 
