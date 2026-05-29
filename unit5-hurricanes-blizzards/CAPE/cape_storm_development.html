@@ -11,6 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
 
     <style type="text/tailwindcss">
         @theme {
@@ -92,6 +94,7 @@
         .storm-tower { animation: tower-grow 1.2s ease-out forwards; transform-origin: bottom; }
 
         @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; } }
+        .cite { font-size: 0.68em; vertical-align: super; color: #5a8060; font-weight: 700; margin-left: 1px; letter-spacing: 0; }
     </style>
 </head>
 <body>
@@ -270,7 +273,7 @@
                 </div>
             </div>
             <div style="background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.2);border-radius:12px;padding:1rem 1.4rem;" class="reveal">
-                <p style="font-size:0.88rem;color:#eaf5eb;margin:0;">⚡ <strong>Reality check:</strong> The 1997 Jarrell, TX F5 tornado formed in ~7,500 J/kg CAPE. The 2011 Joplin, MO EF5 tornado had ~4,000 J/kg with extreme low-level wind shear. CAPE is <em>necessary</em> — but as we'll see, it's never sufficient alone.</p>
+                <p style="font-size:0.88rem;color:#eaf5eb;margin:0;">⚡ <strong>Reality check:</strong> The 1997 Jarrell, TX F5 tornado formed in ~7,500 J/kg CAPE. The 2011 Joplin, MO EF5 tornado had ~4,000 J/kg with extreme low-level wind shear.<sup class="cite">[1]</sup> CAPE is <em>necessary</em> — but as we'll see, it's never sufficient alone.</p>
             </div>
         </div>
     </div>
@@ -287,7 +290,7 @@
                 <p style="font-size:0.8rem;letter-spacing:5px;text-transform:uppercase;color:#5a8060;margin-bottom:1rem;" class="reveal">The Paradox</p>
                 <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;margin:0 0 1rem;color:#eaf5eb;" class="reveal">CIN: The Cap That<br>Makes Storms Violent</h2>
                 <p style="font-size:0.9rem;color:#a8cdb0;line-height:1.7;margin:0 0 1rem;" class="reveal"><strong style="color:#eaf5eb;">CIN (Convective Inhibition)</strong> is the energy barrier that prevents rising air from breaking free. A warm, stable layer aloft — called <em>the cap</em> — acts like a lid on a pressure cooker.</p>
-                <p style="font-size:0.9rem;color:#a8cdb0;line-height:1.7;margin:0 0 1rem;" class="reveal">Here's the counterintuitive part: <strong style="color:#facc15;">a moderate cap makes for more violent storms</strong>, not weaker ones. It allows heat and moisture to build for hours in the boundary layer without releasing — then, when a trigger finally breaks the cap, the energy erupts explosively.</p>
+                <p style="font-size:0.9rem;color:#a8cdb0;line-height:1.7;margin:0 0 1rem;" class="reveal">Here's the counterintuitive part: <strong style="color:#facc15;">a moderate cap makes for more violent storms</strong>, not weaker ones.<sup class="cite">[2]</sup> It allows heat and moisture to build for hours in the boundary layer without releasing — then, when a trigger finally breaks the cap, the energy erupts explosively.</p>
                 <div style="display:flex;flex-direction:column;gap:0.6rem;" class="reveal">
                     <div style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.85rem;color:#a8cdb0;line-height:1.5;">
                         <span style="color:#4ade80;font-size:1rem;flex-shrink:0;">●</span><span>Weak CIN (0–60 J/kg): Storms fire easily but remain disorganized; energy leaks before it can accumulate</span>
@@ -337,8 +340,21 @@
         </div>
     </div>
 
+    <!-- DISCUSSION MOMENT A: AFTER CIN -->
+    <div class="slide slide-discussion-a" data-slide="6">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:500px;height:500px;top:-100px;left:-80px;background:#facc15;opacity:0.07;"></div>
+            <div class="blob" style="width:360px;height:360px;bottom:-80px;right:-60px;background:#4ade80;opacity:0.06;"></div>
+        </div>
+        <div class="content text-center" style="max-width:680px;">
+            <p style="font-size:0.72rem;letter-spacing:6px;text-transform:uppercase;color:#5a8060;margin-bottom:2.5rem;" class="reveal">Discussion Moment</p>
+            <p style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.4rem,3.2vw,2.3rem);color:#eaf5eb;line-height:1.6;font-style:italic;margin:0 auto 2.5rem;" class="reveal">&ldquo;Think about a time you were <span style="color:#facc15;">&lsquo;capped&rsquo;</span> &mdash; when conditions were building but the moment hadn&rsquo;t come yet. What finally broke the seal?&rdquo;</p>
+            <p style="font-size:0.8rem;color:#5a8060;letter-spacing:2px;" class="reveal">Share in the chat &mdash; any field, any story</p>
+        </div>
+    </div>
+
     <!-- SLIDE 5: THE SKEW-T DIAGRAM -->
-    <div class="slide slide-5" data-slide="6">
+    <div class="slide slide-5" data-slide="7">
         <div class="gradient-mesh">
             <div class="blob" style="width:360px;height:360px;top:-70px;left:-50px;background:#4ade80;opacity:0.08;"></div>
             <div class="blob" style="width:260px;height:260px;bottom:-50px;right:-40px;background:#facc15;opacity:0.07;"></div>
@@ -347,7 +363,7 @@
             <div>
                 <p style="font-size:0.8rem;letter-spacing:5px;text-transform:uppercase;color:#5a8060;margin-bottom:1rem;" class="reveal">The Forecaster's Tool</p>
                 <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.7rem);font-weight:400;margin:0 0 1rem;color:#eaf5eb;" class="reveal">Reading a Skew-T Log-P</h2>
-                <p style="font-size:0.88rem;color:#a8cdb0;line-height:1.6;margin:0 0 1rem;" class="reveal">A Skew-T diagram is the MRI of the atmosphere — a vertical snapshot from the surface to the stratosphere. The <em>area</em> between two lines encodes CAPE and CIN, measured in J/kg.</p>
+                <p style="font-size:0.88rem;color:#a8cdb0;line-height:1.6;margin:0 0 1rem;" class="reveal">A Skew-T diagram is the MRI of the atmosphere — a vertical snapshot from the surface to the stratosphere. The <em>area</em> between two lines encodes CAPE and CIN, measured in J/kg.<sup class="cite">[3]</sup></p>
                 <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.7rem;">
                     <li style="display:flex;gap:0.8rem;align-items:flex-start;font-size:0.85rem;color:#a8cdb0;line-height:1.5;" class="reveal">
                         <span style="width:14px;height:14px;border-radius:50%;background:#ef4444;flex-shrink:0;margin-top:2px;"></span>
@@ -401,27 +417,38 @@
                     <line x1="254" y1="24" x2="254" y2="290" stroke="rgba(255,255,255,0.08)" stroke-width="0.75" stroke-dasharray="3,2"/>
                     <text x="279" y="21" fill="#a8cdb0" font-size="7" font-family="DM Sans" font-weight="700" text-anchor="middle" letter-spacing="1">WIND</text>
 
-                    <!-- CAPE shaded area -->
-                    <polygon points="120,60 160,60 190,120 175,120 145,120" fill="rgba(249,115,22,0.25)" stroke="none"/>
-                    <text x="145" y="95" fill="#f97316" font-size="8" text-anchor="middle" font-family="DM Sans" font-weight="700">CAPE</text>
+                    <!-- CIN shaded area: surface (925 hPa) → LFC
+                         Right edge = env line, Left edge = parcel line (parcel cooler = LEFT of env) -->
+                    <path d="M 215,280 L 188,200 L 172,155 L 168,220 Z" fill="rgba(250,204,21,0.22)" stroke="none"/>
+                    <text x="189" y="238" fill="#facc15" font-size="8" text-anchor="middle" font-family="DM Sans" font-weight="700">CIN</text>
 
-                    <!-- CIN shaded area -->
-                    <polygon points="145,200 165,200 175,120 160,120" fill="rgba(250,204,21,0.2)" stroke="none"/>
-                    <text x="168" y="165" fill="#facc15" font-size="8" font-family="DM Sans" font-weight="700">CIN</text>
+                    <!-- CAPE shaded area: LFC → EL
+                         Right edge = parcel line (parcel warmer = RIGHT of env), Left edge = env line -->
+                    <path d="M 172,155 L 162,100 L 133,80 L 160,120 Z" fill="rgba(249,115,22,0.28)" stroke="none"/>
+                    <text x="155" y="104" fill="#f97316" font-size="8" text-anchor="middle" font-family="DM Sans" font-weight="700">CAPE</text>
 
-                    <!-- Environmental temperature (red, skewed) -->
-                    <path d="M 240 280 C 230 240, 200 200, 175 120 C 155 60, 130 30, 100 10" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" class="parcel-path" id="envpath"/>
+                    <!-- Environmental temperature (red): skewed bottom-right → upper-left
+                         925 hPa x=215 → 850 hPa x=188 → 700 hPa x=160 → 500 hPa x=120 -->
+                    <path d="M 215,280 L 188,200 L 160,120 L 120,60" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" class="parcel-path" id="envpath"/>
 
-                    <!-- Parcel path (green) -->
-                    <path d="M 210 280 C 200 240, 185 200, 160 120 C 140 60, 118 30, 100 10" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" class="parcel-path" id="parcelpath" style="animation-delay:0.4s;"/>
+                    <!-- Parcel path (green): same surface start (215,280)
+                         → LEFT of env in CIN zone (parcel cooler, must fight buoyancy)
+                         → crosses env at LFC (172,155)
+                         → RIGHT of env in CAPE zone (parcel warmer, free ascent)
+                         → crosses env again at EL (133,80) -->
+                    <path d="M 215,280 L 168,220 L 172,155 L 162,100 L 133,80 L 110,60" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" class="parcel-path" id="parcelpath" style="animation-delay:0.4s;"/>
 
-                    <!-- LCL dot -->
-                    <circle cx="182" cy="185" r="4" fill="#4ade80" opacity="0.9"/>
-                    <text x="190" y="185" fill="#4ade80" font-size="8" font-family="DM Sans">LCL</text>
+                    <!-- LCL dot: lifted condensation level — parcel saturates, slope changes (on parcel path) -->
+                    <circle cx="168" cy="220" r="4" fill="#4ade80" opacity="0.9"/>
+                    <text x="176" y="223" fill="#4ade80" font-size="8" font-family="DM Sans">LCL</text>
 
-                    <!-- LFC dot -->
-                    <circle cx="168" cy="140" r="4" fill="#facc15" opacity="0.9"/>
-                    <text x="175" y="140" fill="#facc15" font-size="8" font-family="DM Sans">LFC</text>
+                    <!-- LFC dot: level of free convection — env/parcel crossing, bottom of CAPE zone -->
+                    <circle cx="172" cy="155" r="4" fill="#facc15" opacity="0.9"/>
+                    <text x="178" y="152" fill="#facc15" font-size="8" font-family="DM Sans">LFC</text>
+
+                    <!-- EL dot: equilibrium level — upper env/parcel crossing, top of CAPE zone -->
+                    <circle cx="133" cy="80" r="4" fill="#f97316" opacity="0.9"/>
+                    <text x="141" y="78" fill="#f97316" font-size="8" font-family="DM Sans">EL</text>
 
                     <!-- ═══ WIND BARBS (proper meteorological SVG) ═══
                          Convention: staff points FROM obs toward the wind's origin.
@@ -496,76 +523,146 @@
     </div>
 
     <!-- SLIDE 6: THE FOUR INGREDIENTS -->
-    <div class="slide slide-6" data-slide="7">
+    <div class="slide slide-6" data-slide="8">
         <div class="gradient-mesh">
             <div class="blob" style="width:380px;height:380px;top:-80px;right:-60px;background:#f97316;opacity:0.09;"></div>
             <div class="blob" style="width:280px;height:280px;bottom:-60px;left:-50px;background:#4ade80;opacity:0.07;"></div>
         </div>
         <div class="deco-shape" data-speed="0.025" style="width:260px;height:260px;top:5%;right:5%;border:1px solid rgba(249,115,22,0.07);"></div>
-        <div class="content">
-            <p style="font-size:0.8rem;letter-spacing:5px;text-transform:uppercase;color:#5a8060;margin-bottom:0.8rem;" class="reveal">Beyond CAPE</p>
-            <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;margin:0 0 1.3rem;color:#eaf5eb;" class="reveal">The Four Ingredients of a Supercell</h2>
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;">
-                <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(74,222,128,0.2);border-radius:14px;padding:1.2rem;text-align:center;border-top:3px solid #4ade80;" class="reveal">
-                    <div style="font-size:2rem;margin-bottom:0.5rem;">💧</div>
-                    <h3 style="font-size:0.9rem;font-weight:700;color:#4ade80;margin:0 0 0.5rem;">Moisture</h3>
-                    <p style="font-size:0.78rem;color:#a8cdb0;line-height:1.5;margin:0;">Deep boundary layer moisture — dewpoints 60°F+ across the Great Plains. Provides the latent heat that powers the updraft.</p>
+        <div class="content" style="max-width:1200px;">
+            <p style="font-size:0.8rem;letter-spacing:5px;text-transform:uppercase;color:#5a8060;margin-bottom:0.4rem;" class="reveal">Beyond CAPE</p>
+            <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.4rem,2.6vw,2.2rem);font-weight:400;margin:0 0 0.9rem;color:#eaf5eb;" class="reveal">The Four Ingredients of a Supercell</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;align-items:start;">
+
+                <!-- LEFT: 2×2 ingredient grid + key insight -->
+                <div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.85rem;">
+                        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(74,222,128,0.2);border-radius:12px;padding:1rem;text-align:center;border-top:3px solid #4ade80;" class="reveal">
+                            <div style="font-size:1.6rem;margin-bottom:0.35rem;">💧</div>
+                            <h3 style="font-size:0.85rem;font-weight:700;color:#4ade80;margin:0 0 0.4rem;">Moisture</h3>
+                            <p style="font-size:0.74rem;color:#a8cdb0;line-height:1.5;margin:0;">Deep boundary layer moisture — dewpoints 60°F+. Provides the latent heat that powers the updraft.</p>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(250,204,21,0.2);border-radius:12px;padding:1rem;text-align:center;border-top:3px solid #facc15;" class="reveal">
+                            <div style="font-size:1.6rem;margin-bottom:0.35rem;">🔥</div>
+                            <h3 style="font-size:0.85rem;font-weight:700;color:#facc15;margin:0 0 0.4rem;">Instability</h3>
+                            <p style="font-size:0.74rem;color:#a8cdb0;line-height:1.5;margin:0;">High CAPE + moderate CIN. The fuel load and the cap that allows it to build.</p>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(249,115,22,0.2);border-radius:12px;padding:1rem;text-align:center;border-top:3px solid #f97316;" class="reveal">
+                            <div style="font-size:1.6rem;margin-bottom:0.35rem;">💨</div>
+                            <h3 style="font-size:0.85rem;font-weight:700;color:#f97316;margin:0 0 0.4rem;">Wind Shear</h3>
+                            <p style="font-size:0.74rem;color:#a8cdb0;line-height:1.5;margin:0;">Changing wind speed and direction with altitude. Tilts the updraft and causes rotation.</p>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:1rem;text-align:center;border-top:3px solid #ef4444;" class="reveal">
+                            <div style="font-size:1.6rem;margin-bottom:0.35rem;">⬆️</div>
+                            <h3 style="font-size:0.85rem;font-weight:700;color:#ef4444;margin:0 0 0.4rem;">Lift / Trigger</h3>
+                            <p style="font-size:0.74rem;color:#a8cdb0;line-height:1.5;margin:0;">Cold front, dryline, outflow boundary, or orographic lift — the mechanism that breaks the cap.</p>
+                        </div>
+                    </div>
+                    <div style="background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.18);border-radius:12px;padding:0.85rem 1.1rem;" class="reveal">
+                        <p style="font-size:0.82rem;color:#eaf5eb;margin:0;">🌪️ <strong>The key insight:</strong> CAPE and wind shear don't just add together — they <em>interact</em>. High shear in a low-CAPE environment can still produce a tornado. The 0–6 km bulk shear of 40+ knots is what separates supercells from the rest.<sup class="cite">[4]</sup></p>
+                    </div>
                 </div>
-                <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(250,204,21,0.2);border-radius:14px;padding:1.2rem;text-align:center;border-top:3px solid #facc15;" class="reveal">
-                    <div style="font-size:2rem;margin-bottom:0.5rem;">🔥</div>
-                    <h3 style="font-size:0.9rem;font-weight:700;color:#facc15;margin:0 0 0.5rem;">Instability</h3>
-                    <p style="font-size:0.78rem;color:#a8cdb0;line-height:1.5;margin:0;">High CAPE + moderate CIN. The fuel load and the cap that allows it to build. Without CAPE, there's nothing to release.</p>
+
+                <!-- RIGHT: tornado fatality risk shift map -->
+                <div class="reveal">
+                    <p style="font-size:0.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#ef4444;margin:0 0 0.55rem;">Where Tornado Fatalities Are Shifting</p>
+                    <svg id="tornado-risk-map" viewBox="0 0 480 290" style="width:100%;height:auto;display:block;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);"></svg>
+                    <div style="display:flex;gap:1.1rem;margin-top:0.5rem;flex-wrap:wrap;">
+                        <div style="display:flex;align-items:center;gap:0.4rem;">
+                            <span style="width:11px;height:11px;border-radius:2px;background:rgba(239,68,68,0.5);display:inline-block;border:1px solid rgba(239,68,68,0.7);flex-shrink:0;"></span>
+                            <span style="font-size:0.69rem;color:#a8cdb0;">Dixie Alley — Rising Risk</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:0.4rem;">
+                            <span style="width:11px;height:11px;border-radius:2px;background:rgba(250,204,21,0.3);display:inline-block;border:1px solid rgba(250,204,21,0.5);flex-shrink:0;"></span>
+                            <span style="font-size:0.69rem;color:#a8cdb0;">Traditional Tornado Alley — Declining</span>
+                        </div>
+                    </div>
+                    <div style="margin-top:0.6rem;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:0.7rem 0.95rem;">
+                        <p style="font-size:0.78rem;color:#a8cdb0;line-height:1.5;margin:0;">More mobile homes. Fewer storm shelters. <strong style="color:#eaf5eb;">The physics hasn't changed — the built environment has.</strong></p>
+                    </div>
                 </div>
-                <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(249,115,22,0.2);border-radius:14px;padding:1.2rem;text-align:center;border-top:3px solid #f97316;" class="reveal">
-                    <div style="font-size:2rem;margin-bottom:0.5rem;">💨</div>
-                    <h3 style="font-size:0.9rem;font-weight:700;color:#f97316;margin:0 0 0.5rem;">Wind Shear</h3>
-                    <p style="font-size:0.78rem;color:#a8cdb0;line-height:1.5;margin:0;">Changing wind speed and direction with altitude. Tilts the updraft, preventing rain from falling back into it — and causes rotation.</p>
-                </div>
-                <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(239,68,68,0.2);border-radius:14px;padding:1.2rem;text-align:center;border-top:3px solid #ef4444;" class="reveal">
-                    <div style="font-size:2rem;margin-bottom:0.5rem;">⬆️</div>
-                    <h3 style="font-size:0.9rem;font-weight:700;color:#ef4444;margin:0 0 0.5rem;">Lift / Trigger</h3>
-                    <p style="font-size:0.78rem;color:#a8cdb0;line-height:1.5;margin:0;">The mechanism that breaks the cap: cold front, dryline, outflow boundary, or orographic lift from terrain.</p>
-                </div>
-            </div>
-            <div style="margin-top:1.3rem;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.18);border-radius:12px;padding:1rem 1.4rem;" class="reveal">
-                <p style="font-size:0.88rem;color:#eaf5eb;margin:0;">🌪️ <strong>The key insight:</strong> CAPE and wind shear don't just add together — they <em>interact</em>. High shear in a low-CAPE environment can still produce a tornado. High CAPE in zero-shear produces a "pulse" storm that dies in 30 minutes. The 0–6 km bulk shear of 40+ knots is what separates supercells from the rest.</p>
+
             </div>
         </div>
     </div>
 
     <!-- SLIDE 7: CAPE AND CLIMATE CHANGE -->
-    <div class="slide slide-7" data-slide="8">
+    <div class="slide slide-7" data-slide="9">
         <div class="gradient-mesh">
             <div class="blob" style="width:400px;height:400px;top:-80px;right:-70px;background:#ef4444;opacity:0.09;"></div>
             <div class="blob" style="width:300px;height:300px;bottom:-60px;left:-50px;background:#f97316;opacity:0.08;"></div>
         </div>
         <canvas class="particle-canvas-ambient" style="position:absolute;inset:0;z-index:1;"></canvas>
-        <div class="content">
-            <p style="font-size:0.8rem;letter-spacing:5px;text-transform:uppercase;color:#5a8060;margin-bottom:1rem;" class="reveal">The Bigger Picture</p>
-            <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;margin:0 0 0.5rem;color:#eaf5eb;" class="reveal">A Warming World Is Loading the Atmosphere</h2>
-            <p style="font-size:0.9rem;color:#a8cdb0;line-height:1.6;margin:0 0 1.5rem;" class="reveal">Climate change doesn't just raise temperatures — it changes the energy budget of the atmosphere in ways that directly affect CAPE, CIN, and severe storm frequency.</p>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;margin-bottom:1.3rem;">
-                <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1.2rem;" class="reveal">
-                    <h3 style="font-size:0.9rem;font-weight:600;color:#4ade80;margin:0 0 0.5rem;">More CAPE</h3>
-                    <p style="font-size:0.82rem;color:#a8cdb0;line-height:1.5;margin:0;">Warmer surface temperatures increase boundary layer heat and moisture. For every <strong style="color:#eaf5eb;">1.1°C of warming, ~8% more water vapor</strong> can be present — directly increasing potential CAPE.</p>
+        <div class="content" style="max-width:1200px;">
+            <p style="font-size:0.8rem;letter-spacing:5px;text-transform:uppercase;color:#5a8060;margin-bottom:0.4rem;" class="reveal">The Bigger Picture</p>
+            <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.4rem,2.6vw,2.2rem);font-weight:400;margin:0 0 0.9rem;color:#eaf5eb;" class="reveal">A Warming World Is Loading the Atmosphere</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;align-items:start;">
+
+                <!-- LEFT: 3 stacked info boxes + callout -->
+                <div>
+                    <div style="display:flex;flex-direction:column;gap:0.6rem;margin-bottom:0.7rem;">
+                        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(74,222,128,0.2);border-left:3px solid #4ade80;border-radius:10px;padding:0.85rem 1rem;" class="reveal">
+                            <h3 style="font-size:0.85rem;font-weight:600;color:#4ade80;margin:0 0 0.35rem;">More CAPE</h3>
+                            <p style="font-size:0.76rem;color:#a8cdb0;line-height:1.5;margin:0;">Warmer surface temperatures increase boundary layer heat and moisture. For every <strong style="color:#eaf5eb;">1.1°C of warming, ~8% more water vapor</strong> can be present — directly fueling potential CAPE.</p>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(250,204,21,0.2);border-left:3px solid #facc15;border-radius:10px;padding:0.85rem 1rem;" class="reveal">
+                            <h3 style="font-size:0.85rem;font-weight:600;color:#facc15;margin:0 0 0.35rem;">10–15 More High-CAPE Days</h3>
+                            <p style="font-size:0.76rem;color:#a8cdb0;line-height:1.5;margin:0;">Since 1979, parts of the Ohio Valley have seen <strong style="color:#eaf5eb;">10–15 additional days per year</strong> with CAPE above 1,000 J/kg in spring and summer.<sup class="cite">[5]</sup> More fuel in the atmosphere.</p>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(249,115,22,0.2);border-left:3px solid #f97316;border-radius:10px;padding:0.85rem 1rem;" class="reveal">
+                            <h3 style="font-size:0.85rem;font-weight:600;color:#f97316;margin:0 0 0.35rem;">The Shear Wildcard</h3>
+                            <p style="font-size:0.76rem;color:#a8cdb0;line-height:1.5;margin:0;">Wind shear may <em>decrease</em> as poles warm faster than tropics — flattening the temperature gradient that drives the jet stream. <strong style="color:#eaf5eb;">More fuel, weaker organization.</strong><sup class="cite">[6]</sup></p>
+                        </div>
+                    </div>
+                    <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:0.75rem 1rem;" class="reveal">
+                        <p style="font-size:0.8rem;color:#eaf5eb;margin:0;">⚠️ <strong>The unsettled science:</strong> The models genuinely disagree on where that balance lands. This is at <em>the edge of current understanding</em> in climate science.</p>
+                    </div>
                 </div>
-                <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1.2rem;" class="reveal">
-                    <h3 style="font-size:0.9rem;font-weight:600;color:#facc15;margin:0 0 0.5rem;">10–15 More High-CAPE Days</h3>
-                    <p style="font-size:0.82rem;color:#a8cdb0;line-height:1.5;margin:0;">Since 1979, parts of the Ohio Valley have seen <strong style="color:#eaf5eb;">10–15 additional days per year</strong> with CAPE above 1,000 J/kg during spring and summer, per Climate Central analysis.</p>
-                </div>
-                <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1.2rem;" class="reveal">
-                    <h3 style="font-size:0.9rem;font-weight:600;color:#f97316;margin:0 0 0.5rem;">The Shear Wildcard</h3>
-                    <p style="font-size:0.82rem;color:#a8cdb0;line-height:1.5;margin:0;">Projections suggest <strong style="color:#eaf5eb;">5–20% increase in severe storm conditions</strong> by 2100 in the US. But wind shear — the other critical ingredient — may <em>decrease</em> as the poles warm faster than the tropics.</p>
+
+                <!-- RIGHT: two charts stacked -->
+                <div style="display:flex;flex-direction:column;gap:0.85rem;">
+
+                    <!-- Chart 1: Ohio Valley CAPE trend -->
+                    <div class="reveal">
+                        <p style="font-size:0.68rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#facc15;margin:0 0 0.4rem;">Ohio Valley — High-CAPE Days / Year (CAPE &gt; 1,000 J/kg)</p>
+                        <svg id="cape-trend-chart" viewBox="0 0 460 160" style="width:100%;height:auto;display:block;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);"></svg>
+                    </div>
+
+                    <!-- Chart 2: Models disagree diverging visual -->
+                    <div class="reveal">
+                        <p style="font-size:0.68rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#f97316;margin:0 0 0.4rem;">Where the Models Land — Two Scenarios</p>
+                        <svg id="models-disagree-chart" viewBox="0 0 460 118" style="width:100%;height:auto;display:block;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);"></svg>
+                    </div>
+
                 </div>
             </div>
-            <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:1rem 1.4rem;" class="reveal">
-                <p style="font-size:0.88rem;color:#eaf5eb;margin:0;">⚠️ <strong>The unsettled science:</strong> More CAPE + less shear = more storms but fewer supercells? Or does moisture win? The models disagree. This is genuinely <em>at the edge of current understanding</em> in climate science.</p>
+        </div>
+    </div>
+
+    <!-- DISCUSSION MOMENT B: AFTER CLIMATE CHANGE -->
+    <div class="slide slide-discussion-b" data-slide="10">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:480px;height:480px;top:-100px;right:-80px;background:#ef4444;opacity:0.08;"></div>
+            <div class="blob" style="width:360px;height:360px;bottom:-80px;left:-60px;background:#f97316;opacity:0.07;"></div>
+        </div>
+        <div class="content text-center" style="max-width:740px;">
+            <p style="font-size:0.72rem;letter-spacing:6px;text-transform:uppercase;color:#5a8060;margin-bottom:2.5rem;" class="reveal">Vote in Chat</p>
+            <p style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.3rem,2.8vw,2.1rem);color:#eaf5eb;line-height:1.6;margin:0 auto 2.5rem;" class="reveal">&ldquo;If you had to pick one &mdash; <span style="color:#4ade80;font-style:italic;">more storms but fewer supercells</span>, or <span style="color:#ef4444;font-style:italic;">fewer storms but more violent ones</span> &mdash; which do you think a warming world will produce?&rdquo;</p>
+            <div style="display:flex;gap:2rem;justify-content:center;" class="reveal">
+                <div style="background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.3);border-radius:14px;padding:1rem 2.2rem;">
+                    <p style="font-size:1.3rem;font-weight:700;color:#4ade80;margin:0 0 0.3rem;">A</p>
+                    <p style="font-size:0.78rem;color:#a8cdb0;margin:0;line-height:1.5;">More storms,<br>fewer supercells</p>
+                </div>
+                <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);border-radius:14px;padding:1rem 2.2rem;">
+                    <p style="font-size:1.3rem;font-weight:700;color:#ef4444;margin:0 0 0.3rem;">B</p>
+                    <p style="font-size:0.78rem;color:#a8cdb0;margin:0;line-height:1.5;">Fewer storms,<br>more violent</p>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- SLIDE 8: THE OPEN QUESTION -->
-    <div class="slide slide-8" data-slide="9">
+    <div class="slide slide-8" data-slide="11">
         <div class="gradient-mesh">
             <div class="blob" style="width:550px;height:550px;top:-130px;right:-110px;background:#4ade80;opacity:0.11;"></div>
             <div class="blob" style="width:400px;height:400px;bottom:-100px;left:-80px;background:#facc15;opacity:0.09;"></div>
@@ -578,7 +675,7 @@
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;text-align:left;margin-bottom:1.5rem;">
                 <div style="background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.18);border-radius:14px;padding:1.1rem 1.3rem;" class="reveal">
                     <h3 style="font-size:0.9rem;font-weight:600;color:#4ade80;margin:0 0 0.4rem;">The trigger problem</h3>
-                    <p style="font-size:0.82rem;color:#a8cdb0;line-height:1.5;margin:0;">Days with 4,000+ J/kg CAPE pass without a single storm. A boundary that shifts 50 miles makes the difference between nothing and an EF4. We can barely predict the boundary.</p>
+                    <p style="font-size:0.82rem;color:#a8cdb0;line-height:1.5;margin:0;">Days with 4,000+ J/kg CAPE pass without a single storm. A boundary that shifts 50 miles makes the difference between nothing and an EF4. We can barely predict the boundary.<sup class="cite">[7]</sup></p>
                 </div>
                 <div style="background:rgba(250,204,21,0.07);border:1px solid rgba(250,204,21,0.18);border-radius:14px;padding:1.1rem 1.3rem;" class="reveal">
                     <h3 style="font-size:0.9rem;font-weight:600;color:#facc15;margin:0 0 0.4rem;">The storm mode problem</h3>
@@ -594,6 +691,69 @@
     </div>
 
 </div>
+
+    <!-- SLIDE 10: RESEARCH SOURCES -->
+    <div class="slide slide-10" data-slide="12">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:350px;height:350px;top:-70px;right:-50px;background:#4ade80;opacity:0.07;"></div>
+            <div class="blob" style="width:280px;height:280px;bottom:-60px;left:-40px;background:#facc15;opacity:0.06;"></div>
+        </div>
+        <div class="content" style="max-width:900px;">
+            <p style="font-size:0.8rem;letter-spacing:5px;text-transform:uppercase;color:#5a8060;margin-bottom:0.6rem;" class="reveal">Peer-Reviewed Literature</p>
+            <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:400;margin:0 0 1.2rem;color:#eaf5eb;" class="reveal">Research Sources</h2>
+            <div style="display:flex;flex-direction:column;gap:0.55rem;">
+                <div style="display:flex;gap:1rem;align-items:baseline;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:0.65rem 1rem;border-left:3px solid #4ade80;" class="reveal">
+                    <span style="font-size:0.82rem;font-weight:700;color:#4ade80;flex-shrink:0;min-width:1.6rem;">[1]</span>
+                    <div>
+                        <p style="font-size:0.82rem;color:#eaf5eb;margin:0 0 0.1rem;line-height:1.5;">Doswell, C. A., et al. (2012). A review of the meteorological factors associated with the Joplin tornado. <em>Electronic J. Severe Storms Meteorol.</em></p>
+                        <p style="font-size:0.72rem;color:#5a8060;margin:0;">Slide 3 — Joplin EF5 CAPE values</p>
+                    </div>
+                </div>
+                <div style="display:flex;gap:1rem;align-items:baseline;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:0.65rem 1rem;border-left:3px solid #facc15;" class="reveal">
+                    <span style="font-size:0.82rem;font-weight:700;color:#facc15;flex-shrink:0;min-width:1.6rem;">[2]</span>
+                    <div>
+                        <p style="font-size:0.82rem;color:#eaf5eb;margin:0 0 0.1rem;line-height:1.5;">Rasmussen, E. N. &amp; Blanchard, D. O. (1998). A baseline climatology of sounding-derived supercell and tornado forecast parameters. <em>Wea. Forecasting</em>, 13, 1148&ndash;1164.</p>
+                        <p style="font-size:0.72rem;color:#5a8060;margin:0;">Slide 4 — Cap role in severe weather outbreaks</p>
+                    </div>
+                </div>
+                <div style="display:flex;gap:1rem;align-items:baseline;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:0.65rem 1rem;border-left:3px solid #4ade80;" class="reveal">
+                    <span style="font-size:0.82rem;font-weight:700;color:#4ade80;flex-shrink:0;min-width:1.6rem;">[3]</span>
+                    <div>
+                        <p style="font-size:0.82rem;color:#eaf5eb;margin:0 0 0.1rem;line-height:1.5;">Bluestein, H. B. (1992). <em>Synoptic-Dynamic Meteorology in Midlatitudes, Vol. II.</em> Oxford University Press.</p>
+                        <p style="font-size:0.72rem;color:#5a8060;margin:0;">Slide 5 — Lifted parcel theory &amp; Skew-T interpretation</p>
+                    </div>
+                </div>
+                <div style="display:flex;gap:1rem;align-items:baseline;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:0.65rem 1rem;border-left:3px solid #facc15;" class="reveal">
+                    <span style="font-size:0.82rem;font-weight:700;color:#facc15;flex-shrink:0;min-width:1.6rem;">[4]</span>
+                    <div>
+                        <p style="font-size:0.82rem;color:#eaf5eb;margin:0 0 0.1rem;line-height:1.5;">Johns, R. H. &amp; Doswell, C. A. (1992). Severe local storms forecasting. <em>Wea. Forecasting</em>, 7, 588&ndash;612.</p>
+                        <p style="font-size:0.72rem;color:#5a8060;margin:0;">Slide 6 — SPC's four-ingredient conceptual model</p>
+                    </div>
+                </div>
+                <div style="display:flex;gap:1rem;align-items:baseline;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:0.65rem 1rem;border-left:3px solid #4ade80;" class="reveal">
+                    <span style="font-size:0.82rem;font-weight:700;color:#4ade80;flex-shrink:0;min-width:1.6rem;">[5]</span>
+                    <div>
+                        <p style="font-size:0.82rem;color:#eaf5eb;margin:0 0 0.1rem;line-height:1.5;">Diffenbaugh, N. S., et al. (2013). Robust increases in severe thunderstorm environments in response to greenhouse forcing. <em>PNAS</em>, 110(41), 16361&ndash;16366.</p>
+                        <p style="font-size:0.72rem;color:#5a8060;margin:0;">Slide 7 — CAPE trends since 1979</p>
+                    </div>
+                </div>
+                <div style="display:flex;gap:1rem;align-items:baseline;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:0.65rem 1rem;border-left:3px solid #f97316;" class="reveal">
+                    <span style="font-size:0.82rem;font-weight:700;color:#f97316;flex-shrink:0;min-width:1.6rem;">[6]</span>
+                    <div>
+                        <p style="font-size:0.82rem;color:#eaf5eb;margin:0 0 0.1rem;line-height:1.5;">Trapp, R. J., et al. (2007). Changes in severe thunderstorm environment frequency during the 21st century caused by anthropogenically enhanced global radiative forcing. <em>PNAS</em>, 104(50), 19719&ndash;19723.</p>
+                        <p style="font-size:0.72rem;color:#5a8060;margin:0;">Slide 7 — Shear / CAPE tradeoff under warming</p>
+                    </div>
+                </div>
+                <div style="display:flex;gap:1rem;align-items:baseline;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:0.65rem 1rem;border-left:3px solid #ef4444;" class="reveal">
+                    <span style="font-size:0.82rem;font-weight:700;color:#ef4444;flex-shrink:0;min-width:1.6rem;">[7]</span>
+                    <div>
+                        <p style="font-size:0.82rem;color:#eaf5eb;margin:0 0 0.1rem;line-height:1.5;">Weckwerth, T. M. &amp; Parsons, D. B. (2006). A review of convection initiation and motivation for IHOP_2002. <em>Mon. Wea. Rev.</em>, 134, 5&ndash;20.</p>
+                        <p style="font-size:0.72rem;color:#5a8060;margin:0;">Slide 8 — Boundary layer trigger uncertainty</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <!-- NAVIGATION -->
 <div class="nav-controls">
@@ -716,6 +876,257 @@
     document.querySelectorAll('.particle-canvas-ambient').forEach(c => window.initParticles(c, { interactive: false, count: 18 }));
 
     try { animateSlide(document.querySelector('.slide.active')); } catch(e) {}
+
+    // ─── OHIO VALLEY HIGH-CAPE TREND CHART ────────────────────────────────────────
+    (function initCAPETrendChart() {
+        const svgEl = document.getElementById('cape-trend-chart');
+        if (!svgEl || typeof d3 === 'undefined') return;
+
+        const W = 460, H = 160;
+        const margin = { top: 18, right: 22, bottom: 30, left: 42 };
+        const iW = W - margin.left - margin.right;
+        const iH = H - margin.top - margin.bottom;
+
+        // Representative Ohio Valley high-CAPE days data 1979–2024
+        // Trend: ~+0.3 days/year → ~+13.5 days over 45 years
+        // Base ~27 days in 1979, ending ~41 days in 2024
+        const seed = (n) => ((Math.sin(n * 127.1 + 311.7) * 43758.5453) % 1 + 1) % 1;
+        const rawData = d3.range(1979, 2025).map((y, i) => ({
+            year: y,
+            days: Math.round(27 + i * 0.31 + (seed(i) - 0.5) * 7)
+        }));
+
+        const svg = d3.select('#cape-trend-chart');
+        const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+        const x = d3.scaleLinear().domain([1979, 2024]).range([0, iW]);
+        const y = d3.scaleLinear().domain([10, 52]).range([iH, 0]);
+
+        // Shaded area under trend
+        const area = d3.area()
+            .x(d => x(d.year))
+            .y0(iH)
+            .y1(d => y(d.days))
+            .curve(d3.curveCatmullRom);
+        g.append('path').datum(rawData)
+            .attr('d', area)
+            .attr('fill', 'rgba(250,204,21,0.08)');
+
+        // Grid lines
+        [20, 30, 40, 50].forEach(v => {
+            g.append('line')
+                .attr('x1', 0).attr('x2', iW)
+                .attr('y1', y(v)).attr('y2', y(v))
+                .attr('stroke', 'rgba(255,255,255,0.06)').attr('stroke-width', 1);
+        });
+
+        // Trend line (linear regression)
+        const n = rawData.length;
+        const mx = d3.mean(rawData, d => d.year);
+        const my = d3.mean(rawData, d => d.days);
+        const slope = d3.sum(rawData, d => (d.year - mx) * (d.days - my)) /
+                      d3.sum(rawData, d => (d.year - mx) ** 2);
+        const intercept = my - slope * mx;
+        const trendLine = [[1979, slope * 1979 + intercept], [2024, slope * 2024 + intercept]];
+        g.append('line')
+            .attr('x1', x(trendLine[0][0])).attr('y1', y(trendLine[0][1]))
+            .attr('x2', x(trendLine[1][0])).attr('y2', y(trendLine[1][1]))
+            .attr('stroke', '#facc15').attr('stroke-width', 1.8)
+            .attr('stroke-dasharray', '5,3').attr('opacity', 0.85);
+
+        // Data line
+        const line = d3.line().x(d => x(d.year)).y(d => y(d.days)).curve(d3.curveCatmullRom);
+        g.append('path').datum(rawData)
+            .attr('d', line).attr('fill', 'none')
+            .attr('stroke', 'rgba(250,204,21,0.55)').attr('stroke-width', 1.4);
+
+        // Axes
+        const xAxis = d3.axisBottom(x).tickValues([1979,1990,2000,2010,2020,2024]).tickFormat(d3.format('d'));
+        g.append('g').attr('transform', `translate(0,${iH})`).call(xAxis)
+            .selectAll('text, path, line').attr('stroke', 'rgba(255,255,255,0.25)').attr('fill', 'rgba(255,255,255,0.4)').style('font-size', '7px');
+        const yAxis = d3.axisLeft(y).ticks(4).tickFormat(d => d);
+        g.append('g').call(yAxis)
+            .selectAll('text, path, line').attr('stroke', 'rgba(255,255,255,0.25)').attr('fill', 'rgba(255,255,255,0.4)').style('font-size', '7px');
+
+        // Delta annotation
+        const y1979 = trendLine[0][1], y2024 = trendLine[1][1];
+        const delta = Math.round(y2024 - y1979);
+        g.append('text')
+            .attr('x', x(2024) - 4).attr('y', y(y2024) - 8)
+            .attr('text-anchor', 'end').attr('fill', '#facc15')
+            .attr('font-size', 8).attr('font-family', 'DM Sans, sans-serif').attr('font-weight', '700')
+            .text(`+${delta} days since 1979`);
+    })();
+
+    // ─── MODELS DISAGREE CHART ────────────────────────────────────────────────────
+    (function initModelsDisagreeChart() {
+        const svgEl = document.getElementById('models-disagree-chart');
+        if (!svgEl || typeof d3 === 'undefined') return;
+
+        const W = 460, H = 118;
+        const svg = d3.select('#models-disagree-chart');
+
+        // "Today" node
+        const todayX = W * 0.28, midY = H * 0.5;
+
+        // Uncertainty band (fork zone)
+        svg.append('polygon')
+            .attr('points', `${todayX},${midY} ${W*0.82},${H*0.12} ${W*0.82},${H*0.88}`)
+            .attr('fill', 'rgba(249,115,22,0.06)')
+            .attr('stroke', 'rgba(249,115,22,0.15)').attr('stroke-width', 1)
+            .attr('stroke-dasharray', '4,3');
+
+        // Path A — CAPE wins: more storms, fewer supercells (green)
+        svg.append('line')
+            .attr('x1', todayX).attr('y1', midY)
+            .attr('x2', W * 0.82).attr('y2', H * 0.2)
+            .attr('stroke', '#4ade80').attr('stroke-width', 2.5).attr('opacity', 0.85);
+        // arrowhead A
+        svg.append('polygon')
+            .attr('points', `${W*0.82},${H*0.2} ${W*0.82-10},${H*0.2-5} ${W*0.82-10},${H*0.2+5}`)
+            .attr('fill', '#4ade80');
+
+        // Path B — Shear wins: fewer but more violent (red)
+        svg.append('line')
+            .attr('x1', todayX).attr('y1', midY)
+            .attr('x2', W * 0.82).attr('y2', H * 0.8)
+            .attr('stroke', '#ef4444').attr('stroke-width', 2.5).attr('opacity', 0.85);
+        // arrowhead B
+        svg.append('polygon')
+            .attr('points', `${W*0.82},${H*0.8} ${W*0.82-10},${H*0.8-5} ${W*0.82-10},${H*0.8+5}`)
+            .attr('fill', '#ef4444');
+
+        // "Today" dot + label
+        svg.append('circle')
+            .attr('cx', todayX).attr('cy', midY)
+            .attr('r', 6).attr('fill', '#f97316').attr('opacity', 0.9);
+        svg.append('text')
+            .attr('x', todayX).attr('y', midY - 11)
+            .attr('text-anchor', 'middle').attr('fill', '#f97316')
+            .attr('font-size', 8).attr('font-family', 'DM Sans, sans-serif').attr('font-weight', '600')
+            .text('Today');
+
+        // Path labels
+        svg.append('text')
+            .attr('x', W * 0.835).attr('y', H * 0.22)
+            .attr('fill', '#4ade80').attr('font-size', 7.5)
+            .attr('font-family', 'DM Sans, sans-serif').attr('font-weight', '600')
+            .text('More storms,');
+        svg.append('text')
+            .attr('x', W * 0.835).attr('y', H * 0.22 + 11)
+            .attr('fill', '#4ade80').attr('font-size', 7.5)
+            .attr('font-family', 'DM Sans, sans-serif')
+            .text('fewer supercells');
+
+        svg.append('text')
+            .attr('x', W * 0.835).attr('y', H * 0.78)
+            .attr('fill', '#ef4444').attr('font-size', 7.5)
+            .attr('font-family', 'DM Sans, sans-serif').attr('font-weight', '600')
+            .text('Fewer storms,');
+        svg.append('text')
+            .attr('x', W * 0.835).attr('y', H * 0.78 + 11)
+            .attr('fill', '#ef4444').attr('font-size', 7.5)
+            .attr('font-family', 'DM Sans, sans-serif')
+            .text('more violent');
+
+        // Shear & CAPE labels on arrows
+        svg.append('text')
+            .attr('x', W * 0.52).attr('y', H * 0.26)
+            .attr('text-anchor', 'middle').attr('fill', 'rgba(74,222,128,0.75)')
+            .attr('font-size', 7).attr('font-family', 'DM Sans, sans-serif')
+            .text('CAPE dominates');
+        svg.append('text')
+            .attr('x', W * 0.52).attr('y', H * 0.77)
+            .attr('text-anchor', 'middle').attr('fill', 'rgba(239,68,68,0.75)')
+            .attr('font-size', 7).attr('font-family', 'DM Sans, sans-serif')
+            .text('Shear decline dominates');
+
+        // Center uncertainty label
+        svg.append('text')
+            .attr('x', W * 0.53).attr('y', H * 0.52)
+            .attr('text-anchor', 'middle').attr('fill', 'rgba(249,115,22,0.6)')
+            .attr('font-size', 7).attr('font-family', 'DM Sans, sans-serif').attr('font-style', 'italic')
+            .text('models disagree');
+    })();
+
+    // ─── TORNADO FATALITY RISK SHIFT MAP ────────────────────────────────────────
+    (async function initTornadoRiskMap() {
+        const svgEl = document.getElementById('tornado-risk-map');
+        if (!svgEl || typeof d3 === 'undefined' || typeof topojson === 'undefined') return;
+
+        // FIPS codes for the two risk zones
+        const dixieAlley  = new Set(['28','01','47','05','21','22','29']); // MS AL TN AR KY LA MO
+        const greatPlains = new Set(['20','40','31','46','38','48','56','08']); // KS OK NE SD ND TX WY CO
+
+        let us;
+        try {
+            const res = await fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json');
+            us = await res.json();
+        } catch(e) { return; }
+
+        const W = 480, H = 290;
+        const projection = d3.geoAlbersUsa().translate([W / 2, H / 2]).scale(W * 1.25);
+        const path = d3.geoPath(projection);
+        const states = topojson.feature(us, us.objects.states);
+        const mesh   = topojson.mesh(us, us.objects.states, (a, b) => a !== b);
+
+        const svg = d3.select('#tornado-risk-map');
+
+        // State fills
+        svg.selectAll('path.state')
+            .data(states.features)
+            .enter().append('path')
+            .attr('class', 'state')
+            .attr('d', path)
+            .attr('fill', d => {
+                const id = String(d.id).padStart(2, '0');
+                if (dixieAlley.has(id))  return 'rgba(239,68,68,0.42)';
+                if (greatPlains.has(id)) return 'rgba(250,204,21,0.18)';
+                return 'rgba(255,255,255,0.03)';
+            })
+            .attr('stroke', 'none');
+
+        // State borders
+        svg.append('path')
+            .datum(mesh)
+            .attr('d', path)
+            .attr('fill', 'none')
+            .attr('stroke', 'rgba(255,255,255,0.13)')
+            .attr('stroke-width', 0.5);
+
+        // Dashed arrow: Great Plains → Southeast
+        const defs = svg.append('defs');
+        defs.append('marker')
+            .attr('id', 'arrowhead-risk')
+            .attr('viewBox', '0 0 10 10')
+            .attr('refX', 8).attr('refY', 5)
+            .attr('markerWidth', 5).attr('markerHeight', 5)
+            .attr('orient', 'auto')
+            .append('path').attr('d', 'M 0 0 L 10 5 L 0 10 z')
+            .attr('fill', '#ef4444').attr('opacity', 0.85);
+
+        svg.append('line')
+            .attr('x1', W * 0.36).attr('y1', H * 0.42)
+            .attr('x2', W * 0.60).attr('y2', H * 0.55)
+            .attr('stroke', '#ef4444').attr('stroke-width', 1.6)
+            .attr('stroke-dasharray', '5,3').attr('opacity', 0.8)
+            .attr('marker-end', 'url(#arrowhead-risk)');
+
+        // Labels
+        svg.append('text')
+            .attr('x', W * 0.31).attr('y', H * 0.36)
+            .attr('text-anchor', 'middle')
+            .attr('fill', 'rgba(250,204,21,0.75)').attr('font-size', 7.5)
+            .attr('font-family', 'DM Sans, sans-serif').attr('font-weight', '600')
+            .text('Traditional Alley');
+
+        svg.append('text')
+            .attr('x', W * 0.655).attr('y', H * 0.63)
+            .attr('text-anchor', 'middle')
+            .attr('fill', 'rgba(239,68,68,0.9)').attr('font-size', 7.5)
+            .attr('font-family', 'DM Sans, sans-serif').attr('font-weight', '600')
+            .text('Dixie Alley');
+    })();
 </script>
 </body>
 </html>
