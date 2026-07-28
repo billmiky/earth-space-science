@@ -23,8 +23,11 @@ book:
   search: true
   
   sidebar:
-    style: docked
+    style: floating
     background: light
+    collapse-level: 1
+  navbar:
+    pinned: true
   
   chapters:
     - index.qmd
@@ -97,6 +100,8 @@ format:
     css: 
       - styles.css
       - custom.css
+    include-in-header:
+      - meta-viewport.html
     include-after-body: earth-toc.html
     toc: false
     toc-depth: 3

@@ -680,3 +680,73 @@ pre {
     grid-template-columns: [screen-start] 1.5em [screen-start-inset page-start page-start-inset body-start-outset body-start body-content-start] minmax(500px, calc(1000px - 3em)) [body-content-end] 1.5em [body-end body-end-outset page-end-inset page-end screen-end] !important;
   }
 }
+
+/* ================================================================= */
+/* RESPONSIVE IFRAME CONTAINER                                         */
+/* ================================================================= */
+
+.responsive-iframe-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  overflow: hidden;
+  margin: 1rem 0;
+}
+
+.responsive-iframe-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ================================================================= */
+/* MOBILE RESPONSIVENESS — ≤768px (tablets & phones)                   */
+/* ================================================================= */
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 30px 20px;
+  }
+  .hero-section h1 {
+    font-size: 1.8em !important;
+  }
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+  .interactive-quiz {
+    padding: 16px;
+  }
+  .quiz-question {
+    padding: 14px;
+  }
+  #float-toc-btn {
+    top: 68px;
+    left: 10px;
+    width: 44px;
+    height: 44px;
+  }
+  iframe,
+  .interactive-container {
+    max-width: 100%;
+  }
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+/* ================================================================= */
+/* MOBILE RESPONSIVENESS — ≤480px (small phones)                       */
+/* ================================================================= */
+
+@media (max-width: 480px) {
+  body {
+    font-size: 15px;
+  }
+  .hero-section h1 {
+    font-size: 1.5em !important;
+  }
+}
