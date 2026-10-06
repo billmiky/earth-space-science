@@ -1,9 +1,31 @@
-<div id="float-toc-btn" onclick="window.floatTocToggle()" role="button" aria-label="Toggle book navigation" title="Toggle book navigation">🌍</div>
+<div id="float-toc-btn" onclick="window.floatTocToggle()" role="button" tabindex="0" aria-label="Toggle book navigation" title="Toggle book navigation">🌍</div>
 <script>
 (function() {
+  var btn = document.getElementById('float-toc-btn');
+
   window.floatTocToggle = function() {
+    // Below 992px Quarto's sidebar is a Bootstrap collapse, so delegate to its own toggle
+    if (window.matchMedia('(max-width: 991.98px)').matches) {
+      var quartoToggle = document.querySelector('.quarto-btn-toggle');
+      if (quartoToggle) {
+        quartoToggle.click();
+        var sidebar = document.getElementById('quarto-sidebar');
+        // Bootstrap updates the collapse state asynchronously
+        setTimeout(function() {
+          btn.classList.toggle('toc-open', !!sidebar && sidebar.classList.contains('show'));
+        }, 400);
+        return;
+      }
+    }
     var isOpen = document.body.classList.toggle('sidebar-open');
-    document.getElementById('float-toc-btn').classList.toggle('toc-open', isOpen);
+    btn.classList.toggle('toc-open', isOpen);
   };
+
+  btn.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      window.floatTocToggle();
+    }
+  });
 })();
 </script>
