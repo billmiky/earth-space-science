@@ -690,7 +690,7 @@ buildQuiz("nucleosynthesis-quiz", "⚛️ Check Your Understanding — Nucleosyn
 
 # End-of-Chapter Quiz
 
-Based on **A Star's Life** (Unit 1 Mid-Unit Formative Task). Use the tables and diagrams in each question.
+**Study guide for the Unit 1 Mid-Unit Task.** These practice questions use *different* stars and data than the task, but build the same skills: reading the H-R diagram, the life cycle model, and data tables. Pick an answer to see why.
 
 ```{ojs}
 //| echo: false
@@ -700,30 +700,28 @@ quizStimuli = {
     <tbody>${rows.map(r => `<tr>${r.map((c, i) => `<td style="border:1px solid #c7d2fe;padding:6px 8px;text-align:center;${i === 0 ? "font-weight:700;background:#f8f9ff;" : ""}">${c}</td>`).join("")}</tr>`).join("")}</tbody>
   </table></div>`;
 
-  const hr = () => {
+  const hr = (stars) => {
     const W = 360, H = 250, L = 46, T = 14, pw = W - L - 12, ph = H - T - 40;
     const x = t => L + (Math.log10(40000) - Math.log10(t)) / (Math.log10(40000) - Math.log10(2500)) * pw;
     const y = l => T + (5 - Math.log10(l)) / 9 * ph;
-    const ell = (t, l, rx, ry, rot, label, color) => {
+    const ell = (t, l, rx, ry, rot, label, color, ly) => {
       const cx = x(t), cy = y(l);
       return `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" transform="rotate(${rot} ${cx} ${cy})" fill="${color}" fill-opacity=".15" stroke="${color}" stroke-width="1.2"/>
-        <text x="${cx}" y="${cy + 3}" font-size="9" text-anchor="middle" fill="#1e1b4b">${label}</text>`;
+        <text x="${cx}" y="${cy + ly}" font-size="9" text-anchor="middle" fill="${color}" font-weight="700">${label}</text>`;
     };
     const ms = [[30000,1e5],[20000,1e4],[10000,40],[5800,1],[4500,0.2],[3000,0.003]].map(([t, l]) => `${x(t)},${y(l)}`).join(" ");
     const star = (t, l, name, dx, dy, anchor) => `<circle cx="${x(t)}" cy="${y(l)}" r="5" fill="#f59e0b" stroke="#1e1b4b" stroke-width="1.2"/>
       <text x="${x(t) + dx}" y="${y(l) + dy}" font-size="9.5" font-weight="700" text-anchor="${anchor}" fill="#1e1b4b">${name}</text>`;
     const xt = [40000, 20000, 10000, 5000, 2500].map(t => `<line x1="${x(t)}" x2="${x(t)}" y1="${T + ph}" y2="${T + ph + 4}" stroke="#334155"/><text x="${x(t)}" y="${T + ph + 14}" font-size="9" text-anchor="middle" fill="#334155">${t.toLocaleString()}</text>`).join("");
     const yt = [1e4, 100, 1, 0.01, 0.0001].map(l => `<line x1="${L - 4}" x2="${L}" y1="${y(l)}" y2="${y(l)}" stroke="#334155"/><text x="${L - 7}" y="${y(l) + 3}" font-size="9" text-anchor="end" fill="#334155">${l}</text>`).join("");
-    return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;max-width:520px;display:block;margin:auto;" role="img" aria-label="Hertzsprung-Russell diagram showing the main sequence curve, giants, supergiants and white dwarfs, with the Sun, Betelgeuse and Proxima Centauri plotted.">
+    return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;max-width:520px;display:block;margin:auto;" role="img" aria-label="Hertzsprung-Russell diagram showing the main sequence curve, giants, supergiants and white dwarfs, with the stars in the question plotted as labelled dots.">
       <rect x="${L}" y="${T}" width="${pw}" height="${ph}" fill="#fff" stroke="#334155"/>
-      ${ell(6000, 2e4, 80, 20, 0, "Supergiants", "#f97316")}
-      ${ell(4500, 200, 40, 17, 0, "Giants", "#ef4444")}
-      ${ell(10000, 0.003, 55, 14, 28, "White Dwarfs", "#64748b")}
+      ${ell(6000, 2e4, 80, 20, 0, "Supergiants", "#f97316", 3)}
+      ${ell(4500, 200, 40, 17, 0, "Giants", "#ef4444", 29)}
+      ${ell(14000, 0.015, 100, 22, 18, "White Dwarfs", "#64748b", 38)}
       <polyline points="${ms}" fill="none" stroke="#3b82f6" stroke-width="2.5"/>
       <text x="${x(16000)}" y="${y(900)}" font-size="9" fill="#3b82f6" font-weight="700">Main Sequence</text>
-      ${star(5800, 1, "Sun", 8, -6, "start")}
-      ${star(3500, 14000, "Betelgeuse", -8, 14, "end")}
-      ${star(3000, 0.0017, "Proxima Centauri", -8, 14, "end")}
+      ${stars.map(([t, l, n, dx, dy, a]) => star(t, l, n, dx, dy, a)).join("")}
       ${xt}${yt}
       <text x="${L + pw / 2}" y="${H - 4}" font-size="10" text-anchor="middle" fill="#334155">Temperature (K)</text>
       <text transform="translate(11 ${T + ph / 2}) rotate(-90)" font-size="10" text-anchor="middle" fill="#334155">Luminosity (Sun = 1)</text>
@@ -804,154 +802,150 @@ function buildStarQuiz(id, title, questions) {
 
 ```{ojs}
 //| echo: false
-buildStarQuiz("star-summative-quiz", "⭐ Summative Quiz — A Star's Life", [
+buildStarQuiz("star-summative-quiz", "⭐ Study Guide Quiz — Star Life Cycles", [
   {
-    q: "Use the H-R diagram to decide which row correctly gives the life stage of the Sun, Betelgeuse, and Proxima Centauri.",
+    q: "Use the H-R diagram to decide which row correctly gives the life stage of each star.",
     stimulus: quizStimuli.tbl(
-      ["Star", "Mass (Suns)", "Color", "Surface temp.", "Luminosity (Suns)"],
-      [["Sun", "1", "Yellow", "5,300–6,000 K", "1"],
-       ["Betelgeuse", "16.5–19", "Orange-red", "3,500 K", "14,000"],
-       ["Proxima Centauri", "0.12", "Red", "3,000 K", "0.0017"]]
-    ) + quizStimuli.hr(),
+      ["Star", "Surface temp.", "Luminosity (Suns)"],
+      [["Sirius A", "9,900 K", "25"], ["Aldebaran", "3,900 K", "500"], ["Sirius B", "25,000 K", "0.03"]]
+    ) + quizStimuli.hr([
+      [9900, 25, "Sirius A", 8, -6, "start"],
+      [3900, 500, "Aldebaran", 8, -8, "start"],
+      [25000, 0.03, "Sirius B", 8, 14, "start"]
+    ]),
     options: [
-      "Sun: Giant · Betelgeuse: Supergiant · Proxima Centauri: White Dwarf",
-      "Sun: Main Sequence · Betelgeuse: Supergiant · Proxima Centauri: White Dwarf",
-      "Sun: Main Sequence · Betelgeuse: Supergiant · Proxima Centauri: Main Sequence",
-      "Sun: Supergiant · Betelgeuse: Main Sequence · Proxima Centauri: Giant"
-    ],
-    correct: 2,
-    explanation: "The Sun and Proxima Centauri both plot on the Main Sequence curve (Proxima near the cool, dim end). Betelgeuse is cool but extremely luminous (14,000 Suns), so it sits in the Supergiant region at the top right. Proxima is too cool and sits on the main-sequence curve, not in the White Dwarf band."
-  },
-  {
-    q: "Study the life cycle model. What do the life cycles of the Sun, Betelgeuse, and Proxima Centauri have in common?",
-    stimulus: quizStimuli.path(),
-    options: [
-      "All three end as black holes",
-      "All three formed from a gas and dust cloud, became protostars, and then main sequence stars",
-      "All three will become red supergiants and explode as supernovae",
-      "All three skip the protostar stage because they are so massive"
-    ],
-    correct: 1,
-    explanation: "Every star starts the same way: gas and dust cloud → protostar → main sequence star. The paths only split after the main sequence."
-  },
-  {
-    q: "The Sun and Proxima Centauri follow the same pathway, but Betelgeuse follows a different one. What causes stars to split onto different pathways?",
-    stimulus: quizStimuli.path(),
-    options: [
-      "Their distance from Earth",
-      "Their mass — Betelgeuse has about 16–19 times the Sun's mass",
-      "Their color — red stars always become supernovae",
-      "Their age — older stars always become supergiants"
-    ],
-    correct: 1,
-    explanation: "Mass decides the pathway. Small and medium stars (the Sun at 1 solar mass, Proxima at 0.12) become red giants, then white dwarfs. Large stars like Betelgeuse become red supergiants and end in a supernova."
-  },
-  {
-    q: "The Sun has been releasing energy for about 5 billion years and is predicted to keep going for about 5 billion more. Which process powers the Sun's core, and what is the best evidence?",
-    stimulus: quizStimuli.tbl(
-      ["Type of reaction", "Reaction", "Time the Sun could release energy"],
-      [["Chemical", "2H₂ + O₂ → 2H₂O + energy", "50,000 years"],
-       ["Nuclear", "Hydrogen + Hydrogen → Helium + energy", "10 billion years"]]
-    ),
-    options: [
-      "Chemical — the reaction releases energy and makes water",
-      "Chemical — 50,000 years is long enough for the Sun to shine",
-      "Nuclear — it can supply energy for about 10 billion years, matching the Sun's lifespan",
-      "Nuclear — it lasts only 50,000 years, so it must be refilled"
-    ],
-    correct: 2,
-    explanation: "A chemical reaction could power the Sun for only 50,000 years — far shorter than the 5 billion years it has already shone. Nuclear fusion of hydrogen into helium lasts about 10 billion years, so it is the core's energy source."
-  },
-  {
-    q: "Based on Table 3, which row correctly lists the elements being formed in each star right now?",
-    stimulus: quizStimuli.tbl(
-      ["Stage", "Core temp.", "Elements formed"],
-      [["Yellow–Red Main Sequence", "1.5 × 10⁷ K", "He"],
-       ["Red Giant", "2 × 10⁸ K", "C, O, Ne, Mg"],
-       ["Red Supergiant", "7 × 10⁸ K", "Na, Si, S, Ar, Ca"],
-       ["Massive Red Supergiant", "3 × 10⁹ K", "Fe, Ni"],
-       ["Supernova", "1 × 10¹¹ K", "Elements with atomic number &gt; 28"]]
-    ),
-    options: [
-      "Sun: He · Betelgeuse: C, O, Ne, Mg · Proxima Centauri: He",
-      "Sun: C, O, Ne, Mg · Betelgeuse: Fe, Ni · Proxima Centauri: He",
-      "Sun: He · Betelgeuse: Fe, Ni · Proxima Centauri: C, O, Ne, Mg",
-      "Sun: He · Betelgeuse: Na, Si, S, Ar, Ca · Proxima Centauri: He"
+      "Sirius A: Giant · Aldebaran: Main Sequence · Sirius B: White Dwarf",
+      "Sirius A: Main Sequence · Aldebaran: Supergiant · Sirius B: Main Sequence",
+      "Sirius A: White Dwarf · Aldebaran: Giant · Sirius B: Main Sequence",
+      "Sirius A: Main Sequence · Aldebaran: Giant · Sirius B: White Dwarf"
     ],
     correct: 3,
-    explanation: "The Sun and Proxima Centauri are main-sequence stars, so they form He. Betelgeuse is a red supergiant, so it forms Na, Si, S, Ar, and Ca."
+    explanation: "Match each star's temperature and luminosity to a region. Sirius A falls on the main-sequence curve. Aldebaran is cool but far brighter than the Sun, so it plots in the Giants region. Sirius B is hot but very dim, so it plots below the main sequence with the White Dwarfs."
   },
   {
-    q: "Which of the three stars will produce elements heavier than iron during its lifetime, and why?",
-    stimulus: quizStimuli.path(),
+    q: "A 0.5-solar-mass star and a 25-solar-mass star both form from a gas and dust cloud. At what point do their life cycles first follow different pathways?",
     options: [
-      "The Sun — it has been fusing for 5 billion years, long enough to build all elements",
-      "Proxima Centauri — it lives the longest, so it has the most time",
-      "All three — fusion in any star's core makes every element",
-      "Betelgeuse — it is the only one massive enough to end in a supernova, where elements heavier than iron form"
-    ],
-    correct: 3,
-    explanation: "Table 3 shows that elements with atomic number above 28 form only in a supernova. Only a large star like Betelgeuse follows the pathway to a supernova. The Sun and Proxima Centauri never get hot enough."
-  },
-  {
-    q: "A spectrum of an unknown star has dark absorption lines that match hydrogen, helium, sodium, magnesium, calcium, <b>and iron</b>. Which argument is supported by the evidence?",
-    stimulus: quizStimuli.tbl(
-      ["Star", "Current stage", "Elements it forms now"],
-      [["Sun", "Main Sequence", "He"],
-       ["Betelgeuse", "Red Supergiant", "Na, Si, S, Ar, Ca"],
-       ["Proxima Centauri", "Main Sequence", "He"]]
-    ),
-    options: [
-      "Claim: It is Betelgeuse. Reasoning: red supergiants are massive enough to form iron right now.",
-      "Claim: It could be the Sun or Betelgeuse. Reasoning: both fuse, so they make the same elements at the same stage.",
-      "Claim: It is none of these three stars. Reasoning: iron is present, but the Sun and Proxima are early in their lives and Betelgeuse is not yet forming anything heavier than calcium.",
-      "Claim: It could be the Sun or Proxima Centauri. Reasoning: they make hydrogen and helium, so iron lines can be ignored."
+      "Right away, as soon as the cloud begins to collapse",
+      "As soon as the protostar forms",
+      "After the main sequence stage — mass decides what comes next",
+      "Only at the very end, when each star dies"
     ],
     correct: 2,
-    explanation: "Iron lines mean the star has reached a later, hotter stage than any of the three. Stars at different stages form different elements, and the iron evidence cannot be ignored."
+    explanation: "All stars share the early stages. Once a star leaves the main sequence, its mass decides the pathway: small and medium stars swell into red giants, while large stars become red supergiants."
   },
   {
-    q: "Complete the explanation using Table 4: The more massive a star is, the ____(A)____ its lifespan. The Sun lasts about ____(B)____ years, Betelgeuse about ____(C)____ years, and Proxima Centauri about ____(D)____ years.",
-    stimulus: quizStimuli.tbl(
-      ["Mass (Suns)", "Lifespan (years)"],
-      [["0.1", "1000s of billions"], ["1", "10 billion"], ["1.5", "3 billion"], ["3", "370 million"],
-       ["10", "32 million"], ["30", "11 million"], ["60", "3 million"]]
-    ),
-    options: [
-      "(A) longer · (B) 11 million · (C) 1000s of billions · (D) 3–10 billion",
-      "(A) shorter · (B) 10 billion · (C) between 11 and 32 million · (D) 1000s of billions",
-      "(A) longer · (B) 32 million · (C) 370 million · (D) 3 million",
-      "(A) shorter · (B) 3–11 million · (C) 60 million · (D) 10 billion"
-    ],
-    correct: 1,
-    explanation: "Table 4 shows lifespan falls as mass rises. The Sun (1 solar mass) lasts about 10 billion years. Betelgeuse (16.5–19 solar masses) falls between the 10- and 30-solar-mass rows, so 11–32 million years. Proxima (0.12 solar masses) is near the 0.1 row, so thousands of billions of years."
-  },
-  {
-    q: "A newly discovered star has 1.5 solar masses. Compared with the Sun, what does Table 4 predict, and what pathway will it follow?",
-    stimulus: quizStimuli.tbl(
-      ["Mass (Suns)", "Lifespan (years)"],
-      [["1", "10 billion"], ["1.5", "3 billion"], ["3", "370 million"], ["10", "32 million"]]
-    ) + quizStimuli.path(),
-    options: [
-      "A longer life than the Sun; it ends as a supernova",
-      "A shorter life (about 3 billion years); it follows the Sun's pathway to a red giant and white dwarf",
-      "The same life as the Sun, since both are main sequence stars",
-      "A shorter life (about 3 billion years); it ends as a neutron star"
-    ],
-    correct: 1,
-    explanation: "More mass means a shorter life: about 3 billion years versus the Sun's 10 billion. At 1.5 solar masses it is still a small-to-medium star, so it becomes a red giant, then a white dwarf. Only far larger stars end in a supernova."
-  },
-  {
-    q: "Use the life cycle model. Betelgeuse is a red supergiant today. Which row correctly shows what comes next for the Sun and for Betelgeuse?",
+    q: "Using the life cycle model, which row shows what is left after the final stages of Star M (0.8 solar masses), Star N (25 solar masses), and Star O (2 solar masses)?",
     stimulus: quizStimuli.path(),
     options: [
-      "Sun: red giant → white dwarf · Betelgeuse: supernova → neutron star or black hole",
-      "Sun: supernova → black hole · Betelgeuse: red giant → white dwarf",
-      "Sun: red supergiant → supernova · Betelgeuse: red giant → white dwarf",
-      "Sun: protostar → main sequence · Betelgeuse: red giant → black dwarf"
+      "M: neutron star · N: white dwarf · O: black hole",
+      "M: white dwarf · N: neutron star or black hole · O: white dwarf",
+      "M: white dwarf · N: white dwarf · O: white dwarf",
+      "M: black hole · N: neutron star · O: neutron star"
+    ],
+    correct: 1,
+    explanation: "Sort each star by size first. M and O are small-to-medium stars: red giant, then white dwarf. N is a large star: red supergiant, supernova, then a neutron star or black hole."
+  },
+  {
+    q: "Fossils show that sunlight has supported life on Earth for over 3 billion years. Use the table to decide which process best explains the Sun's energy.",
+    stimulus: quizStimuli.tbl(
+      ["Possible energy source", "How long it could power the Sun"],
+      [["Burning fuel (chemical)", "about 10,000 years"],
+       ["Gravitational contraction", "about 30 million years"],
+       ["Hydrogen fusion (nuclear)", "about 10 billion years"]]
+    ),
+    options: [
+      "Burning fuel, because chemical reactions are the most familiar on Earth",
+      "Gravitational contraction, because 30 million years is a long time",
+      "Hydrogen fusion, because it is the only source that lasts longer than 3 billion years",
+      "Hydrogen fusion, because it lasts the shortest time"
+    ],
+    correct: 2,
+    explanation: "Compare each time span to the evidence (over 3 billion years). Only hydrogen fusion — turning hydrogen into helium and releasing energy — can last that long."
+  },
+  {
+    q: "A star's core is observed making carbon, oxygen, neon, and magnesium. Which statement is supported by the table?",
+    stimulus: quizStimuli.tbl(
+      ["Stage", "Elements formed in the core"],
+      [["Main Sequence", "He"],
+       ["Red Giant", "C, O, Ne, Mg"],
+       ["Red Supergiant", "Na, Si, S, Ar, Ca"],
+       ["Massive Red Supergiant", "Fe, Ni"]]
+    ),
+    options: [
+      "The star is a red giant; a main-sequence star only forms helium",
+      "The star is on the main sequence, like most stars",
+      "The star is a massive red supergiant, since it is forming heavy elements",
+      "The star has already exploded as a supernova"
     ],
     correct: 0,
-    explanation: "The Sun (small/medium) will expand into a red giant, then shrink to a white dwarf. Betelgeuse (large) will explode as a supernova, leaving a neutron star or a black hole."
+    explanation: "Match the elements to the stage. C, O, Ne, and Mg appear in the Red Giant row. Main-sequence stars form only helium, and the heavier Fe and Ni come later."
+  },
+  {
+    q: "A gold ring is made of atoms with atomic number 79 (heavier than iron). Which explanation best accounts for where those atoms were made?",
+    options: [
+      "Fusion in the core of the Sun",
+      "Fusion in the core of any main-sequence star",
+      "Fusion in a red giant, like the Sun will become",
+      "A supernova explosion of a massive star, long before the Sun formed"
+    ],
+    correct: 3,
+    explanation: "Fusion in star cores builds elements only up to iron. Elements heavier than iron form when certain massive stars explode as supernovae. The ring's atoms came from stars that died before our solar system formed."
+  },
+  {
+    q: "The top three rows show the lab spectra of three elements. The bottom row shows the spectrum of an unknown star. Which elements does the star contain?",
+    stimulus: (() => {
+      const refs = [["Hydrogen", [20, 55, 80]], ["Sodium", [40, 43, 70]], ["Calcium", [10, 30, 65]], ["Unknown star", [10, 20, 30, 55, 65, 80]]];
+      const bars = refs.map(([name, lines], i) => `<text x="0" y="${i * 34 + 18}" font-size="10" font-weight="700" fill="#1e1b4b">${name}</text>
+        <rect x="80" y="${i * 34 + 4}" width="260" height="22" fill="url(#spec)" stroke="#334155"/>
+        ${lines.map(l => `<line x1="${80 + l * 2.6}" x2="${80 + l * 2.6}" y1="${i * 34 + 4}" y2="${i * 34 + 26}" stroke="#000" stroke-width="2.5"/>`).join("")}`).join("");
+      return `<svg viewBox="0 0 350 140" style="width:100%;height:auto;max-width:480px;display:block;margin:auto;" role="img" aria-label="Spectra with dark absorption lines for hydrogen, sodium, calcium and an unknown star. The unknown star's lines match the hydrogen lines and the calcium lines.">
+        <defs><linearGradient id="spec" x1="0" x2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset=".25" stop-color="#3b82f6"/><stop offset=".5" stop-color="#22c55e"/><stop offset=".75" stop-color="#facc15"/><stop offset="1" stop-color="#ef4444"/></linearGradient></defs>${bars}</svg>`;
+    })(),
+    options: [
+      "Hydrogen only",
+      "Hydrogen and calcium",
+      "Sodium and calcium",
+      "Hydrogen, sodium, and calcium"
+    ],
+    correct: 1,
+    explanation: "Each element absorbs light at its own set of wavelengths, like a fingerprint. Every dark line in the unknown spectrum must be matched to a reference. The lines match hydrogen's and calcium's, and none match sodium's."
+  },
+  {
+    q: "Star X has 20 solar masses, Star Y has 0.5 solar masses, and Star Z has 5 solar masses. Which list orders their lifespans from shortest to longest?",
+    stimulus: quizStimuli.tbl(
+      ["Mass (Suns)", "Approximate lifespan"],
+      [["0.5", "55 billion years"], ["2", "1.8 billion years"], ["5", "180 million years"], ["20", "6 million years"]]
+    ),
+    options: [
+      "X, Z, Y",
+      "Y, Z, X",
+      "Z, X, Y",
+      "X, Y, Z"
+    ],
+    correct: 0,
+    explanation: "Find each mass in the table. The most massive star (X) has the shortest life: it burns through its fuel much faster, even though it has more of it. The least massive star (Y) lives the longest."
+  },
+  {
+    q: "Star W has a cool surface temperature of 3,200 K, but it is 60,000 times more luminous than the Sun. What does this combination tell you about Star W?",
+    options: [
+      "It is very small, like a white dwarf",
+      "It is a main-sequence star, because cool stars are always bright",
+      "Its temperature reading must be wrong",
+      "It must be enormous — a cool surface only gives off this much light if it is very large"
+    ],
+    correct: 3,
+    explanation: "Luminosity depends on both temperature and surface area. Each patch of a 3,200 K surface is dim, so Star W must have an enormous surface to be so bright. On the H-R diagram that places it in the upper right, with the supergiants."
+  },
+  {
+    q: "The Sun's surface is about 5,800 K, but its core is about 15,000,000 K. What best explains this difference?",
+    options: [
+      "The core is closer to Earth, so it is hotter",
+      "Fusion happens at the surface, which loses heat to space",
+      "Fusion releases energy in the core, and that energy spreads outward and cools before leaving the surface as radiation",
+      "The core is burning a chemical fuel that gets hotter than the surface"
+    ],
+    correct: 2,
+    explanation: "Nuclear fusion takes place in the core, where the temperature and pressure are extreme. The energy flows outward to the surface and is radiated into space, and some of it reaches Earth."
   }
 ])
 ```
