@@ -3,6 +3,7 @@
 import { el } from "../dom.js";
 import { PLANET_KEYS, PLANETS, planetHelioEcliptic, eclipticToEquatorial, altAz, apparentMagnitude, sunGeocentricEcliptic } from "../astronomy.js";
 import { fmt, dateToJulian } from "../units.js";
+import { dataTypeBadge } from "../panel-ui.js";
 
 export const meta = { key: "observing", label: "F · Tonight's Observing Targets" };
 
@@ -150,6 +151,7 @@ export function mount(container, ctx) {
 
   function drawNote(sunAlt) {
     note.innerHTML = "";
+    note.appendChild(el("div", { class: "metric-tags" }, [dataTypeBadge("calculated")]));
     const twilight = sunAlt >= -6;
     note.appendChild(el("p", { class: "panel-note-text", html:
       "Positions are <strong>calculated</strong> observer ephemerides (Meeus), not live telescope views. " +

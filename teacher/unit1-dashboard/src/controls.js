@@ -188,6 +188,10 @@ export class Toolbar {
       opt.disabled = opt.value === s.panel;
     }
 
+    // Restrained motion (orbit sweep, pulses, starfield) is disabled while
+    // frozen, in addition to the prefers-reduced-motion CSS rule.
+    document.body.classList.toggle("is-frozen", !!s.frozen);
+
     if (s.frozen) {
       this.freezeBtn.textContent = "▶ Resume";
       this.freezeBtn.classList.add("frozen");

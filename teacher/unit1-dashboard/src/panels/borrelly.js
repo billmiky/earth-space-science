@@ -4,11 +4,21 @@ import { el, provenanceBar } from "../dom.js";
 import { loadBorrellyElements } from "../adapters/borrelly.js";
 import { keplerPropagate, cometOrbitPath, planetOrbitPath, planetHelioEcliptic } from "../astronomy.js";
 import { fmt, dateToJulian, julianToDate } from "../units.js";
+import { metricCard, markUpdated, imageSlot, predictReveal } from "../panel-ui.js";
 
 export const meta = { key: "borrelly", label: "C · Earth vs. Comet Borrelly" };
 
 export function mount(container, ctx) {
   const root = el("div", { class: "panel borrelly-panel" });
+
+  root.appendChild(imageSlot({
+    src: "https://commons.wikimedia.org/wiki/Special:FilePath/Comet_Borrelly_Nucleus.jpg?width=640",
+    alt: "Close-up grayscale image of the elongated, dark nucleus of Comet 19P/Borrelly taken by the Deep Space 1 spacecraft.",
+    caption: "Comet 19P/Borrelly's nucleus, imaged by Deep Space 1",
+    credit: "NASA/JPL-Caltech",
+    creditHref: "https://science.nasa.gov/asset/webb/nucleus-of-comet-19pborrelly-deep-space-1/",
+    fallbackText: "Spacecraft image unavailable right now — the orbit map below still reflects real Borrelly orbital data.",
+  }));
 
   // Date control (synchronized between map and graph). The slider uses a
   // numeric day offset so it works reliably across browsers.
@@ -34,8 +44,29 @@ export function mount(container, ctx) {
   graphWrap.appendChild(graphCanvas);
   root.appendChild(graphWrap);
 
-  const readout = el("div", { class: "ro-list" });
+  const readout = el("div", { class: "metric-cards" });
   root.appendChild(readout);
+
+  const predictWidget = predictReveal({
+    question: "Drag the date slider about 6 months forward from today. Do you predict Borrelly's distance from the Sun gets smaller, bigger, or stays about the same?",
+    options: ["Smaller", "About the same", "Bigger"],
+    getActual: () => {
+      const jdNow = selectedJd();
+      const pNow = keplerPropagate(elements, jdNow);
+      const rNow = Math.hypot(pNow.x, pNow.y, pNow.z);
+      const jdLater = jdNow + 180;
+      const pLater = keplerPropagate(elements, jdLater);
+      const rLater = Math.hypot(pLater.x, pLater.y, pLater.z);
+      const delta = (rLater - rNow) / rNow;
+      const label = Math.abs(delta) < 0.03
+        ? "About the same — distance barely changes in that window."
+        : (delta < 0 ? "Smaller — Borrelly moves closer to the Sun over the next 6 months." : "Bigger — Borrelly moves farther from the Sun over the next 6 months.");
+      const optionIndex = Math.abs(delta) < 0.03 ? 1 : (delta < 0 ? 0 : 2);
+      return { label, optionIndex };
+    },
+    explain: () => "Comets follow the same orbit again and again, so where they are now predicts where they'll be months from now.",
+  });
+  root.appendChild(predictWidget);
 
   const note = el("div", { class: "panel-note" });
   root.appendChild(note);
@@ -45,6 +76,7 @@ export function mount(container, ctx) {
   let elements = null;
   let metaInfo = null;
   let status = "loading";
+  let lastDistance = null;
 
   async function load() {
     const result = await loadBorrellyElements(ctx.store.state);
@@ -200,18 +232,21 @@ export function mount(container, ctx) {
     const earthR = Math.hypot(earth.x, earth.y, earth.z);
 
     readout.innerHTML = "";
-    const rows = [
-      ["Borrelly Sun distance (selected date)", fmt(r, 4) + " AU"],
-      ["Earth Sun distance (selected date)", fmt(earthR, 4) + " AU"],
-      ["Perihelion (closest to Sun)", fmt(elements.q_au, 3) + " AU"],
-      ["Aphelion (farthest from Sun)", fmt(elements.Q_au, 3) + " AU"],
-      ["Orbital period", fmt(elements.period_days || 2500, 4) + " days (~" + fmt((elements.period_days || 2500) / 365.25, 2) + " yr)"],
-    ];
-    for (const [k, v] of rows) {
-      readout.appendChild(el("div", { class: "ro-row" }, [
-        el("span", { text: k }), el("b", { text: v }),
-      ]));
-    }
+    const borrellyCard = metricCard({
+      value: fmt(r, 2),
+      unit: "AU from Sun",
+      label: "19P/Borrelly — selected date",
+      sub: "Earth is at " + fmt(earthR, 2) + " AU on the same date",
+      dataType: "calculated",
+      details: [
+        ["Perihelion (closest to Sun)", fmt(elements.q_au, 3) + " AU"],
+        ["Aphelion (farthest from Sun)", fmt(elements.Q_au, 3) + " AU"],
+        ["Orbital period", fmt(elements.period_days || 2500, 4) + " days (~" + fmt((elements.period_days || 2500) / 365.25, 2) + " yr)"],
+      ],
+    });
+    readout.appendChild(borrellyCard);
+    if (lastDistance !== null && Math.abs(lastDistance - r) > 1e-6) markUpdated(borrellyCard);
+    lastDistance = r;
   }
 
   function drawNote() {

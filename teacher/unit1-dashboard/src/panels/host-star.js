@@ -4,6 +4,7 @@ import { el, provenanceBar } from "../dom.js";
 import { loadExoplanetCatalog } from "../adapters/exoplanet-catalog.js";
 import { missing, derivedLuminosity } from "../models.js";
 import { fmt } from "../units.js";
+import { metricCard, markUpdated } from "../panel-ui.js";
 
 export const meta = { key: "host-star", label: "E · Meet the Host Star" };
 
@@ -17,8 +18,11 @@ export function mount(container, ctx) {
   const svgWrap = el("div", { class: "svg-wrap hr-wrap" });
   root.appendChild(svgWrap);
 
-  const facts = el("div", { class: "facts" });
-  root.appendChild(facts);
+  const sizeWrap = el("div", { class: "size-compare", role: "group", "aria-label": "Star size comparison, scaled by catalog radius" });
+  root.appendChild(sizeWrap);
+
+  const metricCards = el("div", { class: "metric-cards" });
+  root.appendChild(metricCards);
 
   const provenance = el("div", { class: "prov-wrap" });
   root.appendChild(provenance);
@@ -29,6 +33,7 @@ export function mount(container, ctx) {
   let metaInfo = null;
   let refStars = [];
   let status = "loading";
+  let lastRadius = null;
 
   async function load() {
     try {
@@ -58,7 +63,8 @@ export function mount(container, ctx) {
     if (!p) {
       title.innerHTML = "";
       svgWrap.innerHTML = "";
-      facts.innerHTML = "";
+      sizeWrap.innerHTML = "";
+      metricCards.innerHTML = "";
       provenance.innerHTML = "";
       provenance.appendChild(el("div", { class: "status error", text: "No catalog data available." }));
       return;
@@ -74,19 +80,45 @@ export function mount(container, ctx) {
     title.appendChild(el("h3", { text: "Host star: " + p.hostname + "  ·  " + p.plName }));
 
     drawHR(teff, lumCatalog, p.hostname);
+    drawSizeCompare(radius, p.hostname);
 
-    facts.innerHTML = "";
-    const row = (label, value, hint, cls) => el("div", { class: "fact-row" }, [
-      el("span", { class: "fact-label", text: label }),
-      el("span", { class: "fact-value" + (cls || "") + (missing(value) ? " missing" : ""), text: missing(value) ? "— not in catalog" : value }),
-      hint ? el("span", { class: "fact-hint", text: hint }) : null,
-    ]);
+    metricCards.innerHTML = "";
+    const radiusCard = metricCard({
+      value: missing(radius) ? "—" : fmt(radius, 2),
+      unit: "R☉ (solar radii)",
+      label: "How big this star is, compared to the Sun",
+      dataType: "catalog",
+      details: [
+        ["Mass", missing(mass) ? "— not in catalog" : fmt(mass, 4) + " M☉"],
+        ["Radius", missing(radius) ? "— not in catalog" : fmt(radius, 6) + " R☉"],
+      ],
+    });
+    metricCards.appendChild(radiusCard);
+    if (lastRadius !== null && lastRadius !== radius) markUpdated(radiusCard);
+    lastRadius = radius;
 
-    facts.appendChild(row("Effective temperature (catalog)", fmt(teff, 4), "K · Sun = 5772 K"));
-    facts.appendChild(row("Mass (catalog)", fmt(mass, 4), "solar masses"));
-    facts.appendChild(row("Radius (catalog)", fmt(radius, 4), "solar radii"));
-    facts.appendChild(row("Luminosity (catalog)", fmt(lumCatalog, 4), "L☉ · from log₁₀ L/L☉ = " + fmt(p.starLumLog10, 4)));
-    facts.appendChild(row("Luminosity (derived)", fmt(lumDerived, 4), "L☉ · derived from Teff & R via L = 4πR²σT⁴", "derived"));
+    metricCards.appendChild(metricCard({
+      value: missing(teff) ? "—" : fmt(teff, 0),
+      unit: "K",
+      label: "Surface temperature (Sun = 5772 K)",
+      dataType: "catalog",
+    }));
+
+    metricCards.appendChild(metricCard({
+      value: missing(lumCatalog) ? "—" : fmt(lumCatalog, 3),
+      unit: "L☉ (catalog)",
+      label: "How much light this star puts out",
+      dataType: "catalog",
+      details: [["log₁₀ (L/L☉)", fmt(p.starLumLog10, 4)]],
+    }));
+
+    metricCards.appendChild(metricCard({
+      value: missing(lumDerived) ? "—" : fmt(lumDerived, 3),
+      unit: "L☉ (derived)",
+      label: "Luminosity recalculated from temperature + radius",
+      sub: "L = 4πR²σT⁴ — should roughly match the catalog value",
+      dataType: "derived",
+    }));
 
     provenance.innerHTML = "";
     if (metaInfo) {
@@ -103,6 +135,34 @@ export function mount(container, ctx) {
       "<strong>Catalog</strong> values come from the NASA Exoplanet Archive. <strong>Derived</strong> luminosity uses the " +
       "Stefan–Boltzmann law assuming a blackbody star. H–R diagram uses conventional axes: effective temperature " +
       "decreases left→right (log scale), luminosity increases upward (log scale). Stellar ages are not inferred here." }));
+  }
+
+  /** Radius-scaled star-size comparison drawn from catalog radius values. */
+  function drawSizeCompare(radiusRsun, label) {
+    sizeWrap.innerHTML = "";
+    if (missing(radiusRsun) || radiusRsun <= 0) {
+      sizeWrap.appendChild(el("p", { class: "panel-note-text", text: "Radius not in catalog — size comparison unavailable for this star." }));
+      return;
+    }
+    const maxPx = 180;
+    const minPx = 14;
+    // Keep the Sun's on-screen size fixed and scale the host star's pixel
+    // diameter by the real radius ratio, capping at maxPx so very large
+    // giants don't overflow the panel.
+    const sunPx = 60;
+    const rawHostPx = sunPx * radiusRsun;
+    const hostPx = Math.max(minPx, Math.min(maxPx, rawHostPx));
+    const capped = rawHostPx > maxPx || rawHostPx < minPx;
+
+    sizeWrap.appendChild(el("div", { class: "size-circle sun-ref", style: `width:${sunPx}px;height:${sunPx}px` }, [
+      el("span", { text: "Sun (1 R☉)" }),
+    ]));
+    sizeWrap.appendChild(el("div", { class: "size-circle host-star", style: `width:${hostPx}px;height:${hostPx}px` }, [
+      el("span", { text: label + " (" + fmt(radiusRsun, 2) + " R☉)" }),
+    ]));
+    if (capped) {
+      sizeWrap.appendChild(el("p", { class: "size-scale-note", text: "Display size capped to fit this panel — the real radius ratio (" + fmt(radiusRsun, 2) + "×) is used for the numbers above." }));
+    }
   }
 
   function drawHR(teffK, lumLinear, label) {

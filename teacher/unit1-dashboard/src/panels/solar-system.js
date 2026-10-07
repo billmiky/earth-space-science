@@ -3,6 +3,7 @@
 import { el, esc } from "../dom.js";
 import { PLANETS, PLANET_KEYS, planetHelioEcliptic, helioDistance, planetOrbitPath } from "../astronomy.js";
 import { fmt, dateToJulian } from "../units.js";
+import { dataTypeBadge, notScaleTag } from "../panel-ui.js";
 
 export const meta = { key: "solar-system", label: "B · Solar System Now" };
 
@@ -32,9 +33,13 @@ export function mount(container, ctx) {
   const readout = el("div", { class: "orbit-readout", role: "table", "aria-label": "Heliocentric distances in AU" });
   root.appendChild(readout);
 
-  const note = el("div", { class: "panel-note", html:
-    "Calculated positions (Meeus low-precision ephemerides), heliocentric ecliptic frame, " +
-    "viewed from ecliptic north. Object sizes and distances are <strong>not</strong> drawn to scale." });
+  const note = el("div", { class: "panel-note" });
+  note.appendChild(el("div", { class: "metric-tags" }, [
+    dataTypeBadge("calculated"),
+    notScaleTag("Object sizes and distances are not drawn to scale"),
+  ]));
+  note.appendChild(el("p", { class: "panel-note-text", html:
+    "Calculated positions (Meeus low-precision ephemerides), heliocentric ecliptic frame, viewed from ecliptic north." }));
   root.appendChild(note);
 
   container.appendChild(root);
@@ -85,6 +90,10 @@ export function mount(container, ctx) {
     // Sun
     svg.appendChild(el("circle", { cx: 0, cy: 0, r: 0.18, class: "sun-dot" }));
     svg.appendChild(el("text", { x: 0, y: -0.3, class: "sun-label", text: "Sun" }));
+
+    // Purely decorative slow sweep line suggesting orbital motion; disabled
+    // under reduced motion and while frozen (see styles.css .orbit-sweep).
+    svg.appendChild(el("line", { x1: 0, y1: 0, x2: scale, y2: 0, class: "orbit-sweep", "aria-hidden": "true" }));
 
     // Orbit paths
     for (const key of keys) {

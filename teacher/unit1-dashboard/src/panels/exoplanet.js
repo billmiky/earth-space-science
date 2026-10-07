@@ -4,6 +4,20 @@ import { el, provenanceBar, esc } from "../dom.js";
 import { loadExoplanetCatalog } from "../adapters/exoplanet-catalog.js";
 import { missing } from "../models.js";
 import { fmt, kelvinTo, daysToYears } from "../units.js";
+import { metricCard, markUpdated, notScaleTag, imageSlot } from "../panel-ui.js";
+
+// Optional NASA Exoplanet Travel Bureau posters, keyed by catalog plName.
+// Always rendered inside a clearly-labeled "artist's concept" card — never
+// presented as an observation, and always shown beside the real numbers.
+const ARTIST_CONCEPTS = {
+  "TRAPPIST-1 e": {
+    src: "https://commons.wikimedia.org/wiki/Special:FilePath/TRAPPIST-1e_Const_CMYK_Print_(cropped).png?width=500",
+    alt: "Retro travel-poster style illustration imagining a rocky, ocean-bearing TRAPPIST-1e as seen from a hypothetical orbiting moon.",
+    caption: "Artist's concept — not a photograph or observation",
+    credit: "NASA/JPL-Caltech — Exoplanet Travel Bureau",
+    creditHref: "https://exoplanets.nasa.gov/alien-worlds/exoplanet-travel-bureau/",
+  },
+};
 
 export const meta = { key: "exoplanet", label: "D · Earth–Exoplanet Comparison" };
 
@@ -18,8 +32,15 @@ export function mount(container, ctx) {
   controls.appendChild(search);
   root.appendChild(controls);
 
-  const compare = el("div", { class: "size-compare", role: "img", "aria-label": "Relative size comparison of Earth and the selected exoplanet" });
+  const compare = el("div", { class: "size-compare", role: "group", "aria-label": "Relative size comparison of Earth and the selected exoplanet" });
   root.appendChild(compare);
+
+  const evidenceRow = el("div", { class: "evidence-row" });
+  const metricCards = el("div", { class: "metric-cards" });
+  const artistWrap = el("div", { class: "artist-wrap" });
+  evidenceRow.appendChild(metricCards);
+  evidenceRow.appendChild(artistWrap);
+  root.appendChild(evidenceRow);
 
   const facts = el("div", { class: "facts" });
   root.appendChild(facts);
@@ -32,6 +53,7 @@ export function mount(container, ctx) {
   let planets = [];
   let metaInfo = null;
   let status = "loading";
+  let lastRadius = null;
 
   async function load() {
     const result = await loadExoplanetCatalog(store.state);
@@ -64,6 +86,8 @@ export function mount(container, ctx) {
     if (!p) {
       facts.innerHTML = "";
       compare.innerHTML = "";
+      metricCards.innerHTML = "";
+      artistWrap.innerHTML = "";
       provenance.innerHTML = "";
       provenance.appendChild(el("div", { class: "status error", text: "No exoplanet catalog data available." }));
       return;
@@ -80,6 +104,60 @@ export function mount(container, ctx) {
     compare.appendChild(el("div", { class: "size-circle planet", style: `width:${planetD}px;height:${planetD}px`, text: "" }, [
       el("span", { text: p.plName + " · " + fmt(p.radiusEarth, 3) + " R⊕" }),
     ]));
+    compare.appendChild(notScaleTag("Sizes compressed to fit this panel — not to true scale"));
+
+    metricCards.innerHTML = "";
+    const radiusCard = metricCard({
+      value: missing(p.radiusEarth) ? "—" : fmt(p.radiusEarth, 2),
+      unit: "R⊕ (Earth radii)",
+      label: "How big this planet is, compared to Earth",
+      dataType: "catalog",
+    });
+    metricCards.appendChild(radiusCard);
+    if (lastRadius !== null && lastRadius !== p.radiusEarth) markUpdated(radiusCard);
+    lastRadius = p.radiusEarth;
+
+    metricCards.appendChild(metricCard({
+      value: missing(p.orbitalPeriodDays) ? "—" : fmt(p.orbitalPeriodDays, 1),
+      unit: "Earth days",
+      label: "Length of one orbit (its \u201cyear\u201d)",
+      sub: missing(p.orbitalPeriodDays) ? "" : "≈ " + fmt(daysToYears(p.orbitalPeriodDays), 2) + " Earth years",
+      dataType: "catalog",
+    }));
+
+    metricCards.appendChild(metricCard({
+      value: missing(p.equilibriumTempK) ? "—" : fmt(p.equilibriumTempK, 0),
+      unit: "K (equilibrium)",
+      label: "Modeled temperature with no atmosphere",
+      sub: "Estimate, not a measured surface temperature",
+      dataType: "calculated",
+    }));
+
+    metricCards.appendChild(metricCard({
+      value: missing(p.distanceLy) ? "—" : fmt(p.distanceLy, 1),
+      unit: "light-years away",
+      label: "Distance from Earth",
+      dataType: "catalog",
+    }));
+
+    // Optional, always-labeled artist's concept card — shown beside the
+    // numeric evidence above, never presented as an observation.
+    artistWrap.innerHTML = "";
+    const concept = ARTIST_CONCEPTS[p.plName];
+    if (concept) {
+      const card = el("div", { class: "artist-card" }, [
+        el("span", { class: "artist-badge", text: "Artist's concept — not an observation" }),
+        imageSlot({
+          src: concept.src,
+          alt: concept.alt,
+          caption: concept.caption,
+          credit: concept.credit,
+          creditHref: concept.creditHref,
+          fallbackText: "Artist's-concept poster unavailable right now.",
+        }),
+      ]);
+      artistWrap.appendChild(card);
+    }
 
     facts.innerHTML = "";
     const row = (label, value, hint) => el("div", { class: "fact-row" }, [

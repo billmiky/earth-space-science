@@ -5,6 +5,7 @@ import { loadGoesXrays, seriesPeak, seriesLatest } from "../adapters/noaa-goes.j
 import { FLARE_BANDS, flareClass } from "../models.js";
 import { CONFIG } from "../config.js";
 import { fmt, fmtTime } from "../units.js";
+import { metricCard, markUpdated, imageSlot, predictReveal } from "../panel-ui.js";
 
 export const meta = { key: "solar", label: "A · Solar Activity Now" };
 
@@ -13,8 +14,30 @@ export function mount(container, ctx) {
 
   const root = el("div", { class: "panel solar-panel" });
 
-  const readout = el("div", { class: "readouts", role: "group", "aria-label": "Latest solar X-ray flux" });
+  root.appendChild(imageSlot({
+    src: "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_0171.jpg",
+    alt: "Latest ultraviolet image of the Sun from the Solar Dynamics Observatory, 171 Ångström channel, showing bright active regions in the corona.",
+    caption: "The Sun right now, 171 Å (extreme ultraviolet)",
+    credit: "NASA/SDO (AIA 171 Å), updated continuously",
+    creditHref: "https://sdo.gsfc.nasa.gov/data/",
+    fallbackText: "Live solar image unavailable right now — the chart below is still live.",
+  }));
+
+  const readout = el("div", { class: "metric-cards", role: "group", "aria-label": "Latest solar X-ray flux" });
   root.appendChild(readout);
+
+  const predictWidget = predictReveal({
+    question: "Will the X-ray flux line move up, down, or stay about the same by the next refresh?",
+    options: ["Down", "About the same", "Up"],
+    getActual: () => {
+      const trend = recentTrend();
+      const label = trend > 0 ? "Up — flux rose since the last readings." : trend < 0 ? "Down — flux fell since the last readings." : "About the same — little change since the last readings.";
+      const optionIndex = trend > 0 ? 2 : trend < 0 ? 0 : 1;
+      return { label, optionIndex };
+    },
+    explain: () => "Solar X-ray flux can change quickly when active regions produce flares, and drift slowly the rest of the time.",
+  });
+  root.appendChild(predictWidget);
 
   const controls = el("div", { class: "panel-controls" });
   const spanBtn24 = el("button", { class: "chip active", text: "24 hours", onclick: () => setSpan("day") });
@@ -42,6 +65,16 @@ export function mount(container, ctx) {
   let destroyed = false;
   let lastFetchedAt = null;
   let lastStatus = null;
+  let lastFluxValue = null;
+
+  function recentTrend() {
+    if (!series || series.length < 2) return 0;
+    const a = series[series.length - 2].flux;
+    const b = series[series.length - 1].flux;
+    const delta = (b - a) / a;
+    if (Math.abs(delta) < 0.01) return 0;
+    return delta > 0 ? 1 : -1;
+  }
 
   function setSpan(next) {
     span = next;
@@ -70,26 +103,31 @@ export function mount(container, ctx) {
 
     readout.innerHTML = "";
     if (!latest) {
-      readout.appendChild(el("div", { class: "readout", text: "No data available" }));
+      readout.appendChild(el("div", { class: "metric-card" }, [el("div", { class: "metric-label", text: "No data available" })]));
     } else {
-      readout.appendChild(el("div", { class: "readout main" }, [
-        el("span", { class: "ro-label", text: "Latest X-ray flux" }),
-        el("span", { class: "ro-value", text: (latest.flux * 1e6).toFixed(3) + " ×10⁻⁶ W/m²" }),
-        el("span", { class: "ro-sub", text: cls ? "Flare class " + cls : "Below A-class" }),
-      ]));
-      readout.appendChild(el("div", { class: "readout" }, [
-        el("span", { class: "ro-label", text: "Observed" }),
-        el("span", { class: "ro-value", text: fmtTime(latest.timeMs) }),
-      ]));
-      readout.appendChild(el("div", { class: "readout" }, [
-        el("span", { class: "ro-label", text: "Peak in window" }),
-        el("span", { class: "ro-value", text: (peak.value * 1e6).toFixed(3) + " ×10⁻⁶ W/m²" }),
-        el("span", { class: "ro-sub", text: fmtTime(peak.timeMs) }),
-      ]));
-      readout.appendChild(el("div", { class: "readout" }, [
-        el("span", { class: "ro-label", text: "Satellite" }),
-        el("span", { class: "ro-value", text: "GOES-" + latest.satellite }),
-      ]));
+      const mainCard = metricCard({
+        value: (latest.flux * 1e6).toFixed(3),
+        unit: "×10⁻⁶ W/m²",
+        label: cls ? "Latest X-ray flux — Flare class " + cls : "Latest X-ray flux — below A-class",
+        sub: "Observed " + fmtTime(latest.timeMs),
+        dataType: "observed",
+        details: [
+          ["Satellite", "GOES-" + latest.satellite],
+          ["Channel", "0.1–0.8 nm"],
+          ["Flux (raw)", latest.flux + " W/m²"],
+        ],
+      });
+      readout.appendChild(mainCard);
+      if (lastFluxValue !== null && lastFluxValue !== latest.flux) markUpdated(mainCard);
+      lastFluxValue = latest.flux;
+
+      readout.appendChild(metricCard({
+        value: (peak.value * 1e6).toFixed(3),
+        unit: "×10⁻⁶ W/m²",
+        label: "Peak flux in this window",
+        sub: fmtTime(peak.timeMs),
+        dataType: "observed",
+      }));
     }
 
     drawChart(canvas, series);

@@ -14,6 +14,36 @@
   --focus: #fde047;
   --radius: 14px;
   --touch: 48px;
+
+  /* ---- Design tokens: spacing scale ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* ---- Design tokens: type scale (tuned for back-of-room legibility) ---- */
+  --fs-sm: 14px;
+  --fs-base: 17px;
+  --fs-md: 19px;
+  --fs-lg: 22px;
+  --fs-xl: 28px;
+  --fs-2xl: 40px;
+
+  /* ---- Design tokens: radius + shadow scale ---- */
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+  --shadow-1: 0 2px 8px rgba(2, 6, 16, 0.4);
+  --shadow-2: 0 8px 24px rgba(2, 6, 16, 0.55);
+
+  /* ---- Mode accents: never the only cue for meaning (text/glyphs pair with these) ---- */
+  --mode-sun: #f59e0b;
+  --mode-sun-soft: #fde68a;
+  --mode-star-start: #a855f7;
+  --mode-star-end: #f97316;
+  --mode-planets: #3b82f6;
+  --mode-planets-soft: #93c5fd;
 }
 
 * { box-sizing: border-box; }
@@ -24,11 +54,45 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: var(--bg);
+  background:
+    radial-gradient(ellipse at 20% -10%, #152040 0%, transparent 55%),
+    radial-gradient(ellipse at 90% 110%, #1a1430 0%, transparent 55%),
+    var(--bg);
   color: var(--text);
   font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-  font-size: 17px;
+  font-size: var(--fs-base);
   line-height: 1.45;
+  position: relative;
+}
+
+/* Faint, decorative starfield behind all content. Pure CSS (no image asset),
+   purely decorative so it is hidden from assistive tech, and stopped under
+   reduced motion or when the dashboard is frozen. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 10% 20%, #ffffff 100%, transparent 0),
+    radial-gradient(1.5px 1.5px at 75% 8%, #ffffff 100%, transparent 0),
+    radial-gradient(1px 1px at 35% 65%, #ffffff 100%, transparent 0),
+    radial-gradient(1.5px 1.5px at 60% 40%, #ffffff 100%, transparent 0),
+    radial-gradient(1px 1px at 90% 75%, #ffffff 100%, transparent 0),
+    radial-gradient(1.5px 1.5px at 15% 85%, #ffffff 100%, transparent 0),
+    radial-gradient(1px 1px at 48% 12%, #ffffff 100%, transparent 0),
+    radial-gradient(1.5px 1.5px at 85% 55%, #ffffff 100%, transparent 0);
+  background-repeat: repeat;
+  background-size: 480px 480px;
+  opacity: 0.35;
+  animation: starfield-twinkle 9s ease-in-out infinite;
+}
+body.is-frozen::before { animation-play-state: paused; }
+
+@keyframes starfield-twinkle {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.45; }
 }
 
 .app {
@@ -150,7 +214,7 @@ html, body {
 }
 
 /* Focus visibility (keyboard accessibility) */
-:is(button, a, select, input, .tool-select, .chip, .pair-btn):focus-visible {
+:is(button, a, select, input, summary, .tool-select, .chip, .pair-btn):focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
@@ -372,6 +436,8 @@ html, body {
 }
 .size-circle.earth { background: radial-gradient(circle at 35% 35%, #7dd3fc, #0369a1); }
 .size-circle.planet { background: radial-gradient(circle at 35% 35%, #f9a8d4, #9d174d); }
+.size-circle.sun-ref { background: radial-gradient(circle at 35% 35%, #fef08a, #d97706); }
+.size-circle.host-star { background: radial-gradient(circle at 35% 35%, #ddd6fe, #7c3aed); }
 .size-circle span {
   position: absolute;
   bottom: -26px;
@@ -381,6 +447,7 @@ html, body {
   color: var(--muted);
   white-space: nowrap;
 }
+.size-scale-note { font-size: 13.5px; color: var(--muted); margin: 26px 0 0; }
 
 /* ---------- Provenance / notes ---------- */
 .provenance {
@@ -432,6 +499,219 @@ html, body {
 }
 .settings-note { font-size: 13.5px; color: var(--muted); }
 
+/* ---------- Mode header band ---------- */
+.mode-band {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  border-left-width: 6px;
+  background: var(--bg-panel-alt);
+  box-shadow: var(--shadow-1);
+}
+.mode-band.mode-sun { border-left-color: var(--mode-sun); }
+.mode-band.mode-star {
+  border-left-width: 0;
+  border-image: linear-gradient(180deg, var(--mode-star-start), var(--mode-star-end)) 1 / 0 0 0 6px;
+  border-left: 6px solid var(--mode-star-start);
+}
+.mode-band.mode-planets { border-left-color: var(--mode-planets); }
+
+.mode-chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.mode-chip, .stage-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #1a2234;
+  color: var(--text);
+  text-transform: uppercase;
+}
+.mode-band.mode-sun .mode-chip { border-color: var(--mode-sun); color: var(--mode-sun-soft); }
+.mode-band.mode-star .mode-chip { border-color: var(--mode-star-end); background: linear-gradient(120deg, rgba(168,85,247,0.25), rgba(249,115,22,0.25)); }
+.mode-band.mode-planets .mode-chip { border-color: var(--mode-planets); color: var(--mode-planets-soft); }
+.stage-chip { color: var(--muted); text-transform: none; font-weight: 700; }
+
+.mode-prompt {
+  margin: 2px 0 0;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* ---------- Data-type / scale tags (never color-only) ---------- */
+.data-tag, .scale-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #1a2234;
+}
+.tag-observed { color: #86efac; border-color: #22c55e; }
+.tag-calculated { color: #7dd3fc; border-color: #0ea5e9; }
+.tag-catalog { color: #fcd34d; border-color: #d97706; }
+.tag-derived { color: #c4b5fd; border-color: #8b5cf6; }
+.scale-tag { color: var(--warn); border-color: var(--warn); }
+
+/* ---------- Metric cards ---------- */
+.metric-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+.metric-card {
+  background: var(--bg-panel-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-1);
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 220px;
+  flex: 1 1 220px;
+}
+.metric-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 2px; }
+.metric-value { display: flex; align-items: baseline; gap: 8px; }
+.metric-number {
+  font-size: var(--fs-2xl);
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.metric-unit { font-size: var(--fs-md); color: var(--muted); font-weight: 700; }
+.metric-label { font-size: var(--fs-base); font-weight: 700; }
+.metric-sub { font-size: var(--fs-sm); color: var(--muted); }
+.metric-details { margin-top: 4px; }
+.metric-details > summary {
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--accent);
+  min-height: var(--touch);
+  display: flex;
+  align-items: center;
+}
+.metric-details-table { display: flex; flex-direction: column; gap: 4px; padding-top: 4px; }
+.metric-details-row { display: flex; justify-content: space-between; gap: 10px; padding: 4px 2px; border-bottom: 1px solid var(--border); font-size: var(--fs-sm); }
+
+/* Gentle pulse when a metric value is freshly updated. Disabled by the
+   reduced-motion rule below and while the dashboard is frozen. */
+.metric-card.just-updated { animation: metric-pulse 900ms ease-out 1; }
+body.is-frozen .metric-card.just-updated { animation: none; }
+@keyframes metric-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(56,189,248,0.55); }
+  100% { box-shadow: 0 0 0 14px rgba(56,189,248,0); }
+}
+
+/* ---------- Attributed imagery ---------- */
+.img-slot { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.img-frame {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #090d16;
+  aspect-ratio: 4 / 3;
+  box-shadow: var(--shadow-1);
+}
+.img-real { width: 100%; height: 100%; object-fit: cover; display: block; }
+.img-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--muted);
+  background: linear-gradient(160deg, #0d1322, #141c30);
+  text-align: center;
+  padding: 10px;
+}
+.img-fallback-icon { font-size: 28px; opacity: 0.7; }
+.img-fallback-text { font-size: var(--fs-sm); }
+.img-credit { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; font-size: 12.5px; color: var(--muted); }
+.img-caption { font-style: italic; }
+.img-attrib a { color: var(--accent); }
+
+/* ---------- Artist's-concept card (always clearly labeled, never an observation) ---------- */
+.artist-card {
+  border: 1px dashed var(--mode-star-end);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  background: rgba(249,115,22,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.artist-badge {
+  align-self: flex-start;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--mode-star-end);
+  color: #fdba74;
+}
+.evidence-row {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.evidence-row .metric-cards { flex: 2 1 420px; }
+.artist-wrap { flex: 1 1 260px; max-width: 320px; }
+.artist-wrap .img-frame { aspect-ratio: 3 / 4; }
+
+/* ---------- Predict / Reveal / Compare (ephemeral; no data stored) ---------- */
+.predict-reveal {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-panel-alt);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pr-question { margin: 0; font-weight: 700; font-size: var(--fs-base); }
+.pr-choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.pr-choice.active { border-color: var(--accent); background: #123049; color: #dbeafe; }
+.pr-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.pr-status { margin: 0; font-size: var(--fs-sm); color: var(--muted); min-height: 1.4em; }
+.pr-status.pr-locked { color: var(--mode-sun-soft); }
+.pr-status.pr-revealed { color: var(--accent); }
+.pr-status.pr-match { color: var(--accent-2); font-weight: 700; }
+.pr-status.pr-mismatch { color: var(--warn); font-weight: 700; }
+
+/* ---------- Restrained motion: slow orbit sweep ---------- */
+.orbit-sweep {
+  stroke: rgba(147, 197, 253, 0.28);
+  stroke-width: 0.03;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: orbit-sweep-spin 60s linear infinite;
+}
+body.is-frozen .orbit-sweep { animation-play-state: paused; }
+@keyframes orbit-sweep-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -453,4 +733,9 @@ html, body {
   .obs-row .mag { display: none; }
   .readout { min-width: 130px; }
   .ro-value { font-size: 19px; }
+  .mode-prompt { font-size: var(--fs-base); }
+  .metric-card { min-width: 0; flex-basis: 100%; }
+  .metric-number { font-size: var(--fs-xl); }
+  .img-frame { aspect-ratio: 16 / 10; }
+  .pr-choices, .pr-actions { gap: 6px; }
 }

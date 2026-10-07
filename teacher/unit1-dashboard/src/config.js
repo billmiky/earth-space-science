@@ -20,6 +20,9 @@ export const CONFIG = {
   // Reference star data for the H–R diagram (bundled).
   referenceStars: "data/reference-stars.json",
 
+  // Phenomenon-first prompt lines for the mode header band (bundled).
+  prompts: "data/prompts.json",
+
   // JPL SBDB osculating elements for 19P/Borrelly (no CORS — bundled snapshot).
   borrelly: {
     bundled: "data/borrelly-elements.json",

@@ -4,6 +4,8 @@
 import { CONFIG } from "./config.js";
 import { el } from "./dom.js";
 import { PANEL_LABELS } from "./params.js";
+import { modeForPanel, fiveEForPanel } from "./modes.js";
+import { buildModeHeader, promptForPanel } from "./panel-ui.js";
 
 /**
  * Pure layout decision.
@@ -111,10 +113,11 @@ export class PanelHost {
     wrap.dataset.mounted = key;
     wrap.innerHTML = "";
     wrap.appendChild(el("div", { class: "panel-loading", text: "Loading panel…" }));
-    PANEL_MODULES[key]()
-      .then((mod) => {
+    Promise.all([PANEL_MODULES[key](), promptForPanel(key)])
+      .then(([mod, promptData]) => {
         if (wrap.dataset.mounted !== key) return; // superseded
         wrap.innerHTML = "";
+        wrap.appendChild(buildModeHeader(modeForPanel(key), fiveEForPanel(key), promptData?.prompt));
         const header = el("div", { class: "panel-header" }, [
           el("h2", { class: "panel-title", text: mod.meta?.label || PANEL_LABELS[key] }),
         ]);
