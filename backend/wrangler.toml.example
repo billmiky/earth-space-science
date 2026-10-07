@@ -1,0 +1,15 @@
+# backend/wrangler.toml.example — copy to wrangler.toml and fill in values.
+# See README.md for full setup steps.
+
+name = "earth-space-science-teacher-backend"
+main = "worker.js"
+compatibility_date = "2026-10-07"
+
+# Restrict CORS to your textbook's deployed origin. Use "*" ONLY for local dev.
+[vars]
+ALLOWED_ORIGINS = "https://billmiky.github.io"
+
+# Optional: production custom domain. Set up in the Cloudflare dashboard.
+# [[routes]]
+# pattern = "teacher-api.example.com/*"
+# zone_name = "example.com"

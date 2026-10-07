@@ -1,0 +1,245 @@
+---
+title: "Unit 1 Teaching Guide"
+subtitle: "Discovering New Worlds — dashboard classroom guide"
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 2
+    search: false
+    embed-resources: true
+    include-in-header:
+      - _noindex.html
+---
+
+```{=html}
+<style>
+body { max-width: 900px; margin: 0 auto; }
+a.btn {
+  display: inline-block; padding: 8px 14px; border-radius: 8px;
+  font-weight: 700; text-decoration: none; background: #0b3d6e; color: #fff; margin: 2px;
+}
+a.btn:hover { background: #0e4f8f; }
+.guide-section { border-left: 4px solid #4eb8e8; padding-left: 14px; margin: 22px 0; }
+table { font-size: 0.92rem; }
+.tag { font-weight: 700; }
+.obs { color: #b45309; }
+.calc { color: #1d4ed8; }
+.cat { color: #047857; }
+.callout { background: #f1f5f9; border-radius: 8px; padding: 10px 14px; margin: 10px 0; }
+.scaffold { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px 16px; margin: 10px 0; }
+</style>
+
+<div class="callout">
+<strong>Unit anchor question:</strong> <em>“What makes Earth able to sustain
+life, and which exoplanet is most Earth-like?”</em>
+<br>
+<strong>Anchor phenomenon:</strong> Comet Borrelly periodically releases
+vaporized water and dust as it swings near the Sun — a natural laboratory for
+thinking about orbits, energy, and what a planet needs.
+</div>
+
+## Launch links
+
+| View | Link |
+|------|------|
+| Dashboard (all panels) | [unit1-dashboard/index.html](unit1-dashboard/index.html){target="_blank"} |
+| Preset · Solar record | [unit1-dashboard/index.html?preset=solar-record](unit1-dashboard/index.html?preset=solar-record){target="_blank"} |
+| Preset · Orbits and evidence | [unit1-dashboard/index.html?preset=orbits-evidence](unit1-dashboard/index.html?preset=orbits-evidence){target="_blank"} |
+| Preset · Planet and parent star | [unit1-dashboard/index.html?preset=planet-parent-star](unit1-dashboard/index.html?preset=planet-parent-star){target="_blank"} |
+| Preset · Plan and observe | [unit1-dashboard/index.html?preset=plan-observe](unit1-dashboard/index.html?preset=plan-observe){target="_blank"} |
+| Panel A · Solar activity | [unit1-dashboard/index.html?panel=solar](unit1-dashboard/index.html?panel=solar){target="_blank"} |
+| Panel B · Solar system | [unit1-dashboard/index.html?panel=solar-system](unit1-dashboard/index.html?panel=solar-system){target="_blank"} |
+| Panel C · Borrelly | [unit1-dashboard/index.html?panel=borrelly](unit1-dashboard/index.html?panel=borrelly){target="_blank"} |
+| Panel D · Exoplanet | [unit1-dashboard/index.html?panel=exoplanet](unit1-dashboard/index.html?panel=exoplanet){target="_blank"} |
+| Panel E · Host star | [unit1-dashboard/index.html?panel=host-star](unit1-dashboard/index.html?panel=host-star){target="_blank"} |
+| Panel F · Observing | [unit1-dashboard/index.html?panel=observing](unit1-dashboard/index.html?panel=observing){target="_blank"} |
+
+## How the Sun Works
+
+### Panel A — Solar Activity Now
+
+- **Purpose / 5E connection:** Engage + Explore. Put a real-time measurement of
+  the Sun's X-ray output in front of students before the "How the Sun works"
+  lesson.
+- **What students see:** A log-scale graph of NOAA GOES X-ray flux (0.1–0.8 nm)
+  over 24 or ~72 hours, with A/B/C/M/X flare-class reference bands, the latest
+  value, and the window peak.
+- **What the data mean:** The quiet Sun sits near the B/C boundary; flares spike
+  the curve by one or more class letters. The X-ray flux reflects magnetic
+  activity in the Sun's corona, not total energy output.
+- **Classification:** <span class="obs">Observed</span> — GOES satellite
+  measurement, W/m².
+- **Two-minute phenomenon question (Think–Talk–Open Exchange):** *"Why does this
+  line stay flat for hours and then jump in a few minutes?"*
+- **Longer investigation:** Track the peak value over several days; have students
+  argue whether the Sun is "steady" using the Claim–Evidence–Reasoning scaffold.
+- **Teacher look-fors:** Students reading the log scale correctly; students
+  distinguishing flux (this panel) from total solar irradiance (not this panel).
+- **Misconceptions & limitations:** X-ray flux ≠ total solar irradiance; a flare
+  class letter is a logarithmic band, not a linear step; the graph is a
+  satellite measurement, not a camera picture.
+- **Accessibility/MLL supports:** Provide the flare-class letters verbally;
+  pair numeric values with the colored bands; use the text readouts alongside
+  the graph.
+- **Troubleshooting:** If NOAA data does not load, the panel shows an explicit
+  error state (no cached copy is silently substituted). Refresh after 5 minutes.
+
+## Star Life Cycles
+
+### Panel E — Meet the Host Star
+
+- **Purpose / 5E connection:** Explain + Elaborate. Connect an exoplanet's
+  environment to the properties of its star on the H–R diagram.
+- **What students see:** Host-star temperature, mass, radius, and luminosity
+  compared with the Sun, plotted on a conventional H–R diagram (temperature
+  decreasing left→right, luminosity increasing upward) with reference stars.
+- **What the data mean:** A star's position on the H–R diagram tells students
+  its class (main sequence, giant, white dwarf) and therefore its life stage.
+- **Classification:** <span class="cat">Catalog</span> values from the NASA
+  Exoplanet Archive; <span class="calc">derived</span> luminosity is clearly
+  labeled (Stefan–Boltzmann, blackbody assumption); reference stars are
+  published values for orientation.
+- **Two-minute phenomenon question:** *"Why does a tiny, dim red star live far
+  longer than a bright blue one?"*
+- **Longer investigation (Domino Discover):** Sort reference stars from hottest
+  to coolest, then predict their relative lifetimes.
+- **Teacher look-fors:** Students reading axis direction correctly; students not
+  equating "bright" with "hot and blue" incorrectly.
+- **Misconceptions & limitations:** Luminosity is not temperature alone; this
+  panel is catalog-backed — it is not a real-time stellar life-cycle feed; we do
+  not infer precise ages here.
+- **Accessibility/MLL supports:** Label star type in words next to symbols; no
+  essential information is color-only.
+- **Troubleshooting:** If a host star lacks a catalog luminosity, the panel shows
+  "not in catalog" and only the derived value is labeled as derived.
+
+## Planets and Orbits
+
+### Panel B — Solar System Now
+
+- **Purpose / 5E connection:** Explore. A top-down heliocentric view that shows
+  real elliptical orbits and lets students compare any date.
+- **What students see:** Selectable planets, orbital paths, today's marker,
+  date + comparison date, and a table of Sun distances in AU.
+- **What the data mean:** Planets move faster near perihelion; the comparison
+  date shows how much each planet moves in a given interval.
+- **Classification:** <span class="calc">Calculated</span> — Meeus low-precision
+  ephemerides (not live telescope observations), heliocentric ecliptic frame,
+  viewed from ecliptic north. Sizes and distances are **not** to scale.
+- **Two-minute phenomenon question:** *"Which planet changes its distance from
+  the Sun the most over one month?"*
+- **Longer investigation:** Compare Mercury and Mars over a year; ask students to
+  explain the difference using orbital eccentricity.
+- **Teacher look-fors:** Students connecting eccentricity to distance range;
+  students reading AU values, not pixel distances.
+- **Misconceptions & limitations:** This is a calculated model, not a photograph;
+  planet dot sizes are symbolic.
+- **Accessibility/MLL supports:** The distance table is a text alternative to the
+  map; planet colors are redundant with names.
+- **Troubleshooting:** No network needed — positions are computed in-browser.
+
+### Panel C — Earth vs. Comet Borrelly
+
+- **Purpose / 5E connection:** Engage + Explore. The unit anchor phenomenon: why
+  does Borrelly periodically release vaporized water and dust?
+- **What students see:** Orbital comparison (Earth vs. Borrelly, ecliptic
+  projection) and a synchronized Sun-distance-vs-time graph with a date slider,
+  plus perihelion/aphelion values.
+- **What the data mean:** As the comet approaches perihelion (≈1.3 AU), solar
+  heating increases and outgassing intensifies; at aphelion (≈5.9 AU) it is
+  frozen and quiet.
+- **Classification:** <span class="calc">Calculated / predicted</span> — two-body
+  Keplerian propagation from JPL osculating elements. This dashboard does **not**
+  measure the comet's water release, and Earth's Sun distance does **not** cause
+  Earth's seasons.
+- **Two-minute phenomenon question:** *"What changes for the comet between
+  aphelion and perihelion that could make it 'turn on'?"*
+- **Longer investigation:** Drive the date slider through a perihelion passage and
+  have students predict where the tail would be brightest and why.
+- **Teacher look-fors:** Students linking distance to heating, not seasons.
+- **Misconceptions & limitations:** The orbit shown is the ecliptic projection
+  (Borrelly's orbit is inclined ~29°); positions are predictions, not
+  observations; the comet is small and faint — not visible to the unaided eye.
+- **Accessibility/MLL supports:** The synchronized graph provides the same
+  information in a non-spatial format.
+- **Troubleshooting:** Elements are bundled; the two-body model is approximate
+  and does not include outgassing forces.
+
+### Panel D — Earth–Exoplanet Comparison
+
+- **Purpose / 5E connection:** Evaluate. Use real catalog data to answer "which
+  exoplanet is most Earth-like?" — while resisting a single score.
+- **What students see:** A size comparison of Earth and a selected exoplanet,
+  plus radius, mass, orbital period, eccentricity, equilibrium temperature,
+  host-star properties, discovery info, and distance.
+- **What the data mean:** Many "Earth-sized" planets orbit stars very unlike the
+  Sun; equilibrium temperature is a no-atmosphere model estimate, not a surface
+  temperature.
+- **Classification:** <span class="cat">Catalog</span> — NASA Exoplanet Archive
+  `pscomppars` table, with retrieval date and provenance shown.
+- **Two-minute phenomenon question:** *"Which single number best measures
+  'Earth-like' — radius, temperature, or something else?"*
+- **Longer investigation (Class Consensus Discussion):** Have teams defend one
+  planet as "most Earth-like," then identify what evidence is still missing.
+- **Teacher look-fors:** Students citing units (R⊕, M⊕, K, AU); students
+  treating missing values as missing, not zero.
+- **Misconceptions & limitations:** No habitability or Earth-likeness score is
+  computed; resembling Earth in radius does not make a planet habitable;
+  equilibrium temperature ≠ measured surface temperature.
+- **Accessibility/MLL supports:** The table provides a text alternative to the
+  size circles; missing values are shown explicitly.
+- **Troubleshooting:** The default dataset is a curated 16-planet snapshot;
+  a search box filters that list. Live catalog search requires the optional
+  backend (see Hub README).
+
+## Optional local sky observation
+
+### Panel F — Tonight's Observing Targets
+
+- **Purpose / 5E connection:** Extend. Bring orbital geometry down to the
+  student's local horizon.
+- **What students see:** Altitude, azimuth, predicted magnitude, above/below
+  horizon status, a sky-direction view, and a table for a configurable location
+  and evening time.
+- **What the data mean:** A planet can be above the horizon yet unobservable in
+  daylight or twilight; the panel reports the Sun's altitude so you can decide.
+- **Classification:** <span class="calc">Calculated</span> — observer ephemerides
+  (Meeus) with approximate magnitudes. No browser geolocation is requested; the
+  initial location is configurable.
+- **Two-minute phenomenon question:** *"Why can Venus be above the horizon right
+  now and still be invisible?"*
+- **Longer investigation (outdoor option):** Use the Field Journal (below) to
+  record one target's altitude and azimuth at two times, then explain the change.
+- **Teacher look-fors:** Students distinguishing "above horizon" from
+  "visible"; students reading azimuth from North.
+- **Misconceptions & limitations:** Above horizon ≠ visible; this panel never
+  gives solar-viewing guidance; magnitudes are approximate.
+- **Accessibility/MLL supports:** The table is the primary text alternative to
+  the sky chart.
+- **Troubleshooting:** Enter your location in Settings (⚙) on the dashboard.
+
+## Constructed-response scaffold
+
+<div class="scaffold">
+<strong>1 · Describe the pattern.</strong> What do the data show changing, and
+over what interval?<br>
+<strong>2 · State a claim.</strong> Answer the question in one sentence.<br>
+<strong>3 · Cite numeric evidence.</strong> Quote at least one value with its
+unit (e.g., "flux rose from 1.2×10⁻⁶ to 3.4×10⁻⁵ W/m²").<br>
+<strong>4 · Link to a mechanism.</strong> Explain how a system interaction
+(e.g., solar heating, gravitational pull, orbital speed) produces the pattern.
+</div>
+
+## Field Journal (optional outdoor observation)
+
+1. Record date, time, location, and timezone.
+2. Identify one planet using Panel F's altitude/azimuth values.
+3. Sketch the horizon with N/E/S/W labeled; mark the planet.
+4. Estimate its altitude with a fist (≈10° per fist at arm's length).
+5. Note sky conditions and whether the planet was actually visible.
+6. Explain one way your observation matched or differed from the dashboard's
+   calculated position.
+
+<a class="btn" href="index.html">← Back to Teacher Hub</a>
+```
