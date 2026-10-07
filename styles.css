@@ -678,8 +678,13 @@ pre {
 /* ================================================================= */
 
 @media (min-width: 992px) {
+  /* Center the body content and use the full desktop width when the sidebar
+     is collapsed. The book uses the "floating" sidebar style, so we target
+     body.floating (not just body.docked). When the user opens the sidebar
+     (.sidebar-open), Quarto's default grid resumes so the sidebar has room. */
+  body.floating.fullcontent:not(.sidebar-open) .page-columns,
   body.docked:not(.sidebar-open) .page-columns {
-    grid-template-columns: [screen-start] minmax(1.5em, 1fr) [screen-start-inset page-start page-start-inset body-start-outset body-start body-content-start] minmax(0, 900px) [body-content-end] minmax(1.5em, 1fr) [body-end body-end-outset page-end-inset page-end screen-end] !important;
+    grid-template-columns: [screen-start] minmax(1.5em, 1fr) [screen-start-inset page-start page-start-inset body-start-outset body-start body-content-start] minmax(0, 1200px) [body-content-end] minmax(1.5em, 1fr) [body-end body-end-outset page-end-inset page-end screen-end] !important;
   }
 }
 
