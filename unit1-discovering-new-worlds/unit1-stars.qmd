@@ -428,7 +428,71 @@ As long as these forces balance, the star is **stable**. When the fuel runs out,
 
 ```{ojs}
 //| echo: false
-viewof starMass = Inputs.range([0.3, 30], {label: "Star mass (solar masses):", step: 0.1, value: 1.0})
+viewof starMass = {
+  const W = 360, H = 250;
+  const ml = 48, mr = 14, mt = 34, mb = 48;
+  const plotW = W - ml - mr, plotH = H - mt - mb;
+  const mMin = 0.3, mMax = 30;
+  const tMin = 5800 * Math.sqrt(mMin), tMax = 5800 * Math.sqrt(mMax);
+  const xScale = t => ml + (Math.log10(tMax) - Math.log10(t)) / (Math.log10(tMax) - Math.log10(tMin)) * plotW;
+  const tFromX = x => Math.pow(10, Math.log10(tMax) - (x - ml) / plotW * (Math.log10(tMax) - Math.log10(tMin)));
+  const massFromX = x => Math.min(mMax, Math.max(mMin, Math.pow(tFromX(x) / 5800, 2)));
+  const lMin = Math.pow(mMin, 3.5), lMax = Math.pow(mMax, 3.5);
+  const yScale = l => mt + (Math.log10(lMax) - Math.log10(l)) / (Math.log10(lMax) - Math.log10(lMin)) * plotH;
+  const starColor = t => t > 20000 ? "#6ca0dc" : t > 10000 ? "#a0c4ff" : t > 7000 ? "#ffffff" : t > 5000 ? "#ffdd57" : t > 4000 ? "#ffa94d" : "#ff6b6b";
+
+  const el = document.createElement("div");
+  el.style.cssText = "max-width:520px;margin:auto;";
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`)
+    .style("width", "100%").style("height", "auto").style("display", "block")
+    .style("touch-action", "none").style("cursor", "grab");
+
+  svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#0a0a2e").attr("rx", 12);
+  svg.append("text").attr("x", W/2).attr("y", 20).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-size", 13).attr("font-weight", "bold")
+    .text("Drag the star along the main sequence");
+  svg.append("text").attr("x", ml + plotW/2).attr("y", H - 2).attr("text-anchor", "middle")
+    .attr("fill", "#9aa7bd").attr("font-size", 9).text("← hotter (high-mass) · cooler (low-mass) →");
+  svg.append("text").attr("x", 14).attr("y", mt + plotH/2).attr("text-anchor", "middle")
+    .attr("transform", `rotate(-90 14 ${mt + plotH/2})`).attr("fill", "#9aa7bd").attr("font-size", 9).text("Luminosity →");
+
+  const curve = d3.range(mMin, mMax + 0.001, 0.05);
+  svg.append("path").datum(curve)
+    .attr("d", d3.line().x(d => xScale(5800 * Math.sqrt(d))).y(d => yScale(Math.pow(d, 3.5)))(curve))
+    .attr("fill", "none").attr("stroke", "#f39c12").attr("stroke-width", 2.5);
+
+  const dot = svg.append("circle").attr("r", 9).attr("fill", "#4ade80").attr("stroke", "#fff").attr("stroke-width", 1.5);
+  const readout = svg.append("text").attr("x", W/2).attr("y", H - 20).attr("text-anchor", "middle")
+    .attr("fill", "#ffdd57").attr("font-size", 13).attr("font-weight", "bold");
+
+  function render(m) {
+    const t = 5800 * Math.sqrt(m), l = Math.pow(m, 3.5);
+    dot.attr("cx", xScale(t)).attr("cy", yScale(l)).attr("fill", starColor(t));
+    readout.text(`${m.toFixed(1)} M☉ · ${Math.round(t).toLocaleString()} K · ${l >= 1 ? l.toFixed(0) + "×" : l.toFixed(2) + "×"} Sun`);
+    el.value = m;
+  }
+  function setFromPointer(clientX) {
+    const rect = svg.node().getBoundingClientRect();
+    const px = (clientX - rect.left) / rect.width * W;
+    render(massFromX(Math.min(ml + plotW, Math.max(ml, px))));
+    el.dispatchEvent(new Event("input"));
+  }
+  render(1.0);
+
+  let dragging = false;
+  svg.node().addEventListener("pointerdown", e => {
+    dragging = true;
+    try { svg.node().setPointerCapture(e.pointerId); } catch {}
+    setFromPointer(e.clientX);
+  });
+  svg.node().addEventListener("pointermove", e => { if (dragging) setFromPointer(e.clientX); });
+  const end = () => { dragging = false; };
+  svg.node().addEventListener("pointerup", end);
+  svg.node().addEventListener("pointercancel", end);
+
+  el.appendChild(svg.node());
+  return el;
+}
 ```
 
 ```{ojs}
@@ -447,10 +511,6 @@ viewof starMass = Inputs.range([0.3, 30], {label: "Star mass (solar masses):", s
   const stableColor = lifespan > 4.6 ? "#2ecc71" : "#e74c3c";
   const starColor = temp > 20000 ? "#6ca0dc" : temp > 10000 ? "#a0c4ff" : temp > 7000 ? "#ffffff" : temp > 5000 ? "#ffdd57" : temp > 4000 ? "#ffa94d" : "#ff6b6b";
 
-  const wrap = d3.create("div");
-  wrap.style("max-width", "100%");
-
-  // (a) Star + stats card (viewBox scales responsively)
   const svg = d3.create("svg")
     .attr("viewBox", "0 0 360 240")
     .style("width", "100%").style("height", "auto")
@@ -477,27 +537,7 @@ viewof starMass = Inputs.range([0.3, 30], {label: "Star mass (solar masses):", s
     svg.append("text").attr("x", 350).attr("y", y).attr("text-anchor", "end").attr("fill", s.color).attr("font-size", 12).attr("font-weight", "bold").text(s.value);
   });
 
-  wrap.append(() => svg.node());
-
-  // (b) Mini H-R diagram: where this star sits on the main sequence
-  const ms = d3.range(0.3, 30.1, 0.1).map(m => ({ mass: m, temp: 5800 * Math.pow(m, 0.5), lum: Math.pow(m, 3.5) }));
-  wrap.append(() => Plot.plot({
-    title: "Where this star sits on the main sequence",
-    width: width,
-    height: 200,
-    marginLeft: 44,
-    marginRight: 10,
-    style: { background: "#0a0a2e", color: "#e2e8f0", fontFamily: "sans-serif" },
-    x: {label: "Temperature (K)", reverse: true, type: "log"},
-    y: {label: "Luminosity (× Sun)", type: "log"},
-    marks: [
-      Plot.line(ms, {x: "temp", y: "lum", stroke: "#f39c12", strokeWidth: 2}),
-      Plot.dot([{temp, lum}], {x: "temp", y: "lum", fill: starColor, r: 6, stroke: "#fff", strokeWidth: 1,
-        title: `${mass.toFixed(1)} M☉\nTemp: ${temp} K\nLuminosity: ${+lum.toFixed(1)}× Sun`, tip: true})
-    ]
-  }));
-
-  return wrap.node();
+  return svg.node();
 }
 ```
 
@@ -505,7 +545,7 @@ viewof starMass = Inputs.range([0.3, 30], {label: "Star mass (solar masses):", s
 //| echo: false
 buildQuiz("star-mass-quiz", "⚖️ Check Your Understanding — Star Mass & Fate", [
   {
-    q: "Using the slider, at approximately what mass does a star's lifespan drop below 4.6 billion years?",
+    q: "Using the diagram above, at approximately what mass does a star's lifespan drop below 4.6 billion years?",
     options: ["About 0.5 solar masses", "About 1.2 solar masses", "About 5 solar masses", "About 10 solar masses"],
     correct: 1,
     explanation: "At ~1.2 solar masses, the lifespan drops to roughly 4.6 billion years (the age of life on Earth). Stars more massive than this burn out too quickly for complex life to evolve."
