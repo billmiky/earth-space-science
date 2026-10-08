@@ -53,6 +53,15 @@ The answer has everything to do with **orbits.** Borrelly's orbit takes it far f
 This is the same question we need to answer for exoplanets: **Does the planet's orbit keep it at the right temperature for liquid water throughout its entire year?**
 :::
 
+<figure style="margin: 18px auto; max-width: 520px; text-align: center;">
+  <img src="https://images-assets.nasa.gov/image/PIA03501/PIA03501~orig.jpg"
+       alt="NASA Deep Space 1 image of Comet Borrelly's dark nucleus with several bright jets of vaporized gas and dust erupting from its surface"
+       style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,.25);">
+  <figcaption style="margin-top: 8px; color: #64748b; font-size: .85em; font-style: italic; line-height: 1.4;">
+    Comet Borrelly's nucleus, imaged by NASA's Deep Space 1 (2001). The bright jets are ice vaporizing as the comet nears the Sun. Credit: NASA/JPL.
+  </figcaption>
+</figure>
+
 ```{ojs}
 //| echo: false
 Plot = require("@observablehq/plot")
@@ -644,6 +653,106 @@ Scientists have discovered thousands of exoplanets using the Kepler Space Telesc
   return wrap.node();
 }
 ```
+
+```{ojs}
+//| echo: false
+viewof selectedExo = Inputs.select(exoplanets.map(d => d.name), {label: "Choose an exoplanet:", value: "Kepler-442b"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const p = exoplanets.find(d => d.name === selectedExo);
+  const inner = Math.sqrt(p.starLum / 1.1);
+  const outer = Math.sqrt(p.starLum / 0.53);
+  const peri = p.distance * (1 - p.ecc);
+  const aph = p.distance * (1 + p.ecc);
+
+  let zoneV, zColor;
+  if (p.distance < inner) { zoneV = "❌ Too hot"; zColor = "#e74c3c"; }
+  else if (p.distance > outer) { zoneV = "❌ Too cold"; zColor = "#3498db"; }
+  else { zoneV = "✅ In the habitable zone"; zColor = "#2ecc71"; }
+  const stable = peri >= inner && aph <= outer;
+  const note = (p.distance < inner || p.distance > outer)
+    ? "Its average distance falls outside the zone."
+    : stable ? "Its whole orbit stays inside the zone." : "But its orbit swings across the zone's edge.";
+
+  const W = 360, H = 240;
+  const x0 = 44, x1 = 340;
+  const maxDist = Math.max(aph * 1.15, outer * 1.25, 0.6);
+  const px = d => x0 + (d / maxDist) * (x1 - x0);
+
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`)
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "520px").style("display", "block").style("margin", "auto");
+  svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#0a0a2e").attr("rx", 12);
+
+  svg.append("text").attr("x", W/2).attr("y", 22).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-size", 14).attr("font-weight", "bold")
+    .text(`Exoplanet analyzer: ${p.name}`);
+  svg.append("text").attr("x", W/2).attr("y", 40).attr("text-anchor", "middle")
+    .attr("fill", "#9aa7bd").attr("font-size", 10)
+    .text(`Star luminosity ${p.starLum}× Sun · period ${p.period} days`);
+
+  svg.append("line").attr("x1", x0).attr("y1", 120).attr("x2", x1).attr("y2", 120).attr("stroke", "#64748b").attr("stroke-width", 1);
+  svg.append("circle").attr("cx", x0 - 8).attr("cy", 120).attr("r", 6).attr("fill", "#f39c12");
+  svg.append("text").attr("x", x0 - 8).attr("y", 138).attr("text-anchor", "middle").attr("fill", "#f39c12").attr("font-size", 8).text("star");
+
+  svg.append("rect").attr("x", px(inner)).attr("y", 104).attr("width", Math.max(4, px(outer) - px(inner))).attr("height", 32)
+    .attr("fill", "#2ecc71").attr("opacity", 0.15).attr("stroke", "#2ecc71").attr("stroke-dasharray", "2,2");
+  svg.append("text").attr("x", (px(inner) + px(outer)) / 2).attr("y", 100).attr("text-anchor", "middle")
+    .attr("fill", "#2ecc71").attr("font-size", 9).attr("font-weight", "bold").text("habitable zone");
+
+  svg.append("line").attr("x1", px(peri)).attr("y1", 124).attr("x2", px(aph)).attr("y2", 124)
+    .attr("stroke", zColor).attr("stroke-width", 3);
+  svg.append("circle").attr("cx", px(p.distance)).attr("cy", 124).attr("r", 5).attr("fill", zColor).attr("stroke", "#fff").attr("stroke-width", 1);
+  svg.append("text").attr("x", px(p.distance)).attr("y", 112).attr("text-anchor", "middle")
+    .attr("fill", zColor).attr("font-size", 9).attr("font-weight", "bold").text(`${p.distance} AU`);
+  svg.append("text").attr("x", px(peri)).attr("y", 148).attr("text-anchor", "middle").attr("fill", "#ccc").attr("font-size", 8).text(`${peri.toFixed(2)}`);
+  svg.append("text").attr("x", px(aph)).attr("y", 148).attr("text-anchor", "middle").attr("fill", "#ccc").attr("font-size", 8).text(`${aph.toFixed(2)}`);
+
+  svg.append("text").attr("x", W/2).attr("y", 178).attr("text-anchor", "middle")
+    .attr("fill", "#e2e8f0").attr("font-size", 11)
+    .text(`HZ: ${inner.toFixed(2)}–${outer.toFixed(2)} AU · e = ${p.ecc} · peri ${peri.toFixed(2)} · aph ${aph.toFixed(2)}`);
+  svg.append("text").attr("x", W/2).attr("y", 202).attr("text-anchor", "middle")
+    .attr("fill", zColor).attr("font-size", 13).attr("font-weight", "bold")
+    .text(zoneV);
+  svg.append("text").attr("x", W/2).attr("y", 220).attr("text-anchor", "middle")
+    .attr("fill", "#9aa7bd").attr("font-size", 9).text(note);
+  svg.append("text").attr("x", W/2).attr("y", 236).attr("text-anchor", "middle")
+    .attr("fill", "#64748b").attr("font-size", 7.5)
+    .text("Green band = habitable zone · colored line = planet's orbit range");
+
+  return svg.node();
+}
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("analyzer-quiz", "🧪 Check Your Understanding — Exoplanet Analyzer", [
+  {
+    q: "Select Kepler-452b. Its distance is 1.046 AU and its star's habitable zone is about 1.04–1.50 AU. What does the analyzer tell you?",
+    options: ["It's clearly outside the habitable zone", "It's in the habitable zone, but its orbit swings across the inner edge", "It's too hot everywhere in its orbit", "The analyzer cannot analyze it"],
+    correct: 1,
+    explanation: "Kepler-452b's average distance (1.046 AU) is just inside the inner edge (≈1.04 AU), and its perihelion (≈1.01 AU) dips slightly below it. So it's 'in the zone' on average, but its orbit grazes the inner boundary."
+  },
+  {
+    q: "Select 55 Cancri e. Why does the analyzer say 'too hot'?",
+    options: ["Its star is too dim", "Its distance (0.015 AU) is far inside its star's habitable zone", "Its eccentricity is too high", "Its period is too long"],
+    correct: 1,
+    explanation: "55 Cancri e orbits at 0.015 AU — far inside its star's habitable zone (≈0.74–1.06 AU). It receives far too much heat for liquid water."
+  }
+])
+```
+
+<figure style="margin: 18px auto; max-width: 520px; text-align: center;">
+  <img src="https://images-assets.nasa.gov/image/PIA21751/PIA21751~orig.jpg"
+       alt="Artist concept of the TRAPPIST-1 system showing the dim red dwarf star and its seven Earth-sized planets"
+       style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,.25);">
+  <figcaption style="margin-top: 8px; color: #64748b; font-size: .85em; font-style: italic; line-height: 1.4;">
+    Artist concept of TRAPPIST-1, a dim red dwarf orbited by seven Earth-sized planets — three of them in the habitable zone. Credit: NASA/JPL-Caltech.
+  </figcaption>
+</figure>
 
 # Chapter Summary
 
