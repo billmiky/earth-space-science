@@ -208,8 +208,6 @@ buildQuiz("star-lifespan-quiz", "⭐ Check Your Understanding — Star Lifespans
 
 # Explore 1: Patterns of Star Stability
 
-[Launch Smartboard Star Lifecycle Cockpit →](unit1-stars-dashboard.html){.btn .btn-info .btn-lg role="button"}
-
 ::: {.explore-box}
 ## 🔬 The Hertzsprung-Russell Diagram
 
@@ -238,41 +236,70 @@ hrStars = [
   {name: "Deneb", temp: 8500, lum: 200000, stage: "Supergiant", r: 6}
 ]
 
-Plot.plot({
-  title: "Hertzsprung-Russell Diagram",
-  subtitle: "Temperature decreases to the right (astronomers are weird like that)",
-  width: 700,
-  height: 450,
-  marginRight: 80,
-  x: {label: "Surface Temperature (K)", reverse: true, type: "log"},
-  y: {label: "Luminosity (× Sun)", type: "log", grid: true},
-  color: {
+{
+  const hrStageColors = {
     domain: ["Main Sequence", "Red Giant", "White Dwarf", "Supergiant"],
-    range: ["#3498db", "#e74c3c", "#ecf0f1", "#f39c12"],
-    legend: true
-  },
-  marks: [
-    Plot.dot(hrStars, {
-      x: "temp",
-      y: "lum",
-      fill: "stage",
-      r: "r",
-      stroke: "#333",
-      strokeWidth: 0.5,
-      title: d => `${d.name}\nTemp: ${d.temp}K\nLuminosity: ${d.lum}× Sun\nStage: ${d.stage}`
-    ,
-        tip: true}),
-    Plot.text(hrStars.filter(d => ["Sun", "Betelgeuse", "Sirius B", "Rigel", "Proxima Centauri"].includes(d.name)), {
-      x: "temp",
-      y: "lum",
-      text: "name",
-      dx: 15,
-      fontSize: 10,
-      fontWeight: "bold"
-    }),
-    Plot.ruleY([1], {stroke: "#f39c12", strokeDasharray: "3,3", strokeOpacity: 0.5})
-  ]
-})
+    range: ["#3498db", "#e74c3c", "#b0bec5", "#f39c12"]
+  };
+  const hrWrap = d3.create("div");
+  hrWrap.style("max-width", "100%");
+  hrWrap.append(() => Plot.plot({
+    title: "Hertzsprung-Russell Diagram",
+    subtitle: "Temperature decreases to the right (astronomers are weird like that)",
+    width: width,
+    height: 420,
+    marginLeft: 48,
+    marginRight: 8,
+    marginBottom: 40,
+    x: {label: "Surface Temperature (K)", reverse: true, type: "log"},
+    y: {label: "Luminosity (× Sun)", type: "log", grid: true},
+    marks: [
+      Plot.dot(hrStars, {
+        x: "temp",
+        y: "lum",
+        fill: "stage",
+        r: "r",
+        stroke: "#333",
+        strokeWidth: 0.5,
+        title: d => `${d.name}\nTemp: ${d.temp}K\nLuminosity: ${d.lum}× Sun\nStage: ${d.stage}`,
+        tip: true
+      }),
+      Plot.text(hrStars.filter(d => ["Sun", "Sirius B", "Rigel"].includes(d.name)), {
+        x: "temp",
+        y: "lum",
+        text: "name",
+        textAnchor: "start",
+        dx: 12,
+        dy: 8,
+        fontSize: 11,
+        fontWeight: "bold"
+      }),
+      Plot.text(hrStars.filter(d => ["Betelgeuse", "Proxima Centauri"].includes(d.name)), {
+        x: "temp",
+        y: "lum",
+        text: "name",
+        textAnchor: "end",
+        dx: -10,
+        dy: 8,
+        fontSize: 11,
+        fontWeight: "bold"
+      }),
+      Plot.ruleY([1], {stroke: "#f39c12", strokeDasharray: "3,3", strokeOpacity: 0.5})
+    ]
+  }));
+  hrWrap.append("div")
+    .style("display", "flex")
+    .style("flex-wrap", "wrap")
+    .style("gap", "6px 16px")
+    .style("justify-content", "center")
+    .style("margin-top", "10px")
+    .style("font-size", "0.85em")
+    .html(hrStageColors.domain.map((s, i) =>
+      `<span style="display:inline-flex;align-items:center;gap:6px;">` +
+      `<span style="width:12px;height:12px;border-radius:50%;background:${hrStageColors.range[i]};border:1px solid #333;flex:0 0 auto;"></span>` +
+      `${s}</span>`).join(""));
+  return hrWrap.node();
+}
 ```
 
 ::: {.explore-box}
@@ -318,7 +345,7 @@ hrStarData = {
 Plot.plot({
   title: "Hertzsprung-Russell Diagram — Real Stars from the Hipparcos Catalog",
   subtitle: "Hover any star to see its temperature, luminosity, and magnitude",
-  width: 700,
+  width: width,
   height: 600,
   style: { background: "#111", color: "#eee", fontFamily: "sans-serif" },
   x: {
