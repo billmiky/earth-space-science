@@ -274,7 +274,7 @@ sstData = [
 Plot.plot({
   title: "Tropical Atlantic: Sea Surface Temperature vs. Hurricane Activity",
   subtitle: "What's the connection between water temperature and storm formation?",
-  width: 700,
+  width: width,
   height: 380,
   x: {label: "Month", domain: sstData.map(d => d.month)},
   y: {label: "Sea Surface Temperature (°C)", domain: [24, 30]},
@@ -334,7 +334,7 @@ storms2005 = [
 Plot.plot({
   title: "2005 Atlantic Hurricane Season — Every Named Storm",
   subtitle: "Peak intensity (Saffir-Simpson category or TS=Tropical Storm)",
-  width: 700,
+  width: width,
   height: 380,
   x: {label: "Storm Name"},
   y: {label: "Peak Category", domain: [0, 6]},
@@ -493,7 +493,7 @@ safirSimpsonData = [
 Plot.plot({
   title: "Saffir-Simpson Hurricane Wind Scale",
   subtitle: "Maximum sustained wind speed by category",
-  width: 700,
+  width: width,
   height: 350,
   x: {label: "Category"},
   y: {label: "Maximum Sustained Wind (mph)", domain: [0, 200]},
@@ -539,7 +539,7 @@ seasonData = [
 Plot.plot({
   title: "Solar Input vs. Sea Surface Temperature — The Seasonal Lag",
   subtitle: "Peak solar input is in June, but peak SST doesn't arrive until September!",
-  width: 700,
+  width: width,
   height: 380,
   x: {label: "Month", domain: seasonData.map(d => d.month)},
   y: {label: "Relative Value (normalized)"},
@@ -609,7 +609,7 @@ sstTrend = [
 Plot.plot({
   title: "Tropical Atlantic SST Anomaly (Departure from 1971–2000 Average)",
   subtitle: "The ocean is getting warmer — more fuel for hurricanes",
-  width: 700,
+  width: width,
   height: 380,
   x: {label: "Year"},
   y: {label: "Temperature Anomaly (°C)", domain: [-0.3, 0.8]},
@@ -641,7 +641,7 @@ riData = [
 Plot.plot({
   title: "Rapid Intensification Events in the Atlantic",
   subtitle: "Storms are strengthening faster — giving communities less warning time",
-  width: 700,
+  width: width,
   height: 350,
   x: {label: "Period"},
   y: {label: "Number of Rapid Intensification Events"},
@@ -691,7 +691,9 @@ Hurricanes weaken dramatically once they make landfall. Understanding why helps 
 {
   const width = 700;
   const height = 350;
-  const svg = d3.create("svg").attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`);
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${width} ${height}`)
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "700px").style("display", "block").style("margin", "auto");
 
   svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#f8f9fa").attr("rx", 10);
   svg.append("text").attr("x", 350).attr("y", 30).attr("text-anchor", "middle").attr("font-size", 18).attr("font-weight", "bold").text("Why Hurricanes Weaken Over Land");

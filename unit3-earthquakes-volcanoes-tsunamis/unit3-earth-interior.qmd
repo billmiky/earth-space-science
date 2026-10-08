@@ -78,7 +78,7 @@ depthData = [
 Plot.plot({
   title: "How Deep Have We Gone? (km below surface)",
   subtitle: "Log scale — we've barely scratched the surface",
-  width: 700,
+  width: width,
   height: 350,
   marginLeft: 250,
   x: {label: "Depth (km) — log scale", type: "log", grid: true},
@@ -126,9 +126,9 @@ When an earthquake occurs, it produces two main types of seismic waves that trav
 //| echo: false
 {
   const svg = d3.create("svg")
-    .attr("width", 700)
-    .attr("height", 380)
-    .attr("viewBox", "0 0 700 380");
+    .attr("viewBox", "0 0 700 380")
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "700px").style("display", "block").style("margin", "auto");
 
   svg.append("text").attr("x", 350).attr("y", 25).attr("text-anchor", "middle")
     .attr("font-size", 18).attr("font-weight", "bold").text("Two Types of Seismic Waves");
@@ -213,7 +213,7 @@ waveSpeedData = [
 Plot.plot({
   title: "Seismic Wave Speed vs. Depth",
   subtitle: "The dramatic drop in P-wave speed and disappearance of S-waves reveals the liquid outer core",
-  width: 700,
+  width: width,
   height: 450,
   grid: true,
   x: {label: "Depth (km)", domain: [0, 6371]},
@@ -340,9 +340,9 @@ viewof showDifferentiation = Inputs.range([0, 100], {
 {
   const t = showDifferentiation / 100;
   const svg = d3.create("svg")
-    .attr("width", 400)
-    .attr("height", 400)
-    .attr("viewBox", "0 0 400 400");
+    .attr("viewBox", "0 0 400 400")
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "400px").style("display", "block").style("margin", "auto");
 
   const cx = 200, cy = 200;
   
@@ -432,9 +432,9 @@ Earth's interior doesn't just sit there — it actively drives surface processes
 //| echo: false
 {
   const svg = d3.create("svg")
-    .attr("width", 700)
-    .attr("height", 350)
-    .attr("viewBox", "0 0 700 350");
+    .attr("viewBox", "0 0 700 350")
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "700px").style("display", "block").style("margin", "auto");
 
   svg.append("text").attr("x", 350).attr("y", 25).attr("text-anchor", "middle")
     .attr("font-size", 16).attr("font-weight", "bold").text("Interior → Surface Connections");

@@ -71,7 +71,7 @@ riftData = [
 Plot.plot({
   title: "East African Rift: Spreading Rate (mm/year)",
   subtitle: "The rift is fastest in the north where it's oldest — the Red Sea is already an ocean!",
-  width: 700,
+  width: width,
   height: 300,
   marginLeft: 220,
   x: {label: "Spreading rate (mm/year)", grid: true},
@@ -118,9 +118,9 @@ When you heat a pot of water on a stove, the water at the bottom gets hot, becom
 //| echo: false
 {
   const svg = d3.create("svg")
-    .attr("width", 700)
-    .attr("height", 400)
-    .attr("viewBox", "0 0 700 400");
+    .attr("viewBox", "0 0 700 400")
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "700px").style("display", "block").style("margin", "auto");
 
   svg.append("text").attr("x", 350).attr("y", 25).attr("text-anchor", "middle")
     .attr("font-size", 18).attr("font-weight", "bold").text("Mantle Convection Drives Plate Tectonics");
@@ -228,7 +228,7 @@ heatSources = [
 Plot.plot({
   title: "Sources of Earth's Internal Heat (~47 TW total)",
   subtitle: "Radioactive decay and primordial heat keep Earth alive",
-  width: 650,
+  width: width,
   height: 250,
   marginLeft: 200,
   x: {label: "Contribution (%)", grid: true, domain: [0, 60]},
@@ -305,7 +305,7 @@ benefitsData = [
 Plot.plot({
   title: "Benefits of Geological Activity",
   subtitle: "Tectonic forces create incredible resources — but at a cost",
-  width: 700,
+  width: width,
   height: 300,
   marginLeft: 200,
   x: {label: "Economic/Social Value (relative)", grid: true, domain: [0, 10]},

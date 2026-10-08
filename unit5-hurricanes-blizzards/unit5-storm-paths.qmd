@@ -408,7 +408,7 @@ viewof stormTypeMap = Inputs.radio(
   return Plot.plot({
     title: "Storm Track Patterns — Atlantic Hurricanes & Northeast Blizzards",
     subtitle: "Both storm types curve SW → NE across the mid-latitudes",
-    width: 750,
+    width: width,
     height: 480,
     projection: {
       type: "equirectangular",
@@ -1311,7 +1311,7 @@ precipPatternData = [
 Plot.plot({
   title: "Average Annual Precipitation by Latitude",
   subtitle: "Rising air = wet; Sinking air = dry",
-  width: 700,
+  width: width,
   height: 380,
   x: {label: "Latitude (°N)", domain: [0, 90]},
   y: {label: "Annual Precipitation (mm)", domain: [0, 2200]},
@@ -1351,7 +1351,9 @@ viewof warmingScenario = Inputs.range([0, 4], {label: "Global warming (°C above
 {
   const width = 700;
   const height = 400;
-  const svg = d3.create("svg").attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`);
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${width} ${height}`)
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "700px").style("display", "block").style("margin", "auto");
 
   svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#f8f9fa").attr("rx", 10);
   svg.append("text").attr("x", 350).attr("y", 30).attr("text-anchor", "middle").attr("font-size", 16).attr("font-weight", "bold")

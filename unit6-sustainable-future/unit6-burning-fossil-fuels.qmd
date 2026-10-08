@@ -197,7 +197,7 @@ deathsByRegion = [
 Plot.plot({
   title: "Deaths from Outdoor Air Pollution (per 100,000 people)",
   subtitle: "Why are some regions hit so much harder?",
-  width: 750,
+  width: width,
   height: 380,
   marginLeft: 140,
   x: {label: "Deaths per 100,000", domain: [0, 70]},
@@ -265,7 +265,7 @@ energyLong = energyData.flatMap(d => [
 Plot.plot({
   title: "Electricity Generation by Source (%)",
   subtitle: "France vs. United States — spot the key difference",
-  width: 750,
+  width: width,
   height: 400,
   marginLeft: 10,
   fx: {label: null},
@@ -317,7 +317,7 @@ healthLong = healthComparison.flatMap(d => [
 Plot.plot({
   title: "Health & Emissions Comparison: France vs. US",
   subtitle: "Cleaner energy → healthier people",
-  width: 750,
+  width: width,
   height: 400,
   marginLeft: 180,
   fx: {label: null},
@@ -1100,7 +1100,7 @@ carbonReservoirs = [
 Plot.plot({
   title: "Carbon Reservoirs (Gigatons of Carbon)",
   subtitle: "Most of Earth's carbon is locked in rocks — but the atmosphere is the most sensitive reservoir",
-  width: 750,
+  width: width,
   height: 380,
   marginLeft: 160,
   x: {label: "Gigatons of Carbon (log scale)", type: "log"},
@@ -1251,7 +1251,7 @@ cascadeLong = cascadeData.flatMap(d => [
 Plot.plot({
   title: "Climate-Related Deaths: Now vs. 2050 Projections",
   subtitle: "These are the INDIRECT effects of burning fossil fuels — on top of the 4.2M direct air pollution deaths",
-  width: 750,
+  width: width,
   height: 400,
   marginLeft: 190,
   color: {
@@ -1329,7 +1329,7 @@ carbonTech = [
 Plot.plot({
   title: "Carbon Removal Technologies: Potential Scale (Gt CO₂/year)",
   subtitle: "How much carbon could each technology remove annually?",
-  width: 750,
+  width: width,
   height: 350,
   marginLeft: 170,
   x: {label: "Potential Removal (Gt CO₂/year)", domain: [0, 10]},
@@ -1446,7 +1446,7 @@ transportSolutions = [
 Plot.plot({
   title: "Transportation Solutions: Emission Reduction vs. Lives Saved (US)",
   subtitle: "Bubble size = speed of implementation (smaller = faster)",
-  width: 750,
+  width: width,
   height: 450,
   x: {label: "Emission Reduction Potential (%)", domain: [0, 100]},
   y: {label: "Estimated Lives Saved per Year", domain: [0, 45000]},

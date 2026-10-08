@@ -82,7 +82,7 @@ oxygenData = [
 Plot.plot({
   title: "Atmospheric Oxygen Over Earth's History",
   subtitle: "Life transformed Earth's atmosphere — and mass extinctions crashed it",
-  width: 700,
+  width: width,
   height: 380,
   marginBottom: 50,
   x: {label: "Billions of years ago", reverse: true, grid: true},
@@ -145,7 +145,7 @@ evolutionData = [
 Plot.plot({
   title: "Major Events in the History of Life",
   subtitle: "Millions of years ago — notice how extinctions are followed by diversification",
-  width: 700,
+  width: width,
   height: 450,
   marginLeft: 210,
   x: {label: "Millions of years ago", reverse: true, grid: true},
@@ -183,9 +183,9 @@ Earth and life didn't evolve independently. They are locked in **feedback loops*
 //| echo: false
 {
   const svg = d3.create("svg")
-    .attr("width", 700)
-    .attr("height", 550)
-    .attr("viewBox", "0 0 700 550");
+    .attr("viewBox", "0 0 700 550")
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "700px").style("display", "block").style("margin", "auto");
 
   svg.append("text").attr("x", 350).attr("y", 25).attr("text-anchor", "middle")
     .attr("font-size", 18).attr("font-weight", "bold").text("Earth-Life Feedback Loops");
@@ -287,7 +287,7 @@ extinctions = [
 Plot.plot({
   title: "The Big Five Mass Extinctions",
   subtitle: "Percentage of species lost — the End-Permian nearly ended all life",
-  width: 700,
+  width: width,
   height: 300,
   marginLeft: 160,
   x: {label: "Species lost (%)", grid: true, domain: [0, 100]},
@@ -389,7 +389,7 @@ carbonData = [
 Plot.plot({
   title: "Atmospheric CO₂ Over the Past 500 Million Years (ppm)",
   subtitle: "Land plants dramatically drew down CO₂ — until mass extinction reversed it",
-  width: 700,
+  width: width,
   height: 350,
   x: {label: "Billions of years ago", reverse: true, grid: true},
   y: {label: "CO₂ (ppm)", grid: true},

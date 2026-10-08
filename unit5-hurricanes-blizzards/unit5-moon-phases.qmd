@@ -332,7 +332,7 @@ moonPhases = [
 Plot.plot({
   title: "Moon Illumination Through One Lunar Cycle",
   subtitle: "The moon takes ~29.5 days to complete one full cycle of phases",
-  width: 700,
+  width: width,
   height: 360,
   x: {label: "Day of Lunar Cycle", domain: [0, 30]},
   y: {label: "Illumination (%)", domain: [0, 110]},
@@ -681,7 +681,7 @@ tideData = {
 Plot.plot({
   title: "NYC Tide Heights — October 2012",
   subtitle: "Full Moon (Oct 15) · New Moon + Sandy's Landfall (Oct 29)",
-  width: 720,
+  width: width,
   height: 420,
   x: {label: "Day of October", domain: [1, 31]},
   y: {label: "Tide Height (feet)", domain: [-4, 5]},
@@ -762,7 +762,7 @@ tidalRange = [
 Plot.plot({
   title: "Spring Tides vs. Neap Tides: Tidal Range by Moon Phase",
   subtitle: "Spring tides (Sun–Moon aligned) produce much larger tidal swings",
-  width: 600,
+  width: width,
   height: 380,
   x: {label: "Moon Phase", domain: tidalRange.map(d => d.phase)},
   y: {label: "Tide Height (feet)", domain: [-4, 4]},

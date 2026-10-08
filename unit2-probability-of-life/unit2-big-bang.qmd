@@ -63,9 +63,9 @@ d3 = require("d3@7")
 //| echo: false
 {
   const svg = d3.create("svg")
-    .attr("width", 700)
-    .attr("height", 220)
-    .attr("viewBox", "0 0 700 220");
+    .attr("viewBox", "0 0 700 220")
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "700px").style("display", "block").style("margin", "auto");
 
   svg.append("text").attr("x", 350).attr("y", 20).attr("text-anchor", "middle")
     .attr("font-size", 16).attr("font-weight", "bold").text("Doppler Shift for Light");
@@ -148,7 +148,7 @@ galaxyData = [
 Plot.plot({
   title: "Hubble's Law: Galaxy Distance vs. Recession Velocity",
   subtitle: "Farther galaxies move away faster — the universe is expanding uniformly",
-  width: 700,
+  width: width,
   height: 400,
   grid: true,
   x: {label: "Distance (Mpc)", type: "log"},
@@ -209,9 +209,9 @@ In 1965, Arno Penzias and Robert Wilson accidentally discovered a faint microwav
 //| echo: false
 {
   const svg = d3.create("svg")
-    .attr("width", 700)
-    .attr("height", 280)
-    .attr("viewBox", "0 0 700 280");
+    .attr("viewBox", "0 0 700 280")
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "700px").style("display", "block").style("margin", "auto");
 
   svg.append("text").attr("x", 350).attr("y", 25).attr("text-anchor", "middle")
     .attr("font-size", 16).attr("font-weight", "bold").text("The Cosmic Microwave Background (CMB)");
@@ -270,7 +270,7 @@ elementData = [
 Plot.plot({
   title: "Predicted vs. Observed Element Abundances (% by mass)",
   subtitle: "Big Bang nucleosynthesis predictions match observations almost perfectly",
-  width: 650,
+  width: width,
   height: 250,
   marginLeft: 140,
   x: {label: "Abundance (% by mass)", grid: true, domain: [0, 80]},

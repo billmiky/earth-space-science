@@ -261,7 +261,7 @@ viewof showYD = Inputs.toggle({label: "Highlight Younger Dryas Event", value: tr
 Plot.plot({
   title: "Temperature Change: Last Glacial Maximum to Present",
   subtitle: "Greenland ice core data (GISP2)",
-  width: 800,
+  width: width,
   height: 450,
   x: {label: "Thousands of Years Ago", reverse: true, domain: [25, 0]},
   y: {label: "Temperature Anomaly (°C)", domain: [-10, 3]},
@@ -457,7 +457,7 @@ trendData = [
 ```{ojs}
 //| echo: false
 Plot.plot({
-  width: 800,
+  width: width,
   height: 500,
   grid: true,
   x: {
@@ -934,7 +934,7 @@ ydDetailData = [
 Plot.plot({
   title: "Younger Dryas: Greenland Temperature Record",
   subtitle: "Years before present (ice core data)",
-  width: 700,
+  width: width,
   height: 400,
   x: {label: "Years Before Present", reverse: true},
   y: {label: "Temperature (°C)", domain: [-50, -25]},
@@ -1041,7 +1041,7 @@ amocHistoryData = [
 Plot.plot({
   title: "Estimated AMOC Strength Over Time",
   subtitle: "Sverdrups (millions of cubic meters per second)",
-  width: 700,
+  width: width,
   height: 350,
   x: {label: "Year"},
   y: {label: "AMOC Strength (Sv)", domain: [10, 20]},
@@ -1108,7 +1108,7 @@ iceLossData = [
 Plot.plot({
   title: "Cumulative Ice Mass Loss from Ice Sheets",
   subtitle: "Gigatonnes (billions of metric tons)",
-  width: 700,
+  width: width,
   height: 400,
   x: {label: "Year"},
   y: {label: "Ice Mass Change (Gt)"},
@@ -1202,7 +1202,7 @@ slrData = {
 Plot.plot({
   title: `Sea Level Rise Projection: ${scenario}`,
   subtitle: "Meters above 2020 level",
-  width: 700,
+  width: width,
   height: 400,
   x: {label: "Year", domain: [2020, 2100]},
   y: {label: "Sea Level Rise (m)", domain: [0, 1.5]},
@@ -1265,7 +1265,7 @@ riskData = [
 Plot.plot({
   title: "Populations at Risk from Sea Level Rise",
   subtitle: "Millions of people potentially displaced by 1m rise",
-  width: 700,
+  width: width,
   height: 400,
   marginLeft: 160,
   marginRight: 55,

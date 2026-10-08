@@ -593,7 +593,9 @@ viewof neighborTemp = Inputs.range([20, 115], {label: "Neighboring Region Temp (
 {
   const width = 700;
   const height = 350;
-  const svg = d3.create("svg").attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`);
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${width} ${height}`)
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "700px").style("display", "block").style("margin", "auto");
 
   // Background
   svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#f0f4ff").attr("rx", 10);
@@ -2147,7 +2149,7 @@ snowData = [
 Plot.plot({
   title: "Northeast US: Extreme Snowfall Events vs. Average Annual Snowfall",
   subtitle: "More extreme events even as average snowfall decreases",
-  width: 700,
+  width: width,
   height: 350,
   x: {label: "Decade", padding: 0.3},
   y: {label: "Count / Inches"},

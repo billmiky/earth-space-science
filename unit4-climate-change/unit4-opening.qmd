@@ -152,7 +152,7 @@ filteredData = tempData.filter(d => d.year <= yearRange)
 
 Plot.plot({
   title: "Global Temperature Anomaly (°C relative to 1951-1980 average)",
-  width: 700,
+  width: width,
   height: 400,
   y: {label: "Temperature Anomaly (°C)", domain: [-0.6, 1.5]},
   x: {label: "Year"},
@@ -311,7 +311,7 @@ displacementData = [
 
 Plot.plot({
   title: "People Displaced by Weather-Related Disasters (Millions)",
-  width: 600,
+  width: width,
   height: 350,
   x: {label: "Year", tickFormat: d => d.toString()},
   y: {label: "People Displaced (Millions)", domain: [0, 40]},
@@ -405,7 +405,7 @@ longTermData = [
 Plot.plot({
   title: "2,000 Years of Global Temperature Change",
   subtitle: "Temperature anomaly relative to 1961-1990 average",
-  width: 700,
+  width: width,
   height: 400,
   x: {label: "Year (CE)", domain: [0, 2025]},
   y: {label: "Temperature Anomaly (°C)", domain: [-0.6, 1.2]},

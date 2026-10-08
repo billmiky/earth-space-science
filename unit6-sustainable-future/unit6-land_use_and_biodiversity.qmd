@@ -194,7 +194,7 @@ neighborhoodData = [
 Plot.plot({
   title: "NYC Heat Vulnerability: Income vs. Heat Deaths by Neighborhood",
   subtitle: "Color = Heat Vulnerability Index (1=low, 5=high). Size = % Green Space",
-  width: 750,
+  width: width,
   height: 450,
   x: {label: "Median Household Income ($)", domain: [20000, 160000]},
   y: {label: "Heat-Related Deaths per 100,000", domain: [0, 25]},
@@ -535,7 +535,7 @@ landLong = landCover.flatMap(d => [
 Plot.plot({
   title: "Manhattan Land Cover Change (1609–2020)",
   subtitle: "From 70% forest to 91% concrete and buildings",
-  width: 750,
+  width: width,
   height: 420,
   x: {label: null},
   y: {label: "% of Land Area", domain: [0, 100]},
@@ -1072,7 +1072,7 @@ amazonData = [
 Plot.plot({
   title: "Amazon Rainforest: % Remaining Over Time",
   subtitle: "Scientists estimate the tipping point is at 75-80% remaining (20-25% deforested)",
-  width: 750,
+  width: width,
   height: 400,
   x: {label: "Decade"},
   y: {label: "% of Original Forest Remaining", domain: [60, 100]},
@@ -1229,7 +1229,7 @@ landSolutionsLong = landSolutions.flatMap(d => [
 Plot.plot({
   title: "Land Use Solutions: Multi-Criteria Comparison",
   subtitle: "Which solutions have the broadest positive impact?",
-  width: 750,
+  width: width,
   height: 400,
   marginLeft: 200,
   color: {

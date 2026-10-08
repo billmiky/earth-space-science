@@ -94,7 +94,7 @@ earthquakeLocations = {
 Plot.plot({
   title: "Global Earthquake Distribution (Simulated)",
   subtitle: "Earthquakes cluster along plate boundaries — they're not random!",
-  width: 700,
+  width: width,
   height: 400,
   projection: {type: "equirectangular"},
   color: {legend: true, domain: ["Ring of Fire", "Mid-Atlantic Ridge", "Alpine-Himalayan Belt"], range: ["#d63031", "#0984e3", "#f39c12"]},
@@ -219,9 +219,9 @@ When lava erupts at a mid-ocean ridge and solidifies, iron minerals in the rock 
 //| echo: false
 {
   const svg = d3.create("svg")
-    .attr("width", 700)
-    .attr("height", 300)
-    .attr("viewBox", "0 0 700 300");
+    .attr("viewBox", "0 0 700 300")
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "700px").style("display", "block").style("margin", "auto");
 
   svg.append("text").attr("x", 350).attr("y", 25).attr("text-anchor", "middle")
     .attr("font-size", 16).attr("font-weight", "bold").text("Magnetic Striping at a Mid-Ocean Ridge");
@@ -318,7 +318,7 @@ seafloorAge = [
 Plot.plot({
   title: "Ocean Floor Age vs. Distance from Mid-Atlantic Ridge",
   subtitle: "Rock age increases symmetrically with distance — proving seafloor spreading",
-  width: 700,
+  width: width,
   height: 350,
   grid: true,
   x: {label: "Distance from ridge (km, negative = west)"},

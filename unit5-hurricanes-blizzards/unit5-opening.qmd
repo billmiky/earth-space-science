@@ -299,7 +299,7 @@ winterSeasons = [
 Plot.plot({
   title: "NYC Seasonal Snowfall (2014–2024)",
   subtitle: "Blue bars = seasons matching your storm track maps",
-  width: 700,
+  width: width,
   height: 360,
   x: { label: "Season", tickRotate: -25 },
   y: { label: "Total Snowfall (inches)", domain: [0, 60], grid: true },
@@ -477,7 +477,7 @@ viewof hurrYear = Inputs.radio(["2018", "2020"], { label: "Season", value: "2018
   return Plot.plot({
     title: `Atlantic Hurricane Season ${hurrYear}`,
     subtitle: seasonLabel,
-    width: 750,
+    width: width,
     height: 440,
     projection: {
       type: "equirectangular",
@@ -553,7 +553,7 @@ hurrSeasonData = [
 Plot.plot({
   title: "Named Atlantic Storms per Season (2015–2023)",
   subtitle: "Red bars = seasons shown on the tracking charts above",
-  width: 700,
+  width: width,
   height: 360,
   x: { label: "Year", tickFormat: "d" },
   y: { label: "Named Storms", domain: [0, 35], grid: true },
@@ -663,7 +663,7 @@ hurricaneData = [
 Plot.plot({
   title: "Named Atlantic Storms per Year (1980–2024)",
   subtitle: "Has there been a trend?",
-  width: 750,
+  width: width,
   height: 400,
   x: {
     label: "Year",

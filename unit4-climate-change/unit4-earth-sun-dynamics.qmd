@@ -472,7 +472,7 @@ filteredRadData = radiationData.filter(d => d.kya <= timeRange)
 Plot.plot({
   title: "Summer Radiation at 65°N Over the Past " + timeRange + ",000 Years",
   subtitle: "Solar Radiation (Watts/m²)",
-  width: 750,
+  width: width,
   height: 400,
   x: {label: "Thousands of Years Ago (kya)", reverse: true},
   y: {label: "Radiation (W/m²)", domain: [420, 550]},
@@ -995,7 +995,7 @@ combinedData = iceCoreTempData.map(d => {
 
 Plot.plot({
   title: "Temperature vs. Summer Radiation at 65°N",
-  width: 750,
+  width: width,
   height: 400,
   x: {label: "Thousands of Years Ago", reverse: true},
   y: {label: "Temperature Anomaly (°C)", axis: "left"},
@@ -1069,7 +1069,7 @@ solarData = [
 
 Plot.plot({
   title: "Solar Output (TSI) vs Global Temperature",
-  width: 700,
+  width: width,
   height: 400,
   x: {label: "Year"},
   marks: [
