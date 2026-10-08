@@ -61,6 +61,72 @@ d3 = require("d3@7")
 
 ```{ojs}
 //| echo: false
+viewof borrellyTime = Inputs.range([0, 6.85], {label: "Time (years):", step: 0.05, value: 0})
+```
+
+```{ojs}
+//| echo: false
+{
+  const t = borrellyTime;
+  const solveE = (M, e) => { let E = M; for (let i = 0; i < 8; i++) E = E - (E - e * Math.sin(E) - M) / (1 - e * Math.cos(E)); return E; };
+
+  const W = 360, H = 365;
+  const sx = 175, sy = 170, scale = 24;
+
+  const aE = 1.0, eE = 0.017;
+  const ME = 2 * Math.PI * (t % 1.0), EE = solveE(ME, eE);
+  const aB = 3.61, eB = 0.62, cB = aB * eB, bB = aB * Math.sqrt(1 - eB*eB);
+  const MB = 2 * Math.PI * (t / 6.85), EB = solveE(MB, eB);
+
+  const cxE = sx - aE * eE * scale, cyE = sy;
+  const cxB = sx - cB * scale, cyB = sy;
+  const ex = cxE + aE * scale * Math.cos(EE), ey = cyE + aE * scale * Math.sin(EE);
+  const bx = cxB + aB * scale * Math.cos(EB), by = cyB + bB * scale * Math.sin(EB);
+  const rE = aE * (1 - eE * Math.cos(EE));
+  const rB = aB * (1 - eB * Math.cos(EB));
+  const state = rB < 1.6 ? "💧 near the Sun — ice vaporizes" : rB > 2.5 ? "❄️ far from the Sun — frozen" : "🌡️ warming up";
+  const stateColor = rB < 1.6 ? "#f39c12" : rB > 2.5 ? "#74b9ff" : "#f6e05e";
+
+  const svg = d3.create("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "520px").style("display", "block").style("margin", "auto");
+  svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#0a0a2e").attr("rx", 12);
+  svg.append("text").attr("x", W/2).attr("y", 20).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-size", 14).attr("font-weight", "bold")
+    .text("Comet Borrelly vs. Earth");
+  svg.append("text").attr("x", W/2).attr("y", 38).attr("text-anchor", "middle")
+    .attr("fill", "#9aa7bd").attr("font-size", 10)
+    .text("🟢 Earth (period 1 yr)   ·   🟣 Borrelly (period 6.85 yr)");
+
+  svg.append("circle").attr("cx", cxE).attr("cy", cyE).attr("r", aE * scale)
+    .attr("fill", "none").attr("stroke", "#2ecc71").attr("stroke-width", 1.5);
+  svg.append("ellipse").attr("cx", cxB).attr("cy", cyB).attr("rx", aB * scale).attr("ry", bB * scale)
+    .attr("fill", "none").attr("stroke", "#a29bfe").attr("stroke-width", 1.5);
+
+  svg.append("circle").attr("cx", sx).attr("cy", sy).attr("r", 7).attr("fill", "#f39c12");
+  svg.append("text").attr("x", sx).attr("y", sy + 18).attr("text-anchor", "middle")
+    .attr("fill", "#f39c12").attr("font-size", 9).attr("font-weight", "bold").text("Sun");
+
+  svg.append("circle").attr("cx", ex).attr("cy", ey).attr("r", 5).attr("fill", "#2ecc71").attr("stroke", "#fff").attr("stroke-width", 1);
+  svg.append("circle").attr("cx", bx).attr("cy", by).attr("r", 5).attr("fill", stateColor).attr("stroke", "#fff").attr("stroke-width", 1);
+
+  svg.append("text").attr("x", W/2).attr("y", 315).attr("text-anchor", "middle")
+    .attr("fill", "#2ecc71").attr("font-size", 12).attr("font-weight", "bold")
+    .text(`Earth: ${rE.toFixed(2)} AU (nearly constant)`);
+  svg.append("text").attr("x", W/2).attr("y", 338).attr("text-anchor", "middle")
+    .attr("fill", stateColor).attr("font-size", 12).attr("font-weight", "bold")
+    .text(`Borrelly: ${rB.toFixed(2)} AU — ${state}`);
+  svg.append("text").attr("x", W/2).attr("y", 358).attr("text-anchor", "middle")
+    .attr("fill", "#9aa7bd").attr("font-size", 8)
+    .text("Orbits are to scale; bodies are not. Drag the slider to walk through 6.85 years.");
+
+  return svg.node();
+}
+```
+
+```{ojs}
+//| echo: false
 buildQuiz = function(id, title, questions) {
   const outer = html`<div id="${id}" style="margin:18px 0 24px 0;text-align:center;">
     <button style="
@@ -133,6 +199,24 @@ buildQuiz = function(id, title, questions) {
   });
   return outer;
 }
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("borrelly-quiz", "☄️ Check Your Understanding — Comet Borrelly", [
+  {
+    q: "At the start of the slider (t = 0), Borrelly is at 1.37 AU. What happens to its water here?",
+    options: ["It stays frozen", "Solar heating vaporizes the ice", "It turns into liquid rain", "Nothing changes"],
+    correct: 1,
+    explanation: "At 1.37 AU (perihelion, its closest approach), solar heating is strongest and the comet's ice vaporizes into jets — this is the 'boiling' phase that gives Borrelly its tail."
+  },
+  {
+    q: "Drag the slider to about 3.4 years. Borrelly is now at 5.85 AU. Why is it frozen?",
+    options: ["It's too far from the Sun for significant heating", "The Sun has cooled down", "The comet generates cold", "Its orbit is a perfect circle"],
+    correct: 0,
+    explanation: "At 5.85 AU (aphelion, its farthest point), solar heating is very weak, so the water stays frozen. Borrelly spends most of its 6.85-year orbit far from the Sun."
+  }
+])
 ```
 
 # Explore 1: Patterns in Solar System Data
@@ -386,6 +470,7 @@ Real orbits are **ellipses** — some nearly circular, others very elongated. Th
 - $e = 0$: perfect circle
 - $e = 0.5$: moderately elliptical
 - $e = 1$: parabola (escape trajectory)
+- **Kepler's Second Law:** a planet moves fastest at perihelion (closest) and slowest at aphelion — watch the speed and ☀️ energy readouts in the animation below.
 :::
 
 ```{ojs}
@@ -496,7 +581,9 @@ viewof semiMajor = Inputs.range([0.5, 3.0], {label: "Semi-major axis (AU):", ste
     const py = oy + b * scaleF * Math.sin(E);
     planet.attr("cx", px).attr("cy", py);
     line.attr("x2", px).attr("y2", py);
-    live.attr("x", px).attr("y", py - 10).text(`${r.toFixed(2)} AU · ${(a / r).toFixed(2)}× speed`);
+    live.attr("x", px).attr("y", py - 10)
+      .attr("text-anchor", px < W / 2 ? "start" : "end")
+      .text(`${r.toFixed(2)} AU · ${(a / r).toFixed(2)}× speed · ☀️ ${((a / r) ** 2).toFixed(1)}× energy`);
     raf = requestAnimationFrame(step);
   }
   raf = requestAnimationFrame(step);
