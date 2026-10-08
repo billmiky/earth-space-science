@@ -886,11 +886,13 @@ quizStimuli = {
 
   const path = () => {
     const chip = (t, bg) => `<span style="display:inline-block;background:${bg};color:#1e1b4b;border-radius:14px;padding:4px 10px;margin:2px;font-size:.82em;font-weight:600;">${t}</span>`;
+    const tag = (t, bg) => `<span style="display:inline-block;background:${bg};color:#fff;border-radius:10px;padding:1px 8px;margin:0 4px 0 0;font-size:.78em;font-weight:800;">${t}</span>`;
     const arrow = `<span style="color:#667eea;font-weight:700;"> → </span>`;
-    return `<div style="line-height:2;color:#1e1b4b;">
+    return `<div style="line-height:2.2;color:#1e1b4b;">
+      <div style="font-size:.82em;color:#475569;">${tag("M", "#16a34a")}0.8 M☉ (small) &nbsp; ${tag("N", "#dc2626")}25 M☉ (large) &nbsp; ${tag("O", "#2563eb")}2 M☉ (medium)</div>
       <div>${chip("Gas &amp; Dust Cloud", "#e0e7ff")}${arrow}${chip("Protostar", "#e0e7ff")}${arrow}${chip("Main Sequence Star", "#fde68a")}</div>
-      <div><b style="font-size:.82em;">Small &amp; medium stars:</b> ${chip("Red Giant", "#fecaca")}${arrow}${chip("White Dwarf", "#f1f5f9")}${arrow}${chip("Black Dwarf", "#cbd5e1")}</div>
-      <div><b style="font-size:.82em;">Large stars:</b> ${chip("Red Supergiant", "#fed7aa")}${arrow}${chip("Supernova", "#fca5a5")}${arrow}${chip("Neutron Star <i>or</i> Black Hole", "#cbd5e1")}</div>
+      <div>${tag("M", "#16a34a")} ${tag("O", "#2563eb")} <b style="font-size:.82em;">Small &amp; medium stars:</b> ${chip("Red Giant", "#fecaca")}${arrow}${chip("White Dwarf", "#f1f5f9")}${arrow}${chip("Black Dwarf", "#cbd5e1")}</div>
+      <div>${tag("N", "#dc2626")} <b style="font-size:.82em;">Large stars:</b> ${chip("Red Supergiant", "#fed7aa")}${arrow}${chip("Supernova", "#fca5a5")}${arrow}${chip("Neutron Star <i>or</i> Black Hole", "#cbd5e1")}</div>
     </div>`;
   };
 
