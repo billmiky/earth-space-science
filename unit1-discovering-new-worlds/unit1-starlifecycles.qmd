@@ -1,0 +1,230 @@
+---
+title: "Star Life Cycles Model | Unit 1"
+format:
+  dashboard:
+    orientation: columns
+    theme: darkly
+    embed-resources: true
+    nav-buttons:
+      - icon: arrow-left-circle
+        href: unit1-stars.html
+        text: "Back to Stars Lab"
+---
+
+## Interactive Star Life Cycle Model
+
+::: {.card title="Click any stage to follow a star's life" fill="true"}
+
+```{=html}
+<style>
+  .slc-wrap { font-family: 'Segoe UI', system-ui, sans-serif; color: #e2e8f0; }
+  .slc-header { text-align: center; margin-bottom: 4px; }
+  .slc-header h1 { margin: 0; font-size: clamp(1.4rem, 3vw, 2rem); letter-spacing: .5px; }
+  .slc-header p { color: #94a3b8; margin: 4px 0 0; font-size: .95rem; }
+  #slcSvg { display: block; width: 100%; height: auto; }
+  .slc-node { cursor: pointer; }
+  .slc-node circle { transition: opacity .15s, stroke .15s, stroke-width .15s; }
+  .slc-node:hover { filter: brightness(1.2); }
+  .slc-node.dimmed { opacity: .25; }
+  .slc-node.highlighted circle { stroke: #38bdf8; stroke-width: 3; }
+  .slc-edge { transition: opacity .2s; }
+  .slc-edge.dimmed { opacity: .1; }
+  .slc-info { background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 14px 16px; min-height: 96px; margin-top: 12px; }
+  .slc-info h2 { margin: 0 0 6px; font-size: 1.1rem; }
+  .slc-info p { margin: 0; color: #cbd5e1; line-height: 1.5; font-size: .95rem; }
+  .slc-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; justify-content: center; }
+  .slc-buttons button {
+    flex: 1 1 150px; min-height: 48px; border: 1px solid #334155; border-radius: 10px;
+    background: #1e293b; color: #e2e8f0; font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+  .slc-buttons button:hover { background: #273449; }
+  .slc-buttons button.active { outline: 2px solid #38bdf8; background: #0c4a6e; }
+</style>
+
+<div class="slc-wrap">
+  <div class="slc-header">
+    <h1>Life Cycles of Stars</h1>
+    <p>Click any stage — or a path button — to follow how a star's mass decides its fate.</p>
+  </div>
+
+  <svg id="slcSvg" viewBox="0 0 1000 640" role="img" aria-label="Interactive life cycles of stars diagram showing the paths of Sun-like, low-mass, and massive stars from a star-forming nebula through protostars to their final stages"></svg>
+
+  <div class="slc-info" id="slcInfo"></div>
+
+  <div class="slc-buttons">
+    <button data-path="sunlike">☀️ Sun-like star</button>
+    <button data-path="lowmass">🔴 Low-mass star</button>
+    <button data-path="massive">💥 Massive star</button>
+    <button data-path="">⟲ Show all</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var svg = document.getElementById("slcSvg");
+  var info = document.getElementById("slcInfo");
+
+  var stages = [
+    {id:"nebula", name:"Star-Forming Nebula", x:420, y:84, r:64, color:"#8b7cf6", type:"cloud", common:true,
+     desc:"A vast cloud of gas and dust. Gravity pulls clumps together until they collapse into stars."},
+    {id:"protostar", name:"Protostar", x:420, y:190, r:28, color:"#fb923c", type:"protostar", common:true,
+     desc:"The collapsing clump heats up, but nuclear fusion has not yet ignited in its core."},
+    {id:"sunlike", name:"Sun-like Star", x:150, y:290, r:36, color:"#facc15", type:"star", path:"sunlike",
+     desc:"A main-sequence star about 0.8–8× the Sun's mass. It fuses hydrogen for billions of years."},
+    {id:"redgiant", name:"Red Giant", x:150, y:400, r:34, color:"#fb7185", type:"giant", path:"sunlike",
+     desc:"Core hydrogen runs out, the core contracts, and the star swells and cools."},
+    {id:"planneb", name:"Planetary Nebula", x:150, y:500, r:30, color:"#38bdf8", type:"cloud", path:"sunlike",
+     desc:"The star's outer layers drift away, exposing the hot core."},
+    {id:"wdsun", name:"White Dwarf", x:150, y:590, r:15, color:"#e2e8f0", type:"dwarf", path:"sunlike",
+     desc:"The leftover core — Earth-sized but Sun-massive — slowly cools for billions of years."},
+    {id:"reddwarf", name:"Red Dwarf", x:420, y:350, r:24, color:"#ef4444", type:"star", path:"lowmass",
+     desc:"A small, cool star (less than ~0.5 M☉) that burns so slowly it lasts 100s of billions of years."},
+    {id:"wdlow", name:"White Dwarf", x:420, y:480, r:15, color:"#e2e8f0", type:"dwarf", path:"lowmass",
+     desc:"After its long life, the red dwarf leaves behind a cooling white dwarf."},
+    {id:"massive", name:"Massive Star", x:690, y:290, r:36, color:"#60a5fa", type:"star", path:"massive",
+     desc:"More than 8–10× the Sun's mass. It burns hot and blue and lives only millions of years."},
+    {id:"redsuper", name:"Red Supergiant", x:690, y:400, r:36, color:"#f87171", type:"giant", path:"massive",
+     desc:"An enormous, cool star fusing heavier and heavier elements in its core."},
+    {id:"supernova", name:"Supernova", x:690, y:500, r:40, color:"#ffffff", type:"supernova", path:"massive",
+     desc:"The star explodes, briefly outshining its entire galaxy and forging the heaviest elements."},
+    {id:"neutron", name:"Neutron Star", x:820, y:590, r:15, color:"#67e8f9", type:"dwarf", path:"massive",
+     desc:"A collapsed core — a city-sized ball of neutrons spinning incredibly fast."},
+    {id:"blackhole", name:"Black Hole", x:560, y:590, r:15, color:"#000000", type:"blackhole", path:"massive",
+     desc:"A collapsed core so dense that not even light can escape it."}
+  ];
+
+  var byId = {};
+  stages.forEach(function (s) { byId[s.id] = s; });
+
+  var paths = {
+    sunlike: ["nebula","protostar","sunlike","redgiant","planneb","wdsun"],
+    lowmass: ["nebula","protostar","reddwarf","wdlow"],
+    massive: ["nebula","protostar","massive","redsuper","supernova","neutron","blackhole"]
+  };
+
+  var pathDesc = {
+    sunlike: {name:"Sun-like star path", color:"#facc15", desc:"A star like our Sun: main sequence → red giant → planetary nebula → white dwarf, over billions of years."},
+    lowmass: {name:"Low-mass star path", color:"#ef4444", desc:"A red dwarf burns so slowly it lives for 100s of billions of years, then quietly becomes a white dwarf."},
+    massive: {name:"Massive star path", color:"#60a5fa", desc:"More than 8–10× the Sun's mass: it burns fast, swells into a red supergiant, and dies in a supernova — leaving a neutron star or a black hole."}
+  };
+
+  var edges = [
+    ["nebula","protostar"],
+    ["protostar","sunlike","billions of years",282,250],
+    ["protostar","reddwarf"],
+    ["protostar","massive","millions of years",580,250],
+    ["sunlike","redgiant"],
+    ["redgiant","planneb"],
+    ["planneb","wdsun"],
+    ["reddwarf","wdlow","100s–billions of years",505,430],
+    ["massive","redsuper"],
+    ["redsuper","supernova"],
+    ["supernova","neutron"],
+    ["supernova","blackhole"]
+  ];
+
+  function nodeMarkup(s) {
+    var extra = "";
+    if (s.type === "supernova") {
+      for (var i = 0; i < 8; i++) {
+        var a = i * Math.PI / 4;
+        extra += '<line x1="' + Math.cos(a) * (s.r - 5) + '" y1="' + Math.sin(a) * (s.r - 5) +
+                 '" x2="' + Math.cos(a) * (s.r + 9) + '" y2="' + Math.sin(a) * (s.r + 9) +
+                 '" stroke="#fef3c7" stroke-width="2" opacity=".9"/>';
+      }
+    } else if (s.type === "blackhole") {
+      extra = '<circle r="' + (s.r + 5) + '" fill="none" stroke="#64748b" stroke-width="1.5"/>';
+    } else if (s.type === "cloud") {
+      extra = '<circle cx="-20" cy="-10" r="' + (s.r * 0.5) + '" fill="' + s.color + '" opacity=".65"/>' +
+              '<circle cx="20" cy="-8" r="' + (s.r * 0.55) + '" fill="' + s.color + '" opacity=".65"/>' +
+              '<circle cx="2" cy="14" r="' + (s.r * 0.6) + '" fill="' + s.color + '" opacity=".65"/>';
+    } else if (s.type === "protostar") {
+      extra = '<circle r="' + (s.r * 0.45) + '" fill="#fff7ed" opacity=".9"/>';
+    }
+    return '<circle r="' + s.r + '" fill="' + s.color + '" stroke="#0f172a" stroke-width="2" opacity=".9"/>' + extra;
+  }
+
+  var markup = '<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/></marker></defs>';
+
+  // Cycle: supernova -> nebula (dashed curve)
+  markup += '<path class="slc-edge" data-from="supernova" data-to="nebula" d="M 690 460 Q 850 240 475 92" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,5" marker-end="url(#arr)" opacity=".7"/>';
+  markup += '<text x="805" y="245" fill="#94a3b8" font-size="13" font-style="italic" text-anchor="middle">gas &amp; dust recycled</text>';
+
+  edges.forEach(function (e) {
+    var f = byId[e[0]], t = byId[e[1]];
+    var dx = t.x - f.x, dy = t.y - f.y, len = Math.hypot(dx, dy);
+    var ux = dx / len, uy = dy / len;
+    var sx = f.x + ux * (f.r + 4), sy = f.y + uy * (f.r + 4);
+    var ex = t.x - ux * (t.r + 9), ey = t.y - uy * (t.r + 9);
+    markup += '<line class="slc-edge" data-from="' + e[0] + '" data-to="' + e[1] + '" x1="' + sx + '" y1="' + sy + '" x2="' + ex + '" y2="' + ey + '" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>';
+    if (e[2]) {
+      markup += '<text class="slc-edge" data-from="' + e[0] + '" data-to="' + e[1] + '" x="' + e[3] + '" y="' + e[4] + '" fill="#94a3b8" font-size="12.5" font-style="italic" text-anchor="middle">' + e[2] + '</text>';
+    }
+  });
+
+  stages.forEach(function (s) {
+    markup += '<g class="slc-node" data-id="' + s.id + '" transform="translate(' + s.x + ',' + s.y + ')" role="button" tabindex="0" aria-label="' + s.name + '">' +
+              nodeMarkup(s) +
+              '<text y="' + (s.r + 15) + '" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="600">' + s.name + '</text>' +
+              '</g>';
+  });
+
+  svg.innerHTML = markup;
+
+  var nodeEls = svg.querySelectorAll(".slc-node");
+  var edgeEls = svg.querySelectorAll(".slc-edge");
+  var btns = Array.prototype.slice.call(document.querySelectorAll(".slc-buttons button"));
+
+  function applyHighlight(ids) {
+    var set = {};
+    ids.forEach(function (id) { set[id] = true; });
+    nodeEls.forEach(function (g) {
+      var on = set[g.getAttribute("data-id")];
+      g.classList.toggle("dimmed", !on);
+      g.classList.toggle("highlighted", !!on);
+    });
+    edgeEls.forEach(function (e) {
+      var on = set[e.getAttribute("data-from")] && set[e.getAttribute("data-to")];
+      e.classList.toggle("dimmed", !on);
+    });
+  }
+
+  function show(s) {
+    info.innerHTML = '<h2 style="color:' + s.color + '">' + s.name + '</h2><p>' + s.desc + '</p>';
+  }
+
+  function reset() {
+    applyHighlight(stages.map(function (s) { return s.id; }));
+    info.innerHTML = '<h2>Life cycles of stars</h2><p>Select a stage or a path button to follow how a star\'s mass decides its fate.</p>';
+    btns.forEach(function (b) { b.classList.remove("active"); });
+  }
+
+  nodeEls.forEach(function (g) {
+    g.addEventListener("click", function () {
+      var s = byId[g.getAttribute("data-id")];
+      show(s);
+      btns.forEach(function (b) { b.classList.remove("active"); });
+      if (s.path) applyHighlight(paths[s.path]);
+      else applyHighlight(["nebula", "protostar"]);
+    });
+    g.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); g.click(); }
+    });
+  });
+
+  btns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var p = b.getAttribute("data-path");
+      if (!p) { reset(); return; }
+      btns.forEach(function (x) { x.classList.remove("active"); });
+      b.classList.add("active");
+      applyHighlight(paths[p]);
+      show(pathDesc[p]);
+    });
+  });
+
+  reset();
+})();
+</script>
+```
+:::
