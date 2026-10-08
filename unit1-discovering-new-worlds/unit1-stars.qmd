@@ -151,9 +151,9 @@ starLifespans = [
 Plot.plot({
   title: "Star Lifespan vs. Mass — Bigger Stars Die MUCH Faster",
   subtitle: "Our Sun (G-type, 1 solar mass) has a 10-billion-year lifespan",
-  width: 700,
+  width: width,
   height: 380,
-  marginLeft: 130,
+  marginLeft: 110,
   x: {label: "Lifespan (billion years)", type: "log", grid: true},
   y: {label: null},
   marks: [
@@ -434,47 +434,70 @@ viewof starMass = Inputs.range([0.3, 30], {label: "Star mass (solar masses):", s
 ```{ojs}
 //| echo: false
 {
-  const width = 700;
-  const height = 300;
-  const svg = d3.create("svg").attr("width", width).attr("height", height);
-  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#0a0a2e").attr("rx", 12);
-
-  const lifespan = (10 / Math.pow(starMass, 2.5)).toFixed(2);
-  const temp = Math.round(5800 * Math.pow(starMass, 0.5));
-  const lum = Math.pow(starMass, 3.5).toFixed(1);
-  const fate = starMass < 0.5 ? "Slowly fades (never becomes red giant)" :
-               starMass < 8 ? "Red Giant → White Dwarf" :
-               starMass < 25 ? "Supergiant → Supernova → Neutron Star" :
+  const mass = starMass;
+  const temp = Math.round(5800 * Math.pow(mass, 0.5));
+  const lum = Math.pow(mass, 3.5);
+  const lifespan = 10 / Math.pow(mass, 2.5);
+  const fate = mass < 0.5 ? "Slowly fades (never becomes red giant)" :
+               mass < 8 ? "Red Giant → White Dwarf" :
+               mass < 25 ? "Supergiant → Supernova → Neutron Star" :
                "Supergiant → Supernova → BLACK HOLE";
-  const fateColor = starMass < 8 ? "#f39c12" : starMass < 25 ? "#e74c3c" : "#9b59b6";
+  const fateColor = mass < 8 ? "#f39c12" : mass < 25 ? "#e74c3c" : "#9b59b6";
   const stable = lifespan > 4.6 ? "✅ Long enough for complex life" : "❌ Too short for complex life";
   const stableColor = lifespan > 4.6 ? "#2ecc71" : "#e74c3c";
-
-  svg.append("text").attr("x", width/2).attr("y", 25).attr("text-anchor", "middle")
-    .attr("fill", "white").attr("font-size", 16).attr("font-weight", "bold")
-    .text(`Star: ${starMass.toFixed(1)} Solar Masses`);
-
-  // Star visualization
-  const r = Math.min(60, 15 + starMass * 5);
   const starColor = temp > 20000 ? "#6ca0dc" : temp > 10000 ? "#a0c4ff" : temp > 7000 ? "#ffffff" : temp > 5000 ? "#ffdd57" : temp > 4000 ? "#ffa94d" : "#ff6b6b";
-  svg.append("circle").attr("cx", 100).attr("cy", 170).attr("r", r)
+
+  const wrap = d3.create("div");
+  wrap.style("max-width", "100%");
+
+  // (a) Star + stats card (viewBox scales responsively)
+  const svg = d3.create("svg")
+    .attr("viewBox", "0 0 360 240")
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "520px").style("display", "block").style("margin", "auto");
+  svg.append("rect").attr("width", 360).attr("height", 240).attr("fill", "#0a0a2e").attr("rx", 12);
+  svg.append("text").attr("x", 180).attr("y", 22).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-size", 15).attr("font-weight", "bold")
+    .text(`Star: ${mass.toFixed(1)} Solar Masses`);
+
+  const r = Math.min(38, 8 + mass * 3);
+  svg.append("circle").attr("cx", 180).attr("cy", 62).attr("r", r)
     .attr("fill", starColor).attr("opacity", 0.9);
 
-  // Stats
   const stats = [
     {label: "Surface Temperature:", value: `${temp.toLocaleString()} K`, color: "white"},
-    {label: "Luminosity:", value: `${lum}× Sun`, color: "white"},
-    {label: "Lifespan:", value: `${lifespan} billion years`, color: "white"},
+    {label: "Luminosity:", value: `${+lum.toFixed(1)}× Sun`, color: "white"},
+    {label: "Lifespan:", value: `${lifespan.toFixed(2)} billion years`, color: "white"},
     {label: "Stability for life:", value: stable, color: stableColor},
     {label: "Fate:", value: fate, color: fateColor}
   ];
-
   stats.forEach((s, i) => {
-    svg.append("text").attr("x", 200).attr("y", 75 + i * 35).attr("fill", "#aaa").attr("font-size", 12).text(s.label);
-    svg.append("text").attr("x", 370).attr("y", 75 + i * 35).attr("fill", s.color).attr("font-size", 13).attr("font-weight", "bold").text(s.value);
+    const y = 108 + i * 26;
+    svg.append("text").attr("x", 10).attr("y", y).attr("fill", "#9aa7bd").attr("font-size", 11).text(s.label);
+    svg.append("text").attr("x", 350).attr("y", y).attr("text-anchor", "end").attr("fill", s.color).attr("font-size", 12).attr("font-weight", "bold").text(s.value);
   });
 
-  return svg.node();
+  wrap.append(() => svg.node());
+
+  // (b) Mini H-R diagram: where this star sits on the main sequence
+  const ms = d3.range(0.3, 30.1, 0.1).map(m => ({ mass: m, temp: 5800 * Math.pow(m, 0.5), lum: Math.pow(m, 3.5) }));
+  wrap.append(() => Plot.plot({
+    title: "Where this star sits on the main sequence",
+    width: width,
+    height: 200,
+    marginLeft: 44,
+    marginRight: 10,
+    style: { background: "#0a0a2e", color: "#e2e8f0", fontFamily: "sans-serif" },
+    x: {label: "Temperature (K)", reverse: true, type: "log"},
+    y: {label: "Luminosity (× Sun)", type: "log"},
+    marks: [
+      Plot.line(ms, {x: "temp", y: "lum", stroke: "#f39c12", strokeWidth: 2}),
+      Plot.dot([{temp, lum}], {x: "temp", y: "lum", fill: starColor, r: 6, stroke: "#fff", strokeWidth: 1,
+        title: `${mass.toFixed(1)} M☉\nTemp: ${temp} K\nLuminosity: ${+lum.toFixed(1)}× Sun`, tip: true})
+    ]
+  }));
+
+  return wrap.node();
 }
 ```
 
@@ -525,9 +548,9 @@ elements = [
 Plot.plot({
   title: "Nucleosynthesis: Which Stars Build Which Elements?",
   subtitle: "Minimum star mass needed to create each element",
-  width: 700,
+  width: width,
   height: 380,
-  marginLeft: 140,
+  marginLeft: 120,
   x: {label: "Minimum Star Mass (solar masses)", grid: true},
   y: {label: null},
   marks: [
@@ -554,6 +577,70 @@ Plot.plot({
     })
   ]
 })
+```
+
+```{ojs}
+//| echo: false
+viewof fusionMass = Inputs.range([0.5, 30], {label: "Star mass (solar masses):", step: 0.1, value: 1.0})
+```
+
+```{ojs}
+//| echo: false
+{
+  const mass = fusionMass;
+  const shells = [
+    {label: "Fe core", minMass: 10, color: "#2c3e50"},
+    {label: "Si → Fe", minMass: 10, color: "#8e44ad"},
+    {label: "O → Si, S", minMass: 8, color: "#c0392b"},
+    {label: "Ne → O, Mg", minMass: 8, color: "#e74c3c"},
+    {label: "C → Ne, Na", minMass: 4, color: "#e67e22"},
+    {label: "He → C, O", minMass: 0.5, color: "#f39c12"},
+    {label: "H → He", minMass: 0.08, color: "#3498db"}
+  ];
+  const active = shells.filter(s => mass >= s.minMass);
+  const supernova = mass >= 8;
+
+  const svg = d3.create("svg")
+    .attr("viewBox", "0 0 360 360")
+    .style("width", "100%").style("height", "auto")
+    .style("max-width", "520px").style("display", "block").style("margin", "auto");
+  svg.append("rect").attr("width", 360).attr("height", 360).attr("fill", "#0a0a2e").attr("rx", 12);
+
+  svg.append("text").attr("x", 180).attr("y", 24).attr("text-anchor", "middle")
+    .attr("fill", "white").attr("font-size", 15).attr("font-weight", "bold")
+    .text(`Fusion shells inside a ${mass.toFixed(1)} M☉ star`);
+  svg.append("text").attr("x", 180).attr("y", 40).attr("text-anchor", "middle")
+    .attr("fill", "#9aa7bd").attr("font-size", 10)
+    .text("Dim shells = not reached at this mass");
+
+  // Onion: concentric filled circles, innermost drawn last (on top)
+  const cx = 110, cy = 150;
+  active.slice().reverse().forEach((s, i) => {
+    const r = 24 + (active.length - 1 - i) * 15;
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", r)
+      .attr("fill", s.color).attr("opacity", 0.85).attr("stroke", "#0a0a2e").attr("stroke-width", 1);
+  });
+
+  // Legend (all shells, active colored / inactive dimmed)
+  shells.forEach((s, i) => {
+    const isActive = mass >= s.minMass;
+    const y = 64 + i * 22;
+    svg.append("circle").attr("cx", 240).attr("cy", y - 4).attr("r", 6)
+      .attr("fill", s.color).attr("opacity", isActive ? 1 : 0.2);
+    svg.append("text").attr("x", 252).attr("y", y).attr("fill", isActive ? "#e2e8f0" : "#5b6675")
+      .attr("font-size", 11).attr("font-weight", isActive ? "bold" : "normal")
+      .text(s.label);
+  });
+
+  const status = supernova ? "Fuses down to an iron core → supernova!" :
+                 mass >= 0.5 ? `Fuses down to ${active[0].label} → white dwarf` :
+                 "Fuses only H → He — slowly fades";
+  svg.append("text").attr("x", 180).attr("y", 340).attr("text-anchor", "middle")
+    .attr("fill", supernova ? "#e74c3c" : "#2ecc71").attr("font-size", 12).attr("font-weight", "bold")
+    .text(status);
+
+  return svg.node();
+}
 ```
 
 ```{ojs}
