@@ -187,7 +187,9 @@ Borrelly's orbit is tilted about **30°** out of Earth's orbital plane. Drag to 
       const E = (i / 200) * Math.PI * 2;
       const xp = a * (Math.cos(E) - e);
       const yp = b * Math.sin(E);
-      pts.push(new THREE.Vector3(xp, yp * Math.cos(inc), yp * Math.sin(inc)));
+      // Reference plane is the ecliptic (x-z, y=0), matching the green disk.
+      // Tilt rotates the ellipse about the x-axis out of that plane.
+      pts.push(new THREE.Vector3(xp, -yp * Math.sin(inc), yp * Math.cos(inc)));
     }
     const geo = new THREE.BufferGeometry().setFromPoints(pts);
     return new THREE.Line(geo, new THREE.LineBasicMaterial({color}));
@@ -252,15 +254,17 @@ Borrelly's orbit is tilted about **30°** out of Earth's orbital plane. Drag to 
     last = ts;
     t += dt * 0.22; // years per second
 
-    const Ee = t * Math.PI * 2;
-    earth.position.set(Math.cos(Ee) * 0.98, 0, Math.sin(Ee) * 0.98);
+    // Earth follows its (slightly eccentric) elliptical orbit, matching the green line
+    const aE = 1.0, eE = 0.017, bE = aE * Math.sqrt(1 - eE * eE);
+    const EE = solveKepler((t % 1.0) * Math.PI * 2, eE);
+    earth.position.set(aE * (Math.cos(EE) - eE), 0, bE * Math.sin(EE));
 
     const Eb = solveKepler(((t / 6.85) * Math.PI * 2) % (Math.PI * 2), 0.62);
     const aB = 3.61, eB = 0.62, bB = aB * Math.sqrt(1 - eB * eB);
     const xp = aB * (Math.cos(Eb) - eB);
     const yp = bB * Math.sin(Eb);
     const inc = BINC * Math.PI / 180;
-    comet.position.set(xp, yp * Math.cos(inc), yp * Math.sin(inc));
+    comet.position.set(xp, -yp * Math.sin(inc), yp * Math.cos(inc));
 
     const rB = aB * (1 - eB * Math.cos(Eb));
     const state = rB < 1.6 ? "💧 near Sun — ice vaporizes" : rB > 2.5 ? "❄️ far from Sun — frozen" : "🌡️ warming up";
