@@ -66,6 +66,7 @@ This is the same question we need to answer for exoplanets: **Does the planet's 
 //| echo: false
 Plot = require("@observablehq/plot")
 d3 = require("d3@7")
+THREE = require("three@0.149.0")
 ```
 
 ```{ojs}
@@ -131,6 +132,149 @@ viewof borrellyTime = Inputs.range([0, 6.85], {label: "Time (years):", step: 0.0
     .text("Orbits are to scale; bodies are not. Drag the slider to walk through 6.85 years.");
 
   return svg.node();
+}
+```
+
+#### 🔭 See it in 3D
+
+Borrelly's orbit is tilted about **30°** out of Earth's orbital plane. Drag to rotate and scroll to zoom — watch the comet dip above and below the green disk.
+
+```{ojs}
+//| echo: false
+{
+  const solveKepler = (M, e) => { let E = M; for (let i = 0; i < 8; i++) E = E - (E - e * Math.sin(E) - M) / (1 - e * Math.cos(E)); return E; };
+
+  const wrap = d3.create("div");
+  wrap.style("position", "relative").style("max-width", "720px").style("margin", "auto");
+  const el = wrap.node();
+
+  const canvas = document.createElement("canvas");
+  canvas.style.display = "block";
+  canvas.style.touchAction = "none";
+  el.appendChild(canvas);
+
+  const readout = document.createElement("div");
+  readout.style.cssText = "position:absolute;top:10px;left:10px;background:rgba(10,10,30,.72);color:#e2e8f0;padding:8px 12px;border-radius:8px;font-size:.85em;line-height:1.5;pointer-events:none;";
+  el.appendChild(readout);
+
+  const renderer = new THREE.WebGLRenderer({canvas, antialias: true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0a0a1e);
+  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+
+  scene.add(new THREE.AmbientLight(0x404060, 1.4));
+  const sunLight = new THREE.PointLight(0xffffff, 3, 0, 0);
+  scene.add(sunLight);
+
+  const sun = new THREE.Mesh(new THREE.SphereGeometry(0.35, 32, 32), new THREE.MeshBasicMaterial({color: 0xffcc33}));
+  scene.add(sun);
+
+  // Faint green disk = Earth's orbital plane (the ecliptic)
+  const ecliptic = new THREE.Mesh(
+    new THREE.RingGeometry(0.85, 6.0, 64),
+    new THREE.MeshBasicMaterial({color: 0x2ecc71, side: THREE.DoubleSide, transparent: true, opacity: 0.07})
+  );
+  ecliptic.rotation.x = -Math.PI / 2;
+  scene.add(ecliptic);
+
+  function orbitLine(a, e, incDeg, color) {
+    const pts = [];
+    const inc = incDeg * Math.PI / 180;
+    const b = a * Math.sqrt(1 - e * e);
+    for (let i = 0; i <= 200; i++) {
+      const E = (i / 200) * Math.PI * 2;
+      const xp = a * (Math.cos(E) - e);
+      const yp = b * Math.sin(E);
+      pts.push(new THREE.Vector3(xp, yp * Math.cos(inc), yp * Math.sin(inc)));
+    }
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    return new THREE.Line(geo, new THREE.LineBasicMaterial({color}));
+  }
+
+  scene.add(orbitLine(1.0, 0.017, 0, 0x2ecc71));   // Earth (in the ecliptic plane)
+  const BINC = 30;
+  scene.add(orbitLine(3.61, 0.62, BINC, 0xa29bfe)); // Borrelly (tilted 30°)
+
+  const earth = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), new THREE.MeshBasicMaterial({color: 0x2ecc71}));
+  scene.add(earth);
+  const cometMat = new THREE.MeshBasicMaterial({color: 0x74b9ff});
+  const comet = new THREE.Mesh(new THREE.SphereGeometry(0.1, 16, 16), cometMat);
+  scene.add(comet);
+
+  // Custom orbit controls: drag to rotate, scroll to zoom
+  let theta = 0.7, phi = 1.15, dist = 11;
+  function updateCamera() {
+    camera.position.set(
+      dist * Math.sin(phi) * Math.cos(theta),
+      dist * Math.cos(phi),
+      dist * Math.sin(phi) * Math.sin(theta)
+    );
+    camera.lookAt(0, 0, 0);
+  }
+  updateCamera();
+  let dragging = false, lastX = 0, lastY = 0;
+  canvas.addEventListener("pointerdown", e => { dragging = true; lastX = e.clientX; lastY = e.clientY; try { canvas.setPointerCapture(e.pointerId); } catch {} });
+  canvas.addEventListener("pointermove", e => {
+    if (!dragging) return;
+    theta -= (e.clientX - lastX) * 0.01;
+    phi -= (e.clientY - lastY) * 0.01;
+    phi = Math.max(0.15, Math.min(Math.PI - 0.15, phi));
+    lastX = e.clientX; lastY = e.clientY;
+    updateCamera();
+  });
+  canvas.addEventListener("pointerup", () => dragging = false);
+  canvas.addEventListener("pointercancel", () => dragging = false);
+  canvas.addEventListener("wheel", e => {
+    e.preventDefault();
+    dist *= (e.deltaY > 0 ? 1.1 : 0.9);
+    dist = Math.max(2.5, Math.min(25, dist));
+    updateCamera();
+  }, {passive: false});
+
+  function resize() {
+    const w = el.clientWidth || 600;
+    const h = Math.round(w * 0.66);
+    renderer.setSize(w, h, false);
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  const ro = new ResizeObserver(resize);
+  ro.observe(el);
+
+  let t = 0, raf = 0, last = performance.now();
+  function step(ts) {
+    const dt = Math.min((ts - last) / 1000, 0.05);
+    last = ts;
+    t += dt * 0.22; // years per second
+
+    const Ee = t * Math.PI * 2;
+    earth.position.set(Math.cos(Ee) * 0.98, 0, Math.sin(Ee) * 0.98);
+
+    const Eb = solveKepler(((t / 6.85) * Math.PI * 2) % (Math.PI * 2), 0.62);
+    const aB = 3.61, eB = 0.62, bB = aB * Math.sqrt(1 - eB * eB);
+    const xp = aB * (Math.cos(Eb) - eB);
+    const yp = bB * Math.sin(Eb);
+    const inc = BINC * Math.PI / 180;
+    comet.position.set(xp, yp * Math.cos(inc), yp * Math.sin(inc));
+
+    const rB = aB * (1 - eB * Math.cos(Eb));
+    const state = rB < 1.6 ? "💧 near Sun — ice vaporizes" : rB > 2.5 ? "❄️ far from Sun — frozen" : "🌡️ warming up";
+    cometMat.color.set(rB < 1.6 ? 0xf39c12 : rB > 2.5 ? 0x74b9ff : 0xf6e05e);
+    readout.innerHTML = '<span style="color:#a29bfe;font-weight:700;">Borrelly</span> ' + rB.toFixed(2) + ' AU · ' + state +
+      '<br><span style="opacity:.65;">drag to rotate · scroll to zoom</span>';
+
+    renderer.render(scene, camera);
+    raf = requestAnimationFrame(step);
+  }
+  raf = requestAnimationFrame(step);
+  invalidation.then(() => { cancelAnimationFrame(raf); ro.disconnect(); renderer.dispose(); });
+
+  return el;
 }
 ```
 
@@ -224,6 +368,12 @@ buildQuiz("borrelly-quiz", "☄️ Check Your Understanding — Comet Borrelly",
     options: ["It's too far from the Sun for significant heating", "The Sun has cooled down", "The comet generates cold", "Its orbit is a perfect circle"],
     correct: 0,
     explanation: "At 5.85 AU (aphelion, its farthest point), solar heating is very weak, so the water stays frozen. Borrelly spends most of its 6.85-year orbit far from the Sun."
+  },
+  {
+    q: "In the 3D view, Borrelly's purple orbit dips above and below the green disk of Earth's orbital plane. About how much is it tilted?",
+    options: ["0° — it's perfectly flat", "About 30°", "About 90°", "180°"],
+    correct: 1,
+    explanation: "Borrelly's orbit is inclined roughly 30° to the ecliptic. Most planets orbit nearly flat in the same plane, but comets can be strongly tilted — the 3D view exists to show this."
   }
 ])
 ```
