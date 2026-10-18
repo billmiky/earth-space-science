@@ -1,6 +1,6 @@
 ---
 title: "Unit 1: Planets and Orbits"
-subtitle: "Is the exoplanet the right distance from its star for liquid water?"
+subtitle: "Is the exoplanet like Earth in terms of its distance from its star? What allows a planet to keep a stable temperature?"
 format:
   html:
     toc: true
@@ -36,12 +36,88 @@ h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !impo
 
 <a class="quiz-jump-btn" href="#end-of-chapter-quiz">🧠 Quiz ↓</a>
 
-<div class="big-question">🪐 Is the Exoplanet in the Habitable Zone? 🪐</div>
+<div class="big-question">🪐 Is the Exoplanet Like Earth in Its Distance from Its Star? 🪐</div>
 
-# Engage: The Mystery of Comet Borrelly
+::: {.callout-note collapse="true"}
+## 📒 Using this chapter with your student packet
+
+This chapter follows the same steps as your **Planets and Orbits 5E** packet. Missed a class or need a refresher? Jump to the matching section:
+
+| Packet section | In this chapter |
+|---|---|
+| Engage: Which parts of the solar system have liquid water? | [Engage](#engage-which-parts-of-the-solar-system-have-liquid-water) |
+| Explore 1 / Explain 1: Orbital Data Investigation, Revising Models | [Explore 1](#explore-1-orbital-data-investigation), [Explain 1](#explain-1-revising-solar-system-models) |
+| Explore 2: Exoplanets and their Stars Investigation | [Explore 2](#explore-2-exoplanets-and-their-stars) |
+| Explain 2: Kepler's Third Law | [Explain 2](#explain-2-keplers-third-law) |
+| Elaborate: Kepler's First Law, Constructing an Orbit | [Elaborate](#elaborate-how-do-we-determine-the-shapes-of-orbits) |
+| Evaluate: Planets and Orbits Model Rubric | [Evaluate](#evaluate-your-planets-and-orbits-model) |
+:::
+
+# Engage: Which Parts of the Solar System Have Liquid Water?
+
+Water is found all over our solar system, but almost never as a **liquid**. Look at where each object is and what its water is like. What story does the data tell?
+
+```{ojs}
+//| echo: false
+waterObjects = [
+  {object: "Mercury", dist: 57.9, phase: "Vapor", note: "Very small traces of water vapor in its thin atmosphere"},
+  {object: "Venus", dist: 108.2, phase: "Vapor", note: "Very small traces of water vapor in the atmosphere"},
+  {object: "Earth", dist: 149.6, phase: "Liquid", note: "71% of the surface is water; 96.5% of it is salty ocean"},
+  {object: "Mars", dist: 227.9, phase: "Ice", note: "Almost all ice, a little vapor, some brief liquid water on the surface"},
+  {object: "Comet Borrelly", dist: 537, phase: "Ice ↔ vapor", note: "Ice most of the time; every several years it shoots out jets of vapor and dust", min: 202, max: 872},
+  {object: "Europa (Jupiter's moon)", dist: 778.4, phase: "Ice over a liquid ocean", note: "Ice crust, with a salty liquid ocean likely underneath"},
+  {object: "Mimas (Saturn's moon)", dist: 1426, phase: "Ice", note: "A big ball of frozen water"},
+  {object: "Uranus", dist: 2871, phase: "Ice", note: "Possible water in the atmosphere and on the surface"},
+  {object: "Neptune", dist: 4498, phase: "Ice", note: "Lots of ice mixed into its hydrogen and helium atmosphere"},
+  {object: "Pluto", dist: 5910, phase: "Ice", note: "Several small regions of ice"}
+]
+```
+
+```{ojs}
+//| echo: false
+{
+  const wrap = d3.create("div");
+  wrap.append(() => Plot.plot({
+    title: "Water in Our Solar System",
+    subtitle: "Average distance from the Sun (log scale). Comet Borrelly's line shows its closest-to-farthest range.",
+    width: width,
+    height: 380,
+    marginLeft: Math.min(150, width * 0.36),
+    marginRight: 16,
+    marginBottom: 42,
+    color: phaseColors,
+    x: {label: "Average distance from the Sun (million km)", type: "log", grid: true, tickFormat: d => d.toLocaleString()},
+    y: {label: null, domain: waterObjects.map(d => d.object), tickFormat: d => width < 500 ? d.replace(/ \(.*/, "") : d},
+    marks: [
+      Plot.ruleX([149.6], {stroke: "#2ecc71", strokeDasharray: "4,4", strokeOpacity: 0.7}),
+      Plot.ruleY(waterObjects.filter(d => d.min), {y: "object", x1: "min", x2: "max", stroke: "#9b59b6", strokeWidth: 3, strokeOpacity: 0.5}),
+      Plot.dot(waterObjects, {x: "dist", y: "object", fill: "phase", r: 8, stroke: "#333", strokeWidth: 0.5, tip: true,
+        title: d => `${d.object}\n${d.dist.toLocaleString()} million km\n${d.note}`})
+    ]
+  }));
+  wrap.append("div")
+    .style("display", "flex").style("flex-wrap", "wrap")
+    .style("gap", "6px 16px").style("justify-content", "center")
+    .style("margin-top", "8px").style("font-size", "0.85em")
+    .html(phaseColors.domain.map((s, i) =>
+      `<span style="display:inline-flex;align-items:center;gap:6px;">` +
+      `<span style="width:12px;height:12px;border-radius:50%;background:${phaseColors.range[i]};border:1px solid #333;flex:0 0 auto;"></span>` +
+      `${s}</span>`).join(""));
+  return wrap.node();
+}
+```
+
+::: {.student-task}
+### ✏️ In your packet: Describe the phenomenon & develop an initial model
+
+- **Tell the story** of the Water in Our Solar System table with your group. What do you notice about where liquid water is found?
+- **Draw your initial model** on the Sun–Earth diagram to explain the phenomenon. Include **data** and **annotations**.
+:::
+
+## The Investigative Phenomenon: Comet Borrelly
 
 ::: {.engage-box}
-## ☄️ Frozen, Then Boiling — Every 6 Years
+## ☄️ Frozen, Then Bursting into Vapor, Every 6.8 Years
 
 <div style="font-size: 1.3em; font-weight: 700; text-align: center; margin: 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
 Comet Borrelly has water that is frozen most of the time, but every several years it shoots out a jet of vaporized water and dust. Why?
@@ -70,7 +146,7 @@ THREE = require("three@0.149.0")
 
 ```{ojs}
 //| echo: false
-viewof borrellyTime = Inputs.range([0, 6.85], {label: "Time (years):", step: 0.05, value: 0})
+viewof borrellyTime = Inputs.range([0, 6.80], {label: "Time (years):", step: 0.05, value: 0})
 ```
 
 ```{ojs}
@@ -84,8 +160,8 @@ viewof borrellyTime = Inputs.range([0, 6.85], {label: "Time (years):", step: 0.0
 
   const aE = 1.0, eE = 0.017;
   const ME = 2 * Math.PI * (t % 1.0), EE = solveE(ME, eE);
-  const aB = 3.61, eB = 0.62, cB = aB * eB, bB = aB * Math.sqrt(1 - eB*eB);
-  const MB = 2 * Math.PI * (t / 6.85), EB = solveE(MB, eB);
+  const aB = 3.59, eB = 0.624, cB = aB * eB, bB = aB * Math.sqrt(1 - eB*eB);
+  const MB = 2 * Math.PI * (t / 6.80), EB = solveE(MB, eB);
 
   const cxE = sx - aE * eE * scale, cyE = sy;
   const cxB = sx - cB * scale, cyB = sy;
@@ -106,7 +182,7 @@ viewof borrellyTime = Inputs.range([0, 6.85], {label: "Time (years):", step: 0.0
     .text("Comet Borrelly vs. Earth");
   svg.append("text").attr("x", W/2).attr("y", 38).attr("text-anchor", "middle")
     .attr("fill", "#9aa7bd").attr("font-size", 10)
-    .text("🟢 Earth (period 1 yr)   ·   🟣 Borrelly (period 6.85 yr)");
+    .text("🟢 Earth (period 1 yr)   ·   🟣 Borrelly (period 6.80 yr)");
 
   svg.append("circle").attr("cx", cxE).attr("cy", cyE).attr("r", aE * scale)
     .attr("fill", "none").attr("stroke", "#2ecc71").attr("stroke-width", 1.5);
@@ -128,7 +204,7 @@ viewof borrellyTime = Inputs.range([0, 6.85], {label: "Time (years):", step: 0.0
     .text(`Borrelly: ${rB.toFixed(2)} AU — ${state}`);
   svg.append("text").attr("x", W/2).attr("y", 358).attr("text-anchor", "middle")
     .attr("fill", "#9aa7bd").attr("font-size", 8)
-    .text("Orbits are to scale; bodies are not. Drag the slider to walk through 6.85 years.");
+    .text("Orbits are to scale; bodies are not. Drag the slider to walk through 6.80 years.");
 
   return svg.node();
 }
@@ -196,7 +272,7 @@ Borrelly's orbit is tilted about **30°** out of Earth's orbital plane. Drag to 
 
   scene.add(orbitLine(1.0, 0.017, 0, 0x2ecc71));   // Earth (in the ecliptic plane)
   const BINC = 30;
-  scene.add(orbitLine(3.61, 0.62, BINC, 0xa29bfe)); // Borrelly (tilted 30°)
+  scene.add(orbitLine(3.59, 0.624, BINC, 0xa29bfe)); // Borrelly (tilted 30°)
 
   const earth = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), new THREE.MeshBasicMaterial({color: 0x2ecc71}));
   scene.add(earth);
@@ -258,8 +334,8 @@ Borrelly's orbit is tilted about **30°** out of Earth's orbital plane. Drag to 
     const EE = solveKepler((t % 1.0) * Math.PI * 2, eE);
     earth.position.set(aE * (Math.cos(EE) - eE), 0, bE * Math.sin(EE));
 
-    const Eb = solveKepler(((t / 6.85) * Math.PI * 2) % (Math.PI * 2), 0.62);
-    const aB = 3.61, eB = 0.62, bB = aB * Math.sqrt(1 - eB * eB);
+    const Eb = solveKepler(((t / 6.80) * Math.PI * 2) % (Math.PI * 2), 0.624);
+    const aB = 3.59, eB = 0.624, bB = aB * Math.sqrt(1 - eB * eB);
     const xp = aB * (Math.cos(Eb) - eB);
     const yp = bB * Math.sin(Eb);
     const inc = BINC * Math.PI / 180;
@@ -361,16 +437,16 @@ buildQuiz = function(id, title, questions) {
 //| echo: false
 buildQuiz("borrelly-quiz", "☄️ Check Your Understanding — Comet Borrelly", [
   {
-    q: "At the start of the slider (t = 0), Borrelly is at 1.37 AU. What happens to its water here?",
+    q: "At the start of the slider (t = 0), Borrelly is at 1.35 AU. What happens to its water here?",
     options: ["It stays frozen", "Solar heating vaporizes the ice", "It turns into liquid rain", "Nothing changes"],
     correct: 1,
-    explanation: "At 1.37 AU (perihelion, its closest approach), solar heating is strongest and the comet's ice vaporizes into jets — this is the 'boiling' phase that gives Borrelly its tail."
+    explanation: "At 1.35 AU (perihelion, its closest approach), solar heating is strongest and the comet's ice vaporizes into jets — this is the 'boiling' phase that gives Borrelly its tail."
   },
   {
-    q: "Drag the slider to about 3.4 years. Borrelly is now at 5.85 AU. Why is it frozen?",
+    q: "Drag the slider to about 3.4 years. Borrelly is now at 5.83 AU. Why is it frozen?",
     options: ["It's too far from the Sun for significant heating", "The Sun has cooled down", "The comet generates cold", "Its orbit is a perfect circle"],
     correct: 0,
-    explanation: "At 5.85 AU (aphelion, its farthest point), solar heating is very weak, so the water stays frozen. Borrelly spends most of its 6.85-year orbit far from the Sun."
+    explanation: "At 5.83 AU (aphelion, its farthest point), solar heating is very weak, so the water stays frozen. Borrelly spends most of its 6.80-year orbit far from the Sun."
   },
   {
     q: "In the 3D view, Borrelly's purple orbit dips above and below the green disk of Earth's orbital plane. About how much is it tilted?",
@@ -381,138 +457,203 @@ buildQuiz("borrelly-quiz", "☄️ Check Your Understanding — Comet Borrelly",
 ])
 ```
 
-# Explore 1: Patterns in Solar System Data
+# Explore 1: Orbital Data Investigation
 
 ::: {.explore-box}
-## 🔬 Kepler's Third Law — The Mathematical Pattern
+## 🔬 Looking for Patterns in Orbital Data
 
-When you graph orbital period vs. distance from the Sun for all planets, an elegant pattern emerges.
+In class you graph the **Solar System Orbital Data** in Excel. You can do the same thing here: pick any two variables and look for a pattern that could explain **why water is a different phase on different objects** in the solar system.
 :::
 
 ```{ojs}
 //| echo: false
-solarSystem = [
-  {name: "Mercury", period: 0.241, distance: 0.387, type: "Rocky planet"},
-  {name: "Venus", period: 0.615, distance: 0.723, type: "Rocky planet"},
-  {name: "Earth", period: 1.0, distance: 1.0, type: "Rocky planet"},
-  {name: "Mars", period: 1.881, distance: 1.524, type: "Rocky planet"},
-  {name: "Jupiter", period: 11.86, distance: 5.203, type: "Gas giant"},
-  {name: "Saturn", period: 29.46, distance: 9.537, type: "Gas giant"},
-  {name: "Uranus", period: 84.01, distance: 19.19, type: "Ice giant"},
-  {name: "Neptune", period: 164.8, distance: 30.07, type: "Ice giant"},
-  {name: "Comet Borrelly", period: 6.85, distance: 3.61, type: "Comet"}
+orbitalData = [
+  {object: "Mercury", avg: 0.387, period: 0.241, min: 0.307, max: 0.467, phase: "Vapor"},
+  {object: "Venus", avg: 0.723, period: 0.615, min: 0.718, max: 0.728, phase: "Vapor"},
+  {object: "Earth", avg: 1.00, period: 1, min: 0.983, max: 1.017, phase: "Liquid"},
+  {object: "Mars", avg: 1.523, period: 1.88, min: 1.381, max: 1.666, phase: "Ice"},
+  {object: "Comet Borrelly", avg: 3.590, period: 6.80, min: 1.350, max: 5.830, phase: "Ice ↔ vapor"},
+  {object: "Europa (Jupiter's moon)", avg: 5.203, period: 11.87, min: 4.950, max: 5.459, phase: "Ice over a liquid ocean"},
+  {object: "Mimas (Saturn's moon)", avg: 9.539, period: 29.46, min: 9.041, max: 10.124, phase: "Ice"},
+  {object: "Uranus", avg: 19.185, period: 84.03, min: 18.324, max: 20.078, phase: "Ice"},
+  {object: "Neptune", avg: 30.061, period: 164.82, min: 29.709, max: 30.386, phase: "Ice"},
+  {object: "Pluto", avg: 39.479, period: 248.06, min: 29.658, max: 49.304, phase: "Ice"}
 ]
 ```
 
 ```{ojs}
 //| echo: false
-viewof keplerScale = Inputs.radio(["Log scale", "Linear scale"], {label: "Axes:", value: "Log scale"})
+phaseColors = ({
+  domain: ["Vapor", "Liquid", "Ice", "Ice ↔ vapor", "Ice over a liquid ocean"],
+  range: ["#e67e22", "#2ecc71", "#3498db", "#9b59b6", "#16a085"]
+})
 ```
 
 ```{ojs}
 //| echo: false
 {
-  const log = keplerScale === "Log scale";
+  const wrap = d3.create("div").style("overflow-x", "auto");
+  wrap.append(() => Inputs.table(orbitalData, {
+    columns: ["object", "avg", "period", "min", "max", "phase"],
+    header: {
+      object: "Celestial object",
+      avg: "Average distance from Sun (AU)",
+      period: "Period of revolution (Earth years)",
+      min: "Minimum distance (AU)",
+      max: "Maximum distance (AU)",
+      phase: "Phase of most of its water"
+    },
+    rows: 11
+  }));
+  wrap.append("p").style("font-size", "0.85em").style("margin-top", "6px")
+    .text("One AU (astronomical unit) = Earth's average distance from the Sun, about 149.6 million km. Europa and Mimas share the orbits of Jupiter and Saturn.");
+  return wrap.node();
+}
+```
+
+```{ojs}
+//| echo: false
+orbitVars = ({
+  "Average distance from Sun (AU)": "avg",
+  "Period of revolution (Earth years)": "period",
+  "Minimum distance from Sun (AU)": "min",
+  "Maximum distance from Sun (AU)": "max"
+})
+```
+
+```{ojs}
+//| echo: false
+viewof graphX = Inputs.select(Object.keys(orbitVars), {label: "x-axis:", value: "Average distance from Sun (AU)"})
+```
+
+```{ojs}
+//| echo: false
+viewof graphY = Inputs.select(Object.keys(orbitVars), {label: "y-axis:", value: "Period of revolution (Earth years)"})
+```
+
+```{ojs}
+//| echo: false
+viewof graphOptions = Inputs.checkbox(["Log scale axes", "Add a power trendline (like Excel)"], {label: "Options:", value: ["Log scale axes"]})
+```
+
+```{ojs}
+//| echo: false
+{
+  const xk = orbitVars[graphX], yk = orbitVars[graphY];
+  const log = graphOptions.includes("Log scale axes");
+  const trend = graphOptions.includes("Add a power trendline (like Excel)");
   const fmt = d => d >= 1 ? String(d) : String(+d.toFixed(2));
-  const typeColors = {
-    domain: ["Rocky planet", "Gas giant", "Ice giant", "Comet"],
-    range: ["#e67e22", "#f1c40f", "#3498db", "#9b59b6"]
-  };
+
+  // Least-squares fit of log(y) = log(A) + B·log(x), which is what Excel's power trendline does
+  const pts = orbitalData.map(d => [Math.log(d[xk]), Math.log(d[yk])]);
+  const n = pts.length;
+  const mx = d3.mean(pts, p => p[0]), my = d3.mean(pts, p => p[1]);
+  const B = d3.sum(pts, p => (p[0] - mx) * (p[1] - my)) / d3.sum(pts, p => (p[0] - mx) ** 2);
+  const A = Math.exp(my - B * mx);
+  const ssRes = d3.sum(pts, p => (p[1] - (Math.log(A) + B * p[0])) ** 2);
+  const ssTot = d3.sum(pts, p => (p[1] - my) ** 2);
+  const r2 = ssTot ? 1 - ssRes / ssTot : 1;
+  const [x0, x1] = d3.extent(orbitalData, d => d[xk]);
+  const curve = d3.range(0, 1.0001, 0.005).map(t => {
+    const x = log ? x0 * (x1 / x0) ** t : x0 + (x1 - x0) * t;
+    return {x, y: A * x ** B};
+  });
+
   const wrap = d3.create("div");
-  wrap.style("max-width", "100%");
   wrap.append(() => Plot.plot({
-    title: "Kepler's Third Law: Period² ∝ Distance³",
-    subtitle: log ? "Log axes turn the power law into a straight line" : "Linear axes — watch the inner planets cram into the corner",
+    title: `${graphY.replace(/ \(.*/, "")} vs. ${graphX.replace(/ \(.*/, "").toLowerCase()}`,
+    subtitle: trend ? `Power trendline: y = ${A.toFixed(2)}x^${B.toFixed(2)}   (R² = ${r2.toFixed(3)})` : "Tip: hover or tap a dot to see its values",
     width: width,
     height: 400,
-    marginLeft: 48,
-    marginRight: 10,
-    marginBottom: 40,
-    color: { domain: typeColors.domain, range: typeColors.range },
-    x: {label: "Average Distance from Sun (AU)", type: log ? "log" : "linear", grid: true, tickFormat: fmt},
-    y: {label: "Orbital Period (years)", type: log ? "log" : "linear", grid: true, tickFormat: fmt},
+    marginLeft: 50,
+    marginRight: 12,
+    marginBottom: 42,
+    color: phaseColors,
+    x: {label: graphX, type: log ? "log" : "linear", grid: true, tickFormat: fmt},
+    y: {label: graphY, type: log ? "log" : "linear", grid: true, tickFormat: fmt},
     marks: [
-      Plot.dot(solarSystem, {
-        x: "distance",
-        y: "period",
-        fill: "type",
-        r: 7,
-        stroke: "#333",
-        strokeWidth: 0.5,
-        title: d => `${d.name}\nDistance: ${d.distance} AU\nPeriod: ${d.period} yr`,
+      ...(trend ? [Plot.line(curve, {x: "x", y: "y", stroke: "#667eea", strokeWidth: 2, strokeDasharray: "5,5"})] : []),
+      Plot.dot(orbitalData, {
+        x: xk, y: yk, fill: "phase", r: 7, stroke: "#333", strokeWidth: 0.5,
+        title: d => `${d.object}\n${graphX}: ${d[xk]}\n${graphY}: ${d[yk]}\nWater: ${d.phase}`,
         tip: true
       }),
-      ...(log ? [Plot.text(solarSystem, {
-        x: "distance",
-        y: "period",
-        text: "name",
-        dx: 10,
-        dy: -6,
-        fontSize: 10,
-        fontWeight: "bold"
-      })] : []),
-      Plot.line(
-        d3.range(0.2, 35, 0.1).map(d => ({x: d, y: Math.pow(d, 1.5)})),
-        {x: "x", y: "y", stroke: "#667eea", strokeWidth: 2, strokeDasharray: "5,5"}
-      )
+      ...(log ? [Plot.text(orbitalData, {x: xk, y: yk, text: d => d.object.replace(/ \(.*/, ""), dx: 9, dy: -7, fontSize: 10, textAnchor: "start"})] : [])
     ]
   }));
   wrap.append("div")
     .style("display", "flex").style("flex-wrap", "wrap")
     .style("gap", "6px 16px").style("justify-content", "center")
-    .style("margin-top", "10px").style("font-size", "0.85em")
-    .html(typeColors.domain.map((s, i) =>
+    .style("margin-top", "8px").style("font-size", "0.85em")
+    .html(phaseColors.domain.map((s, i) =>
       `<span style="display:inline-flex;align-items:center;gap:6px;">` +
-      `<span style="width:12px;height:12px;border-radius:50%;background:${typeColors.range[i]};border:1px solid #333;flex:0 0 auto;"></span>` +
+      `<span style="width:12px;height:12px;border-radius:50%;background:${phaseColors.range[i]};border:1px solid #333;flex:0 0 auto;"></span>` +
       `${s}</span>`).join(""));
   return wrap.node();
 }
 ```
 
-::: {.key-idea}
-### 💡 Kepler's Third Law
+::: {.student-task}
+### ✏️ In your packet: See – Think – Wonder
 
-$$T^2 = a^3$$
+- **See:** How were the two variables you examined related?
+- **Think:** Why do you think the variables were related in that way? Predict how one variable would be affected if you changed the other one.
+- **Wonder:** What new questions do you have?
 
-Where:
-
-- $T$ = orbital period (in years)
-- $a$ = semi-major axis / average distance (in AU)
-
-This means: **if you know how long a planet takes to orbit its star, you can calculate its distance.** This is exactly how we figure out exoplanet orbits — we measure the period and calculate the distance!
+Try a few pairs: *average distance vs. period*, and *minimum distance vs. maximum distance*. Which objects don't follow the crowd?
 :::
 
 ```{ojs}
 //| echo: false
-buildQuiz("kepler-law-quiz", "📌 Check Your Understanding — Kepler's Third Law", [
+buildQuiz("orbital-data-quiz", "📊 Check Your Understanding — Orbital Data Patterns", [
   {
-    q: "Mars has an orbital period of 1.881 years and a distance of 1.524 AU. Does Kepler's Third Law (T² = a³) hold? Calculate T² and a³.",
-    options: ["T² = 3.54, a³ = 3.54 — Yes, they match!", "T² = 1.88, a³ = 1.52 — No, they don't match", "T² = 3.54, a³ = 4.57 — Close but not exact", "T² = 2.0, a³ = 2.0 — Only works for Earth"],
+    q: "Graph average distance (x) against period of revolution (y). What pattern do you see?",
+    options: ["Objects farther from the Sun take longer to orbit it", "Objects farther from the Sun orbit faster", "Distance and period are not related", "Every object takes about one year to orbit"],
     correct: 0,
-    explanation: "T² = 1.881² = 3.538 and a³ = 1.524³ = 3.540. They match almost perfectly! This elegant relationship holds for every object orbiting the Sun."
+    explanation: "The farther the object, the longer its 'year.' Mercury (0.387 AU) orbits in 0.241 years; Pluto (39.5 AU) takes 248 years. The trendline curves upward: period grows faster than distance."
   },
   {
-    q: "Comet Borrelly has an orbital period of 6.85 years. Using T² = a³, what is its average distance from the Sun?",
-    options: ["About 2.3 AU", "About 3.6 AU", "About 6.85 AU", "About 46.9 AU"],
+    q: "Look at the phase-of-water column next to average distance. Which statement fits the data?",
+    options: ["Water is liquid everywhere in the solar system", "Objects close to the Sun have water vapor, Earth (1 AU) has liquid water, and objects farther out mostly have ice", "Objects far from the Sun have the most liquid water", "The phase of water has nothing to do with distance"],
     correct: 1,
-    explanation: "T² = 6.85² = 46.9. Then a = ³√46.9 ≈ 3.6 AU. Kepler's Third Law lets us calculate distance from period alone — essential for analyzing exoplanets we can't directly observe."
+    explanation: "Distance from the Sun controls how much energy an object receives. Mercury and Venus (close) only hold traces of water vapor, Earth has liquid oceans, and Mars and everything beyond hold mostly ice."
   },
   {
-    q: "Why is Kepler's Third Law especially useful for studying exoplanets?",
-    options: ["It tells us the planet's mass", "It lets us calculate orbital distance from the period, which we can measure via transit timing", "It determines the planet's atmospheric composition", "It predicts whether the planet has moons"],
-    correct: 1,
-    explanation: "For exoplanets, we can measure the orbital period by timing how often the planet transits (crosses in front of) its star. Kepler's Third Law then gives us the distance — and distance determines whether the planet is in the habitable zone."
+    q: "Compare minimum and maximum distance for each object. Whose maximum distance is more than 4 times its minimum distance?",
+    options: ["Earth", "Neptune", "Comet Borrelly", "Venus"],
+    correct: 2,
+    explanation: "Borrelly swings from 1.350 AU to 5.830 AU, more than 4× farther at its farthest point. That big change in distance is why its water flips between ice and vapor. Earth's distance barely changes (0.983 to 1.017 AU)."
   }
 ])
 ```
 
-# Explain 1: The Habitable Zone
+# Explain 1: Revising Solar System Models
 
 ::: {.explain-box}
-## 🧠 The "Goldilocks Zone" — Not Too Hot, Not Too Cold
+## 🧠 What the Patterns Tell Us
 
-A planet needs to be at just the right distance from its star for liquid water to exist. Too close → water boils. Too far → water freezes. This narrow band is the **habitable zone.**
+**Pattern 1: Distance and the phase of water.** Objects close to the Sun receive a lot of energy, so their water is vapor. Objects far from the Sun receive little energy, so their water is ice. Only near Earth's distance is it "just right" for **liquid** water.
+
+**Pattern 2: Distance and period.** The farther an object is from the Sun, the longer its orbit takes. It has a longer path to travel *and* it moves more slowly.
+
+**Pattern 3: Minimum vs. maximum distance.** For most planets these are almost equal, so their orbits are nearly circles. Comet Borrelly and Pluto have very different minimum and maximum distances, so they move much closer to and farther from the Sun during each orbit. Borrelly's ice vaporizes near 1.35 AU and refreezes out near 5.83 AU.
 :::
+
+::: {.key-idea}
+### 💡 Gravity keeps objects in orbit
+
+The Sun's **gravity** constantly pulls every planet, moon, and comet toward it. Each object is also moving sideways, so instead of falling in, it keeps "falling around" the Sun: that's an orbit. Gravity is stronger closer to the Sun, so close objects move faster. Far objects move slower *and* have a longer path, which is why their periods are so long.
+:::
+
+## The Habitable Zone
+
+The **habitable zone** is the range of distances from a star where a planet could have **liquid water on its surface**: not so close that water boils away, not so far that it freezes. For our Sun, the habitable zone is about **0.95 to 1.15 AU** (about 142–172 million km).
+
+- **Earth (1.00 AU)** is inside it.
+- **Venus (0.72 AU)** is too close: too hot.
+- **Mars (1.52 AU)** is too far: too cold.
+
+A brighter star pushes its habitable zone **farther out**; a dimmer star pulls it **closer in**. That is why each star in our exoplanet data set has its own habitable zone limits. Drag the slider to see this.
 
 ```{ojs}
 //| echo: false
@@ -521,128 +662,519 @@ viewof starLum = Inputs.range([0.01, 10], {label: "Star luminosity (× Sun):", s
 
 ```{ojs}
 //| echo: false
-exoplanets = [
-  {name: "Kepler-442b", period: 112.3, distance: 0.409, ecc: 0.04, starLum: 0.12, zone: "In HZ"},
-  {name: "Kepler-186f", period: 129.9, distance: 0.432, ecc: 0.04, starLum: 0.04, zone: "In HZ"},
-  {name: "TRAPPIST-1e", period: 6.1, distance: 0.029, ecc: 0.005, starLum: 0.0005, zone: "In HZ"},
-  {name: "Kepler-22b", period: 289.9, distance: 0.849, ecc: 0.0, starLum: 0.79, zone: "In HZ"},
-  {name: "Kepler-452b", period: 384.8, distance: 1.046, ecc: 0.035, starLum: 1.2, zone: "In HZ"},
-  {name: "55 Cancri e", period: 0.74, distance: 0.015, ecc: 0.17, starLum: 0.6, zone: "Too hot"},
-  {name: "Kepler-16b", period: 228.8, distance: 0.704, ecc: 0.007, starLum: 0.15, zone: "Too cold"}
+{
+  // Scaled from our Sun's habitable zone (0.95–1.15 AU); distance grows with √luminosity
+  const inner = L => 0.95 * Math.sqrt(L);
+  const outer = L => 1.15 * Math.sqrt(L);
+  const fmt = d => d >= 1 ? String(d) : String(+d.toFixed(2));
+  const hzBand = d3.range(0.01, 10.01, 0.01).map(L => ({ L, inner: inner(L), outer: outer(L) }));
+  const points = [
+    {name: "Venus", lum: 1, dist: 0.72},
+    {name: "Earth", lum: 1, dist: 1.0},
+    {name: "Mars", lum: 1, dist: 1.52}
+  ].map(d => ({...d, zone: d.dist < inner(d.lum) ? "Too hot" : d.dist > outer(d.lum) ? "Too cold" : "In HZ"}));
+  const zoneColors = { domain: ["In HZ", "Too hot", "Too cold"], range: ["#2ecc71", "#e74c3c", "#3498db"] };
+
+  return Plot.plot({
+    title: "The Habitable Zone Moves with the Star's Brightness",
+    subtitle: `Green band = habitable zone. Star luminosity ${starLum.toFixed(2)}× Sun → ${inner(starLum).toFixed(2)}–${outer(starLum).toFixed(2)} AU`,
+    width: width,
+    height: 400,
+    marginLeft: 46,
+    marginRight: 10,
+    marginBottom: 40,
+    style: { background: "#0a0a2e", color: "#e2e8f0", fontFamily: "sans-serif" },
+    color: zoneColors,
+    x: {label: "Star luminosity (× Sun)", type: "log", domain: [0.01, 10], grid: true, tickFormat: fmt},
+    y: {label: "Distance from star (AU)", type: "log", grid: true, tickFormat: fmt},
+    marks: [
+      Plot.areaY(hzBand, {x: "L", y1: "inner", y2: "outer", fill: "#2ecc71", opacity: 0.2}),
+      Plot.ruleX([starLum], {stroke: "#ffffff", strokeWidth: 1.5, strokeDasharray: "4,4", strokeOpacity: 0.7}),
+      Plot.dot(points, {x: "lum", y: "dist", fill: "zone", r: 6, stroke: "#0a0a2e", tip: true,
+        title: d => `${d.name}: ${d.dist} AU — ${d.zone}`}),
+      Plot.text(points, {x: "lum", y: "dist", text: "name", dx: 10, textAnchor: "start", fontSize: 11, fontWeight: "bold", fill: "#e2e8f0"})
+    ]
+  });
+}
+```
+
+::: {.callout-tip}
+## 🤔 Wonder: How can Europa have a liquid ocean?
+
+Europa is about 5.2 AU from the Sun, far outside the habitable zone, yet scientists think it has a salty liquid ocean **under** its ice. The heat doesn't come from sunlight. Jupiter's gravity squeezes and stretches Europa as it orbits (called **tidal heating**), and the thick ice shell acts like a lid that keeps the ocean from freezing. The habitable zone is about **surface** water warmed by a star.
+:::
+
+::: {.student-task}
+### ✏️ In your packet: Revise your model + Summary Task
+
+Go back to your Engage model and revise it using the patterns above. Include **data** and **annotations**. Then answer:
+
+- What patterns did you use to explain the different phases of water on different objects? How did you show those patterns exist?
+- What did you do to make the patterns easier to see? (Think: graphs, log scales, trendlines.)
+:::
+
+```{ojs}
+//| echo: false
+buildQuiz("habitable-zone-quiz", "💧 Check Your Understanding — Habitable Zone", [
+  {
+    q: "Our Sun's habitable zone is about 0.95–1.15 AU. Which of these objects is inside it?",
+    options: ["Venus (0.72 AU)", "Earth (1.00 AU)", "Mars (1.52 AU)", "Europa (5.20 AU)"],
+    correct: 1,
+    explanation: "Only Earth's average distance (1.00 AU) falls between 0.95 and 1.15 AU. Venus is too close (too hot) and Mars and Europa are too far (too cold) for liquid water on the surface."
+  },
+  {
+    q: "Drag the luminosity slider to 4× the Sun. What happens to the habitable zone?",
+    options: ["It moves closer to the star", "It stays in the same place", "It moves farther out, to about 1.9–2.3 AU", "It disappears"],
+    correct: 2,
+    explanation: "A brighter star delivers more energy at every distance, so the 'just right' zone moves outward. Distance scales with the square root of luminosity: √4 = 2, so 0.95–1.15 AU doubles to 1.9–2.3 AU."
+  },
+  {
+    q: "Why must a planet stay in the habitable zone for its ENTIRE orbit, not just part of it?",
+    options: ["Planets can only have water if they never get cold", "Liquid water must last year-round for life to survive", "The habitable zone only matters at the closest point", "Stars change brightness when planets move"],
+    correct: 1,
+    explanation: "If a planet swings out of the habitable zone, its water could freeze or boil away for part of every year. Stable liquid water, and life, needs the planet to stay inside the zone the whole way around."
+  }
+])
+```
+
+# Explore 2: Exoplanets and Their Stars
+
+::: {.explore-box}
+## 🔭 Timing an Exoplanet's Year with the Transit Method
+
+Exoplanets are too far away and too dim to watch them orbit. But when a planet passes in front of its star (a **transit**), it blocks a tiny bit of the star's light, and the star's brightness dips for a few hours. The time from one dip to the next is the planet's **orbital period**.
+:::
+
+Try it with the transit data for each exoplanet in our data set. Measure the time between two dips, then type your answer to check it. NASA's [transit method interactive](https://science.nasa.gov/resource/exoplanet-detection-transit-method/) shows how the dips happen.
+
+```{ojs}
+//| echo: false
+exoData = [
+  {name: "Kepler-79 b", mass: 1.165, period: 0.0369, hzIn: 1.711, hzOut: 4.229},
+  {name: "Kepler-18 b", mass: 0.972, period: 0.00962, hzIn: 1.463, hzOut: 3.227},
+  {name: "Kepler-186 f", mass: 0.544, period: 0.356, hzIn: 0.242, hzOut: 0.464},
+  {name: "Kepler-442 b", mass: 0.610, period: 0.3078, hzIn: 0.252, hzOut: 0.531},
+  {name: "TOI-2257 b", mass: 0.33, period: 0.0964, hzIn: 0.079, hzOut: 0.167},
+  {name: "HD-20782 b", mass: 0.96, period: 1.605, hzIn: 2.613, hzOut: 4.632},
+  {name: "Trappist-1 f", mass: 0.089, period: 0.0252, hzIn: 0.023, hzOut: 0.048},
+  {name: "Trappist-1 g", mass: 0.089, period: 0.0340, hzIn: 0.023, hzOut: 0.048}
 ]
 ```
 
 ```{ojs}
 //| echo: false
+numberInput = function(label, value, {placeholder = "", unit = ""} = {}) {
+  const form = html`<form style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0;">
+    <label style="font-weight:600;">${label}</label>
+    <input type="number" step="any" inputmode="decimal" placeholder="${placeholder}"
+      style="width:9em;min-height:40px;padding:4px 8px;border:1px solid #94a3b8;border-radius:6px;font-size:1rem;background:var(--bs-body-bg);color:var(--bs-body-color);">
+    <span>${unit}</span>
+  </form>`;
+  const input = form.querySelector("input");
+  if (value != null) input.value = value;
+  form.value = value == null ? NaN : +value;
+  // The native input event bubbles up to the form, which is what OJS listens to
+  input.addEventListener("input", () => { form.value = input.value === "" ? NaN : +input.value; });
+  form.addEventListener("submit", e => e.preventDefault());
+  return form;
+}
+```
+
+```{ojs}
+//| echo: false
+viewof transitPlanet = Inputs.select(exoData.map(d => d.name), {label: "Exoplanet:", value: "Trappist-1 f"})
+```
+
+```{ojs}
+//| echo: false
+viewof markDips = Inputs.toggle({label: "Mark the dips for me", value: false})
+```
+
+```{ojs}
+//| echo: false
 {
-  const inner = L => Math.sqrt(L / 1.1);
-  const outer = L => Math.sqrt(L / 0.53);
-  const fmt = d => d >= 1 ? String(d) : String(+d.toFixed(2));
-  const Ls = d3.range(0.01, 10.01, 0.01);
-  const hzBand = Ls.map(L => ({ L, inner: inner(L), outer: outer(L) }));
-
-  const solar = [
-    {name: "Venus", lum: 1, dist: 0.72},
-    {name: "Earth", lum: 1, dist: 1.0},
-    {name: "Mars", lum: 1, dist: 1.52}
-  ];
-  const points = [
-    ...solar.map(d => ({...d, kind: "planet"})),
-    ...exoplanets.map(d => ({name: d.name, lum: d.starLum, dist: d.distance, kind: "exo"}))
-  ].map(d => ({
-    ...d,
-    zone: d.dist < inner(d.lum) ? "Too hot" : d.dist > outer(d.lum) ? "Too cold" : "In HZ"
-  }));
-
-  const zoneColors = {
-    domain: ["In HZ", "Too hot", "Too cold"],
-    range: ["#2ecc71", "#e74c3c", "#3498db"]
-  };
-
-  const wrap = d3.create("div");
-  wrap.style("max-width", "100%");
-  wrap.append(() => Plot.plot({
-    title: "The Habitable Zone",
-    subtitle: `Star luminosity ${starLum.toFixed(2)}× Sun → habitable zone ${inner(starLum).toFixed(2)}–${outer(starLum).toFixed(2)} AU`,
+  const p = exoData.find(d => d.name === transitPlanet);
+  const P = p.period * 365.25;                       // period in days
+  const t0 = P * 0.35;                               // first transit
+  const span = P * 3.6;                              // show about 3–4 transits
+  const dur = Math.max(P * 0.035, 0.1);             // transit length (days)
+  const depth = 1.0;                                 // % dimming
+  // Repeatable "noise" so the curve looks like real telescope data
+  let s = [...p.name].reduce((a, c) => a + c.charCodeAt(0), 0);
+  const rand = () => { s = (s * 16807) % 2147483647; return s / 2147483647; };
+  const data = d3.range(0, 1400).map(i => {
+    const t = (i / 1399) * span;
+    const phase = ((t - t0) % P + P) % P;
+    const dt = Math.min(phase, P - phase);
+    const inTransit = dt < dur / 2 ? 1 - Math.min(1, Math.max(0, (dt - dur * 0.3) / (dur * 0.2))) : 0;
+    return {t, b: -depth * inTransit + (rand() - 0.5) * 0.25};
+  });
+  const centers = d3.range(t0, span, P);
+  return Plot.plot({
+    title: `Transit data: ${p.name}`,
+    subtitle: "Each dip is the planet crossing in front of its star",
     width: width,
-    height: 420,
-    marginLeft: 46,
-    marginRight: 10,
+    height: 260,
+    marginLeft: 48,
     marginBottom: 40,
-    style: { background: "#0a0a2e", color: "#e2e8f0", fontFamily: "sans-serif" },
-    color: { domain: zoneColors.domain, range: zoneColors.range },
-    x: {label: "Star luminosity (× Sun)", type: "log", domain: [0.01, 10], grid: true, tickFormat: fmt},
-    y: {label: "Orbital distance (AU)", type: "log", grid: true, tickFormat: fmt},
+    x: {label: "Time (days)", grid: true},
+    y: {label: "Change in brightness (%)", domain: [-1.4, 0.3], grid: true},
     marks: [
-      Plot.areaY(hzBand, {x: "L", y1: "inner", y2: "outer", fill: "#2ecc71", opacity: 0.15}),
-      Plot.dot(points, {
-        x: "lum", y: "dist", fill: "zone",
-        r: 6, stroke: "#0a0a2e", strokeWidth: 1,
-        title: d => `${d.name}\nStar luminosity: ${d.lum}× Sun\nDistance: ${d.dist} AU\n${d.zone}`,
-        tip: true
-      }),
-      Plot.text(points.filter(d => d.kind === "planet"), {
-        x: "lum", y: "dist", text: "name", dx: 10, dy: -4, fontSize: 11, fontWeight: "bold", fill: "#e2e8f0"
-      }),
-      Plot.ruleX([starLum], {stroke: "#ffffff", strokeWidth: 1.5, strokeDasharray: "4,4", strokeOpacity: 0.7})
+      Plot.dot(data, {x: "t", y: "b", r: 1.2, fill: "#c2185b"}),
+      ...(markDips ? [
+        Plot.ruleX(centers, {stroke: "#667eea", strokeDasharray: "4,3"}),
+        Plot.text(centers, {x: d => d, y: 0.22, text: d => d.toFixed(2), fontSize: 10, fill: "#667eea"})
+      ] : [])
     ]
+  });
+}
+```
+
+```{ojs}
+//| echo: false
+viewof measuredDays = numberInput("Period you measured:", null, {placeholder: "days", unit: "days"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const p = exoData.find(d => d.name === transitPlanet);
+  const days = p.period * 365.25;
+  const box = d3.create("div").style("padding", "10px 14px").style("border-radius", "8px").style("margin", "4px 0 16px");
+  if (!(measuredDays > 0)) {
+    box.style("background", "rgba(102,126,234,0.1)")
+      .html("Type the time between two dips. <em>Tip: measure from the first dip to the last dip and divide by the number of gaps; it's more accurate.</em>");
+  } else {
+    const ok = Math.abs(measuredDays - days) / days < 0.05;
+    box.style("background", ok ? "rgba(46,204,113,0.15)" : "rgba(231,76,60,0.12)")
+      .html(ok
+        ? `✅ Nice measuring! ${p.name} orbits in about <strong>${days.toPrecision(3)} days</strong>. Kepler's Third Law needs Earth years, so divide by 365.25: <strong>${measuredDays} ÷ 365.25 = ${(measuredDays / 365.25).toPrecision(3)} years</strong>.`
+        : `Not quite. Find two neighboring dips and subtract their times. (Turn on <em>Mark the dips</em> to check.)`);
+  }
+  return box.node();
+}
+```
+
+## 📈 From a Pattern to an Equation
+
+In Excel, you fit an equation to the solar system pattern. Here's another way to see it. Square each period (**T²**) and cube each average distance (**R³**). For every object orbiting the Sun, the two numbers come out almost the same, so **T² = R³**.
+
+```{ojs}
+//| echo: false
+{
+  const rows = orbitalData.map(d => ({
+    object: d.object, R: d.avg, T: d.period,
+    R3: d.avg ** 3, T2: d.period ** 2, ratio: (d.period ** 2) / (d.avg ** 3)
   }));
-  wrap.append("div")
-    .style("display", "flex").style("flex-wrap", "wrap")
-    .style("gap", "6px 16px").style("justify-content", "center")
-    .style("margin-top", "10px").style("font-size", "0.85em").style("color", "#e2e8f0")
-    .html(zoneColors.domain.map((s, i) =>
-      `<span style="display:inline-flex;align-items:center;gap:6px;">` +
-      `<span style="width:12px;height:12px;border-radius:50%;background:${zoneColors.range[i]};border:1px solid #e2e8f0;flex:0 0 auto;"></span>` +
-      `${s}</span>`).join(""));
+  const wrap = d3.create("div").style("overflow-x", "auto");
+  wrap.append(() => Inputs.table(rows, {
+    columns: ["object", "R", "T", "R3", "T2", "ratio"],
+    header: {object: "Object", R: "R (AU)", T: "T (years)", R3: "R³", T2: "T²", ratio: "T² ÷ R³"},
+    format: {R3: d => d.toPrecision(4), T2: d => d.toPrecision(4), ratio: d => d.toFixed(2)},
+    rows: 11
+  }));
+  return wrap.node();
+}
+```
+
+::: {.student-task}
+### ✏️ In your packet: See – Think – Wonder
+
+- **See:** What relationships did you see between orbital period and other orbital variables?
+- **Think:** Why do those relationships exist? What do all these orbits have in common?
+- **Wonder:** Using the equation you derived, how would changing one variable affect the other?
+:::
+
+```{ojs}
+//| echo: false
+buildQuiz("transit-quiz", "🔭 Check Your Understanding — Transits and Periods", [
+  {
+    q: "A star's brightness dips at day 2.1, day 11.3, and day 20.5. What is the planet's orbital period?",
+    options: ["2.1 days", "9.2 days", "11.3 days", "20.5 days"],
+    correct: 1,
+    explanation: "The period is the time between neighboring dips: 11.3 − 2.1 = 9.2 days, and 20.5 − 11.3 = 9.2 days. (That's Trappist-1 f!)"
+  },
+  {
+    q: "Kepler's Third Law uses periods in Earth years. How do you convert 9.2 days to years?",
+    options: ["9.2 × 365.25 = 3,360 years", "9.2 ÷ 365.25 ≈ 0.0252 years", "9.2 ÷ 12 ≈ 0.77 years", "9.2 ÷ 24 ≈ 0.38 years"],
+    correct: 1,
+    explanation: "One Earth year is 365.25 days, so divide: 9.2 ÷ 365.25 ≈ 0.0252 years. That matches the period in the exoplanet data table."
+  },
+  {
+    q: "For Mars, T² = 1.88² ≈ 3.53 and R³ = 1.523³ ≈ 3.53. What does this tell you?",
+    options: ["Mars is special", "T² = R³ works for objects orbiting our Sun", "Mars has no gravity", "Mars's orbit is a perfect circle"],
+    correct: 1,
+    explanation: "For every object orbiting the Sun, T² ÷ R³ ≈ 1. That shared pattern is Kepler's Third Law, and it's what lets us predict distance from period."
+  }
+])
+```
+
+# Explain 2: Kepler's Third Law
+
+::: {.explain-box}
+## 🧠 A Mathematical Model for Orbits
+
+Johannes Kepler discovered the pattern you just found more than 400 years ago. For our Sun, **T² = R³**. But exoplanets orbit *other* stars, and a more massive star pulls harder with its gravity, so its planets orbit faster. To use the pattern for any star, we include the **star's mass**.
+:::
+
+::: {.key-idea}
+### 💡 Kepler's Third Law of Planetary Motion
+
+**Mathematical model:**
+
+$$M_s \times T^2 = R^3$$
+
+- $M_s$ = mass of the host star (**solar masses**; our Sun = 1)
+- $T$ = period of revolution (**Earth years**)
+- $R$ = average distance from the host star (**AU**), the same as the **semi-major axis**
+
+**Verbal model:** The cube of a planet's average distance from its star equals the star's mass times the square of the planet's period. Planets farther from their star take longer to orbit, and a more massive star makes its planets orbit faster.
+
+**To find the distance:** $R = \sqrt[3]{M_s \times T^2}$
+:::
+
+#### Worked example
+
+A planet orbits a star with **0.5 solar masses** every **0.5 years**. How far is it from its star?
+
+1. Square the period: $T^2 = 0.5^2 = 0.25$
+2. Multiply by the star's mass: $M_s \times T^2 = 0.5 \times 0.25 = 0.125$
+3. Take the cube root: $R = \sqrt[3]{0.125} = 0.5$ AU
+
+## 🧮 Kepler's Third Law Calculator
+
+Use this to check your work. Do the calculation yourself first!
+
+```{ojs}
+//| echo: false
+viewof calcMass = numberInput("Mass of host star (Mₛ):", 1, {unit: "solar masses"})
+```
+
+```{ojs}
+//| echo: false
+viewof calcPeriod = numberInput("Period of revolution (T):", 1, {unit: "Earth years"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const box = d3.create("div").style("padding", "12px 16px").style("border-radius", "10px")
+    .style("background", "rgba(102,126,234,0.1)").style("border-left", "4px solid #667eea").style("margin-bottom", "16px");
+  if (!(calcMass > 0 && calcPeriod > 0)) return box.html("Enter a star mass and a period (both greater than 0).").node();
+  const T2 = calcPeriod ** 2, MT2 = calcMass * T2, R = Math.cbrt(MT2);
+  const sig = x => +x.toPrecision(4);
+  return box.html(`
+    <div>1. T² = ${calcPeriod}² = <strong>${sig(T2)}</strong></div>
+    <div>2. Mₛ × T² = ${calcMass} × ${sig(T2)} = <strong>${sig(MT2)}</strong></div>
+    <div>3. R = ∛${sig(MT2)} = <strong>${sig(R)} AU</strong></div>
+    <div style="margin-top:6px;font-size:.9em;opacity:.85;">Period in days? Divide by 365.25 first.</div>`).node();
+}
+```
+
+## 🌍 Our Exoplanet Data Set: Check Your Calculations
+
+These are the exoplanets from the performance task. Calculate each one's average distance with $R = \sqrt[3]{M_s \times T^2}$ and type it in. Then compare it to the star's habitable zone limits.
+
+```{ojs}
+//| echo: false
+{
+  const wrap = d3.create("div").style("overflow-x", "auto");
+  const table = wrap.append("table").attr("class", "table table-sm").style("min-width", "640px").style("font-size", "0.9em");
+  table.append("thead").html(`<tr>
+    <th>Exoplanet</th><th>Mass of host star (solar masses)</th><th>Period (Earth years)</th>
+    <th>Your average distance (AU)</th><th>HZ inner limit (AU)</th><th>HZ outer limit (AU)</th><th>Check</th></tr>`);
+  const tbody = table.append("tbody");
+  for (const p of exoData) {
+    const R = Math.cbrt(p.mass * p.period ** 2);
+    const tr = tbody.append("tr");
+    tr.append("td").style("font-weight", "600").text(p.name);
+    tr.append("td").text(p.mass);
+    tr.append("td").text(p.period);
+    const input = tr.append("td").append("input")
+      .attr("type", "number").attr("step", "any").attr("inputmode", "decimal").attr("aria-label", `Average distance for ${p.name} in AU`)
+      .style("width", "6.5em").style("min-height", "36px").style("padding", "2px 6px")
+      .style("border", "1px solid #94a3b8").style("border-radius", "6px")
+      .style("background", "var(--bs-body-bg)").style("color", "var(--bs-body-color)");
+    tr.append("td").text(p.hzIn);
+    tr.append("td").text(p.hzOut);
+    const out = tr.append("td");
+    input.on("input", function() {
+      const v = +this.value;
+      if (this.value === "" || !(v > 0)) return out.text("");
+      const ok = Math.abs(v - R) / R < 0.03;
+      out.html(ok ? "✅" : `❌ <span style="font-size:.85em;">recheck: cube root of Mₛ × T²</span>`);
+    });
+  }
   return wrap.node();
 }
 ```
 
 ```{ojs}
 //| echo: false
-buildQuiz("habitable-zone-quiz", "💧 Check Your Understanding — Habitable Zone", [
-  {
-    q: "For a Sun-like star (luminosity = 1.0×), the habitable zone spans approximately 0.95–1.37 AU. Where does Earth (1.0 AU) sit within this range?",
-    options: ["At the very inner edge — almost too hot", "Comfortably within the zone, closer to the inner edge", "At the very outer edge — almost too cold", "Outside the habitable zone entirely"],
-    correct: 1,
-    explanation: "Earth at 1.0 AU sits comfortably within the 0.95–1.37 AU habitable zone, slightly closer to the warm inner boundary. This position allows stable liquid water on the surface."
-  },
-  {
-    q: "If you increase the star's luminosity to 5× the Sun's, what happens to the habitable zone?",
-    options: ["It shrinks to a tiny band very close to the star", "It stays in the same position", "It moves farther from the star (approximately 2.1–3.1 AU)", "It disappears entirely"],
-    correct: 2,
-    explanation: "A brighter star radiates more energy, pushing the habitable zone outward. HZ inner edge = √(5/1.1) ≈ 2.13 AU, outer edge = √(5/0.53) ≈ 3.07 AU. Planets must be farther away to avoid overheating."
-  },
-  {
-    q: "Why must a planet stay within the habitable zone for its ENTIRE orbit, not just part of it?",
-    options: ["Planets can only have water if they never get cold", "Water needs to remain liquid year-round for biochemistry to function continuously", "The habitable zone only applies at perihelion", "Stars change luminosity based on planet position"],
-    correct: 1,
-    explanation: "Life requires persistent liquid water. If a planet swings outside the habitable zone during part of its orbit, surface water could freeze or boil seasonally, preventing the stable conditions needed for sustained biochemistry and life."
-  }
-])
+viewof showHZKey = Inputs.toggle({label: "Show the answer key (after you try!)", value: false})
 ```
 
-# Explore 2: Orbital Eccentricity
+```{ojs}
+//| echo: false
+{
+  if (!showHZKey) return html`<p style="font-size:.9em;opacity:.8;">The answer key draws each star's habitable zone and the planet's average distance.</p>`;
+  const rows = exoData.map(p => {
+    const R = Math.cbrt(p.mass * p.period ** 2);
+    return {...p, R, zone: R < p.hzIn ? "Too close (too hot)" : R > p.hzOut ? "Too far (too cold)" : "In HZ at average distance"};
+  });
+  const zoneColors = {domain: ["In HZ at average distance", "Too close (too hot)", "Too far (too cold)"], range: ["#2ecc71", "#e74c3c", "#3498db"]};
+  return Plot.plot({
+    title: "Average distance vs. each star's habitable zone",
+    subtitle: "Green bars = habitable zone. Dots = planet's average distance (R).",
+    width: width,
+    height: 360,
+    marginLeft: 92,
+    marginRight: 16,
+    x: {label: "Distance from host star (AU, log scale)", type: "log", grid: true, tickFormat: d => String(+d.toPrecision(2))},
+    y: {label: null, domain: rows.map(d => d.name)},
+    color: {...zoneColors, legend: true},
+    marks: [
+      Plot.barX(rows, {y: "name", x1: "hzIn", x2: "hzOut", fill: "#2ecc71", fillOpacity: 0.25, insetTop: 6, insetBottom: 6}),
+      Plot.dot(rows, {y: "name", x: "R", fill: "zone", r: 6, stroke: "#333", tip: true,
+        title: d => `${d.name}\nR = ${d.R.toPrecision(3)} AU\nHZ: ${d.hzIn}–${d.hzOut} AU\n${d.zone}`})
+    ]
+  });
+}
+```
 
-::: {.explore-box}
-## 🔬 Not All Orbits Are Circles
+::: {.student-task}
+### ✏️ In your packet: Explain 2 questions
 
-Real orbits are **ellipses** — some nearly circular, others very elongated. The **eccentricity** ($e$) measures how stretched an orbit is:
-- $e = 0$: perfect circle
-- $e = 0.5$: moderately elliptical
-- $e = 1$: parabola (escape trajectory)
-- **Kepler's Second Law:** a planet moves fastest at perihelion (closest) and slowest at aphelion — watch the speed and ☀️ energy readouts in the animation below.
+1. Based on your calculations, which exoplanets are in the habitable zone **when they are at their average distance**? Cite evidence.
+2. Does that mean they stay in the habitable zone **for their whole orbit**? What other information would you like to have?
+
+*Hint for #2:* the average distance doesn't tell you the **shape** of the orbit. That's next.
 :::
 
 ```{ojs}
 //| echo: false
-viewof eccentricity = Inputs.range([0, 0.9], {label: "Orbital eccentricity:", step: 0.01, value: 0.017})
+buildQuiz("kepler-law-quiz", "📌 Check Your Understanding — Kepler's Third Law", [
+  {
+    q: "Comet Borrelly orbits the Sun (Mₛ = 1) with a period of 6.80 years. What is its average distance?",
+    options: ["About 2.6 AU", "About 3.6 AU", "About 6.8 AU", "About 46 AU"],
+    correct: 1,
+    explanation: "Mₛ × T² = 1 × 6.80² = 46.2, and ∛46.2 ≈ 3.59 AU. That matches Borrelly's average distance in the orbital data table."
+  },
+  {
+    q: "Two planets each have a period of 1 year. Planet A orbits a 1-solar-mass star; Planet B orbits a 0.5-solar-mass star. Which is closer to its star?",
+    options: ["Planet A", "Planet B", "They're the same distance", "You can't tell without more data"],
+    correct: 1,
+    explanation: "R³ = Mₛ × T². For A: R³ = 1, so R = 1 AU. For B: R³ = 0.5, so R ≈ 0.79 AU. A less massive star pulls more weakly, so a planet must be closer to finish an orbit in the same time."
+  },
+  {
+    q: "Star Q has four planets with periods of 0.9, 2.0, 0.4, and 5.1 years. Which planet orbits farthest from Star Q?",
+    options: ["The 0.4-year planet", "The 0.9-year planet", "The 2.0-year planet", "The 5.1-year planet"],
+    correct: 3,
+    explanation: "Around the same star, a longer period always means a larger average distance (R³ = Mₛ × T²). The 5.1-year planet is farthest out and the 0.4-year planet is closest."
+  },
+  {
+    q: "Why is Kepler's Third Law so useful for studying exoplanets?",
+    options: ["It tells us what the planet's atmosphere is made of", "We can measure the period from transits, then calculate the distance from the star", "It tells us whether the planet has moons", "It measures the planet's mass"],
+    correct: 1,
+    explanation: "Transit timing gives the period, and astronomers can estimate the star's mass. Kepler's Third Law turns those into the planet's average distance, which we compare to the habitable zone."
+  }
+])
+```
+
+# Elaborate: How Do We Determine the Shapes of Orbits?
+
+::: {.elaborate-box}
+## 🌍 Kepler's First Law of Planetary Motion
+
+Planets orbit their stars in **ellipses** (stretched circles), with the star at one **focus**. The shape of an orbit decides whether a planet stays in the habitable zone the whole way around, which matters for liquid water and the possibility of life.
+:::
+
+## The Parts of an Orbit
+
+```{ojs}
+//| echo: false
+{
+  // Exaggerated ellipse (e = 0.5) so the foci are easy to see
+  const W = 360, H = 300, cx = 180, cy = 150, a = 125, e = 0.5;
+  const c = a * e, b = a * Math.sqrt(1 - e * e);
+  const F1 = cx + c, F2 = cx - c;
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("role", "img").attr("aria-label", "Labeled ellipse showing the major axis, semi-major axis, the two foci, the distance between the foci, perihelion and aphelion")
+    .style("width", "100%").style("height", "auto").style("max-width", "560px").style("display", "block").style("margin", "auto");
+  svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#0a0a2e").attr("rx", 12);
+  svg.append("ellipse").attr("cx", cx).attr("cy", cy).attr("rx", a).attr("ry", b).attr("fill", "none").attr("stroke", "#a29bfe").attr("stroke-width", 2);
+  // Major axis (d)
+  svg.append("line").attr("x1", cx - a).attr("y1", cy).attr("x2", cx + a).attr("y2", cy).attr("stroke", "#e74c3c").attr("stroke-width", 1.5);
+  svg.append("text").attr("x", cx).attr("y", 18).attr("text-anchor", "middle").attr("fill", "#e74c3c").attr("font-size", 12).attr("font-weight", "bold")
+    .text("Length of major axis = d");
+  svg.append("line").attr("x1", cx - a).attr("y1", 28).attr("x2", cx + a).attr("y2", 28).attr("stroke", "#e74c3c").attr("stroke-width", 1);
+  for (const x of [cx - a, cx + a]) svg.append("line").attr("x1", x).attr("y1", 23).attr("x2", x).attr("y2", 33).attr("stroke", "#e74c3c");
+  // Semi-major axis
+  svg.append("line").attr("x1", cx).attr("y1", cy + b + 12).attr("x2", cx + a).attr("y2", cy + b + 12).attr("stroke", "#f6e05e").attr("stroke-width", 1);
+  for (const x of [cx, cx + a]) svg.append("line").attr("x1", x).attr("y1", cy + b + 7).attr("x2", x).attr("y2", cy + b + 17).attr("stroke", "#f6e05e");
+  svg.append("text").attr("x", W / 2).attr("y", cy + b + 30).attr("text-anchor", "middle").attr("fill", "#f6e05e").attr("font-size", 10.5)
+    .text("semi-major axis = d ÷ 2 = average distance (R)");
+  // Distance between foci (f)
+  svg.append("line").attr("x1", F2).attr("y1", cy - 22).attr("x2", F1).attr("y2", cy - 22).attr("stroke", "#2ecc71").attr("stroke-width", 1.5);
+  for (const x of [F2, F1]) svg.append("line").attr("x1", x).attr("y1", cy - 27).attr("x2", x).attr("y2", cy - 17).attr("stroke", "#2ecc71");
+  svg.append("text").attr("x", cx).attr("y", cy - 30).attr("text-anchor", "middle").attr("fill", "#2ecc71").attr("font-size", 12).attr("font-weight", "bold")
+    .text("distance between foci = f");
+  // Foci
+  svg.append("circle").attr("cx", F1).attr("cy", cy).attr("r", 9).attr("fill", "#f39c12");
+  svg.append("text").attr("x", F1).attr("y", cy + 24).attr("text-anchor", "middle").attr("fill", "#f39c12").attr("font-size", 10).text("Star (focus 1)");
+  svg.append("circle").attr("cx", F2).attr("cy", cy).attr("r", 3.5).attr("fill", "none").attr("stroke", "#e2e8f0");
+  svg.append("text").attr("x", F2).attr("y", cy + 24).attr("text-anchor", "middle").attr("fill", "#e2e8f0").attr("font-size", 10).text("focus 2 (empty)");
+  // Perihelion / aphelion
+  svg.append("circle").attr("cx", cx + a).attr("cy", cy).attr("r", 5).attr("fill", "#4ade80");
+  svg.append("text").attr("x", cx + a - 4).attr("y", cy - 8).attr("text-anchor", "end").attr("fill", "#4ade80").attr("font-size", 9).text("closest");
+  svg.append("circle").attr("cx", cx - a).attr("cy", cy).attr("r", 5).attr("fill", "#74b9ff");
+  svg.append("text").attr("x", cx - a + 4).attr("y", cy - 8).attr("fill", "#74b9ff").attr("font-size", 9).text("farthest");
+  return svg.node();
+}
+```
+
+- **Length of major axis ($d$):** the distance across the orbit between the two points that are farthest apart.
+- **Semi-major axis:** half the major axis ($d \div 2$). It equals the planet's **average distance** from its star, the same $R$ you found with Kepler's Third Law.
+- **Foci:** two special points inside every ellipse. The star sits at one focus; the other focus is an empty point in space. The **distance between foci ($f$)** tells you how stretched the orbit is. When $f = 0$, both foci are in the same place and the orbit is a circle.
+
+::: {.key-idea}
+### 💡 Kepler's First Law of Planetary Motion
+
+**Mathematical model:**
+
+$$e = \frac{f}{d}$$
+
+- $e$ = **orbital eccentricity**: 0 is a perfect circle; the closer to 1, the more stretched the orbit
+- $f$ = distance between the foci
+- $d$ = length of the major axis (same units as $f$)
+
+**Verbal model:** An orbit's eccentricity equals the distance between its foci divided by the length of its major axis.
+
+**To construct an orbit:** $f = e \times d$
+
+**Closest and farthest distances:** closest $= R(1 - e)$, farthest $= R(1 + e)$
+:::
+
+::: {.callout-note collapse="true"}
+## 🔎 Going deeper: what about the center of mass?
+
+A star doesn't sit perfectly still. A planet and its star both orbit their shared **center of mass**. Because a star is so much more massive than its planets (our Sun has 99.9% of the solar system's mass), that center of mass is almost exactly at the star's center. So for our models, we put the star at one focus of the planet's elliptical orbit. The other focus is an empty point with nothing there.
+:::
+
+## Explore Eccentricity
+
+Drag the sliders to change the orbit's shape and size. The green ring is our Sun's habitable zone (0.95–1.15 AU).
+
+- **Kepler's Second Law:** a planet moves fastest when it's closest to its star and slowest when it's farthest. Watch the speed and ☀️ energy readouts in the animation.
+
+```{ojs}
+//| echo: false
+viewof eccentricity = Inputs.range([0, 0.9], {label: "Orbital eccentricity (e):", step: 0.001, value: 0.017})
 ```
 
 ```{ojs}
 //| echo: false
-viewof semiMajor = Inputs.range([0.5, 3.0], {label: "Semi-major axis (AU):", step: 0.1, value: 1.0})
+viewof semiMajor = Inputs.range([0.5, 3.0], {label: "Semi-major axis (AU):", step: 0.01, value: 1.0})
 ```
 
 ```{ojs}
@@ -655,20 +1187,21 @@ viewof semiMajor = Inputs.range([0.5, 3.0], {label: "Semi-major axis (AU):", ste
   const perihelion = a * (1 - e);
   const aphelion = a * (1 + e);
 
-  const inHZ = perihelion >= 0.95 * 0.95 && aphelion <= 1.37 * 1.05;
-  const partialHZ = perihelion < 1.37 && aphelion > 0.95;
+  const HZ_IN = 0.95, HZ_OUT = 1.15;  // our Sun's habitable zone (AU)
+  const inHZ = perihelion >= HZ_IN && aphelion <= HZ_OUT;
+  const partialHZ = perihelion < HZ_OUT && aphelion > HZ_IN;
 
   // Logical viewBox scales responsively via CSS (mobile-first)
   const W = 360, H = 400, ox = 180, oy = 200;
   const m = 42, top = 58, bottom = 338;
 
-  // Fit both the orbit and the 0.95–1.37 AU habitable-zone ring inside the box
+  // Fit both the orbit and the 0.95–1.15 AU habitable-zone ring inside the box
   const scaleF = Math.min(
     100,
-    (ox - m) / Math.max(a * (1 + e), 1.37),
-    (W - ox - m) / Math.max(a * (1 - e), 1.37),
-    (oy - top) / Math.max(b, 1.37),
-    (bottom - oy) / Math.max(b, 1.37)
+    (ox - m) / Math.max(a * (1 + e), HZ_OUT),
+    (W - ox - m) / Math.max(a * (1 - e), HZ_OUT),
+    (oy - top) / Math.max(b, HZ_OUT),
+    (bottom - oy) / Math.max(b, HZ_OUT)
   );
 
   const cx = ox - c * scaleF;  // ellipse center (empty focus sits left of the Sun)
@@ -680,13 +1213,13 @@ viewof semiMajor = Inputs.range([0.5, 3.0], {label: "Semi-major axis (AU):", ste
 
   // Habitable zone: translucent annulus + dashed boundary circles
   const annulus = d3.path();
-  annulus.arc(ox, oy, 1.37 * scaleF, 0, 2 * Math.PI);
-  annulus.arc(ox, oy, 0.95 * scaleF, 0, 2 * Math.PI, true);
+  annulus.arc(ox, oy, HZ_OUT * scaleF, 0, 2 * Math.PI);
+  annulus.arc(ox, oy, HZ_IN * scaleF, 0, 2 * Math.PI, true);
   svg.append("path").attr("d", annulus).attr("fill-rule", "evenodd")
     .attr("fill", "#2ecc71").attr("opacity", 0.10);
-  svg.append("circle").attr("cx", ox).attr("cy", oy).attr("r", 1.37 * scaleF)
+  svg.append("circle").attr("cx", ox).attr("cy", oy).attr("r", HZ_OUT * scaleF)
     .attr("fill", "none").attr("stroke", "#2ecc71").attr("stroke-width", 1).attr("stroke-dasharray", "3,3");
-  svg.append("circle").attr("cx", ox).attr("cy", oy).attr("r", 0.95 * scaleF)
+  svg.append("circle").attr("cx", ox).attr("cy", oy).attr("r", HZ_IN * scaleF)
     .attr("fill", "none").attr("stroke", "#2ecc71").attr("stroke-width", 1).attr("stroke-dasharray", "3,3");
 
   // Orbit ellipse
@@ -721,7 +1254,7 @@ viewof semiMajor = Inputs.range([0.5, 3.0], {label: "Semi-major axis (AU):", ste
   // Legend
   svg.append("text").attr("x", W/2).attr("y", H - 6).attr("text-anchor", "middle")
     .attr("fill", "#2ecc71").attr("font-size", 10)
-    .text("Green = habitable zone (0.95–1.37 AU for a Sun-like star)");
+    .text("Green = habitable zone (0.95–1.15 AU for our Sun)");
 
   // Animated planet: radial line + dot + live readout
   const line = svg.append("line").attr("x1", ox).attr("y1", oy).attr("x2", ox).attr("y2", oy)
@@ -759,164 +1292,295 @@ viewof semiMajor = Inputs.range([0.5, 3.0], {label: "Semi-major axis (AU):", ste
 //| echo: false
 buildQuiz("eccentricity-quiz", "🔵 Check Your Understanding — Orbital Eccentricity", [
   {
-    q: "Earth's orbit has eccentricity e = 0.017 and semi-major axis a = 1.0 AU. Does Earth stay in the habitable zone?",
-    options: ["No — it swings outside during winter", "Yes — with e = 0.017, the orbit is nearly circular and stays well within the HZ all year", "Only during summer months", "It depends on the Moon's position"],
+    q: "Earth's orbit has e = 0.0167 and R = 1.00 AU. Does Earth stay in our Sun's habitable zone (0.95–1.15 AU)?",
+    options: ["No — it leaves the zone every winter", "Yes — it only ranges from about 0.98 to 1.02 AU", "Only during summer", "It depends on the Moon"],
     correct: 1,
-    explanation: "With e = 0.017, Earth's closest approach (perihelion) is 0.983 AU and farthest (aphelion) is 1.017 AU. Both are well within the 0.95–1.37 AU habitable zone. The nearly circular orbit keeps temperatures remarkably stable."
+    explanation: "Closest = 1.00 × (1 − 0.0167) ≈ 0.98 AU and farthest = 1.00 × (1 + 0.0167) ≈ 1.02 AU. Both are inside 0.95–1.15 AU, so Earth's nearly circular orbit keeps it in the habitable zone all year."
   },
   {
-    q: "If you set eccentricity to 0.5 (keeping a = 1.0 AU), what happens?",
-    options: ["The planet stays within the habitable zone", "The planet swings out to 1.5 AU and in to 0.5 AU — partially or fully exiting the habitable zone", "The orbit becomes perfectly circular", "The planet escapes the star's gravity"],
+    q: "Set eccentricity to 0.5 with R = 1.0 AU. What happens?",
+    options: ["The planet stays in the habitable zone", "It swings from 0.5 AU (too hot) to 1.5 AU (too cold)", "The orbit becomes a circle", "The planet escapes the star"],
     correct: 1,
-    explanation: "With e = 0.5 and a = 1.0 AU: perihelion = 1.0 × (1 − 0.5) = 0.5 AU (too hot!) and aphelion = 1.0 × (1 + 0.5) = 1.5 AU (borderline cold). The planet would experience extreme temperature swings, likely preventing stable liquid water."
+    explanation: "Closest = 1.0 × (1 − 0.5) = 0.5 AU and farthest = 1.0 × (1 + 0.5) = 1.5 AU. The planet would bake and then freeze every orbit."
   },
   {
-    q: "Comet Borrelly has e = 0.62. Why does its water alternate between frozen ice and vaporized gas?",
-    options: ["The comet spins very fast, creating heat", "Chemical reactions on the comet heat and cool the water", "Its highly elliptical orbit takes it from far outside the HZ (frozen) to deep inside (vaporized)", "Solar wind strips water away, then it reforms"],
-    correct: 2,
-    explanation: "With e = 0.62, Borrelly swings between ~1.37 AU (near perihelion, inside the HZ) and ~5.85 AU (far outside). Near the Sun, solar radiation vaporizes surface ice into dramatic jets. Far from the Sun, temperatures plunge and water refreezes."
+    q: "An orbit has a major axis of 10 AU and a distance between foci of 2 AU. What is its eccentricity?",
+    options: ["0.02", "0.2", "2", "5"],
+    correct: 1,
+    explanation: "e = f ÷ d = 2 ÷ 10 = 0.2. Eccentricity has no units because f and d are in the same units."
   }
 ])
 ```
 
-# Elaborate: Applying to Exoplanets
+## 🧵 Virtual Lab: Constructing an Orbit
 
-::: {.elaborate-box}
-## 🌍 Real Exoplanet Data
+In class you build orbits with pins and string. Here's the same activity on screen. Pick a planet, calculate the scaled **distance between foci** with $f = e \times d$, and type it in. The two pins go at the foci, and the pencil, held tight against the string, traces the orbit. The green ring is the habitable zone, measured from the pin that represents the star.
 
-Scientists have discovered thousands of exoplanets using the Kepler Space Telescope. For each one, we can measure the orbital period — and use Kepler's Third Law to calculate the orbit.
-:::
+```{ojs}
+//| echo: false
+constructData = [
+  {name: "Earth", d: 60, string: 30.5, e: 0.0167, hzIn: 28.5, hzOut: 34.5},
+  {name: "Kepler-186 f", d: 50, string: 26, e: 0.040, hzIn: 14.8, hzOut: 28.3},
+  {name: "Kepler-442 b", d: 50, string: 26, e: 0.040, hzIn: 16.3, hzOut: 34.4},
+  {name: "TOI-2257 b", d: 25, string: 18.7, e: 0.496, hzIn: 6.8, hzOut: 14.4},
+  {name: "Trappist-1 f", d: 5.7, string: 2.9, e: 0.010, hzIn: 1.7, hzOut: 3.6},
+  {name: "Trappist-1 g", d: 7.0, string: 3.5, e: 0.002, hzIn: 1.7, hzOut: 3.6}
+]
+```
+
+```{ojs}
+//| echo: false
+viewof constructPlanet = Inputs.select(constructData.map(d => d.name), {label: "Planet:", value: "TOI-2257 b"})
+```
 
 ```{ojs}
 //| echo: false
 {
-  const wrap = d3.create("div");
-  wrap.style("overflow-x", "auto");
-  wrap.append(() => Inputs.table(exoplanets, {
-    columns: ["name", "period", "distance", "ecc", "starLum", "zone"],
-    header: {
-      name: "Exoplanet",
-      period: "Period (days)",
-      distance: "Distance (AU)",
-      ecc: "Eccentricity",
-      starLum: "Star luminosity (×Sun)",
-      zone: "Habitable zone"
-    }
-  }));
-  return wrap.node();
+  const p = constructData.find(d => d.name === constructPlanet);
+  return html`<table class="table table-sm" style="max-width:520px;font-size:.92em;">
+    <tbody>
+      <tr><th>Scaled length of major axis (d)</th><td>${p.d} cm</td></tr>
+      <tr><th>Length of string</th><td>${p.string} cm</td></tr>
+      <tr><th>Eccentricity of orbit (e)</th><td>${p.e}</td></tr>
+      <tr><th>Scaled habitable zone range</th><td>${p.hzIn} – ${p.hzOut} cm from the star</td></tr>
+    </tbody></table>`;
 }
 ```
 
 ```{ojs}
 //| echo: false
-viewof selectedExo = Inputs.select(exoplanets.map(d => d.name), {label: "Choose an exoplanet:", value: "Kepler-442b"})
+viewof constructF = numberInput("Your distance between foci (f):", null, {placeholder: "cm", unit: "cm"})
 ```
 
 ```{ojs}
 //| echo: false
 {
-  const p = exoplanets.find(d => d.name === selectedExo);
-  const inner = Math.sqrt(p.starLum / 1.1);
-  const outer = Math.sqrt(p.starLum / 0.53);
-  const peri = p.distance * (1 - p.ecc);
-  const aph = p.distance * (1 + p.ecc);
-
-  let zoneV, zColor;
-  if (p.distance < inner) { zoneV = "❌ Too hot"; zColor = "#e74c3c"; }
-  else if (p.distance > outer) { zoneV = "❌ Too cold"; zColor = "#3498db"; }
-  else { zoneV = "✅ In the habitable zone"; zColor = "#2ecc71"; }
-  const stable = peri >= inner && aph <= outer;
-  const note = (p.distance < inner || p.distance > outer)
-    ? "Its average distance falls outside the zone."
-    : stable ? "Its whole orbit stays inside the zone." : "But its orbit swings across the zone's edge.";
-
-  const W = 360, H = 240;
-  const x0 = 44, x1 = 340;
-  const maxDist = Math.max(aph * 1.15, outer * 1.25, 0.6);
-  const px = d => x0 + (d / maxDist) * (x1 - x0);
-
-  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`)
-    .style("width", "100%").style("height", "auto")
-    .style("max-width", "520px").style("display", "block").style("margin", "auto");
+  const p = constructData.find(d => d.name === constructPlanet);
+  const fCorrect = p.e * p.d;
+  const W = 360, H = 300, m = 22;
+  const box = d3.create("div");
+  const msg = box.append("div").style("padding", "10px 14px").style("border-radius", "8px").style("margin-bottom", "10px");
+  if (!(constructF >= 0)) {
+    msg.style("background", "rgba(102,126,234,0.1)").html(`Calculate <strong>f = e × d = ${p.e} × ${p.d}</strong> and type your answer above.`);
+    return box.node();
+  }
+  const f = constructF;
+  const fOk = Math.abs(f - fCorrect) <= Math.max(0.05, fCorrect * 0.05);
+  if (f >= p.d) {
+    msg.style("background", "rgba(231,76,60,0.12)").html("The pins can't be farther apart than the major axis. Check your multiplication.");
+    return box.node();
+  }
+  const a = p.d / 2, c = f / 2, b = Math.sqrt(a * a - c * c);
+  const near = a - c, far = a + c;
+  const stays = near >= p.hzIn && far <= p.hzOut;
+  // The orbit's far side and the habitable-zone ring both extend from the star; fit whichever is wider
+  const leftExt = Math.max(p.hzOut, far), rightExt = Math.max(p.hzOut, near);
+  const scale = Math.min((W - 2 * m) / (leftExt + rightExt), (H - 80) / (2 * Math.max(b, p.hzOut)));
+  const starX = m + leftExt * scale, cy = 40 + (H - 80) / 2;
+  const centerX = starX - c * scale;
+  const svg = box.append("svg").attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("role", "img").attr("aria-label", `Constructed orbit of ${p.name} with the habitable zone`)
+    .style("width", "100%").style("height", "auto").style("max-width", "560px").style("display", "block").style("margin", "auto");
   svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#0a0a2e").attr("rx", 12);
+  const ring = d3.path();
+  ring.arc(starX, cy, p.hzOut * scale, 0, 2 * Math.PI);
+  ring.arc(starX, cy, p.hzIn * scale, 0, 2 * Math.PI, true);
+  svg.append("path").attr("d", ring).attr("fill-rule", "evenodd").attr("fill", "#2ecc71").attr("opacity", 0.18);
+  for (const r of [p.hzIn, p.hzOut]) svg.append("circle").attr("cx", starX).attr("cy", cy).attr("r", r * scale)
+    .attr("fill", "none").attr("stroke", "#2ecc71").attr("stroke-dasharray", "3,3");
+  const color = stays ? "#2ecc71" : "#e74c3c";
+  svg.append("ellipse").attr("cx", centerX).attr("cy", cy).attr("rx", a * scale).attr("ry", b * scale)
+    .attr("fill", "none").attr("stroke", color).attr("stroke-width", 2.5);
+  // String from each pin to the pencil
+  const ang = -1.1, px = centerX + a * scale * Math.cos(ang), py = cy + b * scale * Math.sin(ang);
+  for (const fx of [starX, starX - f * scale]) svg.append("line").attr("x1", fx).attr("y1", cy).attr("x2", px).attr("y2", py)
+    .attr("stroke", "#f6e05e").attr("stroke-width", 1.2);
+  svg.append("circle").attr("cx", px).attr("cy", py).attr("r", 4).attr("fill", "#f6e05e");
+  svg.append("text").attr("x", px + 7).attr("y", py - 4).attr("fill", "#f6e05e").attr("font-size", 10).text("pencil");
+  svg.append("circle").attr("cx", starX).attr("cy", cy).attr("r", 6).attr("fill", "#f39c12");
+  svg.append("circle").attr("cx", starX - f * scale).attr("cy", cy).attr("r", 3).attr("fill", "#e2e8f0");
+  svg.append("text").attr("x", W / 2).attr("y", 20).attr("text-anchor", "middle").attr("fill", "white").attr("font-size", 13).attr("font-weight", "bold")
+    .text(`${p.name}: closest ${near.toFixed(2)} cm · farthest ${far.toFixed(2)} cm`);
+  svg.append("text").attr("x", W / 2).attr("y", H - 12).attr("text-anchor", "middle").attr("fill", color).attr("font-size", 12).attr("font-weight", "bold")
+    .text(stays ? "✅ Stays in the habitable zone for the whole orbit" : "❌ Leaves the habitable zone during its orbit");
+  msg.style("background", fOk ? "rgba(46,204,113,0.15)" : "rgba(246,173,85,0.18)")
+    .html(fOk
+      ? `✅ f = ${p.e} × ${p.d} = ${+fCorrect.toFixed(3)} cm. Your orbit is built to scale.`
+      : `⚠️ Your pins are ${f} cm apart, but e × d = ${p.e} × ${p.d}. Recalculate. The drawing shows <em>your</em> orbit.`);
+  return box.node();
+}
+```
 
-  svg.append("text").attr("x", W/2).attr("y", 22).attr("text-anchor", "middle")
-    .attr("fill", "white").attr("font-size", 14).attr("font-weight", "bold")
-    .text(`Exoplanet analyzer: ${p.name}`);
-  svg.append("text").attr("x", W/2).attr("y", 40).attr("text-anchor", "middle")
-    .attr("fill", "#9aa7bd").attr("font-size", 10)
-    .text(`Star luminosity ${p.starLum}× Sun · period ${p.period} days`);
+::: {.student-task}
+### ✏️ In your packet: Think – Talk – Open Exchange
 
-  svg.append("line").attr("x1", x0).attr("y1", 120).attr("x2", x1).attr("y2", 120).attr("stroke", "#64748b").attr("stroke-width", 1);
-  svg.append("circle").attr("cx", x0 - 8).attr("cy", 120).attr("r", 6).attr("fill", "#f39c12");
-  svg.append("text").attr("x", x0 - 8).attr("y", 138).attr("text-anchor", "middle").attr("fill", "#f39c12").attr("font-size", 8).text("star");
+- How did you construct the orbit for your assigned exoplanet?
+- How is each variable in Kepler's First Law ($e$, $f$, $d$) represented in your model?
+- Does the exoplanet stay within the habitable zone throughout its orbit? How do you know?
 
-  svg.append("rect").attr("x", px(inner)).attr("y", 104).attr("width", Math.max(4, px(outer) - px(inner))).attr("height", 32)
-    .attr("fill", "#2ecc71").attr("opacity", 0.15).attr("stroke", "#2ecc71").attr("stroke-dasharray", "2,2");
-  svg.append("text").attr("x", (px(inner) + px(outer)) / 2).attr("y", 100).attr("text-anchor", "middle")
-    .attr("fill", "#2ecc71").attr("font-size", 9).attr("font-weight", "bold").text("habitable zone");
+**Reflection:** How did using math (Kepler's laws) help your group predict whether each exoplanet stays in the habitable zone?
+:::
 
-  svg.append("line").attr("x1", px(peri)).attr("y1", 124).attr("x2", px(aph)).attr("y2", 124)
-    .attr("stroke", zColor).attr("stroke-width", 3);
-  svg.append("circle").attr("cx", px(p.distance)).attr("cy", 124).attr("r", 5).attr("fill", zColor).attr("stroke", "#fff").attr("stroke-width", 1);
-  svg.append("text").attr("x", px(p.distance)).attr("y", 112).attr("text-anchor", "middle")
-    .attr("fill", zColor).attr("font-size", 9).attr("font-weight", "bold").text(`${p.distance} AU`);
-  svg.append("text").attr("x", px(peri)).attr("y", 148).attr("text-anchor", "middle").attr("fill", "#ccc").attr("font-size", 8).text(`${peri.toFixed(2)}`);
-  svg.append("text").attr("x", px(aph)).attr("y", 148).attr("text-anchor", "middle").attr("fill", "#ccc").attr("font-size", 8).text(`${aph.toFixed(2)}`);
+```{ojs}
+//| echo: false
+buildQuiz("construct-orbit-quiz", "🧵 Check Your Understanding — Constructing Orbits", [
+  {
+    q: "Earth's scaled orbit has d = 60 cm and e = 0.0167. How far apart should the pins (foci) be?",
+    options: ["0.0167 cm", "About 1.0 cm", "About 30 cm", "60 cm"],
+    correct: 1,
+    explanation: "f = e × d = 0.0167 × 60 ≈ 1.0 cm. The pins are almost on top of each other, which is why Earth's orbit looks like a circle."
+  },
+  {
+    q: "TOI-2257 b has e = 0.496. What do you find when you construct its orbit?",
+    options: ["It stays in the habitable zone the whole time", "It swings inside the inner edge and outside the outer edge of the habitable zone", "It never gets near the habitable zone", "Its orbit is a circle"],
+    correct: 1,
+    explanation: "With d = 25 cm, f ≈ 12.4 cm. Its closest point (≈6.3 cm) is inside the 6.8 cm inner edge and its farthest (≈18.7 cm) is past the 14.4 cm outer edge. Its average distance is in the zone, but its very stretched orbit carries it out."
+  },
+  {
+    q: "If you move the two pins farther apart but keep the same major axis, what happens to the orbit?",
+    options: ["It becomes more circular", "It becomes more stretched (higher eccentricity)", "It gets smaller", "Nothing changes"],
+    correct: 1,
+    explanation: "e = f ÷ d. A bigger f with the same d gives a bigger e, so the orbit becomes a more elongated ellipse."
+  }
+])
+```
 
-  svg.append("text").attr("x", W/2).attr("y", 178).attr("text-anchor", "middle")
-    .attr("fill", "#e2e8f0").attr("font-size", 11)
-    .text(`HZ: ${inner.toFixed(2)}–${outer.toFixed(2)} AU · e = ${p.ecc} · peri ${peri.toFixed(2)} · aph ${aph.toFixed(2)}`);
-  svg.append("text").attr("x", W/2).attr("y", 202).attr("text-anchor", "middle")
-    .attr("fill", zColor).attr("font-size", 13).attr("font-weight", "bold")
-    .text(zoneV);
-  svg.append("text").attr("x", W/2).attr("y", 220).attr("text-anchor", "middle")
-    .attr("fill", "#9aa7bd").attr("font-size", 9).text(note);
-  svg.append("text").attr("x", W/2).attr("y", 236).attr("text-anchor", "middle")
-    .attr("fill", "#64748b").attr("font-size", 7.5)
-    .text("Green band = habitable zone · colored line = planet's orbit range");
+## ➕ Optional Extension: Solar System Objects Data
 
+Use this table to answer the extension questions in your packet. Our Sun's habitable zone is about **142.12–172.04 million km** from the Sun.
+
+```{ojs}
+//| echo: false
+ssObjects = [
+  {object: "Mercury", dist: 57.9, period: "88.0 d", ecc: 0.206},
+  {object: "Venus", dist: 108.2, period: "224.7 d", ecc: 0.007},
+  {object: "Earth", dist: 149.6, period: "365.26 d", ecc: 0.017},
+  {object: "Earth's Moon", dist: 149.6, period: "27.3 d (around Earth)", ecc: 0.055},
+  {object: "Mars", dist: 228.0, period: "1.9 y", ecc: 0.094},
+  {object: "Ceres", dist: 414.0, period: "4.6 y", ecc: 0.079},
+  {object: "Pallas", dist: 414.0, period: "4.6 y", ecc: 0.231},
+  {object: "Jupiter", dist: 778.5, period: "11.9 y", ecc: 0.049},
+  {object: "Saturn", dist: 1432.0, period: "29.4 y", ecc: 0.054},
+  {object: "Uranus", dist: 2867.0, period: "84.0 y", ecc: 0.047},
+  {object: "Neptune", dist: 4515.0, period: "164.8 y", ecc: 0.009},
+  {object: "Pluto", dist: 5906.4, period: "248.0 y", ecc: 0.244},
+  {object: "Eris", dist: 10000, period: "~557.6 y", ecc: 0.436}
+]
+```
+
+```{ojs}
+//| echo: false
+{
+  const wrap = d3.create("div").style("overflow-x", "auto");
+  wrap.append(() => Inputs.table(ssObjects, {
+    header: {object: "Celestial object", dist: "Mean distance from Sun (million km)", period: "Period of revolution", ecc: "Eccentricity of orbit"},
+    format: {dist: d => d === 10000 ? "~10,000" : d.toLocaleString()},
+    rows: 14
+  }));
+  return wrap.node();
+}
+```
+
+**Why can Pluto cross Neptune's orbit?** Pluto's average distance (39.5 AU) is farther than Neptune's (30.1 AU), but Pluto's orbit is much more eccentric (0.244 vs. 0.009). At its closest, Pluto is only $39.5 \times (1 - 0.244) \approx 29.8$ AU from the Sun, slightly closer than Neptune.
+
+```{ojs}
+//| echo: false
+{
+  const W = 360, H = 330, sx = 196, sy = 165, scale = 2.9;
+  const orbit = (a, e) => ({a, e, c: a * e, b: a * Math.sqrt(1 - e * e)});
+  const nep = orbit(30.07, 0.009), plu = orbit(39.48, 0.244);
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("role", "img").attr("aria-label", "Pluto's eccentric orbit dips inside Neptune's nearly circular orbit near Pluto's closest point to the Sun")
+    .style("width", "100%").style("height", "auto").style("max-width", "520px").style("display", "block").style("margin", "auto");
+  svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#0a0a2e").attr("rx", 12);
+  svg.append("ellipse").attr("cx", sx - nep.c * scale).attr("cy", sy).attr("rx", nep.a * scale).attr("ry", nep.b * scale)
+    .attr("fill", "none").attr("stroke", "#3498db").attr("stroke-width", 2);
+  svg.append("ellipse").attr("cx", sx - plu.c * scale).attr("cy", sy).attr("rx", plu.a * scale).attr("ry", plu.b * scale)
+    .attr("fill", "none").attr("stroke", "#e17055").attr("stroke-width", 2);
+  svg.append("circle").attr("cx", sx).attr("cy", sy).attr("r", 5).attr("fill", "#f39c12");
+  svg.append("text").attr("x", sx).attr("y", sy - 10).attr("text-anchor", "middle").attr("fill", "#f39c12").attr("font-size", 10).text("Sun");
+  const periX = sx + plu.a * (1 - plu.e) * scale;
+  svg.append("circle").attr("cx", periX).attr("cy", sy).attr("r", 4).attr("fill", "#e17055");
+  svg.append("text").attr("x", periX - 6).attr("y", sy + 20).attr("text-anchor", "end").attr("fill", "#e17055").attr("font-size", 9).text("Pluto's closest: 29.8 AU");
+  svg.append("text").attr("x", 12).attr("y", 22).attr("fill", "#3498db").attr("font-size", 12).attr("font-weight", "bold").text("Neptune (e = 0.009)");
+  svg.append("text").attr("x", 12).attr("y", 40).attr("fill", "#e17055").attr("font-size", 12).attr("font-weight", "bold").text("Pluto (e = 0.244)");
+  svg.append("text").attr("x", W / 2).attr("y", H - 10).attr("text-anchor", "middle").attr("fill", "#9aa7bd").attr("font-size", 9)
+    .text("Drawn to scale (top view). Pluto's orbit is also tilted 17°, so they never collide.");
   return svg.node();
 }
 ```
 
 ```{ojs}
 //| echo: false
-buildQuiz("analyzer-quiz", "🧪 Check Your Understanding — Exoplanet Analyzer", [
+buildQuiz("extension-quiz", "➕ Check Your Understanding — Optional Extension", [
   {
-    q: "Select Kepler-452b. Its distance is 1.046 AU and its star's habitable zone is about 1.04–1.50 AU. What does the analyzer tell you?",
-    options: ["It's clearly outside the habitable zone", "It's in the habitable zone, but its orbit swings across the inner edge", "It's too hot everywhere in its orbit", "The analyzer cannot analyze it"],
-    correct: 1,
-    explanation: "Kepler-452b's average distance (1.046 AU) is just inside the inner edge (≈1.04 AU), and its perihelion (≈1.01 AU) dips slightly below it. So it's 'in the zone' on average, but its orbit grazes the inner boundary."
+    q: "Using the table and the habitable zone (142.12–172.04 million km), which objects are too close to the Sun to be habitable?",
+    options: ["Mercury and Venus", "Mars and Jupiter", "Earth and the Moon", "Pluto and Eris"],
+    correct: 0,
+    explanation: "Mercury (57.9 million km) and Venus (108.2 million km) are both closer than the 142.12 million km inner edge. Earth and the Moon (149.6) are inside; everything from Mars (228.0) outward is too far."
   },
   {
-    q: "Select 55 Cancri e. Why does the analyzer say 'too hot'?",
-    options: ["Its star is too dim", "Its distance (0.015 AU) is far inside its star's habitable zone", "Its eccentricity is too high", "Its period is too long"],
+    q: "Which planet in the table has the most circular orbit?",
+    options: ["Earth (e = 0.017)", "Venus (e = 0.007)", "Neptune (e = 0.009)", "Jupiter (e = 0.049)"],
     correct: 1,
-    explanation: "55 Cancri e orbits at 0.015 AU — far inside its star's habitable zone (≈0.74–1.06 AU). It receives far too much heat for liquid water."
+    explanation: "The smaller the eccentricity, the more circular the orbit. Venus has the lowest eccentricity in the table (0.007)."
+  },
+  {
+    q: "Which object in the table has the least circular orbit?",
+    options: ["Mercury (e = 0.206)", "Pluto (e = 0.244)", "Eris (e = 0.436)", "Pallas (e = 0.231)"],
+    correct: 2,
+    explanation: "Eris has the highest eccentricity (0.436), so its orbit is the most stretched. Among the eight planets, Mercury (0.206) is the least circular."
   }
 ])
 ```
 
-<figure style="margin: 18px auto; max-width: 520px; text-align: center;">
-  <img src="https://images-assets.nasa.gov/image/PIA21751/PIA21751~orig.jpg"
-       alt="Artist concept of the TRAPPIST-1 system showing the dim red dwarf star and its seven Earth-sized planets"
-       style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,.25);">
-  <figcaption style="margin-top: 8px; color: #64748b; font-size: .85em; font-style: italic; line-height: 1.4;">
-    Artist concept of TRAPPIST-1, a dim red dwarf orbited by seven Earth-sized planets — three of them in the habitable zone. Credit: NASA/JPL-Caltech.
-  </figcaption>
-</figure>
+# Evaluate: Your Planets and Orbits Model
+
+::: {.evaluate-box}
+## ✅ Model Checklist
+
+Use this checklist (based on the Planets and Orbits rubric) before you turn in your model.
+
+**Your model shows:**
+
+- Earth orbiting **inside the habitable zone** for an **entire orbit** around the Sun
+- **Kepler's First Law** ($e = f/d$) and **where each variable** ($e$, $f$, $d$, the foci) appears in your model
+- A **legend, key, or captions** so the model "speaks for itself"
+
+**Your written explanation includes:**
+
+- **Patterns** from graphing the solar system data (distance ↔ phase of water, distance ↔ period, minimum vs. maximum distance)
+- How the equation $e = f/d$ helped you make a claim about the **shape of Earth's orbit** (e = 0.0167: nearly circular, so Earth stays between about 0.98 and 1.02 AU, inside 0.95–1.15 AU)
+- **Reflection:** why math representations, like graphs and equations, help you find patterns you can use as evidence
+:::
+
+## 🔗 Connect to the Performance Task
+
+For the final argument about which star is most likely to host an Earth-like planet, you'll use evidence from this lesson:
+
+| Evidence from this lesson | Where it comes from |
+|---|---|
+| Average distance (semi-major axis) | Kepler's Third Law: $R = \sqrt[3]{M_s \times T^2}$ |
+| Orbit shape (eccentricity) | Kepler's First Law: $e = f/d$, closest $= R(1-e)$, farthest $= R(1+e)$ |
+| Habitable zone range | Exoplanet data table |
+| Does the planet stay in the HZ? | Compare closest and farthest distances to the HZ limits |
+
+Combine this with the star evidence from earlier lessons (temperature, luminosity, HR diagram position, stability, and lifespan) to explain how the planet could have **liquid water** and support **life**.
+
 
 # Chapter Summary
 
 | Key Concept | Details |
 |---|---|
-| **Kepler's Third Law** | $T^2 = a^3$ — period and distance are mathematically linked |
-| **Habitable Zone** | Region where liquid water can exist; HZ = $\sqrt{L/1.1}$ to $\sqrt{L/0.53}$ AU |
-| **Eccentricity** | Measures orbit shape (0 = circle, ~1 = very elongated); must be low for habitability |
-| **Earth's orbit** | $a = 1.0$ AU, $e = 0.017$ (nearly circular), stays in HZ year-round |
-| **Comet Borrelly** | $e = 0.62$ — orbit explains water phase changes (frozen ↔ vaporized) |
-| **Exoplanet analysis** | Measure period → calculate distance → check if in HZ with low eccentricity |
+| **Water and distance** | Close to the Sun, water is vapor; near Earth's distance, liquid; farther out, ice |
+| **Gravity** | The star's gravity keeps objects in orbit; closer objects move faster and have shorter periods |
+| **Habitable zone** | Distances where surface liquid water can exist; about 0.95–1.15 AU for our Sun. Brighter stars push it farther out |
+| **Transit method** | The time between dips in a star's brightness is the planet's orbital period |
+| **Kepler's Third Law** | $M_s \times T^2 = R^3$ (solar masses, Earth years, AU); for our Sun, $T^2 = R^3$ |
+| **Kepler's First Law** | Orbits are ellipses with the star at one focus; eccentricity $e = f/d$ |
+| **Closest and farthest** | closest $= R(1-e)$, farthest $= R(1+e)$ |
+| **Earth's orbit** | $R = 1.00$ AU, $e = 0.0167$: nearly circular, stays in the habitable zone all year |
+| **Comet Borrelly** | $R = 3.59$ AU, ranges from 1.35 to 5.83 AU: its water freezes far away and vaporizes up close |
 
 ---
 
@@ -960,9 +1624,9 @@ buildQuiz("analyzer-quiz", "🧪 Check Your Understanding — Exoplanet Analyzer
       explanation: "Earth is actually closest to the Sun (perihelion) in January — during Northern Hemisphere winter! Seasons are caused by Earth's 23.5° axial tilt, not by distance from the Sun. The distance varies by only ~3% due to our low eccentricity."
     },
     {
-      text: "Kepler's Third Law (T² = a³) applies to any object orbiting any star, not just our Sun.",
-      type: "Fact",
-      explanation: "The generalized form is T² = (4π²/GM)a³, which works for any star mass M. When using solar masses and AU/years, it simplifies to T² = a³/M. This is exactly how astronomers determine exoplanet distances from observed orbital periods."
+      text: "T² = R³ works exactly the same for planets orbiting any star, no matter how massive the star is.",
+      type: "Myth",
+      explanation: "T² = R³ only works for our Sun (1 solar mass). For other stars you must include the star's mass: Mₛ × T² = R³. A more massive star pulls harder, so a planet at the same distance orbits faster."
     },
     {
       text: "A planet with an eccentricity of 0.5 would experience dramatic temperature swings during its orbit.",
@@ -972,22 +1636,22 @@ buildQuiz("analyzer-quiz", "🧪 Check Your Understanding — Exoplanet Analyzer
     {
       text: "The habitable zone is the same distance from every star.",
       type: "Myth",
-      explanation: "The habitable zone depends on stellar luminosity. Dim M-type stars have habitable zones at 0.1–0.2 AU; bright stars push the HZ out to 2–3+ AU. The formula HZ = √(L/threshold) shows the direct dependence on luminosity."
+      explanation: "The habitable zone depends on how bright the star is. In our data set, Trappist-1 (a dim red dwarf) has a habitable zone of only 0.023–0.048 AU, while Kepler-79's is 1.711–4.229 AU. Our Sun's is about 0.95–1.15 AU."
     },
     {
       text: "Scientists can determine an exoplanet's orbital distance by measuring how frequently it passes in front of its star.",
       type: "Fact",
-      explanation: "The transit method measures the orbital period (time between transits). Kepler's Third Law then converts period to distance: a = (T²)^(1/3). This technique has been used to characterize thousands of exoplanets discovered by the Kepler and TESS missions."
+      explanation: "The transit method measures the orbital period (the time between dips in brightness). Kepler's Third Law then turns period and star mass into distance: R = ∛(Mₛ × T²). The Kepler and TESS missions found thousands of exoplanets this way."
     },
     {
       text: "Comet Borrelly's water changes between ice and vapor because the comet generates internal heat.",
       type: "Myth",
-      explanation: "Comets don't generate heat. Borrelly's highly elliptical orbit (e = 0.62) carries it from ~5.85 AU (far, cold) to ~1.37 AU (close, warm). Near the Sun, solar radiation vaporizes surface ice into jets. Far away, temperatures drop and water freezes solid again."
+      explanation: "Comets don't generate heat. Borrelly's stretched orbit carries it from 5.83 AU (far, cold) to 1.35 AU (close, warm). Near the Sun, sunlight vaporizes surface ice into jets. Far away, the water freezes solid again."
     },
     {
       text: "For an exoplanet to support life, it needs both the right orbital distance AND a low eccentricity to stay in the habitable zone year-round.",
       type: "Fact",
-      explanation: "A planet at the right average distance but with high eccentricity will swing in and out of the habitable zone. Water would alternately boil and freeze each 'year.' Low eccentricity (< ~0.2) ensures the planet receives consistent energy for stable liquid water."
+      explanation: "A planet at the right average distance but with a stretched orbit can swing out of the habitable zone. TOI-2257 b is in the zone at its average distance, but with e = 0.496 it passes inside the inner edge and outside the outer edge every orbit."
     }
   ];
   var idx = 0, score = 0, answered = 0, cardAnswered = false;
@@ -1108,114 +1772,64 @@ function buildOrbitQuiz(id, title, questions) {
 //| echo: false
 buildOrbitQuiz("orbit-summative-quiz", "🪐 Summative Quiz — Planets & Orbits", [
   {
-    q: "Kepler's Third Law states T² = a³. If an exoplanet has an orbital period of 8 years, what is its average distance from its Sun-like star?",
-    options: [
-      "2 AU",
-      "4 AU",
-      "8 AU",
-      "64 AU"
-    ],
+    q: "In the Water in Our Solar System data, Mercury and Venus have water vapor, Earth has liquid water, and Mars, Europa, and Neptune have mostly ice. Which variable best explains this pattern?",
+    options: ["The object's size", "The object's distance from the Sun", "The number of moons", "How fast the object spins"],
     correct: 1,
-    explanation: "T² = 8² = 64. Then a³ = 64, so a = ∛64 = 4 AU. The planet orbits at 4 times Earth's distance from its star."
+    explanation: "Distance from the Sun controls how much energy an object receives: close objects are hot (vapor), Earth's distance is 'just right' (liquid), and distant objects are cold (ice)."
   },
   {
-    q: "What determines the boundaries of a star's habitable zone?",
-    options: [
-      "The star's mass only",
-      "The star's luminosity (brightness) — more luminous stars push the HZ farther out",
-      "The number of planets orbiting the star",
-      "The star's age"
-    ],
-    correct: 1,
-    explanation: "The habitable zone is where stellar radiation allows liquid water. Inner edge: HZ_in = √(L/1.1) AU; outer edge: HZ_out = √(L/0.53) AU. A star 4× more luminous than the Sun has a habitable zone roughly 2× farther out."
-  },
-  {
-    q: "A planet orbits at 1.0 AU with eccentricity e = 0.3. What are its closest and farthest distances from the star?",
-    options: [
-      "Perihelion = 0.7 AU, Aphelion = 1.3 AU",
-      "Perihelion = 0.97 AU, Aphelion = 1.03 AU",
-      "Perihelion = 0.5 AU, Aphelion = 1.5 AU",
-      "Perihelion = 1.0 AU, Aphelion = 1.0 AU"
-    ],
+    q: "A star dims at day 4.0, day 16.4, and day 28.8. What is the planet's orbital period in Earth years?",
+    options: ["About 0.034 years", "About 0.34 years", "12.4 years", "4.0 years"],
     correct: 0,
-    explanation: "Perihelion = a(1 - e) = 1.0(1 - 0.3) = 0.7 AU. Aphelion = a(1 + e) = 1.0(1 + 0.3) = 1.3 AU. With e = 0.3, the planet barely stays within the habitable zone (0.95–1.37 AU for a Sun-like star)."
+    explanation: "The dips are 12.4 days apart, so the period is 12.4 days. 12.4 ÷ 365.25 ≈ 0.034 Earth years. (That's Trappist-1 g.)"
   },
   {
-    q: "Why did Comet Borrelly's water vaporize into jets as it approached the Sun?",
-    options: [
-      "The comet's internal radioactive elements generated heat",
-      "Its highly eccentric orbit (e = 0.62) brought it close enough for solar radiation to vaporize surface ice",
-      "Solar wind chemically reacted with the comet's surface",
-      "The comet collided with asteroids near the Sun"
-    ],
+    q: "An exoplanet orbits a Sun-like star (Mₛ = 1) with a period of 8 years. What is its average distance?",
+    options: ["2 AU", "4 AU", "8 AU", "64 AU"],
     correct: 1,
-    explanation: "With e = 0.62, Borrelly's perihelion is ~1.37 AU — close enough for intense solar radiation to sublimate surface ice into dramatic jets of water vapor and dust. At aphelion (~5.85 AU), the water freezes solid again."
+    explanation: "R³ = Mₛ × T² = 1 × 8² = 64, so R = ∛64 = 4 AU."
   },
   {
-    q: "Looking at the exoplanet scatter plot, which planet is flagged 'Too hot' and why?",
-    options: [
-      "Kepler-442b — it's too close to a bright star",
-      "TRAPPIST-1e — it orbits an M-dwarf too closely",
-      "55 Cancri e — it orbits at only 0.015 AU, far inside any habitable zone",
-      "Kepler-16b — it orbits a binary star system"
-    ],
+    q: "A planet orbits a 0.5-solar-mass star every 0.5 years. What is its average distance?",
+    options: ["0.125 AU", "0.25 AU", "0.5 AU", "1 AU"],
     correct: 2,
-    explanation: "55 Cancri e orbits at just 0.015 AU with a period of 0.74 days. At that distance, surface temperatures exceed 2,000°C — far too hot for liquid water regardless of eccentricity."
+    explanation: "Mₛ × T² = 0.5 × 0.5² = 0.125, and ∛0.125 = 0.5 AU."
   },
   {
-    q: "An exoplanet orbits a star with luminosity 0.12× the Sun. The habitable zone inner edge is at √(0.12/1.1) ≈ 0.33 AU. What does this tiny HZ distance imply?",
-    options: [
-      "The planet must be very far from the star to be habitable",
-      "The planet must orbit very close to the dim star, which may cause tidal locking",
-      "The planet will definitely be habitable because the HZ is well-defined",
-      "The star is too bright for any planet to be habitable"
-    ],
-    correct: 1,
-    explanation: "Dim stars require planets to orbit very close for adequate warmth. At ~0.33 AU, gravitational tidal forces likely lock the planet so one side permanently faces the star (tidally locked), creating extreme temperature differences between the day and night sides."
-  },
-  {
-    q: "For the performance task, which exoplanet has the most Earth-like combination of orbital distance (in HZ) AND low eccentricity?",
-    options: [
-      "55 Cancri e (distance = 0.015 AU, e = 0.17)",
-      "Kepler-452b (distance = 1.046 AU, e = 0.035)",
-      "TRAPPIST-1e (distance = 0.029 AU, e = 0.005)",
-      "Kepler-16b (distance = 0.704 AU, e = 0.007)"
-    ],
-    correct: 1,
-    explanation: "Kepler-452b orbits at 1.046 AU (nearly identical to Earth's 1.0 AU) around a G-type star with luminosity 1.2× the Sun. Its low eccentricity (0.035) keeps it firmly in the habitable zone. It's often called 'Earth's cousin.'"
-  },
-  {
-    q: "How does eccentricity affect a planet's chance of staying in the habitable zone?",
-    options: [
-      "Higher eccentricity is better — the planet samples more temperatures",
-      "Eccentricity doesn't matter as long as average distance is correct",
-      "Lower eccentricity keeps the planet at a more constant distance, maintaining stable temperatures for liquid water",
-      "Only eccentricity = 0 (perfect circle) allows habitability"
-    ],
-    correct: 2,
-    explanation: "Lower eccentricity means smaller variation between perihelion and aphelion distances. A planet with low e stays at a near-constant distance, receiving steady energy. High e causes wild temperature swings that prevent stable liquid water, even if the average distance is 'right.'"
-  },
-  {
-    q: "You discover an exoplanet with orbital period T = 1.5 years around a Sun-like star. Is it likely in the habitable zone?",
-    options: [
-      "Yes — using T² = a³, a = ∛(2.25) ≈ 1.31 AU, which is within the Sun-like HZ (0.95–1.37 AU)",
-      "No — 1.5 years is too long for a habitable orbit",
-      "Cannot determine without knowing the planet's mass",
-      "Only if the eccentricity is exactly zero"
-    ],
+    q: "Kepler-186 f orbits a 0.544-solar-mass star with a period of 0.356 years. Its star's habitable zone is 0.242–0.464 AU. Is it in the habitable zone at its average distance?",
+    options: ["Yes — R ≈ 0.41 AU, which is between 0.242 and 0.464 AU", "No — R ≈ 0.07 AU, too close", "No — R ≈ 1.2 AU, too far", "You can't tell without the planet's mass"],
     correct: 0,
-    explanation: "T² = 1.5² = 2.25, so a = ∛2.25 ≈ 1.31 AU. For a Sun-like star, the habitable zone is ~0.95–1.37 AU. At 1.31 AU, the planet sits near the outer edge of the HZ — a promising candidate if eccentricity is low!"
+    explanation: "Mₛ × T² = 0.544 × 0.356² ≈ 0.0689, and ∛0.0689 ≈ 0.41 AU, inside 0.242–0.464 AU. (The planet's own mass isn't needed.)"
   },
   {
-    q: "Which THREE factors must align for an exoplanet to be considered potentially habitable based on orbital analysis?",
-    options: [
-      "Large mass, fast rotation, and many moons",
-      "Correct distance (in HZ), low eccentricity, and a host star with sufficient luminosity for a well-defined HZ",
-      "Close proximity to the star, high eccentricity, and short orbital period",
-      "Circular orbit, no atmosphere, and a binary star system"
-    ],
+    q: "Kepler-18 b's average distance works out to about 0.045 AU, but its star's habitable zone is 1.463–3.227 AU. What can you conclude?",
+    options: ["It's too far from its star, so its water would freeze", "It's much too close to its star to have liquid water", "It's in the habitable zone", "It must have a very eccentric orbit"],
     correct: 1,
-    explanation: "All three must work together: (1) orbital distance within the habitable zone, (2) low eccentricity to stay in the HZ year-round, and (3) a host star whose luminosity creates a habitable zone at the right location. Missing any one factor likely prevents stable liquid water."
+    explanation: "0.045 AU is far inside the 1.463 AU inner edge, so the planet is much too hot for liquid water no matter what its orbit's shape is."
+  },
+  {
+    q: "An orbit has a major axis of 8 AU and a distance between foci of 2 AU. What is its eccentricity?",
+    options: ["0.25", "4", "16", "0.4"],
+    correct: 0,
+    explanation: "Kepler's First Law: e = f ÷ d = 2 ÷ 8 = 0.25."
+  },
+  {
+    q: "A planet's average distance is 1.0 AU and its eccentricity is 0.3. What are its closest and farthest distances from its star?",
+    options: ["0.7 AU and 1.3 AU", "0.97 AU and 1.03 AU", "0.5 AU and 1.5 AU", "1.0 AU and 1.0 AU"],
+    correct: 0,
+    explanation: "Closest = 1.0 × (1 − 0.3) = 0.7 AU and farthest = 1.0 × (1 + 0.3) = 1.3 AU. For our Sun (habitable zone 0.95–1.15 AU), this planet would leave the zone on both sides."
+  },
+  {
+    q: "TOI-2257 b is inside its star's habitable zone at its average distance, but its eccentricity is 0.496. What happens during its orbit?",
+    options: ["It stays in the habitable zone the whole time", "It swings inside the inner edge and outside the outer edge of the habitable zone", "It escapes from its star", "Its temperature never changes"],
+    correct: 1,
+    explanation: "A very stretched orbit carries the planet much closer to and farther from its star than its average distance. Its water could boil near the star and freeze far away."
+  },
+  {
+    q: "Which combination makes an exoplanet the best candidate for stable liquid water?",
+    options: ["Average distance inside the habitable zone AND a low eccentricity", "A short period AND a high eccentricity", "A large major axis AND a massive star, no matter where the habitable zone is", "Any average distance, as long as the orbit is circular"],
+    correct: 0,
+    explanation: "Kepler's Third Law tells you whether the average distance is inside the habitable zone. Kepler's First Law tells you whether a low eccentricity keeps the planet there for the whole orbit. You need both."
   }
 ])
 ```
