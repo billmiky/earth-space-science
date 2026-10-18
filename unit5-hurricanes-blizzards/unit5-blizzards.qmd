@@ -3,9 +3,9 @@ title: "Unit 5: Blizzards"
 subtitle: "How do severe winter storms form, and could they become worse in the future?"
 format:
   html:
-    toc: false
-    toc-depth: 3
-    number-sections: true
+    toc: true
+    toc-depth: 2
+    number-sections: false
     code-fold: true
 execute:
   echo: false
@@ -28,7 +28,7 @@ execute:
 .engage-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
 
 .explore-box { 
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
+  background: linear-gradient(135deg, #b5179e 0%, #c9184a 100%); 
   color: white;
   padding: 25px; 
   margin: 20px 0; 
@@ -37,7 +37,7 @@ execute:
 }
 
 .explain-box { 
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
+  background: linear-gradient(135deg, #1565c0 0%, #00838f 100%); 
   color: #1a1a1a;
   padding: 25px; 
   margin: 20px 0; 
@@ -46,7 +46,7 @@ execute:
 }
 
 .elaborate-box { 
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); 
+  background: linear-gradient(135deg, #2e7d32 0%, #00796b 100%); 
   color: #1a1a1a;
   padding: 25px; 
   margin: 20px 0; 
@@ -55,7 +55,7 @@ execute:
 }
 
 .evaluate-box { 
-  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); 
+  background: linear-gradient(135deg, #c2185b 0%, #bf360c 100%); 
   color: #1a1a1a;
   padding: 25px; 
   margin: 20px 0; 
@@ -534,12 +534,12 @@ function buildUnitQuiz(id, title, questions) {
   const body = html`<div style="border:1.5px solid #c7d2fe;border-top:none;border-radius:0 0 14px 14px;overflow:hidden;background:#f8f9ff;padding:16px;"></div>`;
   questions.forEach((qq, qi) => {
     const card = document.createElement("div");
-    card.style.cssText = "background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
     card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
     qq.options.forEach((opt, oi) => {
       const btn = document.createElement("button");
       btn.textContent = opt;
-      btn.style.cssText = "display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
       btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#667eea";btn.style.background="#f0f0ff"; }};
       btn.onmouseout  = () => { if(!card.dataset.answered){ btn.style.borderColor="#e2e8f0";btn.style.background="#fff"; }};
       btn.onclick = () => {

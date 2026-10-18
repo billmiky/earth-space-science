@@ -3,12 +3,12 @@ title: "Unit 4: Climate Feedbacks"
 subtitle: "What is causing global temperatures to rise, and why is the Arctic warming at almost 4 times the rate as the rest of the globe?"
 format:
   html:
-    toc: false
-    toc-depth: 3
-    number-sections: true
+    toc: true
+    toc-depth: 2
+    number-sections: false
     code-fold: true
 execute:
-  echo: true
+  echo: false
   warning: false
 ---
 
@@ -1136,7 +1136,7 @@ reflectedEnergy = (avgAlbedo * 100).toFixed(1)
 
 html`
 <div style="display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0;">
-  <div style="flex: 1; min-width: 300px;">
+  <div style="flex: 1; min-width: min(300px, 100%);">
     <svg width="350" height="250" style="background: linear-gradient(180deg, #87CEEB 0%, #1565c0 100%); border-radius: 10px;">
       <!-- Ice -->
       <rect x="0" y="150" width="${iceExtent * 3.5}" height="100" fill="#e3f2fd" opacity="0.9"/>

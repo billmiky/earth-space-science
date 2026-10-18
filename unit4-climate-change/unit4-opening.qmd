@@ -3,12 +3,12 @@ title: "Unit 4: Climate Change - Unit Opening"
 subtitle: "How do natural factors contribute to changes in Earth's temperature?"
 format:
   html:
-    toc: false
-    toc-depth: 3
-    number-sections: true
+    toc: true
+    toc-depth: 2
+    number-sections: false
     code-fold: true
 execute:
-  echo: true
+  echo: false
   warning: false
 ---
 
@@ -212,12 +212,12 @@ buildQuiz = function(id, title, questions) {
 
   questions.forEach((qq, qi) => {
     const card = document.createElement("div");
-    card.style.cssText = "background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
     card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;">${qi+1}. ${qq.q}</p>`;
     qq.options.forEach((opt, oi) => {
       const btn = document.createElement("button");
       btn.textContent = opt;
-      btn.style.cssText = "display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
       btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#667eea";btn.style.background="#f0f0ff"; }};
       btn.onmouseout  = () => { if(!card.dataset.answered){ btn.style.borderColor="#e2e8f0";btn.style.background="#fff"; }};
       btn.onclick = () => {
