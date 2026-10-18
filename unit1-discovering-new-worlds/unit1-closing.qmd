@@ -3,12 +3,12 @@ title: "Unit 1: Closing — Which Exoplanet Is Most Earth-Like?"
 subtitle: "Constructing your argument from evidence"
 format:
   html:
-    toc: false
-    toc-depth: 3
-    number-sections: true
+    toc: true
+    toc-depth: 2
+    number-sections: false
     code-fold: true
 execute:
-  echo: true
+  echo: false
   warning: false
 ---
 
@@ -134,7 +134,7 @@ ptData = [
 Plot.plot({
   title: "Exoplanet Habitability Scorecard",
   subtitle: "Scored on star type, lifespan, HZ position, and eccentricity (10 = most Earth-like)",
-  width: 700,
+  width: Math.min(width, 700),
   height: 300,
   marginLeft: 120,
   x: {label: "Habitability Score (0–10)", domain: [0, 10]},

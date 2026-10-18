@@ -674,18 +674,69 @@ pre {
 }
 
 /* ================================================================= */
-/* FULL-WIDTH CONTENT when sidebar is hidden                          */
+/* PAGE WIDTH when sidebar is hidden                                  */
 /* ================================================================= */
 
 @media (min-width: 992px) {
-  /* Center the body content and use the full desktop width when the sidebar
-     is collapsed. The book uses the "floating" sidebar style, so we target
-     body.floating (not just body.docked). When the user opens the sidebar
-     (.sidebar-open), Quarto's default grid resumes so the sidebar has room. */
+  /* Center the body content when the sidebar is collapsed. The book uses the
+     "floating" sidebar style, so we target body.floating (not just body.docked).
+     When the user opens the sidebar (.sidebar-open), Quarto's default grid
+     resumes so the sidebar has room. */
+
+  /* Pages without an "On this page" outline (home page, unit overviews) */
   body.floating.fullcontent:not(.sidebar-open) .page-columns,
-  body.docked:not(.sidebar-open) .page-columns {
-    grid-template-columns: [screen-start] minmax(1.5em, 1fr) [screen-start-inset page-start page-start-inset body-start-outset body-start body-content-start] minmax(0, 1200px) [body-content-end] minmax(1.5em, 1fr) [body-end body-end-outset page-end-inset page-end screen-end] !important;
+  body.docked.fullcontent:not(.sidebar-open) .page-columns {
+    grid-template-columns: [screen-start] minmax(1.5em, 1fr) [screen-start-inset page-start page-start-inset body-start-outset body-start body-content-start] minmax(0, 1000px) [body-content-end] minmax(1.5em, 1fr) [body-end body-end-outset page-end-inset page-end screen-end-inset screen-end] !important;
   }
+
+  /* Chapter pages: a readable text column (~75 characters per line) with the
+     "On this page" outline in the right margin */
+  body.floating:not(.fullcontent):not(.sidebar-open) .page-columns,
+  body.docked:not(.fullcontent):not(.sidebar-open) .page-columns {
+    grid-template-columns: [screen-start] minmax(1.5em, 1fr) [screen-start-inset page-start page-start-inset body-start-outset body-start body-content-start] minmax(0, 820px) [body-content-end] 3em [body-end body-end-outset] minmax(170px, 240px) [page-end-inset page-end] minmax(1.5em, 1fr) [screen-end-inset screen-end] !important;
+  }
+}
+
+/* === "On this page" outline === */
+#quarto-margin-sidebar nav#TOC {
+  font-size: 0.85rem;
+}
+
+#quarto-margin-sidebar nav#TOC ul li a {
+  line-height: 1.35;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+
+/* Collapsible copy of the outline for phones/tablets (mobile-enhancements.html) */
+.mobile-toc {
+  margin: 0 0 1.25rem;
+  border: 1px solid var(--quiz-border);
+  border-radius: 10px;
+  background: var(--quiz-bg);
+}
+
+.mobile-toc summary {
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mobile-toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.5rem 0.5rem;
+}
+
+.mobile-toc a {
+  display: block;
+  padding: 0.55rem 0.5rem;
+  border-top: 1px solid var(--quiz-border);
+  text-decoration: none;
+}
+
+@media (min-width: 992px) {
+  .mobile-toc { display: none; }
 }
 
 /* ================================================================= */
@@ -707,6 +758,97 @@ pre {
   width: 100%;
   height: 100%;
   border: none;
+}
+
+/* ================================================================= */
+/* CHARTS, IMAGES & MEDIA — never wider than the page                  */
+/* ================================================================= */
+
+main img,
+main video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Long unbreakable strings (URLs, "_______" fill-in blanks) wrap instead of
+   widening the page */
+main {
+  overflow-wrap: break-word;
+}
+
+/* Let interactive cells shrink to the column; Quarto puts some in grid
+   layouts where they would otherwise grow to fit their widest content */
+main .cell,
+main .cell-output-display,
+main .grid > *,
+main .panel-grid > * {
+  min-width: 0;
+}
+
+/* Same for the scrollytelling (closeread) columns in the climate story */
+.cr-section > .narrative-col,
+.cr-section > .sticky-col,
+.cr-section .sticky-col-stack > .sticky {
+  min-width: 0;
+}
+
+/* Closeread centers sticky panels with margin:auto, which shrink-wraps them;
+   Plotly charts then fall back to a fixed 700px. Give them the column width. */
+.cr-section .sticky-col-stack > .sticky:has(.plotly-graph-div) {
+  width: 100%;
+}
+
+/* Charts too wide for a phone screen scroll sideways inside their own
+   frame instead of dragging the whole page (see mobile-enhancements.html) */
+.chart-scroll {
+  overflow-x: auto !important;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.chart-scroll::before {
+  content: "↔ Swipe sideways to see the whole chart";
+  display: block;
+  position: sticky;
+  left: 0;
+  font-size: 0.8rem;
+  color: var(--bs-secondary-color, #6c757d);
+  margin-bottom: 0.25rem;
+}
+
+/* ================================================================= */
+/* BACK-TO-TOP BUTTON (textbook-wide, see mobile-enhancements.html)    */
+/* ================================================================= */
+
+#back-to-top-btn {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--quiz-border);
+  background: var(--bs-body-bg, #fff);
+  color: inherit;
+  font-size: 1.3rem;
+  line-height: 1;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+#back-to-top-btn.visible {
+  opacity: 0.9;
+  visibility: visible;
+}
+
+#back-to-top-btn:hover { opacity: 1; }
+
+@media print {
+  #back-to-top-btn, #float-toc-btn { display: none !important; }
 }
 
 /* ================================================================= */
@@ -741,7 +883,68 @@ pre {
   }
   table {
     display: block;
-    overflow-x: auto;
+    overflow-x: auto !important;
+  }
+
+  /* Quarto "panel" layouts use a 24-column grid whose gaps alone are wider
+     than a phone; stack the panels instead */
+  main .panel-grid {
+    display: block;
+  }
+
+  /* Headings: chapter <style> blocks set h1 to 2.8em !important, which fills
+     a whole phone screen. The extra "main" selector outranks those rules. */
+  main h1,
+  main .title {
+    font-size: 1.9rem !important;
+    margin-top: 1.5rem !important;
+    line-height: 1.2;
+  }
+  main h2 {
+    font-size: 1.45rem !important;
+  }
+  main h3 {
+    font-size: 1.2rem !important;
+  }
+  main .big-question {
+    font-size: 1.6rem !important;
+    margin: 16px 0 !important;
+  }
+
+  /* Colored section boxes: less padding so text gets more of the screen */
+  main .engage-box, main .explore-box, main .explain-box,
+  main .elaborate-box, main .evaluate-box, main .key-idea,
+  main .student-task, main .mind-blown, main .check-understanding {
+    padding: 16px !important;
+    border-radius: 12px !important;
+  }
+  main .engage-box h2,
+  main .mind-blown {
+    font-size: 1.3rem !important;
+  }
+}
+
+/* ================================================================= */
+/* TOUCH SCREENS — finger-sized controls                              */
+/* ================================================================= */
+
+@media (pointer: coarse) {
+  main input[type="radio"],
+  main input[type="checkbox"] {
+    width: 1.3em;
+    height: 1.3em;
+  }
+  main input[type="range"] {
+    min-height: 32px;
+  }
+  main select {
+    min-height: 40px;
+  }
+  /* Observable Inputs radio/checkbox options */
+  main form[class^="oi-"] label {
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
   }
 }
 
@@ -750,9 +953,6 @@ pre {
 /* ================================================================= */
 
 @media (max-width: 480px) {
-  body {
-    font-size: 15px;
-  }
   .hero-section h1 {
     font-size: 1.5em !important;
   }

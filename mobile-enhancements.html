@@ -1,0 +1,108 @@
+<button id="back-to-top-btn" type="button" aria-label="Back to top" title="Back to top">↑</button>
+<script>
+(function() {
+  // --- Phone-friendly charts --------------------------------------------
+  // Many interactive charts are drawn 700–800px wide, wider than a phone.
+  // Instead of letting them drag the whole page sideways, each chart shrinks
+  // to fit the screen, but only until its labels reach MIN_TEXT_PX. A chart
+  // that would need to shrink further keeps that size and scrolls sideways in
+  // its own frame with a "swipe" hint (.chart-scroll in styles.css).
+  var MIN_TEXT_PX = 8;
+  var minScales = new WeakMap();
+
+  // Smallest scale at which the chart's typical (median) label stays legible;
+  // 0 for drawings without text, which can shrink freely
+  function minScale(svg) {
+    if (minScales.has(svg)) return minScales.get(svg);
+    var sizes = [];
+    var texts = svg.querySelectorAll('text');
+    for (var i = 0; i < texts.length && i < 40; i++) {
+      var fs = parseFloat(getComputedStyle(texts[i]).fontSize);
+      if (fs) sizes.push(fs);
+    }
+    sizes.sort(function(a, b) { return a - b; });
+    var scale = sizes.length ? Math.min(1, MIN_TEXT_PX / sizes[Math.floor(sizes.length / 2)]) : 0;
+    minScales.set(svg, scale);
+    return scale;
+  }
+
+  function fitSvg(svg, avail) {
+    var vb = svg.viewBox && svg.viewBox.baseVal;
+    var w = vb && vb.width ? vb.width : parseFloat(svg.getAttribute('width'));
+    var h = vb && vb.height ? vb.height : parseFloat(svg.getAttribute('height'));
+    if (!w || !h || w <= avail) return;
+    var minWidth = w * minScale(svg);
+    if (!vb || !vb.width) {
+      // Fixed-size drawing: let it scale only if that keeps labels legible
+      if (minWidth > avail) return;
+      svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+      svg.style.maxWidth = '100%';
+      svg.style.height = 'auto';
+    }
+    // Already-scalable chart: stop it from shrinking past legibility
+    if (minWidth > avail) svg.style.minWidth = minWidth + 'px';
+  }
+
+  function checkCharts() {
+    document.querySelectorAll('main .cell-output-display').forEach(function(frame) {
+      var avail = frame.clientWidth;
+      if (!avail) return;
+      frame.querySelectorAll('svg').forEach(function(svg) {
+        if (!svg.parentElement.closest('svg')) fitSvg(svg, avail);
+      });
+      frame.classList.toggle('chart-scroll', frame.scrollWidth > avail + 2);
+    });
+  }
+
+  var queued = false;
+  function queueCheck() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function() { queued = false; checkCharts(); });
+  }
+
+  // Interactive (OJS) charts redraw whenever a slider moves, so re-check then too
+  var main = document.querySelector('main');
+  if (main) new MutationObserver(queueCheck).observe(main, { childList: true, subtree: true });
+  window.addEventListener('resize', queueCheck);
+  window.addEventListener('load', queueCheck);
+  queueCheck();
+
+  // --- "On this page" menu for phones and tablets ------------------------
+  // Quarto shows the chapter outline in the right margin, which narrow
+  // screens don't have, so they get a collapsible copy under the chapter
+  // title (hidden on laptops by styles.css). Only the main sections are
+  // listed to keep it short.
+  var toc = document.querySelector('#TOC > ul');
+  var header = document.getElementById('title-block-header');
+  if (toc && header) {
+    var menu = document.createElement('details');
+    menu.className = 'mobile-toc';
+    menu.innerHTML = '<summary>On this page</summary>';
+    var list = toc.cloneNode(true);
+    list.removeAttribute('class');
+    list.querySelectorAll('ul').forEach(function(ul) { ul.remove(); });
+    list.querySelectorAll('a').forEach(function(a) {
+      a.removeAttribute('id');
+      a.className = '';
+    });
+    menu.appendChild(list);
+    menu.addEventListener('click', function(e) {
+      if (e.target.closest('a')) menu.open = false;
+    });
+    header.after(menu);
+  }
+
+  // --- Back-to-top button for long chapters ------------------------------
+  var topBtn = document.getElementById('back-to-top-btn');
+  function updateTopBtn() {
+    topBtn.classList.toggle('visible', window.scrollY > window.innerHeight * 1.5);
+  }
+  topBtn.addEventListener('click', function() {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+  });
+  window.addEventListener('scroll', updateTopBtn, { passive: true });
+  updateTopBtn();
+})();
+</script>

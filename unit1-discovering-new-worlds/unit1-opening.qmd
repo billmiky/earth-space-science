@@ -3,12 +3,12 @@ title: "Unit 1: Opening — Discovering New Worlds"
 subtitle: "What has made Earth able to sustain life?"
 format:
   html:
-    toc: false
-    toc-depth: 3
-    number-sections: true
+    toc: true
+    toc-depth: 2
+    number-sections: false
     code-fold: true
 execute:
-  echo: true
+  echo: false
   warning: false
 ---
 
@@ -117,7 +117,7 @@ planetData = [
 Plot.plot({
   title: "Average Surface Temperature of Solar System Planets",
   subtitle: "Only Earth falls in the range where liquid water can exist (0–100°C)",
-  width: 700,
+  width: Math.min(width, 700),
   height: 380,
   marginBottom: 60,
   x: {label: "Planet", tickRotate: -30},
