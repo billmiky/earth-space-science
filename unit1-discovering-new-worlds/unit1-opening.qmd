@@ -140,10 +140,20 @@ Plot.plot({
     ,
         tip: true}),
     Plot.text(planetData, {
+      filter: d => d.temp >= 0,
       x: "planet",
       y: "temp",
       text: d => `${d.temp}°C`,
-      dy: d => d.temp >= 0 ? -12 : 12,
+      dy: -12,
+      fontSize: 11,
+      fontWeight: "bold"
+    }),
+    Plot.text(planetData, {
+      filter: d => d.temp < 0,
+      x: "planet",
+      y: "temp",
+      text: d => `${d.temp}°C`,
+      dy: 12,
       fontSize: 11,
       fontWeight: "bold"
     }),

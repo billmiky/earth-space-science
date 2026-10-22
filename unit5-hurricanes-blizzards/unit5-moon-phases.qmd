@@ -191,11 +191,69 @@ h2 {
 
 ```{ojs}
 //| echo: false
-import {chart} from "@mbostock/phases-of-the-moon"
+viewof year = Inputs.number({label: "Year", value: 2012, step: 1, min: 1900, max: 2100})
+```
 
-viewof year = Inputs.number({label: "Year", value: 2018, step: 1, min: 1900, max: 2100})
-viewof locale = Inputs.select(["en-US", "en-GB", "fr-FR"], {label: "Locale", value: "en-US"})
-chart
+```{ojs}
+//| echo: false
+viewof locale = Inputs.select(["en-US", "en-GB", "fr-FR", "es-ES"], {label: "Month names", value: "en-US"})
+```
+
+```{ojs}
+//| echo: false
+{
+  // Approximate Moon age from a known new Moon (Jan 6, 2000 18:14 UTC); accurate to within about a day
+  const synodic = 29.530588853;
+  const refNewMoon = Date.UTC(2000, 0, 6, 18, 14);
+  const phaseOf = date => {
+    const days = (date - refNewMoon) / 86400000;
+    return (((days / synodic) % 1) + 1) % 1;
+  };
+  const cell = 22, r = 8.5, left = 46, top = 26;
+  const W = left + 31 * cell + 6, H = top + 12 * cell + 6;
+  const moonPath = p => {
+    const waxing = p < 0.5;
+    const c = Math.cos(2 * Math.PI * p);
+    const rx = Math.abs(c) * r;
+    const litSweep = waxing ? 1 : 0;
+    const termSweep = waxing ? (c < 0 ? 1 : 0) : (c > 0 ? 1 : 0);
+    return `M0,${-r} A${r},${r} 0 0 ${litSweep} 0,${r} A${rx},${r} 0 0 ${termSweep} 0,${-r}Z`;
+  };
+  const monthFmt = new Intl.DateTimeFormat(locale, {month: "short", timeZone: "UTC"});
+  const svg = d3.create("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .style("width", "100%").style("height", "auto")
+    .style("background", "#111").style("border-radius", "12px")
+    .style("font", "10px sans-serif");
+  for (let d = 1; d <= 31; d++) {
+    svg.append("text").attr("x", left + (d - 0.5) * cell).attr("y", top - 10)
+      .attr("text-anchor", "middle").attr("fill", "#888").text(d % 5 === 0 || d === 1 ? d : "");
+  }
+  for (let m = 0; m < 12; m++) {
+    const y = top + (m + 0.5) * cell;
+    svg.append("text").attr("x", 8).attr("y", y + 3.5).attr("fill", "#bbb")
+      .style("text-transform", "uppercase").text(monthFmt.format(new Date(Date.UTC(year, m, 1))));
+    const nDays = new Date(Date.UTC(year, m + 1, 0)).getUTCDate();
+    for (let d = 1; d <= nDays; d++) {
+      const date = Date.UTC(year, m, d, 12);
+      const p = phaseOf(date);
+      const g = svg.append("g").attr("transform", `translate(${left + (d - 0.5) * cell},${y})`);
+      g.append("circle").attr("r", r).attr("fill", "#2d2d2d");
+      g.append("path").attr("d", moonPath(p)).attr("fill", "#f5f0d0");
+      const age = p * synodic;
+      const name = age < 1 || age > synodic - 1 ? "New Moon" : Math.abs(age - synodic / 2) < 1 ? "Full Moon"
+        : p < 0.25 ? "Waxing crescent" : p < 0.5 ? "Waxing gibbous" : p < 0.75 ? "Waning gibbous" : "Waning crescent";
+      g.append("title").text(`${new Date(date).toLocaleDateString(locale, {timeZone: "UTC", dateStyle: "medium"})}: ${name} (Moon age ≈ ${age.toFixed(1)} days)`);
+      if (year === 2012 && m === 9 && d === 29) {
+        g.append("circle").attr("r", r + 2.5).attr("fill", "none").attr("stroke", "#ff6b6b").attr("stroke-width", 2);
+      }
+    }
+  }
+  const wrap = html`<div></div>`;
+  wrap.append(svg.node());
+  wrap.append(html`<p style="font-size:.85em;color:#64748b;margin-top:6px;">Phases are calculated from the average length of the lunar month (29.53 days), so they can be off by up to a day. Hover or tap a moon for its date and phase.${year === 2012 ? " The red ring marks October 29, 2012: Hurricane Sandy made landfall the same day as a full Moon." : ""}</p>`);
+  return wrap;
+}
 ```
 
 ```{ojs}

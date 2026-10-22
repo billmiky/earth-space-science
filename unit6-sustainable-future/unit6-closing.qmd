@@ -462,10 +462,20 @@ Plot.plot({
     ,
         tip: true}),
     Plot.text(tradeoffData, {
+      filter: d => d.solution !== "Electrify transport",
       x: "cost",
       y: "health",
       text: "solution",
-      dy: d => d.solution === "Electrify transport" ? -22 : -18,
+      dy: -18,
+      fontSize: 9,
+      fontWeight: "bold"
+    }),
+    Plot.text(tradeoffData, {
+      filter: d => d.solution === "Electrify transport",
+      x: "cost",
+      y: "health",
+      text: "solution",
+      dy: -22,
       fontSize: 9,
       fontWeight: "bold"
     }),
