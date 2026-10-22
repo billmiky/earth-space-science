@@ -378,7 +378,7 @@ viewof oceanTemp = Inputs.range([22, 32], {label: "Ocean Surface Temperature (°
 
   // Ocean
   const oceanColor = d3.interpolateRdBu(1 - (oceanTemp - 22) / 10);
-  svg.append("rect").attr("x", 0).attr("y", 380).attr("width", width).attr("height", 120).attr("fill", oceanColor).attr("rx", "0 0 10 10");
+  svg.append("rect").attr("x", 0).attr("y", 380).attr("width", width).attr("height", 120).attr("fill", oceanColor);
   svg.append("text").attr("x", 375).attr("y", 420).attr("text-anchor", "middle").attr("font-size", 16).attr("fill", "white").attr("font-weight", "bold")
     .text(`Ocean: ${oceanTemp}°C`);
 
@@ -698,11 +698,11 @@ Hurricanes weaken dramatically once they make landfall. Understanding why helps 
   svg.append("text").attr("x", 350).attr("y", 30).attr("text-anchor", "middle").attr("font-size", 18).attr("font-weight", "bold").text("Why Hurricanes Weaken Over Land");
 
   // Ocean section
-  svg.append("rect").attr("x", 0).attr("y", 250).attr("width", 350).attr("height", 100).attr("fill", "#3498db").attr("opacity", 0.4).attr("rx", "0 0 0 10");
+  svg.append("rect").attr("x", 0).attr("y", 250).attr("width", 350).attr("height", 100).attr("fill", "#3498db").attr("opacity", 0.4);
   svg.append("text").attr("x", 175).attr("y", 280).attr("text-anchor", "middle").attr("font-weight", "bold").text("🌊 OCEAN");
 
   // Land section  
-  svg.append("rect").attr("x", 350).attr("y", 250).attr("width", 350).attr("height", 100).attr("fill", "#8B7355").attr("opacity", 0.5).attr("rx", "0 0 10 0");
+  svg.append("rect").attr("x", 350).attr("y", 250).attr("width", 350).attr("height", 100).attr("fill", "#8B7355").attr("opacity", 0.5);
   svg.append("text").attr("x", 525).attr("y", 280).attr("text-anchor", "middle").attr("font-weight", "bold").text("🏗️ LAND");
 
   // Hurricane over ocean (strong)
