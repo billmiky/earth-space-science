@@ -124,18 +124,21 @@ Plot = require("@observablehq/plot")
 ```{ojs}
 //| echo: false
 ptData = [
-  {name: "Kepler-442b", starMass: 0.61, starType: "K", lifespan: 28, distance: 0.409, ecc: 0.04, inHZ: "Yes", score: 9},
-  {name: "Kepler-452b", starMass: 1.04, starType: "G", lifespan: 9.2, distance: 1.046, ecc: 0.035, inHZ: "Yes", score: 10},
-  {name: "TRAPPIST-1e", starMass: 0.089, starType: "M", lifespan: 100, distance: 0.029, ecc: 0.005, inHZ: "Yes", score: 7},
-  {name: "Kepler-22b", starMass: 0.97, starType: "G", lifespan: 10.8, distance: 0.849, ecc: 0.0, inHZ: "Yes", score: 8},
-  {name: "55 Cancri e", starMass: 0.91, starType: "K", lifespan: 12.5, distance: 0.015, ecc: 0.17, inHZ: "No", score: 2}
+  {name: "Kepler-442 b", starMass: 0.61, starType: "K", lifespan: 28, distance: 0.409, ecc: 0.04, inHZ: "Yes", score: 9},
+  {name: "Kepler-186 f", starMass: 0.544, starType: "M", lifespan: 45, distance: 0.432, ecc: 0.04, inHZ: "Yes", score: 8},
+  {name: "Trappist-1 b", starMass: 0.089, starType: "M", lifespan: 100, distance: 0.012, ecc: 0.006, inHZ: "No", score: 3},
+  {name: "Kepler-79 b", starMass: 1.165, starType: "F", lifespan: 6.8, distance: 0.117, ecc: 0.0, inHZ: "No", score: 3},
+  {name: "Kepler-18 b", starMass: 0.972, starType: "G", lifespan: 10.9, distance: 0.045, ecc: 0.0, inHZ: "No", score: 2},
+  {name: "HD 17156 b", starMass: 1.28, starType: "G", lifespan: 5.4, distance: 0.16, ecc: 0.68, inHZ: "No", score: 2},
+  {name: "Kepler-432 b", starMass: 1.32, starType: "K giant", lifespan: 4.6, distance: 0.30, ecc: 0.5, inHZ: "No", score: 1},
+  {name: "HD 20782 b", starMass: 0.96, starType: "G", lifespan: 10.9, distance: 1.35, ecc: 0.95, inHZ: "No", score: 1}
 ]
 
 Plot.plot({
   title: "Exoplanet Habitability Scorecard",
   subtitle: "Scored on star type, lifespan, HZ position, and eccentricity (10 = most Earth-like)",
   width: Math.min(width, 700),
-  height: 300,
+  height: 400,
   marginLeft: 120,
   x: {label: "Habitability Score (0–10)", domain: [0, 10]},
   y: {label: null},
