@@ -43,24 +43,15 @@ This page follows the opening pages of your **Unit 2 Performance Task Organizer 
 
 | PTO section (page) | On this site |
 |---|---|
-| Do Now / Exit Slip boxes, Classes 1–6 (pp. 1–2) | [Do Now and Exit Slips](#do-now-and-exit-slips) |
 | Tell the Story: Evolution of Life on Earth, Text 1 (p. 3) | [Text 1](#text-1-the-history-of-life-on-earth) |
-| Text 2: Visual Representation of the History of Life on Earth (p. 4) | [Text 2](#text-2-visual-representation-of-the-history-of-life-on-earth) |
-| Text 3: Mass Extinction throughout Earth's History (p. 5) | [Text 3](#text-3-mass-extinction-throughout-earths-history) |
+| Text 2: Mass Extinctions (p. 4) | [Text 2](#text-2-mass-extinctions) |
+| Text 3: Visual Representation of the Life on Earth (p. 5) | [Text 3](#text-3-visual-representation-of-the-life-on-earth) |
 | Important details + Overall Story of the Phenomenon (p. 6) | [Overall Story](#overall-story-of-the-phenomenon) |
 | Introduction to the Unit Performance Task: Are We Alone? (p. 7) | [Introduction](#introduction-to-the-unit-performance-task-are-we-alone) |
 | Developing an Initial Explanation (p. 8) | [Initial Explanation](#developing-an-initial-explanation) |
 | Revisiting the Performance Task after each 5E (pp. 9–16) | [Unit Closing: Evidence Review](unit2-closing.qmd#evidence-review-revisiting-the-performance-task) |
 | Unit Closing Task: Construct and Defend an Argument (pp. 17–18) | [Unit Closing: Argument](unit2-closing.qmd#unit-closing-task-construct-and-defend-an-argument) |
 :::
-
-# Do Now and Exit Slips
-
-The first two pages of your PTO have a **Do Now** box and an **Exit Slip** box for **Classes 1–6**. Your teacher posts the prompt at the start and end of each class.
-
-- **Do Now:** a quick warm-up, usually about the last class or today's text.
-- **Exit Slip:** one or two sentences showing what you figured out today.
-- **Absent?** Ask your teacher for the prompt, then use the matching section below to answer it. The 📝 checks on this page are good practice for Exit Slips.
 
 ```{ojs}
 //| echo: false
@@ -163,141 +154,20 @@ Earth is about 4.54 billion years old. Humans have been here for only about 300,
 
 ## Text 1: The History of Life on Earth
 
-Text 1 is the reading or video your teacher links in your PTO. As you read or watch, look for details about:
+Watch the video below. As you watch, look for details about:
 
 - **When** major groups of living things first appeared
 - **How long** life stayed simple (single-celled) before it became complex
 - **What changed** on Earth (oceans, atmosphere, climate) that made new life possible
 - **Disasters** that wiped out life, and what evolved afterward
 
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;margin:20px 0;border-radius:12px;">
+<iframe src="https://www.youtube.com/embed/6Ojagf3S0Qo" title="Text 1: The History of Life on Earth" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
 Texts 2 and 3 below are reproduced from your PTO, so you can explore them here.
 
-## Text 2: Visual Representation of the History of Life on Earth
-
-Your PTO shows a vertical "Life timeline" (axis in millions of years). Here is the same data as an interactive timeline. Hover over or tap a dot for details. Use the zoom to look closely at the last 600 million years, where most familiar life appears.
-
-```{ojs}
-//| echo: false
-lifeTimeline = [
-  {event: "Earth forms", mya: 4540, group: "Earth", note: "Earth forms about 4,540 million years ago (4.54 billion)."},
-  {event: "Earliest water", mya: 4400, group: "Earth", note: "Liquid water oceans appear early in the Hadean."},
-  {event: "Earliest life", mya: 4000, group: "Life", note: "Earliest single-celled life (some evidence suggests ~4,100 Mya)."},
-  {event: "Earliest oxygen", mya: 3500, group: "Atmosphere", note: "Photosynthesizing microbes begin releasing oxygen."},
-  {event: "Atmospheric oxygen", mya: 2400, group: "Atmosphere", note: "Oxygen starts building up in the air (Great Oxidation Event)."},
-  {event: "Oxygen crisis", mya: 2300, group: "Atmosphere", note: "Rising oxygen is toxic to many early microbes."},
-  {event: "Eukaryotes", mya: 1850, group: "Life", note: "Cells with a nucleus and other membrane-bound organelles."},
-  {event: "Multicellular life", mya: 1600, group: "Life", note: "Organisms made of many cells appear."},
-  {event: "Sexual reproduction", mya: 1200, group: "Life", note: "Mixing genes from two parents increases variation."},
-  {event: "Earliest plants", mya: 850, group: "Life", note: "Early plant-like (algal) life."},
-  {event: "Ediacara biota", mya: 635, group: "Life", note: "First large, soft-bodied multicellular organisms."},
-  {event: "Cambrian explosion", mya: 538, group: "Life", note: "Many major groups of animals appear quickly."},
-  {event: "Tetrapods", mya: 370, group: "Life", note: "Four-limbed vertebrates move onto land."},
-  {event: "Dinosaurs", mya: 230, group: "Life", note: "Dinosaurs appear; they dominate until 65 Mya."},
-  {event: "Mammals", mya: 200, group: "Life", note: "Early small mammals appear."},
-  {event: "Flowers", mya: 130, group: "Life", note: "Flowering plants appear."},
-  {event: "Earliest apes", mya: 25, group: "Life", note: "First apes appear."},
-  {event: "Modern humans", mya: 0.3, group: "Humans", note: "Homo sapiens: about 300,000 years ago."}
-]
-
-lifeEons = [
-  {eon: "Hadean", start: 4540, end: 4000, color: "#8d6e63"},
-  {eon: "Archean", start: 4000, end: 2500, color: "#a1887f"},
-  {eon: "Proterozoic", start: 2500, end: 539, color: "#d4a373"},
-  {eon: "Phanerozoic", start: 539, end: 0, color: "#e9c46a"}
-]
-
-extinctionData = [
-  {name: "Ordovician", mya: 445, rate: 85, causes: ["Rapid global cooling", "Falling sea levels"], results: ["Coastal areas destroyed", "Chemical reactions affected by cold"]},
-  {name: "Devonian", mya: 340, rate: 70, causes: ["Asteroid impact(s)", "Rapid global cooling"], results: ["Local destruction from debris", "Ocean life affected by temperature"]},
-  {name: "Permian", mya: 250, rate: 95, causes: ["Volcanic activity", "Increase in methane and CO₂", "Rapid global warming"], results: ["Oxygen removed from oceans", "Desertification of land"]},
-  {name: "Triassic", mya: 200, rate: 76, causes: ["Increase in methane and CO₂", "Rapid global warming"], results: ["Desertification of land", "Frequent heat waves"]},
-  {name: "K-T", mya: 65, rate: 80, causes: ["Asteroid impact", "Volcanic activity", "Falling sea levels"], results: ["Widespread fires", "Plants disrupted by global ash cloud", "\"Nuclear winter\""]}
-]
-
-lifeGroupColors = ({domain: ["Earth", "Atmosphere", "Life", "Humans"], range: ["#8d6e63", "#0984e3", "#00b894", "#d63031"]})
-```
-
-```{ojs}
-//| echo: false
-viewof lifeZoom = Inputs.radio(["All 4.54 billion years", "Last 600 million years"], {label: "Zoom:", value: "All 4.54 billion years"})
-```
-
-```{ojs}
-//| echo: false
-viewof lifeShowExt = Inputs.toggle({label: "Show the 5 mass extinctions (Text 3)", value: false})
-```
-
-```{ojs}
-//| echo: false
-{
-  const maxMya = lifeZoom === "All 4.54 billion years" ? 4600 : 600;
-  const shown = lifeTimeline.filter(d => d.mya <= maxMya);
-  const eons = lifeEons.filter(d => d.end < maxMya).map(d => ({...d, start: Math.min(d.start, maxMya)}));
-  const narrow = width < 520;
-  const wrap = d3.create("div");
-  wrap.append(() => Plot.plot({
-    title: "Life Timeline",
-    subtitle: "Millions of years ago (Mya). Data from the PTO's Evolution of Life Timeline.",
-    width: width,
-    height: 70 + shown.length * 26,
-    marginLeft: Math.min(150, width * 0.36),
-    marginRight: 18,
-    marginBottom: 40,
-    x: {label: "Millions of years ago →  (today is at the right)", domain: [maxMya, 0], grid: true},
-    y: {label: null, domain: shown.map(d => d.event)},
-    color: lifeGroupColors,
-    marks: [
-      Plot.rectX(eons, {x1: "start", x2: "end", fill: "color", fillOpacity: 0.18}),
-      Plot.text(eons, {x: d => (d.start + d.end) / 2, frameAnchor: "top", dy: 4, text: d => narrow && d.start - d.end < maxMya * 0.12 ? "" : d.eon, fontSize: 10, fill: "currentColor", fillOpacity: 0.7}),
-      lifeShowExt ? Plot.ruleX(extinctionData, {x: "mya", stroke: "#d63031", strokeWidth: 2, strokeDasharray: "4,3"}) : null,
-      lifeShowExt ? Plot.text(extinctionData, {x: "mya", frameAnchor: "bottom", dy: -4, text: d => maxMya > 1000 ? "" : `${d.name} ${d.rate}%`, rotate: -90, textAnchor: "start", fill: "#d63031", fontSize: 10, dx: -4}) : null,
-      Plot.dot(shown, {x: "mya", y: "event", fill: "group", r: 7, stroke: "white", strokeWidth: 1, tip: true,
-        title: d => `${d.event}\n~${d.mya.toLocaleString()} million years ago\n${d.note}`})
-    ]
-  }));
-  wrap.append("div")
-    .style("display", "flex").style("flex-wrap", "wrap").style("gap", "6px 16px")
-    .style("justify-content", "center").style("margin-top", "6px").style("font-size", "0.85em")
-    .html(lifeGroupColors.domain.map((s, i) =>
-      `<span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:50%;background:${lifeGroupColors.range[i]};flex:0 0 auto;"></span>${s}</span>`).join("")
-      + (lifeShowExt ? `<span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:14px;border-top:2px dashed #d63031;"></span>Mass extinction</span>` : ""));
-  return wrap.node();
-}
-```
-
-::: {.key-idea}
-### 💡 What the timeline shows
-
-- Life appeared **early** (within about 500 million years), but it stayed **single-celled for billions of years**.
-- Oxygen had to build up first: earliest oxygen (~3,500 Mya), then oxygen in the atmosphere (~2,400 Mya).
-- Complex animals appear only in the **last ~600 million years**. Humans appear in the last **0.3 million**.
-:::
-
-```{ojs}
-//| echo: false
-buildQuiz("u2o-timeline-quiz", "🧬 Check Your Understanding — Life Timeline", [
-  {
-    q: "According to the timeline, about how long after Earth formed did the earliest life appear?",
-    options: ["About 5 million years", "About 500 million years", "About 2 billion years", "About 4.5 billion years"],
-    correct: 1,
-    explanation: "Earth formed ~4,540 Mya and the earliest life appears ~4,000 Mya: a gap of roughly 500 million years. Life started fairly quickly. Complex life took much longer."
-  },
-  {
-    q: "Which event had to happen in the atmosphere before complex, multicellular life appeared?",
-    options: ["Oxygen built up in the atmosphere", "All the water evaporated", "The dinosaurs went extinct", "Flowers evolved"],
-    correct: 0,
-    explanation: "Atmospheric oxygen appears ~2,400 Mya, well before eukaryotes (~1,850 Mya) and multicellular life (~1,600 Mya). Oxygen is a big part of this unit's story."
-  },
-  {
-    q: "Zoom to the last 600 million years. Which group appeared most recently?",
-    options: ["Tetrapods", "Dinosaurs", "Flowers", "Modern humans"],
-    correct: 3,
-    explanation: "Modern humans appear only ~0.3 million years ago, at the far right edge. On the full 4.54-billion-year scale, that dot sits almost exactly on 'today'."
-  }
-])
-```
-
-## Text 3: Mass Extinction throughout Earth's History
+## Text 2: Mass Extinctions
 
 Your PTO's poster, **"Mass Extinctions: The biggest disasters in history,"** shows five events. The death rate is the share of species that died out. Tap a bar or pick an extinction to see its likely causes and results.
 
@@ -366,6 +236,131 @@ buildQuiz("u2o-extinction-quiz", "💀 Check Your Understanding — Mass Extinct
     options: ["All mass extinctions were caused by asteroids", "Rapid climate change (warming or cooling) shows up in most of the extinctions", "Mass extinctions happen every 10 million years", "Extinctions only affected land animals"],
     correct: 1,
     explanation: "Rapid cooling (Ordovician, Devonian), rapid warming (Permian, Triassic), and an impact 'nuclear winter' (K-T) all involve fast climate change. Asteroids appear in only two of the five."
+  }
+])
+```
+
+## Text 3: Visual Representation of the Life on Earth
+
+Your PTO shows a vertical "Life timeline" (axis in millions of years). Here is the same data as an interactive timeline. Hover over or tap a dot for details. Use the zoom to look closely at the last 600 million years, where most familiar life appears.
+
+```{ojs}
+//| echo: false
+lifeTimeline = [
+  {event: "Earth forms", mya: 4540, group: "Earth", note: "Earth forms about 4,540 million years ago (4.54 billion)."},
+  {event: "Earliest water", mya: 4400, group: "Earth", note: "Liquid water oceans appear early in the Hadean."},
+  {event: "Earliest life", mya: 4000, group: "Life", note: "Earliest single-celled life (some evidence suggests ~4,100 Mya)."},
+  {event: "Earliest oxygen", mya: 3500, group: "Atmosphere", note: "Photosynthesizing microbes begin releasing oxygen."},
+  {event: "Atmospheric oxygen", mya: 2400, group: "Atmosphere", note: "Oxygen starts building up in the air (Great Oxidation Event)."},
+  {event: "Oxygen crisis", mya: 2300, group: "Atmosphere", note: "Rising oxygen is toxic to many early microbes."},
+  {event: "Eukaryotes", mya: 1850, group: "Life", note: "Cells with a nucleus and other membrane-bound organelles."},
+  {event: "Multicellular life", mya: 1600, group: "Life", note: "Organisms made of many cells appear."},
+  {event: "Sexual reproduction", mya: 1200, group: "Life", note: "Mixing genes from two parents increases variation."},
+  {event: "Earliest plants", mya: 850, group: "Life", note: "Early plant-like (algal) life."},
+  {event: "Ediacara biota", mya: 635, group: "Life", note: "First large, soft-bodied multicellular organisms."},
+  {event: "Cambrian explosion", mya: 538, group: "Life", note: "Many major groups of animals appear quickly."},
+  {event: "Tetrapods", mya: 370, group: "Life", note: "Four-limbed vertebrates move onto land."},
+  {event: "Dinosaurs", mya: 230, group: "Life", note: "Dinosaurs appear; they dominate until 65 Mya."},
+  {event: "Mammals", mya: 200, group: "Life", note: "Early small mammals appear."},
+  {event: "Flowers", mya: 130, group: "Life", note: "Flowering plants appear."},
+  {event: "Earliest apes", mya: 25, group: "Life", note: "First apes appear."},
+  {event: "Modern humans", mya: 0.3, group: "Humans", note: "Homo sapiens: about 300,000 years ago."}
+]
+
+lifeEons = [
+  {eon: "Hadean", start: 4540, end: 4000, color: "#8d6e63"},
+  {eon: "Archean", start: 4000, end: 2500, color: "#a1887f"},
+  {eon: "Proterozoic", start: 2500, end: 539, color: "#d4a373"},
+  {eon: "Phanerozoic", start: 539, end: 0, color: "#e9c46a"}
+]
+
+extinctionData = [
+  {name: "Ordovician", mya: 445, rate: 85, causes: ["Rapid global cooling", "Falling sea levels"], results: ["Coastal areas destroyed", "Chemical reactions affected by cold"]},
+  {name: "Devonian", mya: 340, rate: 70, causes: ["Asteroid impact(s)", "Rapid global cooling"], results: ["Local destruction from debris", "Ocean life affected by temperature"]},
+  {name: "Permian", mya: 250, rate: 95, causes: ["Volcanic activity", "Increase in methane and CO₂", "Rapid global warming"], results: ["Oxygen removed from oceans", "Desertification of land"]},
+  {name: "Triassic", mya: 200, rate: 76, causes: ["Increase in methane and CO₂", "Rapid global warming"], results: ["Desertification of land", "Frequent heat waves"]},
+  {name: "K-T", mya: 65, rate: 80, causes: ["Asteroid impact", "Volcanic activity", "Falling sea levels"], results: ["Widespread fires", "Plants disrupted by global ash cloud", "\"Nuclear winter\""]}
+]
+
+lifeGroupColors = ({domain: ["Earth", "Atmosphere", "Life", "Humans"], range: ["#8d6e63", "#0984e3", "#00b894", "#d63031"]})
+```
+
+```{ojs}
+//| echo: false
+viewof lifeZoom = Inputs.radio(["All 4.54 billion years", "Last 600 million years"], {label: "Zoom:", value: "All 4.54 billion years"})
+```
+
+```{ojs}
+//| echo: false
+viewof lifeShowExt = Inputs.toggle({label: "Show the 5 mass extinctions (Text 2)", value: false})
+```
+
+```{ojs}
+//| echo: false
+{
+  const maxMya = lifeZoom === "All 4.54 billion years" ? 4600 : 600;
+  const shown = lifeTimeline.filter(d => d.mya <= maxMya);
+  const eons = lifeEons.filter(d => d.end < maxMya).map(d => ({...d, start: Math.min(d.start, maxMya)}));
+  const narrow = width < 520;
+  const wrap = d3.create("div");
+  wrap.append(() => Plot.plot({
+    title: "Life Timeline",
+    subtitle: "Millions of years ago (Mya). Data from the PTO's Evolution of Life Timeline.",
+    width: width,
+    height: 70 + shown.length * 26,
+    marginLeft: Math.min(150, width * 0.36),
+    marginRight: 18,
+    marginBottom: 40,
+    x: {label: "Millions of years ago →  (today is at the right)", domain: [maxMya, 0], grid: true},
+    y: {label: null, domain: shown.map(d => d.event)},
+    color: lifeGroupColors,
+    marks: [
+      Plot.rectX(eons, {x1: "start", x2: "end", fill: "color", fillOpacity: 0.18}),
+      Plot.text(eons, {x: d => (d.start + d.end) / 2, frameAnchor: "top", dy: 4, text: d => narrow && d.start - d.end < maxMya * 0.12 ? "" : d.eon, fontSize: 10, fill: "currentColor", fillOpacity: 0.7}),
+      lifeShowExt ? Plot.ruleX(extinctionData, {x: "mya", stroke: "#d63031", strokeWidth: 2, strokeDasharray: "4,3"}) : null,
+      lifeShowExt ? Plot.text(extinctionData, {x: "mya", frameAnchor: "bottom", dy: -4, text: d => maxMya > 1000 ? "" : `${d.name} ${d.rate}%`, rotate: -90, textAnchor: "start", fill: "#d63031", fontSize: 10, dx: -4}) : null,
+      Plot.dot(shown, {x: "mya", y: "event", fill: "group", r: 7, stroke: "white", strokeWidth: 1, tip: true,
+        title: d => `${d.event}\n~${d.mya.toLocaleString()} million years ago\n${d.note}`})
+    ]
+  }));
+  wrap.append("div")
+    .style("display", "flex").style("flex-wrap", "wrap").style("gap", "6px 16px")
+    .style("justify-content", "center").style("margin-top", "6px").style("font-size", "0.85em")
+    .html(lifeGroupColors.domain.map((s, i) =>
+      `<span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:50%;background:${lifeGroupColors.range[i]};flex:0 0 auto;"></span>${s}</span>`).join("")
+      + (lifeShowExt ? `<span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:14px;border-top:2px dashed #d63031;"></span>Mass extinction</span>` : ""));
+  return wrap.node();
+}
+```
+
+::: {.key-idea}
+### 💡 What the timeline shows
+
+- Life appeared **early** (within about 500 million years), but it stayed **single-celled for billions of years**.
+- Oxygen had to build up first: earliest oxygen (~3,500 Mya), then oxygen in the atmosphere (~2,400 Mya).
+- Complex animals appear only in the **last ~600 million years**. Humans appear in the last **0.3 million**.
+:::
+
+```{ojs}
+//| echo: false
+buildQuiz("u2o-timeline-quiz", "🧬 Check Your Understanding — Life Timeline", [
+  {
+    q: "According to the timeline, about how long after Earth formed did the earliest life appear?",
+    options: ["About 5 million years", "About 500 million years", "About 2 billion years", "About 4.5 billion years"],
+    correct: 1,
+    explanation: "Earth formed ~4,540 Mya and the earliest life appears ~4,000 Mya: a gap of roughly 500 million years. Life started fairly quickly. Complex life took much longer."
+  },
+  {
+    q: "Which event had to happen in the atmosphere before complex, multicellular life appeared?",
+    options: ["Oxygen built up in the atmosphere", "All the water evaporated", "The dinosaurs went extinct", "Flowers evolved"],
+    correct: 0,
+    explanation: "Atmospheric oxygen appears ~2,400 Mya, well before eukaryotes (~1,850 Mya) and multicellular life (~1,600 Mya). Oxygen is a big part of this unit's story."
+  },
+  {
+    q: "Zoom to the last 600 million years. Which group appeared most recently?",
+    options: ["Tetrapods", "Dinosaurs", "Flowers", "Modern humans"],
+    correct: 3,
+    explanation: "Modern humans appear only ~0.3 million years ago, at the far right edge. On the full 4.54-billion-year scale, that dot sits almost exactly on 'today'."
   }
 ])
 ```
