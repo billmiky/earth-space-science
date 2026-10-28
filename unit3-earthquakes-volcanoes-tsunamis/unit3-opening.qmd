@@ -43,26 +43,16 @@ This page follows the opening pages of your **Unit 3 Performance Task Organizer 
 
 | PTO section (page) | On this site |
 |---|---|
-| Do Now / Exit Slip boxes, Classes 1–6 (pp. 1–2) | [Do Now and Exit Slips](#do-now-and-exit-slips) |
 | Class opener: the Tonga and Japan videos | [Anchor Phenomenon](#anchor-phenomenon-whos-at-risk) |
-| Tell the Story, Text #1: Earthquakes and Volcanic Eruptions in Continuously Populated Regions (pp. 3–4) | [Text 1](#text-1-earthquakes-and-volcanic-eruptions-in-continuously-populated-regions) |
-| Text #2: The Deadliest Earthquakes in Human History (pp. 4–5) | [Text 2](#text-2-the-deadliest-earthquakes-in-human-history) |
-| Text #3: Volcano Fatalities since 1500 (pp. 5–6) | [Text 3](#text-3-volcano-fatalities-since-1500), [All three on one map](#putting-the-three-texts-together) |
-| Important details our group surfaced + Overall Story (pp. 6–7) | [Overall Story](#overall-story) |
+| Anchor Phenomenon: Tell the Story, Text #1: Map of Ancient Societies and Tectonic Hazards (p. 3) | [Text 1](#text-1) |
+| Text #2: The Deadliest Earthquakes in Human History (p. 4) | [Text 2](#text-2) |
+| Text #3: Volcano Fatalities since 1500 (p. 5) | [Text 3](#text-3), [All three on one map](#putting-the-three-texts-together) |
+| Important details + Overall Story: what is the phenomenon? | [Overall Story and Detail Tracker](#overall-story) |
 | Performance Task Introduction: Evaluating Disaster Risk (p. 8) | [Performance Task Introduction](#performance-task-introduction-evaluating-disaster-risk) |
 | Initial Model (pp. 9–10) | [Initial Model](#initial-model) |
-| Driving Question Board (class chart paper) | [Driving Question Board](#driving-question-board) |
 | Revisit the Performance Task after each lesson (pp. 11–16) | [Unit Closing: Evidence Review](unit3-closing.qmd#evidence-review-revisiting-the-performance-task) |
 | Final Performance Task (pp. 17–18) | [Unit Closing: Final Performance Task](unit3-closing.qmd#final-performance-task) |
 :::
-
-# Do Now and Exit Slips
-
-The first two pages of your PTO have a **Do Now** box and an **Exit Slip** box for **Classes 1–6**. Your teacher posts the prompt at the start and end of each class.
-
-- **Do Now:** a quick warm-up, usually about the last class or today's text.
-- **Exit Slip:** one or two sentences showing what you figured out today.
-- **Absent?** Ask your teacher for the prompt, then use the matching section below to answer it. The 📝 checks on this page are good practice for Exit Slips.
 
 ```{ojs}
 //| echo: false
@@ -176,74 +166,292 @@ Major earthquakes, volcanic eruptions, and tsunamis happen all over the world, c
 # Tell the Story
 
 ::: {.explore-box}
-## 📰 Three texts, one story
+## 📰 Anchor Phenomenon: Tell the Story
 
 **Directions from your PTO:**
 
 1. Silently read the texts below.
 2. For each text, circle or jot **2–3 details** that are important to telling the story of the **global occurrence of earthquakes, volcanic eruptions, and tsunamis**.
-3. Take turns sharing your details. Write down the ideas that are most important to the story of global geologic hazard occurrence.
+3. Share with your group. Each person should identify the details that they circled.
+4. Discuss as a group, and determine the overall story. **What is the phenomenon?**
 :::
 
-## Text 1: Earthquakes and Volcanic Eruptions in Continuously Populated Regions
+::: {.callout-tip}
+## ⭐ Circling details on this page
 
-Your PTO's Text #1 is a map of **early civilizations (c. 8000–900 BCE)** with call-out boxes for five regions where people have lived for thousands of years. Pick a region to read its call-out box.
+Each text below is an interactive map. Tap a region, earthquake, or volcano to read about it, then tap **☆ Save detail** to "circle" it. Your saved details collect in the [Detail Tracker](#overall-story) at the end of this section, where you can also jot your own details and write the overall story. They stay saved in this browser only, so copy them into your packet too.
+:::
+
+```{ojs}
+//| echo: false
+u3oWorld = {
+  const topojson = await require("topojson-client@3");
+  try {
+    const t = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json");
+    return {countries: topojson.feature(t, t.objects.countries).features, land: topojson.feature(t, t.objects.land)};
+  } catch (e) {
+    let t;
+    try { t = await d3.json("../world-110m.json"); } catch (e2) { t = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-110m.json"); }
+    const key = t.objects.land ? "land" : Object.keys(t.objects)[0];
+    return {countries: [], land: topojson.feature(t, t.objects[key])};
+  }
+}
+```
+
+```{ojs}
+//| echo: false
+// Draws a cropped Equal Earth base map. bounds = [[west, south], [east, north]].
+u3oMapFrame = (w, opts) => {
+  const [[x0, y0], [x1, y1]] = opts.bounds;
+  const xm = (x0 + x1) / 2;
+  const box = {type: "MultiPoint", coordinates: [[x0, y0], [x0, 0], [x0, y1], [xm, y0], [xm, y1], [x1, y0], [x1, 0], [x1, y1]]};
+  const projection = d3.geoEqualEarth().rotate(opts.rotate || [0, 0]).fitWidth(w, box);
+  const path = d3.geoPath(projection);
+  const h = Math.ceil(path.bounds(box)[1][1]);
+  const svg = d3.create("svg").attr("viewBox", [0, 0, w, h]).attr("width", w).attr("height", h)
+    .style("max-width", "100%").style("height", "auto").style("display", "block").style("border-radius", "10px")
+    .attr("role", "img").attr("aria-label", opts.label);
+  svg.append("rect").attr("width", w).attr("height", h).attr("fill", opts.ocean);
+  svg.append("path").attr("d", path(d3.geoGraticule10())).attr("fill", "none").attr("stroke", "#ffffff").attr("stroke-opacity", 0.45);
+  if (u3oWorld.countries.length) {
+    svg.append("g").selectAll("path").data(u3oWorld.countries).join("path")
+      .attr("d", path).attr("fill", d => opts.countryFill ? opts.countryFill(d) : opts.land).attr("stroke", opts.border).attr("stroke-width", 0.5);
+  } else {
+    svg.append("path").attr("d", path(u3oWorld.land)).attr("fill", opts.land).attr("stroke", opts.border).attr("stroke-width", 0.5);
+  }
+  return {svg, projection, h};
+}
+```
+
+```{ojs}
+//| echo: false
+// Saved "circled" details, shared by the three texts and the Detail Tracker. Kept in localStorage when it is available.
+u3oDetails = {
+  const KEY = "u3o-tell-the-story-v1";
+  let state = {details: [], story: ""};
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY));
+    if (saved && Array.isArray(saved.details)) state = {details: saved.details, story: saved.story || ""};
+  } catch (e) {}
+  const subs = [];
+  const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+  const notify = () => {
+    persist();
+    for (let i = subs.length - 1; i >= 0; i--) {
+      const s = subs[i];
+      if (s.el.isConnected) s.seen = true;
+      else if (s.seen) { subs.splice(i, 1); continue; }
+      s.fn();
+    }
+  };
+  return {
+    has: id => state.details.some(d => d.id === id),
+    list: () => state.details.slice(),
+    toggle: d => {
+      state.details = state.details.some(x => x.id === d.id) ? state.details.filter(x => x.id !== d.id) : [...state.details, d];
+      notify();
+    },
+    remove: id => { state.details = state.details.filter(x => x.id !== id); notify(); },
+    story: () => state.story,
+    setStory: t => { state.story = t; persist(); },
+    clear: () => { state = {details: [], story: ""}; notify(); },
+    // fn re-runs on every change until el has been attached to the page and then removed
+    subscribe: (el, fn) => subs.push({el, fn, seen: false})
+  };
+}
+```
+
+```{ojs}
+//| echo: false
+u3oStar = d => {
+  const b = document.createElement("button");
+  b.type = "button";
+  const paint = () => {
+    const on = u3oDetails.has(d.id);
+    b.textContent = on ? "★ Saved" : "☆ Save detail";
+    b.setAttribute("aria-pressed", on);
+    b.setAttribute("aria-label", (on ? "Remove saved detail: " : "Save detail: ") + d.label);
+    b.style.cssText = `flex:0 0 auto;min-height:36px;padding:6px 12px;border-radius:50px;font-weight:700;font-size:.85em;cursor:pointer;white-space:nowrap;border:2px solid #f39c12;background:${on ? "#f39c12" : "#fff"};color:${on ? "#fff" : "#b9770e"};`;
+  };
+  b.onclick = () => u3oDetails.toggle(d);
+  u3oDetails.subscribe(b, paint);
+  paint();
+  return b;
+}
+```
+
+```{ojs}
+//| echo: false
+u3oSavedCount = n => {
+  const el = document.createElement("div");
+  el.style.cssText = "text-align:right;font-size:.9em;margin:4px 0 14px;";
+  const paint = () => {
+    const c = u3oDetails.list().filter(d => d.text === n).length;
+    el.innerHTML = `⭐ Saved from Text ${n}: <b>${c}</b> ${c >= 2 ? "✅" : "(aim for 2–3)"} · <a href="#overall-story">Detail Tracker ↓</a>`;
+  };
+  u3oDetails.subscribe(el, paint);
+  paint();
+  return el;
+}
+```
+
+```{ojs}
+//| echo: false
+// Clickable chips used above each map
+u3oChip = (label, on, color, onclick) => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.textContent = label;
+  b.setAttribute("aria-pressed", on);
+  b.style.cssText = `min-height:40px;padding:6px 14px;border-radius:50px;border:2px solid ${color};background:${on ? color : "#fff"};color:${on ? "#fff" : "#1e1b4b"};font-weight:700;font-size:.9em;cursor:pointer;`;
+  b.onclick = onclick;
+  return b;
+}
+```
+
+## Text 1: Selection of Earthquakes and Volcanic Eruptions in Continuously Populated Regions {#text-1}
+
+Text #1 is a **Map of Ancient Societies and Tectonic Hazards**. The base map shows **early civilizations (c. 8000–900 BCE)**: green dots are agricultural areas and purple dots are major civilizations. The numbered pins are the five call-out boxes. Tap a pin or a button to read a region's call-out box.
 
 ```{ojs}
 //| echo: false
 u3oRegions = [
-  {region: "Mediterranean Basin", lat: 38, lon: 22, color: "#e17055", events: [
+  {n: 1, region: "Mediterranean Basin", lat: 38, lon: 23, pin: [-18, 38], color: "#e17055", events: [
     {year: -1500, label: "1500 BCE", type: "Volcano", text: "An eruption on the island of Santorini impacted the settlement on Crete and contributed to the Atlantis myth."},
     {year: 70, label: "70 CE", type: "Volcano", text: "Eruption of Mt. Vesuvius destroyed the cities of Pompeii and Herculaneum, which were never repopulated. Other towns were impacted by ash, but remained in existence."},
     {year: 2023, label: "2023", type: "Earthquake", text: "Magnitudes 7.7 and 7.8 earthquakes days apart caused thousands of fatalities in Turkey and Syria."}
   ]},
-  {region: "Great Rift Valley", lat: 0, lon: 36, color: "#fdcb6e", events: [
+  {n: 2, region: "Great Rift Valley", lat: 0, lon: 36, pin: [52, -10], color: "#d4a017", events: [
     {year: -1700, label: "1700 BCE", type: "Earthquake", text: "Ancient earthquakes at the northern border of this rift system have been linked to the destruction and abandonment of areas of Canaan."},
     {year: 1928, label: "1928", type: "Earthquake", text: "A magnitude 6.9 earthquake in Kenya created a 38 km long break in Earth's surface."},
     {year: 2002, label: "2002", type: "Volcano", text: "Volcanic eruptions forced the evacuations of hundreds of thousands of people. 245 people died and 120,000 people were left homeless."}
   ]},
-  {region: "Japanese Archipelago", lat: 36, lon: 138, color: "#d63031", events: [
+  {n: 3, region: "Japanese Archipelago", lat: 36, lon: 138, pin: [150, 26], color: "#d63031", events: [
     {year: -5300, label: "5,300 BCE", type: "Volcano", text: "A massive volcanic eruption forced populations to coastal regions. Ecosystems took hundreds of years to recover."},
     {year: 1703, label: "1703", type: "Earthquake + tsunami", text: "A magnitude 8.0 earthquake triggered a tsunami and killed over 100,000 people."},
     {year: 2011, label: "2011", type: "Earthquake + tsunami", text: "A magnitude 9–9.1 earthquake triggered a tsunami and killed 19,759 people."}
   ]},
-  {region: "Mainland Southeast Asia", lat: 18, lon: 100, color: "#6c5ce7", events: [
+  {n: 4, region: "Mainland Southeast Asia", lat: 17, lon: 99, pin: [88, 4], color: "#6c5ce7", events: [
     {year: 460, label: "460 CE", type: "Earthquake", text: "A massive earthquake in Thailand submerged parts of the capital city."},
     {year: 1939, label: "1939", type: "Earthquake", text: "An earthquake in Myanmar destroyed the former capital city, which was never repopulated."},
     {year: 2025, label: "2025", type: "Earthquake", text: "A magnitude 7.7 earthquake in Myanmar killed over 5,000 people."}
   ]},
-  {region: "Andes Region", lat: -18, lon: -71, color: "#00b894", events: [
+  {n: 5, region: "Andes Region", lat: -17, lon: -71, pin: [-92, -24], color: "#00b894", events: [
     {year: -1800, label: "1,800 BCE", type: "Earthquake", text: "A greater-than-magnitude-9 earthquake severely disrupted societies living in southern Peru / northern Chile."},
     {year: 1450, label: "1450", type: "Earthquake", text: "A magnitude 6.5 earthquake in Chile disrupted massive monuments."},
     {year: 1970, label: "1970", type: "Earthquake", text: "A magnitude 7.9 earthquake and landslide in Peru killed 50,000 people."}
   ]}
 ]
 u3oTypeIcon = ({"Volcano": "🌋", "Earthquake": "〰️", "Earthquake + tsunami": "🌊"})
+// Base-map labels from the PTO's "Early Civilizations, c. 8000–900 BCE" map
+u3oCivs = [
+  {name: "MESOAMERICA", date: "c. 5000 BCE", kind: "agri", lat: 18, lon: -97, anchor: "end"},
+  {name: "PERU", date: "c. 4000 BCE", kind: "agri", lat: -12, lon: -77, anchor: "end"},
+  {name: "GREECE", date: "c. 4000 BCE", kind: "agri", lat: 41, lon: 22, anchor: "end"},
+  {name: "MIDDLE EAST", date: "c. 8000 BCE", kind: "agri", lat: 34, lon: 40, anchor: "middle", below: true},
+  {name: "NILE VALLEY", date: "c. 5000 BCE", kind: "agri", lat: 24, lon: 32, anchor: "end"},
+  {name: "CENTRAL AFRICA", date: "c. 3000 BCE", kind: "agri", lat: 10, lon: 24, anchor: "end"},
+  {name: "INDUS VALLEY", date: "c. 3000 BCE", kind: "agri", lat: 30, lon: 71, anchor: "middle"},
+  {name: "CHINA", date: "c. 4000 BCE", kind: "agri", lat: 36, lon: 110, anchor: "middle"},
+  {name: "JAPAN", date: "c. 3000 BCE", kind: "agri", lat: 38, lon: 140, anchor: "start"},
+  {name: "SOUTHEAST ASIA", date: "c. 8000 BCE", kind: "agri", lat: 14, lon: 104, anchor: "start"},
+  {name: "Chavín", date: "c. 900 BCE", kind: "major", lat: -9.6, lon: -77.2},
+  {name: "Greece", date: "c. 1300 BCE", kind: "major", lat: 37.7, lon: 22.8},
+  {name: "Hittites", date: "", kind: "major", lat: 40, lon: 34.6},
+  {name: "Egypt", date: "c. 3100 BCE", kind: "major", lat: 29, lon: 31},
+  {name: "Kush", date: "c. 1000 BCE", kind: "major", lat: 18.5, lon: 32},
+  {name: "Sumer", date: "c. 3500 BCE", kind: "major", lat: 31, lon: 46},
+  {name: "Indus Valley", date: "c. 2500 BCE", kind: "major", lat: 27.3, lon: 68},
+  {name: "Shang China", date: "c. 1700 BCE", kind: "major", lat: 36, lon: 114.3}
+]
+u3oText1State = ({pick: "Japanese Archipelago"})
 ```
 
 ```{ojs}
 //| echo: false
-viewof u3oRegionPick = Inputs.radio(u3oRegions.map(d => d.region), {label: "Region:", value: "Japanese Archipelago"})
+viewof u3oRegionPick = {
+  const w = width, k = Math.max(0.6, Math.min(1, w / 760));
+  const wrap = document.createElement("div");
+  wrap.value = u3oText1State.pick;
+  const chips = document.createElement("div");
+  chips.style.cssText = "display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px;";
+  wrap.appendChild(chips);
+  const {svg, projection} = u3oMapFrame(w, {bounds: [[-125, -45], [158, 62]], rotate: [-15, 0], ocean: "#cfe3f3", land: "#efe3c8", border: "#d6c6a2",
+    label: "Map of early civilizations from 8000 to 900 BCE with five numbered call-out regions: Mediterranean Basin, Great Rift Valley, Japanese Archipelago, Mainland Southeast Asia, and Andes Region."});
+  const civ = svg.append("g");
+  for (const c of u3oCivs) {
+    const [x, y] = projection([c.lon, c.lat]);
+    const col = c.kind === "major" ? "#8e44ad" : "#27ae60";
+    civ.append("circle").attr("cx", x).attr("cy", y).attr("r", (c.kind === "major" ? 4 : 5.5) * k)
+      .attr("fill", col).attr("fill-opacity", c.kind === "major" ? 0.85 : 0.6).attr("stroke", "#fff").attr("stroke-width", 0.8)
+      .append("title").text(`${c.name}${c.date ? ", " + c.date : ""} (${c.kind === "major" ? "major civilization" : "agricultural area"})`);
+    if (c.kind === "agri" && w >= 560) {
+      const dx = c.anchor === "end" ? -7 : c.anchor === "start" ? 7 : 0, dy = c.below ? 15 * k : c.anchor === "middle" ? -9 * k : 3;
+      civ.append("text").attr("x", x + dx).attr("y", y + dy).attr("text-anchor", c.anchor)
+        .attr("font-size", 9.5 * k).attr("font-weight", 700).attr("fill", "#1e6b3c").attr("paint-order", "stroke").attr("stroke", "#efe3c8").attr("stroke-width", 3)
+        .text(c.name);
+    }
+  }
+  const pins = svg.append("g");
+  const draw = () => {
+    pins.selectAll("*").remove();
+    chips.replaceChildren(...u3oRegions.map(r => u3oChip(`${r.n}. ${r.region}`, r.region === wrap.value, r.color, () => pick(r.region))));
+    for (const r of u3oRegions) {
+      const on = r.region === wrap.value;
+      const [tx, ty] = projection([r.lon, r.lat]), [px, py] = projection(r.pin);
+      const g = pins.append("g").style("cursor", "pointer").attr("tabindex", 0).attr("role", "button").attr("aria-label", `Read the ${r.region} call-out box`)
+        .on("click", () => pick(r.region)).on("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(r.region); } });
+      g.append("line").attr("x1", px).attr("y1", py).attr("x2", tx).attr("y2", ty).attr("stroke", r.color).attr("stroke-width", on ? 3 : 2).attr("stroke-dasharray", on ? null : "4 3");
+      g.append("circle").attr("cx", tx).attr("cy", ty).attr("r", 4 * k).attr("fill", r.color);
+      if (on) g.append("circle").attr("cx", px).attr("cy", py).attr("r", 21 * k).attr("fill", r.color).attr("fill-opacity", 0.25);
+      g.append("circle").attr("cx", px).attr("cy", py).attr("r", 14 * k).attr("fill", on ? r.color : "#fff").attr("stroke", r.color).attr("stroke-width", 3);
+      g.append("text").attr("x", px).attr("y", py).attr("dy", "0.35em").attr("text-anchor", "middle").attr("font-size", 14 * k).attr("font-weight", 800)
+        .attr("fill", on ? "#fff" : r.color).text(r.n);
+    }
+  };
+  const pick = name => {
+    wrap.value = u3oText1State.pick = name;
+    draw();
+    wrap.dispatchEvent(new Event("input", {bubbles: true}));
+  };
+  draw();
+  wrap.appendChild(svg.node());
+  const legend = document.createElement("div");
+  legend.style.cssText = "display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;font-size:.85em;margin-top:6px;";
+  legend.innerHTML = `<span><span style="color:#27ae60;">●</span> Agricultural areas</span><span><span style="color:#8e44ad;">●</span> Major civilizations</span><span>① Call-out region</span>`;
+  wrap.appendChild(legend);
+  return wrap;
+}
 ```
 
 ```{ojs}
 //| echo: false
 {
   const r = u3oRegions.find(d => d.region === u3oRegionPick);
-  return html`<div style="background:#fff;color:#1a1a1a;border-left:8px solid ${r.color};border-radius:12px;padding:16px 20px;margin:10px 0;box-shadow:0 2px 10px rgba(0,0,0,.1);">
-    <div style="font-size:1.25em;font-weight:800;margin-bottom:8px;">📍 ${r.region}</div>
-    ${r.events.map(e => html`<div style="display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-top:1px solid #eee;">
-      <div style="flex:0 0 92px;font-weight:800;color:${r.color === "#fdcb6e" ? "#b7791f" : r.color};">${u3oTypeIcon[e.type]} ${e.label}</div>
-      <div style="flex:1 1 auto;">${e.text}</div>
-    </div>`)}
+  const card = html`<div style="background:#fff;color:#1a1a1a;border-left:8px solid ${r.color};border-radius:12px;padding:16px 20px;margin:10px 0 4px;box-shadow:0 2px 10px rgba(0,0,0,.1);">
+    <div style="font-size:1.25em;font-weight:800;margin-bottom:8px;">📍 ${r.n}. ${r.region}</div>
   </div>`;
+  for (const e of r.events) {
+    const row = html`<div style="display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:10px 0;border-top:1px solid #eee;">
+      <div style="flex:0 0 96px;font-weight:800;color:${r.color};">${u3oTypeIcon[e.type]} ${e.label}</div>
+      <div style="flex:1 1 220px;">${e.text}</div>
+    </div>`;
+    row.appendChild(u3oStar({id: `t1-${r.n}-${e.year}`, text: 1, label: `${r.region}, ${e.label}`, detail: e.text}));
+    card.appendChild(row);
+  }
+  return card;
 }
+```
+
+```{ojs}
+//| echo: false
+u3oSavedCount(1)
 ```
 
 ::: {.callout-tip collapse="true"}
 ## 🔎 About the dates in Text 1
 
-The PTO lists the Vesuvius eruption as 70 CE. Most historians date it to **79 CE**. The 5,300 BCE eruption in Japan is usually linked to the **Kikai caldera**, south of Kyushu. Death tolls for very old events are estimates.
+The PTO lists the Vesuvius eruption as 70 CE. Most historians date it to **79 CE**. The 5,300 BCE eruption in Japan is usually linked to the **Kikai caldera**, south of Kyushu. Death tolls for very old events are estimates. The PTO's arrow for the Great Rift Valley points at Central Africa; on this map the pin points at the rift itself, in East Africa.
 :::
 
 ```{ojs}
@@ -253,7 +461,7 @@ buildQuiz("u3o-text1-quiz", "🗺️ Check Your Understanding — Text 1", [
     q: "Which pattern shows up in ALL five regions in Text 1?",
     options: ["They had hazards only in ancient times", "People have kept living there for thousands of years even though hazards keep happening", "They only have volcanoes", "No one has died there since 1900"],
     correct: 1,
-    explanation: "Every region has events from thousands of years ago AND from the last 100 years (2002, 2011, 2023, 2025, 1970). People stayed, which is the puzzle in the anchor phenomenon."
+    explanation: "Every region has an early civilization or farming area on the base map, events from thousands of years ago, AND events from the last 100 years (2002, 2011, 2023, 2025, 1970). People stayed, which is the puzzle in the anchor phenomenon."
   },
   {
     q: "Text 1 says some places (Pompeii, Herculaneum, Myanmar's former capital) were 'never repopulated.' What does that detail add to the story?",
@@ -262,62 +470,121 @@ buildQuiz("u3o-text1-quiz", "🗺️ Check Your Understanding — Text 1", [
     explanation: "Hazards have shaped human history and driven people to move (like the 5,300 BCE eruption that pushed people to Japan's coasts), but the regions themselves stayed home to many people."
   },
   {
-    q: "In which region does Text 1 describe hazards caused mostly by volcanic eruptions AND earthquakes, both within the last 25 years?",
+    q: "In which region does Text 1 describe hazards caused mostly by volcanic eruptions AND earthquakes, both within the last 100 years?",
     options: ["Andes Region", "Mainland Southeast Asia", "Great Rift Valley", "None of them"],
     correct: 2,
-    explanation: "The Great Rift Valley had volcanic eruptions in 2002 (245 deaths, 120,000 homeless) and a long history of earthquakes, including the 1928 M6.9 quake in Kenya. You'll study why in the Energy and Matter lesson."
+    explanation: "The Great Rift Valley had a magnitude 6.9 earthquake in Kenya in 1928 and volcanic eruptions in 2002 (245 deaths, 120,000 homeless). You'll study why in the Energy and Matter lesson."
   }
 ])
 ```
 
-## Text 2: The Deadliest Earthquakes in Human History
+## Text 2: The Deadliest Earthquakes in Human History {#text-2}
 
-Text #2 is a map from **Our World in Data** of the **top 10 known earthquakes by death toll**. Two events tie for 8th place, so **11** are shown. Hover over or tap a bar for details.
+Text #2 is a map from **Our World in Data** of the **top 10 known earthquakes by death toll**. Two events tie for 8th place, so **11** are shown. Countries with one of these earthquakes are shaded red. Tap a numbered circle on the map or a row in the list to read about it.
 
 ```{ojs}
 //| echo: false
 u3oDeadliest = [
-  {rank: 1, place: "Shaanxi, China", year: 1556, deaths: 830000, mag: "8", lat: 34.5, lon: 109.7},
-  {rank: 2, place: "Port-au-Prince, Haiti", year: 2010, deaths: 316000, mag: "7", lat: 18.5, lon: -72.3},
-  {rank: 3, place: "Antakya, Turkey", year: 115, deaths: 260000, mag: "7.5", lat: 36.2, lon: 36.2},
-  {rank: 4, place: "Antakya, Turkey", year: 525, deaths: 250000, mag: "7", lat: 36.2, lon: 36.2},
-  {rank: 5, place: "Tangshan, China", year: 1976, deaths: 242769, mag: "7.5", lat: 39.6, lon: 118.2},
-  {rank: 6, place: "Gyzndzha, Azerbaijan", year: 1139, deaths: 230000, mag: "Unknown", lat: 40.7, lon: 46.4},
-  {rank: 7, place: "Sumatra, Indonesia", year: 2004, deaths: 227899, mag: "9.1", lat: 3.3, lon: 95.9},
-  {rank: 8, place: "Damghan, Iran", year: 856, deaths: 200000, mag: "7.9", lat: 36.2, lon: 54.3},
-  {rank: 8, place: "Gansu, China", year: 1920, deaths: 200000, mag: "8.3", lat: 36.6, lon: 105.3},
-  {rank: 9, place: "Dvin, Armenia", year: 893, deaths: 150000, mag: "Unknown", lat: 40.0, lon: 44.6},
-  {rank: 10, place: "Tokyo, Japan", year: 1923, deaths: 142807, mag: "7.9", lat: 35.3, lon: 139.5}
-].map(d => ({...d, label: `${d.place}, ${d.year}`}))
+  {rank: 1, place: "Shaanxi, China", year: 1556, deaths: 830000, mag: "8", lat: 34.5, lon: 109.7, country: "156"},
+  {rank: 2, place: "Port-au-Prince, Haiti", year: 2010, deaths: 316000, mag: "7", lat: 18.5, lon: -72.3, country: "332", note: "The death toll is still disputed. This is the figure NOAA uses, reported by the Haitian government. Some sources give about 220,000, which would drop Haiti to 7th place."},
+  {rank: 3, place: "Antakya, Turkey", year: 115, deaths: 260000, mag: "7.5", lat: 36.2, lon: 36.2, country: "792", dx: -11},
+  {rank: 4, place: "Antakya, Turkey", year: 525, deaths: 250000, mag: "7", lat: 36.2, lon: 36.2, country: "792", dx: 11},
+  {rank: 5, place: "Tangshan, China", year: 1976, deaths: 242769, mag: "7.5", lat: 39.6, lon: 118.2, country: "156", dy: -8},
+  {rank: 6, place: "Gyzndzha, Azerbaijan", year: 1139, deaths: 230000, mag: "Unknown", lat: 40.7, lon: 46.4, country: "031", dx: 9, dy: -10},
+  {rank: 7, place: "Sumatra, Indonesia", year: 2004, deaths: 227899, mag: "9.1", lat: 3.3, lon: 95.9, country: "360"},
+  {rank: 8, place: "Damghan, Iran", year: 856, deaths: 200000, mag: "7.9", lat: 36.2, lon: 54.3, country: "364"},
+  {rank: 8, place: "Gansu, China", year: 1920, deaths: 200000, mag: "8.3", lat: 36.6, lon: 105.3, country: "156"},
+  {rank: 9, place: "Dvin, Armenia", year: 893, deaths: 150000, mag: "Unknown", lat: 40.0, lon: 44.6, country: "051", dx: -9, dy: -10},
+  {rank: 10, place: "Tokyo, Japan", year: 1923, deaths: 142807, mag: "7.9", lat: 35.3, lon: 139.5, country: "392"}
+].map(d => ({...d, id: `${d.rank}-${d.year}`, label: `${d.place}, ${d.year}`, magText: d.mag === "Unknown" ? "Magnitude unknown" : `Magnitude ${d.mag}`}))
+u3oText2State = ({pick: "1-1556", era: "All 11"})
 ```
 
 ```{ojs}
 //| echo: false
-Plot.plot({
-  title: "The Deadliest Earthquakes in Human History",
-  subtitle: "Deaths per earthquake. Data: NOAA NGDC/WDS Significant Earthquake Database, via the PTO's Our World in Data map.",
-  width: width,
-  height: 60 + u3oDeadliest.length * 30,
-  marginLeft: Math.min(190, width * 0.42),
-  marginRight: 50,
-  x: {label: "Deaths →", grid: true, tickFormat: d => d >= 1000 ? `${d / 1000}k` : d},
-  y: {label: null, domain: u3oDeadliest.map(d => d.label)},
-  marks: [
-    Plot.barX(u3oDeadliest, {y: "label", x: "deaths", fill: d => d.year >= 1900 ? "#d63031" : "#fab1a0", tip: true,
-      title: d => `#${d.rank}: ${d.place}, ${d.year}\n${d.deaths.toLocaleString()} deaths\nMagnitude: ${d.mag}`}),
-    Plot.text(u3oDeadliest, {y: "label", x: "deaths", text: d => `M${d.mag === "Unknown" ? "?" : d.mag}`, dx: 4, textAnchor: "start", fontSize: 10, fill: "currentColor"}),
-    Plot.ruleX([0])
-  ]
-})
+viewof u3oQuakePick = {
+  const w = width, k = Math.max(0.7, Math.min(1, w / 760));
+  const st = u3oText2State;
+  const wrap = document.createElement("div");
+  wrap.value = st.pick;
+  const chips = document.createElement("div");
+  chips.style.cssText = "display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 10px;";
+  wrap.appendChild(chips);
+  const hit = new Set(u3oDeadliest.map(d => d.country));
+  const {svg, projection} = u3oMapFrame(w, {bounds: [[-168, -56], [180, 76]], ocean: "#ffffff", land: "#c9c9c9", border: "#ffffff",
+    countryFill: c => hit.has(c.id) ? "#d0605e" : "#c9c9c9",
+    label: "World map of the 11 deadliest earthquakes in human history. Countries shaded red: Haiti, Turkey, Armenia, Azerbaijan, Iran, China, Japan, and Indonesia."});
+  wrap.appendChild(svg.node());
+  const marks = svg.append("g");
+  const list = document.createElement("div");
+  list.style.cssText = "margin-top:10px;display:grid;gap:6px;";
+  wrap.appendChild(list);
+  const inEra = d => st.era === "All 11" || (st.era === "Since 1900" ? d.year >= 1900 : d.year < 1900);
+  const max = d3.max(u3oDeadliest, d => d.deaths);
+  const draw = () => {
+    chips.replaceChildren(...["All 11", "Before 1900", "Since 1900"].map(e => u3oChip(e, st.era === e, "#d63031", () => { st.era = e; draw(); })));
+    marks.selectAll("*").remove();
+    // selected badge drawn last so it sits on top
+    for (const d of [...u3oDeadliest].sort((a, b) => (a.id === wrap.value) - (b.id === wrap.value))) {
+      const on = d.id === wrap.value, show = inEra(d);
+      const [x0, y0] = projection([d.lon, d.lat]);
+      const x = x0 + (d.dx || 0) * k, y = y0 + (d.dy || 0) * k;
+      const g = marks.append("g").style("cursor", "pointer").attr("opacity", show ? 1 : 0.25)
+        .attr("tabindex", 0).attr("role", "button").attr("aria-label", `#${d.rank} ${d.label}`)
+        .on("click", () => pick(d.id)).on("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(d.id); } });
+      g.append("title").text(`#${d.rank} ${d.label}: ${d.deaths.toLocaleString()} deaths`);
+      if (on) g.append("circle").attr("cx", x).attr("cy", y).attr("r", 16 * k).attr("fill", "#d63031").attr("fill-opacity", 0.25);
+      g.append("circle").attr("cx", x).attr("cy", y).attr("r", 10 * k).attr("fill", on ? "#2d3436" : "#fff").attr("stroke", "#2d3436").attr("stroke-width", 1.5);
+      g.append("text").attr("x", x).attr("y", y).attr("dy", "0.35em").attr("text-anchor", "middle").attr("font-size", 11 * k).attr("font-weight", 800)
+        .attr("fill", on ? "#fff" : "#2d3436").text(d.rank);
+    }
+    list.replaceChildren(...u3oDeadliest.filter(inEra).map(d => {
+      const on = d.id === wrap.value;
+      const row = document.createElement("button");
+      row.type = "button";
+      row.setAttribute("aria-pressed", on);
+      row.style.cssText = `display:grid;grid-template-columns:2.2em 1fr;gap:2px 8px;align-items:center;text-align:left;width:100%;min-height:44px;padding:6px 10px;border-radius:8px;cursor:pointer;color:#1e1b4b;border:2px solid ${on ? "#d63031" : "#e2e8f0"};background:${on ? "#fff5f5" : "#fff"};`;
+      row.innerHTML = `<span style="font-weight:800;">#${d.rank}</span>
+        <span><b>${d.label}</b> · ${d.deaths.toLocaleString()} deaths · ${d.magText}</span>
+        <span></span><span style="display:block;height:8px;border-radius:4px;background:${d.year >= 1900 ? "#d63031" : "#fab1a0"};width:${(100 * d.deaths / max).toFixed(1)}%;"></span>`;
+      row.onclick = () => pick(d.id);
+      return row;
+    }));
+  };
+  const pick = id => {
+    wrap.value = st.pick = id;
+    draw();
+    wrap.dispatchEvent(new Event("input", {bubbles: true}));
+  };
+  draw();
+  const legend = document.createElement("div");
+  legend.style.cssText = "font-size:.85em;text-align:center;margin-top:6px;";
+  legend.innerHTML = `List bars: <span style="display:inline-block;width:12px;height:12px;background:#d63031;border-radius:2px;"></span> since 1900 &nbsp; <span style="display:inline-block;width:12px;height:12px;background:#fab1a0;border-radius:2px;"></span> before 1900. Data: NOAA NGDC/WDS Significant Earthquake Database, via Our World in Data (CC-BY-SA, Hannah Ritchie and Max Roser).`;
+  wrap.appendChild(legend);
+  return wrap;
+}
 ```
 
-<p style="text-align:center;font-size:.85em;"><span style="display:inline-block;width:12px;height:12px;background:#d63031;border-radius:2px;"></span> since 1900 &nbsp; <span style="display:inline-block;width:12px;height:12px;background:#fab1a0;border-radius:2px;"></span> before 1900</p>
+```{ojs}
+//| echo: false
+{
+  const d = u3oDeadliest.find(x => x.id === u3oQuakePick);
+  const card = html`<div style="background:#fff;color:#1a1a1a;border-left:8px solid #d63031;border-radius:12px;padding:16px 20px;margin:10px 0 4px;box-shadow:0 2px 10px rgba(0,0,0,.1);">
+    <div style="display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;">
+      <div style="font-size:1.25em;font-weight:800;">〰️ #${d.rank}: ${d.place}, ${d.year}</div>
+    </div>
+    <div style="margin-top:6px;"><b>${d.deaths.toLocaleString()} deaths</b> · ${d.magText}</div>
+    ${d.note ? html`<div style="margin-top:6px;font-size:.92em;color:#555;">* ${d.note}</div>` : ""}
+  </div>`;
+  card.firstElementChild.appendChild(u3oStar({id: `t2-${d.id}`, text: 2, label: `#${d.rank} ${d.label}`, detail: `${d.deaths.toLocaleString()} deaths, ${d.magText.toLowerCase()}.`}));
+  return card;
+}
+```
 
-::: {.callout-tip collapse="true"}
-## 🔎 About the Haiti number
-
-The 2010 Haiti death toll is still disputed. The map uses NOAA's figure (316,000), which the Haitian government reported. Some sources give a lower figure, about 220,000. In that case Haiti would drop to 7th place.
-:::
+```{ojs}
+//| echo: false
+u3oSavedCount(2)
+```
 
 ```{ojs}
 //| echo: false
@@ -335,7 +602,7 @@ buildQuiz("u3o-text2-quiz", "💀 Check Your Understanding — Text 2", [
     explanation: "A magnitude 9.1 quake releases about 1,000 times more energy than an M7. Haiti's quake struck right next to a crowded capital with weak buildings. Exposure and vulnerability matter, an idea you'll use in the final task."
   },
   {
-    q: "How many of the 11 deadliest earthquakes happened since 1900?",
+    q: "Tap \"Since 1900\" above the map. How many of the 11 deadliest earthquakes happened since 1900?",
     options: ["1", "3", "5", "All 11"],
     correct: 2,
     explanation: "Haiti 2010, Tangshan 1976, Sumatra 2004, Gansu 1920, and Tokyo 1923: five. Huge disasters are not just ancient history."
@@ -343,67 +610,153 @@ buildQuiz("u3o-text2-quiz", "💀 Check Your Understanding — Text 2", [
 ])
 ```
 
-## Text 3: Volcano Fatalities since 1500
+## Text 3: Volcano Fatalities since 1500 {#text-3}
 
-Text #3 is a **Washington Post** map built from the **Volcanic Fatalities Database (Brown et al.)**. Circles are sized by the number of fatalities caused by each volcano since 1500. The chart below shows the deadliest eruption of several of the volcanoes on that map.
+Text #3 is a **Washington Post** map built from the **Volcanic Fatalities Database (Brown et al.)**. Circles are sized by the number of fatalities caused by each volcano since 1500, and can include several eruptions over that period. Tap a size in the legend to show or hide it, and tap a circle to read about that volcano.
 
 ```{ojs}
 //| echo: false
 u3oFatalityBins = ["1–9", "10–99", "100–999", "1,000–9,999", "10,000–61,000"]
+// labeled: true = named on the PTO map. Unlabeled circles are identified by location.
 u3oVolcanoes = [
-  {name: "Tambora", country: "Indonesia", year: "1815", deaths: 60000, note: "~60,000 (some estimates over 71,000 with famine)", lat: -8.25, lon: 118.0},
-  {name: "Krakatau", country: "Indonesia", year: "1883", deaths: 36000, note: "~36,000, mostly from tsunamis", lat: -6.1, lon: 105.4},
-  {name: "Pelée", country: "Martinique", year: "1902", deaths: 28000, note: "~28,000; the town of St. Pierre was destroyed by a pyroclastic flow", lat: 14.8, lon: -61.2},
-  {name: "Nevado del Ruiz", country: "Colombia", year: "1985", deaths: 23000, note: "~23,000, buried by mudflows (lahars)", lat: 4.9, lon: -75.3},
-  {name: "Unzen", country: "Japan", year: "1792", deaths: 15000, note: "~15,000; a collapse triggered a tsunami", lat: 32.8, lon: 130.3},
-  {name: "Kelut", country: "Indonesia", year: "1586", deaths: 10000, note: "~10,000 (and ~5,000 more in 1919)", lat: -7.9, lon: 112.3},
-  {name: "Grímsvötn (Laki)", country: "Iceland", year: "1783", deaths: 9000, note: "~9,000, mostly from famine after the eruption", lat: 64.4, lon: -17.3},
-  {name: "Santa María", country: "Guatemala", year: "1902", deaths: 5000, note: "~5,000 or more", lat: 14.76, lon: -91.55},
-  {name: "Vesuvius", country: "Italy", year: "1631", deaths: 4000, note: "~3,000–6,000", lat: 40.82, lon: 14.43},
-  {name: "El Chichón", country: "Mexico", year: "1982", deaths: 2000, note: "~2,000", lat: 17.36, lon: -93.23},
-  {name: "Oku Volcanic Field (Lake Nyos)", country: "Cameroon", year: "1986", deaths: 1700, note: "~1,700, suffocated by a cloud of volcanic CO₂", lat: 6.44, lon: 10.3},
-  {name: "Huaynaputina", country: "Peru", year: "1600", deaths: 1500, note: "~1,500", lat: -16.6, lon: -70.85},
-  {name: "Pinatubo", country: "Philippines", year: "1991", deaths: 850, note: "~850; tens of thousands were evacuated in time", lat: 15.14, lon: 120.35},
-  {name: "Nyiragongo", country: "DR Congo (Great Rift Valley)", year: "2002", deaths: 245, note: "245 (Text 1)", lat: -1.52, lon: 29.25},
-  {name: "Kīlauea", country: "USA (Hawaiʻi)", year: "1790", deaths: 100, note: "at least 80, possibly a few hundred", lat: 19.4, lon: -155.3},
-  {name: "Mt. St. Helens", country: "USA", year: "1980", deaths: 57, note: "57", lat: 46.2, lon: -122.2}
-].map(d => ({...d, bin: d.deaths >= 10000 ? 4 : d.deaths >= 1000 ? 3 : d.deaths >= 100 ? 2 : d.deaths >= 10 ? 1 : 0, label: `${d.name} (${d.year})`}))
-u3oBinColors = ["#ffeaa7", "#fdcb6e", "#f39c12", "#e17055", "#c0392b"]
+  {name: "Tambora", lab: "right", country: "Indonesia", bin: 4, labeled: true, lat: -8.25, lon: 118.0, note: "Its 1815 eruption was the largest in recorded history. Tens of thousands of people died from the blast and from the famine that followed."},
+  {name: "Krakatau", lab: "left", country: "Indonesia", bin: 4, labeled: true, lat: -6.1, lon: 105.4, note: "Its 1883 eruption set off huge tsunamis. About 36,000 people died, mostly from the waves."},
+  {name: "Kelut", lab: "below", country: "Indonesia", bin: 4, labeled: true, lat: -7.93, lon: 112.31, note: "Mudflows (lahars) from its crater lake have killed thousands of people, including about 5,000 in 1919."},
+  {name: "Pelée", lab: "right", country: "Martinique", bin: 4, labeled: true, lat: 14.81, lon: -61.17, note: "In 1902 a pyroclastic flow (a cloud of hot ash and gas) destroyed the town of St. Pierre, killing about 28,000 people."},
+  {name: "Nevado del Ruiz", lab: "left", country: "Colombia", bin: 4, labeled: true, lat: 4.89, lon: -75.32, note: "In 1985 mudflows (lahars) buried the town of Armero, killing about 23,000 people."},
+  {name: "Unzen", lab: "right", country: "Japan", bin: 4, labeled: true, lat: 32.76, lon: 130.29, note: "In 1792 part of a mountain collapsed into the sea and caused a tsunami. About 15,000 people died."},
+  {name: "Grímsvötn", lab: "right", country: "Iceland", bin: 3, labeled: true, lat: 64.42, lon: -17.33, note: "Its 1783 Laki eruption released poisonous gas that killed livestock and crops. Most deaths came from the famine that followed."},
+  {name: "Vesuvius", lab: "above", country: "Italy", bin: 3, labeled: true, lat: 40.82, lon: 14.43, note: "Its 1631 eruption killed about 3,000–6,000 people. The 70/79 CE eruption that buried Pompeii (Text 1) happened before 1500, so it is not counted here."},
+  {name: "Ararat", lab: "right", country: "Turkey", bin: 3, labeled: true, lat: 39.7, lon: 44.3, note: "In 1840 an earthquake and a huge landslide on its slopes destroyed a village and a monastery."},
+  {name: "Oku Volcanic Field", lab: "left", country: "Cameroon", bin: 3, labeled: true, lat: 6.44, lon: 10.3, note: "In 1986 a cloud of volcanic carbon dioxide burst out of Lake Nyos and suffocated about 1,700 people."},
+  {name: "Huaynaputina", lab: "left", country: "Peru", bin: 3, labeled: true, lat: -16.61, lon: -70.85, note: "Its 1600 eruption was the largest in South America's recorded history. About 1,500 people died."},
+  {name: "Kīlauea", lab: "right", country: "USA (Hawaiʻi)", bin: 2, labeled: true, lat: 19.42, lon: -155.29, note: "An explosive eruption in 1790 killed a group of people traveling nearby. Estimates range from about 80 to several hundred."},
+  {name: "Mt. St. Helens", lab: "above", country: "USA", bin: 1, labeled: true, lat: 46.2, lon: -122.18, note: "Its 1980 eruption killed 57 people."},
+  {name: "Yellowstone", lab: "right", country: "USA", bin: 0, labeled: true, lat: 44.43, lon: -110.67, note: "Deaths here come from hot springs, not eruptions. Its last lava flows were about 70,000 years ago."},
+  {name: "Mammoth Mountain", lab: "below", country: "USA", bin: 0, labeled: true, lat: 37.63, lon: -119.03, note: "Volcanic carbon dioxide gas seeping from the ground has caused a few deaths."},
+  {name: "Santa María", country: "Guatemala", bin: 3, labeled: false, lat: 14.76, lon: -91.55, note: "Its 1902 eruption killed at least 5,000 people."},
+  {name: "El Chichón", country: "Mexico", bin: 3, labeled: false, lat: 17.36, lon: -93.23, note: "Its 1982 eruption killed about 2,000 people."},
+  {name: "La Soufrière", country: "St. Vincent", bin: 3, labeled: false, lat: 13.33, lon: -61.18, note: "Its 1902 eruption, one day before Pelée's, killed about 1,600 people."},
+  {name: "Taal", country: "Philippines", bin: 3, labeled: false, lat: 14.0, lon: 120.99, note: "Its 1911 eruption killed about 1,300 people."},
+  {name: "Mayon", country: "Philippines", bin: 3, labeled: false, lat: 13.26, lon: 123.69, note: "Its 1814 eruption buried the town of Cagsawa. About 1,200 people died."},
+  {name: "Pinatubo", country: "Philippines", bin: 2, labeled: false, lat: 15.14, lon: 120.35, note: "Its 1991 eruption killed several hundred people, but warnings let tens of thousands evacuate in time."},
+  {name: "Galunggung", country: "Indonesia", bin: 3, labeled: false, lat: -7.25, lon: 108.06, note: "Its 1822 eruption and mudflows killed about 4,000 people."},
+  {name: "Merapi", country: "Indonesia", bin: 3, labeled: false, lat: -7.54, lon: 110.45, note: "One of Indonesia's most active volcanoes. About 1,300 people died in 1930 and more than 300 in 2010."},
+  {name: "Agung", country: "Indonesia (Bali)", bin: 3, labeled: false, lat: -8.34, lon: 115.51, note: "Its 1963 eruption killed more than 1,000 people."},
+  {name: "Awu", country: "Indonesia", bin: 3, labeled: false, lat: 3.69, lon: 125.45, note: "Eruptions in 1711 and 1856 each killed thousands of people."},
+  {name: "Lamington", country: "Papua New Guinea", bin: 3, labeled: false, lat: -8.95, lon: 148.15, note: "Its 1951 eruption killed about 3,000 people."},
+  {name: "Asama", country: "Japan", bin: 3, labeled: false, lat: 36.4, lon: 138.53, note: "Its 1783 eruption killed about 1,500 people."},
+  {name: "Nyiragongo", country: "DR Congo", bin: 2, labeled: false, lat: -1.52, lon: 29.25, note: "In 2002 its lava flows reached the city of Goma. This is the Great Rift Valley eruption in Text 1."},
+  {name: "Tarawera", country: "New Zealand", bin: 2, labeled: false, lat: -38.23, lon: 176.51, note: "Its 1886 eruption buried nearby villages. About 150 people died."}
+].map(d => ({...d, id: d.name}))
+u3oBinR = [1.8, 3, 5, 8.5, 15]
+u3oText3State = ({pick: "Tambora", bins: new Set([0, 1, 2, 3, 4])})
 ```
 
 ```{ojs}
 //| echo: false
-Plot.plot({
-  title: "Deadliest Eruption of Selected Volcanoes (since 1500)",
-  subtitle: "Log scale: each gridline is 10× more deaths. Colors match the PTO map's circle sizes.",
-  width: width,
-  height: 60 + u3oVolcanoes.length * 26,
-  marginLeft: Math.min(200, width * 0.44),
-  marginRight: 20,
-  x: {type: "log", domain: [10, 100000], label: "Approximate deaths →", grid: true, tickFormat: d => d.toLocaleString()},
-  y: {label: null, domain: u3oVolcanoes.map(d => d.label)},
-  color: {domain: u3oFatalityBins, range: u3oBinColors, legend: true},
-  marks: [
-    Plot.barX(u3oVolcanoes, {y: "label", x1: 10, x2: "deaths", fill: d => u3oFatalityBins[d.bin], tip: true,
-      title: d => `${d.name}, ${d.country}\nEruption: ${d.year}\nDeaths: ${d.note}`})
-  ]
-})
+viewof u3oVolcPick = {
+  const w = width, k = Math.max(0.65, Math.min(1.1, w / 700));
+  const st = u3oText3State;
+  const wrap = document.createElement("div");
+  wrap.value = st.pick;
+  const chips = document.createElement("div");
+  chips.style.cssText = "display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 10px;";
+  wrap.appendChild(chips);
+  const {svg, projection} = u3oMapFrame(w, {bounds: [[-168, -50], [180, 72]], ocean: "#ffffff", land: "#e3e3e3", border: "#ffffff",
+    label: "World map of volcano fatalities since 1500. The largest circles cluster in Indonesia, Japan, the Philippines, the Caribbean, and Colombia."});
+  wrap.appendChild(svg.node());
+  const marks = svg.append("g");
+  let shown = [];
+  // Circles overlap (e.g. Pelée and La Soufrière), so a tap picks the circle whose center is nearest
+  const nearest = e => {
+    const [mx, my] = d3.pointer(e);
+    let best = null, bd = Infinity;
+    for (const d of shown) {
+      const [x, y] = projection([d.lon, d.lat]), dist = Math.hypot(x - mx, y - my);
+      if (dist <= Math.max(12, u3oBinR[d.bin] * k + 4) && dist < bd) { best = d; bd = dist; }
+    }
+    return best;
+  };
+  svg.on("click", e => { const d = nearest(e); if (d) pick(d.id); })
+    .on("pointermove", e => svg.style("cursor", nearest(e) ? "pointer" : null));
+  const draw = () => {
+    chips.replaceChildren(...u3oFatalityBins.map((b, i) => u3oChip(`● ${b}`, st.bins.has(i), "#e69b00", () => {
+      st.bins.has(i) ? st.bins.delete(i) : st.bins.add(i);
+      draw();
+    })));
+    marks.selectAll("*").remove();
+    shown = u3oVolcanoes.filter(d => st.bins.has(d.bin)).sort((a, b) => b.bin - a.bin);
+    for (const d of shown) {
+      const on = d.id === wrap.value;
+      const [x, y] = projection([d.lon, d.lat]);
+      const g = marks.append("g").attr("tabindex", 0).attr("role", "button").attr("aria-label", `${d.name}, ${d.country}: ${u3oFatalityBins[d.bin]} deaths`)
+        .on("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(d.id); } });
+      g.append("title").text(`${d.name}, ${d.country}: ${u3oFatalityBins[d.bin]} deaths since 1500`);
+      g.append("circle").attr("cx", x).attr("cy", y).attr("r", Math.max(1.5, u3oBinR[d.bin] * k))
+        .attr("fill", "#f9b233").attr("fill-opacity", 0.75).attr("stroke", on ? "#d63031" : "#5c3d00").attr("stroke-width", on ? 3 : 0.9);
+    }
+    if (w >= 520) {
+      for (const d of shown.filter(d => d.labeled || d.id === wrap.value)) {
+        const [x, y] = projection([d.lon, d.lat]);
+        const r = u3oBinR[d.bin] * k + 3, lab = d.lab || "right";
+        const [dx, dy, anchor] = {right: [r, 0, "start"], left: [-r, 0, "end"], above: [0, -r - 4, "middle"], below: [0, r + 6, "middle"]}[lab];
+        marks.append("text").attr("x", x + dx).attr("y", y + dy).attr("dy", "0.35em")
+          .attr("text-anchor", anchor).attr("font-size", 9 * Math.min(1, k)).attr("font-weight", 700)
+          .attr("fill", d.id === wrap.value ? "#d63031" : "#333").attr("paint-order", "stroke").attr("stroke", "#fff").attr("stroke-width", 3)
+          .style("pointer-events", "none").text(d.name.toUpperCase());
+      }
+    }
+  };
+  const pick = id => {
+    wrap.value = st.pick = id;
+    draw();
+    wrap.dispatchEvent(new Event("input", {bubbles: true}));
+  };
+  draw();
+  const legend = document.createElement("div");
+  legend.style.cssText = "font-size:.85em;text-align:center;margin-top:6px;";
+  legend.innerHTML = `Source: Brown et al., Volcanic Fatalities Database, via the Washington Post (Wonkblog). Names in capitals are labeled on the PTO map.`;
+  wrap.appendChild(legend);
+  return wrap;
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const d = u3oVolcanoes.find(x => x.id === u3oVolcPick);
+  const card = html`<div style="background:#fff;color:#1a1a1a;border-left:8px solid #f39c12;border-radius:12px;padding:16px 20px;margin:10px 0 4px;box-shadow:0 2px 10px rgba(0,0,0,.1);">
+    <div style="display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;">
+      <div style="font-size:1.25em;font-weight:800;">🌋 ${d.name}, ${d.country}</div>
+    </div>
+    <div style="margin-top:6px;"><b>${u3oFatalityBins[d.bin]} deaths since 1500</b>${d.labeled ? "" : " · not labeled on the PTO map"}</div>
+    <div style="margin-top:6px;">${d.note}</div>
+  </div>`;
+  card.firstElementChild.appendChild(u3oStar({id: `t3-${d.id}`, text: 3, label: `${d.name}, ${d.country}`, detail: `${u3oFatalityBins[d.bin]} deaths since 1500. ${d.note}`}));
+  return card;
+}
+```
+
+```{ojs}
+//| echo: false
+u3oSavedCount(3)
 ```
 
 ::: {.callout-tip collapse="true"}
 ## 🔎 About these numbers
 
-The PTO map adds up **all** eruptions of each volcano since 1500, so some circles are bigger than one eruption alone. Fatality counts for older eruptions are estimates and differ between sources.
+The PTO map adds up **all** eruptions of each volcano since 1500, so a circle can be bigger than any one eruption. The PTO map only names some volcanoes. The unlabeled circles on this page are identified by their location, and their notes come from other sources. Fatality counts for older eruptions are estimates and differ between sources.
 :::
 
 ```{ojs}
 //| echo: false
 buildQuiz("u3o-text3-quiz", "🌋 Check Your Understanding — Text 3", [
   {
-    q: "Which country has the most volcanoes with large death tolls on the Text 3 map and chart?",
+    q: "Which country has the most volcanoes with large death tolls on the Text 3 map?",
     options: ["Iceland", "Indonesia", "Mexico", "USA"],
     correct: 1,
-    explanation: "Tambora, Krakatau, and Kelut are all in Indonesia, and the PTO map shows a cluster of big circles there. Indonesia has many volcanoes and many people living close to them."
+    explanation: "Tambora, Krakatau, and Kelut are all in Indonesia, and the map shows a cluster of big circles there. Indonesia has many volcanoes and many people living close to them."
   },
   {
     q: "Nevado del Ruiz killed ~23,000 people, mostly with mudflows, and Krakatau killed most of its victims with tsunamis. What does this tell you?",
@@ -423,18 +776,6 @@ buildQuiz("u3o-text3-quiz", "🌋 Check Your Understanding — Text 3", [
 ## Putting the Three Texts Together
 
 Here are all three texts on one map. Turn layers on and off, and add the **live USGS feed** of every magnitude 4.5+ earthquake in the past 30 days. Hover over or tap a symbol for details.
-
-```{ojs}
-//| echo: false
-u3oLand = {
-  const topojson = await require("topojson-client@3");
-  let topo;
-  try { topo = await d3.json("../world-110m.json"); } catch (e) { topo = null; }
-  if (!topo || !topo.objects) topo = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-110m.json");
-  const key = topo.objects.land ? "land" : Object.keys(topo.objects)[0];
-  return topojson.feature(topo, topo.objects[key]);
-}
-```
 
 ```{ojs}
 //| echo: false
@@ -468,13 +809,13 @@ viewof u3oLayers = Inputs.checkbox(["Text 1: Five regions", "Text 2: Deadliest e
     r: {type: "identity"},
     marks: [
       Plot.sphere({fill: "#dbeafe", stroke: "#94a3b8"}),
-      Plot.geo(u3oLand, {fill: "#f1ede4", stroke: "#a0a0a0", strokeWidth: 0.5}),
+      Plot.geo(u3oWorld.land, {fill: "#f1ede4", stroke: "#a0a0a0", strokeWidth: 0.5}),
       on("Live") ? Plot.dot(u3oLive.quakes, {x: "lon", y: "lat", r: d => Math.max(1.5, (d.mag - 4) * 2.2), fill: "#636e72", fillOpacity: 0.55, stroke: "white", strokeWidth: 0.3, tip: true,
         title: d => `M${d.mag.toFixed(1)}: ${d.place}\n${d.time.toLocaleDateString()} · depth ${Math.round(d.depth)} km`}) : null,
       on("Text 3") ? Plot.dot(u3oVolcanoes, {x: "lon", y: "lat", r: d => (2.5 + d.bin * 1.9) * k, fill: "#f39c12", fillOpacity: 0.75, stroke: "#7f4f00", strokeWidth: 0.8, tip: true,
-        title: d => `🌋 ${d.name}, ${d.country}\n${d.year}: ${d.note}`}) : null,
+        title: d => `🌋 ${d.name}, ${d.country}\n${u3oFatalityBins[d.bin]} deaths since 1500`}) : null,
       on("Text 2") ? Plot.dot(u3oDeadliest, {x: "lon", y: "lat", r: 6 * k, symbol: "diamond", fill: "#d63031", stroke: "white", strokeWidth: 1, tip: true,
-        title: d => `#${d.rank} ${d.place}, ${d.year}\n${d.deaths.toLocaleString()} deaths · M${d.mag}`}) : null,
+        title: d => `#${d.rank} ${d.place}, ${d.year}\n${d.deaths.toLocaleString()} deaths · ${d.magText}`}) : null,
       on("Text 1") ? Plot.dot(u3oRegions, {x: "lon", y: "lat", r: 22 * k, fill: d => d.color, fillOpacity: 0.18, stroke: d => d.color, strokeWidth: 2.5, tip: true,
         title: d => `${d.region}\n` + d.events.map(e => `${e.label}: ${e.type}`).join("\n")}) : null
     ]
@@ -501,20 +842,109 @@ buildQuiz("u3o-map-quiz", "🌍 Check Your Understanding — Putting It Together
     q: "Which of the five PTO regions sits right where many live earthquakes, deadly earthquakes, AND deadly volcanoes overlap?",
     options: ["Japanese Archipelago", "None of them", "Only the Great Rift Valley", "Only the Mediterranean Basin"],
     correct: 0,
-    explanation: "Japan has frequent earthquakes, the 1923 Tokyo quake (Text 2), Unzen (Text 3), and tsunamis (Text 1). Indonesia, just south of Mainland Southeast Asia, is another hot spot."
+    explanation: "Japan has frequent earthquakes, the 1923 Tokyo quake (Text 2), Unzen and Asama (Text 3), and tsunamis (Text 1). Indonesia, just south of Mainland Southeast Asia, is another hot spot."
   }
 ])
 ```
 
-## Overall Story
+## Overall Story {#overall-story}
 
 ::: {.student-task}
-### ✏️ In your packet: Tell the Story (pp. 3–7)
+### ✏️ In your packet: Tell the Story
 
-- For **each text** (Text #1, #2, #3), write **2–3 important details** on the lines.
-- Take turns sharing with your group. Write down **at least 5 important details your group surfaced**.
-- Write the **Overall Story** based on your group's discussion.
+- For **each text** (Text #1, #2, #3), circle or jot **2–3 important details**.
+- **Share with your group.** Each person identifies the details they circled.
+- **Discuss as a group** and determine the overall story. **What is the phenomenon?**
 :::
+
+### ⭐ Detail Tracker
+
+Your saved details from all three texts. Add details of your own, then use them to write the overall story.
+
+```{ojs}
+//| echo: false
+{
+  const wrap = html`<div style="background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin:10px 0 18px;box-shadow:0 2px 10px rgba(0,0,0,.1);"></div>`;
+  const groups = html`<div></div>`;
+  wrap.appendChild(groups);
+  const titles = {1: "Text 1: Ancient societies and tectonic hazards", 2: "Text 2: Deadliest earthquakes", 3: "Text 3: Volcano fatalities"};
+  const colors = {1: "#00b894", 2: "#d63031", 3: "#f39c12"};
+  let jotN = 0;
+  const paint = () => {
+    const all = u3oDetails.list();
+    groups.replaceChildren(...[1, 2, 3].map(n => {
+      const mine = all.filter(d => d.text === n);
+      const sec = html`<div style="border-left:6px solid ${colors[n]};padding:4px 0 8px 12px;margin-bottom:14px;">
+        <div style="font-weight:800;">${titles[n]} · ${mine.length} saved ${mine.length >= 2 ? "✅" : ""}</div>
+      </div>`;
+      if (!mine.length) sec.appendChild(html`<div style="font-size:.92em;color:#666;margin-top:4px;">Nothing saved yet. <a href="#text-${n}">Go to Text ${n} ↑</a></div>`);
+      for (const d of mine) {
+        const row = html`<div style="display:flex;gap:8px;align-items:flex-start;margin-top:6px;font-size:.95em;">
+          <div style="flex:1 1 auto;"><b></b> <span></span></div>
+        </div>`;
+        row.querySelector("b").textContent = d.label + ":";
+        row.querySelector("span").textContent = d.detail;
+        const x = html`<button type="button" style="flex:0 0 auto;min-width:36px;min-height:36px;border:1px solid #e2e8f0;border-radius:8px;background:#fff;color:#9b2c2c;cursor:pointer;">✕</button>`;
+        x.setAttribute("aria-label", "Remove " + d.label);
+        x.onclick = () => u3oDetails.remove(d.id);
+        row.appendChild(x);
+        sec.appendChild(row);
+      }
+      const jot = html`<form style="display:flex;gap:8px;margin-top:8px;">
+        <input type="text" maxlength="300" placeholder="Jot your own detail from Text ${n}…" style="font-family:inherit;font-size:.95em;flex:1 1 auto;min-width:0;min-height:40px;padding:6px 10px;border:2px solid #e2e8f0;border-radius:8px;color:#1e1b4b;background:#fff;">
+        <button type="submit" style="flex:0 0 auto;min-height:40px;padding:6px 14px;border:none;border-radius:8px;background:${colors[n]};color:#fff;font-weight:700;cursor:pointer;">Add</button>
+      </form>`;
+      jot.querySelector("input").setAttribute("aria-label", `Your own detail from Text ${n}`);
+      jot.onsubmit = e => {
+        e.preventDefault();
+        const t = jot.querySelector("input").value.trim();
+        if (t) u3oDetails.toggle({id: `t${n}-jot-${Date.now()}-${jotN++}`, text: n, label: "My note", detail: t});
+      };
+      sec.appendChild(jot);
+      return sec;
+    }));
+  };
+  u3oDetails.subscribe(wrap, paint);
+  paint();
+
+  const story = html`<div style="margin-top:6px;">
+    <label style="display:block;font-weight:800;margin-bottom:6px;">📖 Our overall story: What is the phenomenon?</label>
+    <textarea rows="5" placeholder="Earthquakes, volcanic eruptions, and tsunamis…" style="font-family:inherit;width:100%;box-sizing:border-box;padding:10px;border:2px solid #e2e8f0;border-radius:8px;font-size:1em;color:#1e1b4b;background:#fff;"></textarea>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+      <button type="button" class="copy" style="min-height:40px;padding:6px 16px;border:none;border-radius:50px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;font-weight:700;cursor:pointer;">📋 Copy my notes</button>
+      <button type="button" class="clear" style="min-height:40px;padding:6px 16px;border:2px solid #e2e8f0;border-radius:50px;background:#fff;color:#9b2c2c;font-weight:700;cursor:pointer;">Clear everything</button>
+      <span class="msg" style="align-self:center;font-size:.9em;"></span>
+    </div>
+  </div>`;
+  const ta = story.querySelector("textarea"), msg = story.querySelector(".msg");
+  ta.value = u3oDetails.story();
+  ta.oninput = () => u3oDetails.setStory(ta.value);
+  story.querySelector(".copy").onclick = async () => {
+    const all = u3oDetails.list();
+    const text = [1, 2, 3].map(n => `${titles[n]}\n` + (all.filter(d => d.text === n).map(d => `- ${d.label}: ${d.detail}`).join("\n") || "- (none yet)")).join("\n\n")
+      + `\n\nOverall story:\n${ta.value.trim() || "(not written yet)"}`;
+    try { await navigator.clipboard.writeText(text); msg.textContent = "✅ Copied!"; }
+    catch (e) {
+      const tmp = document.createElement("textarea");
+      tmp.value = text;
+      document.body.appendChild(tmp);
+      tmp.select();
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch (e2) {}
+      tmp.remove();
+      msg.textContent = ok ? "✅ Copied!" : "⚠️ Couldn't copy here. Copy your notes into your packet by hand.";
+    }
+  };
+  story.querySelector(".clear").onclick = () => {
+    if (!confirm("Remove all saved details and your overall story?")) return;
+    u3oDetails.clear();
+    ta.value = "";
+    msg.textContent = "Cleared.";
+  };
+  wrap.appendChild(story);
+  return wrap;
+}
+```
 
 ::: {.key-idea}
 ### 💡 One way to tell the story
@@ -687,36 +1117,6 @@ buildQuiz("u3o-model-quiz", "🧩 Check Your Understanding — Initial Model", [
   }
 ])
 ```
-
-# Driving Question Board
-
-::: {.student-task}
-### ✏️ With your class: Driving Question Board
-
-- **Individually**, write questions you would need to answer to figure out **what parts of the world are most at risk** from earthquakes, volcanic eruptions, and tsunamis. Put **one question per sticky note**.
-- As a class, **share and sort** the questions into categories on chart paper. For each category, try to write one **umbrella question**.
-- You will investigate these questions throughout the unit, and return to the board in the [Unit Closing](unit3-closing.qmd#revisit-the-driving-question-board).
-:::
-
-**Questions students often ask** (use them if you're stuck):
-
-- What caused the events in Japan and Tonga? Is there a relationship between volcanoes, earthquakes, and tsunamis?
-- Why do earthquakes, volcanoes, and tsunamis happen in some places and not others? How do tectonic plates move?
-- Can these hazards happen where we live?
-- Why have people lived in these places for thousands of years? How big are the populations there today?
-- What technology and resources do these populations have? Are they rich or poor?
-
-### ❓ Questions to carry forward
-
-One category is usually about **what causes earthquakes, volcanoes, and tsunamis**. The three lessons in this unit start there:
-
-| Upcoming lesson | Question it helps answer |
-|---|---|
-| [Earth's Interior](unit3-earth-interior.qmd) | Where did the material for new islands come from after Krakatoa erupted? |
-| [Surface Features & Plate Boundaries](unit3-plate-boundaries.qmd) | Why does seismic activity happen in some areas more than others? |
-| [Energy and Matter](unit3-energy-matter.qmd) | Where is all the energy coming from to move plates apart? What processes inside Earth can cause it to reach the surface? And why do people continue to live in these hazardous areas? |
-
----
 
 # Myth or Fact?
 
