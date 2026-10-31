@@ -1,6 +1,6 @@
 ---
-title: "Unit 4: Climate Change - Unit Closing"
-subtitle: "How do natural factors contribute to changes in Earth's temperature? Why are scientists so sure humans are causing climate change today?"
+title: "Unit 4: Closing — Why Are Scientists So Sure?"
+subtitle: "What are 99.9% of climate scientists seeing in historical climate data that makes them so sure humans are the cause of climate change today, and why does it matter?"
 format:
   html:
     toc: true
@@ -16,918 +16,953 @@ execute:
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
 
-.anchor-box {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 30px;
-  border-radius: 15px;
-  margin: 25px 0;
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-  animation: slideIn 0.8s ease-out;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.summary-box {
-  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-  border: 3px solid #ff6b6b;
-  padding: 25px;
-  border-radius: 12px;
-  margin: 20px 0;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.evidence-card {
-  background: linear-gradient(to right, #a8edea, #fed6e3);
-  border-left: 8px solid #667eea;
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
-}
-
-.performance-task {
-  background: linear-gradient(135deg, #b5179e 0%, #c9184a 100%);
-  color: white;
-  padding: 30px;
-  border-radius: 15px;
-  margin: 25px 0;
-  box-shadow: 0 10px 30px rgba(240, 147, 251, 0.4);
-}
-
-.rubric-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.rubric-table th, .rubric-table td {
-  border: 1px solid #ddd;
-  padding: 15px;
-  text-align: left;
-}
-
-.rubric-table th {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.rubric-table tr:nth-child(even) {
-  background: #f8f9fa;
-}
-.key-idea { background-color: #d4edda; border-left: 5px solid #28a745; padding: 15px; margin: 15px 0; }
-.reflection-box { background: #fff3cd; border-left: 5px solid #ffc107; padding: 20px; margin: 15px 0; }
-.quiz-section { background-color: #f8d7da; border-left: 5px solid #dc3545; padding: 20px; margin: 20px 0; border-radius: 10px; }
-.pe-badge { display: inline-block; background: #673ab7; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin: 5px; }
-.lab-activity { background: #fafafa; border: 2px solid #333; padding: 20px; margin: 20px 0; border-radius: 10px; }
-.check-understanding { background-color: #d1ecf1; border-left: 5px solid #17a2b8; padding: 15px; margin: 15px 0; }
+.engage-box { background: linear-gradient(135deg, #01579b 0%, #00838f 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 131, 143, 0.3); }
+.engage-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+.evaluate-box { background: linear-gradient(135deg, #ad1457 0%, #c62828 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(198, 40, 40, 0.3); }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.4em; font-weight: 800; background: linear-gradient(135deg, #0277bd 0%, #c62828 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); color: #1a1a1a; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #00838f; font-size: 1.05em; }
+.student-task { background: #fff3e0; color: #1a1a1a; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.claim-box { background: linear-gradient(135deg, #c62828 0%, #e65100 100%); color: white; padding: 22px; margin: 15px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(198, 40, 40, 0.3); }
+.evidence-box { background: linear-gradient(135deg, #00695c 0%, #0277bd 100%); color: white; padding: 22px; margin: 15px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(2, 119, 189, 0.3); }
+.reasoning-box { background: linear-gradient(135deg, #4527a0 0%, #6a1b9a 100%); color: white; padding: 22px; margin: 15px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(69, 39, 160, 0.3); }
+.claim-box *, .evidence-box *, .reasoning-box *, .engage-box *, .evaluate-box * { color: white !important; }
+.evidence-box a, .claim-box a, .reasoning-box a, .engage-box a, .evaluate-box a { text-decoration: underline; }
+.pto-prompt { background: rgba(255,255,255,0.14); border-left: 5px solid #fff; border-radius: 0 10px 10px 0; padding: 12px 16px; margin: 10px 0 14px; font-style: italic; }
+.u4c-skeptic { background: #fff; color: #1a1a1a; border-radius: 12px; border-left: 8px solid #c62828; margin: 12px 0; box-shadow: 0 2px 10px rgba(0,0,0,.1); overflow: hidden; }
+.u4c-skeptic summary { cursor: pointer; padding: 14px 18px; font-weight: 700; list-style: none; min-height: 44px; }
+.u4c-skeptic summary::-webkit-details-marker { display: none; }
+.u4c-skeptic summary::after { content: " ▼ tap for the evidence"; font-weight: 400; font-size: .85em; color: #00838f; }
+.u4c-skeptic[open] summary::after { content: " ▲"; }
+.u4c-skeptic .u4c-answer { padding: 0 18px 14px; border-top: 1px dashed #b2ebf2; }
+.u4c-skeptic .u4c-answer a { color: #01579b; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.6em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #00838f !important; }
+.engage-box h2, .evaluate-box h2 { color: white !important; }
+.u4c-card, .u4c-card * { box-sizing: border-box; }
+figure h2, figure h3 { font-family: 'Inter', sans-serif !important; color: inherit !important; border: none !important; margin: 4px 0 !important; }
+figure h2 { font-size: 1.05em !important; font-weight: 800 !important; }
+figure h3 { font-size: .85em !important; font-weight: 400 !important; opacity: .85; }
+.u4c-planner textarea, .u4c-planner select { width: 100%; max-width: 100%; }
+@media (max-width: 600px) { .big-question { font-size: 1.6em; } h1 { font-size: 1.9em !important; } }
 </style>
 ```
 
+<a class="quiz-jump-btn" href="#end-of-unit-quiz">🧠 Quiz ↓</a>
 
+<div class="big-question">🌡️ Why Are Scientists So Sure, and Why Does It Matter? 🌍</div>
 
-# Returning to the Anchor Phenomenon
+::: {.callout-note collapse="true"}
+## 📒 Using this page with your Performance Task Organizer
 
-::: {.anchor-box}
-## 🌍 Our Anchor Phenomenon Revisited
+This page follows the last pages of your **Unit 4 Performance Task Organizer (PTO): Climate Change**. The opening pages (Tell the Story, Performance Task Introduction, Initial Model) are on the [Unit Opening](unit4-opening.qmd) page.
 
-**Earth's temperature is rising, reversing the cooling trend that occurred over the past 2,000 years, putting millions of people in harm's way, yet the public is not convinced of the risks.**
-
-### You Can Now Explain:
-✅ How natural factors have contributed to climate change in the past  
-✅ Why those natural factors cannot explain current warming  
-✅ What evidence convinces 99.9% of climate scientists that humans are the cause  
-✅ Why this matters for human populations  
+| PTO section (page) | On this page |
+|---|---|
+| Revisiting the Performance Task: Earth-Sun Dynamics 5E (p. 9) | [Earth-Sun Dynamics](#earth-sun-dynamics) |
+| Revisiting the Performance Task: Climate Feedbacks 5E (p. 10) | [Climate Feedbacks](#climate-feedbacks) |
+| Revisiting the Performance Task: Greenhouse Gases 5E (p. 11) (the Past and the Future lesson) | [The Past and the Future](#the-past-and-the-future) |
+| Unit Closing: return to the anchor phenomenon (class discussion) | [Return to the Anchor Phenomenon](#return-to-the-anchor-phenomenon) |
+| Final Performance Task: Share with the community (p. 12) | [Final Performance Task](#final-performance-task), [Your Community](#your-community-new-york-city), [Planner](#communication-planner), [Checklist](#final-communication-checklist) |
 :::
 
-# Synthesizing Your Learning
-
-## The Complete Climate Story
-
 ```{ojs}
 //| echo: false
-Plot = require("@observablehq/plot")
-
-// Complete timeline visualization
-completeTimeline = [
-  {era: "Natural Past", period: "800,000 - 200 years ago", driver: "Milankovitch Cycles", co2_range: "180-280 ppm", temp_range: "-8°C to +2°C", outcome: "Glacial-interglacial cycles"},
-  {era: "Pre-Industrial", period: "1750-1850", driver: "Natural baseline", co2_range: "~280 ppm", temp_range: "Baseline (0°C)", outcome: "Stable climate"},
-  {era: "Industrial Era", period: "1850-present", driver: "Human emissions", co2_range: "280→422 ppm", temp_range: "0°C → +1.2°C", outcome: "Rapid warming"}
-]
-```
-
-### Interactive Evidence Summary Dashboard
-
-```{ojs}
-//| echo: false
-viewof evidenceView = Inputs.radio([
-  "CO₂ Evidence", 
-  "Temperature Evidence", 
-  "Attribution Evidence",
-  "Impact Evidence"
-], {
-  label: "Select evidence category:",
-  value: "CO₂ Evidence"
-})
+Plot = require("@observablehq/plot@0.6.16")
+d3 = require("d3@7.9.0")
 ```
 
 ```{ojs}
 //| echo: false
-{
-  if (evidenceView === "CO₂ Evidence") {
-    return html`
-    <div style="background: #e8f5e9; padding: 20px; border-radius: 10px; margin: 15px 0;">
-      <h3>🔬 CO₂ Evidence</h3>
-      <div class="evidence-card">
-        <h4>Ice Core Records</h4>
-        <p>For 800,000 years, CO₂ never exceeded <strong>280 ppm</strong></p>
-        <p>Today's level: <strong>422 ppm</strong> (50% higher than any point in 800,000 years)</p>
-      </div>
-      <div class="evidence-card">
-        <h4>Rate of Change</h4>
-        <p>Natural CO₂ changes: ~100 ppm over thousands of years</p>
-        <p>Current change: ~140 ppm in just 170 years (<strong>100x faster</strong>)</p>
-      </div>
-      <div class="evidence-card">
-        <h4>Isotopic Fingerprint</h4>
-        <p>Carbon isotope ratios prove the CO₂ is from fossil fuels (depleted in C-13)</p>
-        <p>This is like a "chemical fingerprint" pointing directly to human sources</p>
-      </div>
-    </div>`;
-  } else if (evidenceView === "Temperature Evidence") {
-    return html`
-    <div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin: 15px 0;">
-      <h3>🌡️ Temperature Evidence</h3>
-      <div class="evidence-card">
-        <h4>The 2,000-Year Cooling Trend</h4>
-        <p>Earth was gradually cooling due to Milankovitch cycles</p>
-        <p>This trend <strong>abruptly reversed</strong> ~150 years ago</p>
-      </div>
-      <div class="evidence-card">
-        <h4>Current Warming Rate</h4>
-        <p>Warming <strong>10x faster</strong> than any natural warming in past 65 million years</p>
-        <p>This eliminates all natural explanations</p>
-      </div>
-      <div class="evidence-card">
-        <h4>Pattern Matches Predictions</h4>
-        <p>Warming pattern (nights warming faster, stratosphere cooling) matches greenhouse effect predictions exactly</p>
-        <p>This is the "signature" of greenhouse warming</p>
-      </div>
-    </div>`;
-  } else if (evidenceView === "Attribution Evidence") {
-    return html`
-    <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin: 15px 0;">
-      <h3>🔍 Attribution Evidence</h3>
-      <div class="evidence-card">
-        <h4>Solar Output ❌ Ruled Out</h4>
-        <p>Sun's output has been <strong>flat or slightly declining</strong> since 1980</p>
-        <p>If Sun caused warming, stratosphere would warm too (it's cooling)</p>
-      </div>
-      <div class="evidence-card">
-        <h4>Milankovitch Cycles ❌ Ruled Out</h4>
-        <p>Current orbital configuration predicts gradual <strong>COOLING</strong></p>
-        <p>Yet Earth is warming rapidly — the opposite direction</p>
-      </div>
-      <div class="evidence-card">
-        <h4>Volcanic Activity ❌ Ruled Out</h4>
-        <p>Major eruptions cause temporary <strong>COOLING</strong>, not warming</p>
-        <p>No increase in volcanic activity that could explain warming</p>
-      </div>
-      <div class="evidence-card">
-        <h4>Human Emissions ✅ Only Explanation</h4>
-        <p>Timing matches industrialization perfectly</p>
-        <p>Amount of warming matches physics predictions for CO₂ increase</p>
-        <p>Isotopic fingerprint confirms fossil fuel source</p>
-      </div>
-    </div>`;
-  } else {
-    return html`
-    <div style="background: #fce4ec; padding: 20px; border-radius: 10px; margin: 15px 0;">
-      <h3>⚠️ Impact Evidence</h3>
-      <div class="evidence-card">
-        <h4>Already Happening Now</h4>
-        <ul>
-          <li>Arctic warming <strong>4x faster</strong> than global average</li>
-          <li>Sea level rising <strong>3.7mm/year</strong> and accelerating</li>
-          <li>Extreme weather events increasing in frequency and intensity</li>
-          <li>Ice sheets losing mass at accelerating rates</li>
-        </ul>
-      </div>
-      <div class="evidence-card">
-        <h4>Historical Precedent</h4>
-        <p>Younger Dryas shows climate can change <strong>rapidly</strong> with devastating effects</p>
-        <p>AMOC is weakening now, similar to conditions before past collapses</p>
-      </div>
-      <div class="evidence-card">
-        <h4>Future Projections</h4>
-        <ul>
-          <li><strong>100+ million people</strong> at risk from sea level rise</li>
-          <li>Food and water security threatened globally</li>
-          <li>Ecosystem collapse accelerating</li>
-          <li>Economic damages in the trillions</li>
-        </ul>
-      </div>
-    </div>`;
-  }
-}
-```
-
-## Why Scientists Are Certain: The Complete Picture
-
-::: {.summary-box}
-### The Scientific Consensus Explained
-
-**Multiple independent lines of evidence ALL point to the same conclusion:**
-
-| Evidence Type | What It Shows | Natural Explanation? |
-|--------------|---------------|---------------------|
-| Ice cores (CO₂) | CO₂ at 800,000-year high | ❌ No natural source |
-| Carbon isotopes | Fossil fuel fingerprint | ❌ Proves human origin |
-| Warming pattern | Matches greenhouse effect | ❌ Rules out solar |
-| Timing | Matches industrialization | ❌ Rules out natural cycles |
-| Rate of change | 100x faster than natural | ❌ Rules out all natural causes |
-| Climate models | Predictions match observations | ✅ Only works with human emissions |
-
-**This is why 99.9% of climate scientists agree:** The evidence is overwhelming and consistent across dozens of independent data sources and methods. There is no alternative explanation that fits all the evidence.
-:::
-
-## Interactive: Build Your Argument
-
-```{ojs}
-//| echo: false
-viewof claimToAddress = Inputs.select([
-  "\"The climate has always changed naturally\"",
-  "\"It's just the Sun getting stronger\"",
-  "\"CO₂ is plant food - more is better\"",
-  "\"Scientists are just guessing\"",
-  "\"It's not warming that fast\""
-], {
-  label: "Select a common claim to address:"
-})
-```
-
-```{ojs}
-//| echo: false
-{
-  const responses = {
-    "\"The climate has always changed naturally\"": {
-      acknowledge: "True! Climate has changed naturally in the past.",
-      counter: "But natural changes were driven by Milankovitch cycles (taking thousands of years) or events like volcanic eruptions. Current warming is 100x faster than any natural change in 65 million years.",
-      evidence: "Ice cores show CO₂ never exceeded 280 ppm in 800,000 years. Today it's 422 ppm. Current orbital cycles actually predict COOLING, not warming.",
-      conclusion: "Natural factors cannot explain current warming — only human emissions fit all the evidence."
-    },
-    "\"It's just the Sun getting stronger\"": {
-      acknowledge: "The Sun does vary in output slightly.",
-      counter: "But solar output has been flat or slightly DECLINING since 1980, while temperatures have risen dramatically.",
-      evidence: "If the Sun caused warming, the stratosphere would warm too. Instead, the stratosphere is COOLING while the surface warms — the exact signature of greenhouse gas warming, not solar warming.",
-      conclusion: "Solar changes are ruled out by multiple lines of evidence."
-    },
-    "\"CO₂ is plant food - more is better\"": {
-      acknowledge: "Plants do use CO₂ for photosynthesis.",
-      counter: "But the rate of CO₂ increase is far faster than ecosystems can adapt. Also, climate change brings droughts, floods, and heat waves that harm agriculture.",
-      evidence: "Crop yields are already declining in many regions due to heat stress. Ocean acidification (from CO₂ absorption) is destroying marine ecosystems.",
-      conclusion: "The negative effects of rapid CO₂ increase far outweigh any fertilization benefits."
-    },
-    "\"Scientists are just guessing\"": {
-      acknowledge: "Science does involve uncertainty.",
-      counter: "But 99.9% of climate scientists agree based on multiple independent lines of evidence. This isn't guessing — it's the same scientific method that brought us medicine, smartphones, and space travel.",
-      evidence: "Ice cores, isotope analysis, temperature records, ocean measurements, and climate models all independently point to the same conclusion. Predictions made 30+ years ago have proven accurate.",
-      conclusion: "The scientific consensus is based on overwhelming evidence, not guesswork."
-    },
-    "\"It's not warming that fast\"": {
-      acknowledge: "1.2°C might not sound like much.",
-      counter: "But global averages hide regional extremes. The Arctic has warmed 4°C+. The difference between an ice age and today is only about 5°C globally.",
-      evidence: "We're already seeing increased extreme weather, melting ice sheets, rising seas, and ecosystem disruption. The Younger Dryas showed that even 'small' global changes can have catastrophic regional effects.",
-      conclusion: "Small global changes translate to major regional impacts that affect billions of people."
-    }
-  };
-  
-  const response = responses[claimToAddress];
-  
-  return html`
-  <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 15px 0;">
-    <h3>💬 Responding to: ${claimToAddress}</h3>
-    
-    <div style="margin: 15px 0; padding: 15px; background: #e8f5e9; border-radius: 8px;">
-      <h4>✅ Acknowledge:</h4>
-      <p>${response.acknowledge}</p>
-    </div>
-    
-    <div style="margin: 15px 0; padding: 15px; background: #fff3e0; border-radius: 8px;">
-      <h4>🔄 Counter:</h4>
-      <p>${response.counter}</p>
-    </div>
-    
-    <div style="margin: 15px 0; padding: 15px; background: #e3f2fd; border-radius: 8px;">
-      <h4>📊 Evidence:</h4>
-      <p>${response.evidence}</p>
-    </div>
-    
-    <div style="margin: 15px 0; padding: 15px; background: #f3e5f5; border-radius: 8px;">
-      <h4>🎯 Conclusion:</h4>
-      <p><strong>${response.conclusion}</strong></p>
+buildQuiz = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="margin:18px 0 24px 0;text-align:center;">
+    <button style="
+      display:inline-flex;align-items:center;gap:7px;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      color:#fff;border:none;padding:9px 22px;border-radius:50px;min-height:44px;
+      font-size:.95em;font-weight:700;cursor:pointer;
+      box-shadow:0 3px 12px rgba(102,126,234,.45);">
+      <span style="font-size:1.1em;">📝</span> ${title}
+      <span class="chevron" style="transition:transform .3s;">▼</span>
+    </button>
+    <div class="quiz-body" style="
+      max-height:0;opacity:0;overflow:hidden;
+      transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin-top .3s ease;
+      margin-top:0;text-align:left;">
+      <button class="close-btn" style="
+        display:block;margin:0 auto 10px auto;
+        background:rgba(102,126,234,.12);color:#667eea;border:none;
+        padding:5px 18px;border-radius:50px;font-size:.85em;min-height:36px;
+        font-weight:600;cursor:pointer;">Hide Quiz</button>
+      <p style="text-align:center;color:#718096;font-style:italic;font-size:.9em;margin-bottom:12px;">
+        Select an answer for each question.</p>
     </div>
   </div>`;
+  const toggle = outer.querySelector("button");
+  const chevron = toggle.querySelector(".chevron");
+  const body   = outer.querySelector(".quiz-body");
+  const closeBtn = body.querySelector(".close-btn");
+  function expand(){  body.style.maxHeight="3000px";body.style.opacity="1";body.style.marginTop="14px";chevron.style.transform="rotate(180deg)"; }
+  function collapse(){ body.style.maxHeight="0";body.style.opacity="0";body.style.marginTop="0";chevron.style.transform="rotate(0)"; }
+  toggle.onclick = () => body.style.maxHeight === "0px" || body.style.maxHeight === "" ? expand() : collapse();
+  closeBtn.onclick = collapse;
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => { b.style.cursor="default"; });
+        if(oi === qq.correct){
+          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";
+          card.querySelectorAll("button")[qq.correct].style.borderColor="#48bb78";
+          card.querySelectorAll("button")[qq.correct].style.background="#f0fff4";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";
+      };
+      card.appendChild(btn);
+    });
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  return outer;
 }
 ```
 
-# Your Final Project
+# Evidence Review: Revisiting the Performance Task
 
-::: {.performance-task}
-## 📋 Your Mission: Climate Communication
+::: {.engage-box}
+## 🕵️ Disproving the climate skeptics
 
-### The Challenge:
-Create a communication piece for someone in your community that:
+Our goal all unit: **disprove any skeptic who claims humans are not the cause of climate change today, and show why it matters.** At the end of each lesson, your PTO asked you to make and support a claim with that lesson's data. Each skeptic argument below was tested in one lesson:
 
-1. **Explains** why scientists are certain that humans are causing climate change
-2. **Uses evidence** from multiple sources we've studied
-3. **Addresses** at least one common misconception
-4. **Predicts** how climate factors will be affected
-5. **Explains** why it matters (human impacts)
-
-### Format Options:
-Choose ONE of the following:
-
-- 📝 **Written article or blog post** (800-1200 words)
-- 📊 **Infographic or poster** (visual with explanatory text)
-- 🎬 **Video presentation** (3-5 minutes)
-- 📱 **Social media campaign** (series of 5-7 posts with graphics)
-- 🎙️ **Podcast episode** (5-8 minutes)
-- ✉️ **Letter to a local official** (with supporting evidence)
-- 🎭 **Presentation for a community group** (with slides)
+| Skeptic says... | Tested in |
+|---|---|
+| "It's just a natural cycle: Earth's orbit or the Sun." | [Earth-Sun Dynamics](unit4-earth-sun-dynamics.qmd) |
+| "CO₂ is natural, and CO₂ and temperature are only correlated." | [Climate Feedbacks](unit4-climate-feedbacks.qmd) |
+| "Even if it's real, it won't affect people much." | [The Past and the Future](unit4-past-and-future.qmd) |
 :::
 
-## Self-Check Rubric
+## Revisiting the Performance Task: Earth-Sun Dynamics {#earth-sun-dynamics}
 
-```{=html}
-<table class="rubric-table">
-  <tr>
-    <th>Criteria</th>
-    <th>Exemplary (4)</th>
-    <th>Proficient (3)</th>
-    <th>Developing (2)</th>
-    <th>Beginning (1)</th>
-  </tr>
-  <tr>
-    <td><strong>Scientific Accuracy</strong></td>
-    <td>All claims are scientifically accurate with specific data cited from unit materials</td>
-    <td>Claims are accurate with some specific data cited</td>
-    <td>Some claims are accurate but lack supporting data</td>
-    <td>Contains scientific inaccuracies or unsupported claims</td>
-  </tr>
-  <tr>
-    <td><strong>Evidence Usage</strong></td>
-    <td>Uses 4+ types of evidence (CO₂, temperature, attribution, impacts) effectively integrated</td>
-    <td>Uses 3 types of evidence effectively</td>
-    <td>Uses 2 types of evidence</td>
-    <td>Uses 1 or no types of evidence</td>
-  </tr>
-  <tr>
-    <td><strong>Addresses Natural Factors</strong></td>
-    <td>Thoroughly explains why Milankovitch cycles, solar changes, and volcanic activity cannot explain current warming</td>
-    <td>Explains why most natural factors cannot explain current warming</td>
-    <td>Mentions natural factors but explanation is incomplete</td>
-    <td>Does not address natural factors</td>
-  </tr>
-  <tr>
-    <td><strong>Human Impacts</strong></td>
-    <td>Clearly explains current AND future impacts with specific examples and data</td>
-    <td>Explains current and future impacts with some examples</td>
-    <td>Mentions impacts but lacks specific examples</td>
-    <td>Does not adequately address human impacts</td>
-  </tr>
-  <tr>
-    <td><strong>Addresses Misconceptions</strong></td>
-    <td>Effectively addresses misconception using acknowledge-counter-evidence-conclude structure</td>
-    <td>Addresses misconception with evidence</td>
-    <td>Mentions misconception but response is weak</td>
-    <td>Does not address any misconceptions</td>
-  </tr>
-  <tr>
-    <td><strong>Communication Quality</strong></td>
-    <td>Clear, engaging, well-organized, and perfectly appropriate for intended audience</td>
-    <td>Clear and mostly appropriate for audience</td>
-    <td>Somewhat clear but may not suit audience well</td>
-    <td>Unclear, disorganized, or inappropriate for audience</td>
-  </tr>
-</table>
+::: {.evidence-box}
+### ☀️ Lesson 4.1: Earth-Sun Dynamics
+
+**PTO prompt (p. 9): Disproving climate skeptics**
+
+<div class="pto-prompt">Using the data about historical temperature changes over time, the changes in orbital factors over the past 9,000 years, the solar cycles, and the effect of solar factors on energy entering Earth's systems, make and support a valid claim about the role of orbital factors and solar cycles on the melting of ice caps today.</div>
+
+**What we figured out:**
+
+- **Orbital factors** (shape of the orbit, degree of tilt, direction of tilt) change how much sunlight reaches **65° N in summer**. They cycle over **tens to hundreds of thousands of years** and match the **glacial-interglacial cycles** (more summer sunlight at 65° N → ice sheets melt → interglacial).
+- **From 9,000 years ago to today**, all three factors changed in the direction that gives **weaker northern summers**: tilt dropped from **24.25° to 23.4°**, the Northern Hemisphere now tilts **away** from the Sun when Earth is closest, and the orbit became slightly **less stretched** (146.61–152.59 → 147.06–152.14 million km). Earth **should be slowly cooling toward a glacial period**, not warming.
+- **Solar cycles** last about **11 years** and change the Sun's output by only about **1 W/m²** out of ~1,361. Since about **1960, solar output has been flat or slightly falling while temperature has risen about 1 °C.**
+- Today's warming of about **1.25 °C took ~140 years**. Natural warming of the same amount took **thousands of years**.
+
+📖 Review the lesson: [Earth-Sun Dynamics](unit4-earth-sun-dynamics.qmd)
+:::
+
+Pick a warming event to see how long Earth took to warm by about 1.25 °C.
+
+```{ojs}
+//| echo: false
+u4cTemp22k = [
+  [22000,-3.1],[21000,-3.05],[20000,-3.0],[19000,-2.95],[18000,-2.85],[17000,-2.6],[16000,-2.35],[15000,-2.05],
+  [14700,-1.75],[14500,-1.45],[14000,-1.2],[13500,-1.1],[13000,-1.2],[12500,-1.35],[12000,-1.1],[11500,-0.6],
+  [11000,-0.2],[10500,0.05],[10000,0.25],[9000,0.4],[8000,0.42],[7000,0.45],[6000,0.4],[5000,0.35],[4000,0.25],
+  [3000,0.1],[2000,0.0],[1000,-0.05],[500,-0.15],[141,-0.2],[71,-0.05],[41,0.2],[21,0.5],[0,1.05]
+].map(([ya, t]) => ({ya, t}))
+u4cEvents = [
+  {name: "End of the last ice age (from 20,000 years ago)", from: 20000, to: 14700, years: "about 5,000 years", yrs: 5300, color: "#0277bd"},
+  {name: "Fastest natural warming (end of the Younger Dryas cold snap)", from: 12500, to: 10800, years: "about 1,500 years", yrs: 1700, color: "#6a1b9a"},
+  {name: "Today (1880 → 2021)", from: 141, to: 0, years: "about 140 years", yrs: 141, color: "#c62828"}
+]
+viewof u4cEventPick = Inputs.radio(u4cEvents.map(d => d.name), {label: "Warming event:", value: u4cEvents[2].name})
 ```
 
-::: {.lab-activity}
-## 📝 Performance Task Planning Sheet
+```{ojs}
+//| echo: false
+{
+  const ev = u4cEvents.find(d => d.name === u4cEventPick);
+  const wrap = d3.create("div");
+  wrap.append(() => Plot.plot({
+    title: "Last 22,000 Years of Global Temperature",
+    subtitle: "Change in °C, read from the NASA graph in your packet (Shakun, Marcott, and NASA data)",
+    width: width, height: 300, marginLeft: 44, marginRight: 16, marginBottom: 40,
+    x: {label: "Years ago →", reverse: true, domain: [22000, 0], grid: true, tickFormat: d => d.toLocaleString()},
+    y: {label: "Temp. change (°C)", domain: [-3.5, 1.5], grid: true},
+    marks: [
+      Plot.rectX([ev], {x1: "from", x2: "to", y1: -3.5, y2: 1.5, fill: ev.color, fillOpacity: 0.18}),
+      Plot.line(u4cTemp22k, {x: "ya", y: "t", stroke: "#01579b", strokeWidth: 2.2}),
+      Plot.dot(u4cTemp22k.filter(d => d.ya === 0), {x: "ya", y: "t", r: 5, fill: "#c62828"}),
+      Plot.ruleY([0], {stroke: "#888", strokeDasharray: "3,3"})
+    ]
+  }));
+  wrap.append(() => Plot.plot({
+    title: "Years needed to warm about 1.25 °C",
+    width: width, height: 170, marginLeft: Math.min(150, width * 0.36), marginRight: 70,
+    x: {label: "Years →", grid: true, domain: [0, 9000], ticks: [0, 2500, 5000]},
+    y: {label: null, domain: ["Ice age ending", "Fastest natural", "Today"]},
+    marks: [
+      Plot.barX(u4cEvents.map((d, i) => ({...d, short: ["Ice age ending", "Fastest natural", "Today"][i]})), {y: "short", x: "yrs", fill: d => d.name === ev.name ? d.color : "#b0bec5"}),
+      Plot.text(u4cEvents.map((d, i) => ({...d, short: ["Ice age ending", "Fastest natural", "Today"][i]})), {y: "short", x: "yrs", text: "years", dx: 4, textAnchor: "start", fill: "currentColor", fontSize: 11})
+    ]
+  }));
+  wrap.append("div").style("background", "#fff").style("color", "#1a1a1a").style("border-left", `6px solid ${ev.color}`).style("border-radius", "10px").style("padding", "12px 16px").style("margin", "8px 0")
+    .html(`<b>${ev.name}:</b> warming of about 1.25 °C took <b>${ev.years}</b>. ${ev.yrs < 200 ? "That is roughly 10 to 35 times faster than the natural warming events, and it is happening while orbital factors point toward <b>cooling</b>." : "Orbital changes drove this warming slowly, over many centuries."}`);
+  return wrap.node();
+}
+```
 
-**Step 1: Define Your Audience**
+```{ojs}
+//| echo: false
+u4cSolar = [
+  [1885,1360.85,0.0],[1890,1360.85,-0.05],[1900,1360.75,0.0],[1905,1360.65,-0.1],[1910,1360.7,-0.2],[1920,1360.85,-0.1],
+  [1930,1360.85,0.0],[1940,1361.2,0.2],[1945,1361.25,0.25],[1950,1361.3,0.15],[1957,1361.55,0.18],[1965,1361.2,0.2],
+  [1970,1361.05,0.2],[1980,1361.25,0.4],[1985,1361.3,0.45],[1990,1361.25,0.55],[2000,1361.1,0.75],[2005,1360.95,0.85],
+  [2010,1360.8,0.95],[2014,1360.75,1.0]
+].map(([year, tsi, t]) => ({year, tsi, t}))
+```
 
-Who are you trying to reach? (Be specific!)
+```{ojs}
+//| echo: false
+{
+  const wrap = d3.create("div");
+  const common = {width: width, height: 170, marginLeft: 56, marginRight: 16, x: {domain: [1880, 2020], label: null, tickFormat: d => String(d)}};
+  wrap.append(() => Plot.plot({...common,
+    title: "Sun's output vs. global temperature (11-year averages)",
+    subtitle: "Read from the NASA \"Temperature vs Solar Activity\" graph in your packet. After 1960 (dashed line), solar output falls while temperature keeps rising.",
+    y: {label: "Solar (W/m²)", domain: [1360.4, 1361.8], grid: true},
+    marks: [Plot.ruleX([1960], {stroke: "#555", strokeDasharray: "4,3"}),
+            Plot.line(u4cSolar, {x: "year", y: "tsi", stroke: "#f9a825", strokeWidth: 3}),
+            Plot.dot(u4cSolar, {x: "year", y: "tsi", r: 2.5, fill: "#f9a825", tip: true, title: d => `${d.year}: about ${d.tsi} W/m²`})]
+  }));
+  wrap.append(() => Plot.plot({...common, height: 190, marginBottom: 34,
+    y: {label: "Temp. (°C)", domain: [-0.4, 1.1], grid: true},
+    marks: [Plot.line(u4cSolar, {x: "year", y: "t", stroke: "#c62828", strokeWidth: 3}),
+            Plot.dot(u4cSolar, {x: "year", y: "t", r: 2.5, fill: "#c62828", tip: true, title: d => `${d.year}: about ${d.t} °C`}),
+            Plot.ruleX([1960], {stroke: "#555", strokeDasharray: "4,3"}),
+            Plot.text([{x: 1958, y: 0.9}], {x: "x", y: "y", text: () => "1960", textAnchor: "end", fontSize: 11, fill: "currentColor"})]
+  }));
+  return wrap.node();
+}
+```
 
-| Audience Option | Their Likely Prior Knowledge | Their Likely Concerns |
-|----------------|------------------------------|----------------------|
-| Family member (skeptical) | May have heard climate myths | Cost of action, political concerns |
-| Younger sibling/cousin | Basic science knowledge | Future impacts on their life |
-| Local business owner | Practical focus | Economic impacts |
-| School board member | Education-focused | How to teach this topic |
-| City council member | Policy-focused | Local impacts, what they can do |
+```{ojs}
+//| echo: false
+buildQuiz("u4c-esd-quiz", "☀️ Check Your Understanding — Earth-Sun Dynamics", [
+  {
+    q: "From 9,000 years ago to today, Earth's tilt dropped from 24.25° to 23.4° and the Northern Hemisphere now tilts away from the Sun when Earth is closest. What should that do?",
+    options: ["Make northern summers stronger and melt ice caps faster", "Make northern summers slightly weaker, moving Earth slowly toward a glacial period", "Nothing: orbital factors never affect climate", "Double the energy the Sun gives off"],
+    correct: 1,
+    explanation: "Less tilt and the current precession both reduce summer sunlight at 65° N. On their own, orbital factors would be slowly cooling the planet, so they cannot explain today's melting ice caps."
+  },
+  {
+    q: "On the solar graph, what happens after about 1960?",
+    options: ["Solar output and temperature both rise", "Solar output stays flat or falls, but temperature keeps rising", "Both fall", "Temperature falls while solar output rises"],
+    correct: 1,
+    explanation: "The two lines go in opposite directions. If the Sun were driving recent warming, temperature should have leveled off or dropped with it."
+  },
+  {
+    q: "Why can't the ~11-year solar cycle explain glacial-interglacial cycles or the last 140 years of warming?",
+    options: ["It is far too short and too small: about 1 W/m² up and down every ~11 years, with no long-term rise", "The Sun has no cycles", "Solar cycles last 100,000 years", "Sunspots make Earth colder only"],
+    correct: 0,
+    explanation: "A cycle that goes up and down every 11 years cannot cause a steady 140-year climb, and it does not match the 10,000s–100,000s-year timescale of ice ages."
+  }
+])
+```
 
-**My chosen audience:** _______________________________________________
+::: {.callout-tip collapse="true"}
+## 🔑 Check your thinking (try it first!): a sample claim
 
-**Step 2: Identify Their Questions/Concerns**
+**Claim:** Orbital factors and solar cycles are **not** causing the ice caps to melt today.
 
-What might they already believe or wonder about climate change?
+**Evidence:** Since 9,000 years ago the tilt decreased (24.25° → 23.4°) and the precession flipped, so 65° N summers should be getting weaker and Earth should be moving toward a glacial period. Solar output has been flat or falling since about 1960 while temperature rose about 1 °C. Today's ~1.25 °C rise took ~140 years, compared with thousands of years for natural warming.
 
-1. _______________________________________________
-2. _______________________________________________
-3. _______________________________________________
-
-**Step 3: Select Your Evidence**
-
-| Evidence Type | Specific Data Point from Unit | How I'll Present It |
-|--------------|------------------------------|---------------------|
-| CO₂ evidence | | |
-| Temperature evidence | | |
-| Attribution evidence | | |
-| Impact evidence | | |
-| Historical evidence (AMOC/Younger Dryas) | | |
-
-**Step 4: Choose a Misconception to Address**
-
-Which misconception is your audience most likely to hold?
-
-- [ ] "The climate has always changed naturally"
-- [ ] "It's just the Sun"
-- [ ] "Scientists aren't sure"
-- [ ] "It's not that serious"
-- [ ] Other: _______________________
-
-**How will you address it?**
-
-- **Acknowledge:** _______________________________________________
-- **Counter:** _______________________________________________
-- **Evidence:** _______________________________________________
-- **Conclude:** _______________________________________________
-
-**Step 5: Plan Your Call to Action**
-
-What do you want your audience to understand or do after engaging with your piece?
-
-_______________________________________________
-
-**Step 6: Choose Your Format**
-
-Format selected: _______________________________________________
-
-Why this format works for your audience: _______________________________________________
+**Reasoning:** Ice sheets melt when more energy reaches high northern latitudes in summer. Orbital factors and the Sun are both **reducing** that energy, or not changing it, so something else must be adding energy to Earth's systems.
 :::
+
+::: {.student-task}
+### ✏️ In your PTO: Earth-Sun Dynamics 5E (p. 9)
+
+- Use the **historical temperature graph**, the **9 kya → today orbital table**, the **solar cycles graph**, and the **solar output vs. temperature graph** (from *The Sun and Current Climate Change - Performance Task Data*).
+- Make and support a **valid claim** about the role of **orbital factors and solar cycles** in the **melting of ice caps today**.
+- Say what each factor has been doing recently, how it changes the **amount and distribution of energy** reaching Earth, and whether it matches today's temperature change (correlation or cause?).
+:::
+
+## Revisiting the Performance Task: Climate Feedbacks {#climate-feedbacks}
+
+::: {.evidence-box}
+### 🔄 Lesson 4.2: Climate Feedbacks
+
+**PTO prompt (p. 10): Disproving climate skeptics**
+
+<div class="pto-prompt">Using the data about carbon dioxide levels and temperature changes, the roles of carbon dioxide and ice caps in climate change, and the feedback mechanisms between parts of Earth's systems, make and support a valid claim about the role of carbon dioxide and human activities on the warming of the planet today.</div>
+
+**What we figured out:**
+
+- For **800,000 years**, ice cores show CO₂ stayed between about **180 and 300 ppm**, rising and falling with temperature. Today it is about **421 ppm**.
+- **Rate:** CO₂ took about **20,000 years** to rise from 190 to 280 ppm (≈ 0.005 ppm per year), but only about **200 years** to go from 280 to 421 ppm (≈ 0.7 ppm per year), **more than 100 times faster**.
+- **Source:** of today's 421.6 ppm, about **134.91 ppm is from human activity** and 286.68 ppm from natural factors. Without humans, CO₂ would be inside the natural range.
+- **Carbon cycle model:** before the Industrial Revolution the flows balanced. Now **fossil fuels add 10 Gt of carbon per year** to the atmosphere, and the atmosphere, ocean, and land all gain carbon. Matter is conserved: carbon moved from the **geosphere** to the other reservoirs.
+- **Greenhouse effect:** greenhouse gases absorb infrared (heat) from Earth and send some back. Without them Earth would be about **−18 °C**. More CO₂ → more energy kept → higher temperature.
+- **Feedbacks:** warming melts **sea ice** → dark ocean absorbs more sunlight (**albedo feedback**) → more warming. That's why the **Arctic is warming almost 4 times faster** than the planet. Warming also makes oceans release CO₂ and **permafrost** release methane and CO₂ (**greenhouse gas feedback**).
+- **Disprove the skeptics:** in the ice-core past, temperature sometimes changed **first** (orbital trigger) and CO₂ followed as a feedback. **Today, CO₂ rose first** (from ~285 ppm in 1850) and temperature followed.
+
+📖 Review the lesson: [Climate Feedbacks](unit4-climate-feedbacks.qmd)
+:::
+
+Switch between the two quantitative carbon cycle models from your packet.
+
+```{ojs}
+//| echo: false
+u4cCarbon = ({
+  "Pre-Industrial Revolution": {
+    stores: {"Atmosphere": 560, "Ocean": 38000, "Land biomass": 2160, "Fossil fuels": 10000},
+    flows: [["Ocean","Atmosphere",62],["Atmosphere","Ocean",60],["Land biomass","Atmosphere",107],["Atmosphere","Land biomass",109],["Fossil fuels","Atmosphere",0]]
+  },
+  "Post-Industrial Revolution": {
+    stores: {"Atmosphere": 840, "Ocean": 41000, "Land biomass": 2500, "Fossil fuels": 9000},
+    flows: [["Ocean","Atmosphere",77.5],["Atmosphere","Ocean",80],["Land biomass","Atmosphere",120],["Atmosphere","Land biomass",122.5],["Fossil fuels","Atmosphere",10]]
+  }
+})
+viewof u4cCarbonPick = Inputs.radio(Object.keys(u4cCarbon), {label: "Carbon cycle model:", value: "Post-Industrial Revolution"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const m = u4cCarbon[u4cCarbonPick];
+  const res = Object.keys(m.stores);
+  const net = res.map(r => {
+    const inn = d3.sum(m.flows.filter(f => f[1] === r), f => f[2]);
+    const out = d3.sum(m.flows.filter(f => f[0] === r), f => f[2]);
+    return {reservoir: r, inn, out, net: +(inn - out).toFixed(1), store: m.stores[r]};
+  });
+  const wrap = d3.create("div");
+  wrap.append(() => Plot.plot({
+    title: `Net change in carbon each year: ${u4cCarbonPick}`,
+    subtitle: "Gigatons of carbon per year (in − out), from Tables 1 and 2 in your packet",
+    width: width, height: 220, marginLeft: 96, marginRight: 50,
+    x: {label: "Net change (Gt C per year) →", domain: [-11, 11], grid: true},
+    y: {label: null, domain: res},
+    marks: [
+      Plot.barX(net, {y: "reservoir", x: "net", fill: d => d.net > 0 ? "#c62828" : d.net < 0 ? "#0277bd" : "#90a4ae", tip: true,
+        title: d => `${d.reservoir}\nIn: ${d.inn} Gt/yr  Out: ${d.out} Gt/yr\nNet: ${d.net > 0 ? "+" : ""}${d.net} Gt/yr\nStored: ${d.store.toLocaleString()} Gt`}),
+      Plot.text(net.filter(d => d.net >= 0), {y: "reservoir", x: "net", text: d => `${d.net > 0 ? "+" : ""}${d.net}`, dx: 6, textAnchor: "start", fill: "currentColor", fontWeight: "bold"}),
+      Plot.text(net.filter(d => d.net < 0), {y: "reservoir", x: "net", text: d => `${d.net}`, dx: -6, textAnchor: "end", fill: "currentColor", fontWeight: "bold"}),
+      Plot.ruleX([0])
+    ]
+  }));
+  const rows = net.map(d => `<tr><td style="padding:4px 8px;">${d.reservoir}</td><td style="padding:4px 8px;text-align:right;">${d.store.toLocaleString()}</td><td style="padding:4px 8px;text-align:right;">${d.inn}</td><td style="padding:4px 8px;text-align:right;">${d.out}</td><td style="padding:4px 8px;text-align:right;font-weight:700;">${d.net > 0 ? "+" : ""}${d.net}</td></tr>`).join("");
+  wrap.append("div").style("overflow-x", "auto").html(`<table style="width:100%;border-collapse:collapse;font-size:.9em;background:#fff;color:#1a1a1a;border-radius:8px;">
+    <thead><tr style="background:#e0f7fa;"><th style="padding:4px 8px;text-align:left;">Reservoir</th><th style="padding:4px 8px;text-align:right;">Stored (Gt)</th><th style="padding:4px 8px;text-align:right;">In</th><th style="padding:4px 8px;text-align:right;">Out</th><th style="padding:4px 8px;text-align:right;">Net</th></tr></thead><tbody>${rows}</tbody></table>`);
+  wrap.append("div").style("background", "#fff").style("color", "#1a1a1a").style("border-left", "6px solid #00838f").style("border-radius", "10px").style("padding", "12px 16px").style("margin", "10px 0")
+    .html(u4cCarbonPick.startsWith("Pre")
+      ? "<b>Balanced:</b> every reservoir's in = out (net 0). The carbon cycle was stable, so CO₂ stayed in its natural range."
+      : "<b>Out of balance:</b> fossil fuels lose 10 Gt/yr. The atmosphere gains <b>+5 Gt/yr</b>, and the ocean and land each gain +2.5 Gt/yr. The extra carbon came from burning fossil fuels.");
+  return wrap.node();
+}
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("u4c-cf-quiz", "🔄 Check Your Understanding — Climate Feedbacks", [
+  {
+    q: "Today's CO₂ is 421.6 ppm, and 134.91 ppm of that is from human activity. What would CO₂ be without humans, and what does that show?",
+    options: ["About 287 ppm, inside the 800,000-year natural range, so the extra CO₂ is from humans", "About 556 ppm, so nature added the most", "421.6 ppm, humans had no effect", "0 ppm"],
+    correct: 0,
+    explanation: "421.6 − 134.91 ≈ 286.7 ppm, which is within the natural 180–300 ppm range. The amount above the natural range comes from people burning fossil fuels."
+  },
+  {
+    q: "In the post-Industrial Revolution model, which reservoir is LOSING carbon every year?",
+    options: ["Atmosphere", "Ocean", "Land biomass", "Fossil fuels (geosphere)"],
+    correct: 3,
+    explanation: "Fossil fuels lose 10 Gt/yr as we burn them. That carbon isn't destroyed; it moves into the atmosphere (+5), ocean (+2.5), and land (+2.5)."
+  },
+  {
+    q: "A skeptic says, \"In the ice cores, temperature sometimes rose BEFORE CO₂, so CO₂ can't cause warming.\" What's the best response?",
+    options: ["Ice cores are fake", "In the past, orbital changes started the warming and CO₂ followed as a feedback that added more warming. Today CO₂ rose first, from human emissions, and temperature followed", "CO₂ and temperature are never related", "Temperature always rises first"],
+    correct: 1,
+    explanation: "CO₂ can be both a feedback and a cause. The 1850–2023 data show CO₂ climbing for decades before temperatures rose, and we know the CO₂ came from fossil fuels."
+  }
+])
+```
+
+::: {.callout-tip collapse="true"}
+## 🔑 Check your thinking (try it first!): a sample claim
+
+**Claim:** Human activities, mainly burning fossil fuels, have raised CO₂ to levels not seen in 800,000 years, and that extra CO₂ is warming the planet today.
+
+**Evidence:** CO₂ is ~421 ppm vs. a natural range of ~180–300 ppm; ~135 ppm of it is from humans; it rose more than 100× faster than at the end of the ice age; the carbon cycle model shows fossil fuels adding 10 Gt C/yr; since 1850 CO₂ rose first and temperature followed; the Arctic is warming almost 4× faster than the globe as sea ice melts.
+
+**Reasoning:** CO₂ absorbs infrared energy leaving Earth and sends some back, so more CO₂ means more energy stays in Earth's systems. Melting ice lowers albedo, so more sunlight is absorbed, a positive feedback that speeds up warming. Warmer oceans and thawing permafrost release more greenhouse gases, another positive feedback.
+:::
+
+::: {.student-task}
+### ✏️ In your PTO: Climate Feedbacks 5E (p. 10)
+
+- Use the **CO₂ and temperature** data (ice cores and 1850–2023), the **roles of CO₂ and ice caps**, and the **feedback mechanisms** (from *Disprove the Skeptics*).
+- Make and support a **valid claim** about the role of **CO₂ and human activities** in **warming the planet today**.
+- Include current greenhouse gas levels and their sources, how the greenhouse effect works, the melting of northern ice caps, and **albedo and greenhouse gas feedback loops**. Explain why this is **cause, not just correlation**.
+:::
+
+## Revisiting the Performance Task: The Past and the Future {#the-past-and-the-future}
+
+::: {.evidence-box}
+### 🌊 Lesson 4.3: The Past and the Future
+
+**PTO prompt (p. 11, titled "Greenhouse Gases 5E"): Disproving climate skeptics**
+
+<div class="pto-prompt">Using the data about projected temperature changes, other projected climate changes, and information about their role in shaping human lives, make and support a claim about how human populations will likely be impacted by climate related hazards in the near future.</div>
+
+**What we figured out:**
+
+- **Past climate change shaped people.** Early humans who left Africa ~120,000 years ago died out in a drought. The **Clovis culture** in North America disappeared about **12,750 years ago**, at the same time as a sudden cold snap (the **Younger Dryas**).
+- **Melting ice raises sea level.** As the ice sheets melted after 20,000 years ago, sea level rose about **120 meters**, flooding land bridges and coastlines.
+- **Melting ice can slow ocean currents.** Fresh meltwater is less dense, so it doesn't sink. That slows the **AMOC**, which carries heat north. Less heat moves north and northern air temperatures drop. Continued melting today could slow the AMOC again.
+- **Forecasting:** satellite data show sea level rising about **3 mm per year** (32 years of data): about **15 cm (6 in) in 50 years** and **30 cm (12 in) in 100 years** if the rate stayed the same. It is actually speeding up.
+- **Scenarios:** climate models project about **1.8, 2.7, 3.6, or 4.4 °C** of warming by 2080, depending on how much fossil fuel we burn (SSP1-2.6 to SSP5-8.5). More warming → more sea level rise, heat, and changing rain.
+- **Impacts on people are already happening:** glacial lake floods (about **15 million** people at risk), landslides, coastlines in Alaska shrinking **more than 3 ft per year**, collapsing fisheries (snow crab), crop losses and hunger, and **27 billion-dollar weather disasters in the U.S. in 2024** (average 9).
+
+📖 Review the lesson: [The Past and the Future](unit4-past-and-future.qmd)
+:::
+
+```{ojs}
+//| echo: false
+viewof u4cFutureView = Inputs.radio(["Projected warming by 2080", "Sea level forecast", "U.S. billion-dollar disasters"], {label: "Show:", value: "Projected warming by 2080"})
+```
+
+```{ojs}
+//| echo: false
+viewof u4cYears = u4cFutureView === "Sea level forecast"
+  ? Inputs.range([0, 100], {label: "Years from now:", step: 5, value: 50})
+  : html`<span></span>`
+```
+
+```{ojs}
+//| echo: false
+{
+  if (u4cFutureView === "Projected warming by 2080") {
+    const ssp = [
+      {s: "SSP1-2.6 (low emissions)", t: 1.8}, {s: "SSP2-4.5 (middle)", t: 2.7},
+      {s: "SSP3-7.0 (high)", t: 3.6}, {s: "SSP5-8.5 (very high)", t: 4.4}
+    ];
+    return Plot.plot({
+      title: "Projected global warming by 2080 (°C)",
+      subtitle: "IPCC warming scenarios, as given in your teacher guide. Each scenario = a different amount of fossil fuel burned.",
+      width: width, height: 230, marginLeft: Math.min(170, width * 0.4), marginRight: 50,
+      x: {label: "Warming (°C) →", domain: [0, 5], grid: true},
+      y: {label: null, domain: ssp.map(d => d.s)},
+      color: {type: "linear", domain: [1.5, 4.5], range: ["#ffb74d", "#b71c1c"]},
+      marks: [
+        Plot.barX(ssp, {y: "s", x: "t", fill: "t"}),
+        Plot.text(ssp, {y: "s", x: "t", text: d => `${d.t} °C`, dx: 5, textAnchor: "start", fill: "currentColor", fontWeight: "bold"}),
+        Plot.ruleX([0])
+      ]
+    });
+  }
+  if (u4cFutureView === "Sea level forecast") {
+    const rate = 3.0125; // mm/yr, from the packet's 32-year satellite data
+    const pts = d3.range(0, 101, 5).map(y => ({y, mm: rate * y}));
+    const now = rate * u4cYears;
+    const wrap = d3.create("div");
+    wrap.append(() => Plot.plot({
+      title: "Sea level forecast at today's rate (~3 mm per year)",
+      subtitle: "Straight-line forecast from the packet's 1993–2025 satellite data. The real rate is speeding up, so this is a minimum.",
+      width: width, height: 260, marginLeft: 50, marginRight: 20, marginBottom: 40,
+      x: {label: "Years from now →", domain: [0, 100], grid: true},
+      y: {label: "Rise (mm)", domain: [0, 320], grid: true},
+      marks: [
+        Plot.line(pts, {x: "y", y: "mm", stroke: "#0277bd", strokeWidth: 3}),
+        Plot.dot([{y: u4cYears, mm: now}], {x: "y", y: "mm", r: 7, fill: "#c62828"}),
+        Plot.ruleY([0])
+      ]
+    }));
+    wrap.append("div").style("text-align", "center").style("font-weight", "700").style("margin", "6px 0")
+      .text(`In ${u4cYears} years: about ${Math.round(now)} mm (${(now / 10).toFixed(1)} cm, about ${(now / 25.4).toFixed(1)} inches)`);
+    return wrap.node();
+  }
+  const dis = [
+    {yr: "Average (1980–2024)", n: 9}, {yr: "2017", n: 19}, {yr: "2020", n: 22}, {yr: "2021", n: 20},
+    {yr: "2022", n: 18}, {yr: "2023", n: 28}, {yr: "2024", n: 27}
+  ];
+  return Plot.plot({
+    title: "U.S. billion-dollar weather and climate disasters per year",
+    subtitle: "NOAA NCEI data from the Human Displacement and Disaster Data page (CPI-adjusted). Top recent years vs. the long-term average.",
+    width: width, height: 260, marginLeft: Math.min(140, width * 0.34), marginRight: 40,
+    x: {label: "Number of disasters →", domain: [0, 30], grid: true},
+    y: {label: null, domain: dis.map(d => d.yr)},
+    marks: [
+      Plot.barX(dis, {y: "yr", x: "n", fill: d => d.yr.startsWith("Avg") || d.yr.startsWith("Average") ? "#546e7a" : "#e65100"}),
+      Plot.text(dis, {y: "yr", x: "n", text: "n", dx: 5, textAnchor: "start", fill: "currentColor", fontWeight: "bold"}),
+      Plot.ruleX([0])
+    ]
+  });
+}
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("u4c-pf-quiz", "🌊 Check Your Understanding — The Past and the Future", [
+  {
+    q: "Why could melting Greenland ice slow the AMOC ocean current?",
+    options: ["Meltwater is fresh and less dense, so it doesn't sink like cold, salty water, which weakens the 'conveyor belt'", "Meltwater is saltier and heavier", "Ice adds heat to the ocean", "Currents are powered only by wind"],
+    correct: 0,
+    explanation: "The AMOC depends on cold, salty, dense water sinking in the North Atlantic. Fresh meltwater dilutes the salt, so less water sinks and less heat is carried north, just like during the Younger Dryas."
+  },
+  {
+    q: "Sea level is rising about 3 mm per year. Using that rate, about how much will it rise in 100 years?",
+    options: ["3 mm", "About 30 cm (12 inches)", "About 3 meters", "It will fall"],
+    correct: 1,
+    explanation: "3 mm × 100 years ≈ 300 mm ≈ 30 cm ≈ 12 inches. Because the rate is speeding up as ice melts faster, this is a low estimate."
+  },
+  {
+    q: "What does the difference between the SSP1-2.6 (1.8 °C) and SSP5-8.5 (4.4 °C) scenarios tell us?",
+    options: ["The future is already fixed", "How much the planet warms depends on how much fossil fuel humans burn, so choices made now matter", "Models can't predict anything", "Low emissions cause more warming"],
+    correct: 1,
+    explanation: "The scenarios differ only in future emissions. Lower emissions mean less warming, less sea level rise, and fewer climate hazards for people."
+  }
+])
+```
+
+::: {.callout-tip collapse="true"}
+## 🔑 Check your thinking (try it first!): a sample claim
+
+**Claim:** In the near future, climate-related hazards will displace more people, damage coastal communities, and threaten food and water supplies, and the impacts grow with every degree of warming.
+
+**Evidence:** Sea level is rising ~3 mm/yr (≈ 15 cm in 50 years at minimum); models project 1.8–4.4 °C of warming by 2080; 15 million people are at risk from glacial lake floods; Alaskan coastlines are eroding more than 3 ft/yr; U.S. billion-dollar disasters reached 27 in 2024 compared with an average of 9; 20.3 million people were forced to move by weather disasters in 2023. In the past, rapid climate change caused populations like the Clovis to collapse.
+
+**Reasoning:** Warming melts ice, which raises sea level and can slow the AMOC. Warmer air holds more water, which fuels stronger storms and floods. These hazards push people from their homes and disrupt crops and fisheries.
+:::
+
+::: {.student-task}
+### ✏️ In your PTO: Greenhouse Gases 5E (p. 11)
+
+- Use the **projected temperature changes** (warming scenarios), **other projected climate changes** (sea level, AMOC, precipitation), and the **Human Displacement and Disaster Data**.
+- Make and support a claim about **how human populations will likely be impacted by climate-related hazards in the near future**.
+- Include how rapid climate change affected people **in the past**, possible **AMOC** impacts, how **melting ice** and changes to **food supplies** already affect people, and how climate change could increase **displacement and migration**.
+:::
+
+# Return to the Anchor Phenomenon {#return-to-the-anchor-phenomenon}
+
+::: {.engage-box}
+## 🔁 Back to the Tell the Story texts
+
+At the start of the unit you read three "texts" ([Unit Opening](unit4-opening.qmd)):
+
+1. **Arctic temperature over the last 2,000 years:** slow cooling for almost 2,000 years, then a sharp rise after about 1880 (direct measurements).
+2. **Climate-related displacement in 2023:** at least **6.6 million people** displaced, **20.3 million** forced moves; floods (**9.8 million**) and storms (**9.5 million**) caused most.
+3. **Scientists vs. the public:** **99.9%** of research papers agree humans cause climate change, but only **57%** of people think scientists agree, and **63%** say they are worried.
+
+**Now you can explain them.** Review your ideas for **why scientists are sure humans are causing climate change, and why it's a problem.**
+:::
+
+Tap each skeptic's claim to see how the unit's evidence answers it. Try answering it yourself first.
+
+```{=html}
+<details class="u4c-skeptic">
+  <summary>🗣️ "I believe the climate is changing, but it's a natural cycle that happens all the time." (from Text #3)</summary>
+  <div class="u4c-answer">
+    <p><b>Evidence:</b> Natural orbital cycles take 10,000s–100,000s of years and right now point toward <b>cooling</b> (tilt 24.25° → 23.4°, precession flipped). Natural warming of ~1.25 °C took thousands of years; today's took ~140.</p>
+    <p>📖 <a href="unit4-earth-sun-dynamics.qmd">Earth-Sun Dynamics</a></p>
+  </div>
+</details>
+<details class="u4c-skeptic">
+  <summary>🗣️ "It's just the Sun getting stronger."</summary>
+  <div class="u4c-answer">
+    <p><b>Evidence:</b> The Sun's output goes up and down about 1 W/m² every ~11 years and has been flat or <b>falling</b> since ~1960, while global temperature rose about 1 °C.</p>
+    <p>📖 <a href="unit4-earth-sun-dynamics.qmd">Earth-Sun Dynamics</a></p>
+  </div>
+</details>
+<details class="u4c-skeptic">
+  <summary>🗣️ "CO₂ is natural. Volcanoes and oceans release way more than people do."</summary>
+  <div class="u4c-answer">
+    <p><b>Evidence:</b> Natural flows were <b>balanced</b> (in = out) for thousands of years. Fossil fuels now add 10 Gt of carbon per year, and the atmosphere gains +5 Gt/yr. About 135 of today's ~421 ppm is from humans; without it CO₂ would be ~287 ppm, inside the 800,000-year natural range.</p>
+    <p>📖 <a href="unit4-climate-feedbacks.qmd">Climate Feedbacks</a></p>
+  </div>
+</details>
+<details class="u4c-skeptic">
+  <summary>🗣️ "The graphs only show a correlation. In the past, temperature rose before CO₂."</summary>
+  <div class="u4c-answer">
+    <p><b>Evidence:</b> We know the <b>mechanism</b>: greenhouse gases absorb infrared and send energy back to Earth (the greenhouse effect simulation). In the past CO₂ acted as a <b>feedback</b> after orbital changes started warming. Since 1850, CO₂ rose <b>first</b> and temperature followed.</p>
+    <p>📖 <a href="unit4-climate-feedbacks.qmd">Climate Feedbacks</a></p>
+  </div>
+</details>
+<details class="u4c-skeptic">
+  <summary>🗣️ "Scientists don't really agree about this."</summary>
+  <div class="u4c-answer">
+    <p><b>Evidence:</b> 99.9% of climate research papers agree climate change is real and caused by humans. The IPCC calls human influence "unequivocal." Many people <i>think</i> scientists disagree (22% in Text #3), but the research says otherwise, because every line of evidence in this unit points the same way.</p>
+    <p>📖 <a href="unit4-opening.qmd">Unit Opening: Tell the Story</a></p>
+  </div>
+</details>
+<details class="u4c-skeptic">
+  <summary>🗣️ "No one knows what will happen. It's all guessing." (from Text #3)</summary>
+  <div class="u4c-answer">
+    <p><b>Evidence:</b> Forecasts use measured rates (sea level ~3 mm/yr) and climate models tested on past climate. Impacts are already measured: 20.3 million forced moves in 2023, 27 U.S. billion-dollar disasters in 2024, shrinking Arctic coastlines, collapsed fisheries.</p>
+    <p>📖 <a href="unit4-past-and-future.qmd">The Past and the Future</a></p>
+  </div>
+</details>
+```
+
+::: {.key-idea}
+### 💡 Why scientists are so sure: many lines of evidence point the same way
+
+1. **Natural causes are ruled out:** orbit and Sun point toward cooling or no change.
+2. **The cause is measured:** CO₂ is far above its 800,000-year range, and the extra carbon comes from fossil fuels.
+3. **The mechanism is known:** the greenhouse effect, boosted by albedo and greenhouse gas feedbacks.
+4. **The rate is unusual:** both CO₂ and temperature are changing faster than in any natural event in the record.
+
+**Why it matters:** rising seas, stronger floods and storms, heat, and food disruptions are already displacing people, and the amount of future harm depends on human choices.
+:::
+
+```{ojs}
+//| echo: false
+buildQuiz("u4c-anchor-quiz", "🔁 Check Your Understanding — The Anchor Phenomenon", [
+  {
+    q: "Text #1 shows Arctic temperature slowly falling for almost 2,000 years, then rising sharply after 1880. Which unit evidence best explains the slow cooling AND the sharp rise?",
+    options: ["Slow cooling: orbital factors reducing northern summer sunlight. Sharp rise: CO₂ from burning fossil fuels, amplified by sea ice albedo feedback", "Both are caused by the solar cycle", "Both are caused by volcanoes", "The Arctic thermometers are broken"],
+    correct: 0,
+    explanation: "Orbital factors have been slowly cutting summer sunlight at high northern latitudes for thousands of years. The sudden reversal lines up with the Industrial Revolution and rising CO₂, and the Arctic warms fastest because of the albedo feedback."
+  },
+  {
+    q: "In Text #2, floods and storms displaced the most people in 2023. How does warming connect to that?",
+    options: ["Warmer air and oceans add energy and moisture to storms and heavy rain, and higher seas make coastal floods reach farther", "Warming makes storms weaker", "Floods are unrelated to climate", "Only droughts are linked to climate"],
+    correct: 0,
+    explanation: "More energy in the climate system and higher sea levels increase flood and storm hazards. That's part of why climate change matters for people."
+  }
+])
+```
+
+# Final Performance Task {#final-performance-task}
+
+::: {.engage-box}
+## 📣 Share with the community
+
+**For this final task, communicate to someone in your community who is skeptical about climate change.** In a **letter, public service announcement, pamphlet, or other format**:
+
+1. **Explain how the data demonstrates human causes** of climate change
+2. **Describe the ongoing and future impacts** on the planet of climate change
+3. **Explain how these changes are likely to affect people in your community**
+
+If you choose something with video or audio, write the script in your PTO.
+:::
+
+## What Your Communication Must Include
+
+| Be sure to include... | Evidence from |
+|---|---|
+| 1. How the **data shows human causes** | [Earth-Sun Dynamics](#earth-sun-dynamics) (natural causes ruled out), [Climate Feedbacks](#climate-feedbacks) (CO₂ levels, sources, greenhouse effect) |
+| 2. **Ongoing and future impacts** on the planet | [Climate Feedbacks](#climate-feedbacks) (melting ice, feedbacks), [The Past and the Future](#the-past-and-the-future) (sea level, AMOC, warming scenarios) |
+| 3. How the changes will likely **affect people in your community** | [The Past and the Future](#the-past-and-the-future) (displacement, food, disasters), [Your Community](#your-community-new-york-city) |
+
+## Your Community: New York City {#your-community-new-york-city}
+
+Most students using this book live in **New York City**, a coastal city of about 8 million people with **520 miles of waterfront**. If you live somewhere else, look up the same kinds of facts for your community.
+
+| NYC hazard | What has already happened | Link to the unit |
+|---|---|---|
+| 🌊 **Sea level rise** | The sea at the Battery (Lower Manhattan) has risen about **1.5 feet since 1850**, roughly twice the global average because the land is also slowly sinking. | Melting ice, ~3 mm/yr global rise |
+| 🌀 **Storm surge** | **Hurricane Sandy (2012)** pushed a record storm tide of about **14 feet** at the Battery, killed **44 people** in NYC, and caused about **$19 billion** in damage in the city. Higher seas make every future surge reach farther. | Sea level rise + storms |
+| 🌧️ **Extreme rain** | **Hurricane Ida's remnants (2021)** dropped a record **3.15 inches of rain in one hour** in Central Park. **13 New Yorkers died**, most in flooded basement apartments. | Warmer air holds more water |
+| 🔥 **Extreme heat** | Heat is NYC's deadliest weather: about **350 deaths a year** are linked to hot weather, hitting older people and neighborhoods with fewer trees and less air conditioning hardest. | Projected warming scenarios |
+
+<p style="font-size:.85em;">Sources: NYC Panel on Climate Change; NOAA National Hurricane Center; National Weather Service; NYC Department of Health and Mental Hygiene (Heat-Related Mortality Report, 2022). Numbers are rounded.</p>
+
+::: {.claim-box}
+### 📌 CLAIM
+Tell your skeptic, in one or two sentences, **what is happening and why**. Example starter:
+
+- "The climate is warming because humans are adding CO₂ by burning fossil fuels, and that is already putting [your neighborhood] at risk from ___."
+:::
+
+::: {.evidence-box}
+### 📊 EVIDENCE
+Pick **specific numbers** a skeptic can check: tilt 24.25° → 23.4°, solar output flat since 1960, CO₂ ~421 ppm vs. 180–300 ppm, ~135 ppm from humans, +10 Gt C/yr from fossil fuels, Arctic warming ~4×, sea level ~3 mm/yr, 1.8–4.4 °C by 2080, 27 billion-dollar disasters in 2024, Sandy's ~14 ft storm tide.
+:::
+
+::: {.reasoning-box}
+### 🧠 REASONING
+Connect each number to the science: *Orbital factors should be cooling us, so they can't cause today's warming. Burning fossil fuels moves carbon from the geosphere into the atmosphere, where CO₂ traps infrared energy. The extra energy melts ice, which lowers albedo and raises sea level, so storm surges like Sandy's will reach more neighborhoods.*
+:::
+
+## Communication Planner {#communication-planner}
+
+Plan your communication here, then copy it into your PTO (p. 12). Your plan is saved only in this browser.
+
+```{ojs}
+//| echo: false
+u4cPlanner = {
+  const KEY = "u4c-planner-v1";
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { saved = {}; }
+  const fields = [
+    {id: "who", label: "👤 Who is your skeptic? (e.g., a neighbor, uncle, coworker) and what do they believe?", rows: 2},
+    {id: "claim", label: "🗣️ Which skeptic claim will you answer? (natural cycle, the Sun, 'CO₂ is natural', 'no one knows'...)", rows: 2},
+    {id: "p1", label: "1️⃣ How the data shows HUMAN causes (2–3 pieces of evidence + reasoning)", rows: 4},
+    {id: "p2", label: "2️⃣ Ongoing and future impacts on the planet (ice, feedbacks, sea level, AMOC, warming scenarios)", rows: 4},
+    {id: "p3", label: "3️⃣ How this will likely affect people in YOUR community (name places and hazards)", rows: 4},
+    {id: "close", label: "✅ Closing: why it matters / what you want them to think or do", rows: 2}
+  ];
+  const formats = ["Letter", "Public service announcement (script)", "Pamphlet", "Social media post / infographic", "Video or podcast script", "Other"];
+  const box = html`<div class="u4c-planner u4c-card" style="background:#fff;color:#1a1a1a;border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.12);border-top:6px solid #00838f;"></div>`;
+  const fmtWrap = html`<label style="display:block;font-weight:700;margin-bottom:10px;">📄 Format
+    <select style="display:block;min-height:44px;margin-top:4px;border:2px solid #b2ebf2;border-radius:8px;padding:6px;background:#fff;color:#1a1a1a;">${formats.map(f => html`<option>${f}</option>`)}</select></label>`;
+  const fmt = fmtWrap.querySelector("select");
+  if (saved.format) fmt.value = saved.format;
+  box.appendChild(fmtWrap);
+  const areas = {};
+  fields.forEach(f => {
+    const lab = html`<label style="display:block;font-weight:700;margin:10px 0 4px;">${f.label}
+      <textarea rows="${f.rows}" style="display:block;margin-top:4px;border:2px solid #b2ebf2;border-radius:8px;padding:8px;font:inherit;font-weight:400;background:#fff;color:#1a1a1a;"></textarea></label>`;
+    const ta = lab.querySelector("textarea");
+    ta.value = saved[f.id] || "";
+    areas[f.id] = ta;
+    box.appendChild(lab);
+  });
+  const status = html`<div style="font-size:.85em;color:#00695c;min-height:1.2em;margin-top:6px;"></div>`;
+  const preview = html`<div style="white-space:pre-wrap;background:#f1f8f9;border-radius:8px;padding:12px;margin-top:10px;font-size:.92em;display:none;"></div>`;
+  const btnStyle = "min-height:44px;padding:8px 16px;border:none;border-radius:50px;font-weight:700;cursor:pointer;margin:8px 8px 0 0;";
+  const bPrev = html`<button style="${btnStyle}background:#00838f;color:#fff;">👀 Preview outline</button>`;
+  const bCopy = html`<button style="${btnStyle}background:#0277bd;color:#fff;">📋 Copy outline</button>`;
+  const bClear = html`<button style="${btnStyle}background:#eceff1;color:#37474f;">🗑️ Clear</button>`;
+  const outline = () => [
+    `FORMAT: ${fmt.value}`, `AUDIENCE: ${areas.who.value}`, `SKEPTIC CLAIM I'M ANSWERING: ${areas.claim.value}`, "",
+    `1. HOW THE DATA SHOWS HUMAN CAUSES:\n${areas.p1.value}`, "",
+    `2. ONGOING AND FUTURE IMPACTS:\n${areas.p2.value}`, "",
+    `3. EFFECTS ON MY COMMUNITY:\n${areas.p3.value}`, "",
+    `CLOSING:\n${areas.close.value}`
+  ].join("\n");
+  const save = () => {
+    const data = {format: fmt.value};
+    fields.forEach(f => data[f.id] = areas[f.id].value);
+    try { localStorage.setItem(KEY, JSON.stringify(data)); status.textContent = "Saved in this browser."; } catch (e) { status.textContent = "Couldn't save in this browser. Copy your outline before leaving."; }
+  };
+  box.addEventListener("input", save);
+  fmt.addEventListener("change", save);
+  bPrev.onclick = () => { preview.textContent = outline(); preview.style.display = "block"; };
+  bCopy.onclick = async () => {
+    const text = outline();
+    try { await navigator.clipboard.writeText(text); status.textContent = "Copied! Paste it into your document or PTO."; }
+    catch (e) { preview.textContent = text; preview.style.display = "block"; status.textContent = "Copy isn't available here. Select the outline below and copy it."; }
+  };
+  bClear.onclick = () => {
+    fields.forEach(f => areas[f.id].value = ""); preview.style.display = "none";
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    status.textContent = "Cleared.";
+  };
+  const row = html`<div></div>`;
+  row.append(bPrev, bCopy, bClear);
+  box.append(row, status, preview);
+  return box;
+}
+```
+
+::: {.student-task}
+### ✏️ In your PTO: Final Performance Task (p. 12)
+
+- Choose your **format** (letter, PSA, pamphlet, or other) and write it, or its script, in the box on p. 12.
+- Write it for a **real skeptic** in your community. Be respectful and lead with evidence they can check.
+- Use evidence from **all three lessons** and cover **all three points**: human causes, ongoing and future impacts, and effects on your community.
+:::
+
+::: {.evaluate-box}
+## ✅ Final Communication Checklist {#final-communication-checklist}
+
+The unit closing guide has no separate rubric, so this checklist combines the **three PTO points** with the **three lesson rubrics** (Earth-Sun Dynamics, Climate Feedbacks, The Past and the Future). Tap each item when your communication includes it.
+:::
+
+```{ojs}
+//| echo: false
+u4cChecklist = {
+  const groups = [
+    {title: "1️⃣ The data shows human causes", items: [
+      "Shows orbital factors (9 kya → today) should be weakening northern summers, so they can't explain melting ice caps",
+      "Shows solar output has been flat or falling since ~1960 while temperature rose (solar cycles are ~11 years and small)",
+      "Compares rates: ~1.25 °C in ~140 years today vs. thousands of years in natural warming",
+      "Gives today's CO₂ (~421 ppm) vs. the 800,000-year range (~180–300 ppm) and its source (fossil fuels, ~135 ppm from humans)",
+      "Explains the greenhouse effect mechanism (CO₂ absorbs infrared and sends energy back to Earth)",
+      "Explains why it is cause, not just correlation (mechanism + CO₂ rose first since 1850)"
+    ]},
+    {title: "2️⃣ Ongoing and future impacts on the planet", items: [
+      "Describes melting northern ice caps and the Arctic warming ~4× faster",
+      "Explains positive feedback loops: albedo (sea ice) and greenhouse gases (ocean CO₂, permafrost methane)",
+      "Uses forecasts: sea level ~3 mm/yr and rising, warming scenarios of 1.8–4.4 °C by 2080",
+      "Describes the possible AMOC slowdown and what it would do to heat transport"
+    ]},
+    {title: "3️⃣ Effects on people in your community", items: [
+      "Names your community and its specific hazards (e.g., NYC: sea level rise, storm surge, extreme rain, heat)",
+      "Uses evidence that people are already affected (displacement, disasters, food supplies, melting ice)",
+      "Explains how changes could increase displacement and migration, including lessons from the past (Clovis, early humans)"
+    ]},
+    {title: "🗣️ Communication", items: [
+      "Written for a skeptic: answers at least one skeptic claim respectfully",
+      "Every claim is linked to evidence with scientific reasoning (CER)",
+      "Uses evidence from all three lessons",
+      "Chosen format fits the audience (letter, PSA, pamphlet, script...)"
+    ]}
+  ];
+  const total = d3.sum(groups, g => g.items.length);
+  const box = html`<div class="u4c-card" style="background:#fff;color:#1a1a1a;border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.12);"></div>`;
+  const bar = html`<div style="background:#eceff1;border-radius:20px;height:14px;overflow:hidden;margin:4px 0 4px;"><div style="background:linear-gradient(90deg,#00838f,#c62828);height:100%;width:0%;transition:width .3s;"></div></div>`;
+  const label = html`<div style="font-weight:700;font-size:.95em;"></div>`;
+  box.append(label, bar);
+  const update = () => {
+    const n = box.querySelectorAll("input:checked").length;
+    bar.firstChild.style.width = `${100 * n / total}%`;
+    label.textContent = n === total ? `🎉 ${n} of ${total}: ready to share!` : `${n} of ${total} included`;
+  };
+  groups.forEach(g => {
+    box.appendChild(html`<div style="font-weight:800;margin:14px 0 4px;color:#00695c;">${g.title}</div>`);
+    g.items.forEach(it => {
+      const lab = html`<label style="display:flex;gap:10px;align-items:flex-start;padding:8px 6px;min-height:44px;border-bottom:1px solid #eceff1;cursor:pointer;">
+        <input type="checkbox" style="width:22px;height:22px;flex:0 0 22px;margin-top:2px;accent-color:#00838f;"><span>${it}</span></label>`;
+      lab.querySelector("input").onchange = update;
+      box.appendChild(lab);
+    });
+  });
+  update();
+  return box;
+}
+```
 
 # Unit Summary
 
-::: {.key-idea}
-### 💡 Complete Unit Key Ideas
+| Big idea | What the evidence shows |
+|---|---|
+| **The phenomenon** | Earth, especially the Arctic, is warming fast. 99.9% of climate research agrees humans are the cause, but many people are unsure. Climate hazards displaced people 20.3 million times in 2023 |
+| **Earth-Sun Dynamics** | Orbital factors (eccentricity, tilt, precession) drive ice ages over 10,000s–100,000s of years and today point toward cooling. The ~11-year solar cycle is too small and short; solar output has been flat since ~1960 |
+| **Climate Feedbacks** | CO₂ (~421 ppm) is far above its 800,000-year range because burning fossil fuels moved carbon into the atmosphere. The greenhouse effect traps more energy; albedo and greenhouse gas feedbacks amplify warming, so the Arctic warms ~4× faster |
+| **The Past and the Future** | Past rapid climate change (Younger Dryas, AMOC slowdown) affected human populations. Sea level is rising ~3 mm/yr; models project 1.8–4.4 °C by 2080 depending on emissions; floods, storms, heat, and food disruption are increasing |
+| **Why it matters** | Climate hazards are already affecting communities like NYC (Sandy, Ida, heat). How much worse it gets depends on human choices, which you'll explore in Unit 6 |
 
-**From Earth-Sun Dynamics:**
-- Milankovitch cycles (eccentricity, obliquity, precession) drive glacial-interglacial cycles
-- These cycles operate on 23,000 to 100,000 year timescales
-- Summer radiation at 65°N controls ice sheet growth/retreat
-- **Current orbital configuration predicts gradual COOLING — yet Earth is warming**
+---
 
-**From Climate Feedbacks:**
-- The greenhouse effect traps heat via absorption of infrared radiation
-- CO₂ is now 422 ppm (50% higher than any point in 800,000 years)
-- Ice-albedo feedback amplifies warming (positive feedback loop)
-- Arctic warms 4x faster due to ice-albedo feedback
-- Multiple feedback loops (ice-albedo, water vapor, permafrost) accelerate change
-
-**From The Past and The Future:**
-- AMOC is driven by cold, salty water sinking in the North Atlantic
-- Freshwater from melting ice weakens AMOC
-- The Younger Dryas (~12,900 years ago) shows AMOC can shut down rapidly
-- AMOC shutdown caused ~10°C cooling in decades, devastating human populations
-- AMOC is currently showing signs of weakening
-- Millions are already affected; hundreds of millions at future risk
-
-**The Bottom Line:**
-- ✅ Climate change is definitely caused by human activity
-- ✅ Natural factors cannot explain current warming
-- ✅ Increasing temperatures will affect sea ice, sea level, weather patterns, food, and water
-- ✅ Climate change will affect billions through disasters, displacement, and resource shortages
-- ✅ Understanding the past helps us prepare for and potentially prevent future disasters
-:::
-
-# Final Reflection
-
-::: {.reflection-box}
-### 🤔 Unit Reflection Questions
-
-**Looking Back at Your Learning:**
-
-1. At the beginning of this unit, what did you think caused climate change? How has your understanding evolved?
-
-2. What was the most surprising or compelling piece of evidence you encountered?
-
-3. Which concept was most challenging to understand? How did you work through it?
-
-**Connecting the Concepts:**
-
-4. How do Milankovitch cycles, the greenhouse effect, and AMOC all connect in the climate system?
-
-5. Why is the Younger Dryas relevant to understanding potential future climate risks?
-
-6. How does understanding natural climate change actually STRENGTHEN the case that current warming is human-caused?
-
-**Looking Forward:**
-
-7. How might climate change affect your community in your lifetime?
-
-8. What role can individuals, communities, and governments play in addressing climate change?
-
-9. How will you use what you've learned to communicate about climate change with others?
-
-**Returning to the Anchor Phenomenon:**
-
-10. Can you now fully explain why 99.9% of climate scientists are certain about human-caused climate change?
-
-11. Why do you think there's a gap between scientific consensus and public perception?
-
-12. What responsibility do scientifically-informed citizens have in bridging that gap?
-:::
-
-# Interactive Unit Review
-
-## Comprehensive Topic Review
+# End-of-Unit Quiz
 
 ```{ojs}
 //| echo: false
-viewof reviewTopic = Inputs.select([
-  "Milankovitch Cycles",
-  "Greenhouse Effect & CO₂",
-  "Climate Feedbacks",
-  "AMOC & Ocean Circulation",
-  "Younger Dryas & Past Climate",
-  "Current & Future Impacts",
-  "Evidence & Attribution"
-], {
-  label: "Select a topic to review:"
-})
-```
-
-```{ojs}
-//| echo: false
-{
-  const topics = {
-    "Milankovitch Cycles": {
-      emoji: "🌍",
-      keyPoints: [
-        "Eccentricity: Shape of Earth's orbit changes (~100,000 year cycle)",
-        "Obliquity: Axial tilt varies 22.1°-24.5° (~41,000 year cycle)",
-        "Precession: Axis wobbles like a top (~23,000 year cycle)",
-        "These cycles control summer radiation at 65°N latitude",
-        "Low summer radiation → ice sheets grow → ice age",
-        "Current configuration predicts COOLING, not warming"
-      ],
-      question: "If Milankovitch cycles cause ice ages, why can't they explain current warming?",
-      answer: "Current orbital parameters predict gradual cooling, not warming. The warming we're experiencing is going in the OPPOSITE direction of what Milankovitch cycles would cause, and it's happening 100x faster than orbital changes could produce."
-    },
-    "Greenhouse Effect & CO₂": {
-      emoji: "🏭",
-      keyPoints: [
-        "Greenhouse gases absorb infrared (heat) radiation from Earth's surface",
-        "This trapped heat warms the lower atmosphere",
-        "CO₂ has increased from 280 ppm (pre-industrial) to 422 ppm (today)",
-        "This is 50% higher than any level in 800,000 years",
-        "Rate of increase is 100x faster than any natural change",
-        "Carbon isotopes prove the source is fossil fuels"
-      ],
-      question: "How do we know the extra CO₂ comes from fossil fuels and not natural sources?",
-      answer: "Fossil fuels are depleted in the carbon-13 isotope. As atmospheric CO₂ has increased, the ratio of C-13 has decreased — a chemical 'fingerprint' that proves fossil fuel origin. Also, O₂ is decreasing as CO₂ increases, showing combustion is the source."
-    },
-    "Climate Feedbacks": {
-      emoji: "🔄",
-      keyPoints: [
-        "Positive feedback: amplifies initial change (makes it bigger)",
-        "Negative feedback: reduces initial change (stabilizes)",
-        "Ice-albedo feedback: melting ice → less reflection → more warming → more melting",
-        "Water vapor feedback: warming → more evaporation → more greenhouse effect",
-        "Permafrost feedback: warming → permafrost thaws → releases methane/CO₂",
-        "These feedbacks explain why Arctic warms 4x faster than global average"
-      ],
-      question: "Why is ice-albedo feedback so powerful in the Arctic?",
-      answer: "Ice reflects ~60% of sunlight while ocean water absorbs ~94%. When ice melts and exposes dark ocean, that area absorbs 10x more energy. This causes rapid local warming, which melts more ice, creating an accelerating cycle."
-    },
-    "AMOC & Ocean Circulation": {
-      emoji: "🌊",
-      keyPoints: [
-        "AMOC = Atlantic Meridional Overturning Circulation",
-        "Driven by cold, salty water sinking in North Atlantic",
-        "Transports heat from tropics to Northern Europe",
-        "Freshwater from melting ice reduces salinity",
-        "Less salty water doesn't sink as well → AMOC weakens",
-        "Current observations show AMOC is weakening"
-      ],
-      question: "Why would a weakening AMOC cause Europe to cool even as the globe warms?",
-      answer: "AMOC brings warm tropical water to Northern Europe. Without this heat transport, Europe would be much colder (similar to Canada at the same latitude). A weakened AMOC means less heat reaches Europe, causing regional cooling despite global warming."
-    },
-    "Younger Dryas & Past Climate": {
-      emoji: "🧊",
-      keyPoints: [
-        "Occurred 12,900-11,700 years ago (lasted ~1,200 years)",
-        "Temperatures dropped ~10°C in Greenland within decades",
-        "Triggered by massive freshwater release from Lake Agassiz",
-        "Freshwater shut down AMOC → stopped heat transport north",
-        "Caused population decline, delayed agricultural revolution",
-        "Shows climate can change rapidly with devastating effects"
-      ],
-      question: "What can the Younger Dryas teach us about future climate risks?",
-      answer: "It proves that climate can shift rapidly (within decades) when tipping points are crossed. Similar conditions are developing now: ice sheets are melting, adding freshwater to the North Atlantic, and AMOC is weakening. This could trigger rapid, unexpected changes."
-    },
-    "Current & Future Impacts": {
-      emoji: "⚠️",
-      keyPoints: [
-        "Arctic sea ice declining ~13% per decade",
-        "Sea level rising 3.7mm/year and accelerating",
-        "Extreme weather events becoming more frequent/intense",
-        "100+ million people at risk from sea level rise",
-        "Food and water security threatened globally",
-        "Ecosystems shifting and collapsing"
-      ],
-      question: "Why should we care if global temperature rises 'only' 1.5°C or 2°C?",
-      answer: "Global averages hide regional extremes. The Arctic has already warmed 4°C+. The difference between an ice age and today is only ~5°C globally. Even 'small' global changes mean devastating regional impacts: more extreme heat waves, stronger hurricanes, accelerated ice melt, and ecosystem collapse."
-    },
-    "Evidence & Attribution": {
-      emoji: "🔬",
-      keyPoints: [
-        "99.9% of climate scientists agree humans are causing warming",
-        "Solar output has been flat/declining since 1980 → rules out Sun",
-        "Stratosphere cooling while surface warms → proves greenhouse effect",
-        "Milankovitch cycles predict cooling → rules out orbital changes",
-        "Rate 100x faster than natural → rules out natural variability",
-        "Only human emissions explain ALL observations"
-      ],
-      question: "What makes scientists so confident it's human-caused?",
-      answer: "Multiple independent lines of evidence all point to the same conclusion. Every proposed natural cause has been tested and ruled out. The pattern of warming (nights faster than days, stratosphere cooling, Arctic amplification) matches greenhouse gas predictions exactly. The CO₂ increase has a fossil fuel isotopic fingerprint. Only human emissions fit all the evidence."
-    }
-  };
-  
-  const topic = topics[reviewTopic];
-  
-  return html`
-  <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 15px 0;">
-    <h3>${topic.emoji} ${reviewTopic}</h3>
-    <h4>Key Points:</h4>
-    <ul>
-      ${topic.keyPoints.map(p => `<li>${p}</li>`).join('')}
-    </ul>
-    <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 15px;">
-      <h4>🤔 Review Question:</h4>
-      <p><strong>${topic.question}</strong></p>
-      <details>
-        <summary style="cursor: pointer; color: #1565c0; font-weight: bold;">Click to reveal answer</summary>
-        <p style="margin-top: 10px; padding: 10px; background: white; border-radius: 5px;">${topic.answer}</p>
-      </details>
-    </div>
+function buildUnit4Quiz(id, title, questions) {
+  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const header = html`<div style="background:linear-gradient(135deg,#01579b 0%,#00838f 100%);color:#fff;border-radius:14px 14px 0 0;padding:18px 24px;">
+    <div style="font-size:1.1em;font-weight:700;display:flex;align-items:center;gap:8px;color:#fff;"><span style="font-size:1.2em;">📝</span> ${title}</div>
+    <div style="font-size:0.85em;opacity:0.9;margin-top:4px;color:#fff;">Select an answer for each question.</div>
   </div>`;
+  const body = html`<div style="border:1.5px solid #b2ebf2;border-top:none;border-radius:0 0 14px 14px;overflow:hidden;background:#f5fbfc;padding:16px;"></div>`;
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => {
+          b.style.cursor="default"; b.style.borderColor="#e2e8f0"; b.style.background="#f8fafc"; b.style.color="#475569";
+        });
+        const correctBtn = card.querySelectorAll("button")[qq.correct];
+        correctBtn.style.borderColor="#48bb78";correctBtn.style.background="#f0fff4";correctBtn.style.color="#276749";correctBtn.style.fontWeight="700";
+        if(oi === qq.correct){
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";btn.style.color="#9b2c2c";btn.style.fontWeight="700";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";
+      };
+      card.appendChild(btn);
+    });
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  outer.appendChild(header);
+  outer.appendChild(body);
+  return outer;
 }
 ```
-
----
-
-::: {.quiz-section}
-## 📝 Unit Closing Assessment
-:::
 
 ```{ojs}
 //| echo: false
-{
-  const questions = [
-    {
-      q: "What is the main reason scientists are confident that current warming is NOT caused by changes in Earth's orbit (Milankovitch cycles)?",
-      options: ["A) Earth's orbit hasn't changed", "B) Current orbital configuration predicts cooling, not warming", "C) Milankovitch cycles were disproven", "D) Orbital changes only affect the Southern Hemisphere"],
-      correct: 1,
-      explanation: "Current orbital parameters predict Earth should be in a cooling phase — the fact that we're warming dramatically contradicts natural orbital forcing."
-    },
-    {
-      q: "Current atmospheric CO₂ levels are approximately:",
-      options: ["A) 280 ppm (same as pre-industrial)", "B) 350 ppm", "C) 422 ppm", "D) 600 ppm"],
-      correct: 2,
-      explanation: "CO₂ is at ~422 ppm as of 2024, which is 50% higher than the pre-industrial baseline of 280 ppm."
-    },
-    {
-      q: "How do scientists know that the increased CO₂ comes from fossil fuels?",
-      options: ["A) They can see smoke from factories", "B) Carbon isotope ratios show a fossil fuel fingerprint", "C) They counted all the power plants in the world", "D) It's an educated guess"],
-      correct: 1,
-      explanation: "Fossil fuels have a distinct carbon isotope signature (depleted in ¹³C). The atmosphere shows this exact fingerprint, proving fossil fuel origin."
-    },
-    {
-      q: "Why is the Arctic warming almost 4 times faster than the global average?",
-      options: ["A) The Arctic is closer to the Sun", "B) Ice-albedo feedback amplifies warming there", "C) There are more volcanoes in the Arctic", "D) The Arctic has more CO₂"],
-      correct: 1,
-      explanation: "Arctic amplification occurs because melting ice exposes dark ocean (albedo drops from 0.6 to 0.06), creating a powerful positive feedback."
-    },
-    {
-      q: "What caused the Younger Dryas rapid cooling event ~12,900 years ago?",
-      options: ["A) A massive volcanic eruption", "B) Decreased solar output", "C) Freshwater from melting ice shutting down AMOC", "D) An asteroid impact"],
-      correct: 2,
-      explanation: "A massive freshwater pulse from melting ice sheets disrupted the Atlantic Meridional Overturning Circulation (AMOC), shutting down heat transport to Europe."
-    },
-    {
-      q: "How long did the Younger Dryas cold period last?",
-      options: ["A) About 100 years", "B) About 1,200 years", "C) About 10,000 years", "D) About 100,000 years"],
-      correct: 1,
-      explanation: "The Younger Dryas lasted approximately 1,200 years before AMOC resumed and temperatures quickly recovered."
-    },
-    {
-      q: "Which evidence rules out solar changes as the cause of current warming?",
-      options: ["A) The Sun doesn't affect Earth's climate", "B) Solar output has been flat/declining since 1980, and the stratosphere is cooling", "C) Solar output has increased dramatically", "D) Scientists haven't studied solar output"],
-      correct: 1,
-      explanation: "If the Sun were causing warming, the stratosphere would warm too. Instead, it's cooling — the fingerprint of greenhouse warming, not solar warming."
-    },
-    {
-      q: "What percentage of climate scientists agree that humans are causing current climate change?",
-      options: ["A) About 50%", "B) About 75%", "C) About 90%", "D) About 99.9%"],
-      correct: 3,
-      explanation: "Multiple meta-analyses confirm >99% consensus among actively publishing climate scientists."
-    },
-    {
-      q: "If AMOC significantly weakens, what would likely happen to Northwestern Europe?",
-      options: ["A) It would warm dramatically", "B) It would experience significant cooling despite global warming", "C) Nothing would change", "D) It would experience more earthquakes"],
-      correct: 1,
-      explanation: "AMOC transports tropical heat northward. Without it, Northwestern Europe could cool 5-10°C even as the rest of the world warms."
-    },
-    {
-      q: "Why is the rate of current warming important evidence for human causation?",
-      options: ["A) Fast warming is always natural", "B) Current warming is 100x faster than natural changes, ruling out natural causes", "C) Warming rate doesn't matter", "D) Natural warming is always faster than human-caused warming"],
-      correct: 1,
-      explanation: "Natural climate changes occur over thousands to tens of thousands of years. Current warming in just ~150 years is unprecedented in the geological record."
-    },
-    {
-      q: "What drives the sinking of water that powers AMOC?",
-      options: ["A) Wind pushing water down", "B) Cold, salty water being denser than warm, fresh water", "C) The Moon's gravitational pull", "D) Underwater volcanoes"],
-      correct: 1,
-      explanation: "Thermohaline circulation is driven by density differences: cold, salty water is denser and sinks, pulling warm surface water northward."
-    },
-    {
-      q: "Which statement best explains why understanding past climate change strengthens the case for human causation of current warming?",
-      options: ["A) Past climate was always stable", "B) By understanding natural causes, scientists can show they don't explain current warming", "C) Past climate changes prove current warming is natural too", "D) Past climate is irrelevant to understanding current climate"],
-      correct: 1,
-      explanation: "By thoroughly understanding natural climate drivers, scientists can demonstrate that NONE of them — orbital cycles, solar variation, volcanism — explain the current rapid warming."
-    }
-  ];
-
-  const container = d3.create("div").attr("class", "interactive-quiz");
-  container.append("h3").style("text-align", "center").text("Part A: Multiple Choice");
-  container.append("p").style("text-align", "center").style("color", "#718096").style("font-style", "italic")
-    .text("Select an answer for each question, then click 'Check Answers' to see your score.");
-
-  const state = { answers: new Array(questions.length).fill(-1) };
-
-  questions.forEach((question, qi) => {
-    const qDiv = container.append("div").attr("class", "quiz-question");
-    qDiv.append("p").style("font-weight", "700").style("margin-bottom", "12px")
-      .text(`Question ${qi + 1}: ${question.q}`);
-
-    question.options.forEach((opt, oi) => {
-      const label = qDiv.append("label").attr("class", "quiz-option")
-        .style("display", "block").style("padding", "10px 16px").style("margin", "6px 0")
-        .style("border", "2px solid #e2e8f0").style("border-radius", "8px").style("cursor", "pointer");
-      label.append("input").attr("type", "radio").attr("name", `closing-q${qi}`)
-        .style("margin-right", "10px")
-        .on("change", () => { state.answers[qi] = oi; });
-      label.append("span").text(opt);
-    });
-
-    qDiv.append("div").attr("class", `closing-feedback-${qi}`);
-  });
-
-  const btnDiv = container.append("div").style("text-align", "center").style("margin-top", "20px");
-  btnDiv.append("button")
-    .style("background", "linear-gradient(135deg, #667eea, #764ba2)").style("color", "white")
-    .style("border", "none").style("padding", "12px 36px").style("border-radius", "25px")
-    .style("font-size", "1.1em").style("font-weight", "700").style("cursor", "pointer")
-    .style("box-shadow", "0 4px 15px rgba(102,126,234,0.4)")
-    .text("Check Answers")
-    .on("click", function() {
-      let score = 0;
-      questions.forEach((question, qi) => {
-        const fb = container.select(`.closing-feedback-${qi}`);
-        fb.html("");
-        if (state.answers[qi] === -1) {
-          fb.append("div").attr("class", "quiz-feedback incorrect")
-            .text("⚠️ Please select an answer.");
-          return;
-        }
-        const isCorrect = state.answers[qi] === question.correct;
-        if (isCorrect) score++;
-        fb.append("div").attr("class", `quiz-feedback ${isCorrect ? "correct" : "incorrect"}`)
-          .html(`${isCorrect ? "✅ Correct!" : "❌ Incorrect. The correct answer is " + question.options[question.correct] + "."}<br><em>${question.explanation}</em>`);
-      });
-      
-      const scoreDiv = container.select(".closing-score-display");
-      scoreDiv.html("");
-      const pct = Math.round(score / questions.length * 100);
-      const emoji = pct === 100 ? "🌟" : pct >= 80 ? "👏" : pct >= 60 ? "👍" : "📚";
-      scoreDiv.append("div").attr("class", "quiz-score")
-        .text(`${emoji} Multiple Choice Score: ${score}/${questions.length} (${pct}%)`);
-    });
-
-  container.append("div").attr("class", "closing-score-display");
-
-  // Short answer section
-  container.append("hr").style("margin", "30px 0");
-  container.append("h3").style("text-align", "center").text("Part B: Short Answer");
-  container.append("p").style("text-align", "center").style("color", "#718096").style("font-style", "italic")
-    .text("Type your response, then reveal the rubric to self-assess.");
-
-  const shortAnswers = [
-    {
-      q: "Explain why the fact that Earth was cooling for 2,000 years before recent warming is important evidence for human causation. (3-4 sentences)",
-      points: 4,
-      rubric: [
-        "States that Milankovitch cycles predicted continued cooling (1 pt)",
-        "Explains that warming reversed this natural trend (1 pt)",
-        "Concludes this rules out natural orbital causes (1 pt)",
-        "Uses specific timeframes or data (1 pt)"
-      ]
-    },
-    {
-      q: "Describe the ice-albedo feedback loop and explain why it causes the Arctic to warm faster than the rest of the planet. (4-5 sentences)",
-      points: 5,
-      rubric: [
-        "Correctly defines albedo (1 pt)",
-        "Explains ice has high albedo, ocean has low albedo (1 pt)",
-        "Describes the feedback loop mechanism (1 pt)",
-        "Explains why this amplifies warming in the Arctic specifically (1 pt)",
-        "Uses specific numbers (e.g., 60% vs 6% albedo) (1 pt)"
-      ]
-    },
-    {
-      q: 'A classmate says "The climate has always changed, so current warming is natural." Using evidence from this unit, construct a response that addresses this claim. (5-6 sentences)',
-      points: 6,
-      rubric: [
-        "Acknowledges that climate has changed naturally (1 pt)",
-        "Explains natural causes (Milankovitch cycles) and their timescales (1 pt)",
-        "States current warming is 100x faster than natural (1 pt)",
-        "Provides additional evidence (CO₂ levels, isotopes, solar data) (1 pt)",
-        "Explains why natural factors are ruled out (1 pt)",
-        "Concludes that only human emissions explain observations (1 pt)"
-      ]
-    }
-  ];
-
-  shortAnswers.forEach((sa, si) => {
-    const saDiv = container.append("div").attr("class", "quiz-question");
-    saDiv.append("p").style("font-weight", "700").style("margin-bottom", "8px")
-      .text(`Question ${13 + si}: ${sa.q}`);
-    saDiv.append("p").style("color", "#718096").style("font-size", "0.9em")
-      .text(`(${sa.points} points)`);
-    saDiv.append("textarea")
-      .style("width", "100%").style("min-height", "120px").style("padding", "12px")
-      .style("border", "2px solid #e2e8f0").style("border-radius", "8px")
-      .style("font-family", "Inter, sans-serif").style("font-size", "0.95em")
-      .style("resize", "vertical")
-      .attr("placeholder", "Type your response here...");
-    
-    const rubricBtn = saDiv.append("button")
-      .style("background", "#38a169").style("color", "white")
-      .style("border", "none").style("padding", "8px 20px").style("border-radius", "20px")
-      .style("margin-top", "10px").style("cursor", "pointer").style("font-weight", "600")
-      .text("Show Rubric");
-    
-    const rubricDiv = saDiv.append("div").style("display", "none")
-      .style("background", "rgba(56, 161, 105, 0.08)").style("padding", "15px")
-      .style("border-radius", "8px").style("margin-top", "10px").style("border-left", "4px solid #38a169");
-    
-    rubricDiv.append("strong").text("Scoring Rubric:");
-    const ul = rubricDiv.append("ul").style("margin", "8px 0");
-    sa.rubric.forEach(r => ul.append("li").text(r));
-    
-    rubricBtn.on("click", function() {
-      const isVisible = rubricDiv.style("display") !== "none";
-      rubricDiv.style("display", isVisible ? "none" : "block");
-      d3.select(this).text(isVisible ? "Show Rubric" : "Hide Rubric");
-    });
-  });
-
-  return container.node();
-}
+buildUnit4Quiz("u4c-summative-quiz", "🌡️ End-of-Unit Quiz — Why Are Scientists So Sure?", [
+  {
+    q: "Glacial-interglacial cycles repeat about every 100,000 years. Which factor best matches that timescale?",
+    options: ["The ~11-year solar cycle", "Changes in Earth's orbit and tilt (orbital factors)", "Daily weather", "Yearly seasons"],
+    correct: 1,
+    explanation: "Orbital factors change over tens to hundreds of thousands of years and change how much summer sunlight reaches 65° N, which controls whether ice sheets grow or melt."
+  },
+  {
+    q: "On the 22,000-year temperature graph, warming of about 1.25 °C at the end of the ice age took about 5,000 years. Today's took about 140 years. What does this rate difference suggest?",
+    options: ["Today's warming has the same cause as the ice age ending", "Today's warming is far too fast to be explained by slow orbital changes, so a different cause is needed", "Temperature data are unreliable", "Warming always takes 140 years"],
+    correct: 1,
+    explanation: "Orbital changes act over thousands of years, and right now they point toward cooling. A change this fast needs a fast cause: the rapid rise in greenhouse gases."
+  },
+  {
+    q: "A student graphs solar output and global temperature from 1880 to 2014. Which pattern would show the Sun is NOT causing recent warming?",
+    options: ["Both rise together the whole time", "Solar output stays flat or falls after ~1960 while temperature keeps rising", "Temperature falls with solar output", "Both stay flat"],
+    correct: 1,
+    explanation: "That is exactly what the NASA graph shows. If the Sun were the cause, temperature would follow solar output."
+  },
+  {
+    q: "Ice cores show CO₂ between about 180 and 300 ppm for 800,000 years. Today it's about 421 ppm. Which explanation is best supported?",
+    options: ["A natural cycle that happens every 100,000 years", "Burning fossil fuels moved carbon from the geosphere into the atmosphere faster than oceans and land can absorb it", "Volcanoes erupted more in the last 200 years", "Plants stopped photosynthesizing"],
+    correct: 1,
+    explanation: "The carbon cycle model shows fossil fuels adding 10 Gt C/yr and the atmosphere gaining +5 Gt/yr. CO₂ rose more than 100× faster than at the end of the ice age."
+  },
+  {
+    q: "In the pre-industrial carbon cycle model, the atmosphere received 62 + 107 = 169 Gt/yr and released 60 + 109 = 169 Gt/yr. What does this mean?",
+    options: ["The atmosphere was gaining carbon", "The cycle was balanced: carbon moved, but the amount in the atmosphere stayed steady", "Carbon was being destroyed", "The ocean was losing all its carbon"],
+    correct: 1,
+    explanation: "In = out means a net change of 0. Carbon (matter) is conserved as it moves between reservoirs; only fossil fuel burning upset that balance."
+  },
+  {
+    q: "Which sequence correctly describes the albedo feedback loop?",
+    options: ["Warming → sea ice melts → darker ocean absorbs more sunlight → more warming", "Warming → more ice → more reflection → more warming", "Cooling → ice melts → cooling", "Sunlight → ice grows → warming"],
+    correct: 0,
+    explanation: "Ice reflects most sunlight; dark ocean absorbs it. Losing ice adds more energy, which melts more ice. This positive feedback is why the Arctic warms almost 4× faster than the globe."
+  },
+  {
+    q: "About 12,900 years ago, a sudden cold snap (the Younger Dryas) hit the Northern Hemisphere as ice sheets melted. What is the best explanation?",
+    options: ["The Sun turned off", "Fresh meltwater lowered the density of North Atlantic water, slowing the AMOC so less heat reached the north", "CO₂ suddenly doubled", "Earth's tilt flipped"],
+    correct: 1,
+    explanation: "Less salty water is less dense and doesn't sink, which weakens the AMOC. The Clovis culture disappeared around the same time, showing climate shifts can affect populations."
+  },
+  {
+    q: "Satellite data show sea level rising about 3 mm per year. What's the best prediction for the next 50 years if the rate stays the same, and why is it a low estimate?",
+    options: ["About 15 cm (6 in); the rate is speeding up as ice melts faster", "About 3 mm; sea level never changes", "About 50 m; all the ice will melt", "It will fall because of the AMOC"],
+    correct: 0,
+    explanation: "3 mm × 50 = 150 mm ≈ 15 cm. Faster melting and warmer, expanding oceans are increasing the rate, so the real rise is likely more."
+  },
+  {
+    q: "Models project 1.8 °C of warming by 2080 under SSP1-2.6 and 4.4 °C under SSP5-8.5. What is the main difference between these scenarios?",
+    options: ["How much fossil fuel humans burn", "Which climate model was used", "Changes in Earth's orbit", "The number of sunspots"],
+    correct: 0,
+    explanation: "The scenarios are based on future greenhouse gas emissions. This means human choices strongly affect how big future climate impacts will be."
+  },
+  {
+    q: "You are writing to a skeptical NYC neighbor. Which sentence best connects the evidence to your community?",
+    options: ["\"Climate change is bad, trust me.\"", "\"Burning fossil fuels has raised CO₂ to ~421 ppm, warming the planet and melting ice; seas at the Battery have already risen ~1.5 ft, so storm surges like Sandy's will reach more of our neighborhoods.\"", "\"The Sun is getting hotter, so NYC will flood.\"", "\"Climate change only affects polar bears.\""],
+    correct: 1,
+    explanation: "A strong communication links a human cause (CO₂ from fossil fuels), the science (warming, melting ice, sea level rise), and a specific local impact with data."
+  }
+])
 ```
-
----
-
-## Congratulations! 🎉
-
-You have completed **Unit 4: Climate Change**. You now have the scientific knowledge to:
-
-- ✅ Explain how natural factors have influenced Earth's climate over hundreds of thousands of years
-- ✅ Describe why those same natural factors cannot explain current warming
-- ✅ Present multiple lines of evidence that demonstrate human causation
-- ✅ Explain climate feedback mechanisms and why they matter
-- ✅ Connect past climate events to potential future risks
-- ✅ Communicate effectively about climate science to others
-
-**Your voice matters.** Use your knowledge to help bridge the gap between scientific consensus and public understanding. The future depends on informed citizens who can evaluate evidence and make decisions based on science.
