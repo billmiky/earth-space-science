@@ -1,6 +1,6 @@
 ---
 title: "Unit 4: Seasons (Optional 3E)"
-subtitle: "How does the annual cycle of Earth around the Sun create seasonal temperature variations?"
+subtitle: "How does the annual cycle of the Earth around the sun create seasonal temperature variations?"
 format:
   html:
     toc: true
@@ -16,189 +16,135 @@ execute:
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
 
-.engage-box {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 25px;
-  margin: 20px 0;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-}
-
-.explore-box {
-  background: linear-gradient(135deg, #b5179e 0%, #c9184a 100%);
-  color: white;
-  padding: 25px;
-  margin: 20px 0;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
-}
-
-.explain-box {
-  background: linear-gradient(135deg, #1565c0 0%, #00838f 100%);
-  color: #1a1a1a;
-  padding: 25px;
-  margin: 20px 0;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
-}
-
-.check-understanding {
-  background: linear-gradient(to right, #667eea, #764ba2);
-  color: white;
-  padding: 20px;
-  margin: 20px 0;
-  border-radius: 12px;
-  border-left: 6px solid #fff;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
-  50% { box-shadow: 0 0 30px rgba(102, 126, 234, 0.8); }
-}
-
-.quiz-section {
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-  padding: 25px;
-  margin: 25px 0;
-  border-radius: 15px;
-  border: 4px dashed #ff6b6b;
-}
-
-h1 {
-  font-family: 'Space Grotesk', sans-serif !important;
-  font-weight: 800 !important;
-  font-size: 2.8em !important;
-  margin-top: 40px !important;
-}
-
-h2 {
-  font-family: 'Space Grotesk', sans-serif !important;
-  font-weight: 700 !important;
-  color: #667eea !important;
-}
-
-.big-question {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 2.5em;
-  font-weight: 800;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 30px 0 20px 0;
-  text-align: center;
-  animation: slideIn 0.8s ease-out;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+.engage-box { background: linear-gradient(135deg, #b45309 0%, #9a3412 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(180, 83, 9, 0.3); }
+.explore-box { background: linear-gradient(135deg, #0f766e 0%, #115e59 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(15, 118, 110, 0.3); }
+.explain-box { background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(30, 64, 175, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #0e7490 0%, #155e75 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(14, 116, 144, 0.3); }
+.engage-box h2, .explore-box h2, .explain-box h2, .elaborate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.8em; margin-top: 0; color: white !important; }
+.engage-box a, .explore-box a, .explain-box a, .elaborate-box a { color: #fde68a; }
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 5px; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35); text-transform: uppercase; letter-spacing: 1px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.3em; font-weight: 800; line-height: 1.2; background: linear-gradient(135deg, #f59e0b 0%, #0f766e 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: #1a1a1a; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #f59e0b; font-size: 1.05em; }
+.student-task { background: #fff3e0; color: #1a1a1a; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.4em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #0f766e !important; }
+.ss-table { width: 100%; border-collapse: collapse; font-size: .9em; margin: 6px 0 16px; }
+.ss-table th, .ss-table td { padding: 6px 8px; border-bottom: 1px solid rgba(128,128,128,.3); text-align: left; vertical-align: top; }
+.ss-cards { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
+.ss-card { flex: 1 1 150px; min-width: 0; background: #f8fafc; color: #1e293b; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 10px 12px; font-size: .9em; line-height: 1.45; }
+.ss-card b.big { display: block; font-size: 1.45em; color: #0f172a; }
+.ss-card .lab { font-size: .78em; text-transform: uppercase; letter-spacing: .5px; color: #475569; font-weight: 700; }
+main table { overflow-wrap: anywhere; }
+main figure > h2, main figure > h3 { font-family: 'Inter', sans-serif !important; font-size: 1.05em !important; font-weight: 700 !important; color: inherit !important; border: none !important; margin: 4px 0 2px !important; line-height: 1.3 !important; }
+main figure > h3 { font-size: .85em !important; font-weight: 400 !important; opacity: .8; }
+.ss-note { font-size: .78em; opacity: .75; text-align: center; margin: 4px 0 12px; }
 </style>
 ```
 
-# Engage: Why Do We Have Seasons?
+<a class="quiz-jump-btn" href="#end-of-chapter-quiz">🧠 Quiz ↓</a>
 
-::: {.engage-box}
-### 🤔 Initial Question
-Many people believe seasons are caused by Earth being closer to or farther from the Sun. Is this correct?
+<div class="big-question">☀️ Why Is It Summer in NYC When It's Winter in Melbourne? 🌏</div>
 
-**Fact:** Earth is actually closest to the Sun (perihelion) in early January during Northern Hemisphere winter!
+<span class="pe-badge">HS-ESS1-7</span> <span class="pe-badge">Optional 3E · 3 days</span>
+
+**Investigative phenomenon:** Earth has seasonal temperature changes, and different parts of the planet have different seasons at different times.
+
+::: {.callout-note collapse="true"}
+## 📒 Using this chapter with your Seasons lesson
+
+This chapter follows the same steps as your teacher's **Seasons Optional 3E** (Engage, Explore, Explain; there is no Elaborate or Evaluate). Missed a class or need a refresher? Jump to the matching section:
+
+| Lesson step | In this chapter |
+|---|---|
+| **Engage** Launch: how are seasons, weather, and climate similar and different? | [Seasons, Weather, and Climate](#ss-weather-climate) |
+| **Engage** handout *Why do we have seasons?* (RUMORS) | [Why Do We Have Seasons?](#ss-probe) |
+| **Explore** Investigation Launch: which changes in Earth's position might cause seasons? | [Investigation Launch](#ss-launch) |
+| *What causes seasons? Part 1: Using Physical Models*, Part A (heat lamp, globe, 3 thermometers) | [Part A: Where Is the Globe Warmest?](#ss-part-a) |
+| Part 1, Part B (spread of light on grid paper) | [Part B: How Spread Out Is the Light?](#ss-part-b) |
+| Part 1, Part C (moving the tilted globe around the lamp) | [Part C: Carry the Globe Around the Sun](#ss-part-c) |
+| *Making Sense of ... Part 1* See-Think-Wonder | [Making Sense of Part 1](#ss-making-sense-1) |
+| *What causes seasons? Part 2: Using Computational and Visual Models*, Part D (Seasons and Ecliptic simulator + data) | [Part 2: Computational and Visual Models](#ss-part2) |
+| *Making Sense of ... Part 2* See-Think-Wonder | [Making Sense of Part 2](#ss-making-sense-2) |
+| **Explain** *What Causes Seasons on Earth?* Questions 1 and 2 (NYC and Melbourne) | [NYC and Melbourne: Questions 1 and 2](#ss-q12) |
+| Text *The Seasons* and video *Insolation Part 2a: Reasons for the Seasons* (confirm / contradict / question notes) | [The Seasons: Text and Video](#ss-reading) |
+| Question 3 poster (general explanation) + Idea Carousel | [A General Explanation for Seasons](#ss-q3) |
+| Class Consensus Discussion: "Class Consensus Ideas: Seasons" | [Class Consensus Ideas](#ss-consensus) |
+| Summary Task | [Summary Task](#ss-summary-task) |
+| Transition to the next lesson (Earth's orbit over long timescales) | [Looking Ahead](#ss-bridge) |
 :::
 
-## Interactive: Earth's Orbit Distance
+# Engage: Why Do We Have Seasons? {#ss-engage}
+
+::: {.engage-box}
+## 🍂 Same Planet, Opposite Seasons
+
+On **January 1**, people in **New York City** bundle up in coats, with an average temperature of about **1 °C (34 °F)**. On the same day, people in **Melbourne, Australia** head to the beach, with an average of about **21 °C (70 °F)**. Six months later, it's the other way around.
+
+Seasons repeat **every year**, and they happen at **opposite times** in the Northern and Southern Hemispheres.
+
+**Our question:** How does Earth's yearly trip around the Sun create seasonal temperature changes?
+:::
+
+## Seasons, Weather, and Climate {#ss-weather-climate}
+
+Seasons, weather, and climate are different, but they're connected:
+
+| | What it means | Example |
+|---|---|---|
+| **Weather** | Conditions in the air **right now** (hours to days): temperature, rain, wind, clouds | "It's 3 °C and snowing today." |
+| **Season** | Part of the year (months) with a typical pattern of temperature and daylight that **repeats every year** | "NYC winters are cold and dark." |
+| **Climate** | The **long-term pattern** of weather in a place, averaged over 30+ years | "NYC has hot summers and cold winters." |
+
+This unit is about **climate change**. We start with seasons because they show how the **Earth–Sun relationship** controls temperature. Once that's clear, you can use the same ideas for changes over much longer times.
 
 ```{ojs}
 //| echo: false
-Plot = require("@observablehq/plot")
-
-orbitData = [
-  {month: "Jan", distance: 147.1, season: "Winter (NH)"},
-  {month: "Feb", distance: 147.8, season: "Winter"},
-  {month: "Mar", distance: 148.9, season: "Spring"},
-  {month: "Apr", distance: 150.0, season: "Spring"},
-  {month: "May", distance: 151.0, season: "Spring"},
-  {month: "Jun", distance: 151.8, season: "Summer"},
-  {month: "Jul", distance: 152.1, season: "Summer (NH)"},
-  {month: "Aug", distance: 151.5, season: "Summer"},
-  {month: "Sep", distance: 150.5, season: "Fall"},
-  {month: "Oct", distance: 149.3, season: "Fall"},
-  {month: "Nov", distance: 148.1, season: "Fall"},
-  {month: "Dec", distance: 147.3, season: "Winter"}
-]
-
-Plot.plot({
-  title: "Earth-Sun Distance Throughout the Year",
-  subtitle: "Distance in millions of kilometers",
-  width: width,
-  height: 350,
-  x: {label: "Month", domain: orbitData.map(d => d.month)},
-  y: {label: "Distance (million km)", domain: [146, 153]},
-  marks: [
-    Plot.line(orbitData, {x: "month", y: "distance", stroke: "#e67e22", strokeWidth: 3,
-        tip: true}),
-    Plot.dot(orbitData, {x: "month", y: "distance", fill: "#e67e22", r: 6,
-        tip: true}),
-    Plot.text([{month: "Jan", distance: 147.1}], {x: "month", y: "distance", text: d => "Closest!", dy: -15, fill: "red", fontWeight: "bold"}),
-    Plot.text([{month: "Jul", distance: 152.1}], {x: "month", y: "distance", text: d => "Farthest!", dy: -15, fill: "blue", fontWeight: "bold"})
-  ]
-})
-```
-
-```{ojs}
-//| echo: false
-// --- Collapsible quiz builder (file-scoped) ---
-buildQuiz = function(id, title, questions) {
+ssQuiz = function(id, title, questions) {
   const outer = html`<div id="${id}" style="margin:18px 0 24px 0;text-align:center;">
     <button style="
       display:inline-flex;align-items:center;gap:7px;
-      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-      color:#fff;border:none;padding:9px 22px;border-radius:50px;
+      background:linear-gradient(135deg,#0f766e 0%,#115e59 100%);
+      color:#fff;border:none;padding:9px 22px;min-height:44px;border-radius:50px;
       font-size:.95em;font-weight:700;cursor:pointer;
-      box-shadow:0 3px 12px rgba(102,126,234,.45);
+      box-shadow:0 3px 12px rgba(15,118,110,.4);
       transition:transform .15s,box-shadow .15s;"
-      onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 5px 18px rgba(102,126,234,.55)'"
-      onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 3px 12px rgba(102,126,234,.45)'"
+      onmouseover="this.style.transform='scale(1.04)'"
+      onmouseout="this.style.transform='scale(1)'"
     >
       <span style="font-size:1.1em;">📝</span> ${title}
       <span class="chevron" style="transition:transform .3s;">▼</span>
     </button>
-
     <div class="quiz-body" style="
       max-height:0;opacity:0;overflow:hidden;
       transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin-top .3s ease;
       margin-top:0;text-align:left;">
-
       <button class="close-btn" style="
         display:block;margin:0 auto 10px auto;
-        background:rgba(102,126,234,.12);color:#667eea;border:none;
+        background:rgba(15,118,110,.12);color:#0f766e;border:none;
         padding:5px 18px;border-radius:50px;font-size:.85em;
         font-weight:600;cursor:pointer;">Hide Quiz</button>
       <p style="text-align:center;color:#718096;font-style:italic;font-size:.9em;margin-bottom:12px;">
         Select an answer for each question.</p>
     </div>
   </div>`;
-
   const toggle = outer.querySelector("button");
   const chevron = toggle.querySelector(".chevron");
   const body   = outer.querySelector(".quiz-body");
   const closeBtn = body.querySelector(".close-btn");
-
-  function expand(){  body.style.maxHeight="2000px";body.style.opacity="1";body.style.marginTop="14px";chevron.style.transform="rotate(180deg)"; }
+  function expand(){  body.style.maxHeight="3000px";body.style.opacity="1";body.style.marginTop="14px";chevron.style.transform="rotate(180deg)"; }
   function collapse(){ body.style.maxHeight="0";body.style.opacity="0";body.style.marginTop="0";chevron.style.transform="rotate(0)"; }
   toggle.onclick = () => body.style.maxHeight === "0px" || body.style.maxHeight === "" ? expand() : collapse();
   closeBtn.onclick = collapse;
-
   questions.forEach((qq, qi) => {
     const card = document.createElement("div");
     card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
-    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;">${qi+1}. ${qq.q}</p>`;
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
     qq.options.forEach((opt, oi) => {
       const btn = document.createElement("button");
       btn.textContent = opt;
       btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
-      btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#667eea";btn.style.background="#f0f0ff"; }};
+      btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#0f766e";btn.style.background="#f0fdfa"; }};
       btn.onmouseout  = () => { if(!card.dataset.answered){ btn.style.borderColor="#e2e8f0";btn.style.background="#fff"; }};
       btn.onclick = () => {
         if(card.dataset.answered) return;
@@ -230,191 +176,1212 @@ buildQuiz = function(id, title, questions) {
 
 ```{ojs}
 //| echo: false
-buildQuiz("orbit-distance-quiz", "Check Your Understanding — Earth-Sun Distance", [
+ssQuiz("ss-wc-quiz", "Check Your Understanding: Weather, Seasons, Climate", [
   {
-    q: "According to the chart, when is Earth CLOSEST to the Sun?",
-    options: [
-      "A) June–July (Northern Hemisphere summer)",
-      "B) January (Northern Hemisphere winter)",
-      "C) March–April (spring equinox)",
-      "D) September–October (fall equinox)"
-    ],
+    q: "\"Melbourne's summers are usually warm and dry, and its winters are cool and wet.\" Is this weather, a season, or climate?",
+    options: ["Weather, because it mentions rain", "Climate, because it describes the long-term, repeating pattern for a place", "Neither, because it's about Australia", "Weather, because it mentions temperature"],
     correct: 1,
-    explanation: "Earth reaches perihelion (closest to the Sun) in early January at ~147.1 million km — during Northern Hemisphere winter! This proves distance isn't the main cause of seasons."
+    explanation: "It describes what is typical, year after year. Long-term patterns of weather are climate, and that pattern includes how the seasons usually feel."
   },
   {
-    q: "The difference between Earth's closest and farthest distance from the Sun is only about 5 million km (~3%). What does this tell us about the cause of seasons?",
-    options: [
-      "A) Distance must be the main cause because 5 million km is a lot",
-      "B) The small distance variation means something else must cause seasons",
-      "C) Distance only affects the Southern Hemisphere",
-      "D) The chart data must be wrong"
-    ],
+    q: "Which statement about seasons is true?",
+    options: ["Seasons happen once and never repeat", "Seasons repeat in the same order every year", "Seasons are the same as daily weather", "Every place on Earth has winter at the same time"],
     correct: 1,
-    explanation: "A 3% change in distance creates only a ~7% change in solar energy — far too small to explain the large seasonal temperature swings. Earth's 23.5° axial tilt is the real cause."
+    explanation: "Seasons are a yearly cycle. That repeating pattern is a clue that they're linked to something that also repeats every year: Earth's trip around the Sun."
   }
 ])
 ```
 
-# Explore: Axial Tilt and Sunlight
+## Why Do We Have Seasons? {#ss-probe}
 
-## Interactive: Sun Angle and Solar Heating
+Your handout *Why do we have seasons?* lists different ideas people have about seasons. Below are ideas like the ones on the handout. **Pick the one you're most confident about.** Don't look anything up yet; we'll check your idea against evidence at the end of the Explain.
 
-Explore how the angle of sunlight changes with latitude and season, and how that spreads the same energy over more or less ground:
-
-```{=html}
-<div class="responsive-iframe-container" style="margin: 20px 0;">
-  <iframe src="../unit5-hurricanes-blizzards/solar-angle.html" width="100%" height="480" style="border: none; border-radius: 12px;" loading="lazy" title="Sun Angle and Solar Heating Interactive"></iframe>
-</div>
+```{ojs}
+//| echo: false
+ssProbeOptions = [
+  "A. Earth is closer to the Sun in summer and farther away in winter.",
+  "B. Earth's axis is tilted, so for part of the year one half of Earth leans toward the Sun and gets more direct sunlight and longer days.",
+  "C. The Sun gives off more energy in summer and less in winter.",
+  "D. The half of Earth tilted toward the Sun is closer to the Sun, so it's warmer.",
+  "E. Earth spins (rotates) differently at different times of year.",
+  "F. Clouds and weather block more sunlight in winter."
+]
+viewof ssProbe = Inputs.radio(ssProbeOptions, {label: "My idea:", value: null})
 ```
+
+```{ojs}
+//| echo: false
+viewof ssProbeWhy = Inputs.textarea({label: "Why I think so (optional, stays on your device):", placeholder: "I think this because...", rows: 3, width: Math.min(width, 640)})
+```
+
+```{ojs}
+//| echo: false
+ssProbe ? html`<div class="student-task" style="margin-top:8px;"><b>📌 Your idea is saved for this visit:</b> ${ssProbe}<br><span style="font-size:.9em;">Keep it in mind. In class, everyone shared their "rumor" with classmates and traded Post-its. Here, notice which idea you'd tell a friend, and see whether the models below support it.</span></div>`
+        : html`<p style="font-size:.9em;opacity:.8;">👆 Choose an idea to save it for later in the chapter.</p>`
+```
+
+::: {.student-task}
+### ✏️ In your handout: Why do we have seasons?
+
+- Read each statement and choose the one you agree with most.
+- **Explain your thinking:** What do you already know (from Unit 1, from your own life) that makes you think so?
+- In class you wrote your idea on a Post-it and traded "rumors." If you missed it, write down **two other ideas** from the list that you think other people might believe.
+:::
+
+# Explore: Modeling the Angle of Insolation {#ss-explore}
 
 ::: {.explore-box}
-### 🔬 Exploration Tasks
-1. Observe how the angle of sunlight changes throughout the year at different latitudes
-2. Pick the June and December solstices and compare how concentrated the sunlight is at about 45°N (near NYC)
-3. Notice how the Sun's rays are more direct in summer and more spread out in winter
+## 🔦 Testing Our Ideas With Models
+
+**Insolation** (*in*coming *sol*ar radi*ation*) is the sunlight energy that reaches a surface. In this Explore you collect data from **two kinds of models**:
+
+- **Part 1, physical models:** a heat lamp (the Sun), an inflatable globe (Earth), thermometers, and grid paper
+- **Part 2, computational and visual models:** the Seasons and Ecliptic simulator and data about sunlight around the world
+
+Look for **patterns** in the data. The formal explanation comes later, in the Explain.
 :::
 
-## Interactive: Sunlight Angle Simulator
+## Investigation Launch {#ss-launch}
+
+What changes in **Earth's position with respect to the Sun** might cause seasons? Students usually suggest:
+
+| Possible cause | What changes? | We'll test it in... |
+|---|---|---|
+| **Distance from the Sun** | Earth's orbit is not a perfect circle, so the distance changes during the year | Part C (distance readout) |
+| **Earth's tilt** | Earth's axis is tilted, so the angle of sunlight changes | Parts A, B, C, D |
+| **Earth's rotation** | Earth spins once a day | Part C (does spinning change during the year?) |
+
+## Part 1: Using Physical Models {#ss-part1}
+
+In class, groups pointed a **heat lamp** at an **inflatable globe**, taped **3 thermometers** to the globe, and timed the readings with a **stopwatch**. They also shone light onto **large square grid paper**. These virtual versions let you do the same thing on your own.
+
+### Part A: Where Is the Globe Warmest? {#ss-part-a}
+
+The lamp is level with the globe's **equator**. Thermometers are taped at the **equator (0°)**, the **middle latitudes (45° N)**, and **near the pole (75° N)**. Press ▶ or drag the stopwatch to collect data.
 
 ```{ojs}
 //| echo: false
-viewof sunAngle = Inputs.range([0, 90], {
-  step: 5,
-  value: 45,
-  label: "Sun Angle (degrees from horizon):"
-})
+d3 = require("d3@7")
+Plot = require("@observablehq/plot@0.6.16")
+topo = require("topojson-client@3")
+ssRad = Math.PI / 180
 ```
 
 ```{ojs}
 //| echo: false
-// Calculate how sunlight spreads based on angle
-spreadFactor = 1 / Math.sin(sunAngle * Math.PI / 180)
-intensityPercent = (Math.sin(sunAngle * Math.PI / 180) * 100).toFixed(1)
-
-html`<div style="display: flex; gap: 30px; align-items: center; margin: 20px 0;">
-  <div style="flex: 1;">
-    <svg width="300" height="200">
-      <!-- Ground -->
-      <rect x="0" y="150" width="300" height="50" fill="#8B4513"/>
-      <!-- Sun rays -->
-      <line x1="50" y1="${150 - 100 * Math.tan(sunAngle * Math.PI / 180)}" x2="50" y2="150" stroke="yellow" stroke-width="3"/>
-      <line x1="100" y1="${150 - 100 * Math.tan(sunAngle * Math.PI / 180)}" x2="100" y2="150" stroke="yellow" stroke-width="3"/>
-      <line x1="150" y1="${150 - 100 * Math.tan(sunAngle * Math.PI / 180)}" x2="150" y2="150" stroke="yellow" stroke-width="3"/>
-      <!-- Angle arc -->
-      <path d="M 50 150 L 50 100 A 50 50 0 0 1 ${50 + 50 * Math.cos((90-sunAngle) * Math.PI / 180)} ${150 - 50 * Math.sin((90-sunAngle) * Math.PI / 180)}" fill="none" stroke="red" stroke-width="2"/>
-      <text x="70" y="130" fill="red" font-size="14">${sunAngle}°</text>
-    </svg>
-  </div>
-  <div style="flex: 1; padding: 20px; background: #f5f5f5; border-radius: 10px;">
-    <h4>Energy Intensity</h4>
-    <p><strong>Relative intensity:</strong> ${intensityPercent}%</p>
-    <p><strong>Energy spread factor:</strong> ${spreadFactor.toFixed(2)}x</p>
-    <div style="background: linear-gradient(to right, #ffeb3b ${intensityPercent}%, #ccc ${intensityPercent}%); height: 30px; border-radius: 5px;"></div>
-    <p style="font-size: 12px; margin-top: 10px;">Higher sun angles = more concentrated energy = warmer temperatures</p>
-  </div>
-</div>`
+ssLampTherms = [
+  {name: "Equator (0°)", lat: 0, color: "#dc2626"},
+  {name: "Middle latitude (45° N)", lat: 45, color: "#d97706"},
+  {name: "Near the pole (75° N)", lat: 75, color: "#2563eb"}
+]
+// Simulated readings from a simple model of the lab: warming rate is proportional
+// to how directly the lamp's light hits each spot (cos of latitude).
+ssLampTemp = (lat, t) => 21 + 12 * Math.cos(lat * ssRad) * (1 - Math.exp(-t / 5))
+viewof ssLampT = Inputs.range([0, 10], {step: 0.5, value: 10, label: "Stopwatch (minutes):"})
 ```
 
 ```{ojs}
 //| echo: false
-buildQuiz("sunlight-angle-quiz", "Check Your Understanding — Sunlight Angle & Intensity", [
+ssLampPlay = {
+  const b = html`<button style="min-height:44px;padding:8px 18px;border-radius:22px;border:2px solid #0f766e;background:#f0fdfa;color:#115e59;font-weight:700;cursor:pointer;">▶ Run the lamp for 10 minutes</button>`;
+  b.onclick = () => {
+    const input = viewof ssLampT;
+    let t = 0;
+    input.value = 0; input.dispatchEvent(new Event("input", {bubbles: true}));
+    const timer = setInterval(() => {
+      t += 0.5;
+      input.value = t;
+      input.dispatchEvent(new Event("input", {bubbles: true}));
+      if (t >= 10) clearInterval(timer);
+    }, 220);
+  };
+  return b;
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const W = 360, H = 250, cx = 235, cy = 125, R = 92;
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("role", "img")
+    .attr("aria-label", "A heat lamp shining on a globe with three thermometers at the equator, 45 degrees north, and 75 degrees north")
+    .style("width", "100%").style("max-width", "480px").style("height", "auto").style("display", "block").style("margin", "auto");
+  svg.append("rect").attr("width", W).attr("height", H).attr("rx", 14).attr("fill", "#0b1020");
+  // lamp
+  svg.append("circle").attr("cx", 34).attr("cy", cy).attr("r", 20).attr("fill", "#fbbf24");
+  svg.append("text").attr("x", 34).attr("y", cy + 38).attr("text-anchor", "middle").attr("fill", "#fde68a").attr("font-size", 11).text("Heat lamp");
+  for (let y = cy - 80; y <= cy + 80; y += 20) {
+    const dy = y - cy;
+    if (Math.abs(dy) >= R) continue;
+    const xHit = cx - Math.sqrt(R * R - dy * dy);
+    svg.append("line").attr("x1", 58).attr("y1", y).attr("x2", xHit).attr("y2", y).attr("stroke", "#fde047").attr("stroke-opacity", .55).attr("stroke-width", 1.5);
+  }
+  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", R).attr("fill", "#2563eb").attr("stroke", "#93c5fd");
+  svg.append("path").attr("d", `M${cx},${cy - R} A${R},${R} 0 0,1 ${cx},${cy + R} Z`).attr("fill", "#0b1020").attr("opacity", .55);
+  svg.append("line").attr("x1", cx - R).attr("y1", cy).attr("x2", cx + R).attr("y2", cy).attr("stroke", "#e2e8f0").attr("stroke-dasharray", "3,3").attr("stroke-opacity", .7);
+  svg.append("text").attr("x", cx + R - 4).attr("y", cy - 4).attr("text-anchor", "end").attr("fill", "#e2e8f0").attr("font-size", 10).text("equator");
+  ssLampTherms.forEach(d => {
+    const x = cx - R * Math.cos(d.lat * ssRad), y = cy - R * Math.sin(d.lat * ssRad);
+    svg.append("circle").attr("cx", x).attr("cy", y).attr("r", 6).attr("fill", d.color).attr("stroke", "white").attr("stroke-width", 2);
+    const T = ssLampTemp(d.lat, ssLampT);
+    svg.append("rect").attr("x", x + 10).attr("y", y - 11).attr("width", 54).attr("height", 20).attr("rx", 5).attr("fill", "white");
+    svg.append("text").attr("x", x + 37).attr("y", y + 3).attr("text-anchor", "middle").attr("font-size", 12).attr("font-weight", 700).attr("fill", d.color).text(`${T.toFixed(1)} °C`);
+  });
+  svg.append("text").attr("x", W - 10).attr("y", 20).attr("text-anchor", "end").attr("fill", "#e2e8f0").attr("font-size", 12).attr("font-weight", 700).text(`⏱ ${ssLampT.toFixed(1)} min`);
+  return svg.node();
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const rows = [];
+  for (let t = 0; t <= ssLampT + 1e-9; t += 0.5)
+    ssLampTherms.forEach(d => rows.push({t, name: d.name, T: ssLampTemp(d.lat, t)}));
+  return Plot.plot({
+    title: "Your data: temperature under the lamp",
+    subtitle: "Simulated readings from a model of the lab (not real measurements)",
+    width, height: 280, marginLeft: 44, marginRight: 12,
+    x: {label: "Time (minutes)", domain: [0, 10], grid: true},
+    y: {label: "Temperature (°C)", domain: [20, 34], grid: true},
+    color: {domain: ssLampTherms.map(d => d.name), range: ssLampTherms.map(d => d.color), legend: true},
+    marks: [
+      Plot.line(rows, {x: "t", y: "T", stroke: "name", strokeWidth: 2.5}),
+      Plot.dot(rows.filter(r => r.t % 1 === 0), {x: "t", y: "T", fill: "name", r: 3.5, tip: true, title: r => `${r.name}\n${r.t} min: ${r.T.toFixed(1)} °C`})
+    ]
+  });
+}
+```
+
+```{ojs}
+//| echo: false
+ssQuiz("ss-parta-quiz", "Check Your Understanding: Part A", [
   {
-    q: "Using the simulator, what happens to the relative intensity of sunlight as you decrease the Sun angle from 90° toward 0°?",
-    options: [
-      "A) Intensity increases because rays travel a shorter path",
-      "B) Intensity stays the same regardless of angle",
-      "C) Intensity decreases because the same energy is spread over a larger area",
-      "D) Intensity decreases only below 30°"
-    ],
-    correct: 2,
-    explanation: "At lower sun angles, the same beam of light is spread over a larger surface area, reducing the energy per unit area. At 90° (directly overhead) intensity is 100%, but at 30° it drops to just 50%."
+    q: "After 10 minutes, which thermometer is warmest, and which is coolest?",
+    options: ["Warmest near the pole, coolest at the equator", "Warmest at the equator, coolest near the pole", "They all warm the same amount", "Warmest at 45° N"],
+    correct: 1,
+    explanation: "The equator warms about 12 °C, 45° N about 8 °C, and 75° N only about 3 °C. All three are the same distance from the lamp (within a few cm), so distance can't explain the big difference."
   },
   {
-    q: "How does this sunlight angle effect explain why summers are warmer than winters?",
-    options: [
-      "A) In summer, Earth is closer to the Sun",
-      "B) In summer, the Sun is higher in the sky so sunlight strikes more directly, concentrating energy",
-      "C) In summer, the atmosphere is thinner",
-      "D) In summer, clouds reflect less sunlight"
-    ],
-    correct: 1,
-    explanation: "During summer, Earth's axial tilt causes the Sun to appear higher in the sky, so sunlight strikes at a steeper angle. This concentrates solar energy over a smaller area, warming the surface more effectively."
+    q: "What is different about how the light hits the equator compared with near the pole?",
+    options: ["The light hits the equator straight on (directly); near the pole it hits at a low, glancing angle", "The pole is in the shadow", "The light is a different color at the pole", "The thermometer at the pole is broken"],
+    correct: 0,
+    explanation: "The globe curves away from the lamp. At the equator the rays hit the surface head-on; near the pole they skim across it. Part B tests why the angle matters."
   }
 ])
 ```
 
-# Explain: The Science of Seasons
+### Part B: How Spread Out Is the Light? {#ss-part-b}
+
+Shine a flashlight (or lamp) straight down onto grid paper, then tilt it. The **same amount of light** comes out of the flashlight every time. Watch how many squares it covers.
+
+```{ojs}
+//| echo: false
+viewof ssBeamAngle = Inputs.range([10, 90], {step: 5, value: 90, label: "Angle of light above the surface (°):"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const a = ssBeamAngle * ssRad;
+  const r = 2;                        // beam radius in grid squares
+  const along = r / Math.sin(a);      // stretched radius
+  const area = Math.PI * r * along;   // squares covered
+  const perSquare = 100 / area;       // 100 energy units in the beam
+  const W = 360, H = 330;
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("role", "img")
+    .attr("aria-label", `Side view and top view of a light beam hitting a surface at ${ssBeamAngle} degrees`)
+    .style("width", "100%").style("max-width", "480px").style("height", "auto").style("display", "block").style("margin", "auto");
+  svg.append("rect").attr("width", W).attr("height", H).attr("rx", 14).attr("fill", "#0b1020");
+  // side view
+  svg.append("text").attr("x", 12).attr("y", 20).attr("fill", "#e2e8f0").attr("font-size", 12).attr("font-weight", 700).text("Side view");
+  const gy = 140, gx = 180, s = 14;
+  svg.append("rect").attr("x", 10).attr("y", gy).attr("width", W - 20).attr("height", 8).attr("fill", "#a16207");
+  const dx = Math.cos(a), dy = Math.sin(a);  // direction toward the light source
+  const halfFoot = along * s;
+  [-1, -0.5, 0, 0.5, 1].forEach(k => {
+    const fx = gx + k * halfFoot;
+    svg.append("line").attr("x1", fx - dx * 160).attr("y1", gy - dy * 160).attr("x2", fx).attr("y2", gy)
+      .attr("stroke", "#fde047").attr("stroke-width", k === 0 ? 2.5 : 1.5).attr("stroke-opacity", .85);
+  });
+  svg.append("line").attr("x1", gx - halfFoot).attr("y1", gy + 12).attr("x2", gx + halfFoot).attr("y2", gy + 12).attr("stroke", "#fbbf24").attr("stroke-width", 3);
+  svg.append("text").attr("x", gx).attr("y", gy + 26).attr("text-anchor", "middle").attr("fill", "#fde68a").attr("font-size", 11).text(`lit strip: ${(2 * along).toFixed(1)} squares long`);
+  svg.append("text").attr("x", W - 14).attr("y", 20).attr("text-anchor", "end").attr("fill", "#fde68a").attr("font-size", 13).attr("font-weight", 700).text(`${ssBeamAngle}°`);
+  // top view grid
+  const ty = 180, cols = 22, rows = 10, sq = 14.5, ox = (W - cols * sq) / 2;
+  svg.append("text").attr("x", 12).attr("y", ty - 6).attr("fill", "#e2e8f0").attr("font-size", 12).attr("font-weight", 700).text("Top view: grid paper");
+  svg.append("rect").attr("x", ox).attr("y", ty).attr("width", cols * sq).attr("height", rows * sq).attr("fill", "#f8fafc");
+  const ccx = ox + cols * sq / 2, ccy = ty + rows * sq / 2;
+  const glow = Math.min(1, 0.25 + perSquare / 8);
+  svg.append("ellipse").attr("cx", ccx).attr("cy", ccy).attr("rx", Math.min(along, cols / 2) * sq).attr("ry", r * sq)
+    .attr("fill", d3.interpolateYlOrRd(0.15 + 0.8 * glow)).attr("opacity", .9);
+  for (let i = 0; i <= cols; i++) svg.append("line").attr("x1", ox + i * sq).attr("y1", ty).attr("x2", ox + i * sq).attr("y2", ty + rows * sq).attr("stroke", "#94a3b8").attr("stroke-width", .6);
+  for (let j = 0; j <= rows; j++) svg.append("line").attr("x1", ox).attr("y1", ty + j * sq).attr("x2", ox + cols * sq).attr("y2", ty + j * sq).attr("stroke", "#94a3b8").attr("stroke-width", .6);
+  if (along > cols / 2) svg.append("text").attr("x", ccx).attr("y", ccy + 4).attr("text-anchor", "middle").attr("font-size", 11).attr("fill", "#7c2d12").attr("font-weight", 700).text("spreads past the paper!");
+  const wrap = d3.create("div");
+  wrap.append(() => svg.node());
+  wrap.append("div").attr("class", "ss-cards").html(`
+    <div class="ss-card"><span class="lab">Area lit</span><b class="big">${area.toFixed(1)} squares</b></div>
+    <div class="ss-card"><span class="lab">Energy per square</span><b class="big">${perSquare.toFixed(1)} units</b>(beam = 100 units)</div>
+    <div class="ss-card"><span class="lab">Compared with 90°</span><b class="big">${(100 * Math.sin(a)).toFixed(0)}%</b>as much energy per square</div>`);
+  return wrap.node();
+}
+```
+
+```{ojs}
+//| echo: false
+ssQuiz("ss-partb-quiz", "Check Your Understanding: Part B", [
+  {
+    q: "Set the angle to 90°, then 30°. What happens to the lit area and the energy in each square?",
+    options: ["The area doubles and each square gets half the energy", "The area stays the same", "The area shrinks and each square gets more energy", "Each square gets the same energy"],
+    correct: 0,
+    explanation: "At 30° the light covers about 25 squares instead of about 12.6 (twice as many), so each square gets half as much energy. Same light, more area, less heating per square."
+  },
+  {
+    q: "Where on the globe in Part A was the light most spread out?",
+    options: ["At the equator", "Near the pole, where the light hit at a low angle", "Everywhere the same", "On the night side"],
+    correct: 1,
+    explanation: "Near the pole, the globe's curved surface meets the light at a low angle, so the light is spread over a big area. That's why that thermometer warmed the least."
+  }
+])
+```
+
+### Part C: Carry the Globe Around the Sun {#ss-part-c}
+
+Now tilt the globe **23.5°** and carry it in a circle around the lamp. Keep the axis **pointing the same direction** the whole time (toward the North Star, Polaris), just like the real Earth. Watch the angle of the light hitting **NYC (40.7° N)** and **Melbourne (37.8° S)**.
+
+```{ojs}
+//| echo: false
+ssDecl = (n, eps = 23.44) => -Math.asin(Math.sin(eps * ssRad) * Math.cos(2 * Math.PI * (n + 10) / 365)) / ssRad
+ssDayLen = (lat, dec) => {
+  const x = -Math.tan(Math.max(-89.9, Math.min(89.9, lat)) * ssRad) * Math.tan(dec * ssRad);
+  if (x >= 1) return 0;
+  if (x <= -1) return 24;
+  return 2 * Math.acos(x) / ssRad / 15;
+}
+ssNoon = (lat, dec) => Math.max(0, 90 - Math.abs(lat - dec))
+ssDistFactor = n => 1 + 0.0334 * Math.cos(2 * Math.PI * (n - 3) / 365)
+ssInsol = (lat, n, eps = 23.44, useDist = true) => {
+  const dec = ssDecl(n, eps) * ssRad, phi = Math.max(-89.99, Math.min(89.99, lat)) * ssRad;
+  const x = Math.max(-1, Math.min(1, -Math.tan(phi) * Math.tan(dec)));
+  const w0 = Math.acos(x);
+  const q = 1361 / Math.PI * (w0 * Math.sin(phi) * Math.sin(dec) + Math.cos(phi) * Math.cos(dec) * Math.sin(w0));
+  return Math.max(0, q * (useDist ? ssDistFactor(n) : 1));
+}
+ssDistKm = n => 149.6 * (1 - 0.0167 * Math.cos(2 * Math.PI * (n - 3) / 365))
+ssDateLabel = n => new Date(2025, 0, n).toLocaleDateString("en-US", {month: "short", day: "numeric"})
+ssSeasonNH = n => n >= 79 && n < 172 ? "Spring" : n >= 172 && n < 265 ? "Summer" : n >= 265 && n < 355 ? "Fall" : "Winter"
+ssSeasonSH = n => ({Spring: "Fall", Summer: "Winter", Fall: "Spring", Winter: "Summer"})[ssSeasonNH(n)]
+ssCities = [
+  {name: "NYC", lat: 40.7, color: "#dc2626"},
+  {name: "Melbourne", lat: -37.8, color: "#2563eb"}
+]
+```
+
+```{ojs}
+//| echo: false
+viewof ssOrbitDay = Inputs.range([1, 365], {step: 1, value: 172, label: "Day of the year (1–365):"})
+```
+
+```{ojs}
+//| echo: false
+viewof ssOrbitTilt = Inputs.radio(["Tilted 23.5° (real Earth)", "No tilt (0°)"], {value: "Tilted 23.5° (real Earth)", label: "Globe:"})
+```
+
+```{ojs}
+//| echo: false
+ssOrbitDate = html`<p style="margin:0 0 4px;font-weight:700;">📅 ${ssDateLabel(ssOrbitDay)}</p>`
+ssOrbitJump = {
+  const days = [["Mar 20", 79], ["Jun 21", 172], ["Sep 22", 265], ["Dec 21", 355], ["Jan 3", 3], ["Jul 4", 185]];
+  const box = html`<div style="display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px;"></div>`;
+  days.forEach(([lab, n]) => {
+    const b = html`<button style="min-height:44px;padding:6px 12px;border-radius:18px;border:1.5px solid #0f766e;background:#f0fdfa;color:#115e59;font-weight:600;cursor:pointer;">${lab}</button>`;
+    b.onclick = () => { const i = viewof ssOrbitDay; i.value = n; i.dispatchEvent(new Event("input", {bubbles: true})); };
+    box.appendChild(b);
+  });
+  return box;
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const n = ssOrbitDay, eps = ssOrbitTilt.startsWith("No") ? 0 : 23.44;
+  const dec = ssDecl(n, eps);
+  const wrap = d3.create("div").style("display", "flex").style("flex-wrap", "wrap").style("gap", "10px").style("justify-content", "center");
+  // --- Top view of the orbit ---
+  {
+    const W = 340, H = 300, cx = 170, cy = 150, R = 108;
+    const svg = wrap.append("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("role", "img")
+      .attr("aria-label", `Top view of Earth's orbit on ${ssDateLabel(n)}`)
+      .style("width", "100%").style("max-width", "380px").style("height", "auto").style("flex", "1 1 260px");
+    svg.append("rect").attr("width", W).attr("height", H).attr("rx", 14).attr("fill", "#0b1020");
+    svg.append("text").attr("x", 10).attr("y", 18).attr("fill", "#e2e8f0").attr("font-size", 11).attr("font-weight", 700).text("View from above the North Pole");
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", R).attr("fill", "none").attr("stroke", "#475569").attr("stroke-dasharray", "4,4");
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 18).attr("fill", "#fbbf24");
+    svg.append("text").attr("x", cx).attr("y", cy + 4).attr("text-anchor", "middle").attr("font-size", 10).attr("font-weight", 700).attr("fill", "#7c2d12").text("Sun");
+    const marks = [[79, "Mar equinox"], [172, "Jun solstice"], [265, "Sep equinox"], [355, "Dec solstice"]];
+    marks.forEach(([d, lab]) => {
+      const th = (180 + 360 * (d - 172) / 365.25) * ssRad;
+      const x = cx + (R + 0) * Math.cos(th), y = cy - R * Math.sin(th);
+      svg.append("circle").attr("cx", x).attr("cy", y).attr("r", 3).attr("fill", "#94a3b8");
+      const side = Math.abs(Math.cos(th)) > .3;
+      const lx = side ? (Math.cos(th) < 0 ? 4 : W - 4) : cx, ly = side ? cy - 22 : cy - (R + 10) * Math.sin(th) + (Math.sin(th) < 0 ? 8 : 0);
+      svg.append("text").attr("x", lx).attr("y", ly).attr("text-anchor", side ? (Math.cos(th) < 0 ? "start" : "end") : "middle")
+        .attr("font-size", 10).attr("fill", "#cbd5e1").text(lab);
+    });
+    const th = (180 + 360 * (n - 172) / 365.25) * ssRad;
+    const ex = cx + R * Math.cos(th), ey = cy - R * Math.sin(th);
+    // day side faces the Sun
+    const ang = Math.atan2(cy - ey, cx - ex) / ssRad;
+    svg.append("circle").attr("cx", ex).attr("cy", ey).attr("r", 15).attr("fill", "#1e3a8a");
+    svg.append("path").attr("d", `M0,-15 A15,15 0 0,1 0,15 Z`).attr("fill", "#60a5fa").attr("transform", `translate(${ex},${ey}) rotate(${ang})`);
+    // axis tilt arrow: north pole leans toward +x (fixed direction in space)
+    const tl = 26 * Math.sin(eps * ssRad) / Math.sin(23.44 * ssRad);
+    if (eps > 0) {
+      svg.append("line").attr("x1", ex).attr("y1", ey).attr("x2", ex + tl).attr("y2", ey).attr("stroke", "#f472b6").attr("stroke-width", 3);
+      svg.append("text").attr("x", ex + tl + 3).attr("y", ey + 4).attr("font-size", 11).attr("font-weight", 700).attr("fill", "#f9a8d4").text("N");
+    }
+    svg.append("text").attr("x", 10).attr("y", H - 10).attr("fill", "#94a3b8").attr("font-size", 9.5).text(eps > 0 ? "Pink arrow: the way the North Pole leans (never changes)" : "No tilt: the North Pole points straight up");
+  }
+  // --- Sun's-eye side view ---
+  {
+    const W = 340, H = 300, cx = 185, cy = 150, R = 105;
+    const svg = wrap.append("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("role", "img")
+      .attr("aria-label", `Side view of Earth with sunlight from the left; the Sun is overhead at latitude ${dec.toFixed(1)} degrees`)
+      .style("width", "100%").style("max-width", "380px").style("height", "auto").style("flex", "1 1 260px");
+    svg.append("rect").attr("width", W).attr("height", H).attr("rx", 14).attr("fill", "#0b1020");
+    svg.append("text").attr("x", 10).attr("y", 18).attr("fill", "#e2e8f0").attr("font-size", 11).attr("font-weight", 700).text("Side view: sunlight from the left");
+    for (let y = cy - 100; y <= cy + 100; y += 20) {
+      const dy = y - cy; if (Math.abs(dy) >= R) continue;
+      svg.append("line").attr("x1", 6).attr("y1", y).attr("x2", cx - Math.sqrt(R * R - dy * dy)).attr("y2", y).attr("stroke", "#fde047").attr("stroke-opacity", .45);
+    }
+    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", R).attr("fill", "#60a5fa");
+    svg.append("path").attr("d", `M${cx},${cy - R} A${R},${R} 0 0,1 ${cx},${cy + R} Z`).attr("fill", "#0b1020").attr("opacity", .6);
+    const d = dec * ssRad;
+    const A = [-Math.sin(d), -Math.cos(d)], E = [-Math.cos(d), Math.sin(d)];
+    const P = (lat, side = 1) => { const p = lat * ssRad; return [cx + R * (side * Math.cos(p) * E[0] + Math.sin(p) * A[0]), cy + R * (side * Math.cos(p) * E[1] + Math.sin(p) * A[1])]; };
+    const lines = [[0, "Equator", "#e2e8f0"], [23.44, "Tropic of Cancer", "#fde68a"], [-23.44, "Tropic of Capricorn", "#fde68a"], [66.56, "Arctic Circle", "#a5f3fc"], [-66.56, "Antarctic Circle", "#a5f3fc"]];
+    lines.forEach(([lat, lab, col]) => {
+      const p1 = P(lat, 1), p2 = P(lat, -1);
+      svg.append("line").attr("x1", p1[0]).attr("y1", p1[1]).attr("x2", p2[0]).attr("y2", p2[1]).attr("stroke", col).attr("stroke-width", 1).attr("stroke-dasharray", lat === 0 ? null : "3,3").attr("stroke-opacity", .85);
+      svg.append("text").attr("x", (p1[0] + p2[0]) / 2 + 30).attr("y", (p1[1] + p2[1]) / 2 - 3).attr("text-anchor", "middle").attr("font-size", 8.5).attr("fill", col).attr("stroke", "#0b1020").attr("stroke-width", 2.5).attr("paint-order", "stroke").text(lab);
+    });
+    const np = [cx + 1.22 * R * A[0], cy + 1.22 * R * A[1]], sp = [cx - 1.22 * R * A[0], cy - 1.22 * R * A[1]];
+    svg.append("line").attr("x1", sp[0]).attr("y1", sp[1]).attr("x2", np[0]).attr("y2", np[1]).attr("stroke", "#f472b6").attr("stroke-width", 2.5);
+    svg.append("text").attr("x", np[0]).attr("y", np[1] - 4).attr("text-anchor", "middle").attr("font-size", 11).attr("font-weight", 700).attr("fill", "#f9a8d4").text("N");
+    ssCities.forEach(c => {
+      const p = P(c.lat, 1);
+      svg.append("circle").attr("cx", p[0]).attr("cy", p[1]).attr("r", 5.5).attr("fill", c.color).attr("stroke", "white").attr("stroke-width", 2);
+      svg.append("text").attr("x", p[0] - 9).attr("y", p[1] + 4).attr("text-anchor", "end").attr("font-size", 10.5).attr("font-weight", 700).attr("fill", "white").text(c.name);
+    });
+    const ss = P(dec, 1);
+    svg.append("text").attr("x", 8).attr("y", H - 10).attr("font-size", 9.5).attr("fill", "#fde68a").text(`Sun directly overhead at noon: ${Math.abs(dec).toFixed(1)}° ${dec >= 0 ? "N" : "S"}`);
+  }
+  const nyc = ssNoon(40.7, dec), mel = ssNoon(-37.8, dec);
+  const sN = eps > 0 ? ssSeasonNH(n) : "No seasons", sS = eps > 0 ? ssSeasonSH(n) : "No seasons";
+  const box = d3.create("div");
+  box.append(() => wrap.node());
+  box.append("div").attr("class", "ss-cards").html(`
+    <div class="ss-card" style="border-color:#dc2626"><span class="lab">NYC · ${sN}</span><b class="big">${nyc.toFixed(0)}°</b>noon Sun angle<br>${ssDayLen(40.7, dec).toFixed(1)} h of daylight</div>
+    <div class="ss-card" style="border-color:#2563eb"><span class="lab">Melbourne · ${sS}</span><b class="big">${mel.toFixed(0)}°</b>noon Sun angle<br>${ssDayLen(-37.8, dec).toFixed(1)} h of daylight</div>
+    <div class="ss-card"><span class="lab">Earth–Sun distance</span><b class="big">${ssDistKm(n).toFixed(1)}</b>million km (${n >= 365 || n <= 10 ? "near closest" : (n >= 178 && n <= 192 ? "near farthest" : "in between")})</div>`);
+  box.append("p").attr("class", "ss-note").text("Orbit drawn as a circle: the real orbit is so close to a circle that its shape is hard to see at this scale. Daylight hours are geometric estimates.");
+  return box.node();
+}
+```
+
+::: {.callout-tip}
+## 🔎 Try these
+1. Click **Jun 21** and **Dec 21**. Which city has the higher noon Sun? Which city has longer days?
+2. Click **Jan 3** and **Jul 4**. When is Earth **closest** to the Sun? What season is NYC having then?
+3. Switch to **No tilt (0°)** and drag through the year. What happens to the differences between seasons?
+4. Does Earth's spin (rotation) change in any of these? (It's the same every day: one turn about every 24 hours.)
+:::
+
+```{ojs}
+//| echo: false
+ssQuiz("ss-partc-quiz", "Check Your Understanding: Part C", [
+  {
+    q: "On June 21, the noon Sun is about 73° high in NYC and about 29° high in Melbourne. Using Part B, which city gets more energy per square meter?",
+    options: ["Melbourne, because the angle is lower", "NYC, because higher-angle light is more concentrated", "They get the same", "Neither gets sunlight in June"],
+    correct: 1,
+    explanation: "A higher Sun angle means the light is spread over less area, so each square gets more energy. In June the Northern Hemisphere leans toward the Sun, so NYC gets more direct light (summer) while Melbourne gets spread-out light (winter)."
+  },
+  {
+    q: "Earth is closest to the Sun (about 147 million km) in early January and farthest (about 152 million km) in early July. What does this tell you?",
+    options: ["Distance causes seasons, because January is summer everywhere", "Distance can't be the main cause: NYC is coldest when Earth is closest, and the change is only about 3%", "The Sun is hotter in January", "Earth's orbit is very stretched out"],
+    correct: 1,
+    explanation: "If distance caused seasons, both hemispheres would have summer at the same time (January). Instead NYC has winter and Melbourne has summer. The distance changes by only about 5 million km out of 150 million."
+  },
+  {
+    q: "With No tilt (0°), what happens to the noon Sun angle at NYC through the year?",
+    options: ["It changes a lot", "It stays the same (about 49°) all year, so there would be almost no seasons", "It is 90° all year", "NYC gets no sunlight"],
+    correct: 1,
+    explanation: "Without the tilt, the Sun is always overhead at the equator, every place gets 12 hours of daylight every day, and the noon angle never changes. The tilt is what makes the angle and day length change during the year."
+  }
+])
+```
+
+## Making Sense of Part 1 {#ss-making-sense-1}
+
+::: {.student-task}
+### ✏️ In your handout: Making Sense of the *What causes seasons? Part 1* Investigation
+
+Complete the **See-Think-Wonder**:
+
+- **See:** What did you observe about temperature (Part A), the spread of light (Part B), and the angle of light during the orbit (Part C)?
+- **Think:** What do those observations make you think about how seasons happen?
+- **Wonder:** What questions do you still have?
+
+Then choose **one important observation, idea, or question** to share with the class (in class: Domino Discover).
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+- **See:** The thermometer at the equator warmed the most and the one near the pole warmed the least. Light hitting at a **low angle** is **spread over more squares**, so each square gets less energy. As the tilted globe moved around the lamp, the light hit NYC **more directly in June** and at a **lower angle in December**, and the opposite for Melbourne.
+- **Think:** The **angle** of sunlight, not the distance, controls how much a place heats up. Because the axis stays tilted the same way, each hemisphere takes turns leaning toward the Sun.
+- **Wonder:** *Do places also get more hours of sunlight in summer? Do all places on Earth get the same amount of light on the same day? Why is Earth closest to the Sun in January?*
+:::
+
+## Part 2: Using Computational and Visual Models {#ss-part2}
+
+### Part D: Sunlight Around the World {#ss-part-d}
+
+In class you used the [Seasons and Ecliptic Simulator](https://astro.unl.edu/naap/motion1/animations/seasons_ecliptic.html) (University of Nebraska-Lincoln). The map below is a computational model of the same thing: it calculates where it is **day** and **night** at **noon in London (12:00 UTC)** on any date.
+
+**Conferring questions:** How is sunlight affecting different parts of the world? Are all areas of the globe receiving the same amount of light? How do you think the difference in light affects each area?
+
+```{ojs}
+//| echo: false
+ssLand = {
+  try {
+    const w = await d3.json("../world-110m.json");
+    return topo.feature(w, w.objects.land);
+  } catch (e) {
+    return null;
+  }
+}
+viewof ssMapDay = Inputs.range([1, 365], {step: 1, value: 355, label: "Day of the year (1–365):"})
+```
+
+```{ojs}
+//| echo: false
+html`<p style="margin:0 0 4px;font-weight:700;">📅 ${ssDateLabel(ssMapDay)}</p>`
+```
+
+```{ojs}
+//| echo: false
+{
+  const dec = ssDecl(ssMapDay);
+  const night = d3.geoCircle().center([180, -dec]).radius(90)();
+  const lines = [
+    {lat: 66.56, name: "Arctic Circle"}, {lat: 23.44, name: "Tropic of Cancer"}, {lat: 0, name: "Equator"},
+    {lat: -23.44, name: "Tropic of Capricorn"}, {lat: -66.56, name: "Antarctic Circle"}
+  ];
+  const latLine = lat => ({type: "LineString", coordinates: d3.range(-180, 181, 5).map(lon => [lon, lat])});
+  const cities = [{name: "NYC", lon: -74.0, lat: 40.7}, {name: "Melbourne", lon: 145.0, lat: -37.8}];
+  const plot = Plot.plot({
+    title: `Day and night on ${ssDateLabel(ssMapDay)} (12:00 UTC)`,
+    subtitle: `The Sun is directly overhead at ${Math.abs(dec).toFixed(1)}° ${dec >= 0 ? "N" : "S"}`,
+    width, height: Math.round(Math.min(width, 900) * 0.52),
+    projection: {type: "equirectangular", domain: {type: "Sphere"}},
+    marks: [
+      Plot.sphere({fill: "#bfdbfe", stroke: "#64748b"}),
+      ssLand ? Plot.geo(ssLand, {fill: "#d9c9a3", stroke: "#8d7b5a", strokeWidth: 0.4}) : null,
+      Plot.geo(night, {fill: "#0b1020", fillOpacity: 0.55}),
+      ...lines.map(l => Plot.geo(latLine(l.lat), {stroke: l.lat === 0 ? "#334155" : "#475569", strokeDasharray: l.lat === 0 ? null : "4,3", strokeWidth: 0.8})),
+      Plot.text(lines, {x: -178, y: "lat", text: "name", textAnchor: "start", dy: -5, fontSize: 9, fill: "#1e293b", stroke: "white", strokeWidth: 2}),
+      Plot.dot([{lon: 0, lat: dec}], {x: "lon", y: "lat", r: 9, fill: "#fbbf24", stroke: "#b45309", strokeWidth: 2}),
+      Plot.dot(cities, {x: "lon", y: "lat", r: 5, fill: "#dc2626", stroke: "white", strokeWidth: 1.5}),
+      Plot.text(cities, {x: "lon", y: "lat", text: "name", dy: -10, fontSize: 11, fontWeight: "bold", fill: "#1e293b", stroke: "white", strokeWidth: 3})
+    ]
+  });
+  const rows = [
+    {place: "North Pole (90° N)", lat: 90}, {place: "Arctic Circle (66.6° N)", lat: 66.56}, {place: "NYC (40.7° N)", lat: 40.7},
+    {place: "Equator (0°)", lat: 0}, {place: "Melbourne (37.8° S)", lat: -37.8}, {place: "Antarctic Circle (66.6° S)", lat: -66.56}, {place: "South Pole (90° S)", lat: -90}
+  ];
+  const fmtH = h => h <= 0.01 ? "0 h (dark all day)" : h >= 23.99 ? "24 h (Sun never sets)" : `${h.toFixed(1)} h`;
+  const tbl = document.createElement("div");
+  tbl.style.overflowX = "auto";
+  tbl.innerHTML = `<table class="ss-table"><thead><tr><th>Place</th><th>Daylight</th><th>Noon Sun angle</th><th>Sunlight energy (daily avg., W/m²)</th></tr></thead><tbody>` +
+    rows.map(r => `<tr><td>${r.place}</td><td>${fmtH(ssDayLen(r.lat, dec))}</td><td>${ssNoon(r.lat, dec).toFixed(0)}°</td><td>${ssInsol(r.lat, ssMapDay).toFixed(0)}</td></tr>`).join("") +
+    `</tbody></table>`;
+  const box = html`<div></div>`;
+  box.appendChild(plot);
+  if (!ssLand) box.appendChild(html`<p class="ss-note">🗺️ The coastlines could not load, but day and night are still shown.</p>`);
+  box.appendChild(tbl);
+  box.appendChild(html`<p class="ss-note">Calculated from Earth's tilt and orbit. Sunlight energy is the daily average at the top of the atmosphere (before clouds). Daylight ignores the bending of light by air, which adds a few minutes.</p>`);
+  return box;
+}
+```
+
+```{ojs}
+//| echo: false
+ssQuiz("ss-partd-quiz", "Check Your Understanding: Part D", [
+  {
+    q: "Set the map to December 21. Which statement matches the map and table?",
+    options: ["Every place gets 12 hours of daylight", "The area inside the Arctic Circle is dark all day, while the area inside the Antarctic Circle has the Sun up all day", "The North Pole gets the most sunlight", "NYC gets more daylight than Melbourne"],
+    correct: 1,
+    explanation: "In December the Southern Hemisphere leans toward the Sun. The night side covers the whole Arctic, and the whole Antarctic is in daylight. NYC gets about 9 hours of daylight, Melbourne about 15."
+  },
+  {
+    q: "Set the map to March 20 or September 22 (an equinox). What do you notice?",
+    options: ["The Sun is overhead at the equator and almost every place gets about 12 hours of daylight", "The North Pole is dark", "Only the Southern Hemisphere is lit", "The Sun is overhead at NYC"],
+    correct: 0,
+    explanation: "On the equinoxes, neither hemisphere leans toward the Sun. The line between day and night runs through both poles, so day and night are about equal everywhere."
+  },
+  {
+    q: "Are all areas of the globe receiving the same amount of light?",
+    options: ["Yes, always", "No: the amount depends on latitude and the time of year", "No, but only because of clouds", "Yes, except at night"],
+    correct: 1,
+    explanation: "Sunlight energy changes with latitude (because Earth is curved) and with the date (because of the tilt). That uneven heating is what creates seasons."
+  }
+])
+```
+
+### Sunlight by Latitude Through the Year {#ss-insolation}
+
+These two graphs use the same computational model to show the **whole year at once**.
+
+```{ojs}
+//| echo: false
+{
+  const rects = [];
+  for (let n = 1; n <= 365; n += 5)
+    for (let lat = -90; lat < 90; lat += 5)
+      rects.push({x1: n, x2: Math.min(n + 5, 366), y1: lat, y2: lat + 5, q: ssInsol(lat + 2.5, n + 2)});
+  const monthStarts = [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335];
+  const mNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return Plot.plot({
+    title: "Daily sunlight energy by latitude and month",
+    subtitle: "Average W/m² at the top of the atmosphere (darker = less sunlight). Lines: NYC (red), Melbourne (blue)",
+    width: Math.max(300, width), height: 330, marginLeft: 44, marginRight: 10, marginBottom: 36,
+    x: {label: null, domain: [1, 366], ticks: monthStarts, tickFormat: d => mNames[monthStarts.indexOf(d)]},
+    y: {label: "Latitude (°)", domain: [-90, 90], ticks: [-90, -60, -30, 0, 30, 60, 90]},
+    color: {type: "linear", scheme: "inferno", domain: [0, 560], legend: true, label: "Sunlight energy (W/m²)"},
+    marks: [
+      Plot.rect(rects, {x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: "q", inset: 0, shapeRendering: "crispEdges"}),
+      Plot.ruleY([40.7], {stroke: "#ef4444", strokeWidth: 2}),
+      Plot.ruleY([-37.8], {stroke: "#60a5fa", strokeWidth: 2}),
+      Plot.ruleX([ssMapDay], {stroke: "white", strokeDasharray: "4,3"}),
+      Plot.text([ssMapDay], {x: d => d, y: 88, text: () => "map date", fill: "white", fontSize: 10, textAnchor: "start", dx: 4, dy: 6})
+    ]
+  });
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const places = [
+    {name: "Arctic Circle (66.6° N)", lat: 66.56}, {name: "NYC (40.7° N)", lat: 40.7},
+    {name: "Equator (0°)", lat: 0}, {name: "Melbourne (37.8° S)", lat: -37.8}
+  ];
+  const rows = [];
+  places.forEach(p => { for (let n = 1; n <= 365; n += 2) rows.push({place: p.name, n, h: ssDayLen(p.lat, ssDecl(n))}); });
+  const monthStarts = [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335];
+  const mNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return Plot.plot({
+    title: "Hours of daylight through the year",
+    width, height: 300, marginLeft: 40, marginRight: 10,
+    x: {label: null, domain: [1, 366], ticks: monthStarts, tickFormat: d => mNames[monthStarts.indexOf(d)]},
+    y: {label: "Daylight (hours)", domain: [0, 24], ticks: [0, 6, 12, 18, 24], grid: true},
+    color: {domain: places.map(p => p.name), range: ["#06b6d4", "#dc2626", "#d97706", "#2563eb"], legend: true},
+    marks: [
+      Plot.ruleY([12], {stroke: "currentColor", strokeOpacity: 0.4}),
+      Plot.ruleX([ssMapDay], {stroke: "currentColor", strokeDasharray: "4,3", strokeOpacity: 0.6}),
+      Plot.line(rows, {x: "n", y: "h", stroke: "place", strokeWidth: 2.5}),
+      Plot.tip(rows, Plot.pointerX({x: "n", y: "h", stroke: "place", title: d => `${d.place}\n${ssDateLabel(d.n)}: ${d.h.toFixed(1)} h`}))
+    ]
+  });
+}
+```
+
+<p class="ss-note">Both graphs follow the map's date slider above (dashed line).</p>
+
+```{ojs}
+//| echo: false
+ssQuiz("ss-insol-quiz", "Check Your Understanding: Sunlight Through the Year", [
+  {
+    q: "In the heat map, the brightest band (most sunlight) moves north and south during the year. Where is it in June and in December?",
+    options: ["Over the Northern Hemisphere in June and the Southern Hemisphere in December", "Over the equator all year", "Over the Southern Hemisphere in June", "It doesn't move"],
+    correct: 0,
+    explanation: "The most sunlight follows the hemisphere that is tilted toward the Sun. Look along the red NYC line: bright in June, dark in December. The blue Melbourne line is the reverse."
+  },
+  {
+    q: "In the daylight graph, the NYC and Melbourne lines are mirror images. The equator line is flat at about 12 hours. What pattern does this show?",
+    options: ["Day length changes most at the equator", "When one hemisphere has its longest days, the other has its shortest; the equator barely changes", "All places have the same day length", "Melbourne always has longer days"],
+    correct: 1,
+    explanation: "Summer means more direct sunlight AND more hours of it. Winter means less direct light for fewer hours. Near the equator, day length and Sun angle change little, so seasons are mild."
+  }
+])
+```
+
+## Making Sense of Part 2 {#ss-making-sense-2}
+
+::: {.student-task}
+### ✏️ In your handout: Making Sense of the *What causes seasons? Part 2* Investigation
+
+Complete the **See-Think-Wonder** for the simulator and data:
+
+- **See:** How does sunlight reach different parts of the world in June, December, and at the equinoxes?
+- **Think:** How might the difference in light affect the temperature in each area?
+- **Wonder:** What do you still want to know?
+
+Share one observation, idea, or question with the class (Domino Discover).
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+- **See:** Different places get **different amounts of sunlight** on the same day. In **June** the Northern Hemisphere gets more direct light and longer days, and the Arctic has 24-hour daylight. In **December** the pattern flips to the Southern Hemisphere. At the **equinoxes** both hemispheres get about 12 hours.
+- **Think:** Places getting **more direct sunlight for more hours** should be **warmer**. That's summer. Places getting less light, at a lower angle, for fewer hours should be cooler. That's winter.
+- **Wonder:** *Do real temperatures follow this pattern? Why are places near the equator warm all year?*
+:::
+
+# Explain: Why Do NYC and Melbourne Have Different Seasons? {#ss-explain}
 
 ::: {.explain-box}
-### 🌍 Key Concepts
+## 🧠 From Patterns to Cause and Effect
 
-**Seasons are caused by Earth's 23.5° axial tilt, NOT distance from the Sun.**
-
-1. **Summer:** Your hemisphere is tilted TOWARD the Sun
-   - Sun appears higher in the sky
-   - Sunlight hits more directly (concentrated energy)
-   - Longer days = more heating time
-
-2. **Winter:** Your hemisphere is tilted AWAY from the Sun
-   - Sun appears lower in the sky
-   - Sunlight hits at an angle (spread out energy)
-   - Shorter days = less heating time
+Now use the **patterns** from the models as evidence to explain a **cause and effect** relationship: why NYC and Melbourne have **opposite seasons** in **June/July** and **December/January**. Then build a general explanation for seasons anywhere on Earth.
 :::
 
-## Connection to Climate Change
+## NYC and Melbourne: Questions 1 and 2 {#ss-q12}
 
-Understanding seasons helps us understand climate change because:
+Pick a time of year and compare the two cities. Temperatures are real long-term averages.
 
-- **Milankovitch Cycles** involve changes to Earth's tilt over thousands of years
-- These orbital changes have driven glacial-interglacial cycles
-- We'll explore this in detail in the next lesson!
+```{ojs}
+//| echo: false
+ssTemps = [
+  {m: "Jan", NYC: 1, Melbourne: 21, Singapore: 27},
+  {m: "Feb", NYC: 2, Melbourne: 21, Singapore: 27},
+  {m: "Mar", NYC: 6, Melbourne: 19, Singapore: 28},
+  {m: "Apr", NYC: 12, Melbourne: 16, Singapore: 28},
+  {m: "May", NYC: 18, Melbourne: 13, Singapore: 29},
+  {m: "Jun", NYC: 23, Melbourne: 11, Singapore: 28},
+  {m: "Jul", NYC: 26, Melbourne: 10, Singapore: 28},
+  {m: "Aug", NYC: 25, Melbourne: 11, Singapore: 28},
+  {m: "Sep", NYC: 21, Melbourne: 13, Singapore: 28},
+  {m: "Oct", NYC: 14, Melbourne: 15, Singapore: 28},
+  {m: "Nov", NYC: 9, Melbourne: 17, Singapore: 27},
+  {m: "Dec", NYC: 4, Melbourne: 19, Singapore: 27}
+]
+viewof ssCompare = Inputs.radio(["June / July", "December / January"], {value: "June / July", label: "Time of year:"})
+```
 
-::: {.check-understanding}
-### ✅ Check Your Understanding
-1. Why is it WARMER in summer even though Earth is FARTHER from the Sun?
-2. How does the angle of sunlight affect heating?
-3. Why do the Northern and Southern hemispheres have opposite seasons?
+```{ojs}
+//| echo: false
+{
+  const june = ssCompare.startsWith("June");
+  const n = june ? 172 : 355;
+  const dec = ssDecl(n);
+  const tMonths = june ? ["Jun", "Jul"] : ["Dec", "Jan"];
+  const avgT = city => Math.round((ssTemps.find(d => d.m === tMonths[0])[city] + ssTemps.find(d => d.m === tMonths[1])[city]) / 2);
+  const card = (name, lat, col, season) => `<div class="ss-card" style="border-color:${col};border-width:2.5px;">
+      <span class="lab" style="color:${col}">${name} · ${Math.abs(lat)}° ${lat > 0 ? "N" : "S"}</span>
+      <b class="big">${season}</b>
+      🌡️ Avg. temperature: <b>${avgT(name)} °C</b><br>
+      ☀️ Noon Sun angle: <b>${ssNoon(lat, dec).toFixed(0)}°</b><br>
+      🕒 Daylight: <b>${ssDayLen(lat, dec).toFixed(1)} h</b><br>
+      ⚡ Sunlight energy: <b>${ssInsol(lat, n).toFixed(0)} W/m²</b><br>
+      🌍 Hemisphere tilted <b>${(lat > 0) === june ? "toward" : "away from"}</b> the Sun
+    </div>`;
+  const box = document.createElement("div");
+  box.innerHTML = `<div class="ss-cards">${card("NYC", 40.7, "#dc2626", june ? "Summer" : "Winter")}${card("Melbourne", -37.8, "#2563eb", june ? "Winter" : "Summer")}</div>
+    <p class="ss-note">Sun angle, daylight, and energy are for the ${june ? "June" : "December"} solstice. Earth–Sun distance that day: ${ssDistKm(n).toFixed(1)} million km.</p>`;
+  return box;
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const long = ssTemps.flatMap(d => ["NYC", "Melbourne", "Singapore"].map(c => ({m: d.m, city: c, T: d[c]})));
+  const hl = ssCompare.startsWith("June") ? ["Jun", "Jul"] : ["Dec", "Jan"];
+  return Plot.plot({
+    title: "Average monthly temperature",
+    subtitle: "NYC (40.7° N), Melbourne (37.8° S), and Singapore (1.3° N, near the equator)",
+    width, height: 300, marginLeft: 40, marginRight: 10,
+    x: {label: null, domain: ssTemps.map(d => d.m), padding: 0.1},
+    y: {label: "Temperature (°C)", domain: [-2, 32], grid: true},
+    color: {domain: ["NYC", "Melbourne", "Singapore"], range: ["#dc2626", "#2563eb", "#d97706"], legend: true},
+    marks: [
+      Plot.cell(hl.map(m => ({m})), {x: "m", fill: "#fde68a", fillOpacity: 0.45}),
+      Plot.ruleY([0], {stroke: "currentColor", strokeOpacity: 0.3}),
+      Plot.line(long, {x: "m", y: "T", stroke: "city", strokeWidth: 2.5}),
+      Plot.dot(long, {x: "m", y: "T", fill: "city", r: 3.5, tip: true, title: d => `${d.city}, ${d.m}: about ${d.T} °C`})
+    ]
+  });
+}
+```
+
+<p class="ss-note">Approximate long-term monthly averages, rounded to the nearest °C. Sources: NOAA 1991–2020 climate normals (Central Park, NYC); Australian Bureau of Meteorology (Melbourne); Meteorological Service Singapore.</p>
+
+::: {.student-task}
+### ✏️ In your Student Explain Guide: Questions 1 and 2
+
+With a partner (or on your own):
+
+1. **June/July:** Why is it **summer in NYC** and **winter in Melbourne**? Use evidence from the models (Sun angle, spread of light, daylight hours).
+2. **December/January:** Why are the seasons **reversed**? What is the same about Earth's tilt, and what is different about Earth's position?
 :::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking: Questions 1 and 2 (try it first!)
+
+1. **June/July:** Earth's **Northern Hemisphere is tilted toward the Sun**. Sunlight hits NYC at a **high angle (about 73° at noon)**, so it is concentrated on a small area, and NYC gets **about 15 hours** of daylight. More energy → warmer → **summer (about 24–25 °C)**. Melbourne is in the hemisphere tilted **away**: low Sun (**about 29°**), spread-out light, **about 9.5 hours** of daylight → **winter (about 10–11 °C)**.
+2. **December/January:** The tilt **still points the same direction in space**, but Earth is now on the **other side of its orbit**, so the **Southern Hemisphere** leans toward the Sun. Melbourne gets high-angle light (**about 76°**) and **about 14.5 hours** of daylight (summer). NYC gets low-angle light (**about 26°**) and **about 9 hours** (winter). Earth is actually **closest** to the Sun in early January, so distance isn't the cause.
+:::
+
+```{ojs}
+//| echo: false
+ssQuiz("ss-q12-quiz", "Check Your Understanding: NYC and Melbourne", [
+  {
+    q: "Singapore (near the equator) stays at about 27–29 °C all year. What explains its very small seasonal change?",
+    options: ["Singapore is closer to the Sun", "Near the equator, the noon Sun is always high and day length stays about 12 hours, so sunlight energy changes little", "Singapore has no tilt", "The ocean blocks the seasons"],
+    correct: 1,
+    explanation: "At the equator, the Sun angle at noon stays between about 66° and 90° and days are about 12 hours all year. Seasons are strongest in the middle and high latitudes, where the tilt makes the biggest difference."
+  },
+  {
+    q: "NYC and Melbourne are about the same distance from the equator (40.7° N and 37.8° S). Why do their temperature graphs look like mirror images?",
+    options: ["They are on opposite sides of the equator, so when one hemisphere is tilted toward the Sun the other is tilted away", "Melbourne is closer to the Sun", "Melbourne's time zone is different", "It's a coincidence"],
+    correct: 0,
+    explanation: "Similar latitude means similar amounts of seasonal change. Opposite hemispheres mean the timing is flipped by about six months."
+  }
+])
+```
+
+## The Seasons: Text and Video {#ss-reading}
+
+In class you read the text *The Seasons* and/or watched the video *Insolation Part 2a: Reasons for the Seasons*.
+
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;margin:20px 0;border-radius:12px;">
+<iframe src="https://www.youtube.com/embed/-O9XR0AAxXY" title="Insolation Part 2a: Reasons for the Seasons" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+</div>
+
+::: {.student-task}
+### ✏️ In your notetaker: Confirm, Contradict, Question
+
+While you read or watch, sort ideas into three columns:
+
+- Ideas that **confirm** your thinking about why there are seasons
+- Ideas that **contradict** your thinking
+- Ideas you **have questions** about
+:::
+
+**Formal terms for what you explored:**
+
+| Term | Meaning | Where you saw it |
+|---|---|---|
+| **Insolation** | Incoming solar radiation: sunlight energy reaching a surface | Parts A–D |
+| **Angle of insolation** | How high the Sun is above the horizon. Higher angle = more concentrated energy | Part B grid paper |
+| **Axial tilt** | Earth's axis is tilted about **23.5°** and always points toward **Polaris** | Part C |
+| **Revolution** | Earth's yearly trip around the Sun (365¼ days) | Part C |
+| **Rotation** | Earth's daily spin (about 24 hours). Causes day and night, **not** seasons | Part C |
+| **Summer solstice** | About **June 21** (N. Hemisphere): Sun overhead at the **Tropic of Cancer (23.5° N)**; longest day in the north | Parts C, D |
+| **Winter solstice** | About **December 21** (N. Hemisphere): Sun overhead at the **Tropic of Capricorn (23.5° S)**; shortest day in the north | Parts C, D |
+| **Equinox** | About **March 20** and **September 22**: Sun overhead at the **equator**; about 12 h of day and night everywhere | Part D |
+| **Perihelion / aphelion** | Earth's closest (about **147.1 million km**, early January) and farthest (about **152.1 million km**, early July) points | Part C |
+
+```{ojs}
+//| echo: false
+ssQuiz("ss-terms-quiz", "Check Your Understanding: Key Terms", [
+  {
+    q: "On the June solstice, the Sun is directly overhead at noon at which latitude?",
+    options: ["The equator (0°)", "The Tropic of Cancer (23.5° N)", "The Tropic of Capricorn (23.5° S)", "NYC (40.7° N)"],
+    correct: 1,
+    explanation: "Because the Northern Hemisphere leans 23.5° toward the Sun, the overhead Sun reaches its farthest north point, 23.5° N, on the June solstice. NYC is too far north to ever have the Sun directly overhead."
+  },
+  {
+    q: "Which motion causes day and night, and which causes the yearly cycle of seasons?",
+    options: ["Rotation causes seasons; revolution causes day and night", "Rotation causes day and night; revolution (with the tilt) causes seasons", "Both cause seasons", "Neither one"],
+    correct: 1,
+    explanation: "Earth spins once a day (rotation), making day and night. It orbits once a year (revolution); because the tilted axis keeps pointing the same way, each hemisphere takes turns leaning toward the Sun."
+  }
+])
+```
+
+## A General Explanation for Seasons {#ss-q3}
+
+::: {.student-task}
+### ✏️ In your Student Explain Guide: Question 3 (poster)
+
+In class, groups made a poster that explains **how seasons happen anywhere on Earth** and shared it in an **Idea Carousel**. Make your own version. Include:
+
+- A **model** (drawing) of Earth at **two or more positions** in its orbit, with the **tilted axis** pointing the same way
+- How the **angle of sunlight** and **hours of daylight** change for each hemisphere
+- A **claim** with **evidence** (data from Parts A–D, the temperature graph) and **reasoning** (why more direct sunlight means warmer temperatures)
+:::
+
+**Questions to test your model** (from the Class Consensus Discussion):
+
+- What **evidence** do you have for your explanation?
+- What is the **mechanism**? What are the science ideas involved?
+- How **confident** do you feel about your claims? Why?
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your general explanation (try it first!)
+
+**Claim:** Seasons happen because **Earth's axis is tilted (about 23.5°)** and keeps pointing the same direction in space as Earth **revolves around the Sun**. This changes **how directly** and **for how long** sunlight hits each hemisphere.
+
+**Evidence:**
+
+- Part A: the spot where light hit most directly warmed the most (about 12 °C) and the spot where light hit at a low angle warmed the least (about 3 °C).
+- Part B: light at 30° is spread over **twice** the area of light at 90°, so each square gets **half** the energy.
+- Parts C and D: in June the noon Sun is about **73°** in NYC and **29°** in Melbourne, with about **15 h** vs **9.5 h** of daylight; in December it's reversed.
+- Temperatures: NYC is warmest in July (about 26 °C) and Melbourne is warmest in January–February (about 21 °C).
+- Earth is **closest** to the Sun in **January**, during NYC's winter, so distance is not the cause.
+
+**Reasoning:** Sunlight heats Earth. When a hemisphere is **tilted toward the Sun**, sunlight arrives at a **higher angle** (more concentrated) and for **more hours each day**, so it absorbs more energy and warms up: **summer**. Six months later, that hemisphere is **tilted away**, sunlight is **spread out** and days are **shorter**: **winter**. Because the hemispheres lean in opposite directions, their seasons are **opposite**.
+:::
+
+## Class Consensus Ideas: Seasons {#ss-consensus}
+
+::: {.key-idea}
+**🔑 Class Consensus Ideas: Seasons**
+
+- **Sunlight provides heat** for Earth.
+- Places receiving **more direct sunlight** become **hotter** than places receiving less direct sunlight.
+- Because of the **tilt**, the **Northern Hemisphere is tilted away from the Sun** for half the year. It is **colder** and the **days are shorter**: **Northern Hemisphere winter**.
+- At that same time, the **Southern Hemisphere is tilted toward the Sun**, with **longer days** and **warmer** temperatures: **Southern Hemisphere summer**.
+- For the other half of the year, the **Northern Hemisphere is tilted toward the Sun**: longer days, warmer, **Northern Hemisphere summer**.
+- During that time, the **Southern Hemisphere is tilted away**: colder, shorter days, **Southern Hemisphere winter**.
+:::
+
+In class, ideas the group wasn't sure about were marked with a **question mark (?)**. Write down any ideas you still have a question mark on. They're a good guide for what to review.
+
+## Summary Task {#ss-summary-task}
+
+::: {.student-task}
+### ✏️ Summary Task
+
+On your own, explain **why NYC and Melbourne experience different seasons at the same time of year**. Use a **model** of the Earth–Sun system and **evidence** from the investigations (angle of insolation, daylight hours, temperature data).
+:::
+
+**Before you hand it in, check that your explanation:**
+
+- ☐ Names the cause: Earth's **tilted axis** plus its **revolution** around the Sun
+- ☐ Explains how the **angle of sunlight** changes how **concentrated** the energy is (Part B)
+- ☐ Mentions **hours of daylight** in each hemisphere
+- ☐ Uses at least **two pieces of evidence** (data from the models, temperature graph)
+- ☐ Explains **why the hemispheres have opposite seasons**
+- ☐ Explains why **distance from the Sun** is **not** the cause
+- ☐ Describes the **pattern** as a **cycle** that repeats every year
+
+```{ojs}
+//| echo: false
+{
+  if (!ssProbe) return html`<div class="student-task"><b>🔁 Revisit your Engage idea:</b> You didn't pick an idea at the start. Scroll up to <a href="#ss-probe">Why Do We Have Seasons?</a>, choose one, then come back here.</div>`;
+  const k = ssProbe[0];
+  const fb = {
+    A: "The evidence doesn't support this. Earth is closest to the Sun in early January, during NYC's winter, and the distance changes only about 3%. If distance caused seasons, both hemispheres would have summer at the same time.",
+    B: "The evidence supports this! The tilt changes the angle of sunlight (Part B) and the hours of daylight (Part D), and that's why the hemispheres have opposite seasons.",
+    C: "The evidence doesn't support this. The Sun's output barely changes during the year (about 0.1% over its 11-year cycle). If it did, both hemispheres would have summer at the same time, but they have opposite seasons.",
+    D: "Close, but not quite. The tilt matters, but not because of distance: tilting brings the hemisphere only a few thousand km closer, out of 150 million km. What matters is the more direct angle and longer days.",
+    E: "The evidence doesn't support this. Earth spins once about every 24 hours all year. Rotation causes day and night. The yearly cycle comes from revolution with a tilted axis.",
+    F: "Clouds do change daily weather, but they don't explain the yearly cycle. The models showed that even with no clouds, a hemisphere tilted away from the Sun gets less direct light for fewer hours."
+  }[k];
+  return html`<div class="student-task"><b>🔁 Revisit your Engage idea:</b> ${ssProbe}<br><br>${fb}</div>`;
+}
+```
+
+# Looking Ahead: From Seasons to Long-Term Climate {#ss-bridge}
+
+::: {.elaborate-box}
+## 🔭 Bridge to Earth-Sun Dynamics
+
+Seasons are a **yearly** cycle. Climate change happens over **decades to hundreds of thousands of years**, and very different mechanisms control global temperature over those long times. But the key idea from this chapter still matters: **how much sunlight reaches each part of Earth** controls temperature.
+
+Earth's orbit and tilt aren't fixed. Over very long times they slowly change:
+
+| Orbital factor | What changes | About how long one cycle takes |
+|---|---|---|
+| **Tilt** | Earth's tilt wobbles between about **22.1° and 24.5°** | about **41,000 years** |
+| **Shape of the orbit** (eccentricity) | The orbit stretches from nearly circular to slightly oval | about **100,000 years** |
+| **Direction of tilt** (precession) | The axis slowly swings like a spinning top, changing **which month** each hemisphere leans toward the Sun | about **26,000 years** |
+:::
+
+Try changing the tilt. How would seasons in NYC change?
+
+```{ojs}
+//| echo: false
+viewof ssBridgeTilt = Inputs.range([22.1, 24.5], {step: 0.1, value: 23.4, label: "Earth's tilt (°):"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const e = ssBridgeTilt;
+  const jun = ssInsol(65, 172, e, false), decQ = ssInsol(65, 355, e, false);
+  const nycS = 90 - (40.7 - e), nycW = 90 - (40.7 + e);
+  return html`<div class="ss-cards">
+    <div class="ss-card"><span class="lab">NYC noon Sun, June</span><b class="big">${nycS.toFixed(1)}°</b></div>
+    <div class="ss-card"><span class="lab">NYC noon Sun, December</span><b class="big">${nycW.toFixed(1)}°</b></div>
+    <div class="ss-card"><span class="lab">Summer sunlight at 65° N</span><b class="big">${jun.toFixed(0)} W/m²</b>June solstice daily average</div>
+    <div class="ss-card"><span class="lab">Winter sunlight at 65° N</span><b class="big">${decQ.toFixed(0)} W/m²</b>December solstice daily average</div>
+  </div><p class="ss-note">Same computational model as Part D (Earth–Sun distance held constant). 65° N is where the big ice sheets of past ice ages grew.</p>`;
+}
+```
+
+```{ojs}
+//| echo: false
+ssQuiz("ss-bridge-quiz", "Check Your Understanding: Looking Ahead", [
+  {
+    q: "Move the tilt from 22.1° to 24.5°. What happens to summers and winters at high northern latitudes?",
+    options: ["Summers get more sunlight and winters get less, so seasons become more extreme", "Nothing changes", "Summers get colder", "The seasons switch hemispheres"],
+    correct: 0,
+    explanation: "A bigger tilt makes the hemisphere lean further toward the Sun in summer and further away in winter. Cooler summers (smaller tilt) let snow last through the year, which can help ice sheets grow."
+  }
+])
+```
+
+**Up next:** In [Earth-Sun Dynamics](unit4-earth-sun-dynamics.qmd), you'll compare these slow orbital changes with **ice core temperature records** and **solar cycles** to figure out whether natural factors can explain the warming and melting ice we see **today**.
+
+# Chapter Summary
+
+| Key Concept | Details |
+|---|---|
+| **Seasons** | A yearly, repeating cycle of temperature and daylight; opposite in the two hemispheres |
+| **Cause** | Earth's **23.5° tilt** + **revolution** around the Sun, with the axis always pointing toward Polaris |
+| **Angle of insolation** | Higher Sun angle → light concentrated on a smaller area → more heating. At 30°, light covers 2× the area of 90° |
+| **Daylight hours** | The hemisphere tilted toward the Sun has longer days (NYC: about 15 h in June, about 9 h in December) |
+| **Summer** | Your hemisphere is tilted **toward** the Sun: high Sun, long days, more energy |
+| **Winter** | Your hemisphere is tilted **away**: low Sun, short days, less energy |
+| **Solstices** | About Jun 21 (Sun overhead at 23.5° N) and Dec 21 (Sun overhead at 23.5° S) |
+| **Equinoxes** | About Mar 20 and Sep 22: Sun overhead at the equator, about 12 h of daylight everywhere |
+| **Not distance** | Closest to the Sun (about 147.1 million km) in early **January**, during NYC's winter; only about a 3% change |
+| **Latitude** | Equator: warm all year, small seasons (Singapore about 27–29 °C). Middle and high latitudes: big seasons |
+| **Looking ahead** | Tilt, orbit shape, and direction of tilt change over tens of thousands of years, changing climate over long timescales |
 
 ---
 
+# Myth or Fact?
+
+```{=html}
+<div id="ss-myths" style="background:linear-gradient(135deg,#0b1020 0%,#12324a 55%,#0f4c4a 100%); color:white; padding:30px; border-radius:16px; margin:30px 0; font-family:'Inter',sans-serif; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.8em; margin:0 0 8px 0; color:#fde68a !important;">
+    ☀️ Seasons: Myths vs. Facts
+  </h2>
+  <p style="color:#cbd5e1; margin:0 0 20px 0; font-size:0.95em;">Decide whether each statement is a MYTH or a FACT!</p>
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; background:rgba(255,255,255,0.05); padding:12px 20px; border-radius:12px; margin-bottom:20px;">
+    <div id="ssmf-progress" style="color:#cbd5e1; font-size:0.9em;">Card 1 of 8</div>
+    <div style="color:#cbd5e1; font-size:0.9em;">Score: <span id="ssmf-score" style="color:#fbbf24; font-weight:700;">0</span> / <span id="ssmf-total">0</span></div>
+  </div>
+  <div id="ssmf-card" style="background:rgba(255,255,255,0.08); border-radius:14px; padding:28px; min-height:100px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:1.1em; font-weight:600; line-height:1.6; border:1.5px solid rgba(255,255,255,0.1);"></div>
+  <div style="display:flex; gap:12px; margin-top:16px;">
+    <button id="ssmf-myth" onclick="ssmfAnswer('Myth')" style="flex:1; min-height:44px; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#e17055,#d63031); color:white; font-size:1em; font-weight:700; cursor:pointer;">❌ MYTH</button>
+    <button id="ssmf-fact" onclick="ssmfAnswer('Fact')" style="flex:1; min-height:44px; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#00b894,#00866e); color:white; font-size:1em; font-weight:700; cursor:pointer;">✅ FACT</button>
+  </div>
+  <div id="ssmf-feedback" style="margin-top:16px; padding:16px; border-radius:10px; display:none; font-size:0.95em; line-height:1.6;"></div>
+  <button id="ssmf-next" onclick="ssmfNext()" style="display:none; margin-top:12px; width:100%; min-height:44px; padding:12px; border:2px solid rgba(255,255,255,0.2); border-radius:10px; background:transparent; color:white; font-size:0.95em; font-weight:600; cursor:pointer;">Next Card →</button>
+  <div id="ssmf-done" style="display:none; text-align:center; padding:20px;">
+    <div style="font-size:2.5em; margin-bottom:10px;">🎉</div>
+    <div style="font-size:1.3em; font-weight:700;">All cards complete!</div>
+    <div style="color:#cbd5e1; margin:8px 0;">Final score: <span id="ssmf-final" style="color:#fbbf24; font-weight:700;"></span> / <span id="ssmf-count"></span></div>
+    <button onclick="ssmfRestart()" style="margin-top:12px; min-height:44px; padding:10px 24px; border:2px solid #fbbf24; border-radius:20px; background:transparent; color:#fbbf24; font-size:0.9em; cursor:pointer; font-weight:600;">Play Again</button>
+  </div>
+</div>
+<script>
+(function() {
+  var cards = [
+    { text: "It's summer when Earth is closer to the Sun and winter when it's farther away.", type: "Myth",
+      explanation: "Earth is closest to the Sun (about 147.1 million km) in early January, which is winter in NYC, and farthest (about 152.1 million km) in early July. The distance changes only about 3%. Seasons come from the tilt, which changes the angle of sunlight and the length of the day." },
+    { text: "Earth is closest to the Sun in early January.", type: "Fact",
+      explanation: "Perihelion (closest point) is around January 3. That's summer in the Southern Hemisphere but winter in the Northern Hemisphere, which shows distance isn't what makes summer." },
+    { text: "When it's summer in New York City, it's winter in Melbourne, Australia.", type: "Fact",
+      explanation: "In June and July the Northern Hemisphere is tilted toward the Sun and the Southern Hemisphere is tilted away. NYC averages about 24–26 °C, while Melbourne averages about 10–11 °C." },
+    { text: "The hemisphere tilted toward the Sun is warmer because the tilt brings it much closer to the Sun.", type: "Myth",
+      explanation: "Tilting moves a hemisphere only a few thousand kilometers closer, out of about 150 million km, so that's not why. It's warmer because sunlight hits it at a higher angle (more concentrated) and for more hours each day." },
+    { text: "Low-angle sunlight spreads the same energy over a larger area, so each spot heats up less.", type: "Fact",
+      explanation: "That's what the grid paper showed. Light at 30° covers twice the area of light at 90°, so each square gets half the energy. It's also why the Sun feels weaker in winter and early morning." },
+    { text: "Earth's axis flips to point the other way halfway through the year.", type: "Myth",
+      explanation: "The axis keeps pointing the same direction in space (toward Polaris) all year. What changes is where Earth is in its orbit, so first one hemisphere and then the other leans toward the Sun." },
+    { text: "Seasons happen because Earth spins faster in summer.", type: "Myth",
+      explanation: "Earth rotates once about every 24 hours all year long. Rotation causes day and night. The seasons come from revolution around the Sun with a tilted axis." },
+    { text: "On the June solstice, the North Pole gets more total sunlight in a day than the equator does.", type: "Fact",
+      explanation: "With 24 hours of daylight, the North Pole gets about 520 W/m² averaged over the day (at the top of the atmosphere) vs. about 385 W/m² at the equator. It stays cold because the Sun is always low, ice reflects much of the light, and it's dark for months in winter." }
+  ];
+  var idx = 0, score = 0, answered = 0, cardAnswered = false;
+  function el(id) { return document.getElementById(id); }
+  function updateCard() {
+    if (idx >= cards.length) {
+      el('ssmf-card').style.display = 'none';
+      el('ssmf-myth').style.display = 'none';
+      el('ssmf-fact').style.display = 'none';
+      el('ssmf-feedback').style.display = 'none';
+      el('ssmf-next').style.display = 'none';
+      el('ssmf-done').style.display = 'block';
+      el('ssmf-final').textContent = score;
+      el('ssmf-count').textContent = cards.length;
+      return;
+    }
+    el('ssmf-card').textContent = cards[idx].text;
+    el('ssmf-progress').textContent = 'Card ' + (idx + 1) + ' of ' + cards.length;
+    el('ssmf-feedback').style.display = 'none';
+    el('ssmf-next').style.display = 'none';
+    el('ssmf-myth').disabled = false;
+    el('ssmf-fact').disabled = false;
+    el('ssmf-myth').style.opacity = '1';
+    el('ssmf-fact').style.opacity = '1';
+    cardAnswered = false;
+  }
+  window.ssmfAnswer = function(choice) {
+    if (cardAnswered) return;
+    cardAnswered = true;
+    answered++;
+    var card = cards[idx];
+    var correct = (choice === card.type);
+    if (correct) score++;
+    el('ssmf-score').textContent = score;
+    el('ssmf-total').textContent = answered;
+    var fb = el('ssmf-feedback');
+    fb.style.display = 'block';
+    fb.style.background = correct ? 'rgba(0,184,148,0.2)' : 'rgba(214,48,49,0.2)';
+    fb.style.border = '1px solid ' + (correct ? '#00b894' : '#e17055');
+    fb.innerHTML = '<strong>' + (correct ? '✅ Correct! ' : '❌ That\'s a ' + card.type + '! ') + '</strong>' + card.explanation;
+    el('ssmf-myth').disabled = true;
+    el('ssmf-fact').disabled = true;
+    el('ssmf-myth').style.opacity = (choice === 'Myth') ? '1' : '0.5';
+    el('ssmf-fact').style.opacity = (choice === 'Fact') ? '1' : '0.5';
+    el('ssmf-next').style.display = 'block';
+  };
+  window.ssmfNext = function() { idx++; updateCard(); };
+  window.ssmfRestart = function() {
+    idx = 0; score = 0; answered = 0;
+    el('ssmf-card').style.display = 'flex';
+    el('ssmf-myth').style.display = 'block';
+    el('ssmf-fact').style.display = 'block';
+    el('ssmf-done').style.display = 'none';
+    el('ssmf-score').textContent = '0';
+    el('ssmf-total').textContent = '0';
+    updateCard();
+  };
+  updateCard();
+})();
+</script>
+```
+
+---
+
+# End-of-Chapter Quiz {#end-of-chapter-quiz}
+
 ```{ojs}
 //| echo: false
-buildQuiz("seasons-final-quiz", "📝 Seasons Quiz", [
+function buildSsQuiz(id, title, questions) {
+  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const header = html`<div style="background:linear-gradient(135deg,#0f766e 0%,#1e40af 100%);color:#fff;border-radius:14px 14px 0 0;padding:18px 24px;">
+    <div style="font-size:1.1em;font-weight:700;display:flex;align-items:center;gap:8px;"><span style="font-size:1.2em;">📝</span> ${title}</div>
+    <div style="font-size:0.85em;opacity:0.9;margin-top:4px;">Select an answer for each question.</div>
+  </div>`;
+  const body = html`<div style="border:1.5px solid #99d5cf;border-top:none;border-radius:0 0 14px 14px;overflow:hidden;background:#f0fdfa;padding:16px;"></div>`;
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onmouseover = () => { if(!card.dataset.answered){ btn.style.borderColor="#0f766e";btn.style.background="#f0fdfa"; }};
+      btn.onmouseout  = () => { if(!card.dataset.answered){ btn.style.borderColor="#e2e8f0";btn.style.background="#fff"; }};
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => {
+          b.style.cursor="default"; b.onmouseover=null; b.onmouseout=null;
+          b.style.borderColor="#e2e8f0"; b.style.background="#f8fafc"; b.style.color="#475569";
+        });
+        if(oi === qq.correct){
+          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";btn.style.color="#276749";btn.style.fontWeight="700";
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";btn.style.color="#9b2c2c";btn.style.fontWeight="700";
+          const correctBtn = card.querySelectorAll("button")[qq.correct];
+          correctBtn.style.borderColor="#48bb78";correctBtn.style.background="#f0fff4";correctBtn.style.color="#276749";correctBtn.style.fontWeight="700";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";fb.style.borderRadius="8px";
+      };
+      card.appendChild(btn);
+    });
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  outer.appendChild(header);
+  outer.appendChild(body);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+buildSsQuiz("ss-summative-quiz", "☀️ Summative Quiz: Seasons", [
   {
-    q: "Earth is closest to the Sun during which month?",
-    options: [
-      "A) July",
-      "B) January",
-      "C) March",
-      "D) September"
-    ],
+    q: "In the heat-lamp model (Part A), after 10 minutes the equator thermometer rose about 12 °C and the one at 75° N rose about 3 °C. What best explains the difference?",
+    options: ["The 75° N thermometer was much farther from the lamp", "Light hit the equator directly but hit 75° N at a low angle, spreading the energy over a bigger area", "The pole is made of ice", "The lamp was pointed at the South Pole"],
     correct: 1,
-    explanation: "Earth reaches perihelion (closest approach) in early January at about 147.1 million km, which is during Northern Hemisphere winter."
+    explanation: "All the thermometers were about the same distance from the lamp. The difference came from the angle: direct light concentrates energy, low-angle light spreads it out."
   },
   {
-    q: "What primarily causes Earth's seasons?",
-    options: [
-      "A) Distance from the Sun",
-      "B) Earth's axial tilt of 23.5°",
-      "C) Changes in the Sun's output",
-      "D) Ocean currents"
-    ],
-    correct: 1,
-    explanation: "Earth's 23.5° axial tilt determines which hemisphere receives more direct sunlight at different times of year, creating the seasons."
+    q: "A flashlight lights about 12.6 grid squares when held straight down (90°). About how many squares does it light at 30°?",
+    options: ["About 6", "About 12.6", "About 25", "About 50"],
+    correct: 2,
+    explanation: "At 30°, the lit patch is stretched to twice as long (1 ÷ sin 30° = 2), so it covers about 25 squares and each square gets half the energy."
   },
   {
-    q: "During Northern Hemisphere summer, the North Pole is:",
-    options: [
-      "A) Tilted away from the Sun",
-      "B) Tilted toward the Sun",
-      "C) Not tilted at all",
-      "D) Experiencing 24 hours of darkness"
-    ],
+    q: "In the orbit model, the pink axis arrow always points the same way. On which date is the Northern Hemisphere tilted toward the Sun?",
+    options: ["About March 20", "About June 21", "About September 22", "About December 21"],
     correct: 1,
-    explanation: "During Northern Hemisphere summer, Earth's axial tilt orients the North Pole toward the Sun, resulting in higher sun angles, longer days, and even 24-hour daylight above the Arctic Circle."
+    explanation: "On the June solstice, Earth is on the side of its orbit where the North Pole leans toward the Sun. The Sun is overhead at 23.5° N, and NYC has its longest day."
+  },
+  {
+    q: "Earth–Sun distance is about 147.1 million km on January 3 and about 152.1 million km on July 4. Which conclusion does this data support?",
+    options: ["Seasons are caused by distance", "Distance is not the main cause of seasons, because the Northern Hemisphere has winter when Earth is closest", "The Sun is hotter in July", "Both hemispheres have summer in January"],
+    correct: 1,
+    explanation: "If distance controlled seasons, NYC would be warmest in January. Instead NYC is coldest then, and Melbourne is warmest. The tilt is the main cause."
+  },
+  {
+    q: "In NYC the noon Sun is about 73° high on June 21 and about 26° on December 21. Which is the best explanation for the difference?",
+    options: ["Earth is closer to the Sun in June", "In June the Northern Hemisphere leans toward the Sun, so sunlight arrives at a higher angle", "Earth rotates faster in June", "There are fewer clouds in June"],
+    correct: 1,
+    explanation: "The 23.5° tilt adds to the Sun's height when your hemisphere leans toward the Sun and subtracts when it leans away: 90° − (40.7° − 23.5°) ≈ 73° and 90° − (40.7° + 23.5°) ≈ 26°."
+  },
+  {
+    q: "The daylight graph shows NYC with about 15 hours of daylight in June and Melbourne with about 9.5 hours. In December it's reversed. How does day length add to the seasons?",
+    options: ["It doesn't matter; only angle matters", "Longer days mean more hours of sunlight to heat the surface, adding to the warming in summer", "Longer days cool the surface", "Day length is the same everywhere"],
+    correct: 1,
+    explanation: "Summer has two effects working together: more direct sunlight AND more hours of it. Winter has less direct light for fewer hours."
+  },
+  {
+    q: "Singapore (1.3° N) stays about 27–29 °C all year, while NYC ranges from about 1 °C to 26 °C. Why?",
+    options: ["Singapore is closer to the Sun", "Near the equator, Sun angle and day length change very little during the year", "Singapore is in the Southern Hemisphere", "NYC has no tilt"],
+    correct: 1,
+    explanation: "At the equator, the noon Sun is always high and days are about 12 hours long, so insolation stays fairly steady. At NYC's latitude, the tilt causes big swings in Sun angle and day length."
+  },
+  {
+    q: "If Earth had NO tilt, what would happen to seasons?",
+    options: ["They would be more extreme", "There would be almost no seasons: every place would get the same Sun angle and about 12 hours of daylight all year", "Both hemispheres would have summer at the same time", "The equator would have winter"],
+    correct: 1,
+    explanation: "With 0° tilt, the Sun would always be overhead at the equator. The tiny distance change would still happen, but it's too small to make real seasons."
+  },
+  {
+    q: "On the March and September equinoxes, which is true?",
+    options: ["The Sun is overhead at the equator and almost every place gets about 12 hours of daylight", "The North Pole has 24 hours of daylight", "Earth is closest to the Sun", "The Sun is overhead at the Tropic of Cancer"],
+    correct: 0,
+    explanation: "At the equinoxes, neither hemisphere leans toward the Sun. The day-night line passes through both poles, so day and night are about equal everywhere."
+  },
+  {
+    q: "Earth's tilt slowly varies between about 22.1° and 24.5° over about 41,000 years. When the tilt is larger, what happens?",
+    options: ["Seasons become more extreme: hotter summers and colder winters at high latitudes", "Seasons disappear", "Earth moves closer to the Sun", "Day and night stop happening"],
+    correct: 0,
+    explanation: "A bigger tilt makes each hemisphere lean further toward and away from the Sun. These slow orbital changes are part of what you'll investigate in Earth-Sun Dynamics to explain climate changes over long timescales."
   }
 ])
 ```
-)
