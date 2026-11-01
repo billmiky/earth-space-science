@@ -1,5 +1,5 @@
 ---
-title: "Unit 5: Closing — Constructing Your Argument"
+title: "Unit 5: Closing — Will Storms Get Worse?"
 subtitle: "Will there be more frequent and more intense severe storms in the future?"
 format:
   html:
@@ -16,377 +16,839 @@ execute:
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
 
-.pe-badge { 
-  display: inline-block; 
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white; 
-  padding: 8px 16px; 
-  border-radius: 20px; 
-  font-size: 13px; 
-  font-weight: 800;
-  margin: 5px;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.big-question {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 2.5em;
-  font-weight: 800;
-  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 30px 0 20px 0;
-  text-align: center;
-  animation: slideIn 0.8s ease-out;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.performance-task {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  color: white;
-  padding: 30px;
-  border-radius: 15px;
-  margin: 25px 0;
-  box-shadow: 0 10px 30px rgba(15, 52, 96, 0.5);
-}
-
-.evidence-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  margin: 15px 0;
-  border-left: 5px solid;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-}
-.evidence-card.blizzard { border-color: #3498db; }
-.evidence-card.paths { border-color: #27ae60; }
-.evidence-card.hurricane { border-color: #e74c3c; }
-
-.rubric-table {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  padding: 20px;
-  border-radius: 12px;
-  margin: 20px 0;
-}
-
-.cer-box {
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 12px;
-}
-.claim-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-.evidence-box { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: #1a1a1a; }
-.reasoning-box { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #1a1a1a; }
-
-.student-task {
-  background: #fff3e0;
-  border-left: 5px solid #ff9800;
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 0 10px 10px 0;
-}
-
-.reflection-box {
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-  padding: 25px;
-  margin: 20px 0;
-  border-radius: 15px;
-}
-
-.key-idea { 
-  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-  padding: 20px; 
-  margin: 20px 0;
-  border-radius: 12px;
-  border-left: 8px solid #ff6b6b;
-  font-size: 1.1em;
-}
-
-h1 { 
-  font-family: 'Space Grotesk', sans-serif !important;
-  font-weight: 800 !important;
-  font-size: 2.8em !important;
-  margin-top: 40px !important;
-}
-
-h2 { 
-  font-family: 'Space Grotesk', sans-serif !important;
-  font-weight: 700 !important;
-  color: #6c5ce7 !important;
-}
+.engage-box { background: linear-gradient(135deg, #1a237e 0%, #0277bd 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(2, 119, 189, 0.3); }
+.engage-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+.evaluate-box { background: linear-gradient(135deg, #4a148c 0%, #ad1457 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(173, 20, 87, 0.3); }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.4em; font-weight: 800; background: linear-gradient(135deg, #1a237e 0%, #0288d1 60%, #00897b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 100%); color: #1a1a1a; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #0277bd; font-size: 1.05em; }
+.key-idea a { color: #01579b; }
+.student-task { background: #fff3e0; color: #1a1a1a; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.student-task a { color: #b45309; }
+.claim-box { background: linear-gradient(135deg, #283593 0%, #5e35b1 100%); color: white; padding: 22px; margin: 15px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(40, 53, 147, 0.3); }
+.evidence-box { background: linear-gradient(135deg, #00695c 0%, #0277bd 100%); color: white; padding: 22px; margin: 15px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(2, 119, 189, 0.3); }
+.reasoning-box { background: linear-gradient(135deg, #4527a0 0%, #6a1b9a 100%); color: white; padding: 22px; margin: 15px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(69, 39, 160, 0.3); }
+.claim-box *, .evidence-box *, .reasoning-box *, .engage-box *, .evaluate-box * { color: white !important; }
+.evidence-box a, .claim-box a, .reasoning-box a, .engage-box a, .evaluate-box a { text-decoration: underline; }
+.evidence-box table, .engage-box table { background: rgba(255,255,255,.08); }
+.pto-prompt { background: rgba(255,255,255,0.14); border-left: 5px solid #fff; border-radius: 0 10px 10px 0; padding: 12px 16px; margin: 10px 0 14px; font-style: italic; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.6em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #0277bd !important; }
+.engage-box h2, .evaluate-box h2 { color: white !important; }
+.u5c-card, .u5c-card * { box-sizing: border-box; }
+figure h2, figure h3 { font-family: 'Inter', sans-serif !important; color: inherit !important; border: none !important; margin: 4px 0 !important; }
+figure h2 { font-size: 1.05em !important; font-weight: 800 !important; }
+figure h3 { font-size: .85em !important; font-weight: 400 !important; opacity: .85; }
+.u5c-planner textarea, .u5c-planner select, .u5c-planner input[type=text] { width: 100%; max-width: 100%; }
+.u5c-bands input { width: 64px; min-height: 40px; font-size: 1em; text-align: center; border: 2px solid #b3e5fc; border-radius: 8px; background: #fff; color: #1a1a1a; }
+@media (max-width: 600px) { .big-question { font-size: 1.6em; } h1 { font-size: 1.9em !important; } }
 </style>
 ```
 
+<a class="quiz-jump-btn" href="#end-of-unit-quiz">🧠 Quiz ↓</a>
 
+<div class="big-question">🌀 More Hurricanes and Blizzards in NYC? ❄️</div>
 
-<div class="big-question">📢 Your Voice, Your Evidence, Your Argument 📢</div>
+::: {.callout-note collapse="true"}
+## 📒 Using this page with your Performance Task Organizer
 
-# The Performance Task
+This page follows the last pages of your **Unit 5 Performance Task Organizer (PTO): More Hurricanes and Blizzards in NYC?** The opening pages (Tell the Story: Blizzards and Tropical Storms, Introduction to the Performance Task and Initial Ideas) are on the [Unit Opening](unit5-opening.qmd) page.
 
-::: {.performance-task}
-## 🎯 Unit Driving Question
-
-<div style="font-size: 1.5em; font-weight: 700; text-align: center; margin: 20px 0; color: #f39c12;">
-Will there be more frequent and more intense severe storms in the future?
-</div>
-
-### Your Task
-
-**Construct an oral argument from data analysis** that addresses how severe storms (hurricanes and/or blizzards) may change in frequency, intensity, or path in the future for **your region** (New York City / Northeast US).
-
-Your argument must:
-
-- ✅ Make a clear **claim** about future storm changes
-- ✅ Support your claim with at least **three pieces of evidence** from data analyzed in this unit
-- ✅ Include **scientific reasoning** that connects your evidence to your claim using the mechanisms you've learned
-- ✅ Address at least **one counterargument** or limitation of your claim
-- ✅ Be delivered as a **2–3 minute oral presentation** to your class
-:::
-
-# Building Your Argument: The CER Framework
-
-Your argument should follow the **Claim–Evidence–Reasoning** (CER) framework.
-
-::: {.cer-box .claim-box}
-### 📌 CLAIM
-
-A clear, specific statement that answers the driving question for your region.
-
-**Example format:** "In the future, [specific storm type] in [your region] will likely become [more/less frequent / more/less intense / shift in timing or path] because [brief reason]."
-
-**Strong claim example:** "Hurricanes affecting the Northeast US will likely become stronger and produce more rainfall by 2050, though they may not increase in total number."
-
-**Weak claim:** "Storms will get worse." ← Too vague! What type? In what way? Where?
-:::
-
-::: {.cer-box .evidence-box}
-### 📊 EVIDENCE
-
-Specific data points, trends, or observations from your investigations in this unit. You need at least **three** pieces of evidence from **at least two different chapters**.
-
-Good evidence is:
-- **Specific** (numbers, dates, locations)
-- **From reliable sources** (NOAA data, scientific studies, your own data analysis)
-- **Relevant** to your claim (directly supports or informs it)
-:::
-
-::: {.cer-box .reasoning-box}
-### 🧠 REASONING
-
-The scientific explanation that connects your evidence to your claim. This is where you use the **mechanisms** you learned:
-
-- How does the **Clausius-Clapeyron relation** connect warmer temperatures to storm intensity?
-- How does **Arctic amplification** affect the jet stream and storm paths?
-- How does **sea surface temperature** affect hurricane formation and intensity?
-- How do **convection cells** and the **Coriolis effect** determine where storms form and travel?
-:::
-
-# Evidence Review: What You've Learned
-
-Let's review the key evidence from each chapter.
-
-::: {.evidence-card .blizzard}
-### 🌨️ From Blizzards Sequence
-
-**Available Evidence:**
-
-| Data Point | What It Shows |
-|------------|---------------|
-| Winter Storm Jonas stats | 27.5" snow in NYC, 60 mph winds, $3B damages |
-| Clausius-Clapeyron relation | ~7% more atmospheric moisture per 1°C warming |
-| Extreme snowfall trends | More extreme events per decade even as average snowfall decreases |
-| Arctic amplification & jet stream | Weakened gradient → wavier jet → cold outbreaks can be more extreme |
-| Pressure gradient & wind | Greater temperature/pressure contrasts → stronger winds |
-:::
-
-::: {.evidence-card .paths}
-### 🗺️ From Storm Paths Sequence
-
-**Available Evidence:**
-
-| Data Point | What It Shows |
-|------------|---------------|
-| Storm trajectory maps (2018–2020) | Blizzards and hurricanes follow predictable paths |
-| Global circulation cells | Hadley, Ferrel, Polar cells driven by uneven heating |
-| Westerlies & jet stream | Mid-latitude storms steered SW→NE by prevailing winds |
-| Jet stream projections | Warming may shift storm tracks poleward |
-| Precipitation by latitude | Rising air zones = wet; sinking air zones = dry |
-:::
-
-::: {.evidence-card .hurricane}
-### 🌀 From Hurricanes Sequence
-
-**Available Evidence:**
-
-| Data Point | What It Shows |
-|------------|---------------|
-| SST threshold: 26.5°C | Minimum ocean temperature for hurricane formation |
-| Seasonal lag | Ocean peaks ~2 months after solar maximum (high heat capacity) |
-| 2005 season: 28 named storms | Record-breaking season with 0.55°C SST anomaly |
-| SST trend: +0.65°C anomaly by 2024 | Tropical Atlantic warming steadily |
-| Rapid intensification: +150% increase | Storms strengthening faster → less warning time |
-| Named storm count trend | Slight upward trend from ~11 (1980) to ~18+ (2020s) |
+| PTO section (page) | On this page |
+|---|---|
+| Connect to the Performance Task: Blizzards 5E (pp. 9–14) | [Blizzards](#connect-blizzards) |
+| Connect to the Performance Task: Paths of Severe Storms 5E (pp. 15–16) | [Paths of Severe Storms](#connect-storm-paths) |
+| Connect to the Performance Task: Hurricanes 5E (pp. 17–22) | [Hurricanes](#connect-hurricanes) |
+| (Optional Moon Phases 3E: no PTO page) | [Moon Phases and Sandy](#moon-phases-and-hurricane-sandy) |
+| Unit Closing: return to the anchor phenomenon (class discussion) | [Return to the Anchor Phenomenon](#return-to-the-anchor-phenomenon) |
+| Final Performance Task: oral argument (group presentation or Socratic seminar) | [Final Performance Task](#final-performance-task), [Argument Planner](#argument-planner), [Checklist](#final-argument-checklist) |
 :::
 
 ```{ojs}
 //| echo: false
-Plot = require("@observablehq/plot")
+Plot = require("@observablehq/plot@0.6.16")
+d3 = require("d3@7.9.0")
 ```
-
-# Data Synthesis: The Big Picture
 
 ```{ojs}
 //| echo: false
-// Combined visualization: temperature, storms, and projections
-synthesisData = [
-  {year: 1980, temp: 0.26, storms: 11, category45: 1},
-  {year: 1985, temp: 0.12, storms: 11, category45: 1},
-  {year: 1990, temp: 0.45, storms: 14, category45: 1},
-  {year: 1995, temp: 0.45, storms: 19, category45: 2},
-  {year: 2000, temp: 0.39, storms: 15, category45: 2},
-  {year: 2005, temp: 0.68, storms: 28, category45: 5},
-  {year: 2010, temp: 0.72, storms: 19, category45: 3},
-  {year: 2015, temp: 0.90, storms: 11, category45: 1},
-  {year: 2017, temp: 0.92, storms: 17, category45: 4},
-  {year: 2020, temp: 1.02, storms: 30, category45: 3},
-  {year: 2023, temp: 1.17, storms: 20, category45: 3},
-  {year: 2024, temp: 1.29, storms: 18, category45: 3}
-]
-
-Plot.plot({
-  title: "Global Temperature Anomaly vs. Atlantic Storm Activity (1980–2024)",
-  subtitle: "As temperatures rise, are storms changing?",
-  width: width,
-  height: 380,
-  x: {label: "Year"},
-  y: {label: "Count / Anomaly (°C)"},
-  color: {legend: true},
-  marks: [
-    Plot.barY(synthesisData, {x: "year", y: "storms", fill: "#3498db", fillOpacity: 0.4, title: d => `${d.storms} named storms`,
-        tip: true}),
-    Plot.dot(synthesisData, {x: "year", y: d => d.temp * 20, fill: "#e74c3c", r: 6, title: d => `${d.temp}°C anomaly`,
-        tip: true}),
-    Plot.line(synthesisData, {x: "year", y: d => d.temp * 20, stroke: "#e74c3c", strokeWidth: 2,
-        tip: true}),
-    Plot.dot(synthesisData, {x: "year", y: d => d.category45 * 3, fill: "#f39c12", r: d => d.category45 * 2, symbol: "diamond",
-        tip: true}),
-    Plot.text([{x: 2000, y: 28}], {x: "x", y: "y", text: d => "🔴 Temp anomaly (×20)", fontSize: 10, fill: "#e74c3c"}),
-    Plot.text([{x: 2000, y: 25}], {x: "x", y: "y", text: d => "🔵 Named storms", fontSize: 10, fill: "#3498db"}),
-    Plot.text([{x: 2000, y: 22}], {x: "x", y: "y", text: d => "🔶 Cat 4-5 storms (×3)", fontSize: 10, fill: "#f39c12"})
-  ]
-})
+buildQuiz = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="margin:18px 0 24px 0;text-align:center;">
+    <button style="
+      display:inline-flex;align-items:center;gap:7px;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      color:#fff;border:none;padding:9px 22px;border-radius:50px;min-height:44px;
+      font-size:.95em;font-weight:700;cursor:pointer;
+      box-shadow:0 3px 12px rgba(102,126,234,.45);">
+      <span style="font-size:1.1em;">📝</span> ${title}
+      <span class="chevron" style="transition:transform .3s;">▼</span>
+    </button>
+    <div class="quiz-body" style="
+      max-height:0;opacity:0;overflow:hidden;
+      transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin-top .3s ease;
+      margin-top:0;text-align:left;">
+      <button class="close-btn" style="
+        display:block;margin:0 auto 10px auto;
+        background:rgba(102,126,234,.12);color:#667eea;border:none;
+        padding:5px 18px;border-radius:50px;font-size:.85em;min-height:36px;
+        font-weight:600;cursor:pointer;">Hide Quiz</button>
+      <p style="text-align:center;color:#718096;font-style:italic;font-size:.9em;margin-bottom:12px;">
+        Select an answer for each question.</p>
+    </div>
+  </div>`;
+  const toggle = outer.querySelector("button");
+  const chevron = toggle.querySelector(".chevron");
+  const body   = outer.querySelector(".quiz-body");
+  const closeBtn = body.querySelector(".close-btn");
+  function expand(){  body.style.maxHeight="3000px";body.style.opacity="1";body.style.marginTop="14px";chevron.style.transform="rotate(180deg)"; }
+  function collapse(){ body.style.maxHeight="0";body.style.opacity="0";body.style.marginTop="0";chevron.style.transform="rotate(0)"; }
+  toggle.onclick = () => body.style.maxHeight === "0px" || body.style.maxHeight === "" ? expand() : collapse();
+  closeBtn.onclick = collapse;
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => { b.style.cursor="default"; });
+        if(oi === qq.correct){
+          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";
+          card.querySelectorAll("button")[qq.correct].style.borderColor="#48bb78";
+          card.querySelectorAll("button")[qq.correct].style.background="#f0fff4";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";
+      };
+      card.appendChild(btn);
+    });
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  return outer;
+}
 ```
+
+# Evidence Review: Connect to the Performance Task
+
+::: {.engage-box}
+## 🌡️ The task all unit
+
+**Write (and now argue out loud) how storms will change in frequency and intensity as global temperatures continue to rise.** At the end of each lesson, your PTO asked you to apply what you figured out. Every PTO task has the same **3 parts**:
+
+| Part | What you do |
+|---|---|
+| **1. Variables** | Name the **independent variable** (what changes: global temperature) and the **dependent variable** (storm frequency or intensity) |
+| **2. Evidence + model** | Fill the evidence table (evidence + which resource), then model how **energy and matter flow** in the storm and the **small-scale mechanisms** (molecules, density, condensation) |
+| **3. Argument** | Claim **and** counterclaim, using historical data, the conditions storms need, climate model projections, and the **limits** (precision, reliability, assumptions) of those models |
+
+Lessons: [Blizzards](unit5-blizzards.qmd) → [Paths of Severe Storms](unit5-storm-paths.qmd) → [Hurricanes](unit5-hurricanes.qmd) (plus the optional [Moon Phases](unit5-moon-phases.qmd)).
+:::
+
+Quick check before you start: in every PTO prompt, which is which?
+
+```{ojs}
+//| echo: false
+buildQuiz("u5c-ivdv-quiz", "🔬 Check Your Understanding — Variables", [
+  {
+    q: "Prompt: \"Will the intensity of winter storms where you live increase, decrease, or stay the same as global temperatures increase?\" What is the INDEPENDENT variable?",
+    options: ["The intensity of winter storms", "Global (and regional) temperature", "Where you live", "The number of years"],
+    correct: 1,
+    explanation: "The independent variable is the one that changes on its own and causes an effect: rising global temperature. Storm intensity is the dependent variable, because it may change in response."
+  },
+  {
+    q: "Prompt: \"Will the frequency of hurricanes per year where you live increase, decrease, or stay the same...?\" What is the DEPENDENT variable?",
+    options: ["Global temperature", "Sea surface temperature", "The number of hurricanes per year where you live", "The climate model"],
+    correct: 2,
+    explanation: "Frequency means how often: the number of hurricanes per year. It depends on the conditions that global temperature changes, like sea surface temperature."
+  }
+])
+```
+
+## Connect to the Performance Task: Blizzards {#connect-blizzards}
+
+::: {.evidence-box}
+### ❄️ Lesson 5.1: Blizzards
+
+**PTO prompts (pp. 9–14), choose one:**
+
+<div class="pto-prompt"><b>Task 1:</b> Will the frequency of winter storms per year where you live increase, decrease, or stay the same as global temperatures increase in the future?<br><b>Task 2:</b> Will the intensity of winter storms where you live increase, decrease, or stay the same as global temperatures increase in the future?</div>
+
+**What we figured out:**
+
+- **Wind:** the Sun heats Earth unevenly. Warm air particles move faster and spread out, so warm air is **less dense** and rises (low pressure). Cold, dense air sinks (high pressure). **Air moves from high to low pressure**, and a bigger difference means **stronger wind**.
+- **Precipitation:** rising air expands and cools. Water vapor **condenses** on tiny particles into cloud droplets and **releases heat**, which keeps the air rising. Snow forms when the air is **below freezing**.
+- **Blizzards form at fronts**, where a cold, dry air mass meets a warm, moist air mass. The warm air is pushed up over the cold air, forming a **mid-latitude cyclone** (low pressure). The two key elements of a winter storm are **cold air** and **moisture**, plus **lift** at the front.
+- **Winter Storm Jonas (January 2016)** brought record snow to NYC: **27.5 inches in Central Park**.
+- **Historical data (1950–2010, Nov–Mar):** winter storm **intensity increased** at both mid- and high latitudes. **Frequency increased at high latitudes** but went **up and down at mid-latitudes** (where NYC is) before a big jump in the 2000s.
+- **Climate models (IPCC WGI Interactive Atlas):** winter temperatures where mid-latitude cyclones form are projected to **rise**, and precipitation to increase. The Atlas combines **many models built on different data sets**, which makes its projections **more precise**.
+
+📖 Review the lesson: [Blizzards](unit5-blizzards.qmd)
+:::
+
+Explore the *What is the Future of Winter Storms?* graphs from your packet.
+
+```{ojs}
+//| echo: false
+u5cWinter = {
+  const dec = ["1950s", "1960s", "1970s", "1980s", "1990s", "2000s"];
+  const raw = {
+    "Frequency|High latitudes": [-1.05, -0.25, -0.15, 0.55, 0.45, 0.55],
+    "Frequency|Mid-latitudes":  [-1.15, 0.25, -0.03, 0.15, -0.38, 1.12],
+    "Intensity|High latitudes": [-0.5, -0.65, -0.05, 0.2, 0.8, 0.3],
+    "Intensity|Mid-latitudes":  [-1.25, -0.1, 0.02, 0.32, 0.17, 0.87]
+  };
+  return Object.entries(raw).flatMap(([k, v]) => {
+    const [measure, region] = k.split("|");
+    return v.map((val, i) => ({measure, region, decade: dec[i], val}));
+  });
+}
+viewof u5cWinterMeasure = Inputs.radio(["Frequency", "Intensity"], {label: "Show:", value: "Intensity"})
+viewof u5cWinterRegion = Inputs.radio(["Mid-latitudes", "High latitudes"], {label: "Region:", value: "Mid-latitudes"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const d = u5cWinter.filter(r => r.measure === u5cWinterMeasure && r.region === u5cWinterRegion);
+  const wrap = d3.create("div");
+  wrap.append(() => Plot.plot({
+    title: `Winter storm ${u5cWinterMeasure.toLowerCase()}, ${u5cWinterRegion} (Nov–Mar)`,
+    subtitle: "Difference from the long-term average, by decade. Values read from the graph in your packet (Northern Hemisphere, 1950–2010).",
+    width: width, height: 260, marginLeft: 48, marginBottom: 36,
+    x: {label: null, domain: d.map(r => r.decade)},
+    y: {label: "Difference from average", domain: [-1.5, 1.5], grid: true},
+    marks: [
+      Plot.barY(d, {x: "decade", y: "val", fill: r => r.val >= 0 ? "#0277bd" : "#90a4ae", tip: true, title: r => `${r.decade}: ${r.val > 0 ? "+" : ""}${r.val}`}),
+      Plot.ruleY([0])
+    ]
+  }));
+  const notes = {
+    "Frequency|Mid-latitudes": "<b>Mixed:</b> up, down, up, down, then a big jump in the 2000s. No steady trend, so frequency evidence is uncertain where NYC is.",
+    "Frequency|High latitudes": "<b>Increase:</b> below average before 1980, above average after. More winter storms at high latitudes.",
+    "Intensity|Mid-latitudes": "<b>Increase:</b> intensity rose almost every decade, from far below average in the 1950s to well above average in the 2000s.",
+    "Intensity|High latitudes": "<b>Increase:</b> below average before 1980, above average since, highest in the 1990s."
+  };
+  wrap.append("div").style("background", "#fff").style("color", "#1a1a1a").style("border-left", "6px solid #0277bd").style("border-radius", "10px").style("padding", "12px 16px").style("margin", "8px 0")
+    .html(notes[`${u5cWinterMeasure}|${u5cWinterRegion}`]);
+  return wrap.node();
+}
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("u5c-bz-quiz", "❄️ Check Your Understanding — Blizzards", [
+  {
+    q: "Which pair of graphs gives the CLEAREST trend?",
+    options: ["Intensity: it increased at both mid- and high latitudes", "Mid-latitude frequency: it rose every decade", "Neither graph shows any change", "High-latitude intensity fell every decade"],
+    correct: 0,
+    explanation: "Intensity rose in both regions. Mid-latitude frequency went up and down, which is why your teacher guide says the intensity prompt is easier to argue and the frequency prompt needs you to weigh competing evidence."
+  },
+  {
+    q: "Warmer air can hold more water vapor. How could that make a winter storm MORE intense, as long as the air is still below freezing?",
+    options: ["More moisture means more condensation, more released heat, more rising air, and heavier snow", "Warm air stops all snow", "Water vapor has no effect on storms", "More moisture makes the air sink"],
+    correct: 0,
+    explanation: "Moisture is a key ingredient. More water vapor means more snow can fall, and the heat released by condensation strengthens the low pressure and the wind."
+  },
+  {
+    q: "Why does the IPCC WGI Interactive Atlas being built from many models make its projections more PRECISE?",
+    options: ["When many models with different data sets agree, the results are consistent, like several scales giving the same weight", "Because one model is always right", "More models always predict more warming", "Precision doesn't apply to models"],
+    correct: 0,
+    explanation: "Precision means consistency. Agreement across many independent models gives us more confidence in the projection, even though it doesn't make it perfect."
+  }
+])
+```
+
+::: {.callout-tip collapse="true"}
+## 🔑 Check your thinking (try it first!): sample arguments
+
+**Task 2 (intensity), the clearer case.** *Claim:* Winter storms in NYC will likely become **more intense** as temperatures rise. *Evidence:* mid-latitude winter storm intensity rose from about −1.25 (1950s) to about +0.87 (2000s) above average; the IPCC Atlas projects warmer, wetter winters. *Reasoning:* warmer air holds more water vapor, so storms carry more moisture; more condensation releases more heat, strengthening the low and producing heavier snow when it's still below freezing. *Counterclaim:* if winter air in NYC is often **above freezing**, that moisture falls as **rain**, not snow, so some storms will be less "snowy" even if they are stronger.
+
+**Task 1 (frequency), the uncertain case.** The mid-latitude frequency data go up and down, warmer winters mean fewer days cold enough for snow, but more moisture helps storms form. A strong answer **weighs both** and may conclude we **can't be sure** frequency will change, then says what more data you'd need.
+:::
 
 ::: {.student-task}
-### 📝 Data Analysis Questions
+### ✏️ In your PTO: Blizzards 5E (pp. 9–14)
 
-Before writing your argument, analyze this synthesis graph:
-
-1. Is there a clear correlation between global temperature and the **number** of named storms? Why or why not?
-2. Is there a stronger relationship between temperature and the **intensity** of the strongest storms?
-3. Why might the relationship between warming and storm **count** be more complicated than the relationship between warming and storm **intensity**?
-4. What does this mean for your claim? (Hint: "more storms" vs. "stronger storms" are different claims!)
+- Choose **Task 1 (frequency)** or **Task 2 (intensity)** of winter storms where you live.
+- **Part 1:** write the independent and dependent variables.
+- **Part 2:** fill the evidence table (evidence + resource, e.g. *What is the Future of Winter Storms?*, IPCC Atlas). Then draw a model of winter storm formation in the future: **energy and matter flow** (warm moist air, cold dry air, rising, condensing) and the **small-scale mechanisms** (particle motion, density, condensation releasing heat).
+- **Part 3:** argue with a **claim and counterclaim**, using historical storm data, the conditions a winter storm needs, climate model projections, and the **limited precision and reliability** of the models.
+- Self or peer assess with the *Blizzards 5E Arguing from Evidence Rubric*.
 :::
 
-# Argument Structure Guide
+## Connect to the Performance Task: Paths of Severe Storms {#connect-storm-paths}
+
+::: {.evidence-box}
+### 🧭 Lesson 5.2: The Paths of Severe Storms
+
+**PTO prompt (pp. 15–16):**
+
+<div class="pto-prompt">Will the frequency of winter storms per year where you live increase, decrease, or stay the same as global temperatures increase in the future?</div>
+
+**What we figured out:**
+
+- **The Sun's energy is most direct at the equator** and spreads out toward the poles, so surface air is warmest near the equator and coldest near the poles.
+- **Air masses take on the properties of where they form:** cold and dry over northern land (from Canada), warm and moist over the ocean near 30° N (Gulf of Mexico, Atlantic).
+- **Global winds:** air rises at the equator, sinks at 30° N/S, and moves from high to low pressure. The **Coriolis effect** bends winds to the **right** in the Northern Hemisphere.
+- **Why so many blizzards in the US:** global winds carry polar air south and tropical air north, so they **collide over North America**. The **westerlies** (30°–60° N) then steer winter storms from **southwest to northeast**, like Winter Storm Jonas. Hurricanes form in the tropics, move west with the trade winds, then **curve northeast** in the westerlies.
+- **Evaluate (*How will global wind patterns be affected by rising global temperatures?*):** a research article claims that as Earth warms, the **westerlies (and the storms they carry) will shift toward the poles**, based on how they moved in the past. Your packet then asks you to imagine the westerlies moving about **5° north** and re-rank the storm bands on four winter storm track maps (2014–15, 2016–17, 2018–19, 2019–20).
+
+📖 Review the lesson: [Paths of Severe Storms](unit5-storm-paths.qmd)
+:::
+
+**Shift the storm bands.** Count the storm tracks in each latitude band on one of your packet's maps and type your counts below (the starting numbers are only a placeholder pattern, not real counts). Then move the westerlies north.
+
+```{ojs}
+//| echo: false
+viewof u5cCounts = {
+  const bands = ["45–50° N", "40–45° N", "35–40° N", "30–35° N", "25–30° N"];
+  const start = [3, 8, 9, 5, 1];
+  const box = html`<div class="u5c-bands u5c-card" style="background:#fff;color:#1a1a1a;border-radius:12px;padding:12px 14px;box-shadow:0 2px 10px rgba(0,0,0,.1);">
+    <div style="font-weight:700;margin-bottom:6px;">Storms per band (your counts):</div></div>`;
+  const inputs = bands.map((b, i) => {
+    const row = html`<label style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:4px 0;border-bottom:1px solid #eceff1;">
+      <span>${b}${b === "40–45° N" ? " 🗽 NYC" : ""}</span><input type="number" min="0" max="40" step="1" value="${start[i]}"></label>`;
+    box.appendChild(row);
+    return row.querySelector("input");
+  });
+  box.value = bands.map((b, i) => ({band: b, n: +inputs[i].value || 0}));
+  inputs.forEach(inp => inp.oninput = () => {
+    box.value = bands.map((b, i) => ({band: b, n: Math.max(0, +inputs[i].value || 0)}));
+    box.dispatchEvent(new Event("input", {bubbles: true}));
+  });
+  return box;
+}
+viewof u5cShift = Inputs.range([0, 5], {label: "Westerlies shift north (°):", step: 5, value: 0})
+```
+
+```{ojs}
+//| echo: false
+{
+  const names = u5cCounts.map(d => d.band); // north → south
+  const shifted = u5cShift === 0 ? u5cCounts.map(d => ({...d}))
+    : u5cCounts.map((d, i) => ({band: d.band, n: i < names.length - 1 ? u5cCounts[i + 1].n : 0}));
+  const data = shifted.map((d, i) => ({...d, before: u5cCounts[i].n}));
+  const nyc = data.find(d => d.band === "40–45° N");
+  const wrap = d3.create("div");
+  wrap.append(() => Plot.plot({
+    title: u5cShift === 0 ? "Winter storms per latitude band (today)" : "After the westerlies shift 5° north (each band gets the storms from the band below it)",
+    width: width, height: 230, marginLeft: 80, marginRight: 40,
+    x: {label: "Number of storm tracks →", grid: true, domain: [0, Math.max(10, d3.max(u5cCounts, d => d.n) + 1)]},
+    y: {label: null, domain: names},
+    marks: [
+      Plot.barX(data, {y: "band", x: "n", fill: d => d.band === "40–45° N" ? "#c62828" : "#0277bd"}),
+      u5cShift > 0 ? Plot.tickX(data, {y: "band", x: "before", stroke: "#37474f", strokeWidth: 2, strokeDasharray: "3,2"}) : null,
+      Plot.text(data, {y: "band", x: "n", text: "n", dx: 6, textAnchor: "start", fill: "currentColor", fontWeight: "bold"}),
+      Plot.ruleX([0])
+    ]
+  }));
+  const diff = nyc.n - nyc.before;
+  const ranked = [...data].sort((a, b) => b.n - a.n).map(d => d.band).join(" > ");
+  wrap.append("div").style("background", "#fff").style("color", "#1a1a1a").style("border-left", "6px solid #c62828").style("border-radius", "10px").style("padding", "12px 16px").style("margin", "8px 0")
+    .html(`<b>Ranking (most → fewest):</b> ${ranked}<br>` + (u5cShift === 0
+      ? "Move the slider to shift the westerlies 5° north."
+      : `<b>NYC band (40–45° N):</b> ${nyc.before} → ${nyc.n} storms (${diff > 0 ? "+" + diff + ", more" : diff < 0 ? diff + ", fewer" : "no change"}). ${u5cShift > 0 ? "Dashed marks show the counts before the shift. Bands farther north gain storms; the southernmost band loses them." : ""}`));
+  return wrap.node();
+}
+```
+
+<p style="font-size:.85em;">NYC sits at about 40.7° N, right on the edge between the 35–40° and 40–45° bands, so try your counts both ways. As your teacher guide notes, counts from four maps are a <b>small sample</b>, so different years can give different answers. That uncertainty is part of your argument.</p>
+
+```{ojs}
+//| echo: false
+buildQuiz("u5c-sp-quiz", "🧭 Check Your Understanding — Paths of Severe Storms", [
+  {
+    q: "Why do so many winter storms form over the United States?",
+    options: ["Global winds bring cold, dry polar air south and warm, moist tropical air north, so they collide over North America", "The US is closest to the Sun", "Storms only form over land", "The Coriolis effect is strongest over the US"],
+    correct: 0,
+    explanation: "Air masses from Canada and from the Gulf/Atlantic meet over North America. Where they collide, warm air is lifted at the front and a mid-latitude cyclone forms."
+  },
+  {
+    q: "If the westerlies shift about 5° toward the pole, which places are most likely to get MORE winter storms?",
+    options: ["Places just north of today's busiest storm band", "Places in the tropics", "Places just south of today's busiest band", "Nowhere: storms would disappear"],
+    correct: 0,
+    explanation: "The storm tracks move with the westerlies, so the busiest band moves north. Places north of it gain storms, and places to the south lose them. Whether NYC gains or loses depends on where the busiest band is now."
+  }
+])
+```
+
+::: {.callout-tip collapse="true"}
+## 🔑 Check your thinking (try it first!): a sample argument
+
+**Claim:** The frequency of winter storms in NYC may **stay about the same or decrease slightly**, but the evidence is uncertain.
+
+**Evidence:** On the storm track maps, the busiest bands are usually the middle latitudes (about 35–45° N). Shifting the westerlies 5° north moves storms from the 35–40° band up into NYC's 40–45° band, but also moves NYC's storms into the 45–50° band. Mid-latitude winter storm frequency from 1950–2010 went up and down.
+
+**Reasoning:** Winter storms form where cold and warm air masses collide, and the westerlies steer them. Warming shrinks the temperature difference between the equator and the poles and pushes the westerlies toward the poles, carrying the storm tracks with them.
+
+**Counterclaim and limits:** The maps are only four years, counting tracks is imprecise, and the article's prediction **assumes the westerlies will follow the historic pattern**. A different count or more years of data could change the answer.
+:::
+
+::: {.student-task}
+### ✏️ In your PTO: Paths of Severe Storms 5E (pp. 15–16)
+
+- **Part 1:** independent variable (global temperature) and dependent variable (winter storms per year where you live).
+- **Part 2:** evidence table: the research article's claim about the westerlies, your **band rankings before and after a 5° shift**, and earlier storm frequency data.
+- **Part 3:** argue with a **claim and counterclaim**. You may add pictures (e.g., a map with the shifted bands). Consider historical frequency data, the conditions a winter storm needs, climate model projections, and **the reliability of the models** (what the article assumes).
+- Self or peer assess with *The Paths of Severe Storms 5E Arguing from Evidence Rubric*.
+:::
+
+## Connect to the Performance Task: Hurricanes {#connect-hurricanes}
+
+::: {.evidence-box}
+### 🌀 Lesson 5.3: Hurricanes
+
+**PTO prompts (pp. 17–22), choose one (use the Hurricanes and the Paths of Severe Storms lessons):**
+
+<div class="pto-prompt"><b>Task 1:</b> Will the frequency of hurricanes per year where you live increase, decrease, or stay the same as global temperatures increase in the future?<br><b>Task 2:</b> Will the intensity of hurricanes where you live increase, decrease, or stay the same as global temperatures increase in the future?</div>
+
+**What we figured out:**
+
+- **Hurricanes need warm ocean water (more than about 80 °F, 27 °C)**, which evaporates and carries heat energy into the air. Rising humid air **condenses, releasing heat**, which powers more rising air and forms a low-pressure eye. Winds coming together force air up; light winds outside let it grow.
+- **Seasons and places:** in the North Atlantic, hurricanes happen **June to November**, when sea surface temperatures are highest. They form in the tropics and curve northeast in the westerlies (from the Paths lesson).
+- **Warmer air holds more water**, so storms drop **more rain** during each event (Elaborate). This doesn't mean more total rain every year.
+- **Historical data:** the **total number** of hurricanes worldwide **slightly decreased** from 1990 to 2020 (trend line from about 51 to about 44 per year), but the trend is **not the same everywhere**: the NOAA map shows **more** tropical cyclones per year in the **North Atlantic** (1980–2018) and fewer in parts of the Pacific and Indian Oceans.
+- **Strong hurricanes (Category 4 and 5) increased** in all six regions from 1975–1989 to 1990–2004, and the **percentage** of hurricanes reaching Category 4–5 rose (trend line from about 34% to about 42%).
+- **Climate models:** sea surface temperatures where hurricanes form are projected to **rise**. The IPCC Atlas shows **1.5, 2, 3, and 4 °C** warming scenarios because its **assumptions** (emissions, population, technology, policy, land use, feedbacks) can vary a lot.
+
+📖 Review the lesson: [Hurricanes](unit5-hurricanes.qmd)
+:::
+
+```{ojs}
+//| echo: false
+u5cStrong = [
+  {region: "East Pacific", a: 36, b: 49},
+  {region: "West Pacific", a: 85, b: 116},
+  {region: "North Atlantic", a: 16, b: 25},
+  {region: "Southwest Pacific", a: 10, b: 22},
+  {region: "North Indian", a: 1, b: 7},
+  {region: "South Indian", a: 23, b: 50}
+]
+viewof u5cStrongPick = Inputs.select(["All regions", ...u5cStrong.map(d => d.region)], {label: "Region:", value: "North Atlantic"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const rows = u5cStrongPick === "All regions" ? u5cStrong : u5cStrong.filter(d => d.region === u5cStrongPick);
+  const long = rows.flatMap(d => [{region: d.region, period: "1975–1989", n: d.a}, {region: d.region, period: "1990–2004", n: d.b}]);
+  const wrap = d3.create("div");
+  wrap.append(() => Plot.plot({
+    title: "Number of strong hurricanes (Category 4 and 5)",
+    subtitle: "From the table in your packet (UCAR Windows to the Universe, Hurricanes and Climate)",
+    width: width, height: u5cStrongPick === "All regions" ? 340 : 140, marginLeft: Math.min(130, width * 0.33), marginRight: 72,
+    x: {label: "Strong hurricanes →", grid: true, domain: [0, 125]},
+    y: {label: null, domain: rows.map(d => d.region)},
+    color: {domain: ["1975–1989", "1990–2004"], range: ["#90a4ae", "#c62828"], legend: true},
+    marks: [
+      Plot.barX(long.filter(d => d.period === "1990–2004"), {y: "region", x: "n", fill: "period", insetTop: 3, insetBottom: 3}),
+      Plot.barX(long.filter(d => d.period === "1975–1989"), {y: "region", x: "n", fill: "period", insetTop: 10, insetBottom: 10}),
+      Plot.text(rows, {y: "region", x: "b", text: d => `${d.a} → ${d.b}`, dx: 6, textAnchor: "start", fill: "currentColor", fontWeight: "bold", fontSize: 11}),
+      Plot.ruleX([0])
+    ]
+  }));
+  const tot = rows.reduce((s, d) => [s[0] + d.a, s[1] + d.b], [0, 0]);
+  wrap.append("div").style("background", "#fff").style("color", "#1a1a1a").style("border-left", "6px solid #c62828").style("border-radius", "10px").style("padding", "12px 16px").style("margin", "8px 0")
+    .html(`<b>${u5cStrongPick}:</b> ${tot[0]} → ${tot[1]} strong hurricanes (${tot[0] ? "about " + Math.round(100 * (tot[1] - tot[0]) / tot[0]) + "% more" : ""}). ${u5cStrongPick === "North Atlantic" ? "This is NYC's hurricane region." : ""} Every region went up.`);
+  return wrap.node();
+}
+```
+
+```{ojs}
+//| echo: false
+buildQuiz("u5c-hu-quiz", "🌀 Check Your Understanding — Hurricanes", [
+  {
+    q: "The global number of hurricanes slightly decreased from 1990 to 2020, but strong (Category 4–5) hurricanes increased. Which claim does this evidence best support?",
+    options: ["Hurricanes are getting more intense, even if not more frequent overall", "Hurricanes are disappearing", "Hurricanes are getting weaker", "Nothing has changed"],
+    correct: 0,
+    explanation: "Frequency and intensity are different dependent variables. The total went down a little, but a larger share of storms reached Category 4 or 5."
+  },
+  {
+    q: "How does warmer sea surface temperature give a hurricane MORE energy?",
+    options: ["More water evaporates and carries heat into the air; when it condenses, it releases that heat and strengthens the rising air", "Warm water pushes the hurricane faster", "Warm water lowers the amount of water vapor", "It doesn't; only wind matters"],
+    correct: 0,
+    explanation: "Evaporation moves energy and matter (water vapor) from the ocean to the air. Condensation releases latent heat, which drives the storm."
+  },
+  {
+    q: "Why does the IPCC Atlas show 1.5, 2, 3, and 4 °C scenarios instead of one prediction?",
+    options: ["Its assumptions (emissions, population, technology, policy) can vary a lot, so it shows a range of possible futures", "The scientists couldn't decide", "Each scenario is for a different planet", "Only the 4 °C scenario is real"],
+    correct: 0,
+    explanation: "A model is only as reliable as its assumptions. Because future human choices are uncertain, the Atlas shows several scenarios. Your argument should say which one you used."
+  }
+])
+```
+
+::: {.callout-tip collapse="true"}
+## 🔑 Check your thinking (try it first!): a sample argument
+
+**Claim (Task 2):** Hurricanes reaching NYC will likely become **more intense** as global temperatures rise.
+
+**Evidence:** North Atlantic Category 4–5 hurricanes rose from **16 (1975–1989) to 25 (1990–2004)**; the share of hurricanes reaching Category 4–5 rose from about 34% to 42%; the IPCC Atlas projects warmer sea surface temperatures in hurricane regions.
+
+**Reasoning:** Warm ocean water is the hurricane's energy source. Warmer water means more evaporation, so more water vapor carries energy into the storm. When it condenses, it releases more heat, which lowers pressure and strengthens winds. Warmer air also holds more water, so each storm can drop more rain.
+
+**Counterclaim and limits:** The total number of hurricanes worldwide slightly **decreased**, so frequency may not rise. Strong hurricanes rarely reach NYC (about 40.7° N), because cooler northern water weakens them. The Atlas projections depend on **assumptions** about future emissions.
+:::
+
+::: {.student-task}
+### ✏️ In your PTO: Hurricanes 5E (pp. 17–22)
+
+- Choose **Task 1 (frequency)** or **Task 2 (intensity)** of hurricanes where you live.
+- **Part 1:** independent and dependent variables.
+- **Part 2:** evidence table (graphs from *What is the Future of Tropical Cyclones?*, the strong hurricane table, the IPCC Atlas). Model hurricane formation in the future: **energy and matter flow** (warm water → evaporation → rising, condensing air → released heat) and the **small-scale mechanisms**.
+- **Part 3:** argue with a **claim and counterclaim**, using historical hurricane data, the conditions a hurricane needs (or needs to gain energy), climate model projections, and **the reliability of the model** (its assumptions).
+- Use the *Final Argument Rubric* (in the [checklist below](#final-argument-checklist)).
+:::
+
+## Moon Phases and Hurricane Sandy {#moon-phases-and-hurricane-sandy}
 
 ::: {.key-idea}
-### 📋 Oral Argument Outline (2–3 minutes)
+### 🌕 Optional Moon Phases 3E: How does the moon contribute to storm severity?
 
-**Opening (15–20 seconds):**
-State your claim clearly and specifically.
+- **Hurricane Sandy (October 29–30, 2012)** caused historic flooding in NYC partly because it hit during a **spring tide**: the full moon was on October 29.
+- **Spring tides** happen at **new and full moon**, when the Sun, Moon, and Earth line up, so their pull adds up and high tides are **higher**. **Neap tides** (first and last quarter) have smaller tidal ranges.
+- **For your argument:** storm damage depends on more than climate. **Timing with the tides** (and rising sea level from [Unit 4](../unit4-climate-change/unit4-past-and-future.qmd)) can make the same storm surge reach much farther. This 3E has no PTO page, but it's great evidence for a counterclaim or for the "limits" part of your argument.
 
-**Evidence Block 1 (30–45 seconds):**
-Present your first piece of evidence. Explain what the data shows using specific numbers.
-
-**Evidence Block 2 (30–45 seconds):**
-Present a second piece of evidence from a *different* chapter. Explain the trend or pattern.
-
-**Evidence Block 3 (20–30 seconds):**
-Present a third supporting piece of evidence.
-
-**Reasoning (30–45 seconds):**
-Explain the **scientific mechanism** that connects your evidence to your claim. Use key vocabulary.
-
-**Counterargument (15–20 seconds):**
-Acknowledge one limitation, uncertainty, or opposing viewpoint. Explain why your claim still holds.
-
-**Closing (10–15 seconds):**
-Restate your claim and its significance for your community.
+📖 Review the lesson: [Moon Phases](unit5-moon-phases.qmd)
 :::
 
-# Addressing Counterarguments
+# Return to the Anchor Phenomenon {#return-to-the-anchor-phenomenon}
 
-A strong scientific argument acknowledges complexity. Consider these common counterpoints:
+::: {.engage-box}
+## 🔁 It has felt like storms are getting worse. Does the data support that feeling, and will it continue?
 
-| Counterargument | How to Address It |
-|----------------|-------------------|
-| "Natural variability causes storm cycles, not climate change" | True that multi-decadal cycles exist (AMO), but the long-term warming trend is overlaid on top of natural variability. The mechanisms (more moisture, warmer SST) add fuel regardless of cycle phase. |
-| "Some studies show fewer total storms in a warmer world" | Correct — some models project fewer but **more intense** storms. Distinguish between frequency and intensity in your claim. |
-| "We can't predict individual storms" | True — but we can project **statistical changes** in average conditions. Like saying "summers will be hotter" without predicting the temperature on July 14, 2047. |
-| "Technology and preparation can prevent damage" | Important point, but infrastructure has limits. The **physics** of stronger storms still matters even with better warning systems. |
+At the start of the unit you watched *A Deadly Winter Storm Heads to the East Coast* and *Island of Puerto Rico destroyed by Hurricane Maria*, and studied maps of the 2018–19 and 2019–20 winter storm seasons and the 2018 and 2020 Atlantic hurricane seasons ([Unit Opening](unit5-opening.qmd)).
 
-# Peer Review & Feedback
+**Now review your ideas:** What causes hurricanes and blizzards? What patterns does the past and present data show? What does the data suggest about storms in the future?
+:::
+
+| Question | What the unit's evidence says |
+|---|---|
+| **What causes blizzards?** | Cold, dry and warm, moist air masses colliding at a front; rising air cools and condenses; big pressure differences make strong wind |
+| **What causes hurricanes?** | Warm ocean water (> ~80 °F) evaporating; condensation releases heat that powers the storm |
+| **Why here?** | Global winds bring air masses together over North America; the westerlies steer storms toward the Northeast |
+| **More intense?** | Strong evidence: winter storm intensity and Category 4–5 hurricanes both increased; warmer air and water add more energy and moisture |
+| **More frequent?** | Uncertain: mid-latitude winter storm frequency is mixed, global hurricane totals fell slightly while North Atlantic storms rose, and storm tracks may shift north |
+
+```{ojs}
+//| echo: false
+buildQuiz("u5c-anchor-quiz", "🔁 Check Your Understanding — The Anchor Phenomenon", [
+  {
+    q: "A friend says, \"Storms feel worse, so there must be more of them.\" What is the best response using the unit's data?",
+    options: ["The data more clearly show storms getting MORE INTENSE; whether they're more FREQUENT is mixed and depends on the region", "There are definitely twice as many storms", "Storms are getting weaker everywhere", "Feelings are the same as data"],
+    correct: 0,
+    explanation: "Intensity and frequency are different. The intensity data line up; the frequency data point in different directions. A good argument separates the two."
+  }
+])
+```
+
+# Final Performance Task {#final-performance-task}
+
+::: {.engage-box}
+## 🎤 How will storms change in our region as climate change continues?
+
+**The future of storms is uncertain.** Our data show trends in winter storms and hurricanes over time, but other factors may change those paths. Not every region will be impacted in the same ways, and not all types of storms will change in the same ways.
+
+**Your task:** prepare an **oral argument** about the **future frequency and intensity of hurricanes and winter storms in your region**. In class you will either **present it in groups** or debate it in a **Socratic seminar**. Working on your own? Write your argument with the planner below, then practice saying it out loud (record yourself if you can).
+:::
+
+## What Your Argument Must Include
+
+| Be sure to include... | Evidence from |
+|---|---|
+| A **claim** for each: winter storm frequency, winter storm intensity, hurricane frequency, hurricane intensity, **in your region** | Your three PTO tasks |
+| **At least 2 pieces of evidence for each claim** (data, simulations, models, or reputable data sets) | [Blizzards](#connect-blizzards), [Paths](#connect-storm-paths), [Hurricanes](#connect-hurricanes) |
+| **Reasoning**: the conditions each storm needs and how warming changes them (energy and matter, molecules) | All three lessons |
+| A **counterclaim**: evidence or ideas that point the other way | Mixed frequency data, rain vs. snow, westerlies shift, tides |
+| **Limits of models**: precision, reliability, assumptions | IPCC Atlas (many models; scenarios), article's assumption about the westerlies |
+
+::: {.claim-box}
+### 📌 CLAIM
+Make one clear prediction for each storm type and each variable. Example starter: "As global temperatures rise, winter storms in NYC will become ___ intense, because ___."
+:::
+
+::: {.evidence-box}
+### 📊 EVIDENCE
+Pick **specific numbers**: mid-latitude winter storm intensity −1.25 → +0.87 (1950s → 2000s); North Atlantic Category 4–5 hurricanes 16 → 25; Cat 4–5 share ~34% → ~42%; global hurricane totals ~51 → ~44 per year; the band rankings from your 5° westerlies shift; projected warming of 1.5–4 °C by 2100.
+:::
+
+::: {.reasoning-box}
+### 🧠 REASONING
+Connect each number to the mechanism: *Warmer air holds more water vapor, so storms have more moisture. When water vapor condenses, it releases heat, which makes air rise faster, lowers the pressure, and strengthens the wind. Therefore warmer oceans and air give storms more energy.* Use "because" and "therefore."
+:::
+
+## Argument Planner {#argument-planner}
+
+Plan your argument here. Your plan is saved only in this browser, so copy it before you leave.
+
+```{ojs}
+//| echo: false
+u5cPlanner = {
+  const KEY = "u5c-planner-v1";
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { saved = {}; }
+  const fields = [
+    {id: "region", label: "📍 Your region (city or area, and its latitude)", rows: 1},
+    {id: "ivdv", label: "🔬 Independent variable / dependent variable(s)", rows: 2},
+    {id: "claim", label: "📌 CLAIMS: winter storm frequency, winter storm intensity, hurricane frequency, hurricane intensity (increase, decrease, stay the same, or uncertain?)", rows: 4},
+    {id: "evidence", label: "📊 EVIDENCE: at least 2 pieces for each claim, with the resource each came from", rows: 5},
+    {id: "reasoning", label: "🧠 REASONING: the conditions each storm needs, how warming changes them, energy and matter flow, small-scale mechanisms (use because / therefore)", rows: 5},
+    {id: "counter", label: "↔️ COUNTERCLAIM: evidence or ideas that point the other way, and why your claim is still stronger (or why you're unsure)", rows: 4},
+    {id: "limits", label: "⚖️ LIMITS OF MODELS: precision (how many models agree), reliability (assumptions like emissions or westerlies following past patterns), small samples", rows: 4},
+    {id: "seminar", label: "🗣️ For the seminar: a question you'd ask a classmate who disagrees, and what more data you'd want", rows: 3}
+  ];
+  const focusOpts = ["All four (winter storms + hurricanes, frequency + intensity)", "Winter storms only", "Hurricanes only"];
+  const box = html`<div class="u5c-planner u5c-card" style="background:#fff;color:#1a1a1a;border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.12);border-top:6px solid #0277bd;"></div>`;
+  const focusWrap = html`<label style="display:block;font-weight:700;margin-bottom:10px;">🎯 Focus
+    <select style="display:block;min-height:44px;margin-top:4px;border:2px solid #b3e5fc;border-radius:8px;padding:6px;background:#fff;color:#1a1a1a;">${focusOpts.map(f => html`<option>${f}</option>`)}</select></label>`;
+  const focus = focusWrap.querySelector("select");
+  if (saved.focus) focus.value = saved.focus;
+  box.appendChild(focusWrap);
+  const areas = {};
+  fields.forEach(f => {
+    const lab = html`<label style="display:block;font-weight:700;margin:10px 0 4px;">${f.label}
+      <textarea rows="${f.rows}" style="display:block;margin-top:4px;border:2px solid #b3e5fc;border-radius:8px;padding:8px;font:inherit;font-weight:400;background:#fff;color:#1a1a1a;"></textarea></label>`;
+    const ta = lab.querySelector("textarea");
+    ta.value = saved[f.id] || "";
+    areas[f.id] = ta;
+    box.appendChild(lab);
+  });
+  const status = html`<div style="font-size:.85em;color:#00695c;min-height:1.2em;margin-top:6px;"></div>`;
+  const preview = html`<div style="white-space:pre-wrap;background:#e1f5fe;color:#1a1a1a;border-radius:8px;padding:12px;margin-top:10px;font-size:.92em;display:none;"></div>`;
+  const btnStyle = "min-height:44px;padding:8px 16px;border:none;border-radius:50px;font-weight:700;cursor:pointer;margin:8px 8px 0 0;";
+  const bPrev = html`<button style="${btnStyle}background:#0277bd;color:#fff;">👀 Preview outline</button>`;
+  const bCopy = html`<button style="${btnStyle}background:#1a237e;color:#fff;">📋 Copy outline</button>`;
+  const bClear = html`<button style="${btnStyle}background:#eceff1;color:#37474f;">🗑️ Clear</button>`;
+  const outline = () => [`FOCUS: ${focus.value}`, ...fields.map(f => `\n${f.label.replace(/^\S+\s/, "").split(":")[0].toUpperCase()}:\n${areas[f.id].value}`)].join("\n");
+  const save = () => {
+    const data = {focus: focus.value};
+    fields.forEach(f => data[f.id] = areas[f.id].value);
+    try { localStorage.setItem(KEY, JSON.stringify(data)); status.textContent = "Saved in this browser."; } catch (e) { status.textContent = "Couldn't save in this browser. Copy your outline before leaving."; }
+  };
+  box.addEventListener("input", save);
+  focus.addEventListener("change", save);
+  bPrev.onclick = () => { preview.textContent = outline(); preview.style.display = "block"; };
+  bCopy.onclick = async () => {
+    const text = outline();
+    try { await navigator.clipboard.writeText(text); status.textContent = "Copied! Paste it into your notes or PTO."; }
+    catch (e) { preview.textContent = text; preview.style.display = "block"; status.textContent = "Copy isn't available here. Select the outline below and copy it."; }
+  };
+  bClear.onclick = () => {
+    fields.forEach(f => areas[f.id].value = ""); preview.style.display = "none";
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    status.textContent = "Cleared.";
+  };
+  const row = html`<div></div>`;
+  row.append(bPrev, bCopy, bClear);
+  box.append(row, status, preview);
+  return box;
+}
+```
 
 ::: {.student-task}
-### 👥 Peer Feedback Protocol
+### ✏️ In class: Final Oral Argument
 
-After each oral argument, provide feedback on:
-
-| Criterion | Rating (1–4) | Comments |
-|-----------|--------------|----------|
-| **Claim** is clear, specific, and answerable | | |
-| At least **3 pieces of evidence** from data | | |
-| Evidence is **specific** (numbers, dates, sources) | | |
-| **Scientific reasoning** connects evidence to claim | | |
-| At least **1 counterargument** addressed | | |
-| **Vocabulary** used accurately | | |
-| **Delivery** is clear and within time limit | | |
+- Use your three **Connect to the Performance Task** responses (PTO pp. 9–22) to prepare.
+- Be ready to **say your claims out loud** and back each one with evidence and reasoning.
+- In a **Socratic seminar**, listen for classmates' counterclaims, respond with evidence, and be willing to say "the data are uncertain" when they are.
 :::
 
-# Reflection: How Has Your Thinking Changed?
+::: {.evaluate-box}
+## ✅ Final Argument Checklist {#final-argument-checklist}
 
-::: {.reflection-box}
-### 🔄 Revisiting Your Hypothesis
-
-At the start of this unit, you wrote a hypothesis about how warmer atmosphere and oceans might change storm behavior.
-
-Take it out now and answer:
-
-1. **How has your thinking changed** since writing that initial hypothesis?
-2. What was the **most surprising thing** you learned about storms and climate?
-3. What **new questions** do you have that weren't answered in this unit?
-4. How confident are you in your argument? What **additional evidence** would make you more confident?
-5. What does this mean for **your community**? Should NYC be preparing differently for future storms?
+Built from the **Final Argument Rubric** (Hurricanes 5E) and the **Arguing from Evidence Rubrics** (Blizzards and Paths of Severe Storms 5Es). The unit closing guide has no separate rubric. Tap each item when your argument includes it.
 :::
 
-# Unit 5 Summary: What You Figured Out
+```{ojs}
+//| echo: false
+u5cChecklist = {
+  const groups = [
+    {title: "📌 Claim / Counterclaim", items: [
+      "My claim addresses the problem: how storm frequency and/or intensity will change in MY region as temperatures rise",
+      "I give a counterclaim, and both are accurate, appropriate, and complete"
+    ]},
+    {title: "📊 Evidence", items: [
+      "At least 2 pieces of appropriate evidence for each claim (data, simulations, models, or reputable data sets, not just science ideas)",
+      "Includes historical storm data (winter storm graphs, hurricane totals, strong hurricane table, storm track maps)",
+      "Includes data from global climate models (e.g., IPCC Atlas projections of future temperatures)",
+      "Evidence that refutes my claim is included and clearly labeled"
+    ]},
+    {title: "🧠 Reasoning: science concepts", items: [
+      "Explains the conditions needed for a winter storm (colliding air masses, moisture, below-freezing air) and/or a hurricane (warm water > ~80 °F)",
+      "Explains how warming changes those conditions (energy and matter flow, evaporation, condensation releasing heat)",
+      "Concepts are accurate, appropriate, and no key concept is left out"
+    ]},
+    {title: "🔗 Reasoning: logic", items: [
+      "Includes logic statements that link evidence to claim using words like \"because\" and \"therefore\""
+    ]},
+    {title: "⚖️ Evaluation", items: [
+      "Critiques my own argument: its strengths and weaknesses",
+      "Suggests additional evidence or reasoning that would make it stronger",
+      "Explains how cause and effect or systems and system models were used to build the argument",
+      "Discusses the precision, reliability, and assumptions of the models I used"
+    ]}
+  ];
+  const total = d3.sum(groups, g => g.items.length);
+  const box = html`<div class="u5c-card" style="background:#fff;color:#1a1a1a;border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.12);"></div>`;
+  const bar = html`<div style="background:#eceff1;border-radius:20px;height:14px;overflow:hidden;margin:4px 0 4px;"><div style="background:linear-gradient(90deg,#0277bd,#ad1457);height:100%;width:0%;transition:width .3s;"></div></div>`;
+  const label = html`<div style="font-weight:700;font-size:.95em;"></div>`;
+  box.append(label, bar);
+  const update = () => {
+    const n = box.querySelectorAll("input:checked").length;
+    bar.firstChild.style.width = `${100 * n / total}%`;
+    label.textContent = n === total ? `🎉 ${n} of ${total}: ready to argue!` : `${n} of ${total} included`;
+  };
+  groups.forEach(g => {
+    box.appendChild(html`<div style="font-weight:800;margin:14px 0 4px;color:#01579b;">${g.title}</div>`);
+    g.items.forEach(it => {
+      const lab = html`<label style="display:flex;gap:10px;align-items:flex-start;padding:8px 6px;min-height:44px;border-bottom:1px solid #eceff1;cursor:pointer;">
+        <input type="checkbox" style="width:22px;height:22px;flex:0 0 22px;margin-top:2px;accent-color:#0277bd;"><span>${it}</span></label>`;
+      lab.querySelector("input").onchange = update;
+      box.appendChild(lab);
+    });
+  });
+  update();
+  return box;
+}
+```
 
-| Driving Question | What You Figured Out |
-|-----------------|---------------------|
-| **What causes wind?** | Uneven heating → pressure differences → air flows from H to L pressure |
-| **How do blizzards form?** | Mid-latitude cyclones form at cold/warm air mass boundaries; blizzard conditions on cold side |
-| **Why do storms follow specific paths?** | Global circulation cells + Coriolis effect create prevailing westerlies that steer storms |
-| **What steers storms?** | The jet stream — a high-altitude river of air at cell boundaries |
-| **What powers hurricanes?** | Latent heat from condensation of warm ocean water (≥26.5°C) |
-| **Why is there a hurricane season?** | Thermal lag: ocean peaks ~2 months after solar maximum |
-| **Could storms change in the future?** | Warmer air = more moisture; warmer oceans = more energy; weakened jet = more extremes |
+# Unit Summary
 
-::: {.performance-task}
-## 🎓 You Did It!
+| Big idea | What the evidence shows |
+|---|---|
+| **The phenomenon** | It has felt like storms are getting worse (Winter Storm Jonas, Hurricane Maria, Hurricane Sandy). Does the data agree, and will it continue? |
+| **Blizzards** | Uneven heating makes pressure differences and wind; rising air cools and condenses into snow at fronts where cold and warm air masses meet. Winter storm intensity rose from 1950 to 2010; mid-latitude frequency was mixed |
+| **Paths of Severe Storms** | Global winds and the Coriolis effect bring air masses together over North America and steer storms southwest → northeast. A warming world may shift the westerlies and storm tracks toward the poles |
+| **Hurricanes** | Warm ocean water powers hurricanes through evaporation and condensation. Global totals fell slightly, but North Atlantic storms and Category 4–5 hurricanes increased |
+| **Moon Phases (optional)** | Spring tides at new and full moon raise high tides; Sandy's surge on a spring tide made NYC flooding worse |
+| **The future** | Intensity: likely to increase. Frequency: uncertain and regional. Models are more precise when many agree, but their reliability depends on assumptions about the future |
 
-You've just completed a deep investigation into the science of severe storms. You can now:
+---
 
-- ✅ Explain the **physics** behind wind, precipitation, and storm formation
-- ✅ Read and interpret **weather maps** and **climate data**
-- ✅ Connect **climate change** to changes in storm behavior
-- ✅ Construct **evidence-based scientific arguments**
+# End-of-Unit Quiz
 
-These are the skills of a real climate scientist. The data is clear — the question now is: **what will we do about it?**
-:::
+```{ojs}
+//| echo: false
+function buildUnit5Quiz(id, title, questions) {
+  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const header = html`<div style="background:linear-gradient(135deg,#1a237e 0%,#0277bd 100%);color:#fff;border-radius:14px 14px 0 0;padding:18px 24px;">
+    <div style="font-size:1.1em;font-weight:700;display:flex;align-items:center;gap:8px;color:#fff;"><span style="font-size:1.2em;">📝</span> ${title}</div>
+    <div style="font-size:0.85em;opacity:0.9;margin-top:4px;color:#fff;">Select an answer for each question.</div>
+  </div>`;
+  const body = html`<div style="border:1.5px solid #b3e5fc;border-top:none;border-radius:0 0 14px 14px;overflow:hidden;background:#f3faff;padding:16px;"></div>`;
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => {
+          b.style.cursor="default"; b.style.borderColor="#e2e8f0"; b.style.background="#f8fafc"; b.style.color="#475569";
+        });
+        const correctBtn = card.querySelectorAll("button")[qq.correct];
+        correctBtn.style.borderColor="#48bb78";correctBtn.style.background="#f0fff4";correctBtn.style.color="#276749";correctBtn.style.fontWeight="700";
+        if(oi === qq.correct){
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";btn.style.color="#9b2c2c";btn.style.fontWeight="700";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";
+      };
+      card.appendChild(btn);
+    });
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  outer.appendChild(header);
+  outer.appendChild(body);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+buildUnit5Quiz("u5c-summative-quiz", "🌀 End-of-Unit Quiz — More Hurricanes and Blizzards in NYC?", [
+  {
+    q: "Why does warm air rise and create low pressure near the ground?",
+    options: ["Its particles move faster and spread apart, so it is less dense than the cooler air around it", "Warm air is heavier", "Warm air has no particles", "The Coriolis effect lifts it"],
+    correct: 0,
+    explanation: "Heating speeds up particles, which spread out. Less dense air is pushed up by denser surrounding air, leaving lower pressure at the surface. Air then flows from high to low pressure as wind."
+  },
+  {
+    q: "On a weather map, a cold, dry air mass from Canada meets a warm, moist air mass from the Gulf of Mexico over the Northeast in January. What is most likely?",
+    options: ["Warm air is lifted at the front, cools, and condenses, forming a mid-latitude cyclone that can bring heavy snow", "Clear skies, because the air masses cancel out", "A hurricane, because hurricanes need cold air", "Nothing, because fronts don't affect weather"],
+    correct: 0,
+    explanation: "This is how Winter Storm Jonas formed: colliding air masses, lifting at the front, condensation releasing heat, and below-freezing air for snow."
+  },
+  {
+    q: "The mid-latitude winter storm FREQUENCY graph shows −1.15, +0.25, −0.03, +0.15, −0.38, +1.12 for the 1950s–2000s. What's the best interpretation?",
+    options: ["No steady trend: frequency went up and down, so predictions about frequency are uncertain", "A steady increase every decade", "A steady decrease every decade", "Winter storms stopped in the 1990s"],
+    correct: 0,
+    explanation: "The values change direction several times. Your teacher guide notes frequency data are inconsistent, so a strong argument weighs the competing evidence."
+  },
+  {
+    q: "Why do winter storms over the US usually travel from southwest to northeast?",
+    options: ["The westerlies (bent by the Coriolis effect) steer them toward the northeast", "The trade winds blow toward the northeast at 40° N", "Storms follow rivers", "Mountains push them east"],
+    correct: 0,
+    explanation: "Between about 30° and 60° N, surface winds blow from the southwest toward the northeast. Storms are carried along those prevailing westerlies."
+  },
+  {
+    q: "If warming shifts the westerlies about 5° toward the North Pole, what happens to the storm tracks?",
+    options: ["They move north with the westerlies, so bands farther north get more storms and southern bands get fewer", "They move south", "They stay in exactly the same place", "All winter storms stop"],
+    correct: 0,
+    explanation: "Storms ride the westerlies. Whether a specific place like NYC gains or loses storms depends on which band was busiest before the shift."
+  },
+  {
+    q: "North Atlantic Category 4–5 hurricanes went from 16 (1975–1989) to 25 (1990–2004). Which variable does this evidence address?",
+    options: ["Hurricane intensity", "Hurricane frequency (total number)", "Winter storm frequency", "Global temperature"],
+    correct: 0,
+    explanation: "It counts the strongest storms, so it is evidence about intensity. Total hurricane counts are evidence about frequency."
+  },
+  {
+    q: "Which chain best explains why warmer oceans could make hurricanes stronger?",
+    options: ["Warmer water → more evaporation → more water vapor rising → more condensation releasing heat → stronger rising air and lower pressure", "Warmer water → less evaporation → weaker storm", "Warmer water → colder air → more snow", "Warmer water → higher tides only"],
+    correct: 0,
+    explanation: "Evaporation carries energy and matter from the ocean into the storm; condensation releases that energy as heat, powering the hurricane."
+  },
+  {
+    q: "Warmer air holds more water. What does this predict for storms?",
+    options: ["More rain (or snow, if below freezing) during individual storm events", "Every year will get more total rain everywhere", "Storms will have less moisture", "Only droughts will change"],
+    correct: 0,
+    explanation: "More moisture per storm means heavier precipitation during events. The Hurricanes Elaborate text points out this doesn't necessarily mean more total rain every year."
+  },
+  {
+    q: "Why was flooding from Hurricane Sandy (October 2012) so severe in NYC?",
+    options: ["Its storm surge arrived near a full moon, during a spring tide, when high tides are higher than usual", "It hit during a neap tide", "The Moon pushed the hurricane toward NYC", "It was a blizzard"],
+    correct: 0,
+    explanation: "At new and full moon the Sun's and Moon's tidal pulls line up, making spring tides. A surge on top of a higher high tide reaches farther inland."
+  },
+  {
+    q: "A classmate says, \"The IPCC Atlas says the future will be exactly +2 °C, so storms will definitely get worse by a set amount.\" What's the best critique?",
+    options: ["The Atlas shows several scenarios (1.5, 2, 3, 4 °C) because its assumptions about emissions, population, technology, and policy vary; predictions have limited reliability", "The Atlas only uses one model", "Climate models can't say anything about temperature", "The Atlas predicts cooling"],
+    correct: 0,
+    explanation: "Many models agreeing makes the Atlas more precise, but its reliability depends on assumptions about the future. A strong argument names the scenario and admits these limits."
+  }
+])
+```
