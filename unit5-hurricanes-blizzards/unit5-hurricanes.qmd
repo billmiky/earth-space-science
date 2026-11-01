@@ -1,6 +1,6 @@
 ---
 title: "Unit 5: Hurricanes"
-subtitle: "How do hurricanes form, and why do they only occur at certain times of year?"
+subtitle: "How do hurricanes form? Why do hurricanes exhibit patterns in the time of year they occur?"
 format:
   html:
     toc: true
@@ -16,841 +16,1753 @@ execute:
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
 
-.engage-box { 
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-  color: white;
-  padding: 25px; 
-  margin: 20px 0; 
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-  border: none;
-}
-.engage-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
-
-.explore-box { 
-  background: linear-gradient(135deg, #b5179e 0%, #c9184a 100%); 
-  color: white;
-  padding: 25px; 
-  margin: 20px 0; 
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
-}
-
-.explain-box { 
-  background: linear-gradient(135deg, #1565c0 0%, #00838f 100%); 
-  color: #1a1a1a;
-  padding: 25px; 
-  margin: 20px 0; 
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
-}
-
-.elaborate-box { 
-  background: linear-gradient(135deg, #2e7d32 0%, #00796b 100%); 
-  color: #1a1a1a;
-  padding: 25px; 
-  margin: 20px 0; 
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);
-}
-
-.evaluate-box { 
-  background: linear-gradient(135deg, #c2185b 0%, #bf360c 100%); 
-  color: #1a1a1a;
-  padding: 25px; 
-  margin: 20px 0; 
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(250, 112, 154, 0.3);
-}
-
-.check-understanding { 
-  background: linear-gradient(to right, #667eea, #764ba2);
-  color: white;
-  padding: 20px; 
-  margin: 20px 0;
-  border-radius: 12px;
-  border-left: 6px solid #fff;
-}
-
-.key-idea { 
-  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-  padding: 20px; 
-  margin: 20px 0;
-  border-radius: 12px;
-  border-left: 8px solid #ff6b6b;
-  font-size: 1.1em;
-}
-
-.lab-activity { 
-  background: linear-gradient(to bottom, #ffeaa7, #fdcb6e);
-  border: 4px solid #e17055; 
-  padding: 25px; 
-  margin: 25px 0; 
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-
-.quiz-section { 
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-  padding: 25px; 
-  margin: 25px 0; 
-  border-radius: 15px;
-  border: 4px dashed #ff6b6b;
-}
-
-.pe-badge { 
-  display: inline-block; 
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white; 
-  padding: 8px 16px; 
-  border-radius: 20px; 
-  font-size: 13px; 
-  font-weight: 800;
-  margin: 5px;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.big-question {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 2.5em;
-  font-weight: 800;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 30px 0 20px 0;
-  text-align: center;
-  animation: slideIn 0.8s ease-out;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.mind-blown {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: white;
-  padding: 20px;
-  margin: 20px 0;
-  border-radius: 15px;
-  font-size: 1.3em;
-  font-weight: 700;
-  text-align: center;
-  box-shadow: 0 10px 25px rgba(231, 76, 60, 0.4);
-}
-
-.student-task {
-  background: #fff3e0;
-  border-left: 5px solid #ff9800;
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 0 10px 10px 0;
-}
-
-h1 { 
-  font-family: 'Space Grotesk', sans-serif !important;
-  font-weight: 800 !important;
-  font-size: 2.8em !important;
-  margin-top: 40px !important;
-}
-
-h2 { 
-  font-family: 'Space Grotesk', sans-serif !important;
-  font-weight: 700 !important;
-  color: #e74c3c !important;
-}
-
-@keyframes quizFlash {
-  0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4); }
-  50% { transform: scale(1.05); box-shadow: 0 8px 40px rgba(118, 75, 162, 0.9), 0 0 0 8px rgba(102, 126, 234, 0.22); }
-}
-.quiz-jump-btn {
-  display: inline-block;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white !important;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 800;
-  margin: 5px;
-  border: none;
-  cursor: pointer;
-  text-decoration: none !important;
-  animation: quizFlash 1.6s ease-in-out infinite;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  vertical-align: middle;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.quiz-jump-btn:hover {
-  animation: none;
-  background: linear-gradient(135deg, #5a6fd8 0%, #6a42a0 100%);
-  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.65);
-  transform: scale(1.07);
-  color: white !important;
-  text-decoration: none !important;
-}
-
+.engage-box { background: linear-gradient(135deg, #0b5c8a 0%, #0a3d62 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(10, 61, 98, 0.3); }
+.explore-box { background: linear-gradient(135deg, #00695c 0%, #0a5ea8 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 105, 92, 0.3); }
+.explain-box { background: linear-gradient(135deg, #4834a8 0%, #5e35b1 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #b54708 0%, #9a3412 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(181, 71, 8, 0.3); }
+.evaluate-box { background: linear-gradient(135deg, #b71c1c 0%, #ad1457 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(183, 28, 28, 0.3); }
+.engage-box h2, .explore-box h2, .explain-box h2, .elaborate-box h2, .evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.8em; margin-top: 0; color: white !important; }
+.engage-box h3, .explore-box h3, .explain-box h3, .elaborate-box h3, .evaluate-box h3 { color: white !important; }
+.engage-box a, .explore-box a, .explain-box a, .elaborate-box a, .evaluate-box a { color: #ffe0b2; }
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #0284c7 0%, #0f766e 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; margin: 4px; letter-spacing: .5px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.1em; font-weight: 800; background: linear-gradient(135deg, #0284c7 0%, #e11d48 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 26px 0 18px 0; text-align: center; line-height: 1.2; }
+.key-idea { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); color: #0c1a2a; padding: 18px 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #0284c7; font-size: 1.03em; }
+.key-idea h3 { color: #0c1a2a !important; margin-top: 0; }
+.student-task { background: #fff3e0; color: #1a1a1a; border-left: 5px solid #ff9800; padding: 18px 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.student-task h3 { color: #7c2d12 !important; margin-top: 0; }
+.student-task a { color: #9a3412; }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.3em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #0369a1 !important; }
+.quarto-dark h2, [data-bs-theme="dark"] h2 { color: #7dd3fc !important; }
+.hu-table { width: 100%; border-collapse: collapse; font-size: .92em; margin: 6px 0 16px; }
+.hu-table th, .hu-table td { padding: 6px 8px; border-bottom: 1px solid rgba(128,128,128,.3); text-align: left; vertical-align: top; }
+.hu-note { font-size: .8em; opacity: .78; margin: 4px 0 14px; }
+.student-task, .callout-body-container { overflow-x: auto; }
+.student-task table, .callout-body-container table { font-size: .9em; }
+.hu-card { background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px 14px; margin: 8px 0 14px; }
+.hu-card b { color: #0f172a; }
+.hu-pt textarea { width: 100%; min-height: 84px; font: inherit; font-size: .93em; padding: 8px; border-radius: 8px; border: 1px solid #94a3b8; background: #fff; color: #0f172a; box-sizing: border-box; }
+.hu-pt label.hu-lbl { display: block; font-weight: 700; margin: 12px 0 4px; }
+.hu-btn { min-height: 44px; padding: 8px 18px; border-radius: 22px; border: none; background: linear-gradient(135deg, #0284c7, #4834a8); color: #fff; font-weight: 700; cursor: pointer; margin: 6px 6px 6px 0; }
+.cell-output-display figure h2 { font-family: 'Inter', sans-serif !important; font-size: 1.02rem !important; font-weight: 700 !important; color: inherit !important; margin: 0 0 2px !important; padding: 0 !important; border: none !important; line-height: 1.3; }
+.cell-output-display figure h3 { font-family: 'Inter', sans-serif !important; font-size: .85rem !important; font-weight: 400 !important; opacity: .8; margin: 0 0 6px !important; padding: 0 !important; border: none !important; line-height: 1.3; }
+svg [aria-label="tip"] text { fill: #1a1a1a !important; }
+svg [aria-label="tip"] rect { fill: rgba(255, 255, 255, 0.97) !important; stroke: #d4d4d4 !important; }
+.cell-output-display svg { max-width: 100%; height: auto; }
+form[class*="-checkbox"] { --input-width: 600px; max-width: 100%; }
 </style>
 ```
 
-<a class="quiz-jump-btn" href="#hurricane-quiz">🧠 Quiz ↓</a>
+<a class="quiz-jump-btn" href="#hu-quiz">🧠 Quiz ↓</a>
 
-<div class="big-question">🌀 Anatomy of a Hurricane 🌀</div>
+<div class="big-question">🌀 Why Do Hurricanes Form Where and When They Do? 🌊</div>
 
+<span class="pe-badge">HS-ESS2-5</span> <span class="pe-badge">Cause &amp; Effect</span> <span class="pe-badge">Systems &amp; System Models</span>
 
-# Engage: The Investigative Phenomenon
+::: {.callout-note collapse="true"}
+## 📒 Using this chapter with your student packet
+
+This chapter follows the same steps as your **Hurricanes 5E** packet (its header says "Unit 4", but it is the Unit 5 hurricanes packet). Missed a class or need a refresher? Jump to the matching section:
+
+| Packet section | In this chapter |
+|---|---|
+| Engage: the 2005 hurricane season video + initial ideas (Rumors) | [Engage](#hu-engage) |
+| Explore: Where do hurricanes happen? (map + See-Think-Wonder) | [Where do hurricanes happen?](#hu-where) |
+| How many hurricanes happen? (data table + bar graph) | [How many hurricanes happen?](#hu-how-many) |
+| When do hurricanes happen? (season calendar + questions 1–3) | [When do hurricanes happen?](#hu-when) |
+| Where's the warm water? (IRI Ocean Temperature model + map) | [Where's the warm water?](#hu-warm-water) |
+| See-Think-Wonder (3 rows) | [See-Think-Wonder](#hu-stw) |
+| Explain Part 1: Hurricane Model Illustrating What is Happening to Water Molecules | [Explain, Part 1](#hu-explain-1) |
+| Part 2: What Explains the Patterns from the 2005 Hurricane Season? (scientific explanation) | [Explain, Part 2](#hu-explain-2) |
+| Dependent and independent variables (questions 1–3) | [Causal relationship](#hu-variables) |
+| Explain: Summary Task | [Summary Task](#hu-summary) |
+| Elaborate: What is happening to precipitation as global temperatures rise? | [Elaborate](#hu-elaborate) |
+| Evaluate Part 1: Is global warming affecting hurricanes? (graphs, questions 1–2) | [Evaluate, Part 1](#hu-trends) |
+| Are hurricanes getting stronger? (bar graphs on the map) | [Are hurricanes getting stronger?](#hu-stronger) |
+| Part 2: Reviewing what we know about hurricane formation | [Reviewing formation](#hu-review) |
+| What do global climate models tell us? (IPCC WGI Interactive Atlas) | [Climate models](#hu-ipcc) |
+| Reliability of Models Based on Assumptions | [Reliability](#hu-reliability) |
+| Connect to the Performance Task: Hurricanes 5E (in your PTO) | [Performance Task helper](#hu-pt) |
+| Evaluate: Final Argument Rubric | [Rubric checklist](#hu-rubric) |
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot@0.6.16")
+d3 = require("d3@7.9.0")
+topojson = require("topojson-client@3.1.0")
+```
+
+```{ojs}
+//| echo: false
+huLand = {
+  try {
+    const t = await d3.json("../world-110m.json");
+    return topojson.feature(t, t.objects.land);
+  } catch (e) {
+    try {
+      const t = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-110m.json");
+      return topojson.feature(t, t.objects.land);
+    } catch (e2) { return null; }
+  }
+}
+```
+
+```{ojs}
+//| echo: false
+huOrder = (q, n) => {
+  let h = 0;
+  for (const ch of q) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return d3.shuffler(d3.randomLcg((h % 10000) / 10000))(d3.range(n));
+}
+```
+
+```{ojs}
+//| echo: false
+huBuildCards = function(body, questions, onAnswer) {
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.className = "hu-qcard";
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.1);border:1px solid #e2e8f0;";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.9em;";
+    const order = huOrder(qq.q, qq.options.length);
+    const shownCorrect = order.indexOf(qq.correct);
+    order.map(i => qq.options[i]).forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;";
+      btn.onclick = () => {
+        if (card.dataset.answered) return;
+        card.dataset.answered = "true";
+        card.querySelectorAll("button").forEach(b => { b.style.cursor = "default"; });
+        const right = card.querySelectorAll("button")[shownCorrect];
+        right.style.borderColor = "#48bb78"; right.style.background = "#f0fff4"; right.style.color = "#22543d"; right.style.fontWeight = "700";
+        const ok = oi === shownCorrect;
+        if (ok) {
+          fb.innerHTML = "✅ Correct! " + qq.explanation; fb.style.color = "#276749"; fb.style.background = "#f0fff4";
+        } else {
+          btn.style.borderColor = "#fc8181"; btn.style.background = "#fff5f5"; btn.style.color = "#9b2c2c";
+          fb.innerHTML = "❌ Not quite. " + qq.explanation; fb.style.color = "#9b2c2c"; fb.style.background = "#fff5f5";
+        }
+        fb.style.padding = "10px 14px"; fb.style.marginTop = "8px";
+        if (onAnswer) onAnswer(ok);
+      };
+      card.appendChild(btn);
+    });
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+}
+```
+
+```{ojs}
+//| echo: false
+huQuiz = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="margin:18px 0 24px 0;text-align:center;">
+    <button class="hu-toggle" style="display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#0284c7 0%,#4834a8 100%);color:#fff;border:none;padding:9px 22px;border-radius:50px;font-size:.95em;font-weight:700;cursor:pointer;min-height:44px;box-shadow:0 3px 12px rgba(2,132,199,.4);">
+      <span style="font-size:1.1em;">📝</span> ${title}
+      <span class="chevron" style="transition:transform .3s;">▼</span>
+    </button>
+    <div class="quiz-body" style="max-height:0;opacity:0;overflow:hidden;transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin-top .3s ease;margin-top:0;text-align:left;">
+      <button class="close-btn" style="display:block;margin:0 auto 10px auto;background:rgba(2,132,199,.12);color:#0369a1;border:none;padding:5px 18px;border-radius:50px;font-size:.85em;font-weight:600;cursor:pointer;min-height:36px;">Hide Quiz</button>
+      <p style="text-align:center;color:#64748b;font-style:italic;font-size:.9em;margin-bottom:12px;">Select an answer for each question.</p>
+    </div>
+  </div>`;
+  const toggle = outer.querySelector("button.hu-toggle");
+  const chevron = toggle.querySelector(".chevron");
+  const body = outer.querySelector(".quiz-body");
+  const closeBtn = body.querySelector(".close-btn");
+  function expand(){ body.style.maxHeight="5000px"; body.style.opacity="1"; body.style.marginTop="14px"; chevron.style.transform="rotate(180deg)"; }
+  function collapse(){ body.style.maxHeight="0"; body.style.opacity="0"; body.style.marginTop="0"; chevron.style.transform="rotate(0)"; }
+  toggle.onclick = () => body.style.maxHeight === "0px" || body.style.maxHeight === "" ? expand() : collapse();
+  closeBtn.onclick = collapse;
+  huBuildCards(body, questions);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+// ---------- Packet data (Explore) ----------
+huRegions = [
+  {name: "East Pacific", season: "May–November", months: [4,5,6,7,8,9,10], avg: 9, hemi: "Northern",
+   box: [[-140, 5], [-80, 30]], label: [-112, 33]},
+  {name: "West Pacific", season: "April–January", months: [3,4,5,6,7,8,9,10,11,0], avg: 16, hemi: "Northern",
+   box: [[100, 5], [180, 40]], label: [140, 44]},
+  {name: "North Atlantic", season: "June–November", months: [5,6,7,8,9,10], avg: 7, hemi: "Northern",
+   box: [[-100, 5], [-15, 45]], label: [-50, 49]},
+  {name: "Southwest Pacific", season: "October–May", months: [9,10,11,0,1,2,3,4], avg: 4, hemi: "Southern",
+   box: [[140, -30], [220, -5]], label: [185, -35]},
+  {name: "North Indian", season: "April–December", months: [3,4,5,6,7,8,9,10,11], avg: 2, hemi: "Northern",
+   box: [[50, 5], [100, 25]], label: [75, 29]},
+  {name: "South Indian", season: "October–May", months: [9,10,11,0,1,2,3,4], avg: 6, hemi: "Southern",
+   box: [[30, -30], [115, -5]], label: [72, -35]}
+]
+huMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+huRing = ([[x0, y0], [x1, y1]]) => {
+  const pts = [];
+  for (let x = x0; x <= x1; x += 2) pts.push([x, y0]);
+  for (let y = y0; y <= y1; y += 2) pts.push([x1, y]);
+  for (let x = x1; x >= x0; x -= 2) pts.push([x, y1]);
+  for (let y = y1; y >= y0; y -= 2) pts.push([x0, y]);
+  pts.push([x0, y0]);
+  return pts;
+}
+huProj = ({type: "equirectangular", rotate: [-180, 0],
+  domain: {type: "MultiPoint", coordinates: [[0.5, -42], [90, -42], [180, -42], [270, -42], [359.5, -42], [0.5, 54], [90, 54], [180, 54], [270, 54], [359.5, 54]]}})
+huHemiColor = ({Northern: "#0284c7", Southern: "#e11d48"})
+```
+
+# Engage: What do students know about hurricanes? {#hu-engage}
 
 ::: {.engage-box}
-## 🌊 The 2005 Atlantic Hurricane Season
+## 🌀 The 2005 Atlantic Hurricane Season
 
-<div style="font-size: 1.3em; font-weight: 700; text-align: center; margin: 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-In 2005, hurricanes occurred in the North Atlantic Ocean between June 1 and November 30 — the same seasonal window as every other year. Why?
-</div>
+In the [Blizzards](unit5-blizzards.qmd) and [Paths of Severe Storms](unit5-storm-paths.qmd) chapters you figured out a lot about winter storms. But the class still has open questions about **hurricanes**.
 
-**The Record-Breaking 2005 Season:**
+Just as we studied one winter storm (Jonas) to explain winter storms in general, we now study **one hurricane season** to explain hurricanes in general.
 
-- 🌀 **28 named storms** — the most ever recorded at that time
-- 💪 **15 hurricanes** (7 of them major: Category 3+)
-- 🏚️ **Hurricane Katrina** devastated New Orleans (Category 5 at peak, Cat 3 at landfall)
-- 📊 Used up the entire alphabet of names — had to use Greek letters (Alpha, Beta, Gamma...)
-- 💰 Over **$180 billion** in damages from the full season
-
-### 🤔 Driving Questions:
-- What **energy source** powers hurricanes?
-- Why do hurricanes only form over **warm ocean water**?
-- Why is there a specific **hurricane season** (June–November)?
-- Could **warming oceans** lead to more seasons like 2005?
+**Investigative phenomenon:** In 2005, hurricanes occurred in the North Atlantic Ocean between **June and November 30**, just like in 2018 and 2020.
 :::
+
+In class you watched the **2005 Hurricane Season** video (1:42–3:45). In that animation, ocean color shows **sea surface temperature**: red is warmest, blue is coldest. Below is every named storm of that record-breaking season, placed on the calendar by the date it formed.
+
+```{ojs}
+//| echo: false
+hu2005 = [
+  ["Arlene","2005-06-08",0],["Bret","2005-06-28",0],["Cindy","2005-07-03",1],["Dennis","2005-07-04",4],
+  ["Emily","2005-07-10",5],["Franklin","2005-07-21",0],["Gert","2005-07-23",0],["Harvey","2005-08-02",0],
+  ["Irene","2005-08-04",2],["Jose","2005-08-22",0],["Katrina","2005-08-23",5],["Lee","2005-08-28",0],
+  ["Maria","2005-09-01",3],["Nate","2005-09-05",1],["Ophelia","2005-09-06",1],["Philippe","2005-09-17",1],
+  ["Rita","2005-09-18",5],["Stan","2005-10-01",1],["Tammy","2005-10-05",0],["Vince","2005-10-08",1],
+  ["Wilma","2005-10-15",5],["Alpha","2005-10-22",0],["Beta","2005-10-26",3],["Gamma","2005-11-14",0],
+  ["Delta","2005-11-22",0],["Epsilon","2005-11-29",1],["Zeta","2005-12-30",0]
+].map(([name, d, cat]) => ({name, date: new Date(d + "T12:00:00"), cat, label: cat === 0 ? "Tropical storm" : `Category ${cat} hurricane`}))
+```
+
+```{ojs}
+//| echo: false
+viewof hu05View = Inputs.radio(["Each storm", "Storms per month"], {value: "Each storm", label: "Show:"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const catColors = {0: "#94a3b8", 1: "#facc15", 2: "#fb923c", 3: "#f97316", 4: "#dc2626", 5: "#7f1d1d"};
+  const season = [{x1: new Date("2005-06-01"), x2: new Date("2005-11-30T23:59:00")}];
+  if (hu05View === "Each storm") {
+    return Plot.plot({
+      title: "2005 Atlantic season: when each named storm formed",
+      subtitle: "Height = strongest category reached (0 = tropical storm). Shaded = official season, June 1 – November 30.",
+      width, height: 330, marginLeft: 40, marginBottom: 36,
+      x: {type: "time", domain: [new Date("2005-05-15"), new Date("2006-01-05")], label: null},
+      y: {domain: [-0.5, 5.8], label: "Peak category", ticks: [0, 1, 2, 3, 4, 5], tickFormat: d => String(d)},
+      marks: [
+        Plot.rectX(season, {x1: "x1", x2: "x2", y1: -0.5, y2: 5.8, fill: "#0ea5e9", fillOpacity: 0.12}),
+        Plot.ruleX(hu2005, {x: "date", y1: -0.5, y2: "cat", stroke: d => catColors[d.cat], strokeOpacity: 0.7}),
+        Plot.dot(hu2005, {x: "date", y: "cat", r: 6, fill: d => catColors[d.cat], stroke: "white"}),
+        Plot.text(hu2005.filter(d => d.cat === 5), {x: "date", y: "cat", text: "name", dy: -13, fontWeight: "bold"}),
+        Plot.tip(hu2005, Plot.pointerX({x: "date", y: "cat", title: d => `${d.name}\nFormed ${d3.timeFormat("%b %-d")(d.date)}\n${d.label}`}))
+      ]
+    });
+  }
+  const counts = d3.range(5, 12).map(m => ({m: huMonths[m], n: hu2005.filter(d => d.date.getMonth() === m).length,
+    h: hu2005.filter(d => d.date.getMonth() === m && d.cat > 0).length}));
+  return Plot.plot({
+    title: "2005 Atlantic season: named storms forming each month",
+    subtitle: "Dark part of each bar = storms that became hurricanes",
+    width, height: 300, marginLeft: 40,
+    x: {domain: counts.map(d => d.m), label: null},
+    y: {label: "Storms formed", grid: true},
+    marks: [
+      Plot.barY(counts, {x: "m", y: "n", fill: "#7dd3fc"}),
+      Plot.barY(counts, {x: "m", y: "h", fill: "#0369a1"}),
+      Plot.text(counts, {x: "m", y: "n", text: d => String(d.n), dy: -8, fontWeight: "bold"}),
+      Plot.ruleY([0])
+    ]
+  });
+}
+```
+
+<p class="hu-note">Data: NOAA National Hurricane Center Tropical Cyclone Reports for 2005 (formation dates approximate to a day). 2005 had 27 named storms (plus one unnamed subtropical storm), 15 hurricanes, 7 major hurricanes, and 4 Category 5s: Emily, Katrina, Rita and Wilma. Zeta formed on December 30, after the official season.</p>
+
+```{ojs}
+//| echo: false
+huQuiz("hu-q-engage", "Check: the 2005 season", [
+  {q: "In which months did most 2005 storms form?",
+   options: ["December–March", "July–October", "Only in June", "Evenly through the whole year"],
+   correct: 1,
+   explanation: "21 of the 27 named storms formed from July through October. None formed January–May, and only one (Zeta) formed after November 30."},
+  {q: "In the video, storms formed over red water near the tropics and weakened as they moved north over yellow and blue water. What does that pattern suggest?",
+   options: ["Hurricanes need cold water", "Warm ocean water is connected to hurricanes forming and staying strong", "Ocean color has nothing to do with storms", "Hurricanes make the ocean colder, so they die"],
+   correct: 1,
+   explanation: "This is the key idea to test: storms form and stay strong over warm water and fade over cooler water (or land). The rest of the chapter asks why."}
+])
+```
 
 ::: {.student-task}
-### 📝 Pattern Recognition
+### ✏️ In your packet: initial ideas (Rumors)
 
-Before we investigate, consider:
+Jot down your ideas for: **What caused the patterns of location and time of year we observed from the 2005 hurricane season over the North Atlantic Ocean?** Sentence starters:
 
-1. Why do you think hurricanes form over **oceans** but not over **land**?
-2. Why June through November — what's special about those months?
-3. What do you think happens to a hurricane when it hits land? Why?
+- *Hurricanes form near the equator and die after moving north as a result of… I think this because…*
+- *Hurricanes form between June and November as a result of… I think this because…*
+
+In class, the **Rumors** routine had you trade ideas about what causes a hurricane to form and what makes it stronger. On your own, write down your idea plus one different idea a classmate might have.
 :::
 
-# Explore: Sea Surface Temperature & Hurricane Formation
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+Ideas students often come up with (you will test them in this chapter):
+
+- Hurricanes form near the equator because the **water is warmer**, and die after moving north because the **water is cooler**. Evidence: in the video, storms formed where the water was red and weakened where it was yellow or blue.
+- Hurricanes occur between June and November because it is **warmer** then, so the **water is warmer**.
+
+It's fine if your ideas are incomplete. You will refine them with data.
+:::
+
+# Explore: What Patterns Do We See in Global Occurrence of Hurricanes? {#hu-explore}
 
 ::: {.explore-box}
-## 🔬 Investigation: The Warm Water Connection
+## 🔬 Where, how many, and when?
 
-Hurricanes need warm ocean water to form. But how warm? And why? Let's explore the data.
+Hurricanes are one kind of **tropical cyclone**. In the Northwest Pacific they're called **typhoons**, and in the Indian Ocean and South Pacific, **cyclones**. Same storm, different names. You'll look for patterns in **where**, **how many**, and **when**, and then compare them to **where the warm water is**.
 :::
+
+## Where do hurricanes happen? {#hu-where}
+
+There are **six regions** of the world where hurricanes (tropical cyclones) are likely to occur. Your packet's map ("Where do tropical cyclones take place?", BBC/NOAA) shows every historic storm track from 1842–2023. The map below outlines the same six regions. Tap a region name to learn about it.
 
 ```{ojs}
 //| echo: false
-Plot = require("@observablehq/plot")
-d3 = require("d3@7")
-```
-
-## Sea Surface Temperatures Through the Year
-
-```{ojs}
-//| echo: false
-// Monthly average SST for tropical North Atlantic (10-20°N, 80-20°W)
-sstData = [
-  {month: "Jan", sst: 25.5, hurricanes: 0},
-  {month: "Feb", sst: 25.0, hurricanes: 0},
-  {month: "Mar", sst: 25.2, hurricanes: 0},
-  {month: "Apr", sst: 26.0, hurricanes: 0},
-  {month: "May", sst: 27.0, hurricanes: 0.2},
-  {month: "Jun", sst: 27.8, hurricanes: 0.6},
-  {month: "Jul", sst: 28.3, hurricanes: 0.8},
-  {month: "Aug", sst: 28.8, hurricanes: 3.2},
-  {month: "Sep", sst: 28.9, hurricanes: 4.5},
-  {month: "Oct", sst: 28.4, hurricanes: 2.8},
-  {month: "Nov", sst: 27.5, hurricanes: 0.8},
-  {month: "Dec", sst: 26.2, hurricanes: 0.1}
-]
-
-Plot.plot({
-  title: "Tropical Atlantic: Sea Surface Temperature vs. Hurricane Activity",
-  subtitle: "What's the connection between water temperature and storm formation?",
-  width: width,
-  height: 380,
-  x: {label: "Month", domain: sstData.map(d => d.month)},
-  y: {label: "Sea Surface Temperature (°C)", domain: [24, 30]},
-  marks: [
-    Plot.barY(sstData, {x: "month", y: "sst", fill: d => d.sst >= 26.5 ? (d.sst >= 27.5 ? "#e74c3c" : "#f39c12") : "#3498db", dx: -3,
-        tip: true}),
-    Plot.ruleY([26.5], {stroke: "#e74c3c", strokeWidth: 2, strokeDasharray: "8,4"}),
-    Plot.text([{x: "Mar", y: 26.8}], {x: "x", y: "y", text: d => "← 26.5°C threshold for hurricane formation", fill: "#e74c3c", fontSize: 11, textAnchor: "start"}),
-    Plot.dot(sstData, {x: "month", y: d => 24 + d.hurricanes * 1.2, fill: "#6c5ce7", r: d => Math.max(d.hurricanes * 3, 2),
-        tip: true}),
-    Plot.line(sstData, {x: "month", y: d => 24 + d.hurricanes * 1.2, stroke: "#6c5ce7", strokeWidth: 1.5,
-        tip: true})
-  ]
-})
-```
-
-::: {.student-task}
-### 📝 Analyzing the SST–Hurricane Connection
-
-1. During which months does SST exceed 26.5°C?
-2. During which months do most hurricanes form?
-3. What's the relationship between the two?
-4. Why do you think 26.5°C is the magic number? (We'll find out in the Explain section!)
-:::
-
-## The 2005 Season: Month by Month
-
-```{ojs}
-//| echo: false
-storms2005 = [
-  {name: "Arlene", month: "Jun", category: "TS", peak: 1},
-  {name: "Bret", month: "Jun", category: "TS", peak: 1},
-  {name: "Cindy", month: "Jul", category: 1, peak: 1},
-  {name: "Dennis", month: "Jul", category: 4, peak: 4},
-  {name: "Emily", month: "Jul", category: 5, peak: 5},
-  {name: "Franklin", month: "Jul", category: "TS", peak: 1},
-  {name: "Gert", month: "Jul", category: "TS", peak: 1},
-  {name: "Harvey", month: "Aug", category: "TS", peak: 1},
-  {name: "Irene", month: "Aug", category: 2, peak: 2},
-  {name: "Jose", month: "Aug", category: "TS", peak: 1},
-  {name: "Katrina", month: "Aug", category: 5, peak: 5},
-  {name: "Lee", month: "Aug", category: "TS", peak: 1},
-  {name: "Maria", month: "Sep", category: 3, peak: 3},
-  {name: "Nate", month: "Sep", category: 1, peak: 1},
-  {name: "Ophelia", month: "Sep", category: 1, peak: 1},
-  {name: "Philippe", month: "Sep", category: 1, peak: 1},
-  {name: "Rita", month: "Sep", category: 5, peak: 5},
-  {name: "Stan", month: "Oct", category: 1, peak: 1},
-  {name: "Tammy", month: "Oct", category: "TS", peak: 1},
-  {name: "Vince", month: "Oct", category: 1, peak: 1},
-  {name: "Wilma", month: "Oct", category: 5, peak: 5},
-  {name: "Alpha", month: "Oct", category: "TS", peak: 1},
-  {name: "Beta", month: "Oct", category: 3, peak: 3},
-  {name: "Epsilon", month: "Nov", category: 1, peak: 1}
-]
-
-Plot.plot({
-  title: "2005 Atlantic Hurricane Season — Every Named Storm",
-  subtitle: "Peak intensity (Saffir-Simpson category or TS=Tropical Storm)",
-  width: width,
-  height: 380,
-  x: {label: "Storm Name"},
-  y: {label: "Peak Category", domain: [0, 6]},
-  color: {legend: true, domain: ["Jun", "Jul", "Aug", "Sep", "Oct", "Nov"], range: ["#3498db", "#2ecc71", "#e74c3c", "#f39c12", "#9b59b6", "#1abc9c"]},
-  marks: [
-    Plot.barY(storms2005, {x: "name", y: "peak", fill: "month", sort: {x: null},
-        tip: true}),
-    Plot.ruleY([3], {stroke: "#999", strokeDasharray: "5,5"}),
-    Plot.text([{x: "Katrina", y: 5.5}], {x: "x", y: "y", text: d => "🌀", fontSize: 25}),
-    Plot.text([{x: "Arlene", y: 3.3}], {x: "x", y: "y", text: d => "← Major hurricane threshold (Cat 3+)", fontSize: 10, textAnchor: "start"})
-  ]
-})
-```
-
-::: {.mind-blown}
-🌀 The 2005 season produced FOUR Category 5 hurricanes (Dennis, Emily, Katrina, Rita, Wilma) — the most ever recorded in a single season! 🌀
-:::
-
-# Explain: The Hurricane Engine
-
-::: {.explain-box}
-## ⚡ How Does a Hurricane Work?
-
-A hurricane is essentially a giant **heat engine** — it converts thermal energy from warm ocean water into the kinetic energy of powerful winds. Let's build a model of how this works.
-:::
-
-## Step 1: Warm Water Evaporation
-
-```{ojs}
-//| echo: false
-viewof oceanTemp = Inputs.range([22, 32], {label: "Ocean Surface Temperature (°C)", step: 0.5, value: 28})
+viewof huPick = Inputs.select(huRegions.map(d => d.name), {label: "Region:", value: "North Atlantic"})
 ```
 
 ```{ojs}
 //| echo: false
 {
-  const width = 750;
-  const height = 500;
-  const svg = d3.create("svg").attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`);
-
-  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#e3f2fd").attr("rx", 10);
-
-  // Ocean
-  const oceanColor = d3.interpolateRdBu(1 - (oceanTemp - 22) / 10);
-  svg.append("rect").attr("x", 0).attr("y", 380).attr("width", width).attr("height", 120).attr("fill", oceanColor);
-  svg.append("text").attr("x", 375).attr("y", 420).attr("text-anchor", "middle").attr("font-size", 16).attr("fill", "white").attr("font-weight", "bold")
-    .text(`Ocean: ${oceanTemp}°C`);
-
-  const canForm = oceanTemp >= 26.5;
-  const intensity = canForm ? Math.min((oceanTemp - 26.5) / 5, 1) : 0;
-
-  if (canForm) {
-    // Evaporation arrows
-    const numArrows = Math.floor(intensity * 8) + 3;
-    for (let i = 0; i < numArrows; i++) {
-      const x = 100 + i * (550 / numArrows);
-      svg.append("line").attr("x1", x).attr("y1", 370).attr("x2", x).attr("y2", 280 - intensity * 50)
-        .attr("stroke", "#e74c3c").attr("stroke-width", 2 + intensity * 2).attr("opacity", 0.5 + intensity * 0.3);
-      svg.append("text").attr("x", x).attr("y", 280 - intensity * 55).attr("text-anchor", "middle").attr("font-size", 14).text("💨");
-    }
-
-    // Central updraft / eye
-    const cx = 375, cy = 200;
-    const eyeR = 20 + intensity * 30;
-
-    // Spiral bands
-    for (let angle = 0; angle < Math.PI * 4; angle += 0.1) {
-      const r = 30 + angle * (15 + intensity * 10);
-      const x = cx + r * Math.cos(angle);
-      const y = cy + r * Math.sin(angle) * 0.6;
-      if (x > 50 && x < 700 && y > 40 && y < 360) {
-        svg.append("circle").attr("cx", x).attr("cy", y).attr("r", 2)
-          .attr("fill", "#6c5ce7").attr("opacity", 0.3 + intensity * 0.3);
-      }
-    }
-
-    // Eye
-    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", eyeR).attr("fill", "#e3f2fd").attr("stroke", "#6c5ce7").attr("stroke-width", 3);
-    svg.append("text").attr("x", cx).attr("y", cy - 5).attr("text-anchor", "middle").attr("font-size", 12).attr("font-weight", "bold").text("EYE");
-    svg.append("text").attr("x", cx).attr("y", cy + 10).attr("text-anchor", "middle").attr("font-size", 10).text("(calm)");
-
-    // Labels
-    svg.append("text").attr("x", 375).attr("y", 30).attr("text-anchor", "middle").attr("font-size", 18).attr("font-weight", "bold").attr("fill", "#c62828")
-      .text(`🌀 Hurricane CAN form — Intensity: ${(intensity * 100).toFixed(0)}%`);
-
-    // Wind speed estimate
-    const windSpeed = 74 + intensity * 100;
-    svg.append("rect").attr("x", 520).attr("y", 50).attr("width", 200).attr("height", 60).attr("fill", "#fff3e0").attr("rx", 8);
-    svg.append("text").attr("x", 620).attr("y", 75).attr("text-anchor", "middle").attr("font-size", 13).attr("font-weight", "bold").text(`Est. Wind: ${windSpeed.toFixed(0)} mph`);
-    svg.append("text").attr("x", 620).attr("y", 95).attr("text-anchor", "middle").attr("font-size", 11)
-      .text(`Cat ${windSpeed < 96 ? 1 : windSpeed < 111 ? 2 : windSpeed < 130 ? 3 : windSpeed < 157 ? 4 : 5}`);
-
-    // Process labels
-    const steps = [
-      {x: 100, y: 330, text: "① Warm water\nevaporates"},
-      {x: 250, y: 160, text: "② Moist air rises\n& spirals inward"},
-      {x: 500, y: 100, text: "③ Vapor condenses\n→ releases heat"},
-      {x: 600, y: 250, text: "④ Heat fuels more\nrising → stronger winds"}
-    ];
-    steps.forEach(s => {
-      const lines = s.text.split("\n");
-      lines.forEach((line, i) => {
-        svg.append("text").attr("x", s.x).attr("y", s.y + i * 16).attr("font-size", 12).attr("fill", "#2d3436").text(line);
-      });
-    });
-  } else {
-    svg.append("text").attr("x", 375).attr("y", 200).attr("text-anchor", "middle").attr("font-size", 22).attr("font-weight", "bold").attr("fill", "#3498db")
-      .text("❌ Too cold for hurricane formation");
-    svg.append("text").attr("x", 375).attr("y", 230).attr("text-anchor", "middle").attr("font-size", 14).attr("fill", "#636e72")
-      .text(`Need at least 26.5°C — currently ${oceanTemp}°C (${(26.5 - oceanTemp).toFixed(1)}°C too cold)`);
-    svg.append("text").attr("x", 375).attr("y", 260).attr("text-anchor", "middle").attr("font-size", 13)
-      .text("Not enough evaporation to fuel a tropical cyclone");
-  }
-
-  // Evaporation explanation
-  svg.append("rect").attr("x", 50).attr("y", 440).attr("width", 650).attr("height", 50).attr("fill", "rgba(255,255,255,0.8)").attr("rx", 8);
-  svg.append("text").attr("x", 375).attr("y", 465).attr("text-anchor", "middle").attr("font-size", 12).attr("fill", "#2d3436")
-    .text(canForm ? 
-      "✅ Warm water provides massive evaporation → water vapor carries latent heat energy into the atmosphere" :
-      "Increase ocean temperature above 26.5°C to see hurricane formation");
-
-  return svg.node();
+  const r = huRegions.find(d => d.name === huPick);
+  return Plot.plot({
+    width, height: Math.round(width * 0.42), projection: huProj,
+    marks: [
+      Plot.sphere({fill: "#dbeafe", stroke: "#94a3b8"}),
+      Plot.graticule({stroke: "#fff", strokeOpacity: 0.6}),
+      huLand ? Plot.geo(huLand, {fill: "#cbd5e1", stroke: "#64748b", strokeWidth: 0.4}) : null,
+      Plot.line(d3.range(0, 361, 5).map(x => [x, 0]), {stroke: "#475569", strokeDasharray: "5,4", strokeWidth: 1.2}),
+      ...huRegions.map(g => Plot.line(huRing(g.box), {stroke: huHemiColor[g.hemi], strokeWidth: g.name === huPick ? 4 : 1.8, strokeDasharray: g.name === huPick ? null : "6,3",
+        fill: huHemiColor[g.hemi], fillOpacity: g.name === huPick ? 0.18 : 0.06})),
+      Plot.text(huRegions, {x: d => d.label[0], y: d => d.label[1], text: "name", fontWeight: "bold", fontSize: width < 500 ? 9 : 12,
+        fill: d => huHemiColor[d.hemi], stroke: "white", strokeWidth: 3}),
+      Plot.text([{x: 205, y: 2}], {x: "x", y: "y", text: () => "Equator", fontSize: 10, fill: "#334155", textAnchor: "start", dy: -6})
+    ]
+  });
 }
 ```
 
-::: {.key-idea}
-### 💡 Key Concept: The Hurricane Heat Engine
+```{ojs}
+//| echo: false
+{
+  const r = huRegions.find(d => d.name === huPick);
+  return html`<div class="hu-card"><b>${r.name}</b> (${r.hemi} Hemisphere)<br>
+    Hurricane season: <b>${r.season}</b> · Average hurricanes per year: <b>${r.avg}</b><br>
+    <span style="font-size:.9em;">Location: about ${Math.abs(r.box[0][1])}°–${Math.abs(r.box[1][1])}° ${r.hemi === "Northern" ? "N" : "S"} of the equator. Notice the region starts a few degrees away from the equator, not right on it.</span></div>`;
+}
+```
 
-A hurricane is powered by a **positive feedback loop**:
-
-1. **Warm ocean water** (≥ 26.5°C / 80°F) evaporates rapidly
-2. **Water vapor** rises and carries **latent heat** (hidden energy)
-3. As vapor rises and cools, it **condenses** into clouds, **releasing** latent heat
-4. This released heat **warms the air**, making it rise faster
-5. Faster rising air creates **lower pressure** at the surface
-6. Lower pressure **pulls in more air** (= stronger winds)
-7. Stronger winds cause **more evaporation** → back to step 2
-
-This is why hurricanes **intensify over warm water** and **weaken over land or cool water** — they lose their energy source!
-:::
-
-## The Saffir-Simpson Scale
+<p class="hu-note">Region outlines are approximate, drawn to match the packet map. Blue = Northern Hemisphere regions, red = Southern Hemisphere regions. A strip right along the equator has almost no storms: there, Earth's spin can't start air spinning (the Coriolis effect is zero at the equator).</p>
 
 ```{ojs}
 //| echo: false
-safirSimpsonData = [
-  {category: "TD", label: "Trop. Depression", wind: 38, surge: 0, color: "#74b9ff", damage: "Minimal"},
-  {category: "TS", label: "Trop. Storm", wind: 63, surge: 0, color: "#a29bfe", damage: "Minor flooding"},
-  {category: "Cat 1", label: "Category 1", wind: 85, surge: 4, color: "#ffeaa7", damage: "Some damage"},
-  {category: "Cat 2", label: "Category 2", wind: 100, surge: 6, color: "#fdcb6e", damage: "Extensive damage"},
-  {category: "Cat 3", label: "Category 3", wind: 120, surge: 9, color: "#e17055", damage: "Devastating"},
-  {category: "Cat 4", label: "Category 4", wind: 145, surge: 13, color: "#d63031", damage: "Catastrophic"},
-  {category: "Cat 5", label: "Category 5", wind: 170, surge: 18, color: "#6c5ce7", damage: "Total destruction"}
-]
-
-Plot.plot({
-  title: "Saffir-Simpson Hurricane Wind Scale",
-  subtitle: "Maximum sustained wind speed by category",
-  width: width,
-  height: 350,
-  x: {label: "Category"},
-  y: {label: "Maximum Sustained Wind (mph)", domain: [0, 200]},
-  marks: [
-    Plot.barY(safirSimpsonData, {x: "label", y: "wind", fill: "color", sort: {x: null},
-        tip: true}),
-    Plot.ruleY([74], {stroke: "#e74c3c", strokeDasharray: "5,5"}),
-    Plot.text([{x: "Trop. Storm", y: 80}], {x: "x", y: "y", text: d => "← Hurricane threshold (74 mph)", fontSize: 10, fill: "#e74c3c", textAnchor: "start"}),
-    Plot.text(safirSimpsonData, {x: "label", y: d => d.wind + 8, text: "damage", fontSize: 9})
-  ]
-})
+huQuiz("hu-q-where", "Check: where do hurricanes happen?", [
+  {q: "What pattern do you see in where tropical cyclones take place?",
+   options: ["Mostly near the poles", "In bands over tropical oceans on both sides of the equator, but not right on it", "Only in the Atlantic Ocean", "Over the middle of continents"],
+   correct: 1,
+   explanation: "All six regions are over oceans in the tropics, roughly 5°–30° from the equator, in both hemispheres. None is over land or near the poles."},
+  {q: "Which region is closest to New York City?",
+   options: ["East Pacific", "North Atlantic", "North Indian", "Southwest Pacific"],
+   correct: 1,
+   explanation: "NYC sits on the northern edge of the North Atlantic region. Storms like Sandy (2012), Irene (2011) and Henri (2021) came from there."}
+])
 ```
-
-# Explain: Why Is There a Hurricane Season?
-
-::: {.explain-box}
-## 📅 The Seasonality Question
-
-Atlantic hurricane season runs **June 1 – November 30**, with peak activity in **August–October**. This isn't random — it's directly tied to ocean temperature cycles.
-:::
-
-## Ocean Temperature Through the Year
-
-The ocean's temperature follows a seasonal cycle, but it **lags behind** the Sun's position because water has a very high **heat capacity** — it takes a long time to heat up and a long time to cool down.
-
-```{ojs}
-//| echo: false
-seasonData = [
-  {month: "Jan", solarInput: 220, sst: 25.5, lag: "Ocean cooling (still losing summer heat)"},
-  {month: "Feb", solarInput: 240, sst: 25.0, lag: "Minimum SST (coldest ocean)"},
-  {month: "Mar", solarInput: 290, sst: 25.2, lag: "Solar input increasing but ocean slow to respond"},
-  {month: "Apr", solarInput: 340, sst: 26.0, lag: "Ocean beginning to warm"},
-  {month: "May", solarInput: 370, sst: 27.0, lag: "Warming accelerating"},
-  {month: "Jun", solarInput: 390, sst: 27.8, lag: "Approaching threshold — season begins"},
-  {month: "Jul", solarInput: 395, sst: 28.3, lag: "Peak solar input (but SST still rising!)"},
-  {month: "Aug", solarInput: 380, sst: 28.8, lag: "Solar input declining but ocean still warming"},
-  {month: "Sep", solarInput: 340, sst: 28.9, lag: "PEAK SST — peak hurricane season!"},
-  {month: "Oct", solarInput: 290, sst: 28.4, lag: "Ocean slowly cooling"},
-  {month: "Nov", solarInput: 240, sst: 27.5, lag: "Below threshold soon — season ending"},
-  {month: "Dec", solarInput: 215, sst: 26.2, lag: "Cooling continues"}
-]
-
-Plot.plot({
-  title: "Solar Input vs. Sea Surface Temperature — The Seasonal Lag",
-  subtitle: "Peak solar input is in June, but peak SST doesn't arrive until September!",
-  width: width,
-  height: 380,
-  x: {label: "Month", domain: seasonData.map(d => d.month)},
-  y: {label: "Relative Value (normalized)"},
-  color: {legend: true},
-  marks: [
-    Plot.areaY(seasonData, {x: "month", y: d => (d.sst - 24) / 6, fill: "#e74c3c", fillOpacity: 0.15, curve: "catmull-rom",
-        tip: true}),
-    Plot.line(seasonData, {x: "month", y: d => (d.sst - 24) / 6, stroke: "#e74c3c", strokeWidth: 3, curve: "catmull-rom",
-        tip: true}),
-    Plot.line(seasonData, {x: "month", y: d => (d.solarInput - 200) / 200, stroke: "#f39c12", strokeWidth: 2, strokeDasharray: "5,3", curve: "catmull-rom",
-        tip: true}),
-    Plot.ruleY([(26.5 - 24) / 6], {stroke: "#e74c3c", strokeWidth: 1, strokeDasharray: "3,3"}),
-    Plot.text([{x: "Jan", y: 0.5}], {x: "x", y: "y", text: d => "26.5°C threshold", fill: "#e74c3c", fontSize: 10}),
-    Plot.text([{x: "Jul", y: 0.95}], {x: "x", y: "y", text: d => "🌞 Solar Input", fill: "#f39c12", fontSize: 11}),
-    Plot.text([{x: "Oct", y: 0.85}], {x: "x", y: "y", text: d => "🌊 Sea Surface Temp", fill: "#e74c3c", fontSize: 11})
-  ]
-})
-```
-
-::: {.key-idea}
-### 💡 Key Concept: The Seasonal Lag Explains Hurricane Season
-
-- **Peak solar input** occurs around the **summer solstice** (June 21)
-- But **peak ocean temperature** doesn't occur until **September** — a **2–3 month lag**
-- This is because water has **high specific heat capacity** — it absorbs a lot of energy before its temperature rises
-- Hurricane season peaks in **August–September–October** because that's when ocean temperatures are highest
-- The season ends in November as ocean temperatures fall below the 26.5°C threshold
-:::
 
 ::: {.student-task}
-### 📝 Seasonal Analysis
+### ✏️ In your packet: See-Think-Wonder (map)
 
-1. Why does peak SST occur ~2 months after peak solar input? (Think: specific heat capacity of water)
-2. If ocean waters warm an additional 1°C due to climate change, how might that affect hurricane season? (Start earlier? End later? Both?)
-3. Could a year with unusually warm winter SST lead to earlier hurricane formation?
+**See:** What patterns do you notice about where these storms are taking place? **Think:** What do you think causes that pattern? **Wonder:** What questions do you have?
 :::
 
-# Elaborate: Warming Oceans & Stronger Hurricanes
+## How many hurricanes happen? {#hu-how-many}
+
+The number of hurricanes (strong tropical cyclones) varies a bit from year to year, but the **average** tells you how many are likely. This is the packet's NOAA data table, made into the bar graph your packet asks for.
+
+| Hurricane Region | Hurricane Season | Number of Hurricanes per Year (average) |
+|---|---|---|
+| East Pacific Ocean | May–November | 9 |
+| West Pacific Ocean | April–January | 16 |
+| North Atlantic | June–November | 7 |
+| Southwestern Pacific | October–May | 4 |
+| North Indian Ocean | April–December | 2 |
+| South Indian Ocean | October–May | 6 |
+
+```{ojs}
+//| echo: false
+viewof huBarSort = Inputs.radio(["Packet order", "Most to fewest"], {value: "Packet order", label: "Order:"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const order = ["East Pacific", "West Pacific", "North Atlantic", "North Indian", "Southwest Pacific", "South Indian"];
+  const dom = huBarSort === "Packet order" ? order : [...huRegions].sort((a, b) => b.avg - a.avg).map(d => d.name);
+  return Plot.plot({
+    title: "Average number of hurricanes (tropical cyclones) in a year",
+    subtitle: "Blue = Northern Hemisphere, red = Southern Hemisphere. Source: NOAA (packet table).",
+    width, height: 320, marginLeft: 40, marginBottom: 50,
+    x: {domain: dom, label: null, tickFormat: d => width < 520 ? d.replace("Southwest", "SW").replace("North ", "N. ").replace("South ", "S. ").replace("East ", "E. ").replace("West ", "W. ") : d},
+    y: {domain: [0, 20], label: "Hurricanes per year", grid: true},
+    marks: [
+      Plot.barY(huRegions, {x: "name", y: "avg", fill: d => huHemiColor[d.hemi]}),
+      Plot.text(huRegions, {x: "name", y: "avg", text: d => String(d.avg), dy: -8, fontWeight: "bold"}),
+      Plot.ruleY([0])
+    ]
+  });
+}
+```
+
+```{ojs}
+//| echo: false
+huQuiz("hu-q-howmany", "Check: how many hurricanes?", [
+  {q: "Do all regions get the same number of hurricanes?",
+   options: ["Yes, about 7 each", "No: the West Pacific averages 16 a year, eight times the North Indian Ocean's 2", "No: the North Atlantic has the most", "We can't tell from the table"],
+   correct: 1,
+   explanation: "The West Pacific is the busiest region on Earth. The North Atlantic (7 per year) is in the middle."},
+  {q: "About how many hurricanes form worldwide in an average year, using the table?",
+   options: ["About 7", "About 16", "About 44", "About 100"],
+   correct: 2,
+   explanation: "9 + 16 + 7 + 4 + 2 + 6 = 44. That matches the long-term global average of roughly 40–50 hurricanes a year."}
+])
+```
+
+## When do hurricanes happen? {#hu-when}
+
+**Hurricane season** is the time of year when hurricanes will most likely happen. But hurricane season is not at the same time in all places. Here is the packet's season calendar, filled in from the table.
+
+```{ojs}
+//| echo: false
+viewof huGroup = Inputs.toggle({label: "Color the regions by hemisphere", value: false})
+```
+
+```{ojs}
+//| echo: false
+{
+  const order = ["East Pacific", "West Pacific", "North Atlantic", "North Indian", "Southwest Pacific", "South Indian"];
+  const cells = huRegions.flatMap(r => r.months.map(m => ({region: r.name, month: huMonths[m], hemi: r.hemi})));
+  return Plot.plot({
+    title: "Hurricane season in each region",
+    subtitle: huGroup ? "Blue = Northern Hemisphere, red = Southern Hemisphere" : "Shaded months = hurricane season",
+    width, height: 280, marginLeft: width < 500 ? 104 : 130, marginBottom: 30,
+    x: {domain: huMonths, label: null, axis: "top", tickFormat: d => width < 500 ? d[0] : d},
+    y: {domain: order, label: null},
+    marks: [
+      Plot.cell(huRegions.flatMap(r => huMonths.map(m => ({region: r.name, month: m}))), {x: "month", y: "region", fill: "#f1f5f9", stroke: "#cbd5e1", inset: 1}),
+      Plot.cell(cells, {x: "month", y: "region", fill: d => huGroup ? huHemiColor[d.hemi] : "#0f766e", inset: 1, title: d => `${d.region}: ${d.month}`})
+    ]
+  });
+}
+```
+
+<p class="hu-note">From the packet's NOAA table. The North Atlantic's official season is June 1 – November 30, with a statistical peak around <b>September 10</b>.</p>
+
+```{ojs}
+//| echo: false
+huQuiz("hu-q-when", "Check: when do hurricanes happen?", [
+  {q: "The regions fall into two groups by timing. Which grouping is correct?",
+   options: ["East Pacific, West Pacific, North Atlantic, North Indian (about April–November) vs. Southwest Pacific and South Indian (about October–May)", "North Atlantic alone vs. everyone else", "Pacific regions vs. Indian Ocean regions", "There is no pattern"],
+   correct: 0,
+   explanation: "Four regions peak in the middle of the calendar year; two peak around the turn of the year."},
+  {q: "What do the regions in each group have in common? (Hint: the equator!)",
+   options: ["They are all in the same ocean", "Each group is on the same side of the equator: Northern Hemisphere vs. Southern Hemisphere", "They all touch the United States", "They are the same size"],
+   correct: 1,
+   explanation: "The four mid-year regions are north of the equator; Southwest Pacific and South Indian are south of it."},
+  {q: "Seasons are opposite in the two hemispheres. In which season are hurricanes most common?",
+   options: ["Winter in each hemisphere", "Summer and early fall in each hemisphere", "Spring only", "All seasons equally"],
+   correct: 1,
+   explanation: "Northern regions: June–November is northern summer/fall. Southern regions: October–May covers southern summer (December–February) and early fall."}
+])
+```
+
+::: {.student-task}
+### ✏️ In your packet: When do hurricanes happen?
+
+Shade the calendar for each region, then answer: **1.** Which regions have hurricane season at about the same time? **2.** In terms of location, what do regions with similar seasons have in common? **3.** In which seasons are hurricanes most common?
+:::
+
+## Where's the warm water? {#hu-warm-water}
+
+The temperature of the ocean surface is not the same everywhere, and it affects hurricanes. Your packet uses the **IRI Ocean Temperature** model from Columbia University's Lamont-Doherty Earth Observatory and International Research Institute for Climate and Society, right here in New York City. The map below uses **the same data source**: NOAA's ERSST v5 sea surface temperatures, averaged for each month over 1991–2020 and downloaded from the IRI Data Library.
+
+Choose a month (or a 3-month season). Then turn on **Only show water ≥ 26.5 °C** to color just the warmest water, like the packet's red/orange pencil step.
+
+```{ojs}
+//| echo: false
+viewof huSstMonth = Inputs.select(["Jun–Aug (average)", "Dec–Feb (average)", ...huMonths], {label: "Month:", value: "Jun–Aug (average)"})
+```
+
+```{ojs}
+//| echo: false
+viewof huSstOpts = Inputs.checkbox(["Only show water ≥ 26.5 °C", "Show the six hurricane regions"], {value: ["Show the six hurricane regions"], label: "Options:"})
+```
+
+```{ojs}
+//| echo: false
+// NOAA ERSST v5 monthly climatology (1991–2020), from the IRI/LDEO Data Library.
+// Grid: latitude −40…40 every 4°, longitude 0…354 every 6°. Each character = SST in 0.5 °C steps from −2 °C; "." = land/ice.
+huSstRaw = [
+  "XXaggfedcccbaaZYYXXYZZZacggeeefeddcccbbbcccbbbab..ffgecbaZYXgghjmmmkkiihhhgfeeegffff..nkijjiihhgghhhiiiiihge...mljihghgglkjg.rrqponnnmmljjjl.ii...rommmmmllllmnnooonmljgd...qonnnnnmnlj...vvutsrrqponmmo......trqqqqqqqqqrsssrqpomkhg...tssstsrpnlh...xywwvvutsrqpqs......vuuuuuuuuuuvvuutrqomkik....uvvvtrpnmi...z!.yxwwvuusstx.....yxxxxxxxxxxxxxwutrpomklo.....xwusqooon....!.zzyyyxwwwxz#....z!!!!!!!!!zzzywvtrpommnn.....xwurporsv....!!z!zzzzyyzz!#$$##!########!!zzxwvtrqppqm......xwusrruxx....!!zz!zzzz!!!!!#####$$$$###!!zyxwvutssrsr........xvuttxyx....yzzzzzzz!!!z!!##..#$$###!zyyxwvuttsssssq.......xxwvvwzz......wxyzzz!!!.y.!!!!####!!zyxwvvuttssrrsstt.....yyxxxwxyz!......vwyzzzzz!.wxzzz!###!!!zzyxwwvvvvvvvvwxxw....xxxxyz!z.........vxyzyyyzxuxy.zzzzzzzyyyyxxwwwvwwxxxwvzw...wwvwvvxz.........tuvwy.wxyy.wxxyyyyyxxxwwvvvuttttvwxyxx.w.vwwvuttsq.........v.ttux.vvx..twwxxxxxwwwvuuttsrrrrsuwzx..xwwvvutsqok............sst..s..lnsttuvvvvuuutssrqponmnps.qswvvvutssqpmh........r...qq........jppprrrrrrqqqppomljihjm.pqsssssrqppnmi........o..............jlkllllllllkllkjigedd..jjjqoooonnmlki.....d.e...............ZhihhgggfeeeeeffecaYa.....mkkkkjjjihge...aabde..............NX.bbaaaaZYXXXZZZYV........gijihffeedcbWXXYY....Q..........9FILMNPQRRRRQQRSUUUS........LTddcdcaaZZ.",
+  "YYbhhgffeeedcbaZZYYaaabcdihggghgfeeddddddddddccc..ggigedcaaYhhiknonmlkjjjiihfffhgggg..omkkkkjjiiiijjkkkkkjig...nnlkjjjihmlkg.ssrqpooonnmkkkm.jj...sqnnooonnnnoopqqpponlhe...rqqppppopmk...wvuutssrqponoq......usrrssssssstttttsrqolji...uuuuutsrpni...yyxxwvvutsqqru......wvvvvvvvvvwwwwvutrqolkm....vxxwvtrpoj...z!.yyxxwvuttvz.....yyyyyyyyyyyyyxxvusrpnmnp.....yxwusqrqp....!.!zzzyyxwxy!#....!!!!#!!!!!!zzyxwusrppppp.....yxvtsrtuw....!!!!!!!zzzz!!##############!!!zyxvutsrstp......yxwuttxyz....!!!z!!!!!!!!!!!!###$$#####!!zzyxwvuuuuvv........yxwvwyzz....yzz!!!!!!!!z!!!!..#####!!zyyxwwvvuuuvvwu.......yyxxxx!!......wyz!!!!!#.y.z!!!####!zzyxwvvuuuttuuuvvu.....yyyyyyyz!!......wxzzzz!!!.wxzyz!!#!!!zzyyxwwvvvvwwwwxyyv....xxxxyz!!.........wxyzyyzzyuwx.yzzzzzyyyyxxxwwvvwwxxxxwzv...wvvvvuwy.........uuvwz.xxyy.wxxyyyyxxwwwvvvuuttttvwxyxx.w.vwvutsrqo.........u.ttvx.wwx..twwwwwwwwvvuuttssrrqqstvyx..wvvvutsqpni............rst..t..knssstuuuuuttssrrqoonmmoq.qsvvvutsrqpnlg........q...pq........jonopqqqqqpppoonmkjhgil.oprrssrqponmkh........n..............hkijjjjjjjjjjjjihfdcc..ijipnnnnmlkjih.....b.c...............WggffeeddcccccdddbZYZ.....ljijiiihhgfd...YZabd..............KU.YZYYYYXXWVWXYYXV........ehhgfeeddcbaVWWXX....O..........6BFIIKNOPPQQPPQRSTTR........HRbbbcbaZYY.",
+  "YYbghgffeefdcbaZYYYZaaabdhgfffgfeeddcccccddccccc..ffhfedbaZYhhijmnnmlkjjihhgfffhgggf..oljjkjjjiiiiijjjjjjihf...mmlkjiiihmljf.ssrqpoonmmlkjkm.jj...rpnnnnnnnnnooopppoomkhe...rqpppponomj...wvutssrqqponor......trrrrsssssstttttsrqoljh...uuuuutsqpni...yyxwwvuutsrqsw......vuvvvvvvwwwwwwvutrqomkk....wxxwvtrqoi...z!.yyxxwwvuuwz.....yxyyyyyyyzzzyyxwvtrqonno.....yywvtrsrp....#.!!zzzyxxyz!$....z!!!#!!!!!!!zzxwvtsrqrpn.....zywutsvvx....#!!!!!!zzz!!#####!!##########!zyxwvuttuvo......zyxwvuyz!....##!!!!!!!!#!!!!!#!#$$######!!zzyxwwwwwxw........yyxxx!!!....!!#########!!!##..#####!!zzyyyxxwwwwxxyu.......zzyyyz#!......z!#######.z.!!!####!!zzyxxwwvvvvvvwwxwu.....yyyyzzz!##......yz!######.yyzzz!###!!zzzyxxwwwxxxxyyyzyu....xxxxy!!!.........yz!#!!!#!wyy.zzzzzzzyyyyxxwwwwxxyyyyy!v...wvvvvuvy.........vwxy!.zz!!.yyxyyyyxxxwwwvvuutttuvxyzzy.w.vwvutsrqn.........w.vvxy.yyz..vxwwwxwwwvvuuttssrrqrstvyy..wvvvutsqpni............uvv..w..mputtuuuuuuttssrrqponmmoq.rtvvvutsrqpnlg........q...rs........lpoppqqqqqqppoonmkjhghl.pqssrsrqponmkh........n..............hkjjjjjjjjjjjjjihfdcc..jkjpmnnnmlkjih.....b.c...............WggfeddddccbbcddcbZYb.....liiiiiihggfd...YZacd..............LU.YZXXXXXWVVVWXXWU........ehgffeddccbaWWWXX....P..........8CGHHKNNPPPQPPPQSSSR........IRbbbcaZYYY.",
+  "XXaffeddcddbaZYXXXXYYYZZbfedddeddcbbaaaaaaaaaaaZ..bcfdcbaZYXffghlmlkjihggfeeddegffee..ljhhihhhggggggghhgggfd...ikjihgggfkjhd.qqponmmllkjiijm.ih...pnllllllllllmmmmmmlkjgc...onnnnmmlnlh...ttsrrqqponnmnr......rqppqqqqqqqrrrrrqpomkhe...rsrrrrqoolg...wwvvuutssrqqsv......ttttuuuuuuvvvvutsqpnkji....uvvutrqpnh...xz.xxwwvvutuwz.....wwwxxxxyyyyyyxxvusrpnmml.....yxwusqrqo....!.zzyyyxxxxz#$....yzz!!!!!!!!!zyxwutrqqqnk.....zxwutsuvx....!!!!!zzzzz!#####!zz!#########!!zxwvuuuutl......zyxwvuyzz....######!!!######!!z#$$$$$####!!zyyxxxwxxt........zyyxxz!y....#$$$$$#####$$###..$$#####!!zzzyyyxxxxxxr.......zzzzzz#!......#$$$$$$$$.#.#####$##!!zzyyxxxxwwwwwwwut.....zzzzzzz!##......#$$$$$$$$.!!#!#####!!!zzyyyxxxyyzzzzzzyx....yxyyz!##.........##$$$$$$$!!!.!!!!!zzzyyyxxxxxxyyz!!!z!x...xwwwvvwz.........z!!#$.$$$$.!!zzzzyyyxxwwwvvuuuuvwyz##!.x.wxwvutsqo.........z.zz!#.##$..yzyyyyyxxwwvuuttsrqqrsuwz!..xwwwvtsrpni............xyy..z..rtwwwwwwwvvuutssrqpnmmmoq.uvwwvvutsrqomg........s...ww........psqrsssssrrqqppomljhgho.rsuusssrqponli........p..............kmllllllllkllkkjhfecd..nonrooonnmlkjh.....d.e...............YiigffeeeeddddeddbZYe.....nkjjjjiihgfe...abbdf..............PW.aaYYYYYXWWWXYYXV........gihggfeedccbYZZaZ....U..........GIJKKMOOQQQQQPQRSTTR........MTbbbcbaZZZ.",
+  "VVYddcbbabbZYXWVVVVWWWXXZccbaabaaZZYYYXXXXXXXXXX..WYcaZZXWWUddefjjjihfeedccbabcfedcc..igfffeeeddddddddddddca...chgfedddcihfb.onmlkkjiihggghl.gg...nljjiiiiiiiiijjjjiihgea...lkkkjjjikjf...rqqpoonmmlllmq......pnnnnnnnnnnooooonmlkigc...nppoonnmmjd...ttttssrqqpooqu......rqrrrrrrssstttsrqonljhf....stssrponle...vw.vvuuttsssux.....tuuvvvvwwwxxxwvutrpomlki.....wvusqopnl....y.xxwwwvvvwyzz....wxyyzyzzzzzzyywvtsrponjh.....xwvtrqsst....yyyyyyxxyzz!zz!zyxyz!!######!!zyxwvuttsqi......yxwvutwxw....zyzz!zzz!###!!!zzy!#########!!zyyxwwwvvq........zyxxwxxv....z!!######$$$##!!..$$$#####!!zzyyxxwvvvup.......zzyxxxzy......!$$$$$$$$.$.###$$$$##!!zzyyxxwwvvvvvuts.....zyzzyxxy##......!$$$$$#$$.$$##$$$$###!!!zzyyyyyyyyyzyyyy....yyyzz!!#.........#$$$$$$$%$$#.###!!!zzzzyyyxxyyyz!###!!z...yxxwxwy!.........$#$$%.%%%%.$$##!!zzyyyxxwwvvvvwwxz!$$#.y.xxxvuttrs.........$.$$$$.$$$..#$#!!zzyyxwwvvuttsrrstvx!$..yxxxwvtrqol............!##..#..xyzzzzzyxxwvvuutsrqonnnpt.xxyywwvutsrpnh........w...#!........uvuvvvvuutssrrqpomkiiis.vvwwuuusrqpomj........s..............pqpoppppoonnnnmljhfdg..ttturrqqponlkj.....h.j...............emljjiihhhgggghgfdaZi.....rommlllkjihg...fggjk..............Xb.fecbbaaaZYZaaaZW........llkiihhgfeeeedeff....c..........RSRRQRRRSSSSRRSTUVVT........UYfededcbbb.",
+  "STWbbaZZYZZXWVUTTTUVUUVVXaaYYYYXXWWWVVVVVVVUUVUU..RUZXWWVUTSabcdhhhfedcbaZZYYYadcaaa..fecccbbbbabbaaaaaaaaZY...Xedcbaaaaffda.mljihhgffeeeefj.dd...kiggffgggggggggggffedbX...ihhhggggigd...oonmmlkkjjjjko......mlkkkkllllllmmmllkjigea...kmmlllkjkhc...rrrqqpoonnmnor......popoppppqqqrrqqpomljhgc....pqpponllib...su.tsssrrqqrsu.....qssttttuuuvvvutsrqomkjhe.....ttrqommkg....v.uuuuuttuvwwx....uvwxxxyyyyyyxwvusrpomkge.....vutrpoqpo....wwvwwwwwwyyyxxyxwvwyzz!!!!!!zzyxwvutsrpmg......wwvusrttq....wvwxyyyyz!!zyyyxxvz!######!!!zyxwwvuutrn........yxwvutsq....wwxz!!!#####!!zy..#$$####!!zzyyxwvuttsrn.......yxwvutvu......wz######$.$.#!##$$$##!!!zzyxxwvuutttsrr.....zyyxwutuyz......wy###!!#$.$$####$$###!!!zzyyyyyxxxxxxxxy....zyzzzyyy.........x!##z###$###.#####!!zzzyyyyyyyyzz!!!zzz...yyxxyyzz.........%yz##.$##$.#$$###!!zzyyxxwwwwwxxyz!##!.z.yyxwvuvuw.........(.zz##.$##..$$$$###!zyyxwwvuttsttuwx!$..zyyyxvussqq............z$$..#..!!######!zyyxwvvtsqpooopu.!zz!yyxwvtsqok........y...%$........xzyzzzzyxxwvutsqpnljjjw.zyzzxxwvutrqok........v..............uuttuuuttsssrqpnkigei..zzzxvvvutsqpnl.....o.p...............mqqoonnnmmmmmmlkhfcbn.....wtsrqqponlkj...monqs..............gi.kjggfeeeeefffecY........rqpnmmlkjihjlkmnn....m..........ddbaYYWVWVVVVVWYZZYV........ffkjhhhgffe.",
+  "RRVZZYYXWXYWVTTSSSSTTTTUVYYXWWWVVUUUTTTTTTTSSTSS..ORWVVVUSSRYZacfgfddbaZYXWWWWYbaYYY..dcaaaYZYYYYZZZYYYYYXXV...TcbaaZYYYddbY.kjigfeedcbbbcdh.bb...igfeddddddeeeeeeeddcbZW...ffffeeeegeb...nmlkkiiihhhhil......ljjiiiijjjjjkkkjjihfecY...hlkjjjihifa...ppponnmmllllmo......nmnmnnnooopppponmljhfea....oponmljjga...rs.rqqqppooqrr.....oqqrrrstttttttsrqomljhfc.....srpomkkhe....t.ssssssstuuuu....suuvwwxxxxxwwvusrpomkidb.....ttrpnmnml....uttuuuuvwxxwwwwvutuxyyzzzzzzyyxwvutrqomje......vvusqpqpn....utuvwwxyyzyxxxxvvuyz!!##!!!zzyxwvutssqok........wvutrqpn....uuvyzz!!!!!!zzxx..######!!zzyxwvutsrqpol.......wwusrqss......uw!##!!##.#.!z!#######!!zyxwwvutsrrqppq.....yxxwusqrvx......tvz#!zz!#.##!!!########!!zyyyxxwwwvwwwwx....yyyyxwwv.........uxzzy!!!#!!#.######!!!zzzzzyyzyyyzzzyzz...zzyyyyxx.........$twyz.!!!#.!#######!zzyyxxxxxxyyyzz!!!.z.yzyxwwwwy.........).uvyz.#!!..##$$####!zzyxwwvuuuuvwxz#$..zzzzywvttsu............vz!..#..###$$$###!zzyxwvutrqqqrty.#!!#zzyxwutrqo........$...#!........z#####!zzyxwvutrqomlmo!.#!##zzyxvusrpm........z..............yzyyyyxxwwvutsqomkihn..###!zyyxwusrpn.....u.u...............twwvuuttsssrqpomkheds.....zxxwwvusqpnl...stsvx..............pp.qqonnmnmmmllkifa........wvutssqpnlkmsqssr....t..........onjjfgecdcddddeffecX........nmrqonnlkjh.",
+  "QRUZYYXWVWXVUTSRRRRSSSSTUWXWVVWUTTTSSSSSSSSRRRRR..NQWUUUTRRQXYZbffedcbZYXWVUVVXaZXXX..cbZZZXXXXXXXXXXXXWWWVU...TbaZYXXXXcbaY.jihfedcbbaaaacg.aa...hfddcccccccdddddccbaZYV...feeeddcceda...mmljjhggggfghk......kiihhhhiiiiijjjihhfecaX...hkjiihgfgeZ...poonmmllkkkkln......mlmmmmnnnnoooonmlkigecZ....nnmlkjhheZ...qr.qppooonopqq.....oppqqrrsssttssrqpnlkhgdb.....qpomkjifc....t.rrrrrrsttttu....stuvvvwwwwwvvutsqpnljgca.....srqomkljj....ttstttuvwwwvvvwvttuwxyyzzzzyyxwvutsqpnkhd......utsqpnonm....tstvwwxyyyxwwwwvutxz!!!!!!zzyxxwutsrqomi........vusrpppn....ttvxzzz!!!zzyyxw..!#####!!zyxwvutsrponlj.......vvtrqpst......uwz!!!!!#.!.!y!#######!!zxxwvusrrqponoq.....ywwvtrqrtv......tvz!!zzz!.##!!!########!!zyyxwwvvvuvvwwx....yyyxwvvu.........twzzxzz!#!!!.!#######!!!zzzzyyyyyyyyyzz...!zzyyxxw.........#suxy.!zz!.!!#######!!zzyyyyyyyyzzz!#!.z.z!zyyxxxy.........).stwy.!zz..!########!zzyxxwvvvwwxy!#$..!z!zyxwvvvx............txy..!..#!#######!!zzyxwvussrstw!.$###!!zyxwutss........%...!y........z###!!!zzzyxwvusrponos%.$#$#!!zyxvutrn........!..............!!zzzzyyxxwvutsqnljjq..$$$#!!!zywvtrp.....x.x...............xzyyyxwwvvuutsromkgfv.....zyzzyywvtrpn...vwuxz..............uu.vvtssrrrrqponlid........xxxwvvtsqomnutuvt....v..........sspqmmkjjjkkkjjjjifZ........pputsrqonmj.",
+  "PQTZZYXWVWXVUTSRQQRSSRSTUWXWVVWUTTSSSSSSRRRRRRRR..ORWUTTSRRQXYZbffedcaZYWVVUUVXZYXXX..cbZZZXXXXWXXXXXXWWWWVU...VcaZYXXXWbbaZ.jjhgedcbbaZaacf.aa...hfedccccccccdddcccbaZYV...feedddcceca...mmlkjhhggffghj......kiihhhhiiiiijjjihgfecaX...ikjihhgfgdZ...pppommlkkkkllm......nmmmmmnnnnoooonmljigecZ....nnmlkjhgdZ...rs.qppoonooppq.....qqqqrrrsssttssrqpnljhfdb.....qpomkihed....t.rrrrrrstttuv....tuuvvwwwxwwwvutsqomkifcb.....trpnljkil....tttttuuvwwvvvwxwvuuxyyzzzzzyyxwvutrqomjgc......utsqomnno....ttuwwwxyyxxwwxxwvuxz!!##!!zzyxwvutsqpnlh........vtrqoqqq....uuwyzzzzzzzzyzxx..!#####!zzyxwvusrqpnmli.......vvtsqptu......vx!!!!!!!.!.!z!#######!zyxwvutsrqponnoq.....ywwvutrsuw......uwz!!zzz!.!##!#########!!zyxxwvvuuuuvvwx....yyyyxwwu.........uxzzyzz!#!!!.##########!!!zzyyyxxyyyxy!...!!!zzyxx.........$uvyy.!!z!.!!########!!zzzyyyyyyzzz!!!.!.!#!zzyyyz.........*.uuxy.#!!..!!#######!!zzyxwwwwwxxyz#$..#!#!zyxxwwy............vyz..#..!!!######!!!zyyxvutsstuwz.$##$!!zzyxvvtt........$...zy........y!!!!!!zzzyyxwvtrqoops$.####!!zyxwvuto........z..............yzzzzyyxxxxwvusqomkkr..#!!!zzzyyxvusq.....w.v...............uxxyxxwvvuuutsrpnkhfv.....yxxxxwwvtsqn...tusvy..............qr.tutsrqqqppponlid........vwwvutsrqommrqrrq....p..........ooknllkjjiiiijjjjiga........mnssqqpnmlj.",
+  "QRUaaZYWVWXVUTSRRRRSSSSUVYYWWWXVUUTTTTTTSSSSSSSS..RTXVUUTSSQXYadggfdcbZYXWWVVVXaZYYY..ecaaaZYYYXXYYYYYXXXXWV...YdbaZYYYXccba.kjihgfdccbbbbdf.bb...jgfeedddddddeeedddcbaYW...hffeeeddfdb...onmlkjihhhghij......mkjiijjjjjjjkkkjihgedbY...kkjjjihggea...rrqponmlllllln......pnnnnooooopppoonlkigecb....oonmljigea...tu.rqqpooppppr.....ssrsssstttttttsqpnljhfdd.....rqpnkihfh....v.tsssstttttvx....vvvwwwxxxxxwwvusqpmkhfdd.....usqoljkkp....vvuuuvvwwwvwxz!zxwwyzzz!!!zzyyxwutrqoljgd......vusqomops....vvwxxyyyyxxxyzzyxwz!#####!!zyxwvutsqonli........vtrqprtu....wwyzzzzzzzz!!!zz..##$$##!!zyxwvutrqpnmlj.......wvusrrvw......wy!!!!!!!.!.#!###$####!zyxwvutsrqpooopq.....yxxwvutuwx......wy!!!zzz!.!#####$$$####!zzyxxwvvuuuvvvwx....yyzzyyxw.........xz!!z!!!!!!#.#########!!!zzzyyxxxxxxxyz...!!!zzzzy.........#xyz!.!!!!.!!#######!!!zzyyyyyxxyyzzz!.!.!!!zyyyyz.........(.xyz!.!#!..z!!!####!!zzyyxwwwwvwwyz##..!!!!zyxxxwx............yz!..#..yxyz!!!!!zzzyyxxvutssssv!.zz!#!!zyxxwvur........#...!z........vxyzzzzyyxxxwvutrponor#.yyzzzzyyxwvuto........x..............uwwxxxwvvuuuutrqnmkjo..wwwxxxxwvvutrp.....s.s...............pttuuutsrqqqqqpomjger.....vuuuttssrqom...ppoqu..............jm.oppponlkkkllljhc........rtsrqpoonmljmllml....i..........fgdfeefffedccdefgfeY........fipommljjih.",
+  "STWccbZYXXYWVUUTTTTUUUUVWaaYYYZYXWWVVVVVVVVUUUUU..WXZXWVUUTSaacfiigfecbaZZYYYYZbaaaa..gecccbbaaaaaaaaaaaaZZY...dfdcbaaaafedc.mlkjihgfeeeddeh.dd...ljhgggggfggggggggffecbY...khhggggfhfd...qponmllkkjiijk......omlllllllllmmmmlkjigeca...nmmllkkihfc...tusrqpoonnnmmo......rppppqqqqqqqqqponljhfdd....pqppnljhgc...vx.ttsrrrqrqqt.....vuttuuuvvvvvuutsqomkifeg.....tsqomjiij....y.vuuuuvvutux!....xxxxyyyyyyyyxwvtrpnligfg.....vurpmklms....xxwwwxxyxwwxz#$$!yy!!!!##!!!zzxwvtsqomjif......wvtqomprv....yyyyzzzzyyyz!###zy!#$$$$##!!zyxwutsqpnmj........vusqptvw....yzzzzzzzzzz#####..$$$$$##!zyxwvutsrponnk.......wvutssxx......yzzzzz!!!.#.###$$$$##!!zyxwvutsrqqppopq.....yxxwwvvvzz......yyz!!z!!!.z!####$$####!!zyyxwwvvuuuuvvwx....yyzyyyzy.........yz!!z!!!!y!!.######!!!!zzzyyyxxxxxxxxyz...zzyyyz!!.........xxyz!.z!!!.z!!!!!!!!zzzyyyxxwwwwxyzzyz.!.zzzyxxxxy.........#.xxy!.z!!..xzz!!!!zzzyyxxwvvuuuuvxz#z..!zzzyxwvvuu............xyy..y..tuwxyzzzzyyxxwwvutsrqqruy.wxzzzyyxwvutso........y...xx........rvvwxxxwwvvuuttrqommmpw.vvwwwxwwvutsrn........v..............qsstuutsrrrqqqpomkihk..rqruttuttsrqpn.....m.n...............jppqqpponmlllmmljheck.....rqqqqpponnlj...jkjlo..............bh.kkkkjihfffgghgea........moponllkjihgffggf....a..........UWVXYYaaaZYXXXYabbaW........Xdkkiihffee.",
+  "VVYeedbaZZaYYXXWWVWWXWXYZddbbbcbaZZYYYYYZYYYYXXY..bbdaZYXWWVddfikkjhgfeeeddcbbcedccd..khfggfeeddddeefffeeddb...iigfeddedihge.ponmlkkkjjihggj.fg...omkjjjjjiiijjkkkkjihgdb...nkkjkkkjkig...tsrqppoonmlkkm......rpooooooooooppponmljhfd...qpoooonmkif...wwvutssrqponoq......ussssssssssstssqpnmjhfh....sssrqomkjf...xz.wvvuttssrsv.....xwvwwwwwwwwwwvutsqomjhhk.....vusqomlll....z.xxwwwwwvuwy#....zzzzzzzzzzzyyxwusqomkijk.....wvtqnmoqt....zzyzyyzyxxxz!$$%$!!#######!!!zyxwusqpnmlj......wwtrporuw....zzzzzzzzzzz!!#$$#!#$$$$$##!!zyxwvtsrqpon........wutsrvww....zzzzzzzzz!z!####..$$$$$#!!zyxwvutsrqpppn.......xwvutuyy......xyzzzzz!!.z.####$$$##!!zyxwvutsrrqppqqr.....yxxxwvvx!!......wxyzzzzz!.xz!!######!!!zyyxwwvvvuuuuvvww....yyyyyyzz.........xyzzyyzzyvzz.!!!!!!zzzzyyyxxwwwxxxxxwyy...yxxxxxz!.........vvwxz.yyzz.xzz!!zzzzyyxxwwwvuuuuwxyzxy.y.xyxxwvvuv.........x.vvwy.xxy..uxyyzzzyyxxwwvuuttssstvx!y..yyyxwvvutrp............uvw..v..oquvwxxxxwwvvuutsrqpoopsu.tuxxxwwvutsrpk........u...tt........nsstuvuuutsssrqpomlkjmq.rsutuuutsrrqok........r..............mpoppqppooonnnnljigfg..mmmrqqrqqponmk.....h.i...............ellllklkjiihhiihgecae.....onnnmmmlkjig...eeegi..............Tc.ggefedcbaabcccbX........jllkjihhgfecZabbb....U..........IMNQSSUUVVUUTTUVWXXT........QYggffeccbb."
+]
+```
+
+```{ojs}
+//| echo: false
+huSst = {
+  const A = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-";
+  return huSstRaw.map(s => Array.from(s, ch => ch === "." ? null : A.indexOf(ch) / 2 - 2));
+}
+```
+
+```{ojs}
+//| echo: false
+huCells = {
+  const out = [];
+  for (let i = 0; i < 21; i++) for (let j = 0; j < 60; j++) {
+    const lat = -40 + 4 * i, lon = 6 * j;
+    const y0 = lat - 2, y1 = lat + 2, x0 = lon - 3, x1 = lon + 3;
+    out.push({k: i * 60 + j, lat, lon, geom: {type: "Polygon", coordinates: [[[x0, y0], [x0, y1], [x1, y1], [x1, y0], [x0, y0]]]}});
+  }
+  return out;
+}
+```
+
+```{ojs}
+//| echo: false
+huSstFor = (sel, offset = 0) => {
+  const idx = sel.startsWith("Jun") ? [5, 6, 7] : sel.startsWith("Dec") ? [11, 0, 1] : [huMonths.indexOf(sel)];
+  return huCells.map(c => {
+    const v = idx.map(m => huSst[m][c.k]);
+    return v.some(x => x === null) ? null : d3.mean(v) + offset;
+  });
+}
+```
+
+```{ojs}
+//| echo: false
+huSstMap = (sel, opts, offset = 0, title) => {
+  const vals = huSstFor(sel, offset);
+  const hot = opts.includes("Only show water ≥ 26.5 °C");
+  const showReg = opts.includes("Show the six hurricane regions");
+  const data = huCells.map((c, i) => ({...c, t: vals[i]})).filter(d => d.t !== null);
+  const color = hot
+    ? {type: "threshold", domain: [26.5, 28, 29, 30], range: ["#e2e8f0", "#fdba74", "#f97316", "#dc2626", "#7f1d1d"], legend: true, label: "Sea surface temperature (°C)", tickFormat: d => d}
+    : {type: "threshold", domain: [5, 10, 15, 20, 24, 26.5, 28, 30], range: ["#312e81", "#1d4ed8", "#0ea5e9", "#5eead4", "#bbf7d0", "#fde68a", "#fb923c", "#dc2626", "#7f1d1d"], legend: true, label: "Sea surface temperature (°C)", tickFormat: d => d};
+  return Plot.plot({
+    title: title || `Sea surface temperature: ${sel}`,
+    width, height: Math.round(width * 0.42), projection: huProj, color,
+    marks: [
+      Plot.sphere({fill: "#e5e7eb"}),
+      Plot.geo(data, {geometry: "geom", fill: "t"}),
+      huLand ? Plot.geo(huLand, {fill: "#9ca3af", stroke: "#4b5563", strokeWidth: 0.4}) : null,
+      Plot.line(d3.range(0, 361, 5).map(x => [x, 0]), {stroke: "#111827", strokeDasharray: "5,4", strokeWidth: 1}),
+      ...(showReg ? huRegions.map(g => Plot.line(huRing(g.box), {stroke: "#111827", strokeWidth: 1.6, strokeDasharray: "6,3"})) : []),
+      showReg ? Plot.text(huRegions, {x: d => d.label[0], y: d => d.label[1], text: "name", fontSize: width < 500 ? 8 : 11, fontWeight: "bold", fill: "#111827", stroke: "white", strokeWidth: 3}) : null,
+      Plot.tip(data, Plot.pointer({x: "lon", y: "lat", title: d => `${Math.abs(d.lat)}°${d.lat >= 0 ? "N" : "S"}, ${d.lon <= 180 ? d.lon + "°E" : (360 - d.lon) + "°W"}\n${d.t.toFixed(1)} °C`}))
+    ]
+  });
+}
+```
+
+```{ojs}
+//| echo: false
+huSstMap(huSstMonth, huSstOpts)
+```
+
+<p class="hu-note">Data: NOAA ERSST v5, 1991–2020 monthly averages, via the IRI/LDEO Climate Data Library (Columbia University). Shown on a 4° × 6° grid from 40° S to 40° N; gray cells over land and sea ice have no data. 26.5 °C ≈ 80 °F, the "warm ocean water (more than 80 °F)" in the packet's hurricane diagram.</p>
+
+Now compare **each region's water temperature month by month** with its hurricane season (shaded).
+
+```{ojs}
+//| echo: false
+// Monthly average SST inside each region's main formation zone (8°–20° from the equator), computed from the same ERSST data.
+huBasinSst = ({
+  "North Atlantic":    [26.0, 25.6, 25.6, 26.0, 26.5, 27.0, 27.4, 28.0, 28.4, 28.3, 27.7, 26.9],
+  "East Pacific":      [26.4, 26.3, 26.7, 27.3, 27.9, 28.0, 28.2, 28.4, 28.3, 28.0, 27.6, 27.0],
+  "West Pacific":      [27.4, 27.1, 27.3, 28.0, 28.8, 29.4, 29.5, 29.4, 29.4, 29.2, 28.8, 28.1],
+  "North Indian":      [27.0, 27.1, 28.1, 29.4, 30.0, 29.4, 28.4, 27.9, 28.2, 28.7, 28.5, 27.7],
+  "South Indian":      [27.8, 28.1, 28.3, 28.1, 27.4, 26.5, 25.8, 25.4, 25.4, 25.8, 26.6, 27.3],
+  "Southwest Pacific": [28.9, 29.1, 29.1, 28.8, 28.2, 27.5, 27.0, 26.7, 26.9, 27.4, 28.1, 28.7]
+})
+```
+
+```{ojs}
+//| echo: false
+viewof huBasin = Inputs.select(huRegions.map(d => d.name), {label: "Region:", value: "North Atlantic"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const r = huRegions.find(d => d.name === huBasin);
+  const pts = huBasinSst[huBasin].map((t, m) => ({m: huMonths[m], t, inSeason: r.months.includes(m)}));
+  return Plot.plot({
+    title: `${huBasin}: sea surface temperature through the year`,
+    subtitle: `Shaded = hurricane season (${r.season}). Dashed line = 26.5 °C.`,
+    width, height: 300, marginLeft: 44,
+    x: {domain: huMonths, label: null, tickFormat: d => width < 500 ? d[0] : d},
+    y: {domain: [24.5, 30.5], label: "SST (°C)", grid: true},
+    marks: [
+      Plot.barY(pts.filter(d => d.inSeason), {x: "m", y1: 24.5, y2: 30.5, fill: huHemiColor[r.hemi], fillOpacity: 0.13, inset: 0}),
+      Plot.ruleY([26.5], {stroke: "#dc2626", strokeDasharray: "6,4", strokeWidth: 2}),
+      Plot.line(pts, {x: "m", y: "t", stroke: "#0f172a", strokeWidth: 2.5, curve: "catmull-rom"}),
+      Plot.dot(pts, {x: "m", y: "t", r: 4.5, fill: d => d.t >= 26.5 ? "#f97316" : "#38bdf8", stroke: "white", tip: true, title: d => `${d.m}: ${d.t} °C`})
+    ]
+  });
+}
+```
+
+<p class="hu-note">Average SST for ocean grid cells 8°–20° from the equator inside each region (North Atlantic: 84° W–24° W). Notice the North Indian Ocean has two peaks: its storms are most common in May and October–November, around the summer monsoon.</p>
+
+```{ojs}
+//| echo: false
+huQuiz("hu-q-warm", "Check: where's the warm water?", [
+  {q: "Compare the Jun–Aug map with the Dec–Feb map. What happens to the warmest water (≥ 26.5 °C)?",
+   options: ["It stays in exactly the same place", "It shifts north in June–August and south in December–February, following summer in each hemisphere", "It disappears in December", "It moves toward the poles in winter"],
+   correct: 1,
+   explanation: "The warm belt follows the Sun. In northern summer it reaches about 30° N in the Atlantic and West Pacific; in southern summer it spreads south toward northern Australia and Madagascar."},
+  {q: "Do hurricanes happen in places where the ocean temperature is warm? (Compare the warm-water map with the six regions.)",
+   options: ["Yes: every region sits over water ≥ 26.5 °C during its hurricane season", "No: hurricanes form over the coldest water", "Only the Atlantic region is over warm water", "There's no connection"],
+   correct: 0,
+   explanation: "Every region's season matches the months its water is warmest. The South Indian region, for example, is above 26.5 °C from about November to May, its season."},
+  {q: "In the North Atlantic graph, the water is warmest in September. How does that compare to the 2005 storm chart?",
+   options: ["September–October had the most storms, matching the warmest water", "2005 storms all formed in January", "The warmest month had no storms", "They don't match at all"],
+   correct: 0,
+   explanation: "The ocean warms slowly (water has a high heat capacity), so it peaks in late summer, after the hottest air. That's why the season peaks around September 10, not in June."}
+])
+```
+
+## See-Think-Wonder {#hu-stw}
+
+::: {.student-task}
+### ✏️ In your packet: See-Think-Wonder
+
+Complete 2–3 rows: **What patterns do you see in the location of tropical cyclones? In the time of year they occur? In sea surface temperature throughout any given year?** Then: **How does the warm water during the Northern Hemisphere's summer and winter relate to the times of year that hurricanes occur most frequently in different regions?**
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+The key observations (you'll need these in Explain):
+
+- Tropical cyclones occur **near the equator in both the Northern and Southern Hemispheres**.
+- Tropical cyclones occur during the **warmer months in each hemisphere**.
+- Sea temperature follows air temperature and the seasons in each hemisphere.
+- Tropical cyclones occur at the **locations and times of year when air and sea temperatures are warmest**.
+
+Good "wonder" questions: *Why* do tropical cyclones occur when the air and sea are warmer? Does heat give tropical cyclones their energy?
+
+**About the model:** the IRI maps come from a computational model that combines many data sets. Every model makes assumptions and approximations. Keep that in mind; you'll come back to it in Evaluate.
+:::
+
+# Explain: What Explains Patterns of Hurricane Occurrence? {#hu-explain}
+
+::: {.explain-box}
+## ⚡ What does a hurricane need to form and gain strength?
+
+In class you watched **How Do Hurricanes Happen** (only up to 1:17, because the rest gives away predictions you'll make yourself) and analyzed the **Hurricane Formation Diagram**. The diagram's steps:
+
+1. **#1** Warm ocean water (more than 80 °F) provides energy for the hurricane and causes more evaporation, making humid air and clouds.
+2. **#2** Winds coming together force air upward.
+3. **#3** Winds flow outward above the storm, allowing the air below to rise.
+4. **#4** Humid air rising makes the clouds of the storm.
+5. **#5** Light winds outside the hurricane steer it and let it grow.
+
+**Energy source:** warm water. As water vapor **evaporates** it carries heat energy into the atmosphere. Then water vapor **condenses, releasing the heat energy**. Rising air spirals, creating the **eye** (a low-pressure zone).
+:::
+
+## Part 1: Hurricane Model Illustrating What is Happening to Water Molecules {#hu-explain-1}
+
+Your packet asks you to **revise the diagram to show what is happening to the ocean water on a molecular scale**: what causes the water to rise up and form clouds? Use this virtual model to see it. Each dot is a (very!) simplified water molecule.
+
+```{ojs}
+//| echo: false
+huMolecules = {
+  const W = Math.min(width, 680), H = 380;
+  const wrap = html`<div style="max-width:${W}px;margin:0 auto;">
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:8px;">
+      <label style="font-weight:700;">Ocean surface temperature: <span class="hu-tlab">27.0</span> °C</label>
+      <input class="hu-trange" type="range" min="20" max="31" step="0.5" value="27" style="flex:1 1 180px;min-height:36px;" aria-label="Ocean surface temperature">
+      <button class="hu-btn hu-pause" type="button">⏸ Pause</button>
+    </div>
+    <canvas style="width:100%;height:auto;border-radius:12px;display:block;" role="img" aria-label="Animated model: water molecules evaporate from warm ocean, rise, condense into cloud and release heat"></canvas>
+    <div class="hu-readout" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
+  </div>`;
+  const canvas = wrap.querySelector("canvas");
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext("2d"); ctx.scale(dpr, dpr);
+  const range = wrap.querySelector(".hu-trange"), tlab = wrap.querySelector(".hu-tlab");
+  const readout = wrap.querySelector(".hu-readout");
+  const pauseBtn = wrap.querySelector(".hu-pause");
+  let T = 27, paused = false;
+  range.oninput = () => { T = +range.value; tlab.textContent = T.toFixed(1); };
+  pauseBtn.onclick = () => { paused = !paused; pauseBtn.textContent = paused ? "▶ Play" : "⏸ Pause"; };
+  const es = t => 6.112 * Math.exp(17.67 * t / (t + 243.5));     // saturation vapor pressure (hPa)
+  const seaY = H * 0.72, condY = H * 0.30;
+  const liquid = d3.range(90).map(() => ({x: Math.random() * W, y: seaY + 8 + Math.random() * (H - seaY - 14), ph: Math.random() * 6.28}));
+  let vapor = [], cloud = [], flashes = [], condTimes = [], frame = 0;
+  function draw() {
+    if (!paused) {
+      frame++;
+      const ratio = es(T) / es(26.5);
+      // evaporation: chance per frame grows with saturation vapor pressure (more fast molecules escape)
+      if (Math.random() < 0.16 * ratio ** 2.2) {
+        vapor.push({x: 30 + Math.random() * (W - 60), y: seaY - 2, vy: -(0.55 + 0.05 * (T - 20)), hot: true});
+      }
+      vapor.forEach(v => {
+        v.y += v.vy * (1 + 0.15 * (seaY - v.y) / seaY);
+        const dx = W / 2 - v.x;                                    // #2 winds come together
+        v.x += Math.sign(dx) * Math.min(Math.abs(dx), 0.35) * (v.y < seaY - 40 ? 1 : 0.3);
+      });
+      vapor.filter(v => v.y <= condY).forEach(v => {
+        cloud.push({x: v.x + (Math.random() - 0.5) * 70, y: condY - 10 - Math.random() * 50, r: 6 + Math.random() * 9, life: 420});
+        flashes.push({x: v.x, y: condY, life: 30});
+        condTimes.push(frame);
+      });
+      vapor = vapor.filter(v => v.y > condY);
+      cloud.forEach(c => { c.life--; c.x += (c.x - W / 2) * 0.002; });   // #3 outflow aloft
+      cloud = cloud.filter(c => c.life > 0).slice(-160);
+      flashes.forEach(f => f.life--); flashes = flashes.filter(f => f.life > 0);
+      condTimes = condTimes.filter(t => frame - t < 300);
+    }
+    // sky
+    const g = ctx.createLinearGradient(0, 0, 0, seaY);
+    g.addColorStop(0, "#1e293b"); g.addColorStop(1, "#64748b");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, seaY);
+    // ocean (color by temperature)
+    ctx.fillStyle = d3.interpolateRgb("#1d4ed8", "#ea580c")((T - 20) / 11);
+    ctx.fillRect(0, seaY, W, H - seaY);
+    // condensation level
+    ctx.setLineDash([6, 5]); ctx.strokeStyle = "rgba(255,255,255,.5)"; ctx.beginPath(); ctx.moveTo(0, condY); ctx.lineTo(W, condY); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = "#e2e8f0"; ctx.font = "12px Inter, sans-serif";
+    ctx.fillText("Air cools as it rises → water vapor condenses here", 8, condY + 15);
+    // clouds
+    cloud.forEach(c => { ctx.fillStyle = `rgba(241,245,249,${Math.min(1, c.life / 120) * 0.85})`; ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, 6.283); ctx.fill(); });
+    // heat flashes
+    flashes.forEach(f => { ctx.strokeStyle = `rgba(250,204,21,${f.life / 30})`; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(f.x, f.y, 34 - f.life, 0, 6.283); ctx.stroke(); });
+    ctx.lineWidth = 1;
+    // vapor molecules
+    vapor.forEach(v => { ctx.fillStyle = "#fb923c"; ctx.beginPath(); ctx.arc(v.x, v.y, 3.6, 0, 6.283); ctx.fill(); });
+    // liquid molecules (jiggle more when warmer)
+    const amp = 0.6 + (T - 20) * 0.22;
+    liquid.forEach(m => { m.ph += 0.08 + (T - 20) * 0.02;
+      ctx.fillStyle = "rgba(224,242,254,.85)"; ctx.beginPath(); ctx.arc(m.x + Math.cos(m.ph) * amp, m.y + Math.sin(m.ph * 1.3) * amp, 3, 0, 6.283); ctx.fill(); });
+    ctx.fillStyle = "#fff"; ctx.font = "bold 13px Inter, sans-serif";
+    ctx.fillText(`Warm ocean: ${T.toFixed(1)} °C (${(T * 9 / 5 + 32).toFixed(0)} °F)`, 8, H - 10);
+    ctx.font = "12px Inter, sans-serif";
+    ctx.fillText("● orange = water vapor carrying heat energy up", 8, seaY - 10);
+    // readout
+    if (frame % 15 === 0 || paused) {
+      const grow = T >= 26.5;
+      readout.innerHTML = `
+        <div class="hu-card" style="flex:1 1 150px;margin:0;"><b>Evaporation</b><br>${Math.round(100 * (es(T) / es(26.5)) ** 2.2)}% of the rate at 26.5 °C</div>
+        <div class="hu-card" style="flex:1 1 150px;margin:0;"><b>Water vapor air can hold</b><br>${(es(T) / es(26.5) * 100).toFixed(0)}% of 26.5 °C air</div>
+        <div class="hu-card" style="flex:1 1 180px;margin:0;background:${grow ? "#fee2e2" : "#e0f2fe"};"><b>Storm energy</b><br>${grow ? "▲ Heat released by condensation is more than the storm loses: the storm can form and strengthen" : "▼ Not enough heat released: the storm can't form or it weakens"}</div>`;
+    }
+    raf = requestAnimationFrame(draw);
+  }
+  let raf = requestAnimationFrame(draw);
+  invalidation.then(() => cancelAnimationFrame(raf));
+  return wrap;
+}
+```
+
+<p class="hu-note">A simplified model. Evaporation and the amount of water vapor air can hold both grow with temperature (about 6–7% more per °C). The "storm energy" box uses the observed rule of thumb that hurricanes need water of about 26.5 °C or warmer; real storms also need moist air, low wind shear and some spin from Earth's rotation.</p>
+
+**What the model shows, molecule by molecule:**
+
+| Step | What the molecules are doing | Energy |
+|---|---|---|
+| Warm water | Water molecules move faster when warmer. The fastest ones at the surface break free (**evaporation**). | Thermal energy from the ocean becomes **latent heat** stored in the vapor |
+| Moist air rises | Warm, humid air is **less dense** than the cooler air around it, so it rises. Winds coming together push it up. | Vapor carries the energy upward |
+| Clouds form | Rising air cools; slower vapor molecules stick together into droplets (**condensation**). | The latent heat is **released**, warming the air |
+| Storm grows | Warmed air rises even faster, lowering the air pressure at the surface, so more air rushes in and spirals. | Released heat → kinetic energy of wind |
+
+```{ojs}
+//| echo: false
+huQuiz("hu-q-molecules", "Check: the molecular model", [
+  {q: "Why does warmer ocean water put more water vapor into the air?",
+   options: ["Warm water is lighter, so it floats up as liquid", "In warmer water more molecules move fast enough to escape the surface (evaporate)", "Warm water has more molecules", "Cold water can't evaporate at all"],
+   correct: 1,
+   explanation: "Temperature measures the average kinetic energy of molecules. Warmer water has more molecules with enough energy to break free into the air."},
+  {q: "Where does a hurricane get the energy for its winds?",
+   options: ["From the Sun directly heating the wind", "From latent heat released when water vapor condenses into clouds", "From lightning", "From the cold air it meets"],
+   correct: 1,
+   explanation: "Evaporation stores energy in water vapor. When the vapor condenses high up, that energy is released, warming the air so it rises faster and pulls in more surface wind."},
+  {q: "Set the model to 24 °C. Why does the storm weaken?",
+   options: ["The water is too salty", "Less evaporation means less condensation, so not enough heat is released to keep the air rising", "Cold water releases more heat", "The eye closes"],
+   correct: 1,
+   explanation: "That's why hurricanes die after moving north over cooler water, or over land, where the supply of evaporating water is cut off."}
+])
+```
+
+::: {.student-task}
+### ✏️ In your packet: Part 1
+
+In the box **Hurricane Model Illustrating What is Happening to Water Molecules**, redraw the diagram and add molecules: tightly packed, jiggling molecules in the warm ocean; fast ones escaping as vapor; vapor rising with warm, less dense air; molecules clumping into droplets in the cloud, with arrows or labels showing **heat energy carried up and released**.
+:::
+
+## Part 2: What Explains the Patterns from the 2005 Hurricane Season? {#hu-explain-2}
+
+**Question:** What causes hurricane occurrence near the equator between June 1 – Nov 30? (In class: *What caused hurricanes from the 2005 season to form near the equator and die after moving north? Why did they form between June 1 – Nov 30?*)
+
+Build your scientific explanation. Check each part as you include it:
+
+```{ojs}
+//| echo: false
+viewof huCer = Inputs.checkbox([
+  "Question: I restated the scientific question",
+  "Claim: what causes hurricanes near the equator June 1 – Nov 30",
+  "Evidence 1: where the warm water is (SST maps) matches the six regions",
+  "Evidence 2: the timing of warm water matches each region's hurricane season (and the 2005 storms)",
+  "Science concepts: evaporation, density of warm moist air, condensation releasing latent heat",
+  "Reasoning: links the evidence and concepts to the claim (because…, therefore…)"
+], {label: "My explanation has:"})
+```
+
+```{ojs}
+//| echo: false
+html`<div style="padding:10px 14px;border-radius:10px;margin:4px 0 12px;background:${huCer.length === 6 ? '#dcfce7' : '#fef3c7'};color:${huCer.length === 6 ? '#14532d' : '#78350f'};"><b>${huCer.length} / 6</b> ${huCer.length === 6 ? "All parts included. Compare with the sample below." : "Keep going: a complete explanation has all six parts."}</div>`
+```
+
+::: {.callout-note collapse="true"}
+## 🔑 Sample scientific explanation (try yours first!)
+
+**Question:** What causes hurricane occurrence near the equator between June 1 and November 30?
+
+**Claim:** Hurricanes occur near the equator from June 1 to November 30 because that is where and when the Northern Hemisphere's ocean water (and the air above it) is warmest, warm enough (about 26.5 °C / 80 °F or more) to supply the energy hurricanes need.
+
+**Evidence:** The SST maps show water ≥ 26.5 °C in a belt near the equator, right where the six hurricane regions are. In the North Atlantic the water first reaches 26.5 °C around May–June and is warmest in September, matching the June–November season and the 2005 storms (most formed July–October). Southern Hemisphere regions have their season (October–May) when *their* water is warmest.
+
+**Science concepts:** Warmer water has more fast-moving molecules, so more water evaporates. Warm, moist air is less dense, so it rises. As it rises it cools and the vapor condenses, releasing latent heat that makes the air rise faster and the winds stronger.
+
+**Reasoning:** Because warm water causes more evaporation, it supplies more water vapor to rise and condense. Therefore enough energy is released for hurricanes to form and strengthen only where and when the water is warmest. When hurricanes move north over cooler water, not enough water evaporates, so they lose their energy and die.
+:::
+
+### Constructing a causal relationship {#hu-variables}
+
+Now use your model to make a cause-and-effect relationship that could predict future storms.
+
+```{ojs}
+//| echo: false
+viewof huDVpick = Inputs.select(["(choose)", "Sea surface temperature", "Hurricane occurrence (how many hurricanes form)", "The month of the year", "Latitude"], {label: "1. Dependent variable:"})
+```
+
+```{ojs}
+//| echo: false
+viewof huIVpick = Inputs.select(["(choose)", "Sea surface temperature (and the warm air above it)", "Hurricane occurrence", "Number of storm names", "Wind direction aloft"], {label: "2. Independent variable:"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const dvOK = huDVpick.startsWith("Hurricane occurrence"), ivOK = huIVpick.startsWith("Sea surface");
+  const msg = (pick, ok, good, hint) => pick === "(choose)" ? "Choose one." : ok ? "✅ " + good : "❌ " + hint;
+  return html`<div class="hu-card">
+    <div><b>Dependent variable:</b> ${msg(huDVpick, dvOK, "The DV is the outcome we're explaining: whether (and how many) hurricanes occur.", "The dependent variable is the effect, the thing that responds. What were you trying to explain?")}</div>
+    <div style="margin-top:6px;"><b>Independent variable:</b> ${msg(huIVpick, ivOK, "Sea surface temperature is the cause in your model. Month and latitude matter only because they change the water temperature.", "The independent variable is the cause. What, in your model, supplies the energy?")}</div>
+    ${dvOK && ivOK ? html`<div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:#dcfce7;color:#14532d;"><b>3. Relationship:</b> As sea surface temperature increases (above about 26.5 °C), more water evaporates and condenses, releasing more energy, so hurricanes are more likely to occur (and can grow stronger).</div>` : ""}
+  </div>`;
+}
+```
+
+::: {.student-task}
+### ✏️ In your packet: Part 2
+
+Write your **Scientific Explanation** (question, claim, evidence, science concepts, reasoning). Then answer **1.** the dependent variable, **2.** the independent variable(s), **3.** the relationship between them.
+:::
+
+### Summary Task {#hu-summary}
+
+::: {.student-task}
+### ✏️ In your packet: Explain: Summary Task
+
+1. When deciding on what computational model to use, what would you like to know about the data to feel confident about its accuracy?
+2. How have we used mechanisms at a molecular scale to figure out what causes hurricane occurrence near the equator between June 1 – Nov 30?
+3. What were the main ideas from analyzing the diagram of hurricane formation? How did they help explain the patterns in location and time of year?
+4. a. How did you identify the independent and dependent variable in your claim? b. In your own words, how did you decide which was which?
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your Summary Task (try it first!)
+
+1. Where the data comes from and who made it (for IRI: NOAA's ERSST data, Columbia University), how it was measured (ships, buoys, satellites), how much data was combined and whether data sets agreed, what time period it covers, and what the model assumes or approximates (for example, it fills gaps between measurements).
+2. We looked at what water molecules do: warm water molecules move faster and more of them evaporate; the vapor rises in less dense warm air, then condenses and releases latent heat. That small-scale mechanism explains the big-scale pattern: storms form only where and when the water is warm enough to supply that energy.
+3. Hurricanes need warm water (> 80 °F), rising humid air, winds coming together at the surface and flowing out at the top, and light winds outside the storm. The energy comes from evaporation and condensation. Since warm water is in the tropics in each hemisphere's summer and fall, that's where and when hurricanes happen.
+4. The **dependent variable** is the effect I'm explaining (hurricane occurrence). The **independent variable** is the cause that changes it (sea surface temperature). Test: "Does SST depend on hurricanes, or do hurricanes depend on SST?" Hurricanes depend on SST.
+:::
+
+# Elaborate: What is happening to precipitation as global temperatures rise? {#hu-elaborate}
 
 ::: {.elaborate-box}
-## 🌡️ How Climate Change Is Changing Hurricanes
+## 🌧️ The hidden danger: rain
 
-The connection between warmer oceans and hurricanes has major implications for our future. Let's look at the evidence.
+So far we've focused on how often hurricanes form and how strong their **winds** are. In class you watched *More than 100 dead in devastation and flooding after Hurricane Helene* (0–1:50). Most of the deaths were caused by **water**, not wind.
 :::
 
-## Atlantic Ocean Warming Trend
+**From the packet's article (modified from NPR):**
+
+- Hurricane **Helene** (2024) reached **Category 4**, but some of the worst damage was **hundreds of miles inland**. Around Asheville, N.C., **more than 15 inches** of rain fell on mountains already soaked from earlier storms. The French Broad River crumbled highways, flooded homes and cut off drinking water.
+- The heaviest storms in the southeastern U.S. are already dropping **37% more rain** than in 1958. As the climate keeps changing, that could increase by **20% or more**.
+- The **Category** is based **entirely on wind speed**. Hurricane **Florence** (2018) hit North Carolina as only a **Category 1**, but the slow-moving storm dropped **up to 30 inches** of rain.
+
+| Saffir-Simpson category | Sustained wind (mph) | What it *doesn't* tell you |
+|---|---|---|
+| 1 | 74–95 | Rainfall |
+| 2 | 96–110 | Storm surge height |
+| 3 (major) | 111–129 | How slowly the storm moves |
+| 4 (major) | 130–156 | How big the storm is |
+| 5 (major) | 157 or higher | Flooding far inland |
+
+The packet's map shows how much more rain now falls on the **heaviest 1% of days** in each U.S. region (1958–2021):
 
 ```{ojs}
 //| echo: false
-// Annual average tropical Atlantic SST anomalies
-sstTrend = [
-  {year: 1980, anomaly: -0.05}, {year: 1982, anomaly: -0.15}, {year: 1984, anomaly: -0.10},
-  {year: 1986, anomaly: -0.08}, {year: 1988, anomaly: 0.05}, {year: 1990, anomaly: 0.10},
-  {year: 1992, anomaly: -0.05}, {year: 1994, anomaly: 0.02}, {year: 1995, anomaly: 0.20},
-  {year: 1996, anomaly: 0.05}, {year: 1997, anomaly: 0.08}, {year: 1998, anomaly: 0.25},
-  {year: 1999, anomaly: 0.15}, {year: 2000, anomaly: 0.10}, {year: 2001, anomaly: 0.12},
-  {year: 2002, anomaly: 0.18}, {year: 2003, anomaly: 0.22}, {year: 2004, anomaly: 0.28},
-  {year: 2005, anomaly: 0.55}, {year: 2006, anomaly: 0.20}, {year: 2007, anomaly: 0.18},
-  {year: 2008, anomaly: 0.15}, {year: 2009, anomaly: 0.12}, {year: 2010, anomaly: 0.35},
-  {year: 2011, anomaly: 0.15}, {year: 2012, anomaly: 0.25}, {year: 2013, anomaly: 0.10},
-  {year: 2014, anomaly: 0.08}, {year: 2015, anomaly: 0.20}, {year: 2016, anomaly: 0.30},
-  {year: 2017, anomaly: 0.35}, {year: 2018, anomaly: 0.18}, {year: 2019, anomaly: 0.25},
-  {year: 2020, anomaly: 0.45}, {year: 2021, anomaly: 0.22}, {year: 2022, anomaly: 0.18},
-  {year: 2023, anomaly: 0.60}, {year: 2024, anomaly: 0.65}
+huPrecip = [
+  {region: "Northeast (incl. NY)", pct: 60}, {region: "Midwest", pct: 45}, {region: "Southeast", pct: 37},
+  {region: "Northern Great Plains", pct: 24}, {region: "Alaska", pct: 21}, {region: "Southern Great Plains", pct: 21},
+  {region: "Southwest", pct: 17}, {region: "Northwest", pct: 1}, {region: "Hawaiʻi", pct: -19}, {region: "U.S. Caribbean", pct: -24}
 ]
+```
 
+```{ojs}
+//| echo: false
 Plot.plot({
-  title: "Tropical Atlantic SST Anomaly (Departure from 1971–2000 Average)",
-  subtitle: "The ocean is getting warmer — more fuel for hurricanes",
-  width: width,
-  height: 380,
-  x: {label: "Year"},
-  y: {label: "Temperature Anomaly (°C)", domain: [-0.3, 0.8]},
+  title: "Change in precipitation on the heaviest 1% of days, 1958–2021",
+  subtitle: "Values from the packet map (Fifth National Climate Assessment, 2023)",
+  width, height: 340, marginLeft: width < 500 ? 120 : 150, marginRight: 30,
+  x: {label: "Change (%)", grid: true, domain: [-30, 70]},
+  y: {domain: huPrecip.map(d => d.region), label: null},
   marks: [
-    Plot.barY(sstTrend, {x: "year", y: "anomaly", fill: d => d.anomaly > 0 ? "#e74c3c" : "#3498db",
-        tip: true}),
-    Plot.ruleY([0], {stroke: "#2d3436"}),
-    Plot.linearRegressionY(sstTrend, {x: "year", y: "anomaly", stroke: "#c62828", strokeWidth: 2, strokeDasharray: "8,4"}),
-    Plot.text([{x: 2005, y: 0.65}], {x: "x", y: "y", text: d => "2005 ↑", fontSize: 10, fill: "#c62828"}),
-    Plot.text([{x: 2023, y: 0.72}], {x: "x", y: "y", text: d => "2023 ↑", fontSize: 10, fill: "#c62828"})
+    Plot.barX(huPrecip, {y: "region", x: "pct", fill: d => d.region.startsWith("Northeast") ? "#1e3a8a" : d.pct >= 0 ? "#3b82f6" : "#f59e0b"}),
+    Plot.text(huPrecip.filter(d => d.pct >= 0), {y: "region", x: "pct", text: d => "+" + d.pct + "%", dx: 18, fontWeight: "bold"}),
+    Plot.text(huPrecip.filter(d => d.pct < 0), {y: "region", x: "pct", text: d => d.pct + "%", dx: -18, fontWeight: "bold"}),
+    Plot.ruleX([0])
   ]
 })
 ```
 
-## Rapid Intensification: The Growing Threat
-
-One of the most dangerous trends is **rapid intensification** — when a hurricane's wind speed increases by 35+ mph in just 24 hours. This makes evacuations nearly impossible.
+Why does warmer air mean more rain in a storm? Warmer air can **hold more water vapor**: about **7% more for each 1 °C** of warming. Try it:
 
 ```{ojs}
 //| echo: false
-riData = [
-  {period: "1980–1990", events: 12, pctMajor: 25},
-  {period: "1991–2000", events: 15, pctMajor: 30},
-  {period: "2001–2010", events: 22, pctMajor: 40},
-  {period: "2011–2020", events: 30, pctMajor: 50},
-  {period: "2021–2024*", events: 16, pctMajor: 55}
-]
-
-Plot.plot({
-  title: "Rapid Intensification Events in the Atlantic",
-  subtitle: "Storms are strengthening faster — giving communities less warning time",
-  width: width,
-  height: 350,
-  x: {label: "Period"},
-  y: {label: "Number of Rapid Intensification Events"},
-  marks: [
-    Plot.barY(riData, {x: "period", y: "events", fill: "#e74c3c",
-        tip: true}),
-    Plot.text(riData, {x: "period", y: d => d.events + 2, text: d => `${d.pctMajor}% became\nmajor (Cat 3+)`, fontSize: 10, lineAnchor: "bottom"})
-  ]
-})
+viewof huWarm = Inputs.range([0, 4], {step: 0.5, value: 1, label: "Warming of tropical air (°C):"})
 ```
-
-::: {.key-idea}
-### 💡 Key Concept: Warmer Oceans → Stronger Hurricanes
-
-Research shows that climate change affects hurricanes in several ways:
-
-| Change | Mechanism | Evidence |
-|--------|-----------|----------|
-| **Stronger peak winds** | More warm water → more evaporation → more latent heat release | Proportion of Cat 4-5 storms increasing |
-| **More rapid intensification** | Deeper warm water layers → sustained energy | RI events up ~150% since 1980s |
-| **More rainfall** | Warmer air holds ~7% more moisture per °C | Hurricane Harvey: 60+ inches in TX |
-| **Longer season** | Warmer water above threshold for more months | Recent storms forming earlier/later |
-| **Higher storm surge** | Sea level rise + stronger storms | Sandy's surge was amplified by ~1 ft of SLR |
-:::
-
-::: {.student-task}
-### 📝 Evidence-Based Reasoning
-
-Using the data above:
-
-1. Calculate the approximate **trend** in SST anomaly from 1980 to 2024. How much has the tropical Atlantic warmed?
-2. If SST continues rising at this rate, what anomaly would you predict for 2050?
-3. How might a longer hurricane season affect **NYC specifically**? Consider: When do nor'easters also form?
-4. Hurricane Sandy (2012) hit NYC as a post-tropical cyclone in late October. Was this timing unusual? What does it suggest about future risks?
-:::
-
-# Explain: Why Hurricanes Weaken Over Land
-
-::: {.explain-box}
-## 🏗️ The Land Problem
-
-Hurricanes weaken dramatically once they make landfall. Understanding why helps explain the fundamental energy source of these storms.
-:::
 
 ```{ojs}
 //| echo: false
 {
-  const width = 700;
-  const height = 350;
-  const svg = d3.create("svg").attr("viewBox", `0 0 ${width} ${height}`)
-    .style("width", "100%").style("height", "auto")
-    .style("max-width", "700px").style("display", "block").style("margin", "auto");
-
-  svg.append("rect").attr("width", width).attr("height", height).attr("fill", "#f8f9fa").attr("rx", 10);
-  svg.append("text").attr("x", 350).attr("y", 30).attr("text-anchor", "middle").attr("font-size", 18).attr("font-weight", "bold").text("Why Hurricanes Weaken Over Land");
-
-  // Ocean section
-  svg.append("rect").attr("x", 0).attr("y", 250).attr("width", 350).attr("height", 100).attr("fill", "#3498db").attr("opacity", 0.4);
-  svg.append("text").attr("x", 175).attr("y", 280).attr("text-anchor", "middle").attr("font-weight", "bold").text("🌊 OCEAN");
-
-  // Land section  
-  svg.append("rect").attr("x", 350).attr("y", 250).attr("width", 350).attr("height", 100).attr("fill", "#8B7355").attr("opacity", 0.5);
-  svg.append("text").attr("x", 525).attr("y", 280).attr("text-anchor", "middle").attr("font-weight", "bold").text("🏗️ LAND");
-
-  // Hurricane over ocean (strong)
-  svg.append("text").attr("x", 175).attr("y", 150).attr("text-anchor", "middle").attr("font-size", 50).text("🌀");
-  svg.append("text").attr("x", 175).attr("y", 210).attr("text-anchor", "middle").attr("font-size", 13).attr("font-weight", "bold").text("Cat 4 — 145 mph");
-
-  // Arrow
-  svg.append("line").attr("x1", 280).attr("y1", 180).attr("x2", 420).attr("y2", 180)
-    .attr("stroke", "#2d3436").attr("stroke-width", 3).attr("marker-end", "url(#arrowBlack)");
-
-  // Hurricane over land (weak)
-  svg.append("text").attr("x", 525).attr("y", 150).attr("text-anchor", "middle").attr("font-size", 30).attr("opacity", 0.5).text("🌀");
-  svg.append("text").attr("x", 525).attr("y", 210).attr("text-anchor", "middle").attr("font-size", 13).attr("font-weight", "bold").attr("fill", "#636e72").text("Cat 1 — 80 mph");
-
-  // Reasons
-  const reasons = [
-    {x: 350, y: 60, text: "❌ No warm water → no evaporation → no fuel"},
-    {x: 350, y: 85, text: "❌ Increased friction → winds slow down"},
-    {x: 350, y: 110, text: "❌ No moisture supply → rain decreases"}
-  ];
-  reasons.forEach(r => {
-    svg.append("text").attr("x", r.x).attr("y", r.y).attr("text-anchor", "middle").attr("font-size", 12).attr("fill", "#c62828").text(r.text);
-  });
-
-  // Evaporation arrows over ocean
-  for (let x = 80; x < 280; x += 40) {
-    svg.append("line").attr("x1", x).attr("y1", 245).attr("x2", x).attr("y2", 220)
-      .attr("stroke", "#e74c3c").attr("stroke-width", 1.5).attr("opacity", 0.5);
-  }
-  svg.append("text").attr("x", 175).attr("y", 240).attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "#e74c3c").text("Evaporation ↑↑↑");
-
-  const defs = svg.append("defs");
-  defs.append("marker").attr("id", "arrowBlack").attr("viewBox", "0 0 10 10").attr("refX", 5).attr("refY", 5)
-    .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
-    .append("path").attr("d", "M 0 0 L 10 5 L 0 10 z").attr("fill", "#2d3436");
-
-  return svg.node();
+  const es = t => 6.112 * Math.exp(17.67 * t / (t + 243.5));
+  const base = 28, pct = (es(base + huWarm) / es(base) - 1) * 100;
+  const rows = [{k: "Today (28 °C)", v: 100}, {k: `Warmer (${(base + huWarm).toFixed(1)} °C)`, v: 100 + pct}];
+  return html`<div>${Plot.plot({
+    width: Math.min(width, 560), height: 150, marginLeft: 120, x: {domain: [0, 140], label: "Water vapor the air can hold (% of today)"}, y: {label: null},
+    marks: [Plot.barX(rows, {y: "k", x: "v", fill: (d, i) => i ? "#2563eb" : "#93c5fd"}), Plot.text(rows, {y: "k", x: "v", text: d => d.v.toFixed(0) + "%", dx: 18, fontWeight: "bold"})]
+  })}<div class="hu-card">+${huWarm} °C → about <b>${pct.toFixed(0)}% more</b> water vapor. More vapor feeding a storm means more condensation: <b>heavier rain</b> and more latent heat released.</div></div>`;
 }
 ```
 
-::: {.key-idea}
-### 💡 Key Concept: Three Reasons Hurricanes Weaken Over Land
+<p class="hu-note">Calculated with the Clausius-Clapeyron relationship (saturation vapor pressure of water). The IPCC (AR6) finds heavy rainfall gets about 7% more intense for each 1 °C of global warming.</p>
 
-1. **No warm water** = no evaporation = no latent heat = **fuel supply cut off**
-2. **Increased surface friction** from buildings, trees, mountains = **winds slow down**
-3. **No moisture resupply** = precipitation diminishes = **energy release decreases**
+```{ojs}
+//| echo: false
+huQuiz("hu-q-elab", "Check: precipitation", [
+  {q: "According to the article, why doesn't the hurricane Category describe the full risk?",
+   options: ["The Category is based only on wind speed, but much of the damage comes from rain and flooding", "The Category is based only on rainfall", "Categories are random", "Category 1 storms are always harmless"],
+   correct: 0,
+   explanation: "Florence was only Category 1 at landfall but dropped up to 30 inches of rain. Helene's deadliest flooding was hundreds of miles inland."},
+  {q: "On the map, which region had the biggest increase in heavy-rain amounts since 1958?",
+   options: ["Southwest (+17%)", "Northeast, including New York (+60%)", "Hawaiʻi (−19%)", "Northwest (+1%)"],
+   correct: 1,
+   explanation: "The Northeast's heaviest downpours now drop about 60% more rain. NYC saw this during Ida's remnants in 2021, when Central Park got a record 3.15 inches in one hour."},
+  {q: "Which explains the link between global surface temperature and rain in a tropical storm?",
+   options: ["Warmer temperatures → more evaporation and air that holds more water vapor → more condensation → more rain", "Warmer air holds less water, so storms are drier", "Temperature doesn't affect rain", "Rain cools the ocean, so warming has no effect"],
+   correct: 0,
+   explanation: "About 7% more water vapor per 1 °C. A storm gathers that extra vapor and wrings it out as rain."},
+  {q: "Does more rain in the heaviest storms mean a place gets more rain over the whole year?",
+   options: ["Yes, always", "Not necessarily: the heaviest events can get heavier even if yearly totals change little", "No, it means the place will have a drought", "Yearly rain is the same as storm rain"],
+   correct: 1,
+   explanation: "The map measures only the heaviest 1% of days. Rain can come in fewer, bigger bursts."}
+])
+```
 
-This confirms that **warm ocean water is the essential energy source** for hurricanes. Without it, the hurricane engine shuts down within 12–24 hours.
+::: {.student-task}
+### ✏️ In your packet: Elaborate questions
+
+1. How has rainfall changed during recent hurricanes? 2. Why doesn't "hurricane intensity" (the Category) describe the full risk? 3. How have states been impacted by changing rain levels? 4. Using what you know about temperature, energy and precipitation, explain the relationship between global surface temperatures and the amount of precipitation in a tropical storm.
 :::
 
-# Evaluate: Hurricane Science Assessment
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+1. Rainfall in the heaviest storms has increased, for example 37% more in the Southeast since 1958; storms like Helene and Florence dropped 15–30 inches.
+2. The Category only measures wind speed. Rain, flooding and storm surge cause much of the damage, even from "weak" storms.
+3. Flooding far from the coast: destroyed highways and homes, lost drinking water and deaths (North Carolina); more rain on the heaviest days in most regions, +60% in the Northeast.
+4. Higher temperatures warm the ocean, so more water evaporates (molecules gain energy). Warmer air can hold more water vapor (about 7% per °C). When that vapor rises and condenses in the storm, more rain falls (and more latent heat is released). So as global temperatures rise, tropical storms can drop more rain.
+:::
+
+# Evaluate: What is the Future of Tropical Cyclones? {#hu-evaluate}
 
 ::: {.evaluate-box}
-## ✅ Show What You Know
+## 🔮 More frequent? More intense?
+
+Your final task is to write an argument about whether hurricanes will become **more frequent** and/or **more intense** as global temperatures rise. First, collect the data you'll need.
 :::
 
-::: {.quiz-section #hurricane-quiz}
-### 🧠 Check Your Understanding
+## Part 1: Is global warming affecting hurricanes? {#hu-trends}
 
-**Question 1:** A hurricane is fundamentally powered by:
+Hurricanes form above warm ocean water, and warmer water may lead to stronger hurricanes. Earth warmed about 1 °F over the 20th century, and sea surface temperatures are climbing. Has that affected hurricanes? This is an area of active research. One way scientists study it is by looking at the **history of hurricanes**.
+
+### Total number of hurricanes in different regions
 
 ```{ojs}
 //| echo: false
-viewof q1_hurr = Inputs.radio(
-  ["Wind blowing over the ocean surface",
-   "The Coriolis effect spinning the storm",
-   "Latent heat released when water vapor condenses",
-   "Cold fronts colliding with warm fronts"],
-  {label: "Select the best answer:"}
-)
+// Read from the packet graph (Klotzbach et al. 2022, Geophysical Research Letters). Stacked tops for each year in this order:
+// South Pacific, South Indian, North Indian, western North Pacific, eastern North Pacific, North Atlantic. Accurate to about ±1.
+huTotalsRaw = [
+  [1990,5,12,13,34,50,58],[1991,4,12,13,33,43,47],[1992,9,15,18,39,55,59],[1993,6,12,14,34,45,49],[1994,3,17,18,38,48,51],
+  [1995,3,14,16,31,38,49],[1996,4,18,22,43,48,57],[1997,12,21,23,46,55,58],[1998,9,17,22,31,40,50],[1999,2,11,14,25,31,39],
+  [2000,4,15,17,31,37,45],[2001,3,12,13,34,42,51],[2002,2,13,13,29,37,41],[2003,6,18,19,36,43,50],[2004,2,12,14,34,40,49],
+  [2005,6,11,11,29,36,51],[2006,7,12,13,26,37,42],[2007,4,15,18,34,38,44],[2008,2,12,13,25,32,40],[2009,2,11,12,27,35,38],
+  [2010,6,12,15,24,27,39],[2011,5,11,12,22,32,39],[2012,3,12,12,27,37,47],[2013,3,15,19,35,44,46],[2014,3,10,12,24,40,46],
+  [2015,6,12,14,34,50,54],[2016,4,9,10,27,40,47],[2017,4,9,11,24,33,43],[2018,5,18,22,38,51,59],[2019,5,18,24,42,49,55],
+  [2020,5,12,16,28,32,46],[2021,4,9,12,22,30,37]
+]
+huBasinNames = ["South Pacific", "South Indian", "North Indian", "Western North Pacific", "Eastern North Pacific", "North Atlantic"]
+huBasinCols = ["#0b1f4d", "#1d4ed8", "#38bdf8", "#5eead4", "#bef264", "#fef9c3"]
+huTotals = huTotalsRaw.flatMap(([year, ...c]) => c.map((v, i) => ({year, basin: huBasinNames[i], n: v - (i ? c[i - 1] : 0)})))
+huFit = (pts) => {
+  const mx = d3.mean(pts, d => d.x), my = d3.mean(pts, d => d.y);
+  let a = 0, b = 0; for (const p of pts) { a += (p.x - mx) * (p.y - my); b += (p.x - mx) ** 2; }
+  const m = a / b; return {m, b: my - m * mx};
+}
 ```
 
 ```{ojs}
 //| echo: false
-q1_hurr === "Latent heat released when water vapor condenses" ? 
-  html`<div style="background: #d4edda; padding: 12px; border-radius: 8px; border-left: 4px solid #28a745;">✅ <strong>Correct!</strong> Warm ocean water evaporates, and when that vapor rises and condenses into clouds, it releases latent heat. This heat is the PRIMARY energy source driving the hurricane's circulation.</div>` :
-  q1_hurr ? html`<div style="background: #f8d7da; padding: 12px; border-radius: 8px; border-left: 4px solid #dc3545;">❌ Think about the feedback loop: evaporation → rising → condensation → ??? → more rising</div>` : html``
-```
-
-**Question 2:** Atlantic hurricane season peaks in September (not June) because:
-
-```{ojs}
-//| echo: false
-viewof q2_hurr = Inputs.radio(
-  ["The Sun is closest to Earth in September",
-   "Ocean water has high heat capacity and reaches peak temperature ~2 months after peak solar input",
-   "Wind patterns change in September to allow hurricane formation",
-   "September has the most rain globally"],
-  {label: "Select the best answer:"}
-)
+viewof huBasinSel = Inputs.checkbox(huBasinNames, {value: huBasinNames, label: "Include:"})
 ```
 
 ```{ojs}
 //| echo: false
-q2_hurr === "Ocean water has high heat capacity and reaches peak temperature ~2 months after peak solar input" ? 
-  html`<div style="background: #d4edda; padding: 12px; border-radius: 8px; border-left: 4px solid #28a745;">✅ <strong>Excellent!</strong> Water's high specific heat capacity means it absorbs energy slowly. Peak solar input is in June, but ocean temperatures don't peak until August-September. This "thermal lag" is why hurricane season peaks later than summer solstice.</div>` :
-  q2_hurr ? html`<div style="background: #f8d7da; padding: 12px; border-radius: 8px; border-left: 4px solid #dc3545;">❌ Think about the "seasonal lag" graph. When is the Sun's energy highest? When is the ocean warmest? Why the delay?</div>` : html``
+{
+  const sel = huTotals.filter(d => huBasinSel.includes(d.basin));
+  const yr = d3.rollups(sel, v => d3.sum(v, d => d.n), d => d.year).map(([x, y]) => ({x, y}));
+  if (!yr.length) return html`<p>Pick at least one region.</p>`;
+  const f = huFit(yr);
+  const line = [{year: 1990, v: f.m * 1990 + f.b}, {year: 2021, v: f.m * 2021 + f.b}];
+  return html`<div>${Plot.plot({
+    title: "Hurricanes per year in the selected regions, 1990–2021",
+    subtitle: "Dashed = straight-line trend",
+    width, height: 340, marginLeft: 40,
+    x: {label: null, tickFormat: d => String(d), domain: d3.range(1990, 2022), ticks: d3.range(1990, 2022, 4), type: "band"},
+    y: {label: "Hurricanes", grid: true},
+    color: {domain: huBasinNames, range: huBasinCols, legend: true},
+    marks: [
+      Plot.barY(sel, {x: "year", y: "n", fill: "basin", stroke: "#475569", strokeWidth: 0.3, order: huBasinNames, tip: true, title: d => `${d.year} ${d.basin}: ${d.n}`}),
+      Plot.line(line, {x: "year", y: "v", stroke: "currentColor", strokeDasharray: "6,4", strokeWidth: 2})
+    ]
+  })}<div class="hu-card">Trend: <b>${f.m >= 0 ? "+" : ""}${(f.m * 10).toFixed(1)} hurricanes per decade</b> (about ${Math.round(f.m * 1990 + f.b)} per year in 1990 → ${Math.round(f.m * 2021 + f.b)} in 2021). ${Math.abs(f.m * 10) < 0.5 ? "That's basically flat." : f.m < 0 ? "A slight decrease." : "A slight increase."}</div></div>`;
+}
 ```
 
-**Question 3:** How could a 1°C rise in average ocean temperature affect hurricanes?
+<p class="hu-note">Values read from the packet's graph (a) (Klotzbach et al. 2022, <i>Geophysical Research Letters</i>), accurate to about ±1 storm. The graph has 32 bars, 1990–2021 (the packet caption says 1990–2020). Try selecting only the North Atlantic, then only the Western North Pacific.</p>
+
+The packet's **NOAA map "Observed change in frequency of tropical cyclones, 1980–2018"** adds detail: red/orange (more storms each year) over the **North Atlantic** and the central North Pacific; green/blue (fewer) over much of the **western North Pacific** and the **South Indian Ocean**. So the trend is **not the same everywhere**, and the North Atlantic, NYC's region, saw an increase.
 
 ```{ojs}
 //| echo: false
-viewof q3_hurr = Inputs.radio(
-  ["It would have no meaningful effect",
-   "All hurricanes would become Category 5",
-   "More available energy could fuel stronger storms, more rapid intensification, and a potentially longer season",
-   "Hurricanes would form over colder water too"],
-  {label: "Select the best answer:"}
-)
+huQuiz("hu-q-total", "Check: total number of hurricanes", [
+  {q: "Has the total number of hurricanes worldwide increased, decreased or stayed about the same since 1990?",
+   options: ["Increased a lot", "Stayed about the same or decreased slightly (about 51 → 44 per year on the trend line), with big ups and downs", "Doubled", "Dropped to zero"],
+   correct: 1,
+   explanation: "Year-to-year swings (37 to 59) are much bigger than the slight downward trend. The IPCC says there is low confidence in long-term trends in how often tropical cyclones form."},
+  {q: "Is the trend the same for all regions?",
+   options: ["Yes, every region is the same", "No: the North Atlantic shows an increase while the western North Pacific and South Indian Ocean show decreases", "No: only the Indian Ocean changes", "We can't compare regions"],
+   correct: 1,
+   explanation: "Use the region checkboxes: North Atlantic alone trends up; western North Pacific alone trends down. The NOAA map shows the same split."}
+])
+```
+
+### Percentage of global hurricanes reaching Category 4 or 5
+
+```{ojs}
+//| echo: false
+// Read from the packet's graph (d) (Klotzbach et al. 2022), 1990–2021, ±1%.
+huPct45 = [26,34,44,33,45,33,32,40,28,36,33,20,51,34,48,43,48,36,35,42,36,44,30,28,50,61,47,30,44,44,33,35].map((p, i) => ({year: 1990 + i, p}))
 ```
 
 ```{ojs}
 //| echo: false
-q3_hurr === "More available energy could fuel stronger storms, more rapid intensification, and a potentially longer season" ? 
-  html`<div style="background: #d4edda; padding: 12px; border-radius: 8px; border-left: 4px solid #28a745;">✅ <strong>Correct!</strong> Warmer water means more evaporation (Clausius-Clapeyron), more latent heat available, and the 26.5°C threshold is exceeded for a longer portion of the year. This doesn't mean every storm is stronger, but the potential ceiling is raised and the season could expand.</div>` :
-  q3_hurr ? html`<div style="background: #f8d7da; padding: 12px; border-radius: 8px; border-left: 4px solid #dc3545;">❌ Think about what warmer water means for evaporation rates, available latent heat, and how long SST exceeds 26.5°C each year.</div>` : html``
+viewof huPctAvg = Inputs.toggle({label: "Compare the averages of 1990–2005 and 2006–2021", value: false})
 ```
+
+```{ojs}
+//| echo: false
+{
+  const f = huFit(huPct45.map(d => ({x: d.year, y: d.p})));
+  const a1 = d3.mean(huPct45.filter(d => d.year <= 2005), d => d.p), a2 = d3.mean(huPct45.filter(d => d.year > 2005), d => d.p);
+  return Plot.plot({
+    title: "Percentage of global hurricanes reaching Category 4 or 5",
+    subtitle: huPctAvg ? `Average: ${a1.toFixed(0)}% (1990–2005) vs ${a2.toFixed(0)}% (2006–2021)` : `Dashed trend: about ${(f.m * 1990 + f.b).toFixed(0)}% → ${(f.m * 2021 + f.b).toFixed(0)}%`,
+    width, height: 300, marginLeft: 40,
+    x: {label: null, tickFormat: d => String(d), domain: d3.range(1990, 2022), ticks: d3.range(1990, 2022, 4), type: "band"},
+    y: {label: "% reaching Cat 4–5", grid: true, domain: [0, 65]},
+    marks: [
+      Plot.barY(huPct45, {x: "year", y: "p", fill: "#16a34a", tip: true, title: d => `${d.year}: ${d.p}%`}),
+      huPctAvg
+        ? Plot.ruleY([{y: a1, x1: 1990, x2: 2005}, {y: a2, x1: 2006, x2: 2021}], {y: "y", x1: "x1", x2: "x2", stroke: "#7f1d1d", strokeWidth: 3})
+        : Plot.line([{year: 1990, v: f.m * 1990 + f.b}, {year: 2021, v: f.m * 2021 + f.b}], {x: "year", y: "v", stroke: "currentColor", strokeDasharray: "6,4", strokeWidth: 2})
+    ]
+  });
+}
+```
+
+<p class="hu-note">Values read from the packet's graph (d), Klotzbach et al. 2022. The IPCC (AR6) concludes that the proportion of major (Category 3–5) tropical cyclones has <i>likely</i> increased globally over the last four decades.</p>
+
+## Are hurricanes getting stronger? {#hu-stronger}
+
+How many strong hurricanes were there a few decades ago? How many are there today? Here are the packet's small bar graphs for the table **Number of Strong Hurricanes (Category 4 and 5 storms)**.
+
+| Hurricane Region | 1975–1989 | 1990–2004 |
+|---|---|---|
+| East Pacific Ocean | 36 | 49 |
+| West Pacific Ocean | 85 | 116 |
+| North Atlantic | 16 | 25 |
+| Southwestern Pacific | 10 | 22 |
+| North Indian Ocean | 1 | 7 |
+| South Indian Ocean | 23 | 50 |
+
+```{ojs}
+//| echo: false
+huStrong = [
+  ["East Pacific", 36, 49], ["West Pacific", 85, 116], ["North Atlantic", 16, 25],
+  ["Southwest Pacific", 10, 22], ["North Indian", 1, 7], ["South Indian", 23, 50]
+].flatMap(([r, a, b]) => [{region: r, period: "1975–1989", n: a}, {region: r, period: "1990–2004", n: b}])
+```
+
+```{ojs}
+//| echo: false
+viewof huStrongScale = Inputs.radio(["Same scale for all", "Each region its own scale (like the packet)"], {value: "Each region its own scale (like the packet)", label: "Y-axis:"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const regions = ["East Pacific", "North Atlantic", "North Indian", "West Pacific", "South Indian", "Southwest Pacific"];
+  const own = huStrongScale.startsWith("Each");
+  const cols = width < 520 ? 2 : 3, w = Math.floor((Math.min(width, 900) - 12 * cols) / cols);
+  return html`<div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">${regions.map(r => {
+    const d = huStrong.filter(x => x.region === r);
+    const ch = ((d[1].n - d[0].n) / d[0].n * 100);
+    return html`<div style="width:${w}px;">${Plot.plot({
+      width: w, height: 190, marginLeft: 34, marginBottom: 28,
+      title: r, subtitle: `${d[0].n} → ${d[1].n} (${ch > 0 ? "+" : ""}${ch.toFixed(0)}%)`,
+      x: {domain: ["1975–1989", "1990–2004"], label: null},
+      y: {domain: own ? [0, Math.max(8, d3.max(d, x => x.n) * 1.15)] : [0, 130], label: null, grid: true},
+      marks: [Plot.barY(d, {x: "period", y: "n", fill: (x, i) => i ? "#dc2626" : "#94a3b8"}), Plot.text(d, {x: "period", y: "n", text: x => String(x.n), dy: -7, fontWeight: "bold"}), Plot.ruleY([0])]
+    })}</div>`;
+  })}</div>`;
+}
+```
+
+<p class="hu-note">Data: packet table (Webster et al. 2005, <i>Science</i>; "Hurricanes and Climate," Windows to the Universe/UCAR). Gray = 1975–1989, red = 1990–2004. Watch out: with separate scales, the North Indian bars (1 → 7) look as big as the West Pacific bars (85 → 116).</p>
+
+```{ojs}
+//| echo: false
+huQuiz("hu-q-strong", "Check: are hurricanes getting stronger?", [
+  {q: "Has the number of strong (Category 4 and 5) storms increased, decreased or stayed the same?",
+   options: ["Increased in every region (globally about 171 → 269)", "Decreased in every region", "Stayed exactly the same", "Increased only in the Atlantic"],
+   correct: 0,
+   explanation: "Every region went up: 36+85+16+10+1+23 = 171 vs 49+116+25+22+7+50 = 269, an increase of about 57%. Graph (d) also shows a rising share of Cat 4–5 storms."},
+  {q: "The total number of hurricanes stayed about the same, but strong ones increased. What does that suggest?",
+   options: ["A larger fraction of hurricanes are reaching high intensity", "Hurricanes are getting weaker", "Scientists stopped counting weak storms", "Nothing"],
+   correct: 0,
+   explanation: "Frequency (how many) and intensity (how strong) are different variables. The evidence for intensity increasing is stronger than for frequency changing."},
+  {q: "What is one reason to be careful with the 1975–1989 vs 1990–2004 comparison?",
+   options: ["Satellites and measuring methods improved over time, so older storm strengths may be underestimated", "Hurricanes didn't exist in 1975", "The numbers were made up", "There is no reason to be careful"],
+   correct: 0,
+   explanation: "Good scientists ask how data was collected. Improved satellite estimates are one reason researchers re-analyze old records. Even with re-analyses, the share of the strongest storms has likely increased."}
+])
+```
+
+::: {.student-task}
+### ✏️ In your packet: Part 1
+
+1. Has the total number of hurricanes increased, decreased or stayed about the same? Is the trend the same for all regions? 2. Has the number of strong (Category 4 and 5) storms increased, decreased or stayed about the same? Is the trend the same for all regions? Then make the small bar graphs on the map and answer **"Are there more strong hurricanes now?" YES / NO**.
 :::
 
-::: {.lab-activity}
-### 📝 Culminating Task: Hurricane Energy Model
+## Part 2: Using Climate Models to Make Predictions About the Future {#hu-part2}
 
-Create a **detailed diagram + written explanation** that answers:
+### Reviewing what we know about hurricane formation {#hu-review}
 
-**"How did the 2005 Atlantic hurricane season produce so many powerful storms, and what role did ocean temperature play?"**
+::: {.callout-note collapse="true"}
+## 🔑 1. What is required for a hurricane to form? 2. How does a hurricane gain more energy? (try it first!)
 
-Your model should include:
-
-1. The **energy cycle** of a hurricane (evaporation → condensation → heat release → wind → more evaporation)
-2. Why **26.5°C** is the threshold for formation (relate to evaporation rates and latent heat)
-3. The **seasonal timing** and why September is the peak (thermal lag)
-4. How **2005 SST anomalies** contributed to the record-breaking season
-5. A **claim about the future**: will seasons like 2005 become more common? Use SST trend data as evidence.
-
-Use the vocabulary: *latent heat, evaporation, condensation, specific heat capacity, sea surface temperature, rapid intensification, thermal lag*
+1. **Warm ocean water** (about 26.5 °C / 80 °F or warmer) that causes lots of evaporation; humid air; winds coming together at the surface that force air upward; winds flowing outward above the storm; and light winds outside the hurricane that let it grow (and enough distance from the equator for the storm to spin).
+2. From **warm water**: water evaporates and carries heat energy into the atmosphere. When the vapor **condenses**, it **releases** that heat, warming the air so it rises faster; surface pressure drops and the winds strengthen. Warmer water → more evaporation → more energy released.
 :::
 
-# Summary: Key Takeaways
+### What do global climate models tell us about sea surface temperature where hurricanes form? {#hu-ipcc}
 
-| Concept | Key Idea |
-|---------|----------|
-| **Energy source** | Latent heat from condensation of evaporated warm ocean water |
-| **26.5°C threshold** | Minimum SST for enough evaporation to fuel a tropical cyclone |
-| **Feedback loop** | Evaporation → condensation → heat release → stronger winds → more evaporation |
-| **Hurricane season** | June–Nov because of thermal lag (SST peaks ~2 months after solar maximum) |
-| **Weakening over land** | No water → no evaporation → no fuel + more friction |
-| **Climate connection** | Warmer SSTs → more available energy → potentially stronger storms & longer seasons |
-| **Rapid intensification** | Increasing trend linked to deeper layers of warm water |
+Your packet uses the **[IPCC WGI Interactive Atlas](https://interactive-atlas.ipcc.ch/)** (Intergovernmental Panel on Climate Change, Working Group I). Steps: choose **Season → Customized season** (for example June to November for the North Atlantic), click the regions where hurricanes form, then look at the line graph. Try variables like **mean temperature**, **sea surface temperature**, **maximum 1-day precipitation** and **surface wind speed**. The Atlas works best on a laptop.
 
-**Next up:** You'll bring everything together to construct an **evidence-based argument** about the future of storms in your region. 📢
+Below is a quick **what-if model** using the real 1991–2020 sea surface temperatures from Explore. It adds the same warming everywhere, which is a big simplifying **assumption** (real models warm different places by different amounts).
+
+```{ojs}
+//| echo: false
+viewof huPlus = Inputs.range([0, 3], {step: 0.5, value: 0, label: "Ocean warming added (°C):"})
+```
+
+```{ojs}
+//| echo: false
+viewof huPlusMonth = Inputs.select(["Jun–Aug (average)", "Dec–Feb (average)", ...huMonths], {label: "Month:", value: "Sep"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const v0 = huSstFor(huPlusMonth, 0), v1 = huSstFor(huPlusMonth, huPlus);
+  const ocean = huCells.map((c, i) => ({c, a: v0[i], b: v1[i]})).filter(d => d.a !== null);
+  const share = (k) => ocean.filter(d => d[k] >= 26.5).length / ocean.length * 100;
+  const nyc = huSstFor(huPlusMonth, huPlus)[huCells.findIndex(c => c.lat === 40 && c.lon === 288)];
+  return html`<div>${huSstMap(huPlusMonth, ["Only show water ≥ 26.5 °C", "Show the six hurricane regions"], huPlus, `What if the ocean were ${huPlus} °C warmer? (${huPlusMonth})`)}
+  <div class="hu-card">Ocean between 40° S and 40° N that is ≥ 26.5 °C: <b>${share("a").toFixed(0)}%</b> today → <b>${share("b").toFixed(0)}%</b> with +${huPlus} °C. Water off New York (40° N, 72° W): <b>${nyc === null ? "n/a" : nyc.toFixed(1) + " °C"}</b>.</div></div>`;
+}
+```
+
+::: {.callout-warning}
+## ⚠️ Why "more warm water" doesn't automatically mean "more hurricanes"
+
+The 26.5 °C rule of thumb works for **today's** climate. As the planet warms, the **air** warms too, so the temperature needed for storms to form is expected to **rise along with the ocean**. Climate models also project changes in wind shear and humidity. That's why the IPCC projects:
+
+- **Frequency:** the global number of tropical cyclones will **decrease or stay about the same** (medium confidence). Confidence in past trends of frequency is **low**.
+- **Intensity:** the **proportion of Category 4–5** storms and the peak winds of the strongest storms will **increase** (high confidence).
+- **Rain:** rainfall rates will **increase** (high confidence), roughly in line with "7% more water vapor per °C."
+:::
+
+```{ojs}
+//| echo: false
+huQuiz("hu-q-ipcc", "Check: climate models", [
+  {q: "In the what-if model, the area of ocean warmer than 26.5 °C grows as you add warming. What is the best conclusion?",
+   options: ["Hurricanes will definitely double in number", "Warm water will cover more area, giving storms more energy, but more warm water alone doesn't prove more storms, because the formation threshold may also rise", "Hurricanes will stop forming", "Warming won't change the ocean"],
+   correct: 1,
+   explanation: "This is a reasoning trap. Energy available per storm rises (supporting more intensity and rain), but how many storms form depends on more than one threshold."},
+  {q: "According to the IPCC, which change is most certain?",
+   options: ["Many more hurricanes each year", "A larger proportion of very intense (Cat 4–5) storms and heavier rain", "Hurricanes reaching the North Pole", "Fewer intense storms"],
+   correct: 1,
+   explanation: "IPCC AR6: high confidence that the proportion of intense storms and rainfall rates increase with warming; frequency changes are less certain."}
+])
+```
+
+::: {.student-task}
+### ✏️ In your packet: See-Think-Wonder (IPCC Atlas)
+
+**See:** What do you notice about the average sea surface temperature? **Think:** What does this make you think about how frequent and intense hurricanes will be in the future? **Wonder:** What questions do you have?
+:::
+
+### Reliability of Models Based on Assumptions {#hu-reliability}
+
+| Idea | Meaning (packet's apple-scale example) |
+|---|---|
+| **Precision** | Gives consistent results: the scale shows 100 g every time for the same 100 g apple |
+| **Reliability** | You can trust it to stay accurate over time and in different situations: different apple sizes, months later |
+| **Assumptions** | The ideas a model is built on. Accurate assumptions → a more precise and reliable model |
+
+The IPCC Atlas warming scenarios rest on assumptions about **greenhouse gas emissions**, **economic and population growth**, **technological changes**, **policy and mitigation**, **land use changes**, **climate feedbacks**, and **socioeconomic choices**. Different assumptions give different futures:
+
+```{ojs}
+//| echo: false
+huSSP = [
+  {name: "SSP1-1.9", story: "Very low emissions: net-zero CO₂ around 2050", t: 1.4, lo: 1.0, hi: 1.8},
+  {name: "SSP1-2.6", story: "Low emissions: net-zero CO₂ after 2050", t: 1.8, lo: 1.3, hi: 2.4},
+  {name: "SSP2-4.5", story: "Intermediate: emissions stay near today's until mid-century", t: 2.7, lo: 2.1, hi: 3.5},
+  {name: "SSP3-7.0", story: "High: emissions double by 2100", t: 3.6, lo: 2.8, hi: 4.6},
+  {name: "SSP5-8.5", story: "Very high: emissions double by 2050", t: 4.4, lo: 3.3, hi: 5.7}
+]
+```
+
+```{ojs}
+//| echo: false
+viewof huSSPpick = Inputs.radio(huSSP.map(d => d.name), {value: "SSP2-4.5", label: "Scenario:"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const s = huSSP.find(d => d.name === huSSPpick);
+  return html`<div>${Plot.plot({
+    title: "Global warming by 2081–2100 (vs 1850–1900) in five IPCC scenarios",
+    subtitle: "Dot = best estimate; bar = very likely range",
+    width, height: 250, marginLeft: 80,
+    x: {domain: [0, 6], label: "Warming (°C)", grid: true},
+    y: {domain: huSSP.map(d => d.name), label: null},
+    marks: [
+      Plot.ruleY(huSSP, {y: "name", x1: "lo", x2: "hi", stroke: d => d.name === huSSPpick ? "#dc2626" : "#94a3b8", strokeWidth: 6}),
+      Plot.dot(huSSP, {y: "name", x: "t", r: 6, fill: d => d.name === huSSPpick ? "#7f1d1d" : "#475569", stroke: "white"}),
+      Plot.text(huSSP, {y: "name", x: "hi", text: d => d.t + " °C", dx: 22})
+    ]
+  })}<div class="hu-card"><b>${s.name}:</b> ${s.story}. Best estimate <b>+${s.t} °C</b> (very likely ${s.lo}–${s.hi} °C).</div></div>`;
+}
+```
+
+<p class="hu-note">Data: IPCC AR6 WGI Summary for Policymakers, Table SPM.1. The packet's Atlas also lets you choose warming levels of 1.5, 2, 3 and 4 °C.</p>
+
+```{ojs}
+//| echo: false
+huQuiz("hu-q-reliable", "Check: reliability and assumptions", [
+  {q: "How much variability can there be in assumptions like future emissions, population and technology?",
+   options: ["None: they are known exactly", "A lot: they depend on human choices that haven't been made yet", "Only a tiny amount", "They never affect climate"],
+   correct: 1,
+   explanation: "Nobody knows which policies, technologies or growth paths the world will choose. That's the biggest source of uncertainty in end-of-century warming."},
+  {q: "Why does the Atlas include several warming scenarios (1.5, 2, 3, 4 °C) instead of one prediction?",
+   options: ["To confuse people", "Because the assumptions vary, so showing a range lets us see how the outcome depends on our choices and how confident we can be", "Because the models are broken", "Because only one of them is real"],
+   correct: 1,
+   explanation: "Scenarios are 'if-then' predictions. A good argument names the scenario it uses and admits the limits of model precision and reliability."}
+])
+```
+
+::: {.student-task}
+### ✏️ In your packet: Reliability questions
+
+1. How much variability do you think there can be in the assumptions you read about? Explain your thinking. 2. Why do you think the IPCC WGI Interactive Atlas includes different warming scenarios of 1.5, 2, 3 and 4 °C by 2100?
+:::
+
+## 🔗 Connect to the Performance Task {#hu-pt}
+
+In your **Performance Task Organizer**, **Connect to the Performance Task: Hurricanes 5E** says:
+
+> *"Choose one of the two tasks below and apply what you figured out from the Hurricanes 5E and the Paths of Severe Storms 5E to complete the task."*
+>
+> **Task 1:** *"Will the frequency of hurricanes per year where you live increase, decrease, or stay the same as global temperatures increase in the future?"*
+>
+> **Task 2:** *"Will the intensity of hurricanes where you live increase, decrease, or stay the same as global temperatures increase in the future?"*
+
+Each task has 3 parts: **Part 1** identify the independent and dependent variables; **Part 2** gather evidence in a table, then develop a model of **how and why energy and matter flow** within the storm system and surrounding systems, with **small-scale mechanisms** that explain the big-scale picture; **Part 3** argue from evidence with a **claim and a counterclaim**, considering historical hurricane data, the conditions needed for a hurricane to form (or gain energy), climate model projections, and (Task 2) **the reliability of the model** you used.
+
+Use this helper to plan. Your typing is saved in this browser only, so copy it into your PTO.
+
+```{ojs}
+//| echo: false
+viewof huTask = Inputs.radio(["Task 1: Frequency", "Task 2: Intensity"], {value: "Task 1: Frequency", label: "My task:"})
+```
+
+### Part 1: Variables {#hu-pt-1}
+
+```{ojs}
+//| echo: false
+viewof huPtIV = Inputs.select(["(choose)", "Global temperature", "Frequency of hurricanes where I live", "Intensity of hurricanes where I live", "Where I live"], {label: "Independent variable:"})
+```
+
+```{ojs}
+//| echo: false
+viewof huPtDV = Inputs.select(["(choose)", "Global temperature", "Frequency of hurricanes where I live", "Intensity of hurricanes where I live", "Where I live"], {label: "Dependent variable:"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const want = huTask.startsWith("Task 1") ? "Frequency of hurricanes where I live" : "Intensity of hurricanes where I live";
+  const iv = huPtIV === "(choose)" ? "Choose one." : huPtIV === "Global temperature" ? "✅ Global temperature is the cause (what is changing in the prompt: 'as global temperatures increase')." : "❌ Look for the cause in the prompt: what is increasing in the future?";
+  const dv = huPtDV === "(choose)" ? "Choose one." : huPtDV === want ? `✅ ${want.split(" where")[0]} is the effect you're predicting.` : huPtDV.startsWith("Frequency") || huPtDV.startsWith("Intensity") ? "❌ That's the other task. Check which task you picked." : "❌ The dependent variable is what you're predicting will increase, decrease or stay the same.";
+  return html`<div class="hu-card"><div><b>IV:</b> ${iv}</div><div style="margin-top:4px;"><b>DV:</b> ${dv}</div>
+    <div style="margin-top:6px;font-size:.9em;">Tip: "where I live" is the place, not a variable. For NYC, connect global temperature to <b>sea surface temperature</b> in the North Atlantic, the link in the chain your model explains.</div></div>`;
+}
+```
+
+### Part 2: Evidence table {#hu-pt-2}
+
+Check the evidence you will use. The table builds itself with the resource each piece came from.
+
+```{ojs}
+//| echo: false
+huEvidence = [
+  {e: "Global temperatures are projected to rise 1.4–4.4 °C by 2100 depending on the scenario, warming the oceans", src: "IPCC scenarios (Reliability section) / IPCC Atlas", for: "both", dir: "context"},
+  {e: "Hurricanes form over water ≥ about 26.5 °C (80 °F), only where and when the ocean is warmest", src: "SST maps + hurricane regions (Explore)", for: "both", dir: "context"},
+  {e: "Warm water → more evaporation; condensation releases latent heat that powers the storm", src: "Hurricane formation diagram + molecular model (Explain)", for: "both", dir: "context"},
+  {e: "With +1 to +3 °C, a larger area of ocean is above 26.5 °C, including water closer to NYC", src: "What-if SST model (Evaluate Part 2)", for: "Frequency", dir: "increase"},
+  {e: "The North Atlantic had more tropical cyclones per year from 1980–2018", src: "NOAA observed change map (Evaluate Part 1)", for: "Frequency", dir: "increase"},
+  {e: "Global hurricane totals stayed about the same or decreased slightly from 1990–2021 (≈51 → 44 per year)", src: "Klotzbach et al. graph (Evaluate Part 1)", for: "Frequency", dir: "counter"},
+  {e: "IPCC: global tropical cyclone frequency projected to decrease or stay the same; low confidence in past frequency trends", src: "IPCC AR6 (Evaluate Part 2)", for: "Frequency", dir: "counter"},
+  {e: "Category 4–5 storms increased in all six regions (171 → 269 from 1975–89 to 1990–2004); 16 → 25 in the North Atlantic", src: "Strong hurricanes table (Evaluate Part 1)", for: "Intensity", dir: "increase"},
+  {e: "The share of hurricanes reaching Category 4–5 rose from about 35% to 42% (1990–2021)", src: "Klotzbach et al. graph (d) (Evaluate Part 1)", for: "Intensity", dir: "increase"},
+  {e: "IPCC: the proportion of Category 4–5 storms and hurricane rainfall rates will increase with warming (high confidence)", src: "IPCC AR6 (Evaluate Part 2)", for: "Intensity", dir: "increase"},
+  {e: "Warmer air holds about 7% more water vapor per 1 °C; heavy-rain days in the Northeast now drop 60% more rain", src: "Elaborate (NPR text + NCA5 map)", for: "Intensity", dir: "increase"},
+  {e: "Year-to-year variability is large, and older intensity records came from fewer satellites", src: "Evaluate Part 1 graphs", for: "Intensity", dir: "counter"},
+  {e: "NYC's water is far below 26.5 °C most of the year (about 22–24 °C at its August peak), so storms arriving here are usually weakening", src: "SST map / what-if model", for: "both", dir: "counter"}
+]
+```
+
+```{ojs}
+//| echo: false
+viewof huEvPick = {
+  const kind = huTask.startsWith("Task 1") ? "Frequency" : "Intensity";
+  const list = huEvidence.filter(d => d.for === "both" || d.for === kind);
+  return Inputs.checkbox(list, {format: d => (d.dir === "counter" ? "⚖️ " : d.dir === "increase" ? "📈 " : "🔗 ") + d.e, label: "Evidence:"});
+}
+```
+
+```{ojs}
+//| echo: false
+huEvPick.length === 0 ? html`<p class="hu-note">📈 = supports an increase · ⚖️ = supports a counterclaim · 🔗 = background link in your model. The rubric asks for at least <b>two pieces of evidence</b> for your claim.</p>` :
+html`<div style="overflow-x:auto;"><table class="hu-table"><thead><tr><th>What is the evidence?</th><th>Which resource did the evidence come from?</th></tr></thead><tbody>
+  ${huEvPick.map(d => html`<tr><td>${d.e}</td><td>${d.src}</td></tr>`)}</tbody></table>
+  <p class="hu-note">${huEvPick.filter(d => d.dir === "increase").length} piece(s) support an increase, ${huEvPick.filter(d => d.dir === "counter").length} support a counterclaim.</p></div>`
+```
+
+### Part 2: Model of energy and matter flow {#hu-pt-model}
+
+Pick the links for your model. The flowchart draws them in cause-and-effect order. Include at least one **small-scale (molecular) mechanism** (🔬).
+
+```{ojs}
+//| echo: false
+huLinks = [
+  {k: "start", t: "Global temperature rises (more greenhouse gases)", micro: false},
+  {k: "sst", t: "Ocean surface warms (North Atlantic SST ↑)", micro: false},
+  {k: "evap", t: "🔬 Faster water molecules escape: more evaporation (energy stored as latent heat)", micro: true},
+  {k: "rise", t: "🔬 Warm, moist air is less dense, so it rises; surface pressure drops", micro: true},
+  {k: "cond", t: "🔬 Vapor condenses into clouds, releasing latent heat that warms the air", micro: true},
+  {k: "wind", t: "Air rushes in and spirals faster around the low (winds strengthen)", micro: false},
+  {k: "rain", t: "More water vapor in the air → heavier rainfall", micro: false},
+  {k: "limit", t: "Limits: wind shear, dry air, cooler water near NYC, rising formation threshold", micro: false}
+]
+```
+
+```{ojs}
+//| echo: false
+viewof huLinkPick = Inputs.checkbox(huLinks, {format: d => d.t, value: huLinks.slice(0, 6), label: "My model includes:"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const kind = huTask.startsWith("Task 1") ? "frequency" : "intensity";
+  const steps = huLinks.filter(d => huLinkPick.includes(d));
+  const outcome = {k: "out", t: kind === "frequency" ? "Outcome: frequency of hurricanes where I live? (your claim)" : "Outcome: intensity of hurricanes where I live? (your claim)", micro: false};
+  const all = [...steps, outcome];
+  const n = all.length, bw = Math.min(width - 20, 560), bh = 46, gap = 18, H = n * (bh + gap);
+  const svg = d3.create("svg").attr("viewBox", [0, 0, bw + 20, H]).attr("width", bw + 20).style("max-width", "100%").style("height", "auto")
+    .attr("role", "img").attr("aria-label", "Flowchart of my hurricane model");
+  svg.append("defs").append("marker").attr("id", "hu-arrow").attr("viewBox", "0 0 10 10").attr("refX", 5).attr("refY", 5).attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto")
+    .append("path").attr("d", "M0,0L10,5L0,10z").attr("fill", "#64748b");
+  all.forEach((d, i) => {
+    const y = i * (bh + gap);
+    const fill = d.k === "out" ? "#fee2e2" : d.k === "limit" ? "#fef3c7" : d.micro ? "#ede9fe" : "#e0f2fe";
+    svg.append("rect").attr("x", 10).attr("y", y).attr("width", bw).attr("height", bh).attr("rx", 10).attr("fill", fill).attr("stroke", "#64748b");
+    const fo = svg.append("foreignObject").attr("x", 16).attr("y", y + 2).attr("width", bw - 12).attr("height", bh - 4);
+    fo.append("xhtml:div").style("font", `600 ${bw < 400 ? 11.5 : 13}px Inter, sans-serif`).style("color", "#0f172a").style("height", (bh - 4) + "px")
+      .style("display", "flex").style("align-items", "center").style("line-height", "1.2").text(d.t);
+    if (i < n - 1) svg.append("line").attr("x1", 10 + bw / 2).attr("x2", 10 + bw / 2).attr("y1", y + bh).attr("y2", y + bh + gap - 2)
+      .attr("stroke", "#64748b").attr("stroke-width", 2).attr("marker-end", "url(#hu-arrow)");
+  });
+  const micro = steps.filter(d => d.micro).length;
+  return html`<div>${svg.node()}<div class="hu-card">${micro ? `✅ ${micro} small-scale mechanism(s) included.` : "⚠️ Add at least one 🔬 molecular-scale link: the PTO asks for small-scale mechanisms."} ${steps.some(d => d.k === "limit") ? "✅ Including limits will help your counterclaim." : "Tip: adding the 'Limits' box helps you think about a counterclaim."} Matter: water cycles from ocean → vapor → cloud → rain. Energy: ocean heat → latent heat → wind (kinetic energy).</div></div>`;
+}
+```
+
+### Part 3: Argument (claim and counterclaim) {#hu-pt-3}
+
+```{ojs}
+//| echo: false
+viewof huClaim = Inputs.radio(["Increase", "Decrease", "Stay about the same"], {label: "My claim: it will…"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const kind = huTask.startsWith("Task 1") ? "frequency" : "intensity";
+  const tips = {
+    frequency: {
+      "Increase": "Evidence for: more North Atlantic storms 1980–2018 (NOAA map); more warm water area. Counterclaim to address: global totals flat or slightly down; IPCC projects global frequency to decrease or stay the same; the formation threshold may rise too.",
+      "Decrease": "Evidence for: global totals slightly down since 1990; IPCC projects frequency to decrease or stay the same. Counterclaim to address: North Atlantic storms increased 1980–2018; more ocean is above 26.5 °C.",
+      "Stay about the same": "Evidence for: big year-to-year swings with no clear global trend; IPCC low confidence in frequency trends. Counterclaim: North Atlantic increase 1980–2018."
+    },
+    intensity: {
+      "Increase": "Evidence for: Cat 4–5 storms up in every region; share of Cat 4–5 rising; IPCC high confidence; warmer water and air → more latent heat and rain. Counterclaim to address: natural variability, older records less reliable, NYC's cooler water weakens storms before they arrive.",
+      "Decrease": "This goes against most evidence. If you choose it, you'll need strong evidence, such as cooler water near NYC or more wind shear, and you must answer the Cat 4–5 data in a counterclaim.",
+      "Stay about the same": "You'd need to argue that NYC's cool water and wind shear cancel out the extra energy. Counterclaim to address: rising Cat 4–5 share and IPCC projections."
+    }
+  };
+  return html`<div class="hu-card">${huClaim ? html`<b>Planning tip (${kind}, ${huClaim.toLowerCase()}):</b> ${tips[kind][huClaim]}` : "Choose a claim to see planning tips."}
+    <div style="margin-top:6px;font-size:.9em;">Remember the model limits: projections depend on the emissions scenario and on assumptions inside the models (precision and reliability).</div></div>`;
+}
+```
+
+```{ojs}
+//| echo: false
+huPtForm = {
+  const key = "huPT-" + (huTask.startsWith("Task 1") ? "1" : "2");
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || "{}"); } catch (e) { saved = {}; }
+  const fields = [
+    ["claim", "Claim (answer the prompt for where you live)"],
+    ["evidence", "Evidence (at least 2 pieces, from the table above)"],
+    ["reasoning", "Reasoning: science concepts + logic (use 'because' and 'therefore'; include the molecular mechanism)"],
+    ["counter", "Counterclaim + evidence that supports it, and why your claim is still stronger"],
+    ["evaluation", "Evaluation: strengths, weaknesses, model reliability, and what other evidence would help"]
+  ];
+  const wrap = html`<div class="hu-pt">${fields.map(([k, lab]) => html`<label class="hu-lbl" for="hu-pt-${k}">${lab}</label><textarea id="hu-pt-${k}" data-k="${k}"></textarea>`)}
+    <button class="hu-btn hu-copy" type="button">📋 Copy my argument</button><button class="hu-btn hu-clear" type="button" style="background:#64748b;">Clear</button>
+    <span class="hu-status" style="font-size:.85em;"></span></div>`;
+  const tas = wrap.querySelectorAll("textarea"), status = wrap.querySelector(".hu-status");
+  tas.forEach(t => { t.value = saved[t.dataset.k] || ""; t.oninput = () => {
+    const o = {}; tas.forEach(x => o[x.dataset.k] = x.value);
+    try { localStorage.setItem(key, JSON.stringify(o)); status.textContent = "Saved in this browser."; } catch (e) { status.textContent = "Couldn't save here; copy your work."; }
+  }; });
+  wrap.querySelector(".hu-copy").onclick = async () => {
+    const text = `${huTask}\n\n` + fields.map(([k, lab]) => `${lab}:\n${wrap.querySelector(`[data-k=${k}]`).value}`).join("\n\n");
+    try { await navigator.clipboard.writeText(text); status.textContent = "Copied!"; } catch (e) { status.textContent = "Copy failed; select the text and copy it."; }
+  };
+  wrap.querySelector(".hu-clear").onclick = () => { tas.forEach(t => t.value = ""); try { localStorage.removeItem(key); } catch (e) {} status.textContent = "Cleared."; };
+  return wrap;
+}
+```
+
+::: {.callout-note collapse="true"}
+## 🔑 Sample argument for Task 2 (intensity), from the teacher guide's student work (try yours first!)
+
+**IV:** global temperatures. **DV:** intensity of hurricanes.
+
+*"In New York, where I live, hurricane intensity will likely increase as global temperatures rise. Hurricanes form when warm water evaporates, bringing high-energy molecules into the air. This energy fuels cyclones as air rushes in to fill the low-pressure zone caused by rising warm air. As temperatures rise, more energy is transferred to the air, causing stronger winds. Global temperatures are expected to rise, which will increase water temperatures and cause the energy transfer to the air to increase. As a result, hurricane intensity will increase. This prediction is corroborated by historical data, which shows the number of Category 4 and 5 storms increasing from 1990–2020."*
+
+**To reach Proficient, add:** a counterclaim (for example, "Some evidence suggests storms near NYC may not get stronger, because the water off NYC stays below 26.5 °C and storms weaken before they arrive"), a rebuttal using the data, the specific numbers (North Atlantic Cat 4–5: 16 → 25), and an evaluation of the model (which IPCC scenario, and how assumptions limit reliability).
+
+**For Task 1 (frequency)** the same student argued that frequency will increase, citing the NOAA map's North Atlantic increase. That's a defensible claim if you also handle the counterclaim: global totals haven't risen, and the IPCC projects global frequency to decrease or stay the same.
+:::
+
+## ✅ Evaluate: Final Argument Rubric {#hu-rubric}
+
+::: {.evaluate-box}
+## Final Argument Rubric checklist (Level 4: Proficient)
+
+Check off each component before you turn in your argument.
+:::
+
+```{ojs}
+//| echo: false
+viewof huRubric = Inputs.checkbox([
+  "Claim/Counterclaim: my claim and counterclaim(s) address the problem and are accurate, appropriate and complete",
+  "Evidence: appropriate and sufficient evidence (at least two examples for my claim) from data, models or reputable data sets",
+  "Reasoning (Science Concepts): I explain the concepts that link evidence to the claim (evaporation, density, condensation and latent heat, energy flow), with no key concepts missing",
+  "Reasoning (Logic): a logic statement with 'because' and 'therefore' that clearly links evidence to claim",
+  "Evaluation: I critique my argument (strengths and weaknesses), suggest additional evidence, and explain how I used cause and effect or systems and system models"
+], {label: "My argument includes:"})
+```
+
+```{ojs}
+//| echo: false
+html`<div style="padding:12px 16px;border-radius:10px;margin:6px 0 14px;background:${huRubric.length === 5 ? '#dcfce7' : '#fef3c7'};color:${huRubric.length === 5 ? '#14532d' : '#78350f'};">
+  <b>${huRubric.length} / 5</b> ${huRubric.length === 5 ? "🌟 All five components at the Proficient level." : "Keep going. Note: science ideas are not evidence; evidence is data, observations, or results from a model or simulation."}
+</div>`
+```
+
+**Next:** in the [Unit Closing](unit5-closing.qmd) you'll pull together hurricanes and blizzards to answer: *Will there be more frequent and more intense severe storms in the future?*
+
+# Chapter Summary
+
+| Key Concept | Details |
+|---|---|
+| **Six hurricane regions** | East Pacific, West Pacific, North Atlantic, North Indian, South Indian, Southwest Pacific: tropical oceans in both hemispheres, but not right on the equator |
+| **How many** | Average hurricanes per year: West Pacific 16, East Pacific 9, North Atlantic 7, South Indian 6, Southwest Pacific 4, North Indian 2 (about 44 worldwide) |
+| **When** | Northern regions: about April/June–November; southern regions: October–May. Hurricanes happen in each hemisphere's summer and fall. Atlantic season June 1 – Nov 30, peak around Sep 10 |
+| **Warm water** | Hurricanes need sea surface temperatures of about 26.5 °C (80 °F) or more; the warm belt follows the seasons; ocean temperatures peak in late summer |
+| **Energy source** | Warm water evaporates (latent heat stored); warm moist air is less dense and rises; vapor condenses, releasing latent heat; air rises faster, pressure falls, winds strengthen |
+| **Why they die** | Over cooler water or land, too little water evaporates to supply energy |
+| **Variables** | IV: sea surface temperature (cause). DV: hurricane occurrence (effect) |
+| **Rain** | Category = wind speed only. Warmer air holds about 7% more water vapor per °C → heavier rain (Northeast heavy-rain days +60% since 1958) |
+| **Observed trends** | Global hurricane count about flat or slightly down since 1990 (North Atlantic up); Cat 4–5 storms and their share have increased |
+| **Projections (IPCC AR6)** | Higher proportion of Cat 4–5 storms and higher rainfall rates (high confidence); global frequency decreases or stays the same (medium confidence) |
+| **Models** | Predictions depend on assumptions (emissions, population, technology, policy); scenarios show a range: about 1.4–4.4 °C by 2100 |
+
+---
+
+# Myth or Fact? {#hu-myths}
+
+```{=html}
+<div id="hu-myths-box" style="background:linear-gradient(135deg,#0b1d3a 0%,#123a5c 50%,#0f4c5c 100%); color:white; padding:26px; border-radius:16px; margin:30px 0; font-family:'Inter',sans-serif; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.6em; margin:0 0 8px 0; color:#7dd3fc !important;">🌀 Hurricanes: Myths vs. Facts</h2>
+  <p style="color:#cbd5e1; margin:0 0 18px 0; font-size:0.95em;">Decide whether each statement is a MYTH or a FACT!</p>
+  <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.06); padding:12px 16px; border-radius:12px; margin-bottom:18px;">
+    <div id="humf-progress" style="color:#cbd5e1; font-size:0.9em;">Card 1 of 8</div>
+    <div style="color:#cbd5e1; font-size:0.9em;">Score: <span id="humf-score" style="color:#7dd3fc; font-weight:700;">0</span> / <span id="humf-total">0</span></div>
+  </div>
+  <div id="humf-card" style="background:rgba(255,255,255,0.08); border-radius:14px; padding:24px; min-height:100px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:1.08em; font-weight:600; line-height:1.6; border:1.5px solid rgba(255,255,255,0.12);"></div>
+  <div style="display:flex; gap:12px; margin-top:16px;">
+    <button id="humf-myth" onclick="humfAnswer('Myth')" style="flex:1; min-height:44px; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#e17055,#d63031); color:white; font-size:1em; font-weight:700; cursor:pointer;">❌ MYTH</button>
+    <button id="humf-fact" onclick="humfAnswer('Fact')" style="flex:1; min-height:44px; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#00b894,#00a383); color:white; font-size:1em; font-weight:700; cursor:pointer;">✅ FACT</button>
+  </div>
+  <div id="humf-feedback" style="margin-top:16px; padding:16px; border-radius:10px; display:none; font-size:0.95em; line-height:1.6;"></div>
+  <button id="humf-next" onclick="humfNext()" style="display:none; margin-top:12px; width:100%; min-height:44px; padding:12px; border:2px solid rgba(255,255,255,0.25); border-radius:10px; background:transparent; color:white; font-size:0.95em; font-weight:600; cursor:pointer;">Next Card →</button>
+  <div id="humf-done" style="display:none; text-align:center; padding:20px;">
+    <div style="font-size:2.5em; margin-bottom:10px;">🎉</div>
+    <div style="font-size:1.3em; font-weight:700;">All cards complete!</div>
+    <div style="color:#cbd5e1; margin:8px 0;">Final score: <span id="humf-final" style="color:#7dd3fc; font-weight:700;"></span> / <span id="humf-count"></span></div>
+    <button onclick="humfRestart()" style="margin-top:12px; min-height:44px; padding:10px 24px; border:2px solid #7dd3fc; border-radius:20px; background:transparent; color:#7dd3fc; font-size:0.9em; cursor:pointer; font-weight:600;">Play Again</button>
+  </div>
+</div>
+<script>
+(function() {
+  var cards = [
+    {text: "Hurricanes form right on the equator, where the water is warmest.", type: "Myth",
+     explanation: "Almost no hurricanes form within about 5° of the equator. Storms need Earth's rotation to start spinning (the Coriolis effect), and that effect is zero at the equator."},
+    {text: "A hurricane's main energy source is heat released when water vapor condenses into clouds.", type: "Fact",
+     explanation: "Warm water evaporates, storing energy as latent heat. When the vapor condenses high in the storm, that heat is released, warming the air so it rises faster and strengthens the winds."},
+    {text: "Hurricane season is at the same time of year everywhere in the world.", type: "Myth",
+     explanation: "Seasons are opposite in the two hemispheres. Northern regions peak around June–November; the South Indian and Southwest Pacific regions peak around October–May."},
+    {text: "The North Atlantic hurricane season peaks around September 10, not in July when the air is hottest.", type: "Fact",
+     explanation: "Water has a high heat capacity, so the ocean warms slowly and reaches its highest temperatures in late summer, around September."},
+    {text: "A Category 1 hurricane can't cause deadly flooding.", type: "Myth",
+     explanation: "The Category measures only wind speed. Florence (2018) hit North Carolina as a Category 1 and dropped up to 30 inches of rain."},
+    {text: "Warmer air can hold more water vapor, about 7% more for every 1 °C.", type: "Fact",
+     explanation: "That's why heavy downpours, including hurricane rain, are getting heavier as Earth warms. The Northeast's heaviest rain days now drop about 60% more rain than in 1958."},
+    {text: "Scientists are certain that global warming will make many more hurricanes form every year.", type: "Myth",
+     explanation: "The IPCC projects global tropical cyclone frequency to decrease or stay about the same (medium confidence). The stronger evidence is for more intense storms and heavier rain."},
+    {text: "The number of Category 4 and 5 storms increased in all six hurricane regions between 1975–1989 and 1990–2004.", type: "Fact",
+     explanation: "Every region rose, from 171 to 269 in total (North Atlantic 16 → 25). The share of hurricanes reaching Cat 4–5 has also risen since 1990."}
+  ];
+  var idx = 0, score = 0, answered = 0, cardAnswered = false;
+  function el(id) { return document.getElementById(id); }
+  function updateCard() {
+    if (idx >= cards.length) {
+      ['humf-card','humf-myth','humf-fact','humf-feedback','humf-next'].forEach(function(i){ el(i).style.display = 'none'; });
+      el('humf-done').style.display = 'block';
+      el('humf-final').textContent = score;
+      el('humf-count').textContent = cards.length;
+      return;
+    }
+    el('humf-card').textContent = cards[idx].text;
+    el('humf-progress').textContent = 'Card ' + (idx + 1) + ' of ' + cards.length;
+    el('humf-feedback').style.display = 'none';
+    el('humf-next').style.display = 'none';
+    el('humf-myth').disabled = false; el('humf-fact').disabled = false;
+    el('humf-myth').style.opacity = '1'; el('humf-fact').style.opacity = '1';
+    cardAnswered = false;
+  }
+  window.humfAnswer = function(choice) {
+    if (cardAnswered) return;
+    cardAnswered = true; answered++;
+    var card = cards[idx], correct = (choice === card.type);
+    if (correct) score++;
+    el('humf-score').textContent = score; el('humf-total').textContent = answered;
+    var fb = el('humf-feedback');
+    fb.style.display = 'block';
+    fb.style.background = correct ? 'rgba(0,184,148,0.2)' : 'rgba(214,48,49,0.2)';
+    fb.style.border = '1px solid ' + (correct ? '#00b894' : '#e17055');
+    fb.innerHTML = '<strong>' + (correct ? '✅ Correct! ' : '❌ That\'s a ' + card.type + '! ') + '</strong>' + card.explanation;
+    el('humf-myth').disabled = true; el('humf-fact').disabled = true;
+    el('humf-myth').style.opacity = (choice === 'Myth') ? '1' : '0.5';
+    el('humf-fact').style.opacity = (choice === 'Fact') ? '1' : '0.5';
+    el('humf-next').style.display = 'block';
+  };
+  window.humfNext = function() { idx++; updateCard(); };
+  window.humfRestart = function() {
+    idx = 0; score = 0; answered = 0;
+    el('humf-card').style.display = 'flex';
+    el('humf-myth').style.display = 'block'; el('humf-fact').style.display = 'block';
+    el('humf-done').style.display = 'none';
+    el('humf-score').textContent = '0'; el('humf-total').textContent = '0';
+    updateCard();
+  };
+  updateCard();
+})();
+</script>
+```
+
+---
+
+# End-of-Chapter Quiz {#hu-quiz}
+
+```{ojs}
+//| echo: false
+huEndQuiz = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const header = html`<div style="background:linear-gradient(135deg,#0b5c8a 0%,#0a3d62 100%);color:#fff;border-radius:14px 14px 0 0;padding:18px 22px;">
+    <div style="font-size:1.1em;font-weight:700;">📝 ${title}</div>
+    <div style="font-size:0.85em;opacity:0.9;margin-top:4px;">Select an answer for each question. <span class="hu-score"></span></div>
+  </div>`;
+  const body = html`<div style="border:1.5px solid #bae6fd;border-top:none;border-radius:0 0 14px 14px;background:#f0f9ff;padding:14px;"></div>`;
+  let nRight = 0, nDone = 0;
+  const scoreEl = header.querySelector(".hu-score");
+  huBuildCards(body, questions, ok => { nDone++; if (ok) nRight++; scoreEl.textContent = `Score: ${nRight} / ${nDone}`; });
+  outer.appendChild(header);
+  outer.appendChild(body);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+huEndQuiz("hu-summative-quiz", "Summative Quiz: Hurricanes", [
+  {q: "The West Pacific averages 16 hurricanes a year and the North Indian Ocean 2. Using the SST map, which is the best explanation?",
+   options: ["The West Pacific has a huge area of water above 26.5 °C for most of the year; the North Indian region is small and its season is split by the monsoon", "The North Indian Ocean is colder than the Arctic", "Hurricane counts are random", "The West Pacific is closer to the equator"],
+   correct: 0,
+   explanation: "The western Pacific 'warm pool' is the largest area of very warm water on Earth (about 29–30 °C), so more storms can form there for more of the year."},
+  {q: "The South Indian region's water is above 26.5 °C from about November to May. When is its hurricane season?",
+   options: ["June–November", "October–May", "All year", "Only in July"],
+   correct: 1,
+   explanation: "Its season matches its warm water, which comes in Southern Hemisphere summer, opposite to the North Atlantic."},
+  {q: "On the molecular scale, why does warm, moist air rise above the ocean?",
+   options: ["Its molecules are moving faster and spread out, so the air is less dense than the cooler air around it", "Water molecules are heavier than air", "The eye pulls it up", "Cold air is less dense"],
+   correct: 0,
+   explanation: "Warmer air is less dense, and water vapor molecules are lighter than the nitrogen and oxygen they replace, so humid warm air is buoyant and rises."},
+  {q: "In the hurricane model, where is the stored energy actually released into the air?",
+   options: ["At the ocean surface when water evaporates", "In the clouds, when water vapor condenses into droplets", "In the eye, when air sinks", "When rain hits the ground"],
+   correct: 1,
+   explanation: "Evaporation takes energy from the ocean and stores it in the vapor; condensation releases it higher up, powering the storm."},
+  {q: "A hurricane moves from 29 °C water near Florida to 21 °C water off New England. What most likely happens, and why?",
+   options: ["It strengthens because cold water has more energy", "It weakens because less water evaporates, so less latent heat is released", "Nothing changes", "It turns into a tornado"],
+   correct: 1,
+   explanation: "This is the 'die after moving north' pattern from the 2005 video. Sandy (2012) stayed dangerous partly because it merged with a mid-latitude storm system, not because of warm water."},
+  {q: "In the claim 'Higher sea surface temperatures cause more hurricanes to occur,' which is the dependent variable?",
+   options: ["Sea surface temperature", "Hurricane occurrence", "The month", "The ocean"],
+   correct: 1,
+   explanation: "The dependent variable is the effect that responds: hurricane occurrence. SST is the independent variable (the cause)."},
+  {q: "Hurricane Florence was a Category 1 at landfall but dropped up to 30 inches of rain. What does this show?",
+   options: ["The Category measures wind speed only, not rain or flooding risk", "Category 1 storms are always the most dangerous", "Florence was misclassified", "Rain doesn't cause damage"],
+   correct: 0,
+   explanation: "Slow-moving storms in a warmer, wetter atmosphere can cause catastrophic flooding regardless of their wind category."},
+  {q: "From 1990–2021 the total number of hurricanes stayed about the same or dipped slightly, while the share reaching Category 4–5 rose (about 35% → 42%). Which conclusion is best supported?",
+   options: ["Hurricanes are becoming more frequent", "Hurricanes are becoming more intense, while frequency shows no clear increase", "Hurricanes are getting weaker", "Nothing has changed"],
+   correct: 1,
+   explanation: "Separate the two variables: frequency (how many) vs intensity (how strong). This data supports a rise in intensity, matching IPCC AR6."},
+  {q: "A classmate argues: 'More of the ocean will be above 26.5 °C, so there will definitely be many more hurricanes.' What is the best counterclaim?",
+   options: ["Warm water doesn't matter for hurricanes", "The air warms too, so the temperature needed to form storms may rise; wind shear and humidity also matter; IPCC projects global frequency to decrease or stay the same", "Hurricanes only form in winter", "There is no counterclaim"],
+   correct: 1,
+   explanation: "A strong counterclaim uses evidence and reasoning, not just disagreement. It also points to the limits of a simple model."},
+  {q: "The IPCC shows end-of-century warming from about 1.4 °C (SSP1-1.9) to 4.4 °C (SSP5-8.5). Why give a range instead of one number?",
+   options: ["The models don't work", "Future emissions depend on human choices (policy, technology, population), so each scenario is an 'if-then' prediction based on different assumptions", "Scientists can't agree on anything", "The range is a typo"],
+   correct: 1,
+   explanation: "Model predictions have limited precision and reliability because of their assumptions. A good argument names the scenario it uses."}
+])
+```
