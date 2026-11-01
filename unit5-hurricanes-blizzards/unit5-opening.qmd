@@ -1,6 +1,6 @@
 ---
-title: "Unit 5: More Hurricanes & Blizzards in NYC? — Unit Opening"
-subtitle: "It has felt like storms are getting worse. Does the data support that feeling?"
+title: "Unit 5: Opening — More Hurricanes and Blizzards in NYC?"
+subtitle: "Will there be more frequent and more intense severe storms in the future?"
 format:
   html:
     toc: true
@@ -16,933 +16,1333 @@ execute:
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
 
-.anchor-box {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  color: white;
-  padding: 30px;
-  border-radius: 15px;
-  margin: 25px 0;
-  box-shadow: 0 10px 30px rgba(15, 52, 96, 0.5);
-  animation: slideIn 0.8s ease-out;
-}
-
-.driving-question {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.6em;
-  background: linear-gradient(90deg, #e94560, #ff6b6b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin: 15px 0;
-}
-
-.unit-overview {
-  background: linear-gradient(135deg, #0f3460 0%, #533483 100%);
-  color: white;
-  padding: 25px;
-  border-radius: 15px;
-  margin: 20px 0;
-}
-
-.sequence-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  margin: 15px 0;
-  border-left: 5px solid;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease;
-}
-.sequence-card:hover { transform: translateY(-2px); }
-.sequence-card.blizzard { border-color: #3498db; }
-.sequence-card.paths { border-color: #27ae60; }
-.sequence-card.hurricane { border-color: #e74c3c; }
-
-.pe-badge {
-  display: inline-block;
-  background: linear-gradient(135deg, #e94560, #c62828);
-  color: white;
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  margin: 3px;
-}
-
-.phenomenon-box {
-  background: linear-gradient(135deg, #b5179e 0%, #c9184a 100%);
-  color: white;
-  padding: 25px;
-  border-radius: 15px;
-  margin: 20px 0;
-  box-shadow: 0 8px 25px rgba(245, 87, 108, 0.3);
-}
-
-.student-questions {
-  background: #fff3e0;
-  border-left: 5px solid #ff9800;
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 0 10px 10px 0;
-}
-
-.check-understanding {
-  background-color: #e8eaf6;
-  border-left: 5px solid #3f51b5;
-  padding: 15px;
-  margin: 15px 0;
-  border-radius: 0 10px 10px 0;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-}
-
-/* ===== Tell the Story ===== */
-.video-launch-card { max-width: 900px; margin: 20px auto; }
-.yt-card {
-  display: block; border-radius: 14px;
-  border: 1px solid rgba(0,0,0,.12); background: #fff;
-  overflow: hidden; text-decoration: none;
-  box-shadow: 0 10px 30px rgba(0,0,0,.10);
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-.yt-card:hover { transform: translateY(-2px); box-shadow: 0 16px 44px rgba(0,0,0,.14); }
-.yt-card svg { width: 100%; height: auto; display: block; }
-.yt-actions {
-  display: flex; gap: 10px; align-items: center;
-  justify-content: center; margin-top: 12px; flex-wrap: wrap;
-}
-.yt-btn {
-  display: inline-block; background: #ff0000; color: #fff;
-  padding: 10px 18px; border-radius: 999px;
-  font-weight: 700; text-decoration: none; font-size: 14px;
-}
-.yt-btn:hover { filter: brightness(.9); }
-.yt-btn.dark { background: #0f172a; }
-.map-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 18px; margin: 18px 0;
-}
-@media (max-width: 640px) { .map-grid { grid-template-columns: 1fr; } }
-.map-card {
-  background: #fff; border-radius: 12px; padding: 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,.08);
-  text-align: center; border: 1px solid #e5e7eb;
-}
-.map-card img { width: 100%; border-radius: 8px; border: 1px solid #ddd; }
-.map-card .map-title { font-weight: 700; font-size: .95em; margin-bottom: 6px; color: #1a1a2e; }
-.map-card .map-caption { font-size: .8em; color: #666; margin-top: 6px; line-height: 1.4; }
-.map-card a.map-link { display: inline-block; margin-top: 8px; color: #2563eb; font-size: .82em; font-weight: 600; }
-.map-wpc {
-  background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8a 100%);
-  border-radius: 10px; padding: 18px;
-  color: white; text-align: center; min-height: 160px;
-  display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px;
-}
-.map-wpc .wpc-icon { font-size: 2.5em; }
-.map-wpc .wpc-title { font-weight: 700; font-size: 1em; }
-.map-wpc .wpc-sub { font-size: .8em; opacity: .8; }
-.map-wpc a { color: #90caf9; font-weight: 600; font-size: .85em; }
-.story-prompt { padding: 16px 20px; margin: 20px 0; border-radius: 0 10px 10px 0; }
-.story-prompt.blizzard { background: #e3f2fd; border-left: 5px solid #1565c0; }
-.story-prompt.hurricane { background: #fce4ec; border-left: 5px solid #b71c1c; }
-.tell-story-divider { border: none; border-top: 3px dashed #dee2e6; margin: 45px 0; }
+.engage-box { background: linear-gradient(135deg, #0c4a6e 0%, #1e3a8a 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(30, 58, 138, 0.3); }
+.engage-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
+.explore-box { background: linear-gradient(135deg, #0e7490 0%, #1d4ed8 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(29, 78, 216, 0.3); }
+.explore-box.tropical { background: linear-gradient(135deg, #9f1239 0%, #c2410c 100%); box-shadow: 0 10px 30px rgba(194, 65, 12, 0.3); }
+.explain-box { background: linear-gradient(135deg, #4c1d95 0%, #6d28d9 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(109, 40, 217, 0.3); }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.4em; font-weight: 800; background: linear-gradient(90deg, #0e7490 0%, #1d4ed8 40%, #9f1239 75%, #c2410c 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
+.key-idea { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); color: #0f172a; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #0e7490; font-size: 1.05em; }
+.key-idea.tropical { background: linear-gradient(135deg, #ffe4e6 0%, #fed7aa 100%); border-left-color: #c2410c; }
+.key-idea *, .student-task * { color: #0f172a; }
+.key-idea a, .student-task a { color: #1d4ed8 !important; }
+.student-task { background: #fff3e0; color: #1a1a1a; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.pe-badge { display: inline-block; background: #1e3a8a; color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin: 3px; }
+.mind-blown { background: linear-gradient(135deg, #9f1239 0%, #c2410c 100%); color: white; padding: 20px; margin: 20px 0; border-radius: 15px; font-size: 1.2em; font-weight: 700; text-align: center; box-shadow: 0 10px 25px rgba(194, 65, 12, 0.35); }
+.u5o-video { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 14px 0 6px; border-radius: 12px; }
+.u5o-video iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+.u5o-stats { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin: 20px 0; }
+.u5o-stat { flex: 1 1 150px; max-width: 240px; text-align: center; padding: 16px 12px; border-radius: 14px; color: white; box-shadow: 0 6px 18px rgba(0,0,0,.15); }
+.u5o-stat b { display: block; font-size: 2.1em; line-height: 1.1; font-family: 'Space Grotesk', sans-serif; }
+.u5o-stat span { display: block; font-size: .9em; margin-top: 6px; }
+.engage-box *, .explore-box *, .explain-box *, .mind-blown * { color: white; }
+.engage-box a, .explore-box a, .explain-box a { color: white !important; text-decoration: underline; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.6em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #1d4ed8 !important; }
+.engage-box h2, .explore-box h2, .explain-box h2 { color: white !important; }
+[data-bs-theme="dark"] h2, body.quarto-dark h2 { color: #93c5fd !important; }
+@media (max-width: 600px) { .big-question { font-size: 1.6em; } h1 { font-size: 1.9em !important; } }
 </style>
 ```
 
+<div class="big-question">🌨️ More Hurricanes and Blizzards in NYC? 🌀</div>
 
+<span class="pe-badge">HS-ESS3-5</span> <span class="pe-badge">Stability and Change</span> <span class="pe-badge">Patterns</span>
 
-# Anchor Phenomenon
+::: {.callout-note collapse="true"}
+## 📒 Using this page with your Performance Task Organizer
 
-::: {.anchor-box}
-## 🌀 It Has Felt Like Storms Are Getting Worse
+This page follows the opening pages of your **Unit 5 Performance Task Organizer (PTO): More Hurricanes and Blizzards in NYC?** Missed a class or need a refresher? Jump to the matching section:
 
-[**Does the data support that feeling, and will it continue?**]{.driving-question}
-
-In recent years, powerful storms have battered communities across the United States. From deadly blizzards burying the Northeast under feet of snow to Category 5 hurricanes devastating coastal cities, it *feels* like extreme weather is getting worse. But science doesn't run on feelings—it runs on **evidence**.
-
-In this unit, you will investigate whether storms really are becoming more frequent and intense, and use climate models to argue what the future may hold for your community.
+| PTO section (page) | On this site |
+|---|---|
+| The anchor phenomenon (class launch) | [Anchor Phenomenon](#anchor-phenomenon) |
+| Tell the Story: Blizzards, video *A Deadly Winter Storm Heads to the East Coast* (p. 3) | [Blizzard video](#blizzard-video) |
+| 2018–2019 and 2019–2020 winter storm track maps (p. 3) | [Winter storm maps](#blizzard-maps) |
+| Text 2 continued: 2018–2019 and 2019–2020 US Winter Storms Season Graphs (p. 4) | [Winter storm season graphs](#blizzard-graphs) |
+| What is the overall story of the 2018–2019 and 2019–2020 US blizzard seasons? (p. 5) | [Overall story: blizzards](#blizzard-story) |
+| Tell the Story: Tropical Storms, video *Island of Puerto Rico destroyed by Hurricane Maria* (p. 6) | [Hurricane Maria video](#tropical-video) |
+| 2018 and 2020 Atlantic tropical storm maps (p. 6) | [Tropical storm track maps](#tropical-maps) |
+| Text 1 continued: 2018 and 2020 Atlantic Tropical Storm Graphs (p. 7) | [Tropical storm graphs](#tropical-graphs) |
+| What is the overall story of the 2018 and 2020 US tropical storm seasons? (p. 7) | [Overall story: tropical storms](#tropical-story) |
+| Introduction to the Performance Task and Initial Ideas (p. 8) | [Performance Task and Initial Ideas](#performance-task) |
+| Connect to the Performance Task after each lesson (pp. 9–22) | [Revisiting the Performance Task](#revisiting-the-performance-task) |
 :::
-
-# Unit Driving Question
-
-::: {.phenomenon-box}
-### Will there be more frequent and more intense severe storms in the future?
-
-This question will guide your work across all four chapters in this unit. By the end, you will construct an evidence-based argument about how climate change may alter storm patterns in your region.
-:::
-
-# Tell the Story
-
-Before analyzing data and building models, two real events anchor what this unit is about. Watch each video and examine the data that follows — **jot down observations, what surprises you, and the questions you want answered**.
-
----
-
-## 🌨️ Tell the Story: Blizzards
-
-Every few years, a massive winter storm bears down on the East Coast, shutting down cities and threatening lives. The news report below captures that moment of anticipation and dread right before one such storm arrives. As you watch, consider: *Where is this storm heading? Who is in danger? Does this event seem unusual or part of a pattern?*
-
-### 🎬 Watch: A Deadly Winter Storm Heads to the East Coast
-
-```{=html}
-<div class="video-launch-card">
-  <a class="yt-card"
-     href="https://www.youtube.com/watch?v=dKk5CvbvrXk"
-     target="_blank" rel="noopener noreferrer">
-    <svg viewBox="0 0 1200 500" role="img" aria-label="Watch: A Deadly Winter Storm Heads to the East Coast">
-      <defs>
-        <linearGradient id="bliz-bg" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stop-color="#0d47a1"/>
-          <stop offset="1" stop-color="#1565c0"/>
-        </linearGradient>
-        <linearGradient id="bliz-card" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stop-color="#ffffff" stop-opacity=".97"/>
-          <stop offset="1" stop-color="#ffffff" stop-opacity=".82"/>
-        </linearGradient>
-        <filter id="bliz-shadow">
-          <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#000" flood-opacity=".22"/>
-        </filter>
-      </defs>
-      <rect width="1200" height="500" fill="url(#bliz-bg)"/>
-      <!-- Snow circles -->
-      <circle cx="120" cy="110" r="80" fill="#fff" opacity=".10"/>
-      <circle cx="1080" cy="380" r="100" fill="#fff" opacity=".07"/>
-      <circle cx="600" cy="480" r="300" fill="#fff" opacity=".05"/>
-      <!-- Snowdrift silhouette -->
-      <path d="M0 420 C180 370,320 450,580 400 C840 350,980 440,1200 390 L1200 500 L0 500 Z" fill="#fff" opacity=".12"/>
-      <!-- White card panel -->
-      <g filter="url(#bliz-shadow)">
-        <rect x="80" y="70" width="1040" height="300" rx="22" fill="url(#bliz-card)"/>
-      </g>
-      <!-- YouTube play button -->
-      <rect x="120" y="105" width="110" height="76" rx="14" fill="#ff0000"/>
-      <polygon points="152,118 152,168 196,143" fill="#fff"/>
-      <!-- Text -->
-      <text x="258" y="155" font-family="system-ui,sans-serif" font-size="40" font-weight="800" fill="#0d1b2a">A Deadly Winter Storm</text>
-      <text x="258" y="202" font-family="system-ui,sans-serif" font-size="40" font-weight="800" fill="#0d1b2a">Heads to the East Coast</text>
-      <text x="258" y="244" font-family="system-ui,sans-serif" font-size="20" font-weight="500" fill="#0d1b2a" opacity=".60">Click to search and watch on YouTube</text>
-      <!-- CTA button -->
-      <g transform="translate(258,268)">
-        <rect x="0" y="0" width="256" height="72" rx="36" fill="#1565c0"/>
-        <polygon points="50,18 50,54 82,36" fill="#fff"/>
-        <text x="104" y="45" font-family="system-ui,sans-serif" font-size="24" font-weight="800" fill="#fff">Watch Video</text>
-      </g>
-      <!-- Snow dots -->
-      <circle cx="160" cy="52" r="5" fill="#fff" opacity=".55"/>
-      <circle cx="200" cy="28" r="3" fill="#fff" opacity=".45"/>
-      <circle cx="130" cy="38" r="4" fill="#fff" opacity=".40"/>
-      <circle cx="1050" cy="60" r="4" fill="#fff" opacity=".50"/>
-      <circle cx="1090" cy="40" r="3" fill="#fff" opacity=".40"/>
-      <circle cx="1020" cy="30" r="5" fill="#fff" opacity=".35"/>
-    </svg>
-  </a>
-  <div class="yt-actions">
-    <a class="yt-btn"
-       href="https://www.youtube.com/watch?v=dKk5CvbvrXk"
-       target="_blank" rel="noopener noreferrer">▶ Open video</a>
-    <span style="font-size:12px;color:#666;">Tip: once you find the video, your teacher can embed it directly using its YouTube ID.</span>
-  </div>
-</div>
-```
-
-### 📍 US Winter Storm Track Maps: 2018–19 & 2019–20
-
-The maps below show **where major winter storms tracked across the United States** during two consecutive seasons. Study the paths carefully — notice which regions get hit most often, where storms tend to originate, and how the patterns compare year to year.
-
-
-```{=html}
-<div class="responsive-iframe-container">
-<iframe 
-  src="storm-tracks/index.html" 
-  width="100%" 
-  height="600px" 
-  style="border: 1px solid #ccc; border-radius: 8px; overflow: hidden;"
-  title="Storm Tracks Simulation"
-></iframe>
-</div>
-```
-
-```{=html}
-<div class="responsive-iframe-container">
-<iframe src="winterstorms.html" width="100%" height="700px" style="border:none;" loading="lazy" title="Winter Storms"></iframe>
-</div>
-```
-
-
-### 📊 NYC Seasonal Snowfall: 2014–2024 (2018–19 & 2019–20 Highlighted)
-
-The bar chart below shows **NYC's total seasonal snowfall** for each winter from 2014 to 2024. The two seasons that match your storm track maps are highlighted in blue.
 
 ```{ojs}
 //| echo: false
-winterSeasons = [
-  {season: "2014–15", total: 49.9, highlight: false},
-  {season: "2015–16", total: 30.5, highlight: false},
-  {season: "2016–17", total: 30.9, highlight: false},
-  {season: "2017–18", total: 40.9, highlight: false},
-  {season: "2018–19", total: 20.5, highlight: true},
-  {season: "2019–20", total: 4.8,  highlight: true},
-  {season: "2020–21", total: 38.6, highlight: false},
-  {season: "2021–22", total: 10.3, highlight: false},
-  {season: "2022–23", total: 20.7, highlight: false},
-  {season: "2023–24", total: 8.5,  highlight: false}
-]
-
-Plot.plot({
-  title: "NYC Seasonal Snowfall (2014–2024)",
-  subtitle: "Blue bars = seasons matching your storm track maps",
-  width: width,
-  height: 360,
-  x: { label: "Season", tickRotate: -25 },
-  y: { label: "Total Snowfall (inches)", domain: [0, 60], grid: true },
-  marks: [
-    Plot.barY(winterSeasons, {
-      x: "season", y: "total",
-      fill: d => d.highlight ? "#1565c0" : "#90caf9",
-      tip: true
-    }),
-    Plot.ruleY([25], { stroke: "#555", strokeDasharray: "6,4" }),
-    Plot.text([{season: "2022\u201323", y: 27}], {
-      x: "season", y: "y", text: d => "\u224825\" historical avg", fill: "#555", fontSize: 11
-    })
-  ]
-})
+Plot = require("@observablehq/plot@0.6.16")
+d3 = require("d3@7.9.0")
 ```
-
-::: {.story-prompt .blizzard}
-### 🤔 Initial Observations & Questions — Blizzards
-
-In your science notebook, respond to the following:
-
-1. **Video:** What specific dangers did the reporter describe? What regions were under the most severe warnings?
-2. **Storm Track Maps:** What patterns do you notice in where storms originate and which direction they travel?
-3. **Snowfall Graph:** The 2018–19 and 2019–20 seasons look very different. What might explain that dramatic difference?
-4. **Your Wonder:** Write one question you have about why blizzards form or why their frequency might be changing.
-:::
-
-<hr class="tell-story-divider">
-
-## 🌀 Tell the Story: Tropical Storms
-
-In September 2017, Hurricane Maria struck Puerto Rico as a Category 4 storm — one of the deadliest hurricanes in recorded US history. Years later, communities were still rebuilding. The video below documents the devastation. As you watch, consider: *What made this storm so catastrophic? How does geography matter? Is this a rare event or part of a pattern?*
-
-### 🎬 Watch: Island of Puerto Rico Destroyed by Hurricane Maria
-
-```{=html}
-<div class="video-launch-card">
-  <a class="yt-card"
-     href="https://www.youtube.com/watch?v=zNFnVIlE6cA&t=1s"
-     target="_blank" rel="noopener noreferrer">
-    <svg viewBox="0 0 1200 500" role="img" aria-label="Watch: Island of Puerto Rico Destroyed by Hurricane Maria">
-      <defs>
-        <linearGradient id="hurr-bg" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stop-color="#4a0000"/>
-          <stop offset="1" stop-color="#7b1fa2"/>
-        </linearGradient>
-        <linearGradient id="hurr-card" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stop-color="#ffffff" stop-opacity=".97"/>
-          <stop offset="1" stop-color="#ffffff" stop-opacity=".82"/>
-        </linearGradient>
-        <filter id="hurr-shadow">
-          <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#000" flood-opacity=".22"/>
-        </filter>
-      </defs>
-      <rect width="1200" height="500" fill="url(#hurr-bg)"/>
-      <!-- Spiral swirl rings (hurricane motif) -->
-      <circle cx="160" cy="120" r="70" fill="none" stroke="#fff" stroke-width="2" opacity=".15"/>
-      <circle cx="160" cy="120" r="110" fill="none" stroke="#fff" stroke-width="1.5" opacity=".10"/>
-      <circle cx="1050" cy="350" r="90" fill="none" stroke="#fff" stroke-width="2" opacity=".12"/>
-      <circle cx="1050" cy="350" r="140" fill="none" stroke="#fff" stroke-width="1.5" opacity=".07"/>
-      <!-- Ocean silhouette -->
-      <path d="M0 420 C200 390,380 450,620 410 C860 370,1000 440,1200 400 L1200 500 L0 500 Z" fill="#fff" opacity=".10"/>
-      <!-- Card panel -->
-      <g filter="url(#hurr-shadow)">
-        <rect x="80" y="70" width="1040" height="300" rx="22" fill="url(#hurr-card)"/>
-      </g>
-      <!-- YouTube play button -->
-      <rect x="120" y="105" width="110" height="76" rx="14" fill="#ff0000"/>
-      <polygon points="152,118 152,168 196,143" fill="#fff"/>
-      <!-- Text -->
-      <text x="258" y="152" font-family="system-ui,sans-serif" font-size="38" font-weight="800" fill="#1a0020">Island of Puerto Rico</text>
-      <text x="258" y="198" font-family="system-ui,sans-serif" font-size="38" font-weight="800" fill="#1a0020">Destroyed by Hurricane Maria</text>
-      <text x="258" y="242" font-family="system-ui,sans-serif" font-size="20" font-weight="500" fill="#1a0020" opacity=".60">Click to search and watch on YouTube</text>
-      <!-- CTA button -->
-      <g transform="translate(258,266)">
-        <rect x="0" y="0" width="256" height="72" rx="36" fill="#b71c1c"/>
-        <polygon points="50,18 50,54 82,36" fill="#fff"/>
-        <text x="104" y="45" font-family="system-ui,sans-serif" font-size="24" font-weight="800" fill="#fff">Watch Video</text>
-      </g>
-      <!-- Swirl dots -->
-      <circle cx="152" cy="50" r="4" fill="#fff" opacity=".50"/>
-      <circle cx="180" cy="32" r="3" fill="#fff" opacity=".40"/>
-      <circle cx="130" cy="38" r="5" fill="#fff" opacity=".35"/>
-      <circle cx="1060" cy="55" r="4" fill="#fff" opacity=".45"/>
-      <circle cx="1090" cy="40" r="3" fill="#fff" opacity=".35"/>
-    </svg>
-  </a>
-  <div class="yt-actions">
-    <a class="yt-btn"
-       href="https://www.youtube.com/watch?v=zNFnVIlE6cA&t=1s"
-       target="_blank" rel="noopener noreferrer">▶ Open video</a>
-    <span style="font-size:12px;color:#666;">Tip: once you find the video, your teacher can embed it directly using its YouTube ID.</span>
-  </div>
-</div>
-```
-
-### 🗺️ North Atlantic Hurricane Tracking Charts: 2018 & 2020
-
-The official NOAA National Hurricane Center charts below show **every named storm track** in the 2018 and 2020 Atlantic hurricane seasons. Each line is a different storm's path from formation to dissipation. Compare the two years — 2020 was a record-breaking season.
-
-Use the toggle to compare the 2018 and 2020 Atlantic hurricane seasons. Each colored line represents a named storm's track from formation to dissipation. **2020 was a record-breaking season.**
 
 ```{ojs}
 //| echo: false
-
-// --- Hurricane tracking chart data ---
-// Simplified representative tracks for the 2018 and 2020 Atlantic hurricane seasons
-hurricaneTracks2018 = [
-  { name: "Alberto", cat: "TS", points: [[-86,20],[-87,23],[-88,27],[-87,30]] },
-  { name: "Beryl", cat: "TS", points: [[-48,10],[-54,12],[-60,14],[-66,16]] },
-  { name: "Chris", cat: "H1", points: [[-76,33],[-73,34],[-68,36],[-60,40]] },
-  { name: "Florence", cat: "H4", points: [[-24,12],[-35,15],[-48,19],[-60,24],[-70,28],[-77,34]] },
-  { name: "Gordon", cat: "TS", points: [[-76,23],[-80,25],[-86,28],[-88,31]] },
-  { name: "Helene", cat: "H2", points: [[-20,12],[-28,15],[-34,20],[-36,28],[-30,36]] },
-  { name: "Isaac", cat: "H1", points: [[-42,12],[-50,14],[-58,15],[-62,16]] },
-  { name: "Joyce", cat: "TS", points: [[-38,20],[-42,23],[-44,28],[-40,32]] },
-  { name: "Kirk", cat: "TS", points: [[-30,10],[-38,12],[-45,14],[-50,16]] },
-  { name: "Leslie", cat: "H1", points: [[-40,18],[-38,22],[-34,28],[-28,32],[-14,38]] },
-  { name: "Michael", cat: "H5", points: [[-84,18],[-85,22],[-86,26],[-85,30],[-82,34],[-76,38]] },
-  { name: "Nadine", cat: "TS", points: [[-18,10],[-22,13],[-28,15],[-32,18]] },
-  { name: "Oscar", cat: "H1", points: [[-44,22],[-40,26],[-36,30],[-32,34]] }
-]
-
-hurricaneTracks2020 = [
-  { name: "Arthur", cat: "TS", points: [[-77,28],[-76,32],[-73,35],[-66,38]] },
-  { name: "Bertha", cat: "TS", points: [[-79,28],[-80,30],[-80,32],[-78,34]] },
-  { name: "Cristobal", cat: "TS", points: [[-90,18],[-91,22],[-90,26],[-89,30]] },
-  { name: "Dolly", cat: "TS", points: [[-48,32],[-44,35],[-40,38],[-36,40]] },
-  { name: "Edouard", cat: "TS", points: [[-58,28],[-52,32],[-46,38],[-40,42]] },
-  { name: "Fay", cat: "TS", points: [[-76,30],[-75,33],[-74,37],[-73,40]] },
-  { name: "Gonzalo", cat: "TS", points: [[-50,10],[-55,12],[-60,13],[-62,14]] },
-  { name: "Hanna", cat: "H1", points: [[-86,20],[-90,22],[-94,24],[-97,26]] },
-  { name: "Isaias", cat: "H1", points: [[-64,14],[-70,18],[-74,22],[-77,28],[-76,34],[-72,40]] },
-  { name: "Laura", cat: "H4", points: [[-60,14],[-66,16],[-72,18],[-80,22],[-86,26],[-92,30]] },
-  { name: "Marco", cat: "TS", points: [[-80,16],[-84,18],[-88,22],[-90,26],[-90,29]] },
-  { name: "Nana", cat: "H1", points: [[-78,14],[-82,16],[-86,17],[-88,17]] },
-  { name: "Omar", cat: "TS", points: [[-58,24],[-54,28],[-50,32],[-46,36]] },
-  { name: "Paulette", cat: "H2", points: [[-42,16],[-48,20],[-54,24],[-60,28],[-64,32]] },
-  { name: "Sally", cat: "H2", points: [[-82,22],[-84,24],[-86,26],[-87,28],[-87,30]] },
-  { name: "Teddy", cat: "H4", points: [[-38,12],[-46,16],[-52,20],[-58,26],[-62,32],[-60,40]] },
-  { name: "Vicky", cat: "TS", points: [[-22,14],[-26,16],[-30,18],[-34,20]] },
-  { name: "Wilfred", cat: "TS", points: [[-24,10],[-28,12],[-32,14],[-36,16]] },
-  { name: "Alpha", cat: "TS", points: [[-16,32],[-12,36],[-10,38],[-8,40]] },
-  { name: "Beta", cat: "TS", points: [[-90,22],[-92,24],[-94,26],[-96,28]] },
-  { name: "Gamma", cat: "H1", points: [[-82,16],[-86,18],[-88,20],[-90,22]] },
-  { name: "Delta", cat: "H4", points: [[-76,16],[-80,18],[-84,20],[-88,24],[-92,28],[-92,30]] },
-  { name: "Epsilon", cat: "H3", points: [[-56,24],[-54,28],[-50,32],[-46,36],[-42,40]] },
-  { name: "Zeta", cat: "H2", points: [[-80,16],[-84,18],[-86,22],[-88,26],[-88,30]] },
-  { name: "Eta", cat: "H4", points: [[-76,14],[-80,15],[-82,16],[-84,18],[-86,22],[-84,28]] },
-  { name: "Theta", cat: "TS", points: [[-28,26],[-24,30],[-20,34],[-16,38]] },
-  { name: "Iota", cat: "H5", points: [[-72,12],[-76,13],[-80,14],[-82,14]] }
-]
-
-// Color scale by category
-catColor = (cat) => {
-  const m = { "TD": "#6ec6ff", "TS": "#00bcd4", "H1": "#ffeb3b", "H2": "#ff9800", "H3": "#ff5722", "H4": "#e91e63", "H5": "#9c27b0" };
-  return m[cat] || "#999";
+u5oQuiz = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="margin:18px 0 24px 0;text-align:center;">
+    <button style="
+      display:inline-flex;align-items:center;gap:7px;
+      background:linear-gradient(135deg,#0e7490 0%,#1d4ed8 100%);
+      color:#fff;border:none;padding:9px 22px;border-radius:50px;
+      font-size:.95em;font-weight:700;cursor:pointer;
+      box-shadow:0 3px 12px rgba(29,78,216,.4);">
+      <span style="font-size:1.1em;">📝</span> ${title}
+      <span class="chevron" style="transition:transform .3s;">▼</span>
+    </button>
+    <div class="quiz-body" style="
+      max-height:0;opacity:0;overflow:hidden;
+      transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin-top .3s ease;
+      margin-top:0;text-align:left;">
+      <button class="close-btn" style="
+        display:block;margin:0 auto 10px auto;
+        background:rgba(29,78,216,.12);color:#1d4ed8;border:none;
+        padding:5px 18px;border-radius:50px;font-size:.85em;
+        font-weight:600;cursor:pointer;">Hide</button>
+      <p style="text-align:center;color:#718096;font-style:italic;font-size:.9em;margin-bottom:12px;">
+        Select an answer for each question.</p>
+    </div>
+  </div>`;
+  const toggle = outer.querySelector("button");
+  const chevron = toggle.querySelector(".chevron");
+  const body   = outer.querySelector(".quiz-body");
+  const closeBtn = body.querySelector(".close-btn");
+  function expand(){  body.style.maxHeight="3000px";body.style.opacity="1";body.style.marginTop="14px";chevron.style.transform="rotate(180deg)"; }
+  function collapse(){ body.style.maxHeight="0";body.style.opacity="0";body.style.marginTop="0";chevron.style.transform="rotate(0)"; }
+  toggle.onclick = () => body.style.maxHeight === "0px" || body.style.maxHeight === "" ? expand() : collapse();
+  closeBtn.onclick = collapse;
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
+    const fb = document.createElement("div");
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.className = "u5o-opt";
+      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;";
+      btn.onclick = () => {
+        if(card.dataset.answered) return;
+        card.dataset.answered = "true";
+        const opts = card.querySelectorAll("button.u5o-opt");
+        opts.forEach(b => { b.style.cursor="default"; });
+        if(oi === qq.correct){
+          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";
+          fb.innerHTML = "✅ Correct! " + qq.explanation;
+          fb.style.color="#276749";fb.style.background="#f0fff4";
+        } else {
+          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";
+          opts[qq.correct].style.borderColor="#48bb78";
+          opts[qq.correct].style.background="#f0fff4";
+          fb.innerHTML = "❌ " + qq.explanation;
+          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
+        }
+        fb.style.padding="10px 14px";fb.style.marginTop="8px";
+      };
+      card.appendChild(btn);
+    });
+    fb.className = "u5o-fb";
+    fb.style.cssText = "border-radius:8px;font-size:.9em;";
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  return outer;
 }
+```
 
-viewof hurrYear = Inputs.radio(["2018", "2020"], { label: "Season", value: "2018" })
+# Anchor Phenomenon: Are Storms Getting Worse? {#anchor-phenomenon}
+
+::: {.engage-box}
+## 🌀 It has felt like storms are getting worse
+
+<div style="font-size: 1.2em; font-weight: 700; text-align: center; margin: 18px 0;">
+It felt like hurricanes and blizzards were really bad these past few years. What does the data show? Will this continue?
+</div>
+
+- In this unit you'll look at **two recent winter storm seasons** (2018–19 and 2019–20) and **two recent Atlantic hurricane seasons** (2018 and 2020).
+- You'll look for **patterns**: how many storms, how strong, how long they lasted, where they formed and where they went.
+- Then you'll start building an argument: as global temperatures keep rising (remember [Unit 4](../unit4-climate-change/unit4-past-and-future.qmd)), will storms become **more frequent** (happen more often) or **more intense** (stronger)?
+:::
+
+**Think about it** before you start:
+
+- What do hurricanes and blizzards have in **common**? How are they **different**?
+- Have you lived through a big storm in NYC? What happened?
+
+::: {.callout-tip collapse="true"}
+## 💬 Ideas classmates often share (try your own first!)
+
+- A **hurricane** has heavy rain and extremely strong wind. A **blizzard** has heavy snow and very strong wind.
+- Both can cause a lot of disruption, damage to property, and harm to people.
+- Both only happen during **certain months** of the year, and they tend to form and travel in **specific places** on Earth.
+- To predict the future, we need to know **what causes** these storms, the **past and current patterns** in how often and how strong they are, and **where and when** they travel.
+
+You'll test each of these ideas in the lessons ahead.
+:::
+
+# Tell the Story: Blizzards {#tell-the-story-blizzards}
+
+::: {.explore-box}
+## 🌨️ Recent blizzard seasons in the US
+
+**Directions from your PTO:**
+
+1. Watch the video and analyze the maps and related graphs that follow.
+2. For each video or graphic, highlight, comment on, or jot down **2–3 important details** about recent blizzard seasons in the US.
+:::
+
+::: {.callout-tip}
+## ⭐ Saving details on this page
+
+Explore each video, map and graph, then tap **☆ Save detail** (or a "I noticed" chip) to "circle" a detail. Your saved details collect in the two Detail Trackers ([blizzards](#blizzard-story) and [tropical storms](#tropical-story)), where you can jot your own details and write each overall story. They stay saved in this browser only, so copy them into your packet too.
+:::
+
+```{ojs}
+//| echo: false
+// Saved details for both Tell the Story sections. Kept in localStorage when it is available.
+u5oDetails = {
+  const KEY = "u5o-tell-the-story-v1";
+  let state = {details: [], story: {b: "", t: ""}};
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY));
+    if (saved && Array.isArray(saved.details)) state = {details: saved.details, story: Object.assign({b: "", t: ""}, saved.story || {})};
+  } catch (e) {}
+  const subs = [];
+  const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+  const notify = () => {
+    persist();
+    for (let i = subs.length - 1; i >= 0; i--) {
+      const s = subs[i];
+      if (s.el.isConnected) s.seen = true;
+      else if (s.seen) { subs.splice(i, 1); continue; }
+      s.fn();
+    }
+  };
+  return {
+    has: id => state.details.some(d => d.id === id),
+    list: () => state.details.slice(),
+    toggle: d => {
+      state.details = state.details.some(x => x.id === d.id) ? state.details.filter(x => x.id !== d.id) : [...state.details, d];
+      notify();
+    },
+    remove: id => { state.details = state.details.filter(x => x.id !== id); notify(); },
+    story: g => state.story[g] || "",
+    setStory: (g, t) => { state.story[g] = t; persist(); },
+    clear: g => { state.details = state.details.filter(d => d.group !== g); state.story[g] = ""; notify(); },
+    subscribe: (el, fn) => subs.push({el, fn, seen: false})
+  };
+}
+```
+
+```{ojs}
+//| echo: false
+u5oStar = d => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "u5o-star";
+  const paint = () => {
+    const on = u5oDetails.has(d.id);
+    b.textContent = on ? "★ Saved" : "☆ Save detail";
+    b.setAttribute("aria-pressed", on);
+    b.setAttribute("aria-label", (on ? "Remove saved detail: " : "Save detail: ") + d.detail);
+    b.style.cssText = `flex:0 0 auto;min-height:36px;padding:6px 12px;border-radius:50px;font-weight:700;font-size:.85em;cursor:pointer;white-space:nowrap;border:2px solid #f39c12;background:${on ? "#f39c12" : "#fff"};color:${on ? "#fff" : "#9a5b00"};`;
+  };
+  b.onclick = () => u5oDetails.toggle(d);
+  u5oDetails.subscribe(b, paint);
+  paint();
+  return b;
+}
+```
+
+```{ojs}
+//| echo: false
+// A card of detail rows, each with a save star. items: [{id, detail, html?}]
+u5oDetailRows = (title, items, group, label, color) => {
+  const box = html`<div style="background:#fff;color:#1a1a1a;border-left:8px solid ${color};border-radius:12px;padding:14px 18px;margin:10px 0 4px;box-shadow:0 2px 10px rgba(0,0,0,.1);">
+    <div style="font-size:1.1em;font-weight:800;margin-bottom:4px;color:#1a1a1a;"></div>
+  </div>`;
+  box.firstElementChild.textContent = title;
+  for (const it of items) {
+    const row = html`<div style="display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:10px 0;border-top:1px solid #eee;">
+      <div style="flex:1 1 220px;color:#1a1a1a;"></div>
+    </div>`;
+    if (it.html) row.firstElementChild.innerHTML = it.html; else row.firstElementChild.textContent = it.detail;
+    row.appendChild(u5oStar({id: it.id, group, label, detail: it.detail}));
+    box.appendChild(row);
+  }
+  return box;
+}
+```
+
+```{ojs}
+//| echo: false
+// "I noticed" chips for the videos. Each chip saves a detail.
+u5oNoticeChips = (group, prefix, sets, color) => {
+  const box = html`<div style="background:#fff;color:#1a1a1a;border-radius:12px;padding:14px 18px;margin:10px 0 4px;box-shadow:0 2px 10px rgba(0,0,0,.1);"></div>`;
+  for (const s of sets) {
+    const h = html`<div style="font-weight:800;margin:6px 0;color:#1a1a1a;"></div>`;
+    h.textContent = s.title;
+    const row = html`<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;"></div>`;
+    for (const c of s.chips) {
+      const d = {id: `${prefix}-${s.key}-${c}`, group, label: `Video (${s.short})`, detail: c};
+      const b = document.createElement("button");
+      b.type = "button";
+      const paint = () => {
+        const on = u5oDetails.has(d.id);
+        b.textContent = (on ? "✓ " : "") + c;
+        b.setAttribute("aria-pressed", on);
+        b.style.cssText = `min-height:40px;padding:6px 14px;border-radius:50px;border:2px solid ${color};background:${on ? color : "#fff"};color:${on ? "#fff" : "#1e1b4b"};font-weight:700;font-size:.9em;cursor:pointer;`;
+      };
+      b.onclick = () => u5oDetails.toggle(d);
+      u5oDetails.subscribe(b, paint);
+      paint();
+      row.appendChild(b);
+    }
+    box.appendChild(h); box.appendChild(row);
+  }
+  box.appendChild(html`<div style="font-size:.88em;color:#555;">Tap what you noticed. Add anything else in your own words in the Detail Tracker.</div>`);
+  return box;
+}
+```
+
+```{ojs}
+//| echo: false
+u5oChip = (label, on, color, onclick) => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.textContent = label;
+  b.setAttribute("aria-pressed", on);
+  b.style.cssText = `min-height:40px;padding:6px 14px;border-radius:50px;border:2px solid ${color};background:${on ? color : "#fff"};color:${on ? "#fff" : "#1e1b4b"};font-weight:700;font-size:.9em;cursor:pointer;`;
+  b.onclick = onclick;
+  return b;
+}
+```
+
+```{ojs}
+//| echo: false
+u5oSavedCount = (group, label, goal) => {
+  const el = document.createElement("div");
+  el.style.cssText = "text-align:right;font-size:.9em;margin:4px 0 14px;";
+  const anchor = group === "b" ? "#blizzard-story" : "#tropical-story";
+  const paint = () => {
+    const c = u5oDetails.list().filter(d => d.group === group && d.label.startsWith(label)).length;
+    el.innerHTML = `⭐ Saved from the ${label.toLowerCase()}: <b>${c}</b> ${c >= goal ? "✅" : "(aim for 2–3)"} · <a href="${anchor}">Detail Tracker ↓</a>`;
+  };
+  u5oDetails.subscribe(el, paint);
+  paint();
+  return el;
+}
+```
+
+## 🎬 Video: A Deadly Winter Storm Heads to the East Coast {#blizzard-video}
+
+As you watch this ABC News report, jot **2–3 observations** about:
+
+- **Characteristics of the storm** (snow, wind, cold, visibility, ice...)
+- **Damage or problems** caused by the storm
+
+<div class="u5o-video">
+<iframe src="https://www.youtube-nocookie.com/embed/dKk5CvbvrXk" title="A deadly winter storm heads to the East Coast (ABC News)" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+If the video does not load, [watch it on YouTube](https://www.youtube.com/watch?v=dKk5CvbvrXk).
+
+```{ojs}
+//| echo: false
+u5oNoticeChips("b", "bv", [
+  {key: "char", short: "storm", title: "🌨️ I noticed these storm characteristics:", chips: ["Heavy snow", "Strong winds", "Very low visibility (whiteout)", "Freezing temperatures", "Ice or freezing rain", "Covered a huge area"]},
+  {key: "dmg", short: "damage", title: "⚠️ I noticed these damages or problems:", chips: ["Deaths or injuries", "Dangerous roads and car crashes", "Flights cancelled", "Power outages", "Schools and businesses closed", "Coastal flooding"]}
+], "#0e7490")
+```
+
+```{ojs}
+//| echo: false
+u5oSavedCount("b", "Video", 2)
+```
+
+::: {.callout-note collapse="true"}
+## ❄️ What makes a winter storm a **blizzard**?
+
+The U.S. National Weather Service calls a storm a **blizzard** when, for at least **3 hours**, there are **sustained winds or frequent gusts of 35 mph or more** and **falling or blowing snow** that cuts visibility to **less than ¼ mile**. A blizzard is about **wind and visibility**, not just the amount of snow.
+:::
+
+## 🗺️ Winter Storm Track Maps: 2018–2019 and 2019–2020 {#blizzard-maps}
+
+Your PTO shows two maps (from The Weather Channel). Each arrow is the **path of one named winter storm** across North America during the season. The 2019–20 map also shades **total seasonal snowfall** (lighter to heavier purple and pink). Look at your PTO maps and check which of these details you can see:
+
+```{ojs}
+//| echo: false
+u5oDetailRows("🔎 What the two maps show", [
+  {id: "b-m-west", detail: "Almost every storm track runs from west to east across the US."},
+  {id: "b-m-start", detail: "Many storms start in the West (off the Pacific coast or over the Rockies); some start in the Southwest or along the Gulf of Mexico."},
+  {id: "b-m-ne", detail: "Many tracks end in the Northeast and New England, near New York City."},
+  {id: "b-m-many", detail: "In 2018–19 there were so many tracks that they crisscross almost the entire country."},
+  {id: "b-m-snow", detail: "On the 2019–20 map, the heaviest seasonal snow is in the northern Rockies, the upper Midwest (Minneapolis) and the Northeast. There is very little near Dallas and Atlanta in the South."}
+], "b", "Maps", "#0e7490")
+```
+
+```{ojs}
+//| echo: false
+u5oSavedCount("b", "Maps", 2)
+```
+
+## 📊 Winter Storm Season Graphs {#blizzard-graphs}
+
+These graphs show every **named winter storm** in each season. **The length of each bar shows how long the storm lasted.** The color shows the storm's **category**, based on its snowfall total in "points" (pts = inches of snow).
+
+Pick a season, or compare them. Hover over or tap a bar to read it.
+
+```{ojs}
+//| echo: false
+// Read from the PTO's "Winter Snowfall Total" graphs (bar start and end positions measured from the image, so dates are approximate, ±1 day).
+// [name, start, end, category]; category 0 = Winter Storm (0-30 pts), 1-5 = Category 1-5.
+u5oWsRaw = ({"2018-19":[["Avery","2018-11-13","2018-11-17",2],["Bruce","2018-11-22","2018-11-27",3],["Carter","2018-11-29","2018-12-02",2],["Diego","2018-12-04","2018-12-09",1],["Eboni","2018-12-24","2018-12-28",2],["Fisher","2019-01-01","2019-01-03",0],["Gia","2019-01-09","2019-01-13",2],["Harper","2019-01-17","2019-01-21",4],["Indra","2019-01-20","2019-01-24",1],["Jayden","2019-01-26","2019-01-31",1],["Kai","2019-02-02","2019-02-04",3],["Lucian","2019-02-03","2019-02-07",2],["Maya","2019-02-06","2019-02-13",4],["Nadia","2019-02-10","2019-02-16",2],["Oren","2019-02-14","2019-02-17",2],["Petra","2019-02-16","2019-02-20",2],["Quiana","2019-02-19","2019-02-23",4],["Ryan","2019-02-23","2019-02-25",1],["Scott","2019-02-27","2019-03-02",3],["Taylor","2019-03-05","2019-03-08",0],["Ulmer","2019-03-09","2019-03-13",3],["Vaughn","2019-03-20","2019-03-22",1],["Wesley","2019-04-06","2019-04-12",4],["Xyler","2019-04-24","2019-04-27",0]],"2019-20":[["Aubrey","2019-10-07","2019-10-12",2],["Bessie","2019-10-28","2019-11-01",1],["Caleb","2019-11-09","2019-11-13",2],["Dorothy","2019-11-23","2019-11-28",3],["Ezekiel","2019-11-25","2019-12-03",5],["Finley","2019-12-14","2019-12-17",4],["Gage","2019-12-27","2020-01-02",3],["Henry","2019-12-31","2020-01-03",2],["Isaiah","2020-01-10","2020-01-13",1],["Jacob","2020-01-15","2020-01-19",3],["Kade","2020-02-02","2020-02-08",3],["Lamont","2020-02-08","2020-02-11",0],["Mabel","2020-02-09","2020-02-13",1],["Nash","2020-02-18","2020-02-21",0],["Odell","2020-02-22","2020-02-27",2],["Pearl","2020-03-16","2020-03-19",1],["Quincy","2020-03-22","2020-03-23",0],["Ruth","2020-04-11","2020-04-14",0],["Sadie","2020-04-16","2020-04-18",1]]})
+u5oWsCats = [
+  {c: 0, label: "Winter Storm (0–30 pts)", short: "Winter Storm", color: "#22d3ee"},
+  {c: 1, label: "Category 1 (31–45 pts)", short: "Cat 1", color: "#fef08a"},
+  {c: 2, label: "Category 2 (46–60 pts)", short: "Cat 2", color: "#facc15"},
+  {c: 3, label: "Category 3 (61–75 pts)", short: "Cat 3", color: "#f59e0b"},
+  {c: 4, label: "Category 4 (76–100 pts)", short: "Cat 4", color: "#ea580c"},
+  {c: 5, label: "Category 5 (>100 pts)", short: "Cat 5", color: "#dc2626"}
+]
+u5oWs = Object.fromEntries(Object.entries(u5oWsRaw).map(([season, rows]) => [season, rows.map(([name, s, e, c]) => {
+  const start = new Date(s + "T00:00Z"), end = new Date(e + "T00:00Z");
+  return {season, name, start, end, c, cat: u5oWsCats[c].label, days: Math.round((end - start) / 864e5)};
+})]))
+u5oFmtDate = d3.utcFormat("%b %-d")
+u5oWsStats = Object.fromEntries(Object.entries(u5oWs).map(([season, rows]) => {
+  const longest = d3.greatest(rows, d => d.days);
+  const strongest = d3.greatest(rows, d => d.c * 100 + d.days);
+  return [season, {
+    n: rows.length,
+    first: rows[0], last: rows[rows.length - 1],
+    longest, strongest,
+    avgDays: d3.mean(rows, d => d.days),
+    byCat: u5oWsCats.map(k => ({season, cat: k.short, c: k.c, n: rows.filter(d => d.c === k.c).length}))
+  }];
+}))
+u5oWsState = ({view: "2018-19"})
+```
+
+```{ojs}
+//| echo: false
+viewof u5oWsView = {
+  const st = u5oWsState;
+  const wrap = document.createElement("div");
+  wrap.value = st.view;
+  const chips = document.createElement("div");
+  chips.style.cssText = "display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px;";
+  const opts = [["2018-19", "2018–2019 season"], ["2019-20", "2019–2020 season"], ["compare", "⚖️ Compare the seasons"]];
+  const draw = () => chips.replaceChildren(...opts.map(([id, label]) => u5oChip(label, st.view === id, "#0e7490", () => {
+    st.view = id; wrap.value = id; draw(); wrap.dispatchEvent(new Event("input", {bubbles: true}));
+  })));
+  draw();
+  wrap.appendChild(chips);
+  return wrap;
+}
 ```
 
 ```{ojs}
 //| echo: false
 {
-  const topojson = await require("topojson-client@3");
-  const world = await fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json").then(r => r.json());
-  const land = topojson.feature(world, world.objects.land);
-  const tracks = hurrYear === "2018" ? hurricaneTracks2018 : hurricaneTracks2020;
-  const seasonLabel = hurrYear === "2018"
-    ? "2018 — 15 named storms, 8 hurricanes, 2 major"
-    : "2020 — 30 named storms, 13 hurricanes, 6 major (record)";
-
-  return Plot.plot({
-    title: `Atlantic Hurricane Season ${hurrYear}`,
-    subtitle: seasonLabel,
-    width: width,
-    height: 440,
-    projection: {
-      type: "equirectangular",
-      domain: { type: "MultiPoint", coordinates: [[-100, 5], [0, 48]] }
-    },
-    color: {
-      legend: true,
-      domain: ["TD","TS","H1","H2","H3","H4","H5"],
-      range: ["#6ec6ff","#00bcd4","#ffeb3b","#ff9800","#ff5722","#e91e63","#9c27b0"],
-      label: "Category"
-    },
+  const legend = Plot.legend({color: {domain: u5oWsCats.map(d => d.label), range: u5oWsCats.map(d => d.color)}, swatchSize: 14, style: {fontSize: "12px", color: "inherit", background: "transparent"}});
+  if (u5oWsView !== "compare") {
+    const rows = u5oWs[u5oWsView];
+    const [y0] = u5oWsView.split("-").map(Number);
+    const domain = u5oWsView === "2018-19" ? [new Date(Date.UTC(y0, 10, 1)), new Date(Date.UTC(y0 + 1, 5, 1))] : [new Date(Date.UTC(y0, 9, 1)), new Date(Date.UTC(y0 + 1, 4, 1))];
+    const chart = Plot.plot({
+      width: Math.max(300, width),
+      height: 40 + rows.length * 21,
+      marginLeft: 62, marginRight: 12, marginTop: 28,
+      x: {domain, label: null, type: "utc", grid: true, ticks: d3.utcMonth.every(1), tickFormat: d3.utcFormat(width < 480 ? "%b" : "%B"), axis: "top"},
+      y: {domain: rows.map(d => d.name), label: null, tickSize: 0},
+      color: {domain: u5oWsCats.map(d => d.label), range: u5oWsCats.map(d => d.color)},
+      marks: [
+        Plot.barX(rows, {x1: "start", x2: "end", y: "name", fill: "cat", stroke: "#334155", strokeWidth: 0.8, insetTop: 2, insetBottom: 2, rx: 2}),
+        Plot.tip(rows, Plot.pointer({x: d => new Date((+d.start + +d.end) / 2), y: "name",
+          title: d => `Winter Storm ${d.name}\nAbout ${u5oFmtDate(d.start)} – ${u5oFmtDate(d.end)} (${d.days} day${d.days === 1 ? "" : "s"})\n${d.cat}`}))
+      ]
+    });
+    const s = u5oWsStats[u5oWsView];
+    const fig = html`<div style="margin:6px 0;">
+      <div style="font-weight:800;font-size:1.1em;">${u5oWsView.replace("-", "–20")} Winter Snowfall Total</div>
+      <div style="font-size:.9em;opacity:.85;margin-bottom:4px;">${s.n} named storms · first: ${s.first.name} (${u5oFmtDate(s.first.start)}) · last: ${s.last.name} (${u5oFmtDate(s.last.start)}) · bar length = how long the storm lasted</div>
+    </div>`;
+    fig.appendChild(legend);
+    fig.appendChild(chart);
+    return fig;
+  }
+  const all = [...u5oWsStats["2018-19"].byCat, ...u5oWsStats["2019-20"].byCat].map(d => ({...d, seasonLabel: d.season.replace("-", "–20")}));
+  const chart = Plot.plot({
+    width: Math.max(300, width),
+    height: 320,
+    marginLeft: 92, marginRight: 30,
+    x: {label: "Number of storms →", grid: true, domain: [0, 9]},
+    y: {domain: ["2018–2019", "2019–2020"], label: null, tickSize: 0, axis: null},
+    fy: {domain: u5oWsCats.map(d => d.short), label: null},
+    color: {domain: ["2018–2019", "2019–2020"], range: ["#0e7490", "#7c3aed"], legend: true},
     marks: [
-      Plot.geo(land, { fill: "#2d5016", stroke: "#1a3009", strokeWidth: 0.5 }),
-      Plot.geo({ type: "Sphere" }, { stroke: "#444", fill: "#1b263b" }),
-      Plot.geo(land, { fill: "#2d5016", stroke: "#1a3009", strokeWidth: 0.5 }),
-      ...tracks.map(t =>
-        Plot.line(t.points, {
-          x: d => d[0], y: d => d[1],
-          stroke: catColor(t.cat),
-          strokeWidth: t.cat.startsWith("H") ? 2.5 : 1.5,
-          strokeOpacity: 0.85,
-          curve: "catmull-rom"
-        })
-      ),
-      ...tracks.map(t =>
-        Plot.dot([t.points[0]], {
-          x: d => d[0], y: d => d[1],
-          r: 3, fill: catColor(t.cat), stroke: "#000", strokeWidth: 0.5
-        })
-      ),
-      ...tracks.map(t =>
-        Plot.text([t.points[t.points.length - 1]], {
-          x: d => d[0], y: d => d[1],
-          text: [t.name], fill: "#fff", fontSize: 8,
-          dx: 8, dy: -4, fontWeight: 600
-        })
-      )
+      Plot.barX(all, {fy: "cat", y: "seasonLabel", x: "n", fill: "seasonLabel", insetTop: 1, insetBottom: 1}),
+      Plot.text(all, {fy: "cat", y: "seasonLabel", x: "n", text: d => String(d.n), dx: 8, textAnchor: "start", fill: "currentColor", fontWeight: 700}),
+      Plot.tip(all, Plot.pointer({fy: "cat", y: "seasonLabel", x: "n", title: d => `${d.seasonLabel}: ${d.n} storm${d.n === 1 ? "" : "s"} in ${d.cat}`}))
     ]
   });
+  const a = u5oWsStats["2018-19"], b = u5oWsStats["2019-20"];
+  const row = (k, x, y) => `<tr><td style="padding:6px 8px;font-weight:700;">${k}</td><td style="padding:6px 8px;">${x}</td><td style="padding:6px 8px;">${y}</td></tr>`;
+  const fig = html`<div style="margin:6px 0;">
+    <div style="font-weight:800;font-size:1.1em;">Storms in each category, both seasons</div>
+    <div style="font-size:.9em;opacity:.85;margin-bottom:4px;">Counted from the PTO graphs.</div>
+  </div>`;
+  fig.appendChild(chart);
+  fig.appendChild(html`<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:.92em;margin-top:8px;">
+    <thead><tr style="border-bottom:2px solid currentColor;"><th style="padding:6px 8px;text-align:left;"></th><th style="padding:6px 8px;text-align:left;">2018–2019</th><th style="padding:6px 8px;text-align:left;">2019–2020</th></tr></thead>
+    <tbody>
+    ${row("Named storms", a.n, b.n)}
+    ${row("First storm", `${a.first.name}, ${u5oFmtDate(a.first.start)}`, `${b.first.name}, ${u5oFmtDate(b.first.start)}`)}
+    ${row("Last storm", `${a.last.name}, ${u5oFmtDate(a.last.start)}`, `${b.last.name}, ${u5oFmtDate(b.last.start)}`)}
+    ${row("Strongest", `${a.strongest.name} (${u5oWsCats[a.strongest.c].short})`, `${b.strongest.name} (${u5oWsCats[b.strongest.c].short})`)}
+    ${row("Longest", `${a.longest.name}, about ${a.longest.days} days`, `${b.longest.name}, about ${b.longest.days} days`)}
+    ${row("Average length", `about ${a.avgDays.toFixed(1)} days`, `about ${b.avgDays.toFixed(1)} days`)}
+    </tbody></table></div>`);
+  return fig;
 }
 ```
 
-```{=html}
-<div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:10px 0; font-size:12px;">
-  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;border-radius:50%;background:#00bcd4;display:inline-block;"></span> Tropical Storm</span>
-  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;border-radius:50%;background:#ffeb3b;display:inline-block;"></span> Cat 1</span>
-  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;border-radius:50%;background:#ff9800;display:inline-block;"></span> Cat 2</span>
-  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;border-radius:50%;background:#ff5722;display:inline-block;"></span> Cat 3</span>
-  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;border-radius:50%;background:#e91e63;display:inline-block;"></span> Cat 4</span>
-  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;border-radius:50%;background:#9c27b0;display:inline-block;"></span> Cat 5</span>
-</div>
-<p style="text-align:center;font-size:.8em;color:#666;">Data based on NOAA National Hurricane Center seasonal summaries. Track paths are simplified representations.</p>
+```{ojs}
+//| echo: false
+u5oDetailRows("🔎 Details from the season graphs", [
+  {id: "b-g-count", detail: "2018–19 had 24 named winter storms (Avery to Xyler). 2019–20 had 19 (Aubrey to Sadie): fewer storms."},
+  {id: "b-g-ezekiel", detail: "The only Category 5 storm (more than 100 pts) in either season was Ezekiel, around Thanksgiving 2019. It was also the longest, about 8 days."},
+  {id: "b-g-cat4", detail: "2018–19 had four Category 4 storms (Harper, Maya, Quiana, Wesley). 2019–20 had one (Finley)."},
+  {id: "b-g-early", detail: "The 2019–20 season started in early October (Aubrey), more than a month earlier than 2018–19 (Avery, mid-November)."},
+  {id: "b-g-feb", detail: "Storms bunch up in the middle of winter: 9 storms started in February 2019 alone."},
+  {id: "b-g-length", detail: "Most storms lasted about 2 to 6 days."}
+], "b", "Graphs", "#0e7490")
 ```
-
-### 📊 Atlantic Hurricane Season Frequency: 2015–2023 (2018 & 2020 Highlighted)
-
-The chart below shows how many **named Atlantic storms** formed each year from 2015 to 2023, with the two seasons that match your tracking charts highlighted in red.
 
 ```{ojs}
 //| echo: false
-hurrSeasonData = [
-  {year: 2015, storms: 11, highlight: false},
-  {year: 2016, storms: 15, highlight: false},
-  {year: 2017, storms: 17, highlight: false},
-  {year: 2018, storms: 15, highlight: true},
-  {year: 2019, storms: 18, highlight: false},
-  {year: 2020, storms: 30, highlight: true},
-  {year: 2021, storms: 21, highlight: false},
-  {year: 2022, storms: 14, highlight: false},
-  {year: 2023, storms: 20, highlight: false}
-]
-
-Plot.plot({
-  title: "Named Atlantic Storms per Season (2015–2023)",
-  subtitle: "Red bars = seasons shown on the tracking charts above",
-  width: width,
-  height: 360,
-  x: { label: "Year", tickFormat: "d" },
-  y: { label: "Named Storms", domain: [0, 35], grid: true },
-  marks: [
-    Plot.barY(hurrSeasonData, {
-      x: "year", y: "storms",
-      fill: d => d.highlight ? "#b71c1c" : "#ef9a9a",
-      tip: true
-    }),
-    Plot.ruleY([14], { stroke: "#555", strokeDasharray: "6,4" }),
-    Plot.text([{year: 2016, storms: 15.5}], {
-      x: "year", y: 16.5, text: d => "≈14 avg", fill: "#555", fontSize: 11
-    })
-  ]
-})
+u5oSavedCount("b", "Graphs", 2)
 ```
 
-::: {.story-prompt .hurricane}
-### 🤔 Initial Observations & Questions — Tropical Storms
+::: {.callout-tip collapse="true"}
+## 🔎 About these graphs
 
-In your science notebook, respond to the following:
-
-1. **Video:** What kinds of damage did you see? Who were the most affected communities, and why?
-2. **Tracking Charts:** Compare the 2018 and 2020 storm tracks. Which season was more active? Where did most storms form?
-3. **Frequency Graph:** 2020 stands out dramatically. Does this mean hurricanes are definitely getting worse? What other data would you need to be sure?
-4. **Your Wonder:** Write one question the tracking charts raise for you about hurricane patterns or formation.
+- The storm **names** (Avery, Bruce, ...) come from **The Weather Channel**, which names big winter storms. The National Weather Service does not officially name winter storms.
+- The **categories** use the graph's own point scale: more inches of snow means more points and a higher category. This is **not** the same as the hurricane category scale.
+- Dates on this page were measured from the PTO graph image, so they are about ±1 day.
 :::
-
-<hr class="tell-story-divider">
-
-# What Makes This Unit Different?
-
-This unit builds directly on **Unit 4: Climate Change**, where you analyzed data about Earth's changing climate. Now you'll apply that understanding to a question that hits close to home: **how might climate change affect the storms that impact your city?**
-
-Instead of memorizing weather vocabulary, you'll:
-
-- 🔬 **Build models** of how storms form
-- 📊 **Analyze real data** on storm frequency and intensity
-- 🗺️ **Read weather maps** like a meteorologist
-- 💬 **Construct arguments** about future climate impacts
-
-# Unit Storyline Overview
-
-::: {.unit-overview}
-### Four Chapters — One Big Question
-
-Each chapter below addresses part of the unit driving question. Together they build toward a final project where you argue how storms in your region may change in the future.
-:::
-
-::: {.sequence-card .blizzard}
-### 🌨️ Sequence 1: Blizzards
-**Investigative Phenomenon:** Winter storm Jonas produced strong enough winds and enough snow to cause significant disruptions to society, damage to property, and harm to human life.
-
-**Key Questions:** How do severe winter storms form? What causes wind and precipitation?
-
-:::
-
-::: {.sequence-card .paths}
-### 🗺️ Sequence 2: The Paths of Severe Storms
-**Investigative Phenomenon:** Maps from 2018–2020 show that blizzards and hurricanes exhibit clear patterns in where they start and the direction in which they travel.
-
-**Key Questions:** Why do severe storms follow the paths they do? How might those paths shift with warming?
-
-:::
-
-::: {.sequence-card .hurricane}
-### 🌀 Sequence 3: Hurricanes
-**Investigative Phenomenon:** In 2005, hurricanes occurred in the North Atlantic Ocean between June and November 30, just like 2018 and 2020.
-
-**Key Questions:** How do hurricanes form? Why do they occur only at certain times of year?
-
-:::
-
-::: {.sequence-card}
-### 📢 Unit Closing: Constructing Your Argument
-**Performance Task:** Construct an oral argument from data analysis explaining how storms may change in the future in your region.
-
-:::
-
-# Storms by the Numbers
-
-Let's look at some real data to start building your intuition about whether storms are changing.
 
 ```{ojs}
 //| echo: false
-Plot = require("@observablehq/plot")
-
-// Named Atlantic hurricanes per year
-hurricaneData = [
-  {year: 1980, count: 11}, {year: 1985, count: 11}, {year: 1990, count: 14},
-  {year: 1995, count: 19}, {year: 1996, count: 13}, {year: 1997, count: 8},
-  {year: 1998, count: 14}, {year: 1999, count: 12}, {year: 2000, count: 15},
-  {year: 2001, count: 15}, {year: 2002, count: 12}, {year: 2003, count: 16},
-  {year: 2004, count: 15}, {year: 2005, count: 28}, {year: 2006, count: 10},
-  {year: 2007, count: 15}, {year: 2008, count: 16}, {year: 2009, count: 9},
-  {year: 2010, count: 19}, {year: 2011, count: 19}, {year: 2012, count: 19},
-  {year: 2013, count: 14}, {year: 2014, count: 8}, {year: 2015, count: 11},
-  {year: 2016, count: 15}, {year: 2017, count: 17}, {year: 2018, count: 15},
-  {year: 2019, count: 18}, {year: 2020, count: 30}, {year: 2021, count: 21},
-  {year: 2022, count: 14}, {year: 2023, count: 20}, {year: 2024, count: 18}
-]
-
-Plot.plot({
-  title: "Named Atlantic Storms per Year (1980–2024)",
-  subtitle: "Has there been a trend?",
-  width: width,
-  height: 400,
-  x: {
-    label: "Year",
-    tickRotate: -25,
-    tickSpacing: 12
+u5oQuiz("u5o-bz-quiz", "❄️ Check Your Understanding — Winter Storm Seasons", [
+  {
+    q: "On the season graphs, what does a longer bar mean?",
+    options: ["The storm dropped more snow", "The storm lasted longer", "The storm traveled farther", "The storm was colder"],
+    correct: 1,
+    explanation: "The PTO's hint: the length of each bar shows how long the storm lasted. Snowfall (points) is shown by the color."
   },
-  y: {label: "Number of Named Storms", domain: [0, 35]},
-  marks: [
-    Plot.barY(hurricaneData, {x: "year", y: "count", fill: d => d.count >= 20 ? "#e74c3c" : d.count >= 15 ? "#f39c12" : "#3498db",
-        tip: true}),
-    Plot.ruleY([14], {stroke: "#999", strokeDasharray: "5,5"}),
-    Plot.text([{x: 1985, y: 15.5}], {x: "x", y: "y", text: d => "1991–2020 average: ~14", fill: "#999", fontSize: 11}),
-    Plot.linearRegressionY(hurricaneData, {x: "year", y: "count", stroke: "#e74c3c", strokeWidth: 2, strokeDasharray: "8,4"})
-  ]
-})
+  {
+    q: "Which statement is best supported by the two graphs?",
+    options: ["2019–20 had more named storms than 2018–19", "2019–20 had fewer named storms, but it had the single most intense storm (Ezekiel, Category 5)", "Both seasons had exactly the same storms", "Neither season had any storm above Category 2"],
+    correct: 1,
+    explanation: "24 storms in 2018–19 vs. 19 in 2019–20. But Ezekiel (more than 100 pts) was the only Category 5 in either season. Frequency and intensity can tell different stories."
+  },
+  {
+    q: "In which direction do most winter storm tracks on the PTO maps travel?",
+    options: ["East to west", "West to east", "North to south", "They don't move"],
+    correct: 1,
+    explanation: "The arrows run from the West toward the East Coast. You'll figure out why in Paths of Severe Storms (hint: global winds)."
+  }
+])
 ```
 
-::: {.student-questions}
-### 🤔 Initial Questions — What Do You Notice? What Do You Wonder?
+## Overall Story: Blizzard Seasons {#blizzard-story}
 
-Take a moment to study the graph above. In your notebook, write down:
+::: {.student-task}
+### ✏️ In your packet: What is the overall story of the 2018–2019 and 2019–2020 US blizzard seasons? (p. 5)
 
-1. **What patterns do you notice** in the number of named storms over time?
-2. **What questions do you have** about why the numbers vary so much from year to year?
-3. **Do you think storms are getting worse?** What evidence from this graph would you use to support your claim?
-4. **What additional data** would you want to see to answer the unit driving question?
+- Take turns sharing your important observations (from the video, the maps and the graphs).
+- Decide which **3–5 observations** are most important to the story, and **why it matters**.
 :::
 
-## 🌥️ Global Cloud Cover by Season
+### ⭐ Detail Tracker: Blizzards
 
-Where the atmosphere is most active, you see clouds. Three patterns drive almost everything in this unit: the **Intertropical Convergence Zone (ITCZ)**, **mid-latitude storm tracks** (where blizzards live), and **monsoon systems**. All three shift with the seasons — and that shift is exactly why hurricane season and blizzard season fall when they do.
+```{ojs}
+//| echo: false
+u5oTracker = (group) => {
+  const parts = group === "b"
+    ? [["Video", "#blizzard-video", "🎬 Video: A Deadly Winter Storm"], ["Maps", "#blizzard-maps", "🗺️ Winter storm track maps"], ["Graphs", "#blizzard-graphs", "📊 Winter storm season graphs"]]
+    : [["Video", "#tropical-video", "🎬 Video: Hurricane Maria"], ["Maps", "#tropical-maps", "🗺️ Tropical storm track maps"], ["Graphs", "#tropical-graphs", "📊 Tropical storm graphs"]];
+  const color = group === "b" ? "#0e7490" : "#c2410c";
+  const storyQ = group === "b" ? "What is the overall story of the 2018–2019 and 2019–2020 US blizzard seasons, and why does it matter?" : "What is the overall story of the 2018 and 2020 US tropical storm seasons, and why does it matter?";
+  const wrap = html`<div style="background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin:10px 0 18px;box-shadow:0 2px 10px rgba(0,0,0,.1);"></div>`;
+  const total = html`<div style="font-weight:800;margin-bottom:12px;color:#1e1b4b;"></div>`;
+  const groups = html`<div></div>`;
+  wrap.appendChild(total); wrap.appendChild(groups);
+  let jotN = 0;
+  const paint = () => {
+    const all = u5oDetails.list().filter(d => d.group === group);
+    total.innerHTML = `Saved details: ${all.length} ${all.length >= 3 ? "✅ Now pick the 3–5 most important." : "(aim for 2–3 from each video or graphic)"}`;
+    groups.replaceChildren(...parts.map(([label, anchor, title]) => {
+      const mine = all.filter(d => d.label.startsWith(label));
+      const sec = html`<div style="border-left:6px solid ${color};padding:4px 0 8px 12px;margin-bottom:14px;">
+        <div style="font-weight:800;color:#1e1b4b;">${title} · ${mine.length} saved ${mine.length >= 2 ? "✅" : ""}</div>
+      </div>`;
+      if (!mine.length) sec.appendChild(html`<div style="font-size:.92em;color:#555;margin-top:4px;">Nothing saved yet. <a href="${anchor}">Go back ↑</a></div>`);
+      for (const d of mine) {
+        const row = html`<div style="display:flex;gap:8px;align-items:flex-start;margin-top:6px;font-size:.95em;color:#1e1b4b;">
+          <div style="flex:1 1 auto;"></div>
+        </div>`;
+        row.firstElementChild.textContent = (d.label.includes("(") ? d.label.replace(/^.*\((.*)\)$/, "$1") + ": " : "") + d.detail;
+        const x = html`<button type="button" style="flex:0 0 auto;min-width:36px;min-height:36px;border:1px solid #e2e8f0;border-radius:8px;background:#fff;color:#9b2c2c;cursor:pointer;">✕</button>`;
+        x.setAttribute("aria-label", "Remove " + d.detail);
+        x.onclick = () => u5oDetails.remove(d.id);
+        row.appendChild(x);
+        sec.appendChild(row);
+      }
+      const jot = html`<form style="display:flex;gap:8px;margin-top:8px;">
+        <input type="text" maxlength="300" placeholder="Jot your own detail…" style="font-family:inherit;font-size:.95em;flex:1 1 auto;min-width:0;min-height:40px;padding:6px 10px;border:2px solid #e2e8f0;border-radius:8px;color:#1e1b4b;background:#fff;">
+        <button type="submit" style="flex:0 0 auto;min-height:40px;padding:6px 14px;border:none;border-radius:8px;background:${color};color:#fff;font-weight:700;cursor:pointer;">Add</button>
+      </form>`;
+      jot.querySelector("input").setAttribute("aria-label", `Your own detail: ${title}`);
+      jot.onsubmit = e => {
+        e.preventDefault();
+        const inp = jot.querySelector("input");
+        const t = inp.value.trim();
+        if (t) u5oDetails.toggle({id: `${group}-${label}-jot-${Date.now()}-${jotN++}`, group, label: label + " (my note)", detail: t});
+      };
+      sec.appendChild(jot);
+      return sec;
+    }));
+  };
+  u5oDetails.subscribe(wrap, paint);
+  paint();
+  const story = html`<div style="margin-top:6px;">
+    <label style="display:block;font-weight:800;margin-bottom:6px;color:#1e1b4b;"></label>
+    <textarea rows="5" style="font-family:inherit;width:100%;box-sizing:border-box;padding:10px;border:2px solid #e2e8f0;border-radius:8px;font-size:1em;color:#1e1b4b;background:#fff;"></textarea>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+      <button type="button" class="copy" style="min-height:40px;padding:6px 16px;border:none;border-radius:50px;background:${color};color:#fff;font-weight:700;cursor:pointer;">📋 Copy my notes</button>
+      <button type="button" class="clear" style="min-height:40px;padding:6px 16px;border:2px solid #e2e8f0;border-radius:50px;background:#fff;color:#9b2c2c;font-weight:700;cursor:pointer;">Clear this tracker</button>
+      <span class="msg" style="align-self:center;font-size:.9em;color:#1e1b4b;"></span>
+    </div>
+  </div>`;
+  story.querySelector("label").textContent = "📖 " + storyQ;
+  const ta = story.querySelector("textarea"), msg = story.querySelector(".msg");
+  ta.setAttribute("aria-label", storyQ);
+  ta.placeholder = "1. …  2. …  3. …  This matters because…";
+  ta.value = u5oDetails.story(group);
+  ta.oninput = () => u5oDetails.setStory(group, ta.value);
+  story.querySelector(".copy").onclick = async () => {
+    const all = u5oDetails.list().filter(d => d.group === group);
+    const text = parts.map(([label, , title]) => `${title}\n` + (all.filter(d => d.label.startsWith(label)).map(d => `- ${d.detail}`).join("\n") || "- (none yet)")).join("\n\n")
+      + `\n\nOverall story:\n${ta.value.trim() || "(not written yet)"}`;
+    try { await navigator.clipboard.writeText(text); msg.textContent = "✅ Copied!"; }
+    catch (e) {
+      const tmp = document.createElement("textarea");
+      tmp.value = text; document.body.appendChild(tmp); tmp.select();
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch (e2) {}
+      tmp.remove();
+      msg.textContent = ok ? "✅ Copied!" : "⚠️ Couldn't copy here. Copy your notes into your packet by hand.";
+    }
+  };
+  story.querySelector(".clear").onclick = () => {
+    if (!confirm("Remove the saved details and overall story in this tracker?")) return;
+    u5oDetails.clear(group);
+    ta.value = "";
+    msg.textContent = "Cleared.";
+  };
+  wrap.appendChild(story);
+  return wrap;
+}
+```
 
-Toggle through the four seasons and look for:
-- Where cloud cover is **thickest** (most active storms / deepest convection)
-- Which latitudes are **clearest** (subtropical deserts, sinking air zones)
-- How the cloud bands connect to **when and where** hurricanes and blizzards strike
+```{ojs}
+//| echo: false
+u5oTracker("b")
+```
 
-```{=html}
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+::: {.key-idea}
+### 💡 One way to tell the blizzard story
 
-<div style="max-width:920px; margin:30px auto; font-family:system-ui,sans-serif;">
+1. Both seasons had **many named winter storms** (24 in 2018–19, 19 in 2019–20), so the **number of storms did not go up**.
+2. But 2019–20 **started earlier** (October) and had the **most intense storm** of both seasons: Ezekiel, a Category 5 that lasted about 8 days over Thanksgiving.
+3. Storms travel **west to east** across the US, and many end in the **Northeast**, near NYC.
+4. The heaviest snow falls in the **northern** US: the northern Rockies, upper Midwest and Northeast.
+5. **Why it matters:** winter storms bring heavy snow, strong winds and ice that cause deaths, crashes, power outages and closures. If storms change as Earth warms, NYC needs to be ready.
 
-  <!-- Season tab buttons -->
-  <div style="display:flex; gap:10px; margin-bottom:10px; justify-content:center; flex-wrap:wrap;">
-    <button id="cbtn-DJF" onclick="showCloudSeason('DJF')" style="padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:#1565c0;color:#fff;box-shadow:0 2px 8px rgba(21,101,192,0.4);">❄️ DJF — Winter</button>
-    <button id="cbtn-MAM" onclick="showCloudSeason('MAM')" style="padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:#e0e0e0;color:#555;">🌱 MAM — Spring</button>
-    <button id="cbtn-JJA" onclick="showCloudSeason('JJA')" style="padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:#e0e0e0;color:#555;">☀️ JJA — Summer</button>
-    <button id="cbtn-SON" onclick="showCloudSeason('SON')" style="padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:#e0e0e0;color:#555;">🍂 SON — Fall</button>
-  </div>
+Two seasons are **not enough to show a long-term trend**. That's why you'll look at many decades of storm data in the [Blizzards](unit5-blizzards.qmd) lesson.
+:::
 
-  <!-- Season description -->
-  <div id="cloud-info" style="background:#f0f4ff;border-left:5px solid #1565c0;padding:12px 16px;border-radius:0 10px 10px 0;font-size:0.92em;line-height:1.6;margin-bottom:10px;min-height:56px;"></div>
+# Tell the Story: Tropical Storms {#tell-the-story-tropical-storms}
 
-  <!-- Map canvas -->
-  <div style="border-radius:16px;overflow:hidden;box-shadow:0 15px 35px rgba(0,0,0,0.2);position:relative;background:#1b4f8c;">
-    <canvas id="cloud-map" width="900" height="450" style="display:block;width:100%;"></canvas>
-    <div id="cloud-map-loading" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(255,255,255,0.9);font-weight:700;font-size:15px;text-shadow:1px 1px 4px rgba(0,0,0,0.8);pointer-events:none;">Loading map…</div>
-  </div>
+::: {.explore-box .tropical}
+## 🌀 Recent tropical storm seasons in the Atlantic
 
-  <!-- Legend -->
-  <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px;font-size:12px;font-weight:600;color:#555;">
-    <span>Clear sky</span>
-    <div style="width:200px;height:14px;border-radius:7px;background:linear-gradient(to right,#2a6096,rgba(255,255,255,0.95));border:1px solid #bbb;"></div>
-    <span>Dense clouds</span>
-  </div>
-  <p style="text-align:center;font-size:0.78em;color:#888;margin-top:6px;">
-    Modeled seasonal climatology (ISCCP/MODIS) · Equirectangular projection — all regions visible simultaneously
-  </p>
+**Directions from your PTO:**
+
+1. Silently watch the video and analyze the maps and related graphs that follow.
+2. For each video or graphic, highlight, comment on, or jot down **2–3 important details** about recent US tropical storm seasons.
+:::
+
+## 🎬 Video: Island of Puerto Rico Destroyed by Hurricane Maria {#tropical-video}
+
+As you watch this ABC News report, jot **2–3 observations** about:
+
+- **Characteristics of the storm**
+- **Damage or problems** caused by the storm
+
+<div class="u5o-video">
+<iframe src="https://www.youtube-nocookie.com/embed/zNFnVIlE6cA" title="Island of Puerto Rico 'destroyed' by Hurricane Maria (ABC News)" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-<script>
-(function () {
-  var CLOUD_SEASON_INFO = {
-    DJF: { color: '#1565c0', label: '❄️ December–January–February (Northern Winter)',
-      desc: '<strong>Blizzard season.</strong> North Atlantic and Pacific storm tracks are at peak strength (40–65°N) — this is when nor\'easters and blizzards hammer the US East Coast. The ITCZ sits near or just south of the equator. Subtropical deserts are at their driest and clearest.' },
-    MAM: { color: '#2e7d32', label: '🌱 March–April–May (Northern Spring)',
-      desc: '<strong>Transition season.</strong> Mid-latitude storm tracks weaken as the temperature contrast between poles and tropics decreases. The ITCZ migrates northward. Blizzard risk drops rapidly. The Atlantic hurricane season hasn\'t started yet.' },
-    JJA: { color: '#e65100', label: '☀️ June–July–August (Northern Summer)',
-      desc: '<strong>Monsoon + early hurricane season.</strong> The South Asian and West African monsoons produce some of the heaviest cloud cover on Earth. The ITCZ is at its northernmost extent. Atlantic hurricane season begins — warm tropical oceans fuel developing storms. NH mid-latitude storm tracks are at minimum.' },
-    SON: { color: '#6a1b9a', label: '🍂 September–October–November (Northern Fall)',
-      desc: '<strong>Peak hurricane season + blizzard ramp-up.</strong> September is historically the most active month for Atlantic hurricanes — the Caribbean and Gulf of Mexico are very active. Mid-latitude storm tracks strengthen again as winter returns.' }
+If the video does not load, [watch it on YouTube](https://www.youtube.com/watch?v=zNFnVIlE6cA).
+
+```{ojs}
+//| echo: false
+u5oNoticeChips("t", "tv", [
+  {key: "char", short: "storm", title: "🌀 I noticed these storm characteristics:", chips: ["Extremely strong winds", "Heavy rain", "Flooding", "Storm surge (ocean pushed onto land)", "Lasted for hours"]},
+  {key: "dmg", short: "damage", title: "⚠️ I noticed these damages or problems:", chips: ["Power out across the island", "Homes and buildings destroyed", "Roads, bridges and phone networks wrecked", "Trees and power lines down", "People without water, food or fuel", "Deaths and injuries"]}
+], "#c2410c")
+```
+
+```{ojs}
+//| echo: false
+u5oDetailRows("📌 Hurricane Maria facts (NOAA National Hurricane Center)", [
+  {id: "t-v-cat4", detail: "Maria hit Puerto Rico on September 20, 2017 as a strong Category 4 hurricane, with winds near 155 mph."},
+  {id: "t-v-deaths", detail: "Puerto Rico's official death toll is 2,975 people, many from the long loss of power, water and medical care after the storm."},
+  {id: "t-v-cost", detail: "Damage was about $90 billion, one of the costliest hurricanes in US history."}
+], "t", "Video (facts)", "#c2410c")
+```
+
+```{ojs}
+//| echo: false
+u5oSavedCount("t", "Video", 2)
+```
+
+Maria happened in **2017**. Next you'll compare two other seasons: **2018** and **2020**.
+
+## 🗺️ Atlantic Tropical Storm Track Maps: 2018 and 2020 {#tropical-maps}
+
+Your PTO shows the National Weather Service's **North Atlantic Hurricane Tracking Charts**. This map draws the same storms from NOAA's official best-track record (**HURDAT2**). Each line is one storm's path; the **color shows how strong it was** at that point. **Hint from your PTO: the storms start from the lower latitudes (the south!).** A dot marks where each storm started.
+
+Choose a year and a filter, then pick a storm to highlight it. Hover over or tap the map to read the storm at that point.
+
+```{ojs}
+//| echo: false
+// NOAA NHC HURDAT2 best tracks (hurdat2-1851-2025), named storms only, positions every 12 hours.
+// trk: [lon, lat, wind (knots), status code, "MMDDHH"]; status H hurricane, T tropical storm, S subtropical storm, D depression, X extratropical, L low/wave.
+u5oHur = ({"2018":[{"name":"Alberto","start":"20180525","end":"20180531","maxkt":55,"mph":65,"cat":0,"type":"TS","minp":990,"named":"20180526","us":true,"trk":[[-87.1,18.8,30,"D","052512"],[-85.9,18.9,30,"D","052600"],[-85.6,21.3,30,"D","052612"],[-84.8,23.6,35,"S","052700"],[-84.4,26.6,40,"S","052712"],[-85.8,28.2,55,"T","052800"],[-85.9,29.1,50,"T","052812"],[-86.1,30.9,30,"D","052900"],[-87.0,33.0,30,"D","052912"],[-87.6,35.4,30,"D","053000"],[-87.7,38.2,30,"D","053012"],[-86.0,41.5,30,"D","053100"],[-83.3,46.0,30,"L","053112"]],"lf":["20180528"]},{"name":"Beryl","start":"20180704","end":"20180717","maxkt":70,"mph":80,"cat":1,"type":"H","minp":991,"named":"20180705","us":false,"trk":[[-34.9,10.0,30,"D","070412"],[-38.0,10.1,35,"T","070500"],[-40.9,10.2,40,"T","070512"],[-43.4,10.3,55,"T","070600"],[-46.0,10.7,70,"H","070612"],[-48.3,10.7,65,"H","070700"],[-50.4,11.7,55,"T","070712"],[-53.6,12.9,45,"T","070800"],[-56.9,14.1,45,"L","070812"],[-61.3,15.5,35,"L","070900"],[-65.3,16.6,35,"L","070912"],[-68.9,17.6,35,"L","071000"],[-71.6,19.3,30,"L","071012"],[-73.0,21.3,25,"L","071100"],[-73.8,23.7,25,"L","071112"],[-73.6,26.7,25,"L","071200"],[-72.4,29.6,25,"L","071212"],[-70.7,31.9,25,"L","071300"],[-69.4,33.3,25,"L","071312"],[-68.0,34.5,25,"L","071400"],[-66.2,35.6,35,"S","071412"],[-65.5,37.8,35,"S","071500"],[-65.1,38.1,35,"S","071512"],[-63.1,38.3,35,"L","071600"],[-60.2,39.5,35,"L","071612"],[-57.1,43.0,30,"L","071700"]],"lf":[]},{"name":"Chris","start":"20180705","end":"20180717","maxkt":90,"mph":105,"cat":2,"type":"H","minp":969,"named":"20180708","us":false,"trk":[[-69.7,30.7,20,"L","070512"],[-71.7,30.9,25,"L","070600"],[-73.1,31.5,25,"D","070612"],[-74.2,32.2,25,"D","070700"],[-74.9,32.7,25,"D","070712"],[-75.3,32.9,30,"D","070800"],[-75.0,33.1,35,"T","070812"],[-74.6,32.6,45,"T","070900"],[-74.6,32.2,50,"T","070912"],[-74.3,32.2,60,"T","071000"],[-73.5,32.9,65,"H","071012"],[-71.9,33.9,90,"H","071100"],[-69.1,35.6,85,"H","071112"],[-64.3,38.5,75,"H","071200"],[-59.2,43.3,60,"T","071212"],[-53.4,48.0,45,"X","071300"],[-45.0,51.0,40,"X","071312"],[-33.5,53.5,40,"X","071400"],[-25.0,58.0,45,"X","071412"],[-21.0,60.5,45,"X","071500"],[-20.3,60.7,35,"X","071512"],[-18.5,61.0,25,"X","071600"],[-13.7,61.3,25,"X","071612"],[-12.0,63.1,20,"X","071700"],[-11.5,63.5,15,"X","071712"]],"lf":[]},{"name":"Debby","start":"20180802","end":"20180810","maxkt":45,"mph":50,"cat":0,"type":"TS","minp":998,"named":"20180807","us":false,"trk":[[-35.5,40.8,35,"X","080300"],[-38.9,39.9,35,"X","080312"],[-42.2,38.6,35,"L","080400"],[-45.1,36.7,30,"L","080412"],[-47.2,34.8,30,"L","080500"],[-49.2,32.9,30,"L","080512"],[-50.3,31.7,30,"L","080600"],[-49.5,31.9,30,"L","080612"],[-47.9,33.7,30,"L","080700"],[-48.1,37.9,35,"S","080712"],[-49.2,39.7,35,"T","080800"],[-48.6,41.0,40,"T","080812"],[-47.2,42.4,45,"T","080900"],[-44.4,44.0,40,"T","080912"],[-38.5,45.9,35,"X","081000"],[-30.8,47.0,30,"X","081012"]],"lf":[]},{"name":"Ernesto","start":"20180815","end":"20180819","maxkt":40,"mph":45,"cat":0,"type":"TS","minp":999,"named":"20180815","us":false,"trk":[[-45.5,36.9,30,"L","081500"],[-45.9,37.8,35,"S","081512"],[-45.4,39.3,35,"S","081600"],[-43.8,41.5,40,"S","081612"],[-40.2,43.5,40,"T","081700"],[-35.1,46.6,40,"T","081712"],[-27.7,49.8,40,"L","081800"],[-18.2,52.3,35,"X","081812"],[-9.6,54.2,35,"X","081900"]],"lf":[]},{"name":"Florence","start":"20180830","end":"20180918","maxkt":130,"mph":150,"cat":4,"type":"MH","minp":937,"named":"20180901","us":true,"trk":[[-17.9,12.8,25,"L","083012"],[-20.2,13.1,30,"L","083100"],[-22.6,13.6,30,"L","083112"],[-24.9,14.0,30,"D","090100"],[-27.2,14.8,35,"T","090112"],[-29.6,15.9,45,"T","090200"],[-32.4,16.8,50,"T","090212"],[-35.2,17.6,50,"T","090300"],[-38.0,18.2,55,"T","090312"],[-40.2,18.7,65,"H","090400"],[-42.0,19.5,70,"H","090412"],[-43.4,20.4,85,"H","090500"],[-45.2,21.7,105,"H","090512"],[-46.9,23.1,115,"H","090600"],[-48.2,24.4,90,"H","090612"],[-49.6,25.0,60,"T","090700"],[-51.1,24.9,55,"T","090712"],[-52.9,24.7,55,"T","090800"],[-54.1,24.6,55,"T","090812"],[-55.0,24.5,60,"T","090900"],[-56.1,24.4,65,"H","090912"],[-57.3,24.5,80,"H","091000"],[-59.5,24.9,105,"H","091012"],[-61.8,25.6,115,"H","091100"],[-64.7,26.5,125,"H","091112"],[-68.1,27.9,120,"H","091200"],[-70.7,29.4,115,"H","091212"],[-73.2,31.5,105,"H","091300"],[-75.1,33.1,95,"H","091312"],[-76.5,34.0,90,"H","091400"],[-77.9,34.1,80,"H","091412"],[-78.8,33.9,60,"T","091500"],[-79.5,33.6,55,"T","091512"],[-80.2,33.6,45,"T","091600"],[-81.5,33.6,35,"T","091612"],[-82.2,35.0,25,"D","091700"],[-82.2,37.8,25,"X","091712"],[-80.5,39.5,25,"X","091800"],[-73.3,42.2,25,"X","091812"]],"lf":["20180914"]},{"name":"Gordon","start":"20180902","end":"20180907","maxkt":60,"mph":70,"cat":0,"type":"TS","minp":996,"named":"20180903","us":true,"trk":[[-78.2,23.3,25,"L","090300"],[-80.7,25.1,45,"T","090312"],[-83.3,26.6,55,"T","090400"],[-86.2,28.1,55,"T","090412"],[-88.0,29.8,60,"T","090500"],[-89.8,31.9,30,"D","090512"],[-90.9,33.0,20,"D","090600"],[-91.7,33.9,15,"D","090612"],[-92.0,34.4,15,"L","090700"],[-92.2,35.0,15,"L","090712"]],"lf":["20180903"]},{"name":"Helene","start":"20180907","end":"20180917","maxkt":95,"mph":110,"cat":2,"type":"H","minp":967,"named":"20180908","us":false,"trk":[[-16.8,13.4,30,"D","090712"],[-18.0,13.6,35,"T","090800"],[-19.9,13.5,45,"T","090812"],[-22.2,13.2,50,"T","090900"],[-24.5,13.2,60,"T","090912"],[-26.7,13.7,75,"H","091000"],[-29.4,14.4,85,"H","091012"],[-32.1,15.3,95,"H","091100"],[-34.0,16.2,95,"H","091112"],[-35.3,17.6,85,"H","091200"],[-36.3,19.8,80,"H","091212"],[-37.1,21.9,70,"H","091300"],[-37.4,24.1,60,"T","091312"],[-37.4,27.2,60,"T","091400"],[-37.2,31.8,60,"T","091412"],[-36.5,35.2,60,"T","091500"],[-34.5,38.4,55,"T","091512"],[-31.5,40.6,50,"T","091600"],[-27.1,43.1,45,"X","091612"],[-20.0,45.2,50,"X","091700"],[-12.5,48.0,50,"X","091712"]],"lf":[]},{"name":"Isaac","start":"20180907","end":"20180915","maxkt":65,"mph":75,"cat":1,"type":"H","minp":995,"named":"20180908","us":false,"trk":[[-35.0,13.5,30,"D","090712"],[-34.9,13.9,30,"D","090800"],[-35.8,14.4,35,"T","090812"],[-37.0,14.4,45,"T","090900"],[-38.7,14.3,55,"T","090912"],[-41.0,14.5,65,"H","091000"],[-43.5,14.4,65,"H","091012"],[-46.2,14.5,60,"T","091100"],[-49.1,14.6,60,"T","091112"],[-51.7,14.5,55,"T","091200"],[-54.2,14.9,55,"T","091212"],[-57.2,15.3,45,"T","091300"],[-60.7,14.9,40,"T","091312"],[-63.6,14.9,35,"T","091400"],[-66.2,15.2,35,"T","091412"],[-69.0,15.4,30,"D","091500"]],"lf":[]},{"name":"Joyce","start":"20180912","end":"20180921","maxkt":45,"mph":50,"cat":0,"type":"TS","minp":995,"named":"20180912","us":false,"trk":[[-39.8,37.0,45,"X","091200"],[-41.5,35.8,40,"S","091212"],[-42.4,34.3,40,"S","091300"],[-43.4,33.9,35,"S","091312"],[-44.4,33.1,35,"T","091400"],[-44.9,31.8,35,"T","091412"],[-43.9,31.4,45,"T","091500"],[-41.6,31.9,40,"T","091512"],[-38.8,33.2,35,"T","091600"],[-35.2,34.3,30,"D","091612"],[-31.4,34.3,30,"D","091700"],[-28.9,34.1,30,"D","091712"],[-27.5,33.5,30,"D","091800"],[-27.3,32.0,30,"D","091812"],[-27.9,30.4,25,"L","091900"],[-29.2,29.9,20,"L","091912"],[-30.6,29.8,20,"L","092000"],[-32.3,29.5,20,"L","092012"],[-34.0,29.7,20,"L","092100"],[-35.0,30.8,20,"L","092112"]],"lf":[]},{"name":"Kirk","start":"20180922","end":"20180928","maxkt":55,"mph":65,"cat":0,"type":"TS","minp":998,"named":"20180922","us":false,"trk":[[-22.9,8.1,35,"T","092212"],[-25.7,8.9,35,"T","092300"],[-29.3,9.2,35,"L","092312"],[-34.1,9.4,25,"L","092400"],[-38.5,9.8,35,"L","092412"],[-42.7,10.3,35,"L","092500"],[-46.8,11.0,35,"L","092512"],[-50.3,11.5,45,"T","092600"],[-53.6,12.1,55,"T","092612"],[-56.4,12.9,50,"T","092700"],[-58.7,13.6,50,"T","092712"],[-60.8,13.8,45,"T","092800"],[-63.1,13.6,40,"T","092812"]],"lf":[]},{"name":"Leslie","start":"20180922","end":"20181014","maxkt":80,"mph":90,"cat":1,"type":"H","minp":968,"named":"20180923","us":false,"trk":[[-45.0,35.0,25,"X","092200"],[-44.2,33.7,35,"X","092212"],[-45.2,33.2,35,"X","092300"],[-46.5,33.2,35,"S","092312"],[-47.8,33.5,35,"S","092400"],[-47.9,32.8,35,"S","092412"],[-47.2,32.7,30,"D","092500"],[-45.2,31.7,30,"X","092512"],[-42.6,32.6,50,"X","092600"],[-38.5,33.8,55,"X","092612"],[-40.4,37.3,65,"X","092700"],[-42.5,37.0,65,"X","092712"],[-44.5,36.9,50,"X","092800"],[-46.4,36.4,45,"S","092812"],[-48.9,35.9,40,"S","092900"],[-50.6,34.7,40,"S","092912"],[-51.7,34.0,45,"T","093000"],[-52.6,33.7,45,"T","093012"],[-53.4,33.5,45,"T","100100"],[-54.1,33.1,50,"T","100112"],[-54.9,32.4,50,"T","100200"],[-55.9,31.2,55,"T","100212"],[-56.6,29.8,60,"T","100300"],[-56.8,29.5,75,"H","100312"],[-57.0,30.3,75,"H","100400"],[-57.2,31.7,65,"H","100412"],[-57.6,34.2,55,"T","100500"],[-58.3,35.9,55,"T","100512"],[-57.6,36.5,50,"T","100600"],[-56.4,37.4,50,"T","100612"],[-53.7,37.4,50,"T","100700"],[-51.6,36.5,50,"T","100712"],[-49.4,35.8,45,"T","100800"],[-47.4,34.9,45,"T","100812"],[-45.1,33.5,55,"T","100900"],[-43.6,31.6,55,"T","100912"],[-42.7,29.8,65,"H","101000"],[-42.5,28.1,65,"H","101012"],[-41.6,27.7,70,"H","101100"],[-39.3,28.8,70,"H","101112"],[-35.2,30.4,80,"H","101200"],[-29.6,32.6,75,"H","101212"],[-22.4,34.2,70,"H","101300"],[-14.1,37.2,65,"H","101312"],[-7.6,41.1,40,"X","101400"]],"lf":[]},{"name":"Michael","start":"20181006","end":"20181015","maxkt":140,"mph":160,"cat":5,"type":"MH","minp":919,"named":"20181007","us":true,"trk":[[-86.9,18.1,25,"L","100700"],[-86.4,18.8,35,"T","100712"],[-85.5,19.7,50,"T","100800"],[-85.1,20.9,65,"H","100812"],[-85.2,22.7,85,"H","100900"],[-86.2,24.6,90,"H","100912"],[-86.5,26.6,110,"H","101000"],[-86.3,29.0,125,"H","101012"],[-84.5,31.5,80,"H","101100"],[-81.7,34.1,45,"T","101112"],[-77.7,36.5,50,"X","101200"],[-70.6,39.1,60,"X","101212"],[-61.5,43.1,65,"X","101300"],[-48.2,46.4,65,"X","101312"],[-33.1,48.4,65,"X","101400"],[-20.7,48.6,60,"X","101412"],[-13.5,45.9,55,"X","101500"],[-10.3,42.8,35,"X","101512"]],"lf":["20181010"]},{"name":"Nadine","start":"20181008","end":"20181012","maxkt":55,"mph":65,"cat":0,"type":"TS","minp":995,"named":"20181009","us":false,"trk":[[-26.7,9.3,25,"L","100812"],[-28.4,9.8,25,"L","100900"],[-29.6,10.4,35,"T","100912"],[-30.7,11.2,50,"T","101000"],[-31.4,12.3,55,"T","101012"],[-32.5,13.3,50,"T","101100"],[-33.8,13.9,45,"T","101112"],[-35.0,14.8,40,"T","101200"],[-35.7,15.8,35,"T","101212"]],"lf":[]},{"name":"Oscar","start":"20181026","end":"20181104","maxkt":95,"mph":110,"cat":2,"type":"H","minp":952,"named":"20181026","us":false,"trk":[[-45.3,26.4,40,"S","102700"],[-48.0,27.4,50,"S","102712"],[-51.1,25.9,55,"T","102800"],[-53.1,25.4,60,"T","102812"],[-56.4,25.5,65,"H","102900"],[-58.1,25.7,75,"H","102912"],[-58.5,27.0,95,"H","103000"],[-58.0,29.0,85,"H","103012"],[-56.0,31.7,70,"H","103100"],[-52.4,35.4,70,"H","103112"],[-48.7,40.7,75,"X","110100"],[-44.7,46.0,65,"X","110112"],[-38.6,50.3,60,"X","110200"],[-33.1,53.4,60,"X","110212"],[-26.8,55.3,70,"X","110300"],[-19.6,57.9,55,"X","110312"],[-14.5,59.8,45,"X","110400"],[-9.1,62.4,40,"X","110412"]],"lf":[]}],"2020":[{"name":"Arthur","start":"20200516","end":"20200521","maxkt":50,"mph":60,"cat":0,"type":"TS","minp":989,"named":"20200517","us":false,"trk":[[-78.0,28.9,35,"T","051700"],[-77.5,30.3,35,"T","051712"],[-77.0,31.9,40,"T","051800"],[-75.9,34.4,45,"T","051812"],[-73.1,36.2,50,"T","051900"],[-69.5,37.0,55,"X","051912"],[-66.8,36.2,50,"X","052000"],[-65.6,34.6,50,"X","052012"],[-65.0,32.8,40,"X","052100"]],"lf":[]},{"name":"Bertha","start":"20200527","end":"20200528","maxkt":45,"mph":50,"cat":0,"type":"TS","minp":1005,"named":"20200527","us":true,"trk":[[-79.5,32.6,45,"T","052712"],[-80.7,34.9,25,"D","052800"],[-80.6,39.9,20,"X","052812"]],"lf":["20200527"]},{"name":"Cristobal","start":"20200601","end":"20200612","maxkt":50,"mph":60,"cat":0,"type":"TS","minp":982,"named":"20200602","us":true,"trk":[[-91.6,19.6,25,"D","060200"],[-92.5,19.5,35,"T","060212"],[-92.5,19.0,45,"T","060300"],[-92.2,18.8,50,"T","060312"],[-91.7,18.2,40,"T","060400"],[-91.2,17.7,30,"D","060412"],[-90.4,17.9,30,"D","060500"],[-89.9,19.6,40,"T","060512"],[-90.0,22.0,50,"T","060600"],[-90.2,23.9,45,"T","060612"],[-90.1,25.8,45,"T","060700"],[-89.9,28.0,45,"T","060712"],[-89.9,29.8,45,"T","060800"],[-91.5,31.7,30,"D","060812"],[-92.1,34.2,25,"D","060900"],[-92.1,38.0,25,"D","060912"],[-90.8,42.6,30,"X","061000"],[-87.4,47.5,35,"X","061012"],[-82.6,51.7,30,"X","061100"],[-80.4,53.2,35,"X","061112"],[-79.4,53.3,35,"X","061200"]],"lf":["20200607"]},{"name":"Dolly","start":"20200622","end":"20200625","maxkt":40,"mph":45,"cat":0,"type":"TS","minp":1000,"named":"20200623","us":false,"trk":[[-66.9,38.4,30,"D","062212"],[-65.1,38.5,30,"D","062300"],[-62.7,39.4,40,"T","062312"],[-60.6,40.2,35,"T","062400"],[-58.5,42.0,30,"L","062412"],[-55.6,44.1,25,"L","062500"]],"lf":[]},{"name":"Edouard","start":"20200704","end":"20200709","maxkt":40,"mph":45,"cat":0,"type":"TS","minp":1005,"named":"20200706","us":false,"trk":[[-69.4,30.9,30,"D","070412"],[-67.0,32.1,30,"D","070500"],[-64.2,33.8,30,"D","070512"],[-58.5,36.4,35,"T","070600"],[-51.7,39.9,40,"T","070612"],[-44.1,43.6,40,"X","070700"],[-36.6,47.6,40,"X","070712"],[-28.0,51.0,35,"X","070800"],[-19.0,52.0,30,"X","070812"],[-9.0,52.0,30,"X","070900"],[0.0,52.0,25,"X","070912"]],"lf":[]},{"name":"Fay","start":"20200705","end":"20200711","maxkt":50,"mph":60,"cat":0,"type":"TS","minp":998,"named":"20200709","us":true,"trk":[[-88.8,27.7,20,"L","070512"],[-86.2,28.9,30,"L","070600"],[-85.0,30.8,20,"L","070612"],[-84.2,32.2,20,"L","070700"],[-83.2,33.3,20,"L","070712"],[-81.6,33.3,20,"L","070800"],[-79.2,33.3,20,"L","070812"],[-77.1,33.9,25,"L","070900"],[-76.8,34.1,30,"L","070912"],[-74.8,36.0,40,"T","071000"],[-74.7,37.7,50,"T","071012"],[-74.3,40.2,35,"T","071100"],[-74.0,43.4,25,"L","071112"]],"lf":["20200710"]},{"name":"Gonzalo","start":"20200720","end":"20200725","maxkt":55,"mph":65,"cat":0,"type":"TS","minp":997,"named":"20200722","us":false,"trk":[[-36.8,8.9,20,"L","072012"],[-38.2,8.6,25,"L","072100"],[-39.3,9.2,25,"L","072112"],[-40.9,9.8,30,"D","072200"],[-43.0,9.9,40,"T","072212"],[-45.4,9.9,50,"T","072300"],[-47.6,9.7,55,"T","072312"],[-50.2,9.8,50,"T","072400"],[-53.3,9.9,45,"T","072412"],[-56.3,10.0,35,"T","072500"],[-59.8,10.3,35,"T","072512"]],"lf":[]},{"name":"Hanna","start":"20200723","end":"20200726","maxkt":80,"mph":90,"cat":1,"type":"H","minp":973,"named":"20200724","us":true,"trk":[[-88.3,25.7,25,"D","072300"],[-89.7,25.9,30,"D","072312"],[-91.1,26.2,35,"T","072400"],[-92.8,27.1,45,"T","072412"],[-94.5,27.1,55,"T","072500"],[-96.0,27.1,70,"H","072512"],[-97.6,26.7,75,"H","072600"],[-99.3,26.2,40,"T","072612"]],"lf":["20200725"]},{"name":"Isaias","start":"20200728","end":"20200805","maxkt":80,"mph":90,"cat":1,"type":"H","minp":986,"named":"20200730","us":true,"trk":[[-54.0,12.5,35,"L","072812"],[-58.3,14.1,40,"L","072900"],[-62.2,15.2,40,"L","072912"],[-65.7,15.8,45,"T","073000"],[-68.5,17.7,55,"T","073012"],[-71.2,19.9,65,"H","073100"],[-74.0,21.3,65,"H","073112"],[-75.9,22.9,75,"H","080100"],[-77.5,24.3,70,"H","080112"],[-78.9,25.3,60,"T","080200"],[-79.5,26.6,55,"T","080212"],[-79.7,28.2,60,"T","080300"],[-80.0,30.1,60,"T","080312"],[-79.1,32.8,80,"H","080400"],[-76.8,37.7,60,"T","080412"],[-73.1,44.0,45,"X","080500"]],"lf":["20200801"]},{"name":"Josephine","start":"20200810","end":"20200816","maxkt":40,"mph":45,"cat":0,"type":"TS","minp":1004,"named":"20200813","us":false,"trk":[[-35.4,11.3,30,"L","081100"],[-38.2,11.5,30,"D","081112"],[-41.0,11.9,30,"D","081200"],[-43.7,12.1,30,"D","081212"],[-46.1,12.4,30,"D","081300"],[-48.6,13.4,40,"T","081312"],[-51.3,14.5,35,"T","081400"],[-54.2,16.2,35,"T","081412"],[-56.9,18.0,40,"T","081500"],[-59.7,18.8,35,"T","081512"],[-62.1,19.8,35,"T","081600"],[-64.5,20.2,30,"D","081612"]],"lf":[]},{"name":"Kyle","start":"20200814","end":"20200816","maxkt":45,"mph":50,"cat":0,"type":"TS","minp":1000,"named":"20200814","us":false,"trk":[[-74.2,36.6,35,"T","081412"],[-71.0,38.0,40,"T","081500"],[-66.7,38.8,45,"T","081512"],[-61.6,39.7,35,"X","081600"]],"lf":[]},{"name":"Laura","start":"20200820","end":"20200829","maxkt":130,"mph":150,"cat":4,"type":"MH","minp":937,"named":"20200821","us":true,"trk":[[-47.3,14.4,30,"D","082000"],[-51.6,16.1,30,"D","082012"],[-55.5,16.8,30,"D","082100"],[-59.4,17.0,40,"T","082112"],[-62.8,17.1,40,"T","082200"],[-65.9,17.7,45,"T","082212"],[-68.8,18.2,45,"T","082300"],[-72.3,18.8,45,"T","082312"],[-76.0,19.8,55,"T","082400"],[-79.7,20.8,50,"T","082412"],[-83.3,22.3,55,"T","082500"],[-86.2,23.4,65,"H","082512"],[-88.9,24.9,75,"H","082600"],[-91.4,26.4,100,"H","082612"],[-93.0,28.5,130,"H","082700"],[-93.3,31.2,85,"H","082712"],[-92.5,34.4,35,"T","082800"],[-91.2,36.1,25,"D","082812"],[-88.0,37.5,25,"D","082900"]],"lf":["20200827"]},{"name":"Marco","start":"20200820","end":"20200825","maxkt":65,"mph":75,"cat":1,"type":"H","minp":991,"named":"20200822","us":false,"trk":[[-81.8,14.6,30,"L","082100"],[-83.7,16.3,30,"D","082112"],[-84.6,18.3,35,"T","082200"],[-85.2,20.3,55,"T","082212"],[-86.1,22.2,55,"T","082300"],[-87.2,24.3,65,"H","082312"],[-87.6,26.4,55,"T","082400"],[-88.3,28.1,45,"T","082412"],[-89.3,28.9,35,"T","082500"],[-91.4,28.6,20,"L","082512"]],"lf":[]},{"name":"Omar","start":"20200830","end":"20200906","maxkt":35,"mph":40,"cat":0,"type":"TS","minp":1003,"named":"20200901","us":false,"trk":[[-79.4,30.2,25,"L","083100"],[-77.4,31.5,30,"D","083112"],[-76.2,32.9,30,"D","090100"],[-73.7,34.6,35,"T","090112"],[-70.7,35.8,35,"T","090200"],[-68.0,36.2,35,"T","090212"],[-64.8,36.2,30,"D","090300"],[-61.7,36.1,30,"D","090312"],[-59.5,35.3,30,"D","090400"],[-58.0,35.3,30,"D","090412"],[-57.3,35.5,30,"D","090500"],[-57.3,36.8,30,"D","090512"],[-56.8,38.8,30,"L","090600"]],"lf":[]},{"name":"Nana","start":"20200901","end":"20200904","maxkt":65,"mph":75,"cat":1,"type":"H","minp":994,"named":"20200901","us":false,"trk":[[-76.8,16.3,40,"T","090112"],[-80.1,17.0,50,"T","090200"],[-83.7,17.1,50,"T","090212"],[-86.8,17.0,60,"T","090300"],[-89.6,16.4,45,"T","090312"],[-91.4,15.8,20,"L","090400"]],"lf":[]},{"name":"Paulette","start":"20200907","end":"20200928","maxkt":90,"mph":105,"cat":2,"type":"H","minp":965,"named":"20200907","us":false,"trk":[[-41.3,16.9,30,"D","090700"],[-42.1,17.1,35,"T","090712"],[-42.4,17.6,40,"T","090800"],[-43.0,18.3,50,"T","090812"],[-44.5,18.9,50,"T","090900"],[-46.0,19.6,50,"T","090912"],[-47.6,20.4,50,"T","091000"],[-48.9,21.3,45,"T","091012"],[-50.3,22.3,50,"T","091100"],[-52.1,23.4,55,"T","091112"],[-54.3,25.4,60,"T","091200"],[-56.7,27.3,60,"T","091212"],[-59.1,28.6,65,"H","091300"],[-61.4,29.6,70,"H","091312"],[-63.6,30.9,75,"H","091400"],[-64.9,32.9,85,"H","091412"],[-63.3,35.1,90,"H","091500"],[-59.5,37.6,90,"H","091512"],[-54.0,40.0,85,"H","091600"],[-46.9,42.6,75,"X","091612"],[-39.3,45.9,65,"X","091700"],[-34.5,47.0,55,"X","091712"],[-31.8,46.0,45,"X","091800"],[-31.3,42.8,40,"X","091812"],[-31.1,39.1,40,"X","091900"],[-30.5,36.5,40,"L","091912"],[-29.5,35.7,35,"L","092000"],[-29.7,35.1,35,"L","092012"],[-31.2,34.1,35,"T","092100"],[-29.8,32.9,35,"T","092112"],[-26.3,33.8,50,"T","092200"],[-23.1,34.8,40,"L","092212"],[-20.5,34.8,35,"L","092300"],[-18.1,35.6,45,"L","092312"],[-16.7,36.2,40,"L","092400"],[-17.2,35.4,35,"L","092412"],[-19.8,33.7,35,"L","092500"],[-23.2,33.0,30,"L","092512"],[-26.8,33.2,30,"L","092600"],[-29.5,34.6,25,"L","092612"],[-30.3,36.3,25,"L","092700"],[-28.4,37.0,25,"L","092712"],[-26.4,36.8,20,"L","092800"],[-25.5,36.1,20,"L","092812"]],"lf":[]},{"name":"Rene","start":"20200906","end":"20200914","maxkt":40,"mph":45,"cat":0,"type":"TS","minp":1001,"named":"20200907","us":false,"trk":[[-19.0,14.8,25,"L","090700"],[-20.7,15.6,30,"D","090712"],[-22.9,16.1,35,"T","090800"],[-25.7,16.4,35,"T","090812"],[-28.6,16.8,30,"D","090900"],[-31.2,17.3,35,"T","090912"],[-33.5,17.9,35,"T","091000"],[-35.3,18.4,40,"T","091012"],[-37.2,19.1,35,"T","091100"],[-39.3,19.9,35,"T","091112"],[-41.8,21.1,35,"T","091200"],[-44.0,22.8,30,"D","091212"],[-46.0,24.7,30,"D","091300"],[-47.3,26.7,30,"D","091312"],[-47.8,27.5,25,"D","091400"],[-48.4,27.5,25,"D","091412"]],"lf":[]},{"name":"Sally","start":"20200911","end":"20200918","maxkt":95,"mph":110,"cat":2,"type":"H","minp":965,"named":"20200912","us":true,"trk":[[-79.4,25.6,30,"D","091200"],[-80.8,25.5,35,"T","091212"],[-82.5,26.0,35,"T","091300"],[-84.5,27.2,50,"T","091312"],[-86.0,27.9,50,"T","091400"],[-86.9,28.4,65,"H","091412"],[-87.7,28.7,75,"H","091500"],[-88.1,29.0,70,"H","091512"],[-88.0,29.6,75,"H","091600"],[-87.6,30.5,85,"H","091612"],[-86.7,31.6,35,"T","091700"],[-85.2,32.6,30,"X","091712"],[-82.3,33.7,30,"X","091800"]],"lf":["20200912"]},{"name":"Teddy","start":"20200912","end":"20200924","maxkt":120,"mph":140,"cat":4,"type":"MH","minp":945,"named":"20200914","us":false,"trk":[[-32.4,11.2,30,"D","091212"],[-34.2,11.6,30,"D","091300"],[-36.2,12.2,30,"D","091312"],[-38.7,12.9,35,"T","091400"],[-42.1,12.9,35,"T","091412"],[-44.5,13.0,45,"T","091500"],[-46.6,13.8,55,"T","091512"],[-48.0,14.7,65,"H","091600"],[-49.3,16.1,85,"H","091612"],[-51.1,17.4,85,"H","091700"],[-52.8,18.9,100,"H","091712"],[-54.4,20.4,120,"H","091800"],[-55.8,21.7,110,"H","091812"],[-57.2,23.5,105,"H","091900"],[-58.7,25.4,100,"H","091912"],[-60.8,26.9,95,"H","092000"],[-62.6,28.0,85,"H","092012"],[-63.7,29.0,80,"H","092100"],[-62.9,30.5,80,"H","092112"],[-61.4,34.6,85,"H","092200"],[-63.5,39.1,90,"H","092212"],[-64.2,41.8,65,"H","092300"],[-62.1,45.0,55,"X","092312"],[-58.2,49.7,45,"X","092400"]],"lf":[]},{"name":"Vicky","start":"20200914","end":"20200919","maxkt":45,"mph":50,"cat":0,"type":"TS","minp":1001,"named":"20200914","us":false,"trk":[[-28.2,17.5,30,"D","091400"],[-28.6,18.5,40,"T","091412"],[-29.6,19.5,45,"T","091500"],[-30.8,20.5,45,"T","091512"],[-32.6,21.4,45,"T","091600"],[-34.3,21.4,35,"T","091612"],[-35.6,21.6,35,"T","091700"],[-37.6,21.6,30,"D","091712"],[-39.4,20.8,25,"L","091800"],[-41.0,20.4,25,"L","091812"],[-42.9,20.1,20,"L","091900"],[-45.1,19.6,20,"L","091912"]],"lf":[]},{"name":"Beta","start":"20200917","end":"20200925","maxkt":55,"mph":65,"cat":0,"type":"TS","minp":993,"named":"20200918","us":true,"trk":[[-94.7,21.5,30,"D","091712"],[-94.2,22.0,30,"D","091800"],[-93.8,23.2,30,"D","091812"],[-92.3,25.2,50,"T","091900"],[-92.4,26.4,50,"T","091912"],[-92.1,26.8,50,"T","092000"],[-92.8,27.1,50,"T","092012"],[-94.1,27.5,50,"T","092100"],[-95.5,27.8,45,"T","092112"],[-96.3,28.3,45,"T","092200"],[-96.8,28.8,35,"T","092212"],[-95.8,29.0,25,"X","092300"],[-94.6,30.0,25,"X","092312"],[-92.4,30.8,25,"X","092400"],[-90.6,32.4,25,"X","092412"],[-87.6,33.6,20,"X","092500"]],"lf":["20200922"]},{"name":"Wilfred","start":"20200917","end":"20200921","maxkt":35,"mph":40,"cat":0,"type":"TS","minp":1006,"named":"20200917","us":false,"trk":[[-25.0,10.2,25,"L","091700"],[-27.0,10.5,30,"L","091712"],[-29.3,11.1,35,"T","091800"],[-32.0,11.7,35,"T","091812"],[-35.0,12.4,35,"T","091900"],[-37.3,13.2,35,"T","091912"],[-39.9,14.3,35,"T","092000"],[-43.2,15.4,30,"D","092012"],[-46.7,15.8,30,"D","092100"]],"lf":[]},{"name":"Alpha","start":"20200914","end":"20200919","maxkt":45,"mph":50,"cat":0,"type":"TS","minp":992,"named":"20200917","us":false,"trk":[[-22.0,47.2,40,"X","091412"],[-22.4,47.0,60,"X","091500"],[-22.1,45.0,50,"X","091512"],[-20.5,42.9,40,"X","091600"],[-19.5,40.9,40,"X","091612"],[-18.9,38.9,35,"X","091700"],[-17.3,37.7,35,"S","091712"],[-13.1,36.7,45,"S","091800"],[-10.3,38.9,45,"S","091812"],[-7.6,40.6,30,"D","091900"]],"lf":[]},{"name":"Gamma","start":"20201002","end":"20201006","maxkt":65,"mph":75,"cat":1,"type":"H","minp":978,"named":"20201002","us":false,"trk":[[-83.3,16.6,30,"L","100200"],[-84.4,17.8,30,"D","100212"],[-85.8,18.8,40,"T","100300"],[-87.1,19.7,55,"T","100312"],[-87.9,21.0,50,"T","100400"],[-88.1,22.3,50,"T","100412"],[-87.4,22.9,50,"T","100500"],[-87.5,22.6,40,"T","100512"],[-88.2,21.9,30,"D","100600"],[-88.5,20.6,25,"D","100612"]],"lf":[]},{"name":"Delta","start":"20201004","end":"20201011","maxkt":120,"mph":140,"cat":4,"type":"MH","minp":953,"named":"20201005","us":true,"trk":[[-77.0,16.4,30,"D","100500"],[-78.4,16.4,40,"T","100512"],[-79.8,16.6,65,"H","100600"],[-82.0,17.8,100,"H","100612"],[-84.6,19.3,100,"H","100700"],[-87.4,21.1,85,"H","100712"],[-90.2,22.3,80,"H","100800"],[-92.4,23.7,90,"H","100812"],[-93.5,25.3,105,"H","100900"],[-93.8,27.5,100,"H","100912"],[-92.9,30.1,75,"H","101000"],[-91.4,32.5,35,"T","101012"],[-89.6,33.9,25,"X","101100"],[-87.5,34.8,20,"X","101112"]],"lf":["20201009"]},{"name":"Epsilon","start":"20201016","end":"20201026","maxkt":100,"mph":115,"cat":3,"type":"MH","minp":952,"named":"20201019","us":false,"trk":[[-54.9,31.5,20,"L","101612"],[-55.5,30.9,30,"L","101700"],[-56.2,30.3,30,"L","101712"],[-56.3,28.9,30,"L","101800"],[-56.4,27.3,30,"L","101812"],[-56.3,25.7,30,"L","101900"],[-55.6,25.4,35,"T","101912"],[-55.2,25.2,40,"T","102000"],[-54.7,26.2,50,"T","102012"],[-56.3,28.3,65,"H","102100"],[-58.7,28.9,85,"H","102112"],[-60.4,29.5,100,"H","102200"],[-61.3,30.8,80,"H","102212"],[-61.6,32.2,75,"H","102300"],[-61.6,33.7,75,"H","102312"],[-62.0,36.1,75,"H","102400"],[-61.3,37.4,75,"H","102412"],[-57.6,40.3,65,"H","102500"],[-51.8,43.3,65,"H","102512"],[-41.2,47.2,60,"T","102600"],[-28.5,52.1,60,"X","102612"]],"lf":[]},{"name":"Zeta","start":"20201024","end":"20201030","maxkt":100,"mph":115,"cat":3,"type":"MH","minp":970,"named":"20201025","us":true,"trk":[[-82.6,18.4,25,"D","102412"],[-83.2,18.0,35,"T","102500"],[-83.6,17.8,45,"T","102512"],[-83.8,18.2,55,"T","102600"],[-84.8,18.9,65,"H","102612"],[-86.6,19.9,70,"H","102700"],[-89.0,21.3,60,"T","102712"],[-90.8,23.2,55,"T","102800"],[-91.7,26.0,80,"H","102812"],[-89.9,30.2,85,"H","102900"],[-83.6,35.3,45,"T","102912"],[-71.7,39.5,45,"X","103000"]],"lf":["20201028"]},{"name":"Eta","start":"20201031","end":"20201114","maxkt":130,"mph":150,"cat":4,"type":"MH","minp":922,"named":"20201101","us":true,"trk":[[-73.6,14.9,35,"T","110100"],[-76.7,14.9,40,"T","110112"],[-79.4,14.9,60,"T","110200"],[-81.2,14.8,90,"H","110212"],[-82.5,14.3,130,"H","110300"],[-83.1,13.6,125,"H","110312"],[-83.7,13.8,95,"H","110400"],[-84.9,13.8,50,"T","110412"],[-86.0,14.0,30,"D","110500"],[-87.5,14.5,25,"L","110512"],[-87.8,16.2,30,"L","110600"],[-87.4,16.9,30,"D","110612"],[-86.4,17.5,30,"D","110700"],[-83.2,19.1,45,"T","110712"],[-80.2,20.4,55,"T","110800"],[-79.0,22.2,50,"T","110812"],[-80.1,24.5,55,"T","110900"],[-82.9,24.9,50,"T","110912"],[-85.0,23.4,45,"T","111000"],[-85.3,22.6,50,"T","111012"],[-84.6,23.5,55,"T","111100"],[-83.9,25.8,65,"H","111112"],[-83.5,27.9,55,"T","111200"],[-82.5,29.7,40,"T","111212"],[-79.9,31.9,40,"T","111300"],[-75.3,34.0,40,"X","111312"],[-69.2,35.7,35,"X","111400"]],"lf":["20201109"]},{"name":"Theta","start":"20201108","end":"20201116","maxkt":60,"mph":70,"cat":0,"type":"TS","minp":987,"named":"20201110","us":false,"trk":[[-47.5,28.4,25,"X","110812"],[-45.9,28.5,25,"X","110900"],[-43.7,28.8,35,"X","110912"],[-41.0,28.8,50,"S","111000"],[-38.0,28.9,60,"S","111012"],[-35.8,29.2,55,"T","111100"],[-33.8,29.6,55,"T","111112"],[-31.9,31.1,60,"T","111200"],[-29.4,31.5,55,"T","111212"],[-26.7,31.9,50,"T","111300"],[-24.2,31.9,45,"T","111312"],[-22.1,32.0,40,"T","111400"],[-20.4,31.8,35,"T","111412"],[-18.9,31.7,35,"T","111500"],[-18.3,31.4,30,"L","111512"],[-17.9,32.1,30,"L","111600"],[-18.6,33.4,25,"L","111612"]],"lf":[]},{"name":"Iota","start":"20201112","end":"20201118","maxkt":135,"mph":155,"cat":4,"type":"MH","minp":917,"named":"20201113","us":false,"trk":[[-70.9,15.5,25,"L","111212"],[-72.7,15.0,25,"L","111300"],[-73.7,14.4,30,"D","111312"],[-74.5,13.6,35,"T","111400"],[-75.7,12.9,40,"T","111412"],[-76.7,12.6,55,"T","111500"],[-78.0,13.1,70,"H","111512"],[-79.8,13.2,90,"H","111600"],[-81.5,13.5,135,"H","111612"],[-83.0,13.6,130,"H","111700"],[-84.7,13.7,75,"H","111712"],[-86.7,13.8,40,"T","111800"],[-89.0,13.7,25,"D","111812"]],"lf":[]}]})
+u5oSS = kt => kt >= 137 ? 5 : kt >= 113 ? 4 : kt >= 96 ? 3 : kt >= 83 ? 2 : kt >= 64 ? 1 : 0
+u5oCls = (code, kt) => code === "H" ? (kt >= 96 ? "Major hurricane (Cat 3–5)" : "Hurricane (Cat 1–2)") : code === "T" || code === "S" ? "Tropical storm" : code === "D" ? "Tropical depression" : "Extratropical / remnant low"
+u5oClsDomain = ["Major hurricane (Cat 3–5)", "Hurricane (Cat 1–2)", "Tropical storm", "Tropical depression", "Extratropical / remnant low"]
+u5oClsRange = ["#e879f9", "#ef4444", "#facc15", "#4ade80", "#94a3b8"]
+u5oTypeLabel = ({TS: "Tropical storm", H: "Hurricane", MH: "Major hurricane"})
+u5oMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+u5oDay = s => `${u5oMonths[+s.slice(4, 6) - 1]} ${+s.slice(6, 8)}`
+u5oStorms = Object.fromEntries(Object.entries(u5oHur).map(([yr, list]) => [yr, list.map(s => ({...s, yr,
+  pts: s.trk.map(([lon, lat, kt, code, t]) => ({name: s.name, lon, lat, kt, mph: Math.round(kt * 1.15078 / 5) * 5, cls: u5oCls(code, kt), when: `${u5oMonths[+t.slice(0, 2) - 1]} ${+t.slice(2, 4)}, ${t.slice(4)}:00 UTC`}))
+}))]))
+u5oTcState = ({yr: "2018", filter: "all", storm: ""})
+```
+
+```{ojs}
+//| echo: false
+u5oWorld = {
+  const topojson = await require("topojson-client@3.1.0");
+  try {
+    const t = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-50m.json");
+    return topojson.feature(t, t.objects.land);
+  } catch (e) {
+    try {
+      const t = await d3.json("../world-110m.json");
+      const key = t.objects.land ? "land" : Object.keys(t.objects)[0];
+      return topojson.feature(t, t.objects[key]);
+    } catch (e2) {
+      const t = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-110m.json");
+      return topojson.feature(t, t.objects.land);
+    }
+  }
+}
+```
+
+```{ojs}
+//| echo: false
+viewof u5oTc = {
+  const st = u5oTcState;
+  const wrap = document.createElement("div");
+  wrap.value = {...st};
+  const yrRow = document.createElement("div"), fRow = document.createElement("div"), selRow = document.createElement("div");
+  yrRow.style.cssText = fRow.style.cssText = "display:flex;flex-wrap:wrap;gap:8px;margin:6px 0;";
+  selRow.style.cssText = "margin:8px 0 4px;";
+  const filters = [["all", "All named storms"], ["hur", "Hurricanes only"], ["major", "Major hurricanes only"], ["us", "Made US landfall"]];
+  const pass = s => st.filter === "all" || (st.filter === "hur" && s.type !== "TS") || (st.filter === "major" && s.type === "MH") || (st.filter === "us" && s.us);
+  const fire = () => { wrap.value = {...st}; draw(); wrap.dispatchEvent(new Event("input", {bubbles: true})); };
+  const draw = () => {
+    yrRow.replaceChildren(...["2018", "2020"].map(y => u5oChip(y + " season", st.yr === y, "#c2410c", () => { st.yr = y; st.storm = ""; fire(); })));
+    fRow.replaceChildren(...filters.map(([id, label]) => u5oChip(label, st.filter === id, "#9f1239", () => { st.filter = id; st.storm = ""; fire(); })));
+    const sel = document.createElement("select");
+    sel.setAttribute("aria-label", "Highlight a storm");
+    sel.style.cssText = "font-family:inherit;font-size:1em;min-height:42px;padding:6px 10px;border:2px solid #c2410c;border-radius:8px;background:#fff;color:#1e1b4b;max-width:100%;";
+    const list = u5oStorms[st.yr].filter(pass);
+    sel.appendChild(new Option(`🔍 Highlight a storm (${list.length} shown)`, ""));
+    for (const s of list) sel.appendChild(new Option(`${s.name} (${u5oTypeLabel[s.type]}${s.cat ? ", Cat " + s.cat : ""})`, s.name));
+    sel.value = st.storm;
+    sel.onchange = () => { st.storm = sel.value; fire(); };
+    selRow.replaceChildren(sel);
   };
+  draw();
+  wrap.append(yrRow, fRow, selRow);
+  return wrap;
+}
+```
 
-  var _worldLand = null;
-  var _currentSeason = 'DJF';
+```{ojs}
+//| echo: false
+u5oTcShown = {
+  const f = u5oTc.filter;
+  return u5oStorms[u5oTc.yr].filter(s => f === "all" || (f === "hur" && s.type !== "TS") || (f === "major" && s.type === "MH") || (f === "us" && s.us));
+}
+```
 
-  // ── Cloud fraction model (lat-row base + fast pixel corrections) ──────────
-
-  function cfRowBase(lat, S) {
-    var b = 0.50;
-    var itczLat = { DJF: -5, MAM: 4, JJA: 10, SON: 3 }[S];
-    b += 0.40 * Math.exp(-0.5 * Math.pow((lat - itczLat) / 9,  2));
-    var nhLat  = { DJF: 56, MAM: 52, JJA: 57, SON: 54 }[S];
-    var nhStrg = { DJF: 0.27, MAM: 0.20, JJA: 0.11, SON: 0.22 }[S];
-    b += nhStrg * Math.exp(-0.5 * Math.pow((lat - nhLat) / 11, 2));
-    b += 0.24   * Math.exp(-0.5 * Math.pow((lat + 52)   / 10, 2)); // Southern Ocean
-    var nhSub = { DJF: 25, MAM: 27, JJA: 30, SON: 27 }[S];
-    b -= 0.20   * Math.exp(-0.5 * Math.pow((lat - nhSub) / 8,  2)); // NH subtropical dry
-    b -= 0.17   * Math.exp(-0.5 * Math.pow((lat + 25)   / 8,  2)); // SH subtropical dry
-    if (S === 'DJF' && lat > 65) b -= 0.10; // Arctic winter dry
-    if (lat < -75)               b -= 0.10; // Antarctic plateau
-    return b;
-  }
-
-  function cfPixel(lat, lng, S, base) {
-    var cf = base;
-    if (lat >  12 && lat <  35 && lng >  -10 && lng <  58)  cf -= 0.22; // Sahara / Arabian
-    if (lat >  22 && lat <  38 && lng > -118 && lng < -100)  cf -= S === 'DJF' ? 0.04 : 0.14; // SW USA / Baja
-    if (lat > -32 && lat < -16 && lng >  -76 && lng <  -65)  cf -= 0.18; // Atacama
-    if (lat > -35 && lat < -16 && lng >  114 && lng <  145)  cf -= 0.14; // Australian outback
-    if (S === 'JJA' && lat >  5 && lat <  30 && lng >  65  && lng <  130) cf += 0.32; // S Asian monsoon
-    if (S === 'JJA' && lat >  5 && lat <  20 && lng > -18  && lng <   30) cf += 0.25; // W African monsoon
-    if (S === 'JJA' && lat > 20 && lat <  40 && lng >  110 && lng <  145) cf += 0.17; // E Asian Meiyu
-    if (S === 'SON' && lat >  0 && lat <  20 && lng >   65 && lng <  115) cf += 0.18; // monsoon retreat
-    if ((S === 'JJA' || S === 'SON') && lat > 8 && lat < 22 && lng > -100 && lng < -60) cf += 0.18; // Caribbean
-    if (S === 'JJA' && lat > 25 && lat < 42 && lng > -130 && lng < -120) cf += 0.18; // CA marine stratus
-    if (lat > -28 && lat <  -3 && lng >  -84 && lng <  -72)  cf += 0.19; // Humboldt / Peru stratus
-    if (lat > -28 && lat < -10 && lng >    7 && lng <   18)  cf += 0.17; // Benguela stratus
-    if ((S === 'DJF' || S === 'SON') && lat > 40 && lat < 65 && lng > -50 && lng < -10) cf += 0.10; // N Atlantic belt
-    return Math.max(0.06, Math.min(0.92, cf));
-  }
-
-  // ── Draw topojson geometry onto canvas 2D ctx ────────────────────────────
-
-  function drawGeo(ctx, W, H, feature) {
-    var geom = (feature && feature.geometry !== undefined) ? feature.geometry : feature;
-    if (!geom) return;
-    function rings(poly) {
-      poly.forEach(function (ring) {
-        ring.forEach(function (pt, i) {
-          var x = ((pt[0] + 180) / 360) * W;
-          var y = ((90 - pt[1]) / 180) * H;
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-        });
-        ctx.closePath();
-      });
-    }
-    if      (geom.type === 'MultiPolygon')    geom.coordinates.forEach(rings);
-    else if (geom.type === 'Polygon')         rings(geom.coordinates);
-    else if (geom.type === 'GeometryCollection') geom.geometries.forEach(function (g) { drawGeo(ctx, W, H, { geometry: g }); });
-    else if (feature.type === 'FeatureCollection') feature.features.forEach(function (f) { drawGeo(ctx, W, H, f); });
-  }
-
-  // ── Full map render ─────────────────────────────────────────────────────
-
-  function drawCloudMap(season) {
-    var canvas = document.getElementById('cloud-map');
-    if (!canvas) return;
-    var ctx = canvas.getContext('2d');
-    var W = canvas.width, H = canvas.height;
-
-    // 1. Ocean background
-    var grad = ctx.createLinearGradient(0, 0, 0, H);
-    grad.addColorStop(0,   '#0a2e5e');
-    grad.addColorStop(0.5, '#1b4f8c');
-    grad.addColorStop(1,   '#0a2e5e');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, W, H);
-
-    // 2. Land masses
-    if (_worldLand) {
-      ctx.fillStyle   = '#3d6b2a';
-      ctx.strokeStyle = '#2a4d1a';
-      ctx.lineWidth   = 0.4;
-      ctx.beginPath();
-      drawGeo(ctx, W, H, _worldLand);
-      ctx.fill();
-      ctx.stroke();
-    }
-
-    // 3. Cloud alpha layer (ImageData — no cross-origin, no CORS)
-    var imgd = ctx.createImageData(W, H);
-    var px   = imgd.data;
-    for (var row = 0; row < H; row++) {
-      var lat  = 90 - (row / H) * 180;
-      var base = cfRowBase(lat, season);
-      for (var col = 0; col < W; col++) {
-        var lng  = (col / W) * 360 - 180;
-        var cf   = cfPixel(lat, lng, season, base);
-        var a    = Math.round(Math.pow(Math.max(cf - 0.10, 0) / 0.90, 0.65) * 220);
-        var i4   = (row * W + col) * 4;
-        px[i4]   = 255; px[i4+1] = 255; px[i4+2] = 255; px[i4+3] = a;
-      }
-    }
-    // blit via an offscreen canvas — saves on reflow
-    var cc = document.createElement('canvas');
-    cc.width = W; cc.height = H;
-    cc.getContext('2d').putImageData(imgd, 0, 0);
-    ctx.drawImage(cc, 0, 0);
-
-    // 4. Reference latitude lines
-    var refLines = [
-      { lat:  66.5, label: 'Arctic Circle (66.5°N)',      color: 'rgba(200,230,255,0.65)', dash: [4,3] },
-      { lat:  23.5, label: 'Tropic of Cancer (23.5°N)',   color: 'rgba(255,230,140,0.75)', dash: [6,4] },
-      { lat:   0,   label: 'Equator',                     color: 'rgba(255,255,255,0.85)', dash: []    },
-      { lat: -23.5, label: 'Tropic of Capricorn (23.5°S)',color: 'rgba(255,230,140,0.75)', dash: [6,4] },
-      { lat: -66.5, label: 'Antarctic Circle (66.5°S)',   color: 'rgba(200,230,255,0.65)', dash: [4,3] }
-    ];
-    ctx.font = '10px system-ui,sans-serif';
-    refLines.forEach(function (ref) {
-      var y = Math.round((90 - ref.lat) / 180 * H) + 0.5;
-      ctx.setLineDash(ref.dash);
-      ctx.strokeStyle = ref.color;
-      ctx.lineWidth   = ref.dash.length ? 0.8 : 1.3;
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle = ref.color;
-      ctx.fillText(ref.label, 4, y - 3);
-    });
-  }
-
-  // ── Button / info panel update + redraw ───────────────────────────────────
-
-  window.showCloudSeason = function (season) {
-    _currentSeason = season;
-    var colors = { DJF: '#1565c0', MAM: '#2e7d32', JJA: '#e65100', SON: '#6a1b9a' };
-    ['DJF','MAM','JJA','SON'].forEach(function (s) {
-      var btn = document.getElementById('cbtn-' + s);
-      if (!btn) return;
-      var col = colors[s];
-      btn.style.cssText = (s === season)
-        ? 'padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:' + col + ';color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.25);'
-        : 'padding:8px 20px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-size:13px;background:#e0e0e0;color:#555;';
-    });
-    var si   = CLOUD_SEASON_INFO[season];
-    var info = document.getElementById('cloud-info');
-    if (info) { info.innerHTML = '<strong>' + si.label + '</strong><br/>' + si.desc; info.style.borderColor = si.color; }
-    drawCloudMap(season);
-  };
-
-  // ── Init: draw immediately, load land in background ────────────────────
-
-  function waitForTopojson(cb) {
-    if (typeof topojson !== 'undefined') { cb(); return; }
-    setTimeout(function () { waitForTopojson(cb); }, 80);
-  }
-
-  waitForTopojson(function () {
-    // Show clouds first (no land yet)
-    window.showCloudSeason('DJF');
-    var loading = document.getElementById('cloud-map-loading');
-    if (loading) loading.textContent = '';
-
-    // Load land outlines, then redraw with them
-    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json')
-      .then(function (r) { return r.json(); })
-      .then(function (world) {
-        _worldLand = topojson.feature(world, world.objects.land);
-        drawCloudMap(_currentSeason);
-      })
-      .catch(function () { /* silently continue without land outlines */ });
+```{ojs}
+//| echo: false
+{
+  const shown = u5oTcShown;
+  const sel = shown.find(s => s.name === u5oTc.storm);
+  const pts = shown.flatMap(s => s.pts);
+  const selPts = sel ? sel.pts : [];
+  const starts = shown.map(s => s.pts[0]);
+  const w = Math.max(300, width);
+  const chart = Plot.plot({
+    width: w,
+    projection: {type: "mercator", domain: {type: "MultiPoint", coordinates: [[-105, 6], [5, 6], [-105, 60], [5, 60]]}},
+    style: {background: "#0b2545", color: "#e2e8f0"},
+    color: {domain: u5oClsDomain, range: u5oClsRange},
+    marks: [
+      Plot.graticule({stroke: "#ffffff", strokeOpacity: 0.12}),
+      Plot.geo(u5oWorld, {fill: "#3f5872", stroke: "#8aa0b8", strokeWidth: 0.5}),
+      Plot.line(pts, {x: "lon", y: "lat", z: "name", stroke: "cls", strokeWidth: sel ? 1.2 : (w < 500 ? 1.6 : 2.2), strokeOpacity: sel ? 0.3 : 0.95, curve: "catmull-rom"}),
+      Plot.dot(starts, {x: "lon", y: "lat", r: sel ? 2 : 3, fill: "#ffffff", fillOpacity: sel ? 0.4 : 0.9}),
+      sel ? Plot.line(selPts, {x: "lon", y: "lat", stroke: "cls", strokeWidth: 5, curve: "catmull-rom"}) : null,
+      sel ? Plot.dot([selPts[0]], {x: "lon", y: "lat", r: 6, fill: "#ffffff", stroke: "#0b2545", strokeWidth: 2}) : null,
+      sel ? Plot.text([selPts[0]], {x: "lon", y: "lat", text: () => `${sel.name} starts here`, dy: 14, fill: "#ffffff", fontWeight: 800, fontSize: 13, stroke: "#0b2545", strokeWidth: 3}) : null,
+      Plot.tip(sel ? selPts : pts, Plot.pointer({x: "lon", y: "lat", maxRadius: 24,
+        title: d => `${d.name} · ${d.when}\n${d.cls}\nWinds about ${d.mph} mph`}))
+    ]
   });
+  const fig = html`<div style="margin:6px 0;"></div>`;
+  fig.appendChild(html`<div style="font-weight:800;font-size:1.1em;">${u5oTc.yr} North Atlantic tropical storm tracks</div>`);
+  fig.appendChild(html`<div style="font-size:.9em;opacity:.85;margin-bottom:6px;">${shown.length} storm${shown.length === 1 ? "" : "s"} shown · source: NOAA National Hurricane Center HURDAT2</div>`);
+  fig.appendChild(Plot.legend({color: {domain: u5oClsDomain, range: u5oClsRange}, swatchSize: 14, style: {fontSize: "12px", color: "inherit", background: "transparent"}}));
+  const box = html`<div style="border-radius:10px;overflow:hidden;"></div>`;
+  box.appendChild(chart);
+  fig.appendChild(box);
+  return fig;
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const s = u5oTcShown.find(x => x.name === u5oTc.storm);
+  if (!s) {
+    const list = u5oStorms[u5oTc.yr];
+    const us = list.filter(x => x.us).map(x => x.name);
+    return html`<div style="background:#fff;color:#1a1a1a;border-left:8px solid #c2410c;border-radius:12px;padding:14px 18px;margin:10px 0 4px;box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:.95em;">
+      <b>${u5oTc.yr} at a glance:</b> ${list.length} named storms · ${list.filter(x => x.type !== "TS").length} hurricanes · ${list.filter(x => x.type === "MH").length} major hurricanes · first named storm ${list[0].name} (${u5oDay(list[0].named)}) · last ${list[list.length - 1].name} (${u5oDay(list[list.length - 1].named)}).<br>
+      <b>${us.length} made landfall on the US mainland:</b> ${us.join(", ")}.<br>
+      <span style="color:#555;">Pick a storm above to see its details.</span></div>`;
+  }
+  const card = html`<div style="background:#fff;color:#1a1a1a;border-left:8px solid ${s.type === "MH" ? "#c026d3" : s.type === "H" ? "#dc2626" : "#ca8a04"};border-radius:12px;padding:14px 18px;margin:10px 0 4px;box-shadow:0 2px 10px rgba(0,0,0,.1);">
+    <div style="font-size:1.15em;font-weight:800;color:#1a1a1a;">${u5oTypeLabel[s.type]} ${s.name} (${s.yr})</div>
+    <div style="margin:6px 0;font-size:.95em;color:#1a1a1a;">
+      📅 ${u5oDay(s.start)} – ${u5oDay(s.end)} · 💨 Peak winds about <b>${s.mph} mph</b>${s.cat ? ` (<b>Category ${s.cat}</b>)` : ""} · 🔻 Lowest pressure ${s.minp} mb · ${s.us ? "🇺🇸 Made US landfall" : "Did not make US mainland landfall"}
+    </div>
+  </div>`;
+  const detail = `${s.yr}: ${u5oTypeLabel[s.type]} ${s.name} lasted ${u5oDay(s.start)} – ${u5oDay(s.end)}, peak winds about ${s.mph} mph${s.cat ? " (Category " + s.cat + ")" : ""}${s.us ? ", and made US landfall" : ""}.`;
+  const row = html`<div style="display:flex;justify-content:flex-end;"></div>`;
+  row.appendChild(u5oStar({id: `t-m-storm-${s.yr}-${s.name}`, group: "t", label: "Maps", detail}));
+  card.appendChild(row);
+  return card;
+}
+```
+
+```{ojs}
+//| echo: false
+u5oDetailRows("🔎 Patterns on the track maps", [
+  {id: "t-m-south", detail: "Storms start at low latitudes (in the south): off Africa, in the Caribbean, or in the Gulf of Mexico."},
+  {id: "t-m-curve", detail: "Many tracks move west first, then curve north and northeast."},
+  {id: "t-m-color", detail: "Storms strengthen (colors change from yellow to red or pink) over warm tropical ocean, and weaken over land or cold northern water."},
+  {id: "t-m-dense", detail: "The 2020 map is much more crowded than 2018, especially in the Caribbean and the Gulf of Mexico."},
+  {id: "t-m-us", detail: "4 named storms made US mainland landfall in 2018 (Alberto, Gordon, Florence, Michael). In 2020, 11 did, a record."},
+  {id: "t-m-greek", detail: "2020 used up the whole list of names, so the last nine storms got Greek letters (Alpha to Iota)."}
+], "t", "Maps", "#c2410c")
+```
+
+```{ojs}
+//| echo: false
+u5oSavedCount("t", "Maps", 2)
+```
+
+```{ojs}
+//| echo: false
+u5oQuiz("u5o-tm-quiz", "🗺️ Check Your Understanding — Track Maps", [
+  {
+    q: "Where do almost all Atlantic tropical storms on the map start?",
+    options: ["Near the North Pole", "Over land in Canada", "At low latitudes over warm tropical ocean", "Over the Great Lakes"],
+    correct: 2,
+    explanation: "The start dots are mostly between about 10° and 25° N, over the warm tropical Atlantic, Caribbean and Gulf. You'll figure out why warm water matters in the Hurricanes lesson."
+  },
+  {
+    q: "Filter to 'Made US landfall'. Which statement is true?",
+    options: ["More named storms reached the US mainland in 2018 than in 2020", "About three times as many named storms reached the US mainland in 2020 (11) as in 2018 (4)", "No storms reached the US in either year", "Only major hurricanes reach the US"],
+    correct: 1,
+    explanation: "2020 set a record with 11 US landfalls. Several were tropical storms, not hurricanes, which still cause flooding."
+  },
+  {
+    q: "Pick Hurricane Michael (2018). What happens to its color as it moves north over the Gulf of Mexico?",
+    options: ["It changes from tropical storm (yellow) to major hurricane (pink): it got stronger over warm water", "It stays yellow the whole time", "It gets weaker over the Gulf", "It turns green right away"],
+    correct: 0,
+    explanation: "Michael strengthened rapidly over the warm Gulf and hit the Florida Panhandle as a Category 5 with winds near 160 mph. Over land it weakened quickly."
+  }
+])
+```
+
+## 📊 Atlantic Tropical Storm Graphs: 2018 and 2020 {#tropical-graphs}
+
+Your PTO graphs ("Frequency & Strength of Tropical Storms") count each season's storms by the **strongest type they reached**. Compare them side by side. Use the switch to see the counts in NOAA's **final** records too.
+
+```{ojs}
+//| echo: false
+u5oTcTypes = ["Wave Low Disturbance", "Subtropical Depression", "Subtropical Storm", "Tropical Depression", "Tropical Storm", "Hurricane", "Major Hurricane"]
+u5oTcCounts = {
+  const fin = yr => { const l = u5oStorms[yr]; return [0, 0, 0, 0, l.filter(s => s.type === "TS").length, l.filter(s => s.type === "H").length, l.filter(s => s.type === "MH").length]; };
+  return {
+    pto: {"2018": [0, 0, 0, 0, 7, 6, 2], "2020": [0, 0, 0, 0, 17, 7, 6]},
+    final: {"2018": fin("2018"), "2020": fin("2020")}
+  };
+}
+u5oTcGraphState = ({src: "pto", showAll: false})
+```
+
+```{ojs}
+//| echo: false
+viewof u5oTcGraph = {
+  const st = u5oTcGraphState;
+  const wrap = document.createElement("div");
+  wrap.value = {...st};
+  const row = document.createElement("div");
+  row.style.cssText = "display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px;";
+  const fire = () => { wrap.value = {...st}; draw(); wrap.dispatchEvent(new Event("input", {bubbles: true})); };
+  const draw = () => row.replaceChildren(
+    u5oChip("PTO graphs", st.src === "pto", "#c2410c", () => { st.src = "pto"; fire(); }),
+    u5oChip("NOAA final records", st.src === "final", "#c2410c", () => { st.src = "final"; fire(); }),
+    u5oChip(st.showAll ? "Hide the 0 columns" : "Show all 7 PTO columns", st.showAll, "#64748b", () => { st.showAll = !st.showAll; fire(); })
+  );
+  draw();
+  wrap.appendChild(row);
+  return wrap;
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const counts = u5oTcCounts[u5oTcGraph.src];
+  const types = u5oTcGraph.showAll ? u5oTcTypes : u5oTcTypes.slice(4);
+  const data = ["2018", "2020"].flatMap(yr => u5oTcTypes.map((t, i) => ({yr, type: t, n: counts[yr][i]}))).filter(d => types.includes(d.type));
+  const chart = Plot.plot({
+    width: Math.max(300, width),
+    height: 70 + types.length * 62,
+    marginLeft: width < 500 ? 96 : 150, marginRight: 34,
+    x: {label: "Number of occurrences →", grid: true, domain: [0, 20]},
+    y: {domain: ["2018", "2020"], axis: null},
+    fy: {domain: types, label: null, tickFormat: d => width < 500 ? d.replace("Wave Low ", "").replace("Subtropical", "Subtrop.") : d},
+    color: {domain: ["2018", "2020"], range: ["#dc2626", "#2563eb"], legend: true},
+    marks: [
+      Plot.barX(data, {fy: "type", y: "yr", x: "n", fill: "yr", insetTop: 2, insetBottom: 2}),
+      Plot.text(data, {fy: "type", y: "yr", x: "n", text: d => `${d.n}`, dx: 8, textAnchor: "start", fill: "currentColor", fontWeight: 700}),
+      Plot.tip(data, Plot.pointer({fy: "type", y: "yr", x: "n", title: d => `${d.yr}: ${d.n} storm${d.n === 1 ? "" : "s"} whose strongest stage was ${d.type}`}))
+    ]
+  });
+  const tot = yr => counts[yr].reduce((a, b) => a + b, 0);
+  const hur = yr => counts[yr][5] + counts[yr][6];
+  const fig = html`<div style="margin:6px 0;"></div>`;
+  fig.appendChild(html`<div style="font-weight:800;font-size:1.1em;">Frequency &amp; strength of tropical storms: 2018 vs 2020 (${u5oTcGraph.src === "pto" ? "PTO graphs" : "NOAA final records"})</div>`);
+  fig.appendChild(chart);
+  fig.appendChild(html`<div class="u5o-stats">
+    <div class="u5o-stat" style="background:#b91c1c;"><b>${tot("2018")} → ${tot("2020")}</b><span>named storms</span></div>
+    <div class="u5o-stat" style="background:#c2410c;"><b>${hur("2018")} → ${hur("2020")}</b><span>hurricanes (any category)</span></div>
+    <div class="u5o-stat" style="background:#7e22ce;"><b>${counts["2018"][6]} → ${counts["2020"][6]}</b><span>major hurricanes (Cat 3–5)</span></div>
+  </div>`);
+  return fig;
+}
+```
+
+::: {.callout-tip collapse="true"}
+## 🔎 Why do the PTO graph and NOAA's final records differ for 2020?
+
+After every season, the National Hurricane Center re-checks all its data and writes a final report on each storm. For 2020, two storms were **upgraded** after the season:
+
+- **Gamma** was upgraded from a tropical storm to a **Category 1 hurricane**.
+- **Zeta** was upgraded from Category 2 to a **Category 3 (major) hurricane** at its Louisiana landfall.
+
+So NOAA's final count for 2020 is **30 named storms, 14 hurricanes and 7 major hurricanes**. The PTO graph shows the earlier counts (30 named storms, 13 hurricanes, 6 major). For 2018, both agree: **15 named storms, 8 hurricanes, 2 major hurricanes** (Florence and Michael).
+
+The PTO graphs count only **named** storms, so the depression and subtropical columns are 0. (There were also a few weaker depressions that never got names.)
+:::
+
+```{ojs}
+//| echo: false
+{
+  // Named storms so far in the season: day each storm first reached tropical-storm strength
+  const doy = s => { const d = new Date(Date.UTC(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8))); return {d: new Date(Date.UTC(2000, d.getUTCMonth(), d.getUTCDate()))}; };
+  const data = ["2018", "2020"].flatMap(yr => u5oStorms[yr].map(s => ({yr, name: s.name, ...doy(s.named)})).sort((a, b) => a.d - b.d).map((d, i) => ({...d, n: i + 1})));
+  const chart = Plot.plot({
+    width: Math.max(300, width),
+    height: 300,
+    marginLeft: 40, marginRight: 20,
+    x: {type: "utc", domain: [new Date(Date.UTC(2000, 4, 1)), new Date(Date.UTC(2000, 11, 1))], tickFormat: d3.utcFormat("%b"), label: null, grid: true},
+    y: {label: "↑ Named storms so far", domain: [0, 31], grid: true},
+    color: {domain: ["2018", "2020"], range: ["#dc2626", "#2563eb"], legend: true},
+    marks: [
+      Plot.rectX([{a: new Date(Date.UTC(2000, 5, 1)), b: new Date(Date.UTC(2000, 10, 30))}], {x1: "a", x2: "b", y1: 0, y2: 31, fill: "#facc15", fillOpacity: 0.12}),
+      Plot.text([{x: new Date(Date.UTC(2000, 5, 4)), y: 29}], {x: "x", y: "y", text: () => "Official season: June 1 – Nov 30", textAnchor: "start", fill: "currentColor", fontSize: 11}),
+      Plot.line(data, {x: "d", y: "n", stroke: "yr", curve: "step-after", strokeWidth: 2.5}),
+      Plot.dot(data, {x: "d", y: "n", fill: "yr", r: 3}),
+      Plot.tip(data, Plot.pointer({x: "d", y: "n", title: d => `${d.yr}: #${d.n} ${d.name}, named ${d3.utcFormat("%b %-d")(d.d)}`}))
+    ]
+  });
+  const fig = html`<div style="margin:16px 0 6px;"><div style="font-weight:800;font-size:1.1em;">How fast did the names pile up?</div>
+    <div style="font-size:.9em;opacity:.85;margin-bottom:4px;">Each step is a new named storm (date it reached tropical-storm strength). Source: NOAA HURDAT2.</div></div>`;
+  fig.appendChild(chart);
+  return fig;
+}
+```
+
+```{ojs}
+//| echo: false
+u5oDetailRows("🔎 Details from the graphs", [
+  {id: "t-g-count", detail: "2018 had 15 named storms. 2020 had 30, twice as many and the most on record (the old record was 28, in 2005)."},
+  {id: "t-g-hur", detail: "Hurricanes: 8 in 2018 and 14 in 2020 (13 on the PTO graph)."},
+  {id: "t-g-major", detail: "Major hurricanes (Category 3–5): 2 in 2018 and 7 in 2020 (6 on the PTO graph), more than three times as many."},
+  {id: "t-g-ts", detail: "The tallest bar in both years is Tropical Storm: most storms never become hurricanes."},
+  {id: "t-g-early", detail: "Both seasons had a named storm before the official June 1 start (Alberto in May 2018; Arthur and Bertha in May 2020)."},
+  {id: "t-g-pace", detail: "In 2020 the names piled up much faster: by the end of September 2020 there were already 23 named storms, compared with 12 in 2018."}
+], "t", "Graphs", "#c2410c")
+```
+
+```{ojs}
+//| echo: false
+u5oSavedCount("t", "Graphs", 2)
+```
+
+```{ojs}
+//| echo: false
+u5oQuiz("u5o-tg-quiz", "📊 Check Your Understanding — Tropical Storm Graphs", [
+  {
+    q: "Which change from 2018 to 2020 is about FREQUENCY (how often storms happen)?",
+    options: ["Hurricane Iota's winds reached 155 mph", "The number of named storms doubled, from 15 to 30", "Michael was a Category 5", "Storms got lower pressure"],
+    correct: 1,
+    explanation: "Frequency is how many storms happen in a period of time. Wind speed, category and pressure describe intensity (how strong a storm is)."
+  },
+  {
+    q: "Which change from 2018 to 2020 is about INTENSITY?",
+    options: ["More storms got names", "There were more major hurricanes (2 → 7)", "The season started in May", "More storms crossed the Atlantic"],
+    correct: 1,
+    explanation: "A major hurricane is Category 3 or stronger (winds of at least 111 mph). More major hurricanes means more storms reached high intensity."
+  },
+  {
+    q: "A classmate says: \"2020 had twice as many storms as 2018, so storms are definitely increasing every year.\" What's the best response?",
+    options: ["Agree: two years prove a trend", "Two seasons can show a difference, but to find a trend we need many decades of data", "Disagree: storms never change", "Agree, because 2020 was in the news more"],
+    correct: 1,
+    explanation: "Seasons vary a lot from year to year. Scientists look at long records (and climate models) to find trends. That's what you'll do in the Hurricanes lesson."
+  }
+])
+```
+
+## Overall Story: Tropical Storm Seasons {#tropical-story}
+
+::: {.student-task}
+### ✏️ In your packet: What is the overall story of the 2018 and 2020 US tropical storm seasons? (p. 7)
+
+- Under the graphs, jot **2–3 observations** that tell the story of recent tropical storm seasons.
+- Take turns sharing; decide which **3–5 observations** are most important to the story, and **why it matters**.
+:::
+
+### ⭐ Detail Tracker: Tropical Storms
+
+```{ojs}
+//| echo: false
+u5oTracker("t")
+```
+
+::: {.key-idea .tropical}
+### 💡 One way to tell the tropical storm story
+
+1. 2020 had **twice as many named storms** as 2018 (30 vs. 15), a record, and so many that it ran out of names.
+2. 2020 also had **more hurricanes** (14 vs. 8) and **more than three times as many major hurricanes** (7 vs. 2).
+3. Storms **start in the warm tropics** (the south), move west, then curve north and northeast.
+4. Many more storms **hit the US** in 2020 (11 vs. 4), especially the Gulf Coast.
+5. **Why it matters:** hurricanes like Maria bring extreme winds, rain and flooding that destroy homes, knock out power for months and kill people.
+:::
+
+::: {.mind-blown}
+Putting both stories together (from your teacher's guide): over these two years, there were **more tropical storms and hurricanes**, but there was **not an increase in the number of winter storms**. The winter season did bring the **single most intense** winter storm, though. Is this the start of a trend, or just two unusual years?
+:::
+
+# Introduction to the Performance Task and Initial Ideas {#performance-task}
+
+::: {.explain-box}
+## 🎯 Will there be more frequent and more intense severe storms in the future?
+
+In this unit, your task will be to **write an argument** about how storms will change in **frequency** and **intensity** as global temperatures continue to rise.
+:::
+
+| Word | Means | Example from this page |
+|---|---|---|
+| **Frequency** | How **often** something happens | 15 named storms in 2018 vs. 30 in 2020 |
+| **Intensity** | How **strong** a storm is (wind speed, snowfall, pressure) | Ezekiel was Category 5 (more than 100 pts); Michael had 160 mph winds |
+| **Prediction** | What you think **will** happen, based on evidence | "I predict more major hurricanes because..." |
+| **Explanation** | **Why or how** something happens, using science ideas | "Hurricanes get their energy from warm ocean water, so..." |
+
+::: {.callout-note collapse="true"}
+## 🤔 Predictions, explanations and arguments
+
+- An **explanation** tells *how or why* something happens (like how a hurricane forms).
+- A **prediction** says what *will* happen. A good scientific prediction is built on an explanation: if you know *why* storms form, you can predict what happens when conditions change.
+- An **argument** makes a **claim** (your prediction) and backs it up with **evidence** and **reasoning**. It also takes on a **counterclaim**: evidence that points the other way. Your final task is an argument.
+:::
+
+### 💭 Initial Ideas: your predictions
+
+**Individually brainstorm ideas and predictions** for each prompt. There are no wrong answers yet. What matters is what you are **basing your prediction on**. Your answers save in this browser so you can come back and see how your thinking changes.
+
+```{ojs}
+//| echo: false
+u5oPredictions = {
+  const KEY = "u5o-predictions-v1";
+  const prompts = [
+    {id: "hf", q: "Will hurricanes happen more often in the future?", icon: "🌀", opts: ["Yes, more often", "About the same", "No, less often", "Not sure yet"]},
+    {id: "hi", q: "Will hurricanes be more intense in the future?", icon: "🌀", opts: ["Yes, more intense", "About the same", "No, less intense", "Not sure yet"]},
+    {id: "bf", q: "Will blizzards happen more often in the future?", icon: "🌨️", opts: ["Yes, more often", "About the same", "No, less often", "Not sure yet"]},
+    {id: "bi", q: "Will blizzards be more intense in the future?", icon: "🌨️", opts: ["Yes, more intense", "About the same", "No, less intense", "Not sure yet"]}
+  ];
+  const bases = ["2018 vs 2020 hurricane data", "2018–19 vs 2019–20 winter storm data", "Warmer air and oceans (Unit 4)", "The news or social media", "My own experience in NYC"];
+  let state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+  const wrap = html`<div style="margin:10px 0;"></div>`;
+  for (const p of prompts) {
+    const s = state[p.id] = Object.assign({pick: "", bases: [], why: ""}, state[p.id] || {});
+    const card = html`<div style="background:#fff;color:#1e1b4b;border-radius:12px;padding:14px 16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.1);border-left:6px solid ${p.icon === "🌀" ? "#c2410c" : "#0e7490"};">
+      <div style="font-weight:800;margin-bottom:8px;color:#1e1b4b;">${p.icon} ${p.q}</div>
+      <div class="opts" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+      <div style="font-weight:700;font-size:.92em;margin:10px 0 6px;color:#1e1b4b;">I'm basing this on:</div>
+      <div class="bases" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+      <textarea rows="2" placeholder="Because…" style="font-family:inherit;width:100%;box-sizing:border-box;margin-top:8px;padding:8px;border:2px solid #e2e8f0;border-radius:8px;font-size:.95em;color:#1e1b4b;background:#fff;"></textarea>
+    </div>`;
+    const color = p.icon === "🌀" ? "#c2410c" : "#0e7490";
+    const opts = card.querySelector(".opts"), bs = card.querySelector(".bases"), ta = card.querySelector("textarea");
+    ta.setAttribute("aria-label", "My reasoning: " + p.q);
+    const paint = () => {
+      opts.replaceChildren(...p.opts.map(o => u5oChip(o, s.pick === o, color, () => { s.pick = s.pick === o ? "" : o; save(); paint(); })));
+      bs.replaceChildren(...bases.map(b => {
+        const on = s.bases.includes(b);
+        const c = u5oChip(b, on, "#64748b", () => { s.bases = on ? s.bases.filter(x => x !== b) : [...s.bases, b]; save(); paint(); });
+        c.style.fontSize = ".82em"; c.style.minHeight = "36px";
+        return c;
+      }));
+    };
+    ta.value = s.why;
+    ta.oninput = () => { s.why = ta.value; save(); };
+    paint();
+    wrap.appendChild(card);
+  }
+  const bar = html`<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+    <button type="button" style="min-height:42px;padding:6px 18px;border:none;border-radius:50px;background:linear-gradient(135deg,#0e7490,#c2410c);color:#fff;font-weight:700;cursor:pointer;">📋 Copy my predictions</button>
+    <span style="font-size:.9em;"></span></div>`;
+  const msg = bar.querySelector("span");
+  bar.querySelector("button").onclick = async () => {
+    const text = "My initial predictions (Unit 5)\n\n" + prompts.map(p => {
+      const s = state[p.id];
+      return `${p.q}\n- Prediction: ${s.pick || "(not chosen yet)"}\n- Based on: ${s.bases.join("; ") || "(none chosen)"}\n- Because: ${s.why.trim() || "(not written yet)"}`;
+    }).join("\n\n");
+    try { await navigator.clipboard.writeText(text); msg.textContent = "✅ Copied! Paste it into your packet or notes."; }
+    catch (e) {
+      const tmp = document.createElement("textarea");
+      tmp.value = text; document.body.appendChild(tmp); tmp.select();
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch (e2) {}
+      tmp.remove();
+      msg.textContent = ok ? "✅ Copied!" : "⚠️ Couldn't copy here. Copy your predictions into your packet by hand.";
+    }
+  };
+  wrap.appendChild(bar);
+  return wrap;
+}
+```
+
+::: {.student-task}
+### ✏️ In your packet: Introduction to the Performance Task and Initial Ideas (p. 8)
+
+Individually brainstorm ideas and predictions in response to the prompts:
+
+- Will hurricanes happen **more often** in the future?
+- Will hurricanes be **more intense** in the future?
+- Will blizzards happen **more often** in the future?
+- Will blizzards be **more intense** in the future?
+
+Then exchange your best ideas with classmates. For each one, say **what you are basing your prediction on**.
+:::
+
+```{ojs}
+//| echo: false
+u5oQuiz("u5o-pt-quiz", "🎯 Check Your Understanding — The Performance Task", [
+  {
+    q: "\"Will blizzards happen more often as global temperatures rise?\" What is the independent variable (the thing that changes on its own)?",
+    options: ["How often blizzards happen", "Global temperature", "The amount of snow in NYC", "The names of the storms"],
+    correct: 1,
+    explanation: "Global temperature is what changes (independent variable). The number of blizzards per year is what might change in response (dependent variable). Every 'Connect to the Performance Task' page asks you to name these."
+  },
+  {
+    q: "Which is the strongest basis for a prediction about future hurricanes?",
+    options: ["One storm you saw on the news", "A feeling that storms are worse", "Long-term storm records plus an explanation of what hurricanes need to form, plus climate model projections", "The hurricane names for next year"],
+    correct: 2,
+    explanation: "A strong argument uses historical data, the conditions storms need to form, and climate model projections, and admits the limits of those models. That's exactly what the PTO asks for."
+  }
+])
+```
+
+### Revisiting the Performance Task {#revisiting-the-performance-task}
+
+After each lesson, you'll return to your PTO and use that lesson's evidence. Each "Connect to the Performance Task" page has the same three parts: **(1)** name the independent and dependent variables, **(2)** gather evidence in a table and build a model of how energy and matter flow in the storm, **(3)** write an argument with a claim **and** a counterclaim.
+
+| After this lesson | Your PTO prompt asks... |
+|---|---|
+| [Blizzards](unit5-blizzards.qmd) (pp. 9–14) | Choose: will the **frequency** (Task 1) or **intensity** (Task 2) of winter storms where you live increase, decrease, or stay the same as global temperatures increase? |
+| [Paths of Severe Storms](unit5-storm-paths.qmd) (pp. 15–16) | Will the **frequency** of winter storms per year where you live increase, decrease, or stay the same as global temperatures increase? |
+| [Hurricanes](unit5-hurricanes.qmd) (pp. 17–22) | Choose: will the **frequency** (Task 1) or **intensity** (Task 2) of hurricanes where you live increase, decrease, or stay the same as global temperatures increase? |
+
+You'll put it all together in the [Unit Closing](unit5-closing.qmd).
+
+### 🤔 Questions this story raises
+
+These are questions students usually ask after Tell the Story, and where you'll investigate them:
+
+| Question | Where you'll investigate it |
+|---|---|
+| What are some similarities and differences between hurricanes and blizzards? | [Blizzards](unit5-blizzards.qmd), [Hurricanes](unit5-hurricanes.qmd) |
+| What are some reasons that some storms are worse than others? (Why was Hurricane Sandy's flooding so bad?) | [Moon Phases (optional)](unit5-moon-phases.qmd) |
+| Why was the 2019–2020 winter storm season so intense? What causes high winds and snow? | [Blizzards](unit5-blizzards.qmd) |
+| Why do severe winter storms form in the Northeast? Why do storms travel the paths they do? How likely is a storm to hit where we live? | [Paths of Severe Storms](unit5-storm-paths.qmd) |
+| Why was the 2020 hurricane season so intense, and why were there more hurricanes? Why do hurricanes happen at certain times of year? | [Hurricanes](unit5-hurricanes.qmd) |
+| Have hurricanes and blizzards become more frequent and intense over the last few decades, not just recent years? | [Blizzards](unit5-blizzards.qmd), [Hurricanes](unit5-hurricanes.qmd) |
+| Will there be more frequent and/or more intense hurricanes and blizzards? | Every lesson, then the [Unit Closing](unit5-closing.qmd) |
+
+# Myth or Fact?
+
+```{=html}
+<div id="u5omf-widget" style="background:linear-gradient(135deg,#0b2545 0%,#13315c 50%,#1e3a8a 100%); color:white; padding:24px; border-radius:16px; margin:30px 0; font-family:'Inter',sans-serif; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.6em; margin:0 0 8px 0; color:#fff !important;">
+    🌀 Storms: Myths vs. Facts
+  </h2>
+  <p style="color:#cbd5e1; margin:0 0 20px 0; font-size:0.95em;">Decide whether each statement is a MYTH or a FACT!</p>
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; background:rgba(255,255,255,0.06); padding:12px 20px; border-radius:12px; margin-bottom:20px;">
+    <div id="u5omf-progress" style="color:#cbd5e1; font-size:0.9em;">Card 1 of 8</div>
+    <div style="color:#cbd5e1; font-size:0.9em;">Score: <span id="u5omf-score" style="color:#67e8f9; font-weight:700;">0</span> / <span id="u5omf-total">0</span></div>
+  </div>
+  <div id="u5omf-card" style="background:rgba(255,255,255,0.08); color:#fff; border-radius:14px; padding:24px; min-height:100px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:1.1em; font-weight:600; line-height:1.6; border:1.5px solid rgba(255,255,255,0.12);"></div>
+  <div style="display:flex; gap:12px; margin-top:16px;">
+    <button id="u5omf-myth" onclick="u5omfAnswer('Myth')" style="flex:1; min-height:44px; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#e17055,#d63031); color:white; font-size:1em; font-weight:700; cursor:pointer;">❌ MYTH</button>
+    <button id="u5omf-fact" onclick="u5omfAnswer('Fact')" style="flex:1; min-height:44px; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#00a383,#0891b2); color:white; font-size:1em; font-weight:700; cursor:pointer;">✅ FACT</button>
+  </div>
+  <div id="u5omf-feedback" style="margin-top:16px; padding:16px; border-radius:10px; display:none; font-size:0.95em; line-height:1.6; color:#fff;"></div>
+  <button id="u5omf-next" onclick="u5omfNext()" style="display:none; margin-top:12px; width:100%; min-height:44px; padding:12px; border:2px solid rgba(255,255,255,0.25); border-radius:10px; background:transparent; color:white; font-size:0.95em; font-weight:600; cursor:pointer;">Next Card →</button>
+  <div id="u5omf-done" style="display:none; text-align:center; padding:20px;">
+    <div style="font-size:2.5em; margin-bottom:10px;">🎉</div>
+    <div style="font-size:1.3em; font-weight:700;">All cards complete!</div>
+    <div style="color:#cbd5e1; margin:8px 0;">Final score: <span id="u5omf-final" style="color:#67e8f9; font-weight:700;"></span> / <span id="u5omf-count"></span></div>
+    <button onclick="u5omfRestart()" style="margin-top:12px; min-height:44px; padding:10px 24px; border:2px solid #67e8f9; border-radius:20px; background:transparent; color:#67e8f9; font-size:0.9em; cursor:pointer; font-weight:600;">Play Again</button>
+  </div>
+</div>
+<script>
+(function() {
+  var cards = [
+    {text: "The 2020 Atlantic hurricane season had more named storms than any season on record.", type: "Fact",
+     explanation: "2020 had 30 named storms, beating the old record of 28 set in 2005. It used up the regular name list and needed nine Greek letters."},
+    {text: "A blizzard is any storm that drops a lot of snow.", type: "Myth",
+     explanation: "The National Weather Service defines a blizzard by wind and visibility: winds or frequent gusts of 35 mph or more with snow that cuts visibility below 1/4 mile for at least 3 hours. A heavy, calm snowfall is not a blizzard."},
+    {text: "Atlantic hurricanes and tropical storms usually start near the equator's warm waters (low latitudes) and move away from it.", type: "Fact",
+     explanation: "On the track maps, almost every storm starts between about 10° and 25° N over warm tropical water, then moves west and curves north."},
+    {text: "Atlantic hurricane season only happens in August.", type: "Myth",
+     explanation: "The official season runs June 1 to November 30. Both 2018 and 2020 even had named storms in May, and 2020's last storm (Iota) formed in mid-November."},
+    {text: "Two seasons of storm data are enough to prove that storms are getting worse every year.", type: "Myth",
+     explanation: "Storm seasons vary a lot from year to year. To find a trend, scientists use many decades of records plus climate models. Two seasons are a starting point for questions."},
+    {text: "A hurricane's category (1–5) is based on its maximum sustained wind speed.", type: "Fact",
+     explanation: "That's the Saffir-Simpson scale. Category 3 and up (111 mph or more) are 'major' hurricanes. The winter storm graphs in your PTO use a different scale, based on snowfall."},
+    {text: "Most winter storms in the US travel from east to west.", type: "Myth",
+     explanation: "The PTO maps show tracks running west to east, often ending in the Northeast. You'll find out why (global winds) in Paths of Severe Storms."},
+    {text: "Hurricane Maria hit Puerto Rico as a weak tropical storm.", type: "Myth",
+     explanation: "Maria struck Puerto Rico on September 20, 2017 as a strong Category 4 hurricane with winds near 155 mph, knocking out power to the whole island."}
+  ];
+  var idx = 0, score = 0, answered = 0, cardAnswered = false;
+  function el(id) { return document.getElementById(id); }
+  function updateCard() {
+    if (idx >= cards.length) {
+      el('u5omf-card').style.display = 'none';
+      el('u5omf-myth').style.display = 'none';
+      el('u5omf-fact').style.display = 'none';
+      el('u5omf-feedback').style.display = 'none';
+      el('u5omf-next').style.display = 'none';
+      el('u5omf-done').style.display = 'block';
+      el('u5omf-final').textContent = score;
+      el('u5omf-count').textContent = cards.length;
+      return;
+    }
+    el('u5omf-card').textContent = cards[idx].text;
+    el('u5omf-progress').textContent = 'Card ' + (idx + 1) + ' of ' + cards.length;
+    el('u5omf-feedback').style.display = 'none';
+    el('u5omf-next').style.display = 'none';
+    el('u5omf-myth').disabled = false;
+    el('u5omf-fact').disabled = false;
+    el('u5omf-myth').style.opacity = '1';
+    el('u5omf-fact').style.opacity = '1';
+    cardAnswered = false;
+  }
+  window.u5omfAnswer = function(choice) {
+    if (cardAnswered) return;
+    cardAnswered = true;
+    answered++;
+    var card = cards[idx];
+    var correct = (choice === card.type);
+    if (correct) score++;
+    el('u5omf-score').textContent = score;
+    el('u5omf-total').textContent = answered;
+    var fb = el('u5omf-feedback');
+    fb.style.display = 'block';
+    fb.style.background = correct ? 'rgba(0,184,148,0.25)' : 'rgba(214,48,49,0.25)';
+    fb.style.border = '1px solid ' + (correct ? '#00b894' : '#e17055');
+    fb.innerHTML = '<strong>' + (correct ? '✅ Correct! ' : '❌ That\'s a ' + card.type + '! ') + '</strong>' + card.explanation;
+    el('u5omf-myth').disabled = true;
+    el('u5omf-fact').disabled = true;
+    el('u5omf-myth').style.opacity = (choice === 'Myth') ? '1' : '0.5';
+    el('u5omf-fact').style.opacity = (choice === 'Fact') ? '1' : '0.5';
+    el('u5omf-next').style.display = 'block';
+  };
+  window.u5omfNext = function() { idx++; updateCard(); };
+  window.u5omfRestart = function() {
+    idx = 0; score = 0; answered = 0;
+    el('u5omf-card').style.display = 'flex';
+    el('u5omf-myth').style.display = 'block';
+    el('u5omf-fact').style.display = 'block';
+    el('u5omf-done').style.display = 'none';
+    el('u5omf-score').textContent = '0';
+    el('u5omf-total').textContent = '0';
+    updateCard();
+  };
+  updateCard();
 })();
 </script>
 ```
-
-# Connecting to Unit 4
-
-In Unit 4, you learned that:
-
-- Human activities have increased atmospheric CO₂ from 280 ppm to over 420 ppm
-- This enhanced greenhouse effect is raising global temperatures
-- Positive feedback loops (ice-albedo, water vapor, permafrost) amplify warming
-- Climate models project continued warming throughout the 21st century
-
-::: {.check-understanding}
-### 🔗 Making Connections
-
-Now consider: **How might a warmer atmosphere and warmer oceans change storm behavior?**
-
-Write a brief hypothesis in your notebook. We'll revisit it at the end of the unit to see how your thinking has evolved.
-:::
-
-# What You'll Figure Out
-
-By the end of this unit, you will be able to:
-
-| Sequence | You Will Figure Out... |
-|----------|----------------------|
-| **Blizzards** | Wind is caused by uneven heating → pressure differences. Cold and warm air masses collide to produce precipitation. Mid-latitude cyclones become blizzards under certain conditions. |
-| **Storm Paths** | Global winds driven by uneven solar heating drive storm trajectories. Wind patterns may shift as temperatures rise. |
-| **Hurricanes** | Hurricanes get energy from warm ocean water. Ocean temperature seasonality explains hurricane season. |
-| **Closing** | You can construct an evidence-based argument about future storm changes in your region. |
-
-# Getting Started
-
-In the next chapter, we'll dive into our first investigative phenomenon: **Winter Storm Jonas** and the science behind blizzard formation. Get ready to think like a meteorologist! 🌨️
