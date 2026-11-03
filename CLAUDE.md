@@ -43,9 +43,13 @@ cd src-interactives/<app> && npm install && npm run build   # rebuild a React in
 
 ## How a chapter is built (current pattern)
 
-Recent work rebuilds each chapter around its curriculum **packet** (5E or 3E sequence,
-Performance Task Organizer for openings/closings). Follow an existing rebuilt chapter —
-e.g. `unit5-hurricanes-blizzards/unit5-hurricanes.qmd` — rather than inventing structure:
+Units 2–5 are rebuilt around their curriculum **packets** (Unit 1 and Unit 6 still use the
+older layout). The pattern got stricter over time: **Units 4–5 are the reference**; Units 2–3
+follow the same 5E skeleton but lack section anchors, use fewer answer callouts, and use
+unpinned `d3@7`. Follow `unit5-hurricanes-blizzards/unit5-hurricanes.qmd` or
+`unit4-climate-change/unit4-earth-sun-dynamics.qmd` rather than inventing structure.
+
+### Topic chapters (5E; optional chapters like Seasons and Moon Phases use 3E)
 
 1. YAML front matter: `title`, `subtitle` (the packet's guiding question), `toc: true`,
    `execute: echo: false`.
@@ -54,20 +58,30 @@ e.g. `unit5-hurricanes-blizzards/unit5-hurricanes.qmd` — rather than inventing
 3. Quiz jump button, big question, PE badges (e.g. `HS-ESS2-5`).
 4. A collapsed "📒 Using this chapter with your student packet" callout mapping each packet
    section to an anchor in the chapter.
-5. One `#` section per 5E phase, with `{#prefix-...}` anchors. Packet prompts go in
+5. One `#` section per 5E phase, with `{#prefix-...}` anchors (Units 4–5). Packet prompts go in
    `.student-task` boxes ("✏️ In your packet: …") followed by a collapsed
    "🔑 Check your thinking (try it first!)" callout.
-6. End with: summary, **Myth or Fact?** cards, then an **End-of-Chapter Quiz** (8–10 MCQs,
-   immediate explanatory feedback). Evaluate sections include a performance-task helper and
-   rubric checklist.
+6. Evaluate includes a rubric checklist and a "🔗 Connect to the Performance Task" helper.
+7. End with: `# Chapter Summary`, `# Myth or Fact?` cards, then `# End-of-Chapter Quiz`
+   (8–10 MCQs, immediate explanatory feedback).
 
-Conventions:
+### Openings and closings (built from the Performance Task Organizer)
+
+- **Opening** (`unitN-opening.qmd`): anchor phenomenon and "Tell the Story" texts/videos
+  as interactives, predictions/Detail Tracker tools, and Myth or Fact cards. Do Now,
+  Exit Slips, and Driving Question Board activities were deliberately removed.
+- **Closing** (`unitN-closing.qmd`): `# Evidence Review: Revisiting the Performance Task` →
+  `# Return to the Anchor Phenomenon` → `# Final Performance Task` → `# Unit Summary` →
+  `# End-of-Unit Quiz`. No Myth or Fact section.
+
+### Conventions
 
 - **Prefix everything per chapter** (CSS classes, element IDs, JS functions, and OJS
   variable names — e.g. `hu-`, `humf`, `bz-`, `sp-`, `u5o-`). OJS cells share one namespace
   per page, so duplicate names break rendering (see `fix_ojs.sh` for a past collision fix).
-- Load OJS libraries with **pinned versions**: `require("d3@7.9.0")`,
-  `require("@observablehq/plot@0.6.16")`, `require("topojson-client@3.1.0")`.
+- In new or rebuilt code, load OJS libraries with **pinned versions** (as Units 4–5 do):
+  `require("d3@7.9.0")`, `require("@observablehq/plot@0.6.16")`,
+  `require("topojson-client@3.1.0")`. Units 2–3 still use `d3@7`; leave them unless asked.
 - **Real data only** (NOAA, NASA, USGS, HURDAT2, ERSST, etc.), with the source cited in
   the chapter. Never fabricate or "simulate" data presented as real; label models and
   what-ifs as such. Recent commits explicitly removed fabricated tracks/simulated data.
