@@ -1,0 +1,1081 @@
+---
+title: "Extra Credit: From Slime to the Sublime"
+subtitle: "How did Earth stay fit for life for 4 billion years, and what does that tell us about life on other planets?"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: false
+    code-fold: true
+execute:
+  echo: false
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.ab-hero { background: linear-gradient(135deg, #0b1d3a 0%, #1f4e79 45%, #0f766e 100%); color: #fff; padding: 28px 24px; border-radius: 18px; margin: 10px 0 24px; box-shadow: 0 12px 34px rgba(15, 118, 110, 0.3); }
+.ab-hero h2 { font-family: 'Space Grotesk', sans-serif; color: #fff !important; margin: 0 0 8px; font-size: 1.7em; }
+.ab-hero p { margin: 6px 0; line-height: 1.6; }
+.ab-hero .ab-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-top: 16px; }
+.ab-hero .ab-step { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; padding: 12px 14px; }
+.ab-hero .ab-step b { display: block; font-size: 1.05em; margin-bottom: 4px; }
+.ab-hero a { color: #a7f3d0 !important; }
+
+.ab-big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.2em; font-weight: 800; background: linear-gradient(135deg, #0f766e 0%, #6d28d9 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 24px 0 12px; text-align: center; line-height: 1.2; }
+
+.ab-section { border-left: 6px solid #0f766e; background: #f0fdfa; color: #134e4a; padding: 14px 18px; border-radius: 0 12px 12px 0; margin: 16px 0; }
+.ab-section b { color: #0f172a; }
+.ab-before { background: #eef2ff; color: #1e1b4b; border-left: 6px solid #6366f1; padding: 14px 18px; border-radius: 0 12px 12px 0; margin: 16px 0; }
+.ab-quote { background: #fffbeb; color: #422006; border-left: 6px solid #f59e0b; padding: 14px 18px; border-radius: 0 12px 12px 0; margin: 16px 0; font-style: italic; }
+.ab-quote .ab-cite { display: block; font-style: normal; font-size: 0.85em; margin-top: 6px; color: #78350f; }
+.ab-key-idea { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #1a1a1a; padding: 18px 20px; margin: 18px 0; border-radius: 12px; border-left: 8px solid #ef4444; font-size: 1.05em; }
+.ab-connects { display: inline-block; background: #0f766e; color: #fff !important; padding: 4px 12px; border-radius: 999px; font-size: 0.8em; font-weight: 700; margin: 2px 4px 2px 0; text-decoration: none !important; }
+.ab-update { background: #f1f5f9; color: #0f172a; border: 1px dashed #64748b; padding: 12px 16px; border-radius: 10px; margin: 14px 0; font-size: 0.95em; }
+.ab-task { background: #fff3e0; color: #1a1a1a; border-left: 5px solid #ff9800; padding: 18px 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.ab-task h3 { margin-top: 0; color: #9a3412 !important; }
+.ab-pe-badge { display: inline-block; background: linear-gradient(135deg, #0f766e 0%, #6d28d9 100%); color: #fff; padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; margin: 4px; text-transform: uppercase; letter-spacing: 1px; }
+.ab-video { position: relative; width: 100%; padding-top: 56.25%; border-radius: 12px; overflow: hidden; margin: 12px 0 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+.ab-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.ab-table-wrap { overflow-x: auto; margin: 12px 0; }
+.ab-vocab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 16px 0; }
+.ab-flip { min-height: 120px; border: none; border-radius: 14px; padding: 16px; cursor: pointer; text-align: left; font-size: 0.95em; line-height: 1.5; background: linear-gradient(135deg, #1e3a8a, #0f766e); color: #fff; box-shadow: 0 6px 16px rgba(15,118,110,0.25); transition: transform .15s; }
+.ab-flip:hover { transform: translateY(-2px); }
+.ab-flip .ab-term { font-family: 'Space Grotesk', sans-serif; font-size: 1.25em; display: block; }
+.ab-flip .ab-hint { opacity: 0.75; font-size: 0.8em; display: block; margin-top: 8px; }
+.ab-flip.ab-flipped { background: #ffffff; color: #0f172a; border: 2px solid #0f766e; }
+.ab-check { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; min-height: 44px; border-radius: 8px; cursor: pointer; }
+.ab-check:hover { background: rgba(15,118,110,0.08); }
+.ab-check input { width: 22px; height: 22px; margin-top: 2px; flex-shrink: 0; accent-color: #0f766e; }
+
+.quarto-dark .ab-section { background: #0f2e2b; color: #ccfbf1; }
+.quarto-dark .ab-section b { color: #fff; }
+.quarto-dark .ab-before { background: #1e1b4b; color: #e0e7ff; }
+.quarto-dark .ab-quote { background: #3b2a06; color: #fef3c7; }
+.quarto-dark .ab-quote .ab-cite { color: #fcd34d; }
+.quarto-dark .ab-update { background: #1e293b; color: #e2e8f0; border-color: #94a3b8; }
+.quarto-dark .ab-task { background: #3a2a14; color: #fde7c7; }
+.quarto-dark .ab-task h3 { color: #fdba74 !important; }
+.quarto-dark .ab-flip.ab-flipped { background: #0f172a; color: #e2e8f0; }
+
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.4em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #0f766e !important; }
+.quarto-dark h2 { color: #5eead4 !important; }
+@media (max-width: 600px) { .ab-big-question { font-size: 1.6em; } h1 { font-size: 1.9em !important; } }
+</style>
+```
+
+<a class="quiz-jump-btn" href="#the-extra-credit-assignment">✏️ Jump to the Assignment ↓</a>
+
+<div class="ab-big-question">🦠➡️🧠 From Slime to the Sublime</div>
+
+<span class="ab-pe-badge">HS-ESS1-6</span>
+<span class="ab-pe-badge">HS-ESS2-7</span>
+<span class="ab-pe-badge">HS-ESS2-4</span>
+
+::: {.ab-hero}
+## ⭐ Extra Credit at a Glance
+
+Life on Earth started as **microbial slime** more than 3.5 billion years ago. It took about 4 billion years to get to animals, and the planet nearly froze solid (maybe twice) along the way. This assignment asks you to read **Chapter 4, "From slime to the sublime,"** from *Astrobiology: A Very Short Introduction* by David Catling, and use it to explain **why Earth stayed livable** and **what that means for finding life elsewhere.**
+
+::: {.ab-steps}
+::: {.ab-step}
+<b>1️⃣ Read</b>
+Read Chapter 4 from the copy your teacher gave you. Use the **Guided Reading** below as your study partner.
+:::
+::: {.ab-step}
+<b>2️⃣ Collect</b>
+Fill in the **Timeline Data Collector** as you read. You'll need those dates for your graph.
+:::
+::: {.ab-step}
+<b>3️⃣ Answer</b>
+Answer the **4 Analytical Reading Questions** in full sentences.
+:::
+::: {.ab-step}
+<b>4️⃣ Draw</b>
+Build the **annotated oxygen graph and timeline** by hand.
+:::
+:::
+
+📝 **Turn in your work on notebook paper or printer paper.** Your teacher will tell you the due date and how many points it is worth.
+:::
+
+::: {.callout-note collapse="true"}
+## 📒 How this page is organized
+
+| What you need | Where it is |
+|---|---|
+| Key words to know before you read | [Vocabulary Flip Cards](#vocabulary-flip-cards) |
+| Help reading each section of Chapter 4 | [Guided Reading](#guided-reading-chapter-4) (7 sections, same order as the chapter) |
+| Dates for your timeline | [Timeline Data Collector](#timeline-data-collector) |
+| The questions you turn in | [The Extra Credit Assignment](#the-extra-credit-assignment) |
+| The graph you draw | [Visual Task](#visual-task-oxygen-graph-timeline) |
+| Practice before you write | [Myth or Fact?](#myth-or-fact) and [Practice Quiz](#practice-quiz) |
+
+**About the reading:** This page does **not** reprint the chapter. It walks you through it in plain language so you can understand the ideas. The answers you turn in should come from **the chapter itself**, written in **your own words.**
+:::
+
+```{ojs}
+//| echo: false
+Plot = require("@observablehq/plot@0.6.16")
+d3 = require("d3@7.9.0")
+```
+
+# Vocabulary Flip Cards {#vocabulary-flip-cards}
+
+Tap a card to flip it. Try to say the meaning out loud **before** you flip.
+
+```{=html}
+<div class="ab-vocab-grid" id="ab-vocab"></div>
+<script>
+(function () {
+  var words = [
+    ["Ga / Ma", "Short for 'billions of years ago' (giga-annum) and 'millions of years ago' (mega-annum). 2.4 Ga = 2,400 Ma."],
+    ["Greenhouse effect", "Warming of a planet's surface because its atmosphere absorbs infrared (heat) radiation from the ground and sends some back down."],
+    ["Faint young Sun paradox", "The puzzle that early Earth had liquid water even though the young Sun was about 25% dimmer."],
+    ["Carbonate–silicate cycle", "A slow geologic cycle that removes CO₂ by rock weathering and returns it through volcanoes. It acts like Earth's thermostat."],
+    ["Negative feedback", "A change that causes a response that pushes back against the change, keeping a system steady."],
+    ["Reductant", "A chemical that uses up oxygen, like hydrogen, methane, or dissolved iron."],
+    ["Great Oxidation Event (GOE)", "When oxygen first built up in Earth's atmosphere, about 2.4–2.3 Ga."],
+    ["Banded iron formation (BIF)", "Striped, iron-rich sedimentary rock. Shows that early oceans held lots of dissolved iron that reacted with oxygen."],
+    ["Stromatolite", "Layered rock mound built by mats of microbes such as cyanobacteria."],
+    ["Eukaryote", "A complex cell with a nucleus. All large plants and animals are made of eukaryotic cells."],
+    ["Aerobic metabolism", "Getting energy from food using oxygen. Gives about 10 times more energy than anaerobic (no-oxygen) metabolism."],
+    ["Albedo", "The fraction of sunlight a surface reflects (0 to 1). Earth today ≈ 0.3; snowy sea ice ≈ 0.7."],
+    ["Snowball Earth", "The hypothesis that Earth's oceans froze over completely, all the way to the equator."],
+    ["Mass extinction", "An event in which a large share of species and families die out in a geologically short time."]
+  ];
+  var grid = document.getElementById("ab-vocab");
+  words.forEach(function (w) {
+    var b = document.createElement("button");
+    b.className = "ab-flip";
+    b.type = "button";
+    b.setAttribute("aria-pressed", "false");
+    function front() { b.innerHTML = '<span class="ab-term">' + w[0] + '</span><span class="ab-hint">Tap to see the meaning</span>'; }
+    function back() { b.innerHTML = '<strong>' + w[0] + ':</strong> ' + w[1]; }
+    front();
+    b.addEventListener("click", function () {
+      var on = b.classList.toggle("ab-flipped");
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+      on ? back() : front();
+    });
+    grid.appendChild(b);
+  });
+})();
+</script>
+```
+
+# Guided Reading: Chapter 4 {#guided-reading-chapter-4}
+
+Read each section of the chapter, then use the matching section here to check that you understood it. Each section has a **🎯 Before you read** question, a plain-language walkthrough, and badges that show which assignment question it helps with.
+
+## 1. How did Earth maintain an environment fit for life? {#ab-section-1}
+
+<a class="ab-connects" href="#q1-the-faint-young-sun-paradox">Helps with Q1</a> <a class="ab-connects" href="#q2-the-planetary-thermostat">Helps with Q2</a> <a class="ab-connects" href="#visual-task-oxygen-graph-timeline">Graph annotation 1</a>
+
+::: {.ab-before}
+🎯 **Before you read:** The Sun was about 25% dimmer when life began. Why didn't Earth's oceans freeze?
+:::
+
+### ☀️ Why was the young Sun dimmer?
+
+The Sun shines by **fusing hydrogen into helium** in its core. Every time four hydrogen nuclei become one helium nucleus, there are **fewer particles** in the core. The core gets squeezed by the material above it, **heats up**, and fusion runs **faster**. So the Sun slowly brightens: about **7–9% every billion years.** Astronomers check this by looking at Sun-like stars of different ages.
+
+### 🥶 The paradox
+
+If early Earth had **today's atmosphere**, it should have been frozen solid until about 2 billion years ago. But rocks say otherwise: **sedimentary rocks** made by water washing sediment into oceans show **liquid water at least 3.8 Ga.** That mismatch is the **faint young Sun paradox.**
+
+The chapter lists **three possible solutions.** Make sure you can name them:
+
+1. A **stronger greenhouse effect** in the past (the most likely answer).
+2. Early Earth was **darker** and absorbed more sunlight (little evidence).
+3. The young Sun was **more massive** and lost material to space, so it started bright (observations of young stars don't support this).
+
+### 🔥 Try it: How big a greenhouse did early Earth need?
+
+Without an atmosphere, Earth's surface would average about **−18 °C**. Today it averages **+15 °C**. The **33 °C** difference is our greenhouse effect. Move the slider back in time to see how the Sun's dimness changes the math.
+
+```{ojs}
+//| echo: false
+viewof abSunGa = Inputs.range([0, 4.5], {value: 3.5, step: 0.1, label: "Billions of years ago (Ga):"})
+```
+
+```{ojs}
+//| echo: false
+abSun = {
+  const t0 = 4.57;                            // age of the Sun today (Gyr)
+  const t = t0 - abSunGa;                     // Sun's age at that time
+  const L = 1 / (1 + 0.4 * (1 - t / t0));     // Gough (1981) solar luminosity model
+  const bareK = 255 * Math.pow(L, 0.25);      // no-atmosphere temperature, same albedo (0.3)
+  const bareC = bareK - 273.15;
+  const needed = 15 - bareC;                  // greenhouse warming needed to stay at +15 °C
+  return {L, bareC, needed};
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const pct = Math.round(abSun.L * 100);
+  const dim = 100 - pct;
+  const w = Math.min(width, 640);
+  const sunR = 30 + 40 * abSun.L;
+  const bars = [
+    {label: "Today's greenhouse", v: 33, c: "#94a3b8"},
+    {label: `Needed ${abSunGa.toFixed(1)} Ga`, v: abSun.needed, c: "#ef4444"}
+  ];
+  const maxV = 60;
+  return html`<div style="background:#0b1d3a;color:#fff;border-radius:16px;padding:18px;max-width:${w}px;font-family:Inter,sans-serif;">
+    <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+      <svg width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="Sun drawn at ${pct}% of today's brightness">
+        <defs><radialGradient id="abSunGrad"><stop offset="0%" stop-color="#fff7cc"/><stop offset="70%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></radialGradient></defs>
+        <circle cx="60" cy="60" r="${sunR}" fill="url(#abSunGrad)" opacity="${0.45 + 0.55 * abSun.L}"/>
+      </svg>
+      <div style="flex:1;min-width:200px;">
+        <div style="font-size:1.6em;font-weight:800;">Sun at ${pct}% of today</div>
+        <div style="opacity:.85;">${dim > 0 ? `${dim}% dimmer than today` : "Same as today"}</div>
+        <div style="margin-top:8px;">Bare-rock Earth (no atmosphere): <b>${abSun.bareC.toFixed(0)} °C</b></div>
+        <div>Greenhouse warming needed to stay at +15 °C: <b style="color:#fca5a5;">${abSun.needed.toFixed(0)} °C</b></div>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      ${bars.map(b => html`<div style="margin:6px 0;">
+        <div style="font-size:.85em;opacity:.85;">${b.label}: ${b.v.toFixed(0)} °C</div>
+        <div style="background:rgba(255,255,255,.12);border-radius:6px;height:16px;">
+          <div style="width:${Math.min(100, 100 * b.v / maxV)}%;background:${b.c};height:16px;border-radius:6px;"></div></div></div>`)}
+    </div>
+  </div>`;
+}
+```
+
+::: {.callout-tip collapse="true"}
+## 🔬 How this calculator works (it's a model)
+This is a **model**, not measured data. The Sun's brightness uses a standard formula from solar physics (Gough, 1981, *Solar Physics* 74:21–34), which gives a Sun about 23–25% dimmer 3.5 billion years ago. The bare-rock temperature assumes Earth reflects the same 30% of sunlight as today. At 3.5 Ga the model needs about **50 °C** of greenhouse warming, which matches the number in the chapter.
+:::
+
+### 🌫️ So what was the greenhouse made of?
+
+- Today, **water vapor** causes about two-thirds of the greenhouse effect, but water vapor **rains and snows out**. Its amount just follows the temperature. **CO₂ doesn't condense**, so CO₂ really sets the thermostat.
+- **Fossil soils (palaeosols)** limit late-Archaean CO₂ to at most tens to a hundred times pre-industrial levels. That's **not enough** on its own.
+- Before the Great Oxidation, air had **less than 1 ppm of oxygen**. Without oxygen to destroy it, **methane (CH₄)** made by microbes could build up to **thousands of ppm**. Methane, its breakdown product **ethane**, and CO₂, plus the water vapor they bring along, could keep early Earth warm.
+
+::: {.ab-update}
+📅 **Updated numbers:** The chapter (published 2013) says CO₂ was 390 ppm in 2010 and methane is 1.8 ppm. NOAA measurements now show CO₂ at Mauna Loa averaging about **425 ppm in 2024**, and global methane at about **1.9 ppm**. The ideas in the chapter are the same; the numbers have kept going up. ([NOAA Global Monitoring Laboratory](https://gml.noaa.gov/ccgg/trends/))
+:::
+
+### 🌡️ Earth's thermostat: the carbonate–silicate cycle {#ab-thermostat}
+
+Before life (and through much of Earth's history), **CO₂ controlled the greenhouse effect** through a slow geologic loop that works over about **a million years**:
+
+1. CO₂ dissolves in **rain** and **chemically weathers silicate rocks** on the continents.
+2. **Rivers** carry the dissolved carbon to the ocean, where it gets locked into **limestone (CaCO₃)** on the seafloor.
+3. **Plate tectonics** carries that seafloor into **subduction zones** (like the Nazca Plate sliding under Chile).
+4. Heat and pressure break down the carbonate, and **volcanoes and metamorphism release CO₂** back to the air.
+
+Press a button to watch the thermostat respond.
+
+```{ojs}
+//| echo: false
+viewof abThermo = Inputs.radio(["🔥 Earth gets too warm", "❄️ Earth gets too cold"], {value: "🔥 Earth gets too warm", label: "What happens if…"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const warm = abThermo.startsWith("🔥");
+  const w = Math.min(width, 620);
+  const steps = warm
+    ? ["Temperature goes UP", "More evaporation → more rain", "Faster weathering of silicate rock", "More CO₂ pulled out of the air into rivers and limestone", "Less CO₂ → weaker greenhouse", "Earth COOLS back down ✅"]
+    : ["Temperature goes DOWN", "Less evaporation → drier air, less rain", "Slower weathering of silicate rock", "Volcanoes keep adding CO₂, but less is removed", "CO₂ builds up → stronger greenhouse", "Earth WARMS back up ✅"];
+  const color = warm ? "#ef4444" : "#3b82f6";
+  const n = steps.length, cx = 50, cy = 50, r = 36;
+  const pts = steps.map((s, i) => {
+    const a = -Math.PI / 2 + i * 2 * Math.PI / n;
+    return {s, x: cx + r * Math.cos(a), y: cy + r * Math.sin(a)};
+  });
+  const node = document.createElement("div");
+  node.style.cssText = `max-width:${w}px;font-family:Inter,sans-serif;`;
+  node.innerHTML = `
+    <svg viewBox="0 0 100 100" style="width:100%;max-width:${w}px;height:auto;" role="img" aria-label="Feedback loop with ${n} steps, ending in the temperature returning to normal">
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="0.8" stroke-dasharray="2 1.5" opacity="0.6"/>
+      <text x="${cx}" y="${cy - 2}" text-anchor="middle" font-size="4.2" font-weight="700" fill="${color}">Negative</text>
+      <text x="${cx}" y="${cy + 3.5}" text-anchor="middle" font-size="4.2" font-weight="700" fill="${color}">feedback</text>
+      ${pts.map((p, i) => `
+        <g class="ab-thermo-step" style="opacity:0;transition:opacity .4s ${i * 0.45}s;">
+          <circle cx="${p.x}" cy="${p.y}" r="5.2" fill="${color}"/>
+          <text x="${p.x}" y="${p.y + 1.5}" text-anchor="middle" font-size="4" font-weight="800" fill="#fff">${i + 1}</text>
+        </g>`).join("")}
+    </svg>
+    <ol style="margin:6px 0 0 0;padding-left:22px;line-height:1.7;">
+      ${steps.map((s, i) => `<li class="ab-thermo-step" style="opacity:0;transition:opacity .4s ${i * 0.45}s;"><b>${s}</b></li>`).join("")}
+    </ol>`;
+  requestAnimationFrame(() => requestAnimationFrame(() =>
+    node.querySelectorAll(".ab-thermo-step").forEach(el => el.style.opacity = 1)));
+  return node;
+}
+```
+
+::: {.ab-key-idea}
+🔑 **Key idea:** The carbonate–silicate cycle is a **negative feedback**: whichever way the temperature drifts, the cycle pushes it back. Without **plate tectonics** returning buried carbon through subduction and volcanoes, weathering would eventually pull all the CO₂ out of the air and Earth would freeze.
+:::
+
+::: {.callout-warning collapse="true"}
+## ⚠️ Two cautions from the chapter
+- The cycle is **far too slow** (about a million years) to cancel out today's human-caused warming.
+- On the very early Earth, the mantle was **hotter** (more radioactive decay), so plate tectonics may have worked differently. Scientists still debate how it worked then.
+:::
+
+## 2. The Great Oxidation Event: a step towards complex life {#ab-section-2}
+
+<a class="ab-connects" href="#q3-catastrophes-and-biological-innovations">Helps with Q3</a> <a class="ab-connects" href="#visual-task-oxygen-graph-timeline">Graph: GOE, cyanobacteria, BIFs</a>
+
+::: {.ab-before}
+🎯 **Before you read:** Cyanobacteria were making oxygen by about 2.7–2.8 Ga. So why didn't oxygen fill the air until about 2.4 Ga?
+:::
+
+<div class="ab-video">
+<iframe src="https://www.youtube-nocookie.com/embed/qERdL8uHSgI" title="PBS Eons: That Time Oxygen Almost Killed Everything" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+*🎬 Optional video: PBS Eons, "That Time Oxygen Almost Killed Everything."*
+
+- **Almost all oxygen comes from life.** In **oxygenic photosynthesis**, cyanobacteria, algae, and plants split water and release O₂ as waste. (An older kind, **anoxygenic photosynthesis**, uses hydrogen, H₂S, or iron instead and makes no oxygen.)
+- **Oxygen was used up as fast as it was made.** **Reductants** from volcanoes and seafloor vents (hydrogen, carbon monoxide, methane) and **dissolved iron** in the ocean reacted with it. That iron left behind **banded iron formations.**
+- **Photosynthesis is mostly a zero-sum game.** CO₂ + H₂O + sunlight → CH₂O (organic matter) + O₂, and that reaction easily runs backward when things rot. Only when organic carbon gets **buried in sediment** (about 0.2% today) is an O₂ molecule **freed for good.**
+- **Tipping point:** When the flow of reductants dropped **below** the oxygen freed by burial, oxygen flooded the air. The chapter compares it to an **acid–base titration** where the solution suddenly changes color. Scientists call this a **redox titration.**
+
+### ⚗️ Try it: The redox titration tipping point
+
+This is a **conceptual model** (not real data). Over Earth history, hydrogen escaping to space slowly made the planet's rocks less able to soak up oxygen. Drag the slider to lower the reductant supply and find the tipping point.
+
+```{ojs}
+//| echo: false
+viewof abRed = Inputs.range([0, 100], {value: 85, step: 1, label: "Reductant supply (relative units):"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const oxySource = 50;                         // oxygen freed by organic burial (held constant)
+  const net = oxySource - abRed;
+  const oxic = net > 0;
+  const w = Math.min(width, 620);
+  const sky = oxic ? "linear-gradient(#60a5fa,#bfdbfe)" : "linear-gradient(#d97706,#fde68a)";
+  return html`<div style="max-width:${w}px;font-family:Inter,sans-serif;border-radius:16px;overflow:hidden;border:2px solid ${oxic ? "#2563eb" : "#b45309"};">
+    <div style="background:${sky};padding:16px;color:#111827;">
+      <div style="font-weight:800;font-size:1.3em;">${oxic ? "🌍 Oxygenated atmosphere!" : "🟠 Anoxic atmosphere (hazy, methane-rich)"}</div>
+      <div style="margin-top:4px;">${oxic
+        ? "Oxygen from buried carbon now beats the reductants. O₂ builds up, an ozone layer forms, and red beds start rusting on land."
+        : "Reductants (H₂, CO, CH₄, dissolved iron) soak up every bit of O₂ that photosynthesis frees. Less than 1 ppm O₂ reaches the air."}</div>
+    </div>
+    <div style="background:#fff;color:#111827;padding:14px;">
+      <div style="font-size:.9em;">O₂ freed by burial of organic carbon: <b>${oxySource}</b></div>
+      <div style="background:#e5e7eb;border-radius:6px;height:14px;margin:4px 0 10px;"><div style="width:${oxySource}%;height:14px;border-radius:6px;background:#22c55e;"></div></div>
+      <div style="font-size:.9em;">O₂ eaten by reductants: <b>${abRed}</b></div>
+      <div style="background:#e5e7eb;border-radius:6px;height:14px;margin:4px 0 10px;"><div style="width:${abRed}%;height:14px;border-radius:6px;background:#b45309;"></div></div>
+      <div style="font-size:.9em;">${oxic ? "✅ Source > sink. You crossed the tipping point." : "❌ Sink ≥ source. Keep lowering the reductants…"}</div>
+    </div>
+  </div>`;
+}
+```
+
+### 🕵️ Evidence the GOE happened
+
+| Clue in the rocks | What it tells us |
+|---|---|
+| **Red beds** appear on land | Iron on continents started rusting in oxygen |
+| A special **sulfur isotope signal** disappears | Before the GOE, UV light made sulfur particles that "fell from the sky." Oxygen stopped that. |
+| **Ozone layer** forms (20–30 km up) | O₂ split by sunlight makes O₃, which blocks harmful UV |
+| Oxygen only reached **0.2–2%** | Not today's 21%. Not enough for large animals yet. |
+
+::: {.callout-tip collapse="true"}
+## 💭 Why did reductants decrease? (the chapter's leading idea)
+Methane and hydrogen in an oxygen-free atmosphere carried **hydrogen up to space**, where it escaped. Since that hydrogen originally came from **water (H₂O)**, the oxygen got **left behind** in Earth's rocks. Over time, the rocks became more oxidized, so they released fewer reductants.
+:::
+
+## 3. A boring billion years ended by the advent of animal life {#ab-section-3}
+
+<a class="ab-connects" href="#q3-catastrophes-and-biological-innovations">Helps with Q3</a> <a class="ab-connects" href="#visual-task-oxygen-graph-timeline">Graph: eukaryotes, 2nd rise, Cambrian</a>
+
+::: {.ab-before}
+🎯 **Before you read:** If oxygen showed up 2.4 Ga, why did animals wait until about 0.58 Ga?
+:::
+
+- From about **1.8 to 0.8 Ga**, oxygen stayed stuck at **0.2–2%**. Deep water was **anoxic** and often full of iron or toxic hydrogen sulfide. Evolution moved so slowly that scientists call it the **"boring billion."**
+- But it wasn't totally boring: **Grypania** (coiled, probably seaweed, ~1.9 Ga), **acritarchs** (possibly algal cysts, ~1.8 Ga), and **red algae** (~1.2 Ga), likely some of the first organisms to reproduce **sexually.** (Today's red algae give us agar and the nori wrapped around sushi!)
+- **Second rise of oxygen:** from about **750 to 580 Ma**, oxygen climbed above **3%** and the deep sea became oxygenated.
+- **Ediacaran biota** (after 580 Ma): soft, mouthless creatures shaped like pizzas or fronds, absorbing food through their skin.
+- **Cambrian Explosion** (starting ~541 Ma): most modern animal groups appear within 10–30 million years, many with **hard skeletons.** Tiny swimming *Pikaia* may be related to the ancestors of all vertebrates, **including you.**
+- **Third rise of oxygen** (~400 Ma): **vascular plants** with wood and roots spread over land. Afterward, O₂ stayed between **10% and 30%.**
+
+::: {.ab-update}
+📅 **Updated date:** The chapter uses **541 Ma** for the start of the Cambrian. Geologists have since refined it to **538.8 Ma** (International Commission on Stratigraphy, 2023). Either number is fine for your graph. Just label it.
+:::
+
+## 4. Snowball Earth or Waterbelt Earth? {#ab-section-4}
+
+<a class="ab-connects" href="#q3-catastrophes-and-biological-innovations">Helps with Q3</a> <a class="ab-connects" href="#visual-task-oxygen-graph-timeline">Graph annotation 3</a>
+
+::: {.ab-before}
+🎯 **Before you read:** How can a few glaciers turn into a planet covered in ice?
+:::
+
+<div class="ab-video">
+<iframe src="https://www.youtube-nocookie.com/embed/4ONwQV26L-k" title="PBS Eons: How Volcanoes Froze the Earth (Twice)" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+*🎬 Optional video: PBS Eons, "How Volcanoes Froze the Earth (Twice)."*
+
+Worldwide glaciations happened right around **both rises of oxygen**, like **bookends** around the boring billion:
+
+| Glaciation group | When (from the chapter) |
+|---|---|
+| **Palaeoproterozoic** | 3–4 glaciations, **2.45–2.22 Ga** (with the GOE) |
+| **Neoproterozoic** | Two big ones at **715 Ma** and **635 Ma**, a small one at **582 Ma** (with the 2nd O₂ rise) |
+
+**Evidence of ice:** **tillite** (jumbled glacier rock), **striations** (scratches), **dropstones** (rocks dropped from icebergs into sediment), and **magnetic minerals** in rocks that point **parallel to the ground**, which shows the rocks formed near the **equator.**
+
+### 🧊 Try it: The ice-albedo runaway
+
+In the 1960s, **Mikhail Budyko** calculated that if ice reached closer to the equator than about **30° latitude**, Earth would freeze completely. Ice reflects more sunlight (higher **albedo**), so the planet cools, so more ice forms, and so on. Drag the ice edge toward the equator.
+
+```{ojs}
+//| echo: false
+viewof abIce = Inputs.range([0, 90], {value: 70, step: 1, label: "Ice edge latitude (°):"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const rad = abIce * Math.PI / 180;
+  const fIce = 1 - Math.sin(rad);               // fraction of Earth's surface poleward of the ice edge
+  const albedo = 0.3 + 0.3 * fIce;              // simplified: ice-covered areas reflect ~0.6 vs ~0.3
+  const absorbed = (1 - albedo) / 0.7;          // compared to today
+  const runaway = abIce < 30;
+  const w = Math.min(width, 620);
+  const R = 70, cx = 90, cy = 90;
+  const yEdge = R * Math.sin(rad);
+  return html`<div style="max-width:${w}px;font-family:Inter,sans-serif;background:#0b1d3a;color:#fff;border-radius:16px;padding:16px;">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;">
+      <svg width="180" height="180" viewBox="0 0 180 180" role="img" aria-label="Earth with ice reaching ${abIce} degrees latitude in both hemispheres">
+        <defs><clipPath id="abGlobeClip"><circle cx="${cx}" cy="${cy}" r="${R}"/></clipPath></defs>
+        <circle cx="${cx}" cy="${cy}" r="${R}" fill="#1d4ed8"/>
+        <g clip-path="url(#abGlobeClip)">
+          <rect x="0" y="0" width="180" height="${cy - yEdge}" fill="#e0f2fe"/>
+          <rect x="0" y="${cy + yEdge}" width="180" height="${180}" fill="#e0f2fe"/>
+        </g>
+        <line x1="${cx - R}" y1="${cy}" x2="${cx + R}" y2="${cy}" stroke="#fbbf24" stroke-dasharray="3 3"/>
+        <line x1="${cx - R * Math.cos(Math.PI / 6)}" y1="${cy - R / 2}" x2="${cx + R * Math.cos(Math.PI / 6)}" y2="${cy - R / 2}" stroke="#f87171" stroke-dasharray="2 3"/>
+        <line x1="${cx - R * Math.cos(Math.PI / 6)}" y1="${cy + R / 2}" x2="${cx + R * Math.cos(Math.PI / 6)}" y2="${cy + R / 2}" stroke="#f87171" stroke-dasharray="2 3"/>
+        <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#94a3b8"/>
+      </svg>
+      <div style="flex:1;min-width:200px;line-height:1.7;">
+        <div>🧊 Surface covered by ice: <b>${Math.round(fIce * 100)}%</b></div>
+        <div>🪞 Planet albedo (model): <b>${albedo.toFixed(2)}</b></div>
+        <div>☀️ Sunlight absorbed vs. today: <b>${Math.round(absorbed * 100)}%</b></div>
+        <div style="font-size:.8em;opacity:.75;">Red dashed lines = 30° (Budyko's limit). Yellow = equator.</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;padding:12px;border-radius:10px;background:${runaway ? "#7f1d1d" : "#064e3b"};">
+      ${runaway
+        ? "🚨 <b>Runaway!</b> Past 30°, the extra reflected sunlight cools Earth faster than the ice edge can stabilize. Budyko's model predicts the whole planet freezes: about −35 °C on average, with ice 1.5 km thick at the equator."
+        : "✅ Stable (for now). Ice still covers less than half of Earth's surface, so the planet absorbs enough sunlight to hold the ice edge in place."}
+    </div>
+  </div>`;
+}
+```
+
+::: {.callout-tip collapse="true"}
+## 🔬 About this model
+This is a **simplified model** for learning, not a climate simulation. It uses the fact that the area of a sphere poleward of latitude φ is 1 − sin φ, and assumes ice-covered areas reflect about 0.6 of sunlight (bare sea ice ≈ 0.5, snowy ice ≈ 0.7, according to the chapter) and everything else about 0.3. The 30° runaway threshold comes from Budyko's calculation described in the chapter.
+:::
+
+**Getting out of a snowball:** Joe Kirschvink (who coined "Snowball Earth") proposed that **volcanoes kept venting CO₂.** With no rain or open ocean to remove it, CO₂ built up over **a few million years** until the greenhouse melted the ice. **Dark volcanic ash and dust** on the ice helped too. Then the runaway ran **in reverse.** Thick **cap carbonate** rocks sitting right on top of glacial deposits may be the leftover CO₂.
+
+**The debate:** If the ocean was totally frozen, how did **algae that need sunlight** survive? Some computer models predict a **Waterbelt Earth** with a strip of open tropical ocean instead.
+
+::: {.ab-key-idea}
+🔑 **Key idea:** Both snowball episodes line up with **rises in oxygen.** Oxygen destroys **methane** (they react with each other), so more O₂ meant a **weaker greenhouse.** Continents bunched in the rainy tropics also sped up weathering and pulled down CO₂. The lesson for astrobiology: **life on an Earth-like planet is resilient.** It made it through, and animals appeared soon after.
+:::
+
+## 5. On the occurrence of advanced life {#ab-section-5}
+
+<a class="ab-connects" href="#q3-catastrophes-and-biological-innovations">Helps with Q3</a> <a class="ab-connects" href="#q4-astrobiological-implications-the-drake-equation">Helps with Q4</a>
+
+::: {.ab-before}
+🎯 **Before you read:** What would another planet need before it could have animals?
+:::
+
+The chapter names **two hurdles** that life had to clear to become complex. Can you find both in the chapter? (They are the answer to part of **Q3**, so they're not listed here!) Use these clues:
+
+- 🧫 **Hurdle clue 1:** Think about the *kind of cell* that can turn into many specialized cell types, like liver cells versus brain cells.
+- 💨 **Hurdle clue 2:** Think about what an animal needs to **grow large and move.** Look for the number "**ten times**" and the number "**3 per cent**."
+
+More big ideas from this section:
+
+- **Why not fluorine or chlorine** instead of oxygen? Fluorine **explodes** with organic matter; chlorine makes **bleach.** Oxygen is "reactive enough but not too aggressive."
+- **Oxygenation time:** how long a planet takes to build enough oxygen for animals. On Earth: **about 4 billion years.** If a planet needs more than **12 billion years**, its Sun-like star becomes a **red giant** first, and the planet never gets beyond "microbial slime."
+
+## 6. Trends in evolution? The lesson of mass extinctions {#ab-section-6}
+
+<a class="ab-connects" href="#q4-astrobiological-implications-the-drake-equation">Helps with Q4</a>
+
+::: {.ab-before}
+🎯 **Before you read:** Is evolution a ladder that leads straight to humans?
+:::
+
+- **No.** Species come and go, and **mass extinctions** prune life again and again. A mass extinction is when **more than 25% of families** disappear.
+- Life did trend toward **using more of Earth's resources**: plant spores on land ~470 Ma, insects ~400 Ma, amphibians ~365 Ma.
+- The **coelom** (fluid-filled body cavity) and **hard skeletons** helped animals move, starting a **predator–prey arms race** that fed the Cambrian Explosion.
+
+```{ojs}
+//| echo: false
+abExtinctions = [
+  {name: "Permian–Triassic (\"Great Dying\")", ma: 251.9, cause: "Huge Siberian volcanic eruptions burned through coal, releasing CO₂ and methane → warming, ocean acidification, anoxic oceans, possibly toxic H₂S", loss: "Up to 95% of marine species; 70–80% of land animals"},
+  {name: "Cretaceous–Paleogene (K–Pg)", ma: 66.0, cause: "~10 km asteroid hit Chicxulub, Mexico → wildfires, acid rain, ozone damage, sunlight blocked by sulfate particles, cooling", loss: "65–75% of all species, including non-bird dinosaurs"}
+]
+```
+
+```{ojs}
+//| echo: false
+html`<div class="ab-table-wrap"><table class="table" style="min-width:520px;">
+  <thead><tr><th>Event</th><th>When</th><th>Cause (from the chapter)</th><th>What was lost</th></tr></thead>
+  <tbody>${abExtinctions.map(d => html`<tr><td><b>${d.name}</b></td><td>${d.ma} Ma</td><td>${d.cause}</td><td>${d.loss}</td></tr>`)}</tbody>
+</table></div>`
+```
+
+::: {.ab-update}
+📅 **Updated dates:** The chapter rounds these to **251 Ma** and **65 Ma.** The table uses current dates from the International Commission on Stratigraphy (**251.9 Ma** and **66.0 Ma**). You may see either in different books.
+:::
+
+::: {.ab-quote}
+"You are reading this book because of the Chicxulub impactor."
+<span class="ab-cite">Catling, *Astrobiology: A Very Short Introduction*, Ch. 4. With the dinosaurs gone, mammals took over.</span>
+:::
+
+**The big catch for aliens:** Impacts like Chicxulub hit Earth about **every 100 million years** (give or take a factor of a few). So even if an Earth-like planet stays livable, **any civilization on it might not last long.** That idea feeds right into the Drake Equation.
+
+## 7. Bonus: The Drake Equation connection {#ab-section-7}
+
+<a class="ab-connects" href="#q4-astrobiological-implications-the-drake-equation">Helps with Q4</a>
+
+The chapter ends by pointing to the **search for extraterrestrial intelligence.** In 1961, astronomer Frank Drake wrote an equation to organize the question *"How many civilizations in our galaxy could we talk to?"*
+
+$$N = R_* \times f_p \times n_e \times f_l \times f_i \times f_c \times L$$
+
+Every factor is a **guess** for now, and different scientists pick very different numbers. Play with the sliders. Which factors does Chapter 4 give you evidence about?
+
+```{ojs}
+//| echo: false
+viewof abDrake = Inputs.form({
+  R: Inputs.range([0.5, 10], {value: 1.5, step: 0.5, label: "R* new stars per year"}),
+  fp: Inputs.range([0, 1], {value: 1, step: 0.05, label: "fp fraction with planets"}),
+  ne: Inputs.range([0, 1], {value: 0.2, step: 0.05, label: "ne livable planets per system"}),
+  fl: Inputs.range([0, 1], {value: 0.5, step: 0.05, label: "fl where life starts"}),
+  fi: Inputs.range([0, 1], {value: 0.05, step: 0.01, label: "fi life gets complex & intelligent"}),
+  fc: Inputs.range([0, 1], {value: 0.2, step: 0.05, label: "fc see note below"}),
+  L: Inputs.range([100, 1000000], {value: 10000, step: 100, label: "L civilization lifespan (years)"})
+})
+```
+
+```{ojs}
+//| echo: false
+{
+  const d = abDrake;
+  const N = d.R * d.fp * d.ne * d.fl * d.fi * d.fc * d.L;
+  const msg = N < 1 ? "Less than 1: we might be alone in the galaxy right now." : N < 100 ? "A handful of civilizations, spread across 100,000 light-years." : "A crowded galaxy! So why haven't we heard from anyone?";
+  return html`<div style="background:linear-gradient(135deg,#1e1b4b,#0f766e);color:#fff;border-radius:16px;padding:18px;max-width:${Math.min(width, 620)}px;font-family:Inter,sans-serif;">
+    <div style="font-size:.9em;opacity:.85;">Your estimate of N, civilizations in the Milky Way we could detect:</div>
+    <div style="font-size:2.4em;font-weight:800;">${N < 10 ? N.toFixed(2) : Math.round(N).toLocaleString()}</div>
+    <div>${msg}</div>
+  </div>`;
+}
+```
+
+::: {.callout-important}
+## ⚠️ Heads-up about "f~c~" in your assignment
+In Drake's original equation, **f~c~** means the fraction of intelligent civilizations that develop technology we could **detect** (like radio). Your extra credit question uses **f~c~** for *the fraction of planets where complex animal life develops.* Both are fair ways to break up the problem. **Answer Q4 using your assignment's meaning**, and you can earn bonus respect by mentioning the difference!
+:::
+
+::: {.callout-tip collapse="true"}
+## 💡 Thinking prompts for Q4 (not answers!)
+- **For f~c~:** Earth had life for ~3.5 billion years, but animals for only ~0.6 billion. What does Earth's "oxygenation time" suggest about how common complex life might be? What if a planet's oxygenation time is longer than its star's lifetime?
+- **For L:** How often do civilization-ending catastrophes happen, according to the chapter? What does that suggest about how long a civilization might last compared with the age of the galaxy?
+- Try setting **fi** or **L** very small on the calculator. What happens to N?
+:::
+
+# Timeline Data Collector {#timeline-data-collector}
+
+As you read, type the date the **chapter** gives for each event (in **Ga**, billions of years ago; e.g. 580 Ma = **0.58** Ga). Press **Check** to compare. Your entries save on this device so you can come back later.
+
+```{=html}
+<div id="ab-collector" style="font-family:Inter,sans-serif;"></div>
+<script>
+(function () {
+  var events = [
+    {id: "water", label: "Oldest evidence of liquid water", ga: 3.8, lo: 3.7, hi: 3.9, note: "Sedimentary rocks show liquid water by at least 3.8 Ga."},
+    {id: "cyano", label: "First signs of photosynthetic oxygen (cyanobacteria)", ga: 2.75, lo: 2.6, hi: 2.9, note: "The chapter gives about 2.7–2.8 Ga (Tumbiana stromatolites, Australia). Your Coevolution chapter dated photosynthesis to ~3.4 Ga; scientists still debate when oxygen-making began."},
+    {id: "bif", label: "Banded iron formations deposited", ga: 2.5, lo: 1.8, hi: 3.8, note: "The chapter says BIFs date from the Archaean (before 2.5 Ga). Your Coevolution chapter gives roughly 3.8–1.85 Ga. Draw it as a long span, not a point."},
+    {id: "goe", label: "Great Oxidation Event", ga: 2.4, lo: 2.3, hi: 2.45, note: "2.4–2.3 Ga. Oxygen rises to 0.2–2%."},
+    {id: "pglac", label: "Palaeoproterozoic glaciations (Snowball #1)", ga: 2.35, lo: 2.2, hi: 2.46, note: "Three or four glaciations, 2.45–2.22 Ga."},
+    {id: "euk", label: "Early eukaryote fossils (Grypania, acritarchs)", ga: 1.85, lo: 1.7, hi: 2.1, note: "Grypania ~1.9 Ga, acritarchs ~1.8 Ga. The chapter gives no single 'first eukaryote' date; ~1.9–2.0 Ga is a reasonable label."},
+    {id: "boring", label: "Start of the 'boring billion'", ga: 1.8, lo: 1.7, hi: 1.9, note: "The boring billion runs from 1.8 to 0.8 Ga."},
+    {id: "red", label: "Red algae (sexual reproduction)", ga: 1.2, lo: 1.1, hi: 1.3, note: "About 1.2 Ga."},
+    {id: "rise2", label: "Second rise of oxygen begins", ga: 0.75, lo: 0.7, hi: 0.8, note: "Starts ~750 Ma, reaching >3% by ~580 Ma."},
+    {id: "nglac", label: "Neoproterozoic glaciations (Snowball #2)", ga: 0.675, lo: 0.58, hi: 0.72, note: "Big ones at 715 and 635 Ma; a small one at 582 Ma."},
+    {id: "edi", label: "Ediacaran biota", ga: 0.58, lo: 0.55, hi: 0.6, note: "After about 580 Ma."},
+    {id: "camb", label: "Cambrian Explosion", ga: 0.541, lo: 0.52, hi: 0.55, note: "541 Ma in the chapter (now 538.8 Ma)."},
+    {id: "rise3", label: "Third rise of oxygen (vascular land plants)", ga: 0.4, lo: 0.38, hi: 0.42, note: "Around 400 Ma. O₂ then stays at 10–30%."},
+    {id: "pt", label: "Permian–Triassic mass extinction", ga: 0.251, lo: 0.245, hi: 0.255, note: "251 Ma in the chapter (now 251.9 Ma)."},
+    {id: "kpg", label: "Cretaceous–Paleogene (dinosaur) extinction", ga: 0.065, lo: 0.06, hi: 0.07, note: "65 Ma in the chapter (now 66.0 Ma)."}
+  ];
+  var KEY = "ab-collector-v1";
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { saved = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {} }
+  var root = document.getElementById("ab-collector");
+  var wrap = document.createElement("div");
+  wrap.style.cssText = "display:flex;flex-direction:column;gap:10px;";
+  events.forEach(function (ev, i) {
+    var row = document.createElement("div");
+    row.style.cssText = "background:#f8fafc;color:#0f172a;border:1px solid #cbd5e1;border-radius:12px;padding:12px 14px;";
+    row.innerHTML =
+      '<label for="ab-in-' + ev.id + '" style="font-weight:700;display:block;margin-bottom:6px;">' + (i + 1) + '. ' + ev.label + '</label>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">' +
+      '<input id="ab-in-' + ev.id + '" type="number" step="0.001" min="0" max="4.6" inputmode="decimal" placeholder="Ga" style="width:110px;min-height:44px;padding:8px 10px;border:2px solid #94a3b8;border-radius:8px;font-size:1em;background:#fff;color:#0f172a;">' +
+      '<span>Ga</span>' +
+      '<button type="button" style="min-height:44px;padding:8px 18px;border:none;border-radius:8px;background:#0f766e;color:#fff;font-weight:700;cursor:pointer;">Check</button>' +
+      '</div><div class="ab-fb" style="margin-top:8px;font-size:.92em;display:none;"></div>';
+    var input = row.querySelector("input"), btn = row.querySelector("button"), fb = row.querySelector(".ab-fb");
+    if (saved[ev.id] !== undefined) input.value = saved[ev.id];
+    input.addEventListener("input", function () { saved[ev.id] = input.value; save(); });
+    btn.addEventListener("click", function () {
+      var v = parseFloat(input.value);
+      fb.style.display = "block";
+      if (isNaN(v)) { fb.innerHTML = "✏️ Type a number first (in Ga)."; fb.style.color = "#92400e"; return; }
+      var tol = Math.max(0.03, (ev.hi - ev.lo) * 0.25);
+      var ok = v >= ev.lo - tol && v <= ev.hi + tol;
+      var mis = !ok && v >= (ev.lo - tol) * 1000 && v <= (ev.hi + tol) * 1000;
+      fb.style.color = ok ? "#166534" : "#991b1b";
+      fb.innerHTML = ok ? "✅ Matches the chapter. " + ev.note
+        : mis ? "🔁 That looks like it's in <b>Ma</b>. Divide by 1,000 to get Ga, then check again."
+        : "❌ Not quite. Look again in the chapter. <details style='margin-top:4px;'><summary style='cursor:pointer;'>Show the chapter's value</summary>" + ev.note + "</details>";
+    });
+    wrap.appendChild(row);
+  });
+  var reset = document.createElement("button");
+  reset.type = "button";
+  reset.textContent = "Clear my entries";
+  reset.style.cssText = "align-self:flex-start;min-height:44px;padding:8px 18px;border:2px solid #94a3b8;border-radius:8px;background:transparent;color:inherit;cursor:pointer;";
+  reset.addEventListener("click", function () {
+    if (!confirm("Clear all your timeline entries?")) return;
+    saved = {}; save();
+    wrap.querySelectorAll("input").forEach(function (x) { x.value = ""; });
+    wrap.querySelectorAll(".ab-fb").forEach(function (x) { x.style.display = "none"; });
+  });
+  root.appendChild(wrap);
+  root.appendChild(document.createElement("br"));
+  root.appendChild(reset);
+})();
+</script>
+```
+
+# The Extra Credit Assignment {#the-extra-credit-assignment}
+
+::: {.callout-note}
+## 📝 Directions
+Complete the following on **notebook or printer paper.** Answer each part in **complete sentences, in your own words.** Use specific evidence and numbers from Chapter 4. The hints below tell you **where to look**, not what to write.
+:::
+
+## Q1. The Faint Young Sun Paradox {#q1-the-faint-young-sun-paradox}
+
+::: {.ab-task}
+### ✏️ Question 1
+**a.** Why was the Sun 25–30% dimmer billions of years ago than it is today?
+
+**b.** Explain how Earth avoided completely freezing solid during its early history despite receiving significantly less solar energy.
+:::
+
+::: {.callout-tip collapse="true"}
+## 📍 Where to look + sentence starters
+- **Where:** Section 1, the first two paragraphs (the Sun) and the paragraphs about the greenhouse effect and methane. Review the [Sun calculator](#ab-section-1).
+- **Starter (a):** "The Sun gets brighter over time because when hydrogen fuses into helium in the core…"
+- **Starter (b):** "Rocks show Earth had liquid water by 3.8 Ga. Earth stayed warm because its atmosphere had more…, especially…, which could build up because…"
+- **Level up:** Mention the 33 °C vs. ~50 °C greenhouse numbers, and name at least one of the other two possible solutions to the paradox.
+:::
+
+## Q2. The Planetary Thermostat {#q2-the-planetary-thermostat}
+
+::: {.ab-task}
+### ✏️ Question 2
+**a.** Describe how the carbonate-silicate weathering cycle acts as a negative feedback loop to keep Earth's surface temperature within the liquid water range.
+
+**b.** What role does plate tectonics play in returning sequestered carbon back into the atmosphere?
+:::
+
+::: {.callout-tip collapse="true"}
+## 📍 Where to look + sentence starters
+- **Where:** Section 1, the paragraph beginning with Earth's early climate "before life." Review the [thermostat animation](#ab-thermostat).
+- **Starter (a):** "If Earth warms, … which removes CO₂ and cools Earth. If Earth cools, …"
+- **Starter (b):** "Carbon locked in seafloor limestone is carried by moving plates into a subduction zone, where…"
+- **Level up:** Draw a small feedback loop diagram next to your answer, and use the word **sequestered** correctly (it means "stored away").
+:::
+
+## Q3. Catastrophes and Biological Innovations {#q3-catastrophes-and-biological-innovations}
+
+::: {.ab-task}
+### ✏️ Question 3
+**a.** What were the two major evolutionary hurdles complex animal life had to overcome to evolve from single-celled microbes?
+
+**b.** How do severe planetary crises (such as Snowball Earth glaciations or major oxygenation events) act as evolutionary "bottlenecks" that drive biological innovation?
+:::
+
+::: {.callout-tip collapse="true"}
+## 📍 Where to look + sentence starters
+- **Where:** Section 5 ("On the occurrence of advanced life") for part (a). Sections 2–4 and 6 for part (b): the GOE, Snowball Earth, and mass extinctions.
+- **Starter (a):** "The first hurdle was… because… The second hurdle was… because aerobic metabolism…"
+- **Starter (b):** "A bottleneck is when a crisis kills off most living things, and the survivors… For example, after the Neoproterozoic glaciations… Another example is the Chicxulub impact, which…"
+- **Level up:** Use the chapter's word **resilient**, and give at least two examples with dates.
+:::
+
+## Q4. Astrobiological Implications (The Drake Equation) {#q4-astrobiological-implications-the-drake-equation}
+
+::: {.ab-task}
+### ✏️ Question 4
+How does Earth's climate history inform the **f~c~** factor (the fraction of planets where complex animal life develops) and the **L** factor (the lifespan of a technological civilization) in the Drake Equation?
+:::
+
+::: {.callout-tip collapse="true"}
+## 📍 Where to look + sentence starters
+- **Where:** Section 5 ("oxygenation time") for f~c~, and the last two paragraphs of Section 6 for L. Try the [Drake calculator](#ab-section-7).
+- **Starter (f~c~):** "On Earth, it took about … years to build enough oxygen for animals. This suggests f~c~ could be small/large because…"
+- **Starter (L):** "Earth's history shows that catastrophes like … happen about every … years, so a civilization's lifespan L…"
+- **Level up:** End with your own opinion: is the galaxy full of complex life, or is Earth rare? Back it up.
+:::
+
+## Visual Task: Oxygen Graph & Timeline {#visual-task-oxygen-graph-timeline}
+
+::: {.ab-task}
+### ✏️ Construct an Annotated Timeline & Conceptual Graph
+Plot **Atmospheric Oxygen Levels vs. Geologic Time (4.5 Ga to Present)**, annotating key evolutionary leaps and planetary bottlenecks.
+
+**Graph requirements**
+
+- **Horizontal axis (x-axis):** Time in Billions of Years Ago (4.5, 3.5, 2.5, 1.5, 0.5, 0 Ga).
+- **Vertical axis (y-axis):** Atmospheric O₂ concentration (% of modern atmospheric levels, logarithmic or qualitative scale: Anoxic → Low → High).
+- **Plotted curve:** Show the Anoxic Era (4.5–2.4 Ga), Great Oxidation Event (2.4 Ga), Neoproterozoic 2nd Rise (0.75–0.58 Ga), and Phanerozoic Peak.
+
+**Required diagram annotations**
+
+1. **Faint Young Sun Era:** Label the high CO₂/CH₄ greenhouse shield keeping early oceans liquid.
+2. **Biological Milestones:** Mark the emergence of Photosynthetic Cyanobacteria, Eukaryotic Cells, and the Cambrian Explosion of Animals.
+3. **Catastrophic Bottlenecks:** Mark Snowball Earth episodes and Banded Iron Formation (BIF) deposition.
+:::
+
+### 🖨️ Blank graph template
+
+Want a head start on the axes? Open the template to print it or copy it onto your paper. Then use your **Timeline Data Collector** dates to draw the curve and annotations yourself.
+
+```{=html}
+<div style="background:#fff;border-radius:12px;padding:10px;border:1px solid #cbd5e1;">
+<svg id="ab-template" viewBox="0 0 760 420" style="width:100%;height:auto;" role="img" aria-label="Blank graph template. X-axis: time from 4.5 billion years ago to today. Y-axis: oxygen level from anoxic to low to high.">
+  <rect x="0" y="0" width="760" height="420" fill="#ffffff"/>
+  <text x="380" y="28" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="700" fill="#0f172a">Atmospheric Oxygen vs. Geologic Time</text>
+  <g font-family="Inter,Arial,sans-serif" font-size="13" fill="#334155">
+    <rect x="90" y="60" width="640" height="95" fill="#dbeafe" opacity="0.5"/>
+    <rect x="90" y="155" width="640" height="95" fill="#fef3c7" opacity="0.5"/>
+    <rect x="90" y="250" width="640" height="95" fill="#f1f5f9" opacity="0.8"/>
+    <text x="80" y="110" text-anchor="end" font-weight="700">High</text>
+    <text x="80" y="205" text-anchor="end" font-weight="700">Low</text>
+    <text x="80" y="300" text-anchor="end" font-weight="700">Anoxic</text>
+    <text transform="translate(22,205) rotate(-90)" text-anchor="middle" font-size="13" font-weight="700">Atmospheric O₂ (% of modern)</text>
+    <line x1="90" y1="345" x2="740" y2="345" stroke="#0f172a" stroke-width="2"/>
+    <line x1="90" y1="55" x2="90" y2="345" stroke="#0f172a" stroke-width="2"/>
+    <g id="ab-ticks"></g>
+    <text x="410" y="395" text-anchor="middle" font-weight="700">Time (billions of years ago, Ga)</text>
+  </g>
+</svg>
+</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 20px;">
+  <button type="button" id="ab-print" style="min-height:44px;padding:10px 20px;border:none;border-radius:10px;background:#0f766e;color:#fff;font-weight:700;cursor:pointer;">🖨️ Open printable template</button>
+</div>
+<script>
+(function () {
+  var ns = "http://www.w3.org/2000/svg";
+  var g = document.getElementById("ab-ticks");
+  var ticks = [4.5, 3.5, 2.5, 1.5, 0.5, 0];
+  ticks.forEach(function (t) {
+    var x = 90 + (4.5 - t) / 4.5 * 640;
+    var gl = document.createElementNS(ns, "line");
+    gl.setAttribute("x1", x); gl.setAttribute("x2", x); gl.setAttribute("y1", 60); gl.setAttribute("y2", 345);
+    gl.setAttribute("stroke", "#94a3b8"); gl.setAttribute("stroke-dasharray", "3 4");
+    g.appendChild(gl);
+    var tk = document.createElementNS(ns, "line");
+    tk.setAttribute("x1", x); tk.setAttribute("x2", x); tk.setAttribute("y1", 345); tk.setAttribute("y2", 353);
+    tk.setAttribute("stroke", "#0f172a"); tk.setAttribute("stroke-width", "2");
+    g.appendChild(tk);
+    var lb = document.createElementNS(ns, "text");
+    lb.setAttribute("x", x); lb.setAttribute("y", 371); lb.setAttribute("text-anchor", "middle");
+    lb.textContent = t;
+    g.appendChild(lb);
+  });
+  document.getElementById("ab-print").addEventListener("click", function () {
+    var svg = document.getElementById("ab-template").outerHTML;
+    var w = window.open("", "_blank");
+    if (!w) { alert("Your browser blocked the pop-up. Allow pop-ups for this site, or copy the axes by hand."); return; }
+    w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Oxygen Graph Template</title>' +
+      '<style>@page{size:landscape;margin:0.5in}body{margin:0;font-family:Arial,sans-serif}svg{width:100%;height:auto}p{font-size:12px;color:#334155}</style></head><body>' +
+      svg + '<p>Name: ______________________ &nbsp; Class: ________ &nbsp; Extra Credit: From Slime to the Sublime</p>' +
+      '<script>window.onload=function(){window.print();}<\/script></body></html>');
+    w.document.close();
+  });
+})();
+</script>
+```
+
+### ✅ Graph checklist
+
+Tick each item as you add it to **your** graph. (Your checks save on this device.)
+
+```{=html}
+<div id="ab-graph-check" style="font-family:Inter,sans-serif;"></div>
+<script>
+(function () {
+  var items = [
+    "Title and both axes labeled, with units (Ga; % of modern O₂ or Anoxic → Low → High)",
+    "X-axis tick marks at 4.5, 3.5, 2.5, 1.5, 0.5, 0 Ga (oldest on the LEFT)",
+    "Curve stays near zero during the Anoxic Era (4.5–2.4 Ga)",
+    "Step up at the Great Oxidation Event (~2.4 Ga) to a 'low' plateau (0.2–2%)",
+    "Long flat 'boring billion' plateau (~1.8–0.8 Ga)",
+    "Second rise during the Neoproterozoic (0.75–0.58 Ga) to above 3%",
+    "Phanerozoic Peak: high oxygen (10–30%) after ~0.4 Ga",
+    "Annotation 1: Faint Young Sun Era with the high CO₂/CH₄ greenhouse shield",
+    "Annotation 2: Photosynthetic cyanobacteria marked",
+    "Annotation 2: Eukaryotic cells marked",
+    "Annotation 2: Cambrian Explosion of animals marked",
+    "Annotation 3: Snowball Earth episodes marked (both groups)",
+    "Annotation 3: Banded Iron Formation deposition marked",
+    "Each annotation has a short explanation (one sentence), not just a label",
+    "Neat, readable, and colored or shaded to make the eras stand out"
+  ];
+  var KEY = "ab-graph-check-v1";
+  var saved = [];
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "[]") || []; } catch (e) { saved = []; }
+  var root = document.getElementById("ab-graph-check");
+  var count = document.createElement("div");
+  count.style.cssText = "font-weight:700;margin:6px 0 10px;";
+  function update() { var n = root.querySelectorAll("input:checked").length; count.textContent = n + " of " + items.length + " done" + (n === items.length ? " 🎉 Ready to turn in!" : ""); }
+  root.appendChild(count);
+  items.forEach(function (txt, i) {
+    var lab = document.createElement("label");
+    lab.className = "ab-check";
+    var cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.checked = saved.indexOf(i) !== -1;
+    cb.addEventListener("change", function () {
+      saved = []; root.querySelectorAll("input").forEach(function (x, j) { if (x.checked) saved.push(j); });
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      update();
+    });
+    var span = document.createElement("span");
+    span.textContent = txt;
+    lab.appendChild(cb); lab.appendChild(span);
+    root.appendChild(lab);
+  });
+  update();
+})();
+</script>
+```
+
+::: {.callout-tip collapse="true"}
+## 💡 Graph tips
+- Earth's oxygen did **not** rise in a smooth curve. It went up in **steps** with long flat stretches. Draw it that way.
+- Some events are **spans**, not points (BIFs, Snowball glaciations, the boring billion). Show them as shaded bars or brackets.
+- Time runs **from left (old) to right (now)**, so the numbers on the x-axis get **smaller** as you move right.
+- Things get crowded after 1 Ga. Use **arrows** and put labels above or below the curve.
+:::
+
+## 🏆 How your work will be checked
+
+| Part | Strong answer looks like… |
+|---|---|
+| **Q1–Q4** | Answers **every part** of the question, in **complete sentences**, using your own words |
+| **Evidence** | Uses specific **numbers, dates, and examples** from Chapter 4 |
+| **Science vocabulary** | Uses terms like *greenhouse effect, negative feedback, subduction, eukaryote, aerobic, albedo* correctly |
+| **Graph** | Correct axes, step-shaped O₂ curve, and **all required annotations** with short explanations |
+| **Effort & neatness** | Readable, organized, and clearly labeled |
+
+*Your teacher decides the final point values.*
+
+# Myth or Fact? {#myth-or-fact}
+
+```{=html}
+<div id="ab-myths" style="background:linear-gradient(135deg,#0b1d3a 0%,#16213e 50%,#0f3460 100%); color:white; padding:26px; border-radius:16px; margin:24px 0; font-family:'Inter',sans-serif; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.6em; margin:0 0 8px 0; color:#5eead4 !important;">🦠 Slime to Sublime: Myths vs. Facts</h2>
+  <p style="color:#94a3b8; margin:0 0 16px 0; font-size:0.95em;">Decide whether each statement is a MYTH or a FACT!</p>
+  <div style="display:flex; justify-content:space-between; background:rgba(255,255,255,0.05); padding:10px 16px; border-radius:12px; margin-bottom:16px; flex-wrap:wrap; gap:6px;">
+    <div id="abmf-progress" style="color:#94a3b8; font-size:0.9em;"></div>
+    <div style="color:#94a3b8; font-size:0.9em;">Score: <span id="abmf-score" style="color:#5eead4; font-weight:700;">0</span> / <span id="abmf-total">0</span></div>
+  </div>
+  <div id="abmf-card" style="background:rgba(255,255,255,0.08); border-radius:14px; padding:24px; min-height:100px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:1.1em; font-weight:600; line-height:1.6;"></div>
+  <div id="abmf-btns" style="display:flex; gap:12px; margin-top:14px;">
+    <button type="button" id="abmf-myth" style="flex:1; min-height:44px; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#e17055,#d63031); color:white; font-weight:700; cursor:pointer;">❌ MYTH</button>
+    <button type="button" id="abmf-fact" style="flex:1; min-height:44px; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#00b894,#0f766e); color:white; font-weight:700; cursor:pointer;">✅ FACT</button>
+  </div>
+  <div id="abmf-feedback" style="margin-top:14px; padding:14px; border-radius:10px; display:none; font-size:0.95em; line-height:1.6;"></div>
+  <button type="button" id="abmf-next" style="display:none; margin-top:12px; width:100%; min-height:44px; padding:12px; border:2px solid rgba(255,255,255,0.2); border-radius:10px; background:transparent; color:white; font-weight:600; cursor:pointer;">Next Card →</button>
+  <div id="abmf-done" style="display:none; text-align:center; padding:16px;">
+    <div style="font-size:2.2em;">🎉</div>
+    <div style="font-size:1.2em; font-weight:700;">All cards complete! Final score: <span id="abmf-final"></span></div>
+    <button type="button" id="abmf-restart" style="margin-top:12px; min-height:44px; padding:10px 24px; border:2px solid #5eead4; border-radius:20px; background:transparent; color:#5eead4; font-weight:600; cursor:pointer;">Play Again</button>
+  </div>
+</div>
+<script>
+(function () {
+  var cards = [
+    {t: "The Sun has been getting brighter over its lifetime.", a: "Fact", e: "Fusion turns hydrogen into fewer helium particles, so the core compresses, heats, and fuses faster. The Sun brightens about 7–9% every billion years."},
+    {t: "Oxygen filled the atmosphere as soon as cyanobacteria evolved.", a: "Myth", e: "Reductants like hydrogen, methane, and dissolved iron used up the oxygen for hundreds of millions of years. Oxygen only built up at the Great Oxidation Event, ~2.4 Ga."},
+    {t: "Water vapor is a greenhouse gas, but CO₂ is what really controls Earth's thermostat.", a: "Fact", e: "Water vapor condenses into rain and snow, so its amount just responds to temperature. CO₂ doesn't condense, so it sets the background temperature."},
+    {t: "The carbonate–silicate cycle can fix human-caused global warming in a few decades.", a: "Myth", e: "It works over about a million years, far too slow to counteract today's warming."},
+    {t: "During a Snowball Earth, the ice may have reached all the way to the equator.", a: "Fact", e: "Magnetic minerals in glacial rocks show they formed near the equator. (Some scientists argue a strip of open tropical water, a 'Waterbelt,' remained.)"},
+    {t: "Evolution is a steady ladder of progress that always leads to humans.", a: "Myth", e: "Species come and go, and mass extinctions repeatedly prune life. Mammals only took over after an asteroid wiped out the dinosaurs."},
+    {t: "Large animals could not evolve until oxygen rose above about 3%.", a: "Fact", e: "Cells deep inside an animal get oxygen by diffusion. Animals a few millimeters across need more than about 3% atmospheric O₂, which happened around 580 Ma."},
+    {t: "Fluorine would work even better than oxygen for alien animals.", a: "Myth", e: "Fluorine is so reactive it explodes with organic matter. Oxygen is reactive enough to give lots of energy but not too aggressive."}
+  ];
+  var i = 0, score = 0, answered = 0;
+  var $ = function (id) { return document.getElementById(id); };
+  function show() {
+    $("abmf-progress").textContent = "Card " + (i + 1) + " of " + cards.length;
+    $("abmf-card").textContent = cards[i].t;
+    $("abmf-feedback").style.display = "none";
+    $("abmf-next").style.display = "none";
+    $("abmf-btns").style.display = "flex";
+  }
+  function answer(choice) {
+    var c = cards[i], ok = choice === c.a;
+    answered++; if (ok) score++;
+    $("abmf-score").textContent = score; $("abmf-total").textContent = answered;
+    var fb = $("abmf-feedback");
+    fb.style.display = "block";
+    fb.style.background = ok ? "rgba(0,184,148,0.18)" : "rgba(214,48,49,0.2)";
+    fb.innerHTML = (ok ? "✅ Correct! " : "❌ Not quite. ") + "It's a <b>" + c.a.toUpperCase() + "</b>. " + c.e;
+    $("abmf-btns").style.display = "none";
+    $("abmf-next").style.display = "block";
+    $("abmf-next").textContent = i === cards.length - 1 ? "See Results →" : "Next Card →";
+  }
+  $("abmf-myth").addEventListener("click", function () { answer("Myth"); });
+  $("abmf-fact").addEventListener("click", function () { answer("Fact"); });
+  $("abmf-next").addEventListener("click", function () {
+    i++;
+    if (i >= cards.length) {
+      ["abmf-card", "abmf-btns", "abmf-feedback", "abmf-next"].forEach(function (id) { $(id).style.display = "none"; });
+      $("abmf-final").textContent = score + " / " + cards.length;
+      $("abmf-done").style.display = "block";
+    } else show();
+  });
+  $("abmf-restart").addEventListener("click", function () {
+    i = 0; score = 0; answered = 0;
+    $("abmf-score").textContent = 0; $("abmf-total").textContent = 0;
+    $("abmf-done").style.display = "none"; $("abmf-card").style.display = "flex";
+    show();
+  });
+  show();
+})();
+</script>
+```
+
+# Practice Quiz {#practice-quiz}
+
+Warm up before you write your answers. These questions are **practice only** and are not part of what you turn in.
+
+```{ojs}
+//| echo: false
+function abBuildQuiz(questions) {
+  const outer = html`<div style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const header = html`<div style="background:linear-gradient(135deg,#0f766e 0%,#6d28d9 100%);color:#fff;border-radius:14px 14px 0 0;padding:16px 22px;">
+    <div style="font-size:1.1em;font-weight:700;">🧠 Slime to Sublime Practice Quiz</div>
+    <div style="font-size:0.85em;opacity:0.85;margin-top:4px;">Pick an answer to see feedback.</div>
+  </div>`;
+  const body = html`<div style="border:1.5px solid #99f6e4;border-top:none;border-radius:0 0 14px 14px;background:#f0fdfa;padding:14px;"></div>`;
+  const scoreEl = html`<div style="font-weight:700;color:#134e4a;margin:4px 0 12px;">Score: 0 / ${questions.length}</div>`;
+  let score = 0, done = 0;
+  body.appendChild(scoreEl);
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 18px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi + 1}. ${qq.q}</p>`;
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.92em;";
+    qq.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;";
+      btn.onclick = () => {
+        if (card.dataset.answered) return;
+        card.dataset.answered = "1";
+        done++;
+        const right = oi === qq.correct;
+        if (right) score++;
+        const buttons = card.querySelectorAll("button");
+        buttons.forEach(b => { b.style.cursor = "default"; b.style.color = "#475569"; });
+        buttons[qq.correct].style.borderColor = "#16a34a"; buttons[qq.correct].style.background = "#f0fdf4"; buttons[qq.correct].style.color = "#166534";
+        if (!right) { btn.style.borderColor = "#dc2626"; btn.style.background = "#fef2f2"; btn.style.color = "#991b1b"; }
+        fb.innerHTML = (right ? "✅ Correct! " : "❌ ") + qq.explanation;
+        fb.style.cssText += `padding:10px 14px;margin-top:8px;color:${right ? "#166534" : "#991b1b"};background:${right ? "#f0fdf4" : "#fef2f2"};`;
+        scoreEl.textContent = `Score: ${score} / ${questions.length}` + (done === questions.length ? (score >= 7 ? " 🌟 You're ready to write!" : " 📖 Reread the sections you missed.") : "");
+      };
+      card.appendChild(btn);
+    });
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+  outer.appendChild(header);
+  outer.appendChild(body);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+abBuildQuiz([
+  {q: "Without an atmosphere, Earth's average surface temperature would be about −18 °C. Today it is +15 °C. How big is Earth's greenhouse effect?",
+   options: ["15 °C", "18 °C", "33 °C", "50 °C"], correct: 2,
+   explanation: "18 + 15 = 33 °C. About 50 °C would have been needed 3.5 billion years ago, when the Sun was fainter."},
+  {q: "Why could methane build up to thousands of ppm in the Archaean atmosphere?",
+   options: ["Volcanoes were much bigger then", "There was almost no oxygen to react with and destroy it", "Methane doesn't absorb infrared light", "The Sun was making methane"], correct: 1,
+   explanation: "Today methane stays low (~1.9 ppm) because it reacts with oxygen. With less than 1 ppm O₂, microbial methane could accumulate."},
+  {q: "In the carbonate–silicate cycle, what happens when Earth gets colder?",
+   options: ["Weathering speeds up and removes more CO₂", "Weathering slows, so volcanic CO₂ builds up and warms Earth", "Volcanoes stop erupting", "The oceans release oxygen"], correct: 1,
+   explanation: "Drier, colder conditions slow weathering. Volcanoes keep adding CO₂, so the greenhouse strengthens. That's negative feedback."},
+  {q: "Which rock evidence shows that early oceans contained lots of dissolved iron that reacted with oxygen?",
+   options: ["Banded iron formations", "Tillite", "Granite", "Cap carbonates"], correct: 0,
+   explanation: "Banded iron formations are striped, iron-rich sedimentary rocks from the Archaean ocean."},
+  {q: "What finally let oxygen build up at the Great Oxidation Event?",
+   options: ["Cyanobacteria evolved that same year", "The flow of reductants dropped below the oxygen freed by burying organic carbon", "An asteroid brought oxygen", "Plants spread onto land"], correct: 1,
+   explanation: "It was a tipping point, like a redox titration: once oxygen sources beat the sinks, O₂ accumulated."},
+  {q: "In Budyko's calculation, Earth freezes completely if polar ice reaches closer to the equator than about…",
+   options: ["60° latitude", "45° latitude", "30° latitude", "10° latitude"], correct: 2,
+   explanation: "Past ~30°, the ice-albedo runaway takes over: more ice reflects more sunlight, which makes more ice."},
+  {q: "According to the chapter, how did a Snowball Earth eventually melt?",
+   options: ["Volcanic CO₂ built up over millions of years with no rain to remove it", "The Sun suddenly brightened", "Plate tectonics stopped", "Methane-eating microbes evolved"], correct: 0,
+   explanation: "With the ocean frozen and no rainfall, volcanic CO₂ piled up until the greenhouse effect melted the ice. Dark ash on the ice helped too."},
+  {q: "Aerobic (oxygen-using) metabolism provides about how much more energy than anaerobic metabolism from the same food?",
+   options: ["Twice as much", "About 10 times as much", "About 100 times as much", "The same amount"], correct: 1,
+   explanation: "About ten times more energy, which is why abundant oxygen was needed for large, active animals."},
+  {q: "Which event caused the Cretaceous–Paleogene mass extinction?",
+   options: ["Siberian volcanic eruptions", "Snowball Earth", "A ~10 km asteroid impact at Chicxulub", "The Great Oxidation Event"], correct: 2,
+   explanation: "The Chicxulub impact (66 Ma) caused wildfires, acid rain, and cooling. Siberian volcanism caused the Permian–Triassic event."},
+  {q: "Why does the chapter suggest civilizations on other planets may be short-lived (small L)?",
+   options: ["Aliens prefer not to use radio", "Random catastrophes like big impacts happen roughly every 100 million years", "Stars never last long enough for life", "Oxygen always disappears after a few thousand years"], correct: 1,
+   explanation: "Even on a planet that stays livable, random catastrophes can wipe out a civilization, so civilizations may be brief compared with the age of the galaxy."}
+])
+```
+
+# Source
+
+The guided reading on this page summarizes and briefly quotes **Chapter 4, "From slime to the sublime,"** in David C. Catling, *Astrobiology: A Very Short Introduction* (Oxford University Press, 2013). Read the full chapter from the copy your teacher provides.
+
+Updated values: atmospheric CO₂ and methane from the [NOAA Global Monitoring Laboratory](https://gml.noaa.gov/ccgg/trends/); geologic period boundaries from the [International Commission on Stratigraphy Chronostratigraphic Chart](https://stratigraphy.org/chart). Solar brightness model: Gough, D. O. (1981), "Solar interior structure and luminosity variations," *Solar Physics* 74, 21–34. Videos: [PBS Eons](https://www.youtube.com/@eons).
