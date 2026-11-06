@@ -1,0 +1,22 @@
+<script>
+// Remembers the last chapter a student opened so the home page can offer
+// "Pick up where you left off". Stored only in this browser (localStorage).
+(function () {
+  if (document.querySelector('.lp-hero')) return; // the home page itself
+  var h = document.querySelector('#title-block-header h1.title, h1.title');
+  var title = h ? h.textContent.trim() : '';
+  if (!title) return;
+  function save() {
+    try {
+      localStorage.setItem('ess-last-page', JSON.stringify({
+        path: location.pathname,
+        hash: location.hash || '',
+        title: title,
+        t: Date.now()
+      }));
+    } catch (e) { /* storage blocked: nothing to remember */ }
+  }
+  save();
+  window.addEventListener('hashchange', save);
+})();
+</script>
