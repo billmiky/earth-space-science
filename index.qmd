@@ -1,308 +1,803 @@
 ---
 title: "Earth and Space Science"
+description: "An interactive Earth & Space Science textbook for NYC high school students, built on real NASA, NOAA, and USGS data."
 format:
   html:
     toc: false
+execute:
+  echo: false
 ---
 
 ```{=html}
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;600;800&display=swap');
-.check-understanding {
-  background: rgba(11, 61, 110, 0.08);
-  color: inherit;
-  padding: 20px 24px;
-  margin: 20px 0;
-  border-radius: 12px;
-  border: 1px solid #4eb8e8;
-  border-left: 6px solid #4eb8e8;
-  box-shadow: 0 2px 8px rgba(11, 61, 110, 0.1);
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap');
+
+/* The hero replaces Quarto's default title block on this page only */
+#title-block-header { display: none; }
+
+:root {
+  --lp-ink: #0f172a;
+  --lp-muted: #475569;
+  --lp-card: #ffffff;
+  --lp-card-border: #e2e8f0;
+  --lp-soft: #f1f5f9;
 }
-.check-understanding h3 { margin-top: 0; color: #0b3d6e; }
-.check-understanding ol, .check-understanding li { color: inherit; }
+.quarto-dark {
+  --lp-ink: #f1f5f9;
+  --lp-muted: #a8b3c4;
+  --lp-card: #1e2533;
+  --lp-card-border: #334155;
+  --lp-soft: #1a2130;
+}
+
+/* ---------- Hero ---------- */
+.lp-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  margin: 0.5rem 0 2.5rem;
+  padding: 2.25rem 1.5rem 1.5rem;
+  color: #f8fafc;
+  background:
+    radial-gradient(1.5px 1.5px at 12% 18%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 28% 72%, #cbd5e1 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 44% 12%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 63% 84%, #e2e8f0 50%, transparent 51%),
+    radial-gradient(1px 1px at 78% 22%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 91% 64%, #cbd5e1 50%, transparent 51%),
+    radial-gradient(1px 1px at 6% 90%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 53% 40%, #94a3b8 50%, transparent 51%),
+    radial-gradient(ellipse at 75% 45%, rgba(56, 189, 248, 0.22), transparent 60%),
+    linear-gradient(160deg, #020617 0%, #0b1736 55%, #13204a 100%);
+}
+.lp-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+@media (min-width: 1100px) {
+  .lp-hero { padding: 2.75rem 2.5rem 2rem; }
+  .lp-hero-grid { grid-template-columns: 1.05fr 1fr; gap: 1.5rem; }
+}
+.lp-kicker {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7dd3fc;
+  margin: 0 0 0.75rem;
+}
+.lp-hero h1.lp-title {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.1rem, 6.5vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 1rem;
+  color: #fff;
+  border: 0;
+  padding: 0;
+}
+.lp-hero h1.lp-title span {
+  background: linear-gradient(90deg, #fbbf24, #f97316);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.lp-lede {
+  font-size: 1.12rem;
+  line-height: 1.55;
+  color: #cbd5e1;
+  margin: 0 0 1.4rem;
+  max-width: 34rem;
+}
+.lp-lede b { color: #fff; }
+@media (max-width: 600px) {
+  .lp-hero { padding: 1.6rem 1.15rem 1.25rem; }
+  .lp-lede { font-size: 1rem; margin-bottom: 1.1rem; }
+  .lp-kicker { font-size: 0.7rem; }
+}
+.lp-lede strong { color: #fde68a; }
+.lp-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.lp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 48px;
+  padding: 0.7rem 1.25rem;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.lp-btn:hover { transform: translateY(-2px); }
+.lp-btn:focus-visible { outline: 3px solid #7dd3fc; outline-offset: 3px; }
+.lp-btn-primary {
+  background: linear-gradient(90deg, #fbbf24, #f97316);
+  color: #1c1917 !important;
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.35);
+}
+.lp-btn-ghost {
+  color: #f8fafc !important;
+  border: 1.5px solid rgba(248, 250, 252, 0.45);
+}
+.lp-btn-ghost:hover { background: rgba(248, 250, 252, 0.1); }
+
+/* "Pick up where you left off" — filled in by script if the student has visited a chapter */
+.lp-resume {
+  display: none;
+  margin-top: 1.1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  background: rgba(125, 211, 252, 0.12);
+  border: 1px solid rgba(125, 211, 252, 0.35);
+  font-size: 0.95rem;
+  color: #e0f2fe;
+}
+.lp-resume.lp-show { display: block; }
+.lp-resume a { color: #fde68a !important; font-weight: 700; }
+
+/* Globe */
+.lp-globe-wrap { text-align: center; }
+.lp-globe-wrap canvas {
+  width: 100%;
+  max-width: 440px;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  cursor: grab;
+  touch-action: none;
+  display: block;
+  margin: 0 auto;
+}
+.lp-globe-wrap canvas:active { cursor: grabbing; }
+.lp-globe-info {
+  min-height: 3.2em;
+  margin: 0.5rem auto 0;
+  max-width: 440px;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: #e2e8f0;
+}
+.lp-globe-info b { color: #fde68a; }
+.lp-globe-legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-top: 0.35rem;
+}
+.lp-globe-legend i {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  margin-right: 0.3rem;
+  vertical-align: -1px;
+}
+.lp-source { font-size: 0.75rem; color: #94a3b8; margin: 0.6rem 0 0; }
+.lp-source a { color: #7dd3fc !important; }
+
+/* ---------- Section headings ---------- */
+.lp-section-title {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 4.5vw, 2rem);
+  letter-spacing: -0.01em;
+  margin: 2.75rem 0 0.35rem;
+  color: var(--lp-ink);
+  border: 0;
+}
+.lp-section-sub { color: var(--lp-muted); margin: 0 0 1.25rem; font-size: 1.05rem; }
+
+/* ---------- Quick paths ---------- */
+.lp-paths {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.9rem;
+}
+.lp-path {
+  display: block;
+  padding: 1.1rem 1.15rem;
+  border-radius: 16px;
+  background: var(--lp-card);
+  border: 1px solid var(--lp-card-border);
+  color: var(--lp-ink) !important;
+  text-decoration: none !important;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.lp-path:hover { transform: translateY(-3px); border-color: #38bdf8; }
+.lp-path:focus-visible { outline: 3px solid #38bdf8; outline-offset: 2px; }
+.lp-path-emoji { font-size: 1.7rem; display: block; margin-bottom: 0.35rem; }
+.lp-path > b { display: block; font-size: 1.05rem; margin-bottom: 0.2rem; }
+.lp-path span.lp-path-text { color: var(--lp-muted); font-size: 0.93rem; line-height: 1.45; }
+
+/* ---------- Unit cards ---------- */
+.lp-units {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.1rem;
+}
+.lp-unit {
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--lp-card);
+  border: 1px solid var(--lp-card-border);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.lp-unit:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(15, 23, 42, 0.14); }
+.lp-unit-head {
+  display: block;
+  position: relative;
+  padding: 1.15rem 1.2rem 1.1rem;
+  color: #fff !important;
+  text-decoration: none !important;
+  background: var(--lp-grad);
+}
+.lp-unit-head:focus-visible { outline: 3px solid #fde68a; outline-offset: -3px; }
+.lp-unit-num {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+.lp-unit-emoji {
+  position: absolute;
+  right: 0.9rem;
+  top: 0.7rem;
+  font-size: 2.4rem;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+}
+.lp-unit-head h3 {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  margin: 0.25rem 3rem 0.55rem 0;
+  color: #fff !important;
+  border: 0;
+}
+.lp-unit-q {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+  opacity: 0.97;
+}
+.lp-unit-body { padding: 0.95rem 1.2rem 1.15rem; display: flex; flex-direction: column; gap: 0.75rem; flex: 1; }
+.lp-unit-hook {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.45;
+  color: var(--lp-muted);
+}
+.lp-unit-hook b { color: var(--lp-ink); }
+.lp-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
+.lp-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  background: var(--lp-soft);
+  border: 1px solid var(--lp-card-border);
+  color: var(--lp-ink) !important;
+  text-decoration: none !important;
+}
+.lp-chip:hover { border-color: var(--lp-accent); color: var(--lp-accent) !important; }
+.quarto-dark .lp-chip:hover { color: #fff !important; }
+
+/* ---------- Stripes ---------- */
+.lp-stripes-card {
+  border-radius: 20px;
+  padding: 1.25rem 1.2rem 1rem;
+  background: var(--lp-card);
+  border: 1px solid var(--lp-card-border);
+}
+.lp-stripes svg { width: 100%; height: auto; display: block; border-radius: 10px; touch-action: none; cursor: crosshair; }
+.lp-stripes-read {
+  font-size: 1.1rem;
+  min-height: 1.6em;
+  margin: 0.75rem 0 0.25rem;
+  color: var(--lp-ink);
+}
+.lp-stripes-read b { font-family: 'Space Grotesk', system-ui, sans-serif; }
+.lp-stripes-axis { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--lp-muted); margin-top: 0.3rem; }
+.lp-stripes-card .lp-source { color: var(--lp-muted); }
+.lp-stripes-card .lp-source a { color: inherit !important; text-decoration: underline; }
+
+/* ---------- Features ---------- */
+.lp-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.9rem;
+}
+.lp-feature {
+  padding: 1rem 1.1rem;
+  border-radius: 16px;
+  background: var(--lp-soft);
+  border: 1px solid var(--lp-card-border);
+  color: var(--lp-ink);
+}
+.lp-feature b { display: block; margin: 0.2rem 0; font-size: 1.02rem; }
+.lp-feature p { margin: 0; color: var(--lp-muted); font-size: 0.93rem; line-height: 1.45; }
+.lp-feature-emoji { font-size: 1.5rem; }
+
+.lp-footer-note { color: var(--lp-muted); font-size: 0.9rem; margin-top: 2.5rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-btn, .lp-path, .lp-unit { transition: none; }
+  .lp-btn:hover, .lp-path:hover, .lp-unit:hover { transform: none; }
+}
 </style>
 ```
 
-::: {.hero-section}
-
-# 🌍 Earth and Space Science {.unnumbered}
-
-<p>An interactive journey from the core of our planet to the edge of the observable universe.<br>
-<strong>Explore. Discover. Understand.</strong></p>
-
-:::
+```{=html}
+<section class="lp-hero" aria-labelledby="lp-hero-title">
+<div class="lp-hero-grid">
+<div class="lp-hero-text">
+  <p class="lp-kicker">Earth &amp; Space Science · Interactive Textbook</p>
+  <h1 class="lp-title" id="lp-hero-title">Earth is moving <span>right now.</span></h1>
+  <p class="lp-lede"><strong id="lp-quake-count">Hundreds of</strong> earthquakes shook the planet in the past 7 days. Every dot on this globe is one of them, live from the U.S. Geological Survey. Why do they line up like that? <b>Let's find out.</b></p>
+  <div class="lp-cta">
+    <a class="lp-btn lp-btn-primary" href="unit1-discovering-new-worlds/index.html">🚀 Start Unit 1</a>
+    <a class="lp-btn lp-btn-ghost" href="#lp-units">Pick a unit ↓</a>
+  </div>
+  <div class="lp-resume" id="lp-resume" role="status"></div>
+</div>
+<div class="lp-hero-globe">
+```
 
 ```{ojs}
-//| echo: false
 //| output: true
+lpGlobe = {
+  const SIZE = 440;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const quakes = lpQuakes || [];
+  const now = Date.now();
+  const DAY = 864e5;
 
-{
-  // 1. CSS: Force high-contrast tooltips (readable in dark/light mode)
-  const style = html`<style>
-    g[aria-label="tip"] text { fill: #1a202c !important; font-family: sans-serif; }
-    g[aria-label="tip"] path { fill: #ffffff !important; stroke: #e2e8f0 !important; }
-    .plot-title { font-size: 20px; font-weight: bold; font-family: sans-serif; fill: #2d3748; }
-    .plot-subtitle { font-size: 14px; font-family: sans-serif; fill: #4a5568; }
-  </style>`;
+  const wrap = html`<div class="lp-globe-wrap"></div>`;
+  const canvas = html`<canvas width=${SIZE * dpr} height=${SIZE * dpr} role="img"
+    aria-label="Spinning globe showing every magnitude 2.5 and larger earthquake from the past 7 days, from the USGS live feed. Most dots line up along plate boundaries, like the Ring of Fire around the Pacific Ocean."></canvas>`;
+  const info = html`<div class="lp-globe-info" aria-live="polite"></div>`;
+  const legend = html`<div class="lp-globe-legend" aria-hidden="true">
+    <span><i style="background:#fde047"></i>Last 24 hours</span>
+    <span><i style="background:#f97316"></i>Earlier this week</span>
+    <span>Bigger dot = stronger quake</span></div>`;
+  const src = html`<p class="lp-source">Live data: <a href="https://earthquake.usgs.gov/earthquakes/map/" target="_blank" rel="noopener">USGS Earthquake Hazards Program</a>. ${reduceMotion ? "Drag" : "Drag to spin"}, or tap a dot.</p>`;
+  wrap.append(canvas, info, legend, src);
 
-  // 2. LIBRARIES & MAP DATA
-  const topojson = await require("topojson-client@3");
-  let land = null;
+  const ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+  const projection = d3.geoOrthographic().fitExtent([[6, 6], [SIZE - 6, SIZE - 6]], {type: "Sphere"}).precision(0.5);
+  const path = d3.geoPath(projection, ctx);
+  const graticule = d3.geoGraticule10();
+  const R = projection.scale();
+  const radius = m => 1.6 * Math.pow(1.65, m - 2.5) + 0.6;
+  const ago = t => {
+    const h = (now - t) / 36e5;
+    if (h < 1) return "less than an hour ago";
+    if (h < 24) return `${Math.round(h)} hour${Math.round(h) === 1 ? "" : "s"} ago`;
+    const d = Math.round(h / 24);
+    return `${d} day${d === 1 ? "" : "s"} ago`;
+  };
+
+  // Headline count + default caption
+  const strongest = quakes[quakes.length - 1];
+  const countEl = document.getElementById("lp-quake-count");
+  if (countEl && quakes.length) countEl.textContent = quakes.length.toLocaleString();
+  const defaultInfo = () => {
+    if (!lpQuakes) { info.innerHTML = "Live earthquake data couldn't load right now. Check back later!"; return; }
+    if (!strongest) { info.innerHTML = "No earthquakes in the feed right now."; return; }
+    info.innerHTML = `Strongest this week: <b>M${strongest.mag.toFixed(1)}</b>, ${strongest.place} (${ago(strongest.time)})`;
+  };
+  defaultInfo();
+
+  // Start centered on the strongest quake so it's front and center
+  let rotation = strongest ? [-strongest.lon, -Math.max(-35, Math.min(35, strongest.lat)) * 0.6] : [74, -20];
+  let selected = null;
+  let lastInteract = -Infinity;
+
+  function draw(t) {
+    projection.rotate(rotation);
+    const [cx, cy] = projection.translate();
+    ctx.clearRect(0, 0, SIZE, SIZE);
+
+    // Atmosphere glow
+    const glow = ctx.createRadialGradient(cx, cy, R * 0.92, cx, cy, R * 1.04);
+    glow.addColorStop(0, "rgba(56,189,248,0.35)");
+    glow.addColorStop(1, "rgba(56,189,248,0)");
+    ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(cx, cy, R * 1.04, 0, 2 * Math.PI); ctx.fill();
+
+    // Ocean
+    const ocean = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.35, R * 0.1, cx, cy, R);
+    ocean.addColorStop(0, "#1e4f8f");
+    ocean.addColorStop(1, "#0a1f45");
+    ctx.beginPath(); path({type: "Sphere"}); ctx.fillStyle = ocean; ctx.fill();
+
+    ctx.beginPath(); path(graticule); ctx.strokeStyle = "rgba(148,163,184,0.16)"; ctx.lineWidth = 0.6; ctx.stroke();
+
+    if (lpLand) {
+      ctx.beginPath(); path(lpLand);
+      ctx.fillStyle = "#2f6f5e"; ctx.fill();
+      ctx.strokeStyle = "rgba(226,232,240,0.35)"; ctx.lineWidth = 0.5; ctx.stroke();
+    }
+
+    // Quakes on the visible side of the globe
+    const center = [-rotation[0], -rotation[1]];
+    for (const q of quakes) {
+      if (d3.geoDistance([q.lon, q.lat], center) > Math.PI / 2 - 0.02) continue;
+      const [x, y] = projection([q.lon, q.lat]);
+      const r = radius(q.mag);
+      const recent = now - q.time < DAY;
+      if (recent && !reduceMotion) {
+        const phase = ((t / 1600) + (q.time % 1000) / 1000) % 1;
+        ctx.beginPath(); ctx.arc(x, y, r + phase * 14, 0, 2 * Math.PI);
+        ctx.strokeStyle = `rgba(253,224,71,${0.7 * (1 - phase)})`; ctx.lineWidth = 1.5; ctx.stroke();
+      }
+      ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI);
+      ctx.fillStyle = recent ? "rgba(253,224,71,0.92)" : "rgba(249,115,22,0.72)";
+      ctx.fill();
+      ctx.strokeStyle = "rgba(15,23,42,0.6)"; ctx.lineWidth = 0.6; ctx.stroke();
+    }
+
+    if (selected && d3.geoDistance([selected.lon, selected.lat], center) < Math.PI / 2) {
+      const [x, y] = projection([selected.lon, selected.lat]);
+      ctx.beginPath(); ctx.arc(x, y, radius(selected.mag) + 5, 0, 2 * Math.PI);
+      ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 2; ctx.stroke();
+    }
+
+    // Soft shading on the night edge
+    const shade = ctx.createRadialGradient(cx - R * 0.3, cy - R * 0.3, R * 0.5, cx, cy, R);
+    shade.addColorStop(0, "rgba(2,6,23,0)");
+    shade.addColorStop(1, "rgba(2,6,23,0.45)");
+    ctx.beginPath(); path({type: "Sphere"}); ctx.fillStyle = shade; ctx.fill();
+  }
+
+  // Drag to spin (mouse + touch)
+  const toLocal = e => {
+    const b = canvas.getBoundingClientRect();
+    return [(e.clientX - b.left) * SIZE / b.width, (e.clientY - b.top) * SIZE / b.height];
+  };
+  let dragStart = null, rotStart = null, moved = false;
+  canvas.addEventListener("pointerdown", e => {
+    dragStart = toLocal(e); rotStart = rotation.slice(); moved = false;
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener("pointermove", e => {
+    if (!dragStart) return;
+    const p = toLocal(e);
+    const dx = p[0] - dragStart[0], dy = p[1] - dragStart[1];
+    if (Math.hypot(dx, dy) > 4) moved = true;
+    const k = 90 / R;
+    rotation = [rotStart[0] + dx * k, Math.max(-70, Math.min(70, rotStart[1] - dy * k))];
+    lastInteract = performance.now();
+    if (reduceMotion) draw(0);
+  });
+  canvas.addEventListener("pointerup", e => {
+    const p = toLocal(e);
+    dragStart = null;
+    lastInteract = performance.now();
+    if (moved) return;
+    // Tap: pick the nearest visible quake
+    const center = [-rotation[0], -rotation[1]];
+    let best = null, bestD = 22;
+    for (const q of quakes) {
+      if (d3.geoDistance([q.lon, q.lat], center) > Math.PI / 2) continue;
+      const [x, y] = projection([q.lon, q.lat]);
+      const d = Math.hypot(x - p[0], y - p[1]) - radius(q.mag);
+      if (d < bestD) { bestD = d; best = q; }
+    }
+    selected = best;
+    if (best) info.innerHTML = `<b>M${best.mag.toFixed(1)}</b> · ${best.place} · ${ago(best.time)}`;
+    else defaultInfo();
+    if (reduceMotion) draw(0);
+  });
+  canvas.addEventListener("pointercancel", () => { dragStart = null; });
+
+  // Animate only while the globe is on screen
+  let timer = null, last = null;
+  const tick = elapsed => {
+    if (last !== null && !dragStart && performance.now() - lastInteract > 2500) {
+      rotation[0] += (elapsed - last) * 0.006;
+    }
+    last = elapsed;
+    draw(elapsed);
+  };
+  const start = () => { if (!timer) { last = null; timer = d3.timer(tick); } };
+  const stop = () => { if (timer) { timer.stop(); timer = null; } };
+  if (reduceMotion) {
+    draw(0);
+  } else {
+    const io = new IntersectionObserver(([e]) => e.isIntersecting ? start() : stop());
+    io.observe(canvas);
+    invalidation.then(() => { io.disconnect(); stop(); });
+  }
+
+  return wrap;
+}
+```
+
+```{=html}
+</div>
+</div>
+</section>
+<script>
+(function () {
+  // Show a "pick up where you left off" link if last-visited.html saved one
   try {
-    const world = await FileAttachment("world-110m.json").json();
-    land = topojson.feature(world, world.objects.land);
-  } catch (e) {}
+    var saved = JSON.parse(localStorage.getItem('ess-last-page') || 'null');
+    if (!saved || !saved.path || !saved.title) return;
+    var box = document.getElementById('lp-resume');
+    var a = document.createElement('a');
+    a.href = saved.path + (saved.hash || '');
+    a.textContent = saved.title;
+    box.appendChild(document.createTextNode('👋 Welcome back! Pick up where you left off: '));
+    box.appendChild(a);
+    box.classList.add('lp-show');
+  } catch (e) { /* storage blocked: just skip it */ }
+})();
+</script>
+```
 
-  // 3. ANNOTATIONS: Key locations to welcome students
-  // These labels act as "tour guides" on the map.
-  const annotations = [
-    {lon: -150, lat: 40, label: "The Ring of Fire", rotate: -25},
-    {lon: -28, lat: 20, label: "Mid-Atlantic Ridge", rotate: 80},
-    {lon: 90, lat: 25, label: "Himalayan Belt", rotate: 0},
-    {lon: 38, lat: -5, label: "East African Rift", rotate: 85}
-  ];
+```{=html}
+<h2 class="lp-section-title anchored" id="lp-paths">What do you need today?</h2>
+<p class="lp-section-sub">This book follows your class packets, so you can catch up or review on your own.</p>
+<div class="lp-paths">
+  <a class="lp-path" href="#lp-units">
+    <span class="lp-path-emoji" aria-hidden="true">📒</span>
+    <b>I missed class</b>
+    <span class="lp-path-text">Open your unit and chapter. The <b>packet guide</b> at the top of each chapter shows where every packet page lives.</span>
+  </a>
+  <a class="lp-path" href="#lp-units">
+    <span class="lp-path-emoji" aria-hidden="true">🧠</span>
+    <b>I have a test coming</b>
+    <span class="lp-path-text">Every chapter ends with a <b>summary</b>, <b>Myth or Fact</b> cards, and a <b>quiz</b> that explains each answer.</span>
+  </a>
+  <a class="lp-path" href="unit1-discovering-new-worlds/index.html">
+    <span class="lp-path-emoji" aria-hidden="true">🌱</span>
+    <b>I'm brand new</b>
+    <span class="lp-path-text">Start at Unit 1 with the Sun, the stars, and the hunt for another Earth.</span>
+  </a>
+</div>
+```
 
-  // 4. DATA FETCHING (Same robust logic as before)
-  let earthQuakeData = [];
-  try {
-    const feed = await d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month.geojson");
-    earthQuakeData = feed.features.map(f => ({
+```{=html}
+<h2 class="lp-section-title anchored" id="lp-units">Six units. Six real mysteries.</h2>
+<p class="lp-section-sub">Each unit starts with a question scientists are still working on. Tap a unit to see the big picture, or jump straight to a chapter.</p>
+<div class="lp-units">
+
+  <article class="lp-unit" style="--lp-grad: linear-gradient(135deg, #4f46e5, #7c3aed); --lp-accent: #6d28d9;">
+    <a class="lp-unit-head" href="unit1-discovering-new-worlds/index.html">
+      <span class="lp-unit-emoji" aria-hidden="true">🌟</span>
+      <span class="lp-unit-num">Unit 1</span>
+      <h3>Discovering New Worlds</h3>
+      <p class="lp-unit-q">Is there another planet out there Earth-like enough to support life?</p>
+    </a>
+    <div class="lp-unit-body">
+      <p class="lp-unit-hook">Every second, the Sun turns <b>about 600 million tons</b> of hydrogen into helium. That's where sunlight comes from.</p>
+      <nav class="lp-chips" aria-label="Unit 1 chapters">
+        <a class="lp-chip" href="unit1-discovering-new-worlds/unit1-sun.html">How the Sun Works</a>
+        <a class="lp-chip" href="unit1-discovering-new-worlds/unit1-stars.html">Star Life Cycles</a>
+        <a class="lp-chip" href="unit1-discovering-new-worlds/unit1-orbits.html">Planets &amp; Orbits</a>
+      </nav>
+    </div>
+  </article>
+
+  <article class="lp-unit" style="--lp-grad: linear-gradient(135deg, #0f766e, #0891b2); --lp-accent: #0e7490;">
+    <a class="lp-unit-head" href="unit2-probability-of-life/index.html">
+      <span class="lp-unit-emoji" aria-hidden="true">👽</span>
+      <span class="lp-unit-num">Unit 2</span>
+      <h3>Probability of Life Elsewhere</h3>
+      <p class="lp-unit-q">Are we alone in the universe?</p>
+    </a>
+    <div class="lp-unit-body">
+      <p class="lp-unit-hook"><b>4.5 billion years</b> and <b>5 mass extinctions</b> came before humans showed up. What took so long?</p>
+      <nav class="lp-chips" aria-label="Unit 2 chapters">
+        <a class="lp-chip" href="unit2-probability-of-life/unit2-solar-system.html">Solar System</a>
+        <a class="lp-chip" href="unit2-probability-of-life/unit2-coevolution.html">Earth &amp; Life</a>
+        <a class="lp-chip" href="unit2-probability-of-life/unit2-big-bang.html">Big Bang</a>
+        <a class="lp-chip" href="unit2-probability-of-life/unit2-asteroids.html">Asteroids</a>
+      </nav>
+    </div>
+  </article>
+
+  <article class="lp-unit" style="--lp-grad: linear-gradient(135deg, #ea580c, #b91c1c); --lp-accent: #c2410c;">
+    <a class="lp-unit-head" href="unit3-earthquakes-volcanoes-tsunamis/index.html">
+      <span class="lp-unit-emoji" aria-hidden="true">🌋</span>
+      <span class="lp-unit-num">Unit 3</span>
+      <h3>Earthquakes, Tsunamis &amp; Volcanoes</h3>
+      <p class="lp-unit-q">Who is most at risk, and why do people live there anyway?</p>
+    </a>
+    <div class="lp-unit-body">
+      <p class="lp-unit-hook">About <b>800 million people</b> live within 100 km of an active volcano.</p>
+      <nav class="lp-chips" aria-label="Unit 3 chapters">
+        <a class="lp-chip" href="unit3-earthquakes-volcanoes-tsunamis/unit3-earth-interior.html">Earth's Interior</a>
+        <a class="lp-chip" href="unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html">Plate Boundaries</a>
+        <a class="lp-chip" href="unit3-earthquakes-volcanoes-tsunamis/unit3-energy-matter.html">Energy &amp; Matter</a>
+      </nav>
+    </div>
+  </article>
+
+  <article class="lp-unit" style="--lp-grad: linear-gradient(135deg, #0e7490, #dc2626); --lp-accent: #0e7490;">
+    <a class="lp-unit-head" href="unit4-climate-change/index.html">
+      <span class="lp-unit-emoji" aria-hidden="true">🌡️</span>
+      <span class="lp-unit-num">Unit 4</span>
+      <h3>Climate Change</h3>
+      <p class="lp-unit-q">What do scientists see in the data that makes them so sure humans are the cause?</p>
+    </a>
+    <div class="lp-unit-body">
+      <p class="lp-unit-hook"><b>2024</b> was the warmest year in NASA's record, which goes back to 1880.</p>
+      <nav class="lp-chips" aria-label="Unit 4 chapters">
+        <a class="lp-chip" href="unit4-climate-change/unit4-seasons-optional.html">Seasons</a>
+        <a class="lp-chip" href="unit4-climate-change/unit4-earth-sun-dynamics.html">Earth–Sun Dynamics</a>
+        <a class="lp-chip" href="unit4-climate-change/unit4-climate-feedbacks.html">Feedbacks</a>
+        <a class="lp-chip" href="unit4-climate-change/unit4-past-and-future.html">Past &amp; Future</a>
+      </nav>
+    </div>
+  </article>
+
+  <article class="lp-unit" style="--lp-grad: linear-gradient(135deg, #1e3a8a, #0e7490); --lp-accent: #1d4ed8;">
+    <a class="lp-unit-head" href="unit5-hurricanes-blizzards/index.html">
+      <span class="lp-unit-emoji" aria-hidden="true">🌀</span>
+      <span class="lp-unit-num">Unit 5</span>
+      <h3>Hurricanes &amp; Blizzards in NYC</h3>
+      <p class="lp-unit-q">Will NYC get more frequent and more intense storms?</p>
+    </a>
+    <div class="lp-unit-body">
+      <p class="lp-unit-hook">In 2012, <b>Hurricane Sandy</b> pushed seawater into NYC's subway tunnels.</p>
+      <nav class="lp-chips" aria-label="Unit 5 chapters">
+        <a class="lp-chip" href="unit5-hurricanes-blizzards/unit5-moon-phases.html">Moon Phases</a>
+        <a class="lp-chip" href="unit5-hurricanes-blizzards/unit5-blizzards.html">Blizzards</a>
+        <a class="lp-chip" href="unit5-hurricanes-blizzards/unit5-storm-paths.html">Storm Paths</a>
+        <a class="lp-chip" href="unit5-hurricanes-blizzards/unit5-hurricanes.html">Hurricanes</a>
+      </nav>
+    </div>
+  </article>
+
+  <article class="lp-unit" style="--lp-grad: linear-gradient(135deg, #15803d, #0d9488); --lp-accent: #15803d;">
+    <a class="lp-unit-head" href="unit6-sustainable-future/index.html">
+      <span class="lp-unit-emoji" aria-hidden="true">♻️</span>
+      <span class="lp-unit-num">Unit 6</span>
+      <h3>A Sustainable Future</h3>
+      <p class="lp-unit-q">How can we meet our needs without wrecking the planet?</p>
+    </a>
+    <div class="lp-unit-body">
+      <p class="lp-unit-hook">Air pollution is linked to about <b>7 million early deaths</b> worldwide every year (WHO).</p>
+      <nav class="lp-chips" aria-label="Unit 6 chapters">
+        <a class="lp-chip" href="unit6-sustainable-future/unit6-burning-fossil-fuels.html">Fossil Fuels</a>
+        <a class="lp-chip" href="unit6-sustainable-future/unit6-land_use_and_biodiversity.html">Land Use</a>
+        <a class="lp-chip" href="unit6-sustainable-future/unit6-mining.html">Mining</a>
+      </nav>
+    </div>
+  </article>
+
+</div>
+```
+
+```{=html}
+<h2 class="lp-section-title anchored" id="lp-stripes">146 years of Earth's temperature in one picture</h2>
+<p class="lp-section-sub">Each stripe is one year, from 1880 to 2025. Blue years were cooler than average, red years were warmer. <b>Drag or tap across it.</b></p>
+<div class="lp-stripes-card">
+```
+
+```{ojs}
+//| output: true
+lpStripes = {
+  // NASA GISTEMP v4 annual global surface temperature anomaly (°C vs. 1951–1980), 1880–2025.
+  // Same series as Unit 4's Earth–Sun Dynamics chapter.
+  const anomalies = [-0.17,-0.09,-0.11,-0.18,-0.28,-0.33,-0.31,-0.36,-0.18,-0.11,-0.36,-0.22,-0.27,-0.31,-0.3,-0.23,-0.11,-0.11,-0.28,-0.18,-0.08,-0.16,-0.28,-0.37,-0.47,-0.26,-0.22,-0.38,-0.42,-0.48,-0.44,-0.44,-0.37,-0.34,-0.15,-0.14,-0.36,-0.46,-0.3,-0.27,-0.27,-0.18,-0.28,-0.26,-0.27,-0.22,-0.11,-0.22,-0.2,-0.36,-0.15,-0.09,-0.16,-0.28,-0.13,-0.2,-0.15,-0.03,0.0,-0.02,0.12,0.18,0.06,0.09,0.2,0.09,-0.07,-0.03,-0.11,-0.11,-0.17,-0.07,0.01,0.08,-0.13,-0.14,-0.19,0.05,0.06,0.03,-0.02,0.06,0.03,0.05,-0.2,-0.11,-0.06,-0.02,-0.08,0.05,0.03,-0.08,0.01,0.16,-0.07,-0.01,-0.1,0.18,0.07,0.16,0.26,0.32,0.14,0.31,0.16,0.12,0.18,0.32,0.39,0.27,0.45,0.41,0.22,0.23,0.31,0.45,0.33,0.47,0.61,0.38,0.39,0.53,0.63,0.62,0.53,0.68,0.64,0.66,0.54,0.66,0.72,0.61,0.65,0.67,0.75,0.89,1.01,0.91,0.85,0.98,1.01,0.85,0.89,1.17,1.28,1.18];
+  const data = anomalies.map((a, i) => ({year: 1880 + i, a}));
+  const W = data.length * 6, H = 150;
+  const color = d3.scaleDiverging([-0.6, 0, 1.2], t => d3.interpolateRdBu(1 - t)).clamp(true);
+
+  const wrap = html`<div class="lp-stripes"></div>`;
+  const svg = d3.create("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("preserveAspectRatio", "none")
+    .attr("role", "img")
+    .attr("aria-label", "Warming stripes: 146 vertical stripes, one per year from 1880 to 2025. Early years are mostly light blue; stripes turn red after about 1980 and are darkest red in the 2020s, showing Earth's average temperature has risen about 1.2 to 1.3 °C.");
+  svg.selectAll("rect").data(data).join("rect")
+    .attr("x", (d, i) => i * 6).attr("y", 0)
+    .attr("width", 6.4).attr("height", H)
+    .attr("fill", d => color(d.a));
+  const marker = svg.append("rect")
+    .attr("y", 0).attr("width", 6).attr("height", H)
+    .attr("fill", "none").attr("stroke", "#fde047").attr("stroke-width", 3)
+    .attr("vector-effect", "non-scaling-stroke")
+    .style("display", "none");
+
+  const read = html`<p class="lp-stripes-read" aria-live="polite"></p>`;
+  const show = d => {
+    marker.attr("x", (d.year - 1880) * 6).style("display", null);
+    const sign = d.a > 0 ? "+" : d.a < 0 ? "−" : "±";
+    const word = d.a > 0 ? "warmer" : d.a < 0 ? "cooler" : "the same as";
+    read.innerHTML = d.a === 0
+      ? `<b>${d.year}:</b> right at the 1951–1980 average`
+      : `<b>${d.year}:</b> ${sign}${Math.abs(d.a).toFixed(2)} °C ${word} than the 1951–1980 average`;
+  };
+  show(data.find(d => d.year === 2024));
+
+  const node = svg.node();
+  const pick = e => {
+    const b = node.getBoundingClientRect();
+    const i = Math.max(0, Math.min(data.length - 1, Math.floor((e.clientX - b.left) / b.width * data.length)));
+    show(data[i]);
+  };
+  node.addEventListener("pointerdown", e => { node.setPointerCapture(e.pointerId); pick(e); });
+  node.addEventListener("pointermove", e => { if (e.pointerType === "mouse" || e.buttons) pick(e); });
+
+  wrap.append(node, read);
+  return wrap;
+}
+```
+
+```{=html}
+<div class="lp-stripes-axis" aria-hidden="true"><span>1880</span><span>1950</span><span>2025</span></div>
+<p class="lp-source">Data: <a href="https://data.giss.nasa.gov/gistemp/" target="_blank" rel="noopener">NASA GISTEMP v4</a>, yearly global average surface temperature compared to the 1951–1980 average. You'll dig into this data in <a href="unit4-climate-change/index.html">Unit 4</a>.</p>
+</div>
+```
+
+```{=html}
+<h2 class="lp-section-title anchored" id="lp-features">Not a regular textbook</h2>
+<p class="lp-section-sub">You learn by doing things, not by reading walls of text.</p>
+<div class="lp-features">
+  <div class="lp-feature"><span class="lp-feature-emoji" aria-hidden="true">🛰️</span><b>Real data</b><p>The same datasets scientists use, from NASA, NOAA, and USGS. Nothing made up.</p></div>
+  <div class="lp-feature"><span class="lp-feature-emoji" aria-hidden="true">🎛️</span><b>Hands-on models</b><p>Drag sliders, spin orbits, and steer storms to see what changes and why.</p></div>
+  <div class="lp-feature"><span class="lp-feature-emoji" aria-hidden="true">✏️</span><b>Matches your packet</b><p>Packet prompts appear right in the chapter, with a "check your thinking" answer to try after.</p></div>
+  <div class="lp-feature"><span class="lp-feature-emoji" aria-hidden="true">✅</span><b>Quizzes that teach</b><p>Get instant feedback that explains <em>why</em> an answer is right or wrong.</p></div>
+</div>
+<p class="lp-footer-note">Tip: use the <b>menu</b> (left, or ☰ on a phone) to move between chapters, and the <b>🔍 search</b> to find any topic.</p>
+```
+
+```{ojs}
+//| output: false
+d3 = require("d3@7.9.0")
+```
+
+```{ojs}
+//| output: false
+lpTopojson = require("topojson-client@3.1.0")
+```
+
+```{ojs}
+//| output: false
+lpLand = FileAttachment("world-110m.json").json()
+  .then(w => lpTopojson.feature(w, w.objects.land))
+  .catch(() => null)
+```
+
+```{ojs}
+//| output: false
+// Live USGS feed: every magnitude 2.5+ earthquake in the past 7 days.
+// If it can't load, the globe shows no dots rather than made-up ones.
+lpQuakes = d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson")
+  .then(feed => feed.features
+    .filter(f => f.geometry && f.properties.mag != null)
+    .map(f => ({
       lon: f.geometry.coordinates[0],
       lat: f.geometry.coordinates[1],
       mag: f.properties.mag,
-      place: f.properties.place,
-      time: new Date(f.properties.time).toLocaleDateString(),
-      type: "Earthquake"
-    }));
-  } catch (e) {
-    earthQuakeData = [{lon: 0, lat: 0, mag: 0, place: "Data Offline", type: "Earthquake"}];
-  }
-
-  const volcanoes = [
-    {name: "Mt. Fuji", lat: 35.36, lon: 138.72, type: "Volcano"},
-    {name: "Krakatoa", lat: -6.10, lon: 105.42, type: "Volcano"},
-    {name: "Mt. St. Helens", lat: 46.19, lon: -122.19, type: "Volcano"},
-    {name: "Mauna Loa", lat: 19.47, lon: -155.60, type: "Volcano"},
-    {name: "Vesuvius", lat: 40.82, lon: 14.42, type: "Volcano"},
-    {name: "Kilimanjaro", lat: -3.06, lon: 37.35, type: "Volcano"},
-    {name: "Eyjafjallajökull", lat: 63.63, lon: -19.62, type: "Volcano"},
-    {name: "Popocatépetl", lat: 19.02, lon: -98.62, type: "Volcano"},
-    {name: "Etna", lat: 37.75, lon: 14.99, type: "Volcano"},
-  ];
-  
-  const allData = [...earthQuakeData, ...volcanoes];
-
-  // 5. RENDER WELCOME MAP
-  return html`${style}
-    ${Plot.plot({
-    title: "Welcome to a Living Planet",
-    subtitle: "Every dot represents the Earth moving, breathing, and reshaping itself.",
-    width: Math.min(900, window.innerWidth - 40),
-    height: 520,
-    projection: "equal-earth",
-    
-    color: {
-      legend: true,
-      domain: ["Earthquake", "Volcano"],
-      range: ["#f7ea3e", "#f56565"] // Friendlier Blue and Red
-    },
-    
-    marks: [
-      // Ocean (Softer blue-grey)
-      Plot.geo({type: "Sphere"}, {fill: "#f7fafc", stroke: "#cbd5e0"}),
-      
-      // Land
-      land ? Plot.geo(land, {fill: "#2f6ba7", stroke: "white", strokeWidth: 0.7}) : null,
-      
-      // Graticule (Subtle grid)
-      Plot.graticule({stroke: "#cbd5e0", strokeOpacity: 0.3}),
-      
-      // ANNOTATIONS: Large text labels on the map
-      Plot.text(annotations, {
-        x: "lon", y: "lat", 
-        text: "label", 
-        fill: "#718096", 
-        fontSize: 14, 
-        fontStyle: "italic",
-        fontWeight: "bold",
-        stroke: "#f7fafc", 
-        strokeWidth: 3, // White halo around text to make it readable
-      }),
-
-      // Data Points
-      Plot.dot(allData, {
-        x: "lon", y: "lat",
-        r: d => d.type === "Volcano" ? 5 : Math.max(1.8, d.mag * 0.7), 
-        fill: "type",
-        fillOpacity: d => d.type === "Volcano" ? 0.9 : 0.5,
-        stroke: "white",
-        strokeWidth: 0.3,
-        symbol: d => d.type === "Volcano" ? "triangle" : "circle",
-        tip: true,
-        channels: {
-          Name: d => d.name || d.place,
-          Magnitude: "mag",
-          Date: "time"
-        }
-      })
-    ]
-  })}`;
-}
+      place: f.properties.place || "Unknown location",
+      time: f.properties.time
+    }))
+    .sort((a, b) => a.mag - b.mag))
+  .catch(() => null)
 ```
-
----
-
-## 🚀 Your Journey Through 6 Units
-
-Each unit is built around a **driving question** — a real-world mystery you'll investigate using data, simulations, and scientific reasoning.
-
-```{ojs}
-//| echo: false
-{
-  const units = [
-    {unit: 1, title: "Discovering New Worlds", icon: "🌟", question: "How do we discover new worlds?", color: "#667eea", topics: "Sun's lifespan • Star life cycles • Exoplanets • Nuclear fusion"},
-    {unit: 2, title: "Probability of Life", icon: "🧬", question: "What is the probability of life elsewhere?", color: "#00cec9", topics: "Big Bang • Early Earth • Water • Co-evolution"},
-    {unit: 3, title: "Earthquakes & Volcanoes", icon: "🌋", question: "Who's at risk from earthquakes, volcanoes, tsunamis?", color: "#e17055", topics: "Earth's interior • Plate tectonics • Seismic waves • Hazards"},
-    {unit: 4, title: "Climate Change", icon: "🌡️", question: "How is our climate changing?", color: "#6c5ce7", topics: "Earth-Sun dynamics • Carbon cycle • Feedback loops • Ice cores"},
-    {unit: 5, title: "Hurricanes & Blizzards", icon: "🌀", question: "Will NYC see more hurricanes and blizzards?", color: "#0984e3", topics: "Severe weather • Storm paths • Climate impacts"},
-    {unit: 6, title: "Sustainable Future", icon: "♻️", question: "How can we create a sustainable future?", color: "#00b894", topics: "Fossil fuels • Land use • Mining • Solutions"}
-  ];
-
-  const div = d3.create("div");
-
-  units.forEach(u => {
-    const card = div.append("div")
-      .attr("class", "unit-card")
-      .style("border-left-color", u.color);
-
-    card.append("span").attr("class", "unit-icon").text(u.icon);
-    card.append("h3").style("color", u.color).text(`Unit ${u.unit}: ${u.title}`);
-    card.append("p").style("font-size", "1.1em").style("font-weight", "600").style("font-style", "italic")
-      .text(`"${u.question}"`);
-    card.append("p").style("color", "#718096").style("margin-bottom", "0").text(u.topics);
-  });
-
-  return div.node();
-}
-```
-
----
-
-## 📊 What Makes This Textbook Different?
-
-::: {.feature-grid}
-
-:::: {.feature-item}
-<span class="feature-icon">📊</span>
-**Interactive Graphs**
-
-Hover over any chart to explore data. Zoom, pan, and discover patterns yourself.
-::::
-
-:::: {.feature-item}
-<span class="feature-icon">🗺️</span>
-**Live Maps**
-
-Visualize real earthquake, climate, and weather data on interactive maps.
-::::
-
-:::: {.feature-item}
-<span class="feature-icon">🔬</span>
-**Simulations**
-
-Manipulate variables in orbital, climate, and geological simulations.
-::::
-
-:::: {.feature-item}
-<span class="feature-icon">💻</span>
-**Runnable Code**
-
-See and modify the code behind every visualization.
-::::
-
-:::: {.feature-item}
-<span class="feature-icon">✅</span>
-**Interactive Quizzes**
-
-Test your understanding with instant feedback after each chapter.
-::::
-
-:::: {.feature-item}
-<span class="feature-icon">🌍</span>
-**Real Data**
-
-Work with the same datasets scientists use — from NASA, USGS, and NOAA.
-::::
-
-:::
-
----
-
-## 🔥 A Taste of What's Inside
-
-Here's a preview of the kind of data you'll explore — global temperature change over the last 140+ years:
-
-```{ojs}
-//| echo: false
-{
-  // 1. Generate Data
-  const years = d3.range(1880, 2025);
-  const tempData = years.map(y => ({
-    year: y,
-    anomaly: -0.2 + (y - 1880) * 0.002 + Math.sin((y - 1880) * 0.15) * 0.1 + (y > 1970 ? (y - 1970) * 0.018 : 0) + (Math.random() - 0.5) * 0.08,
-    decade: Math.floor(y / 10) * 10 + "s"
-  }));
-
-  // 2. Render Plot
-  return Plot.plot({
-    title: "🌡️ Global Temperature Anomaly (1880–2024)",
-    subtitle: "Hover over any bar to see the year and temperature change",
-    width: Math.min(800, window.innerWidth - 60),
-    height: 350,
-    x: {label: "Year", tickFormat: "d"},
-    y: {label: "Temperature anomaly (°C)", grid: true},
-    color: {
-      scheme: "RdBu",
-      reverse: true, // Reverses so Red = Hot, Blue = Cold
-      legend: true,
-      label: "°C anomaly",
-      // Optional: Set domain to be symmetric so 0 is perfectly white
-      domain: [-1.2, 1.2] 
-    },
-    marks: [
-      Plot.ruleY([0], {stroke: "#a0aec0", strokeDasharray: "4,2"}),
-      Plot.rectY(tempData, {
-        x: "year",
-        y: "anomaly",
-        interval: 1, // <--- THIS FIXED IT
-        fill: "anomaly",
-        tip: true,
-        channels: {
-          Year: "year",
-          "Temp Anomaly": d => d.anomaly.toFixed(2) + " °C"
-        }
-      })
-    ]
-  });
-}
-```
-
-::: {.callout-tip}
-## 🧭 How to Navigate
-- Use the **sidebar** (left) to jump between units and chapters
-- **Hover** over charts to see data values
-- **Expand code** blocks to see how visualizations work
-- Use the **🔍 search** icon to find any topic
-:::
-
-*Let's begin our exploration of Earth and Space — start with [Unit 1: Discovering New Worlds](unit1-discovering-new-worlds/index.qmd)!*
-
----
 
 ::: {.callout-note collapse="true"}
 ## 📄 License & Copyright Information
 
-This textbook is based on the **New Visions for Public Schools** Earth & Space Science curriculum. The majority of resources from [curriculum.newvisions.org](https://curriculum.newvisions.org) are Open Educational Resources (OER) available under the terms of the:
+This textbook is by Will Pollard and is based on the **New Visions for Public Schools** Earth & Space Science curriculum. The majority of resources from [curriculum.newvisions.org](https://curriculum.newvisions.org) are Open Educational Resources (OER) available under the terms of the:
 
 **[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License](https://creativecommons.org/licenses/by-nc-sa/4.0/)**
 
@@ -321,4 +816,3 @@ Materials created by New Visions' partners are subject to other licenses; copyri
 
 **Regents Examination Questions:** Used with permission from the **New York State Education Department**. Past Regents Examinations are available at [nysedregents.org](http://www.nysedregents.org/). The New York State Education Department retains all rights. Reproducing materials for profit or any commercial use is strictly forbidden without express prior written permission of the New York State Education Department. Any reproduction or distribution must expressly credit the New York State Education Department.
 :::
-
