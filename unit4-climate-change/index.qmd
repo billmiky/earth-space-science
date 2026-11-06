@@ -1,23 +1,315 @@
 ---
 title: "Unit 4: Climate Change"
+execute:
+  echo: false
 ---
 
 ```{=html}
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;600;800&display=swap');
 
-.unit-header { background: linear-gradient(135deg, #0a7e8c 0%, #c0392b 100%); color: white; padding: 40px; margin: -20px -20px 30px -20px; border-radius: 0 0 25px 25px; text-align: center; box-shadow: 0 10px 30px rgba(10, 126, 140, 0.35); }
-.unit-header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.5em; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-.unit-header p { font-size: 1.3em; margin-top: 10px; opacity: 0.9; }
+/* The hero replaces Quarto's default title block on this page only */
+#title-block-header { display: none; }
+
 .key-idea { background: linear-gradient(135deg, #e0f7fa 0%, #ffe0d6 100%); color: #1a1a1a; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #0a7e8c; font-size: 1.1em; }
 h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #0a7e8c !important; }
+.quarto-dark h2 { color: #5eead4 !important; }
+
+/* ---------- Unit 4 hero ---------- */
+.u4h-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  margin: 0.5rem 0 2.5rem;
+  padding: 2rem 1.5rem 1.5rem;
+  color: #f8fafc;
+  background:
+    radial-gradient(ellipse at 85% 10%, rgba(239, 68, 68, 0.28), transparent 55%),
+    radial-gradient(ellipse at 10% 90%, rgba(20, 184, 166, 0.25), transparent 55%),
+    linear-gradient(160deg, #04141a 0%, #0b2530 55%, #2a1218 100%);
+}
+@media (min-width: 1100px) { .u4h-hero { padding: 2.5rem 2.5rem 2rem; } }
+@media (max-width: 600px) { .u4h-hero { padding: 1.5rem 1rem 1.25rem; } }
+.u4h-kicker {
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #5eead4; margin: 0 0 0.7rem;
+}
+.u4h-hero h1.u4h-title {
+  font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700;
+  font-size: clamp(1.9rem, 6vw, 3rem); line-height: 1.08; letter-spacing: -0.02em;
+  margin: 0 0 0.9rem; color: #fff; border: 0; padding: 0;
+}
+.u4h-hero h1.u4h-title span {
+  background: linear-gradient(90deg, #fbbf24, #ef4444);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.u4h-lede { font-size: 1.08rem; line-height: 1.55; color: #cbd5e1; margin: 0 0 0.9rem; max-width: 46rem; }
+.u4h-lede b { color: #fff; }
+.u4h-dq {
+  margin: 0 0 1.25rem; padding: 0.7rem 0.95rem; border-radius: 12px;
+  background: rgba(94, 234, 212, 0.08); border-left: 4px solid #5eead4;
+  color: #e2e8f0; font-size: 0.97rem; line-height: 1.5; max-width: 46rem;
+}
+.u4h-dq strong { color: #5eead4; display: block; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.2rem; }
+@media (max-width: 600px) { .u4h-lede { font-size: 1rem; } .u4h-kicker { font-size: 0.7rem; } }
+
+/* Viz panel */
+.u4h-viz { background: rgba(2, 6, 23, 0.45); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 18px; padding: 0.9rem 0.9rem 0.7rem; }
+.u4h-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.6rem; }
+.u4h-tab {
+  min-height: 44px; padding: 0.45rem 0.95rem; border-radius: 999px; cursor: pointer;
+  font-family: inherit; font-weight: 600; font-size: 0.92rem; line-height: 1.2; color: #e2e8f0; background: transparent;
+  border: 1.5px solid rgba(226, 232, 240, 0.35);
+}
+.u4h-tab[aria-pressed="true"] { background: #5eead4; border-color: #5eead4; color: #042f2e; }
+.u4h-tab:focus-visible, .u4h-play:focus-visible, .u4h-range:focus-visible { outline: 3px solid #fde68a; outline-offset: 2px; }
+.u4h-read { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.2rem 0.7rem; min-height: 3.2rem; }
+.u4h-ppm { font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700; font-size: clamp(1.9rem, 6vw, 2.6rem); color: #fde68a; line-height: 1.1; }
+.u4h-ppm small { font-size: 0.5em; color: #cbd5e1; font-weight: 600; margin-left: 0.25rem; }
+.u4h-when { color: #e2e8f0; font-size: 0.98rem; }
+.u4h-viz svg { width: 100%; height: auto; display: block; touch-action: pan-y; cursor: crosshair; }
+.u4h-viz svg text { font-family: Inter, system-ui, sans-serif; }
+.u4h-controls { display: flex; align-items: center; gap: 0.7rem; margin-top: 0.4rem; }
+.u4h-play {
+  flex: 0 0 auto; width: 48px; height: 48px; border-radius: 50%; cursor: pointer;
+  border: 0; background: linear-gradient(135deg, #fbbf24, #ef4444); color: #1c1917;
+  font-size: 1.1rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center;
+}
+.u4h-range { flex: 1; min-width: 0; height: 44px; accent-color: #fbbf24; cursor: pointer; background: transparent; }
+.u4h-note { font-size: 0.9rem; color: #cbd5e1; margin: 0.4rem 0 0; min-height: 2.6em; line-height: 1.4; }
+.u4h-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.3rem; }
+.u4h-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem; min-height: 48px; padding: 0.7rem 1.25rem;
+  border-radius: 999px; font-weight: 700; text-decoration: none !important;
+  transition: transform 0.15s ease;
+}
+.u4h-btn:hover { transform: translateY(-2px); }
+.u4h-btn:focus-visible { outline: 3px solid #5eead4; outline-offset: 3px; }
+.u4h-btn-primary { background: linear-gradient(90deg, #fbbf24, #f97316); color: #1c1917 !important; box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3); }
+.u4h-btn-ghost { color: #f8fafc !important; border: 1.5px solid rgba(248, 250, 252, 0.45); }
+.u4h-btn-ghost:hover { background: rgba(248, 250, 252, 0.1); }
+.u4h-source { font-size: 0.75rem; color: #94a3b8; margin: 0.9rem 0 0; line-height: 1.45; }
+.u4h-source a { color: #7dd3fc !important; }
+@media (prefers-reduced-motion: reduce) { .u4h-btn { transition: none; } .u4h-btn:hover { transform: none; } }
 </style>
 ```
 
-::: {.unit-header}
-# 🌡️ Unit 4: Climate Change
-**How do natural factors contribute to changes in Earth's temperature? What are 99.9% of climate scientists seeing in historical climate data that makes them so sure humans are the cause of climate change today, and why does it matter?**
-:::
+```{=html}
+<section class="u4h-hero" aria-labelledby="u4h-title">
+  <p class="u4h-kicker">Unit 4 · Climate Change</p>
+  <h1 class="u4h-title" id="u4h-title">Earth's air has more CO₂ than at any time in <span>800,000 years.</span></h1>
+  <p class="u4h-lede">Since 1958, scientists on top of Mauna Loa in Hawaii have measured <b>carbon dioxide (CO₂)</b> in the air every month. Press play and watch it climb. Then <b>zoom out</b> to air bubbles trapped in Antarctic ice to see how unusual today really is.</p>
+  <div class="u4h-dq"><strong>Unit driving question</strong>How do natural factors contribute to changes in Earth's temperature? What are 99.9% of climate scientists seeing in historical climate data that makes them so sure humans are the cause of climate change today, and why does it matter?</div>
+```
+
+```{ojs}
+//| output: true
+u4hViz = {
+  // NOAA GML Mauna Loa monthly mean CO2 (ppm), March 1958 – September 2026, one value per month.
+  const mlo = U4H_MLO;
+  // Antarctic ice-core composite CO2 (Bereiter et al. 2015, NOAA NCEI), averaged into 1,000-year bins:
+  // flat pairs [thousands of years before 1950, ppm], oldest first. Industrial-era samples (< 200 yr BP) left out.
+  const iceFlat = U4H_ICE;
+
+  const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const modern = mlo.map((v, i) => {
+    const m = 2 + i; // index 0 = March 1958
+    const year = 1958 + Math.floor(m / 12), month = m % 12;
+    return {t: year + (month + 0.5) / 12, v, label: `${monthNames[month]} ${year}`};
+  });
+  // Yearly means of full years, for the 800,000-year view
+  const byYear = d3.rollups(modern, a => ({n: a.length, v: d3.mean(a, d => d.v)}), d => Math.floor(d.t));
+  const yearly = byYear.filter(([, o]) => o.n === 12).map(([y, o]) => ({y, v: o.v}));
+  const ice = [];
+  for (let i = 0; i < iceFlat.length; i += 2) ice.push({ago: iceFlat[i] * 1000 + 76, v: iceFlat[i + 1], kind: "ice"});
+  const NOW = 2026;
+  const deep = ice.concat(yearly.map(d => ({ago: NOW - d.y, v: d.v, kind: "mlo", y: d.y})));
+  const iceMax = d3.max(ice, d => d.v);
+
+  const W = Math.round(Math.max(300, Math.min(720, width - 28))), H = W < 500 ? 270 : 330;
+  const small = W < 500;
+  const M = {top: 28, right: 14, bottom: 34, left: 42};
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const root = html`<div class="u4h-viz"></div>`;
+  const tabs = html`<div class="u4h-tabs" role="group" aria-label="Choose a time span">
+    <button class="u4h-tab" type="button" aria-pressed="true" data-mode="modern">Since 1958</button>
+    <button class="u4h-tab" type="button" aria-pressed="false" data-mode="deep">🔭 Last 800,000 years</button></div>`;
+  const read = html`<div class="u4h-read" aria-live="polite"><span class="u4h-ppm"></span><span class="u4h-when"></span></div>`;
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("role", "img");
+  const controls = html`<div class="u4h-controls">
+    <button class="u4h-play" type="button" aria-label="Play">▶</button>
+    <input class="u4h-range" type="range" min="0" step="1" aria-label="Move through time"></div>`;
+  const note = html`<p class="u4h-note"></p>`;
+  root.append(tabs, read, svg.node(), controls, note);
+  const playBtn = controls.querySelector(".u4h-play");
+  const range = controls.querySelector(".u4h-range");
+  const ppmEl = read.querySelector(".u4h-ppm"), whenEl = read.querySelector(".u4h-when");
+
+  const gBand = svg.append("g"), gGrid = svg.append("g"), gX = svg.append("g").attr("transform", `translate(0,${H - M.bottom})`);
+  const gY = svg.append("g").attr("transform", `translate(${M.left},0)`);
+  const yLabel = svg.append("text").attr("x", 4).attr("y", 14).attr("fill", "#94a3b8").attr("font-size", 12).text("CO₂ (ppm)");
+  const ghost = svg.append("path").attr("fill", "none").attr("stroke", "rgba(148,163,184,0.25)").attr("stroke-width", 1.2);
+  const lineIce = svg.append("path").attr("fill", "none").attr("stroke", "#7dd3fc").attr("stroke-width", 1.8).attr("stroke-linejoin", "round");
+  const lineMain = svg.append("path").attr("fill", "none").attr("stroke-width", 2).attr("stroke-linejoin", "round");
+  const gNotes = svg.append("g");
+  const dot = svg.append("circle").attr("r", 6).attr("fill", "#fde68a").attr("stroke", "#0b2530").attr("stroke-width", 2);
+
+  const grad = svg.append("defs").append("linearGradient").attr("id", "u4h-grad").attr("x1", 0).attr("x2", 1).attr("y1", 0).attr("y2", 0);
+  grad.append("stop").attr("offset", "0%").attr("stop-color", "#fbbf24");
+  grad.append("stop").attr("offset", "100%").attr("stop-color", "#ef4444");
+
+  const axisStyle = g => {
+    g.selectAll("text").attr("fill", "#cbd5e1").attr("font-size", 13);
+    g.selectAll("line,path").attr("stroke", "rgba(203,213,225,0.45)");
+  };
+
+  let mode = "modern", data = modern, idx = modern.length - 1, x, y;
+
+  function setup() {
+    data = mode === "modern" ? modern : deep;
+    range.max = data.length - 1;
+    gBand.selectAll("*").remove(); gNotes.selectAll("*").remove();
+    if (mode === "modern") {
+      x = d3.scaleLinear([1958, NOW + 1], [M.left, W - M.right]);
+      y = d3.scaleLinear([305, 440], [H - M.bottom, M.top]);
+      gX.call(d3.axisBottom(x).ticks(small ? 4 : 7).tickFormat(d3.format("d"))).call(axisStyle);
+      lineMain.attr("stroke", "url(#u4h-grad)");
+      lineIce.attr("d", null);
+      ghost.attr("d", d3.line(d => x(d.t), d => y(d.v))(modern));
+      svg.attr("aria-label", "Line graph of carbon dioxide measured at Mauna Loa, Hawaii, every month from 1958 to 2026. It rises from about 315 ppm to about 430 ppm, with a small up-and-down wiggle every year.");
+    } else {
+      x = d3.scaleLinear([806000, 0], [M.left, W - M.right]);
+      y = d3.scaleLinear([160, 440], [H - M.bottom, M.top]);
+      gX.call(d3.axisBottom(x).tickValues(small ? [800000, 400000, 0] : [800000, 600000, 400000, 200000, 0])
+        .tickFormat(d => d === 0 ? "today" : `${d / 1000}k yrs ago`)).call(axisStyle)
+        .call(g => g.selectAll(".tick:last-of-type text").attr("text-anchor", "end"));
+      gBand.append("rect").attr("x", M.left).attr("width", W - M.left - M.right)
+        .attr("y", y(300)).attr("height", y(170) - y(300)).attr("fill", "rgba(125,211,252,0.08)");
+      gBand.append("line").attr("x1", M.left).attr("x2", W - M.right).attr("y1", y(300)).attr("y2", y(300))
+        .attr("stroke", "#7dd3fc").attr("stroke-dasharray", "5 4").attr("stroke-opacity", 0.7);
+      gNotes.append("text").attr("x", M.left + 8).attr("y", y(300) - 7).attr("fill", "#7dd3fc").attr("font-size", 13)
+        .text("Highest natural level: about 300 ppm");
+      lineMain.attr("stroke", "#ef4444");
+      ghost.attr("d", d3.line(d => x(d.ago), d => y(d.v))(deep));
+      svg.attr("aria-label", "Line graph of carbon dioxide over the last 800,000 years from Antarctic ice cores, then Mauna Loa. It swings between about 175 and 300 ppm in ice-age cycles, then shoots straight up to about 427 ppm in modern times.");
+    }
+    gGrid.selectAll("*").remove();
+    gGrid.selectAll("line").data(y.ticks(5)).join("line")
+      .attr("x1", M.left).attr("x2", W - M.right).attr("y1", d => y(d)).attr("y2", d => y(d))
+      .attr("stroke", "rgba(203,213,225,0.12)");
+    gY.call(d3.axisLeft(y).ticks(5).tickSize(0).tickPadding(6)).call(axisStyle).call(g => g.select(".domain").remove());
+  }
+
+  function show(i) {
+    idx = Math.max(0, Math.min(data.length - 1, i));
+    range.value = idx;
+    const d = data[idx];
+    if (mode === "modern") {
+      lineMain.attr("d", d3.line(e => x(e.t), e => y(e.v))(modern.slice(0, idx + 1)));
+      dot.attr("cx", x(d.t)).attr("cy", y(d.v));
+      ppmEl.innerHTML = `${d.v.toFixed(1)}<small>ppm</small>`;
+      whenEl.textContent = d.label;
+      const rise = d.v - modern[0].v;
+      note.innerHTML = idx === 0 ? "The very first month of measurements." :
+        `That's <b>${rise > 0 ? "+" : ""}${rise.toFixed(1)} ppm</b> since March 1958. Notice the yearly wiggle: plants soak up CO₂ every Northern Hemisphere summer.`;
+    } else {
+      const iceSlice = data.slice(0, idx + 1).filter(e => e.kind === "ice");
+      const mloSlice = data.slice(0, idx + 1).filter(e => e.kind === "mlo");
+      lineIce.attr("d", d3.line(e => x(e.ago), e => y(e.v))(iceSlice));
+      lineMain.attr("d", mloSlice.length ? d3.line(e => x(e.ago), e => y(e.v))([iceSlice[iceSlice.length - 1], ...mloSlice]) : null);
+      dot.attr("cx", x(d.ago)).attr("cy", y(d.v));
+      ppmEl.innerHTML = `${Math.round(d.v)}<small>ppm</small>`;
+      if (d.kind === "ice") {
+        whenEl.textContent = `about ${d3.format(",")(Math.round(d.ago / 1000) * 1000)} years ago`;
+        note.innerHTML = d.v < 210 ? "🧊 A cold <b>ice age</b> (glacial period). Low CO₂, huge ice sheets."
+          : d.v > 265 ? "🌿 A warm <b>interglacial</b> period, like the last 10,000 years."
+          : "Air from a bubble trapped in Antarctic ice.";
+      } else {
+        whenEl.textContent = `${d.y} (Mauna Loa yearly average)`;
+        note.innerHTML = `<b>${Math.round(d.v - iceMax)} ppm above</b> the highest point in the ice-core averages. Humans burning fossil fuels did this in about 150 years.`;
+      }
+    }
+  }
+
+  // Playback
+  let timer = null, visible = false, played = false;
+  const STEPS_PER_SEC = () => data.length / 6;
+  function stop() { if (timer) { timer.stop(); timer = null; } playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "Play"); }
+  function play() {
+    if (reduceMotion) { show(data.length - 1); return; }
+    if (idx >= data.length - 1) show(0);
+    const start = idx;
+    playBtn.textContent = "❚❚"; playBtn.setAttribute("aria-label", "Pause");
+    timer = d3.timer(el => {
+      const i = start + Math.floor(el / 1000 * STEPS_PER_SEC());
+      show(i);
+      if (i >= data.length - 1) stop();
+    });
+  }
+  playBtn.addEventListener("click", () => timer ? stop() : play());
+  range.addEventListener("input", () => { stop(); show(+range.value); });
+
+  // Drag or tap on the chart to read values
+  const node = svg.node();
+  const nearest = e => {
+    const b = node.getBoundingClientRect();
+    const px = (e.clientX - b.left) * W / b.width;
+    const key = mode === "modern" ? (d => d.t) : (d => -d.ago);
+    const target = mode === "modern" ? x.invert(px) : -x.invert(px);
+    return d3.leastIndex(data, d => Math.abs(key(d) - target));
+  };
+  node.addEventListener("pointerdown", e => { stop(); show(nearest(e)); });
+  node.addEventListener("pointermove", e => { if (e.pointerType === "mouse" || e.buttons) show(nearest(e)); });
+
+  tabs.addEventListener("click", e => {
+    const b = e.target.closest(".u4h-tab"); if (!b || b.dataset.mode === mode) return;
+    stop();
+    mode = b.dataset.mode;
+    tabs.querySelectorAll(".u4h-tab").forEach(t => t.setAttribute("aria-pressed", t === b ? "true" : "false"));
+    setup();
+    if (reduceMotion || !visible) show(data.length - 1); else { show(0); play(); }
+  });
+
+  setup();
+  show(modern.length - 1);
+
+  // Draw itself the first time it scrolls into view; pause when off screen
+  const io = new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    if (!visible) stop();
+    else if (!played && !reduceMotion) { played = true; show(0); play(); }
+  }, {threshold: 0.35});
+  io.observe(node);
+  invalidation.then(() => { io.disconnect(); stop(); });
+
+  return root;
+}
+```
+
+```{=html}
+  <div class="u4h-cta">
+    <a class="u4h-btn u4h-btn-primary" href="unit4-opening.html">Start the unit →</a>
+    <a class="u4h-btn u4h-btn-ghost" href="#unit-storyline">See the lessons ↓</a>
+  </div>
+  <p class="u4h-source">Data: <a href="https://gml.noaa.gov/ccgg/trends/data.html" target="_blank" rel="noopener">NOAA Global Monitoring Laboratory</a>, Mauna Loa monthly mean CO₂, March 1958 – September 2026. Ice cores: <a href="https://www.ncei.noaa.gov/access/paleo-search/study/17975" target="_blank" rel="noopener">Antarctic ice-core CO₂ composite</a> (Bereiter et al., 2015, NOAA NCEI Paleoclimatology), shown as 1,000-year averages. The highest single ice-core value is 298.6 ppm, about 335,000 years ago.</p>
+</section>
+```
+
+```{ojs}
+//| output: false
+d3 = require("d3@7.9.0")
+```
+
+```{ojs}
+//| output: false
+U4H_MLO = [315.71,317.45,317.51,317.27,315.87,314.93,313.21,312.42,313.33,314.67,315.58,316.49,316.65,317.72,318.29,318.15,316.54,314.8,313.84,313.33,314.81,315.58,316.43,316.98,317.58,319.03,320.03,319.58,318.18,315.9,314.17,313.83,315,316.19,316.89,317.7,318.54,319.48,320.58,319.77,318.56,316.79,314.99,315.31,316.1,317.01,317.94,318.55,319.68,320.57,321.02,320.62,319.61,317.4,316.24,315.42,316.69,317.7,318.74,319.07,319.86,321.38,322.24,321.49,319.74,317.77,316.21,315.99,317.07,318.35,319.57,320.04,320.75,321.84,322.25,321.89,320.44,318.69,316.71,316.87,317.68,318.71,319.44,320.44,320.89,322.14,322.17,321.87,321.21,318.87,317.82,317.3,318.87,319.42,320.62,321.6,322.39,323.7,324.08,323.75,322.37,320.36,318.64,318.1,319.78,321.02,322.33,322.5,323.03,324.41,325,324.09,322.54,320.92,319.25,319.39,320.73,321.96,322.57,323.15,323.89,325.02,325.57,325.36,324.14,322.11,320.33,320.25,321.32,322.89,324,324.41,325.63,326.66,327.38,326.71,325.88,323.66,322.38,321.78,322.85,324.11,325.06,325.99,326.93,328.13,328.08,327.67,326.34,324.68,323.1,323.06,324.01,325.13,326.17,326.69,327.18,327.78,328.93,328.57,327.36,325.43,323.36,323.56,324.8,326.01,326.77,327.63,327.75,329.72,330.07,329.09,328.04,326.32,324.84,325.2,326.5,327.55,328.55,329.57,330.3,331.5,332.48,332.07,330.87,329.31,327.52,327.19,328.17,328.65,329.36,330.71,331.49,332.65,333.19,332.2,331.07,329.15,327.33,327.28,328.31,329.58,330.73,331.46,331.94,333.11,333.95,333.42,331.97,329.95,328.49,328.36,329.38,330.77,331.56,332.74,333.36,334.74,334.72,333.97,333.08,330.68,328.96,328.72,330.16,331.62,332.68,333.17,334.96,336.14,336.93,336.17,334.89,332.56,331.29,331.28,332.46,333.6,334.94,335.26,336.66,337.69,338.02,338.01,336.5,334.42,332.36,332.45,333.76,334.91,336.14,336.69,338.27,338.82,339.24,339.26,337.54,335.72,333.97,334.24,335.32,336.81,337.9,338.34,340.07,340.93,341.45,341.36,339.45,337.67,336.25,336.14,337.3,338.29,339.29,340.55,341.63,342.6,343.04,342.54,340.82,338.48,336.95,337.05,338.58,339.91,340.93,341.76,342.78,343.96,344.77,343.88,342.42,340.24,338.37,338.41,339.44,340.78,341.57,342.78,343.37,345.4,346.14,345.76,344.32,342.51,340.46,340.53,341.79,343.2,344.21,344.92,345.68,347.37,347.77,347.16,345.79,343.74,341.59,341.86,343.31,345,345.48,346.41,347.91,348.66,349.28,348.65,346.9,345.26,343.47,343.35,344.73,346.12,346.78,347.48,348.25,349.86,350.52,349.98,348.25,346.17,345.48,344.82,346.22,347.48,348.73,348.92,349.81,351.4,352.15,351.58,350.21,348.2,346.66,346.72,348.08,349.28,350.51,351.7,352.5,353.67,354.35,353.88,352.8,350.49,348.97,349.37,350.42,351.62,353.07,353.43,354.08,355.72,355.95,355.44,354.05,351.84,350.09,350.33,351.55,352.91,353.86,355.1,355.75,356.38,357.38,356.39,354.89,353.06,351.38,351.69,353.14,354.41,354.93,355.82,357.33,358.77,359.23,358.23,356.3,353.97,352.34,352.43,353.89,355.21,356.34,357.21,357.97,359.22,359.71,359.44,357.15,354.99,353.01,353.4,354.42,355.68,357.1,357.42,358.59,359.39,360.3,359.64,357.45,355.76,354.14,354.23,355.53,357.03,358.36,359.04,360.11,361.36,361.78,360.94,359.51,357.59,355.86,356.21,357.65,359.1,360.04,361,361.98,363.44,363.83,363.33,361.78,359.33,358.32,358.14,359.61,360.82,362.2,363.36,364.28,364.69,365.25,365.06,363.69,361.55,359.69,359.72,361.04,362.39,363.24,364.21,364.65,366.49,366.77,365.73,364.46,362.4,360.44,360.97,362.65,364.51,365.39,366.1,367.36,368.79,369.56,369.13,367.98,366.1,364.16,364.54,365.67,367.3,368.35,369.28,369.84,371.15,371.12,370.46,369.61,367.06,364.95,365.52,366.88,368.26,369.45,369.71,370.75,371.98,371.75,371.87,370.02,368.27,367.15,367.18,368.53,369.83,370.76,371.69,372.63,373.55,374.03,373.4,371.68,369.78,368.34,368.61,369.94,371.42,372.7,373.37,374.3,375.19,375.93,375.69,374.16,372.03,370.92,370.73,372.43,373.98,375.07,375.82,376.64,377.92,378.78,378.46,376.88,374.57,373.34,373.31,374.84,376.17,377.17,378.05,379.06,380.54,380.8,379.87,377.65,376.17,374.43,374.63,376.33,377.68,378.63,379.91,380.95,382.48,382.64,382.4,380.93,378.93,376.89,377.19,378.54,380.31,381.58,382.4,382.86,384.8,385.22,384.24,382.65,380.6,379.04,379.33,380.35,382.02,383.1,384.12,384.81,386.73,386.78,386.33,384.73,382.24,381.2,381.37,382.7,384.19,385.78,386.06,386.28,387.33,388.78,387.99,386.62,384.32,383.41,383.22,384.41,385.79,387.17,387.7,389.04,389.76,390.36,389.7,388.24,386.29,384.95,384.64,386.23,387.63,388.91,390.41,391.37,392.67,393.21,392.38,390.41,388.54,387.03,387.43,388.87,389.99,391.5,392.05,392.8,393.44,394.41,393.95,392.72,390.33,389.28,389.19,390.48,392.06,393.31,394.04,394.59,396.38,396.93,395.91,394.56,392.59,391.32,391.27,393.2,394.57,395.78,397.03,397.66,398.64,400.02,398.81,397.51,395.39,393.72,393.9,395.36,397.03,398.04,398.27,399.91,401.51,401.96,401.43,399.27,397.18,395.54,396.16,397.4,399.08,400.18,400.55,401.74,403.35,404.15,402.97,401.46,399.11,397.82,398.49,400.27,402.06,402.73,404.25,405.06,407.6,407.9,406.99,404.59,402.45,401.23,401.79,403.72,404.64,406.36,406.66,407.54,409.22,409.89,409.08,407.33,405.32,403.57,403.82,405.31,407,408.15,408.52,409.59,410.45,411.44,410.99,408.9,407.16,405.71,406.19,408.21,409.27,411.03,411.96,412.18,413.54,414.86,414.15,411.96,410.17,408.76,408.74,410.47,411.97,413.59,414.32,414.72,416.42,417.28,416.58,414.58,412.75,411.5,411.49,413.1,414.23,415.49,416.72,417.61,419.01,419.09,418.93,416.9,414.42,413.26,413.9,414.97,416.67,418.13,419.24,418.76,420.19,420.97,420.94,418.85,417.15,415.91,415.74,417.47,418.99,419.48,420.31,420.99,423.35,424,423.68,421.83,419.68,418.5,418.82,420.46,421.86,422.8,424.55,425.38,426.51,426.9,426.91,425.55,422.99,422.03,422.38,423.85,425.4,426.65,427.09,428.15,429.64,430.51,429.61,427.87,425.48,424.37,424.87,426.46,427.49,428.62,429.35,430.15,431.12,432.34,431.43,429.13,427.55,426.07]
+```
+
+```{ojs}
+//| output: false
+U4H_ICE = [805,205,804,206,803,203,802,199,801,199,798,200,797,198,796,199,795,207,793,216,792,220,791,231,790,227,789,237,788,257,787,268,786,263,785,258,784,261,783,255,782,257,781,254,780,253,779,255,778,252,777,247,776,247,775,242,774,239,773,242,772,243,771,233,770,231,769,224,768,224,767,225,766,231,765,229,764,224,763,217,762,215,761,217,760,225,759,224,758,218,757,214,756,209,755,201,753,200,752,198,751,192,750,192,749,189,748,188,747,188,746,190,745,187,744,189,743,188,742,189,741,187,740,184,739,186,738,192,737,206,736,215,735,216,734,213,733,208,732,211,731,211,730,211,729,210,728,211,727,210,726,211,725,211,724,212,723,213,722,214,721,219,720,215,719,201,718,193,717,194,716,212,715,225,714,227,713,224,712,224,711,225,710,226,709,231,708,234,707,236,706,237,705,235,704,233,703,232,702,232,701,233,700,237,699,239,698,241,697,239,696,238,695,238,694,240,693,240,692,241,691,239,690,236,689,232,688,227,687,223,686,222,685,221,684,225,683,221,682,220,681,227,680,233,679,231,678,219,677,218,676,223,675,214,674,205,673,201,672,196,671,196,670,192,669,188,668,179,667,174,666,175,665,180,664,190,663,191,662,191,661,193,660,188,659,187,658,184,657,191,656,200,655,200,654,195,653,193,652,187,650,191,649,196,648,193,647,192,646,190,645,196,644,195,642,191,640,190,639,189,637,195,636,194,635,195,634,195,632,196,631,200,629,202,627,206,626,222,625,235,624,238,623,239,622,244,621,244,620,246,618,248,617,253,616,253,615,253,613,256,612,258,611,259,610,258,609,259,607,255,606,248,605,245,603,239,602,238,601,232,599,228,598,219,597,216,596,219,595,233,594,238,593,233,592,228,591,237,590,246,589,250,588,243,587,230,586,224,583,209,582,213,581,225,580,241,579,252,578,250,577,251,576,253,575,250,574,252,573,249,572,248,571,251,570,251,569,251,568,253,567,254,566,253,565,252,564,247,563,243,562,234,561,232,560,229,559,231,558,241,557,247,556,237,555,226,554,224,553,223,552,221,551,215,550,211,549,202,548,205,547,210,546,210,545,210,544,208,543,204,542,205,541,211,540,213,539,206,538,205,537,199,536,200,535,192,534,195,533,202,532,216,531,220,530,221,529,223,528,225,527,228,526,232,525,236,524,237,523,242,521,244,520,247,519,245,518,246,517,247,516,243,515,242,514,239,513,242,512,235,511,236,510,233,509,240,508,238,507,236,506,236,505,234,504,233,503,232,502,231,501,230,500,231,499,231,498,233,497,236,496,238,495,238,494,239,493,240,492,245,491,243,490,248,489,241,488,237,487,232,486,233,485,231,484,231,483,227,482,223,481,224,480,220,479,234,478,239,477,237,476,233,475,233,474,243,473,244,472,231,471,217,470,206,468,203,467,204,466,208,465,208,464,200,463,194,462,191,461,196,460,202,459,208,458,204,457,196,456,193,454,198,453,202,452,205,451,201,450,202,449,208,448,204,447,201,445,199,443,202,442,201,440,202,439,200,437,208,435,210,434,208,433,212,432,227,431,220,429,242,428,248,427,254,426,268,425,270,424,268,423,271,422,266,421,269,420,272,419,274,418,275,417,273,416,272,415,274,414,265,413,275,411,284,410,283,409,275,408,284,407,286,406,280,405,280,404,276,402,279,400,283,399,277,398,276,394,267,392,259,389,246,387,247,386,239,384,240,382,227,378,230,377,225,375,215,373,200,371,202,368,206,365,201,362,186,360,186,359,193,355,209,354,209,353,216,351,221,349,220,347,212,346,205,345,205,343,201,342,250,340,234,339,240,338,249,337,270,336,282,335,288,334,289,333,278,332,272,331,265,330,275,329,272,328,268,327,264,326,266,325,260,324,260,323,257,321,249,320,256,319,233,318,245,317,262,316,247,315,257,314,254,313,242,312,239,311,238,310,230,309,228,308,226,307,245,306,249,305,245,304,240,303,236,302,239,301,236,300,231,299,224,298,217,296,213,295,213,294,207,293,206,292,208,291,217,290,228,288,231,287,231,286,226,285,228,284,231,282,224,281,215,280,211,279,204,278,202,277,193,276,198,275,194,274,194,273,190,272,185,271,199,269,194,268,188,267,212,266,200,264,228,262,212,261,206,260,210,259,204,257,203,256,199,254,195,253,197,252,205,251,200,249,215,246,225,245,243,244,258,243,280,242,279,241,261,240,253,239,246,238,239,237,245,236,247,235,245,232,238,231,232,229,224,228,234,227,236,226,210,224,206,223,209,222,207,221,216,220,214,219,240,218,245,217,251,216,245,215,241,214,251,213,243,212,248,211,249,210,246,209,242,208,235,207,230,206,227,205,236,203,248,202,239,201,251,198,242,197,226,195,223,193,218,191,226,189,231,188,211,186,203,184,200,183,198,182,218,181,213,179,208,177,190,176,190,175,196,174,198,171,198,169,197,168,184,167,187,166,191,164,196,163,204,160,188,159,186,158,189,156,189,154,196,153,199,151,202,150,203,149,202,148,196,146,194,144,196,143,195,142,197,139,193,138,199,137,199,136,204,134,212,133,223,132,226,131,237,130,251,129,265,128,278,127,276,126,274,125,277,124,279,123,277,122,279,121,278,120,273,119,271,118,278,117,275,116,274,115,275,114,271,113,263,112,260,111,258,110,247,109,244,108,236,106,242,105,253,104,243,103,241,102,237,101,242,100,247,99,243,98,243,97,241,96,246,95,245,94,242,93,237,92,232,91,232,90,231,89,228,88,221,87,222,86,223,85,232,84,241,83,249,82,242,81,232,80,232,79,232,78,226,77,228,76,239,75,248,74,236,73,232,72,235,71,236,70,220,69,208,68,202,67,202,66,206,65,202,64,202,63,197,62,202,61,209,60,215,59,227,58,224,57,219,56,210,55,213,54,217,53,223,52,219,51,211,50,206,49,203,48,203,47,206,46,217,45,215,44,207,43,203,42,204,41,202,40,198,39,201,38,208,37,210,36,203,35,202,34,198,33,196,32,195,31,191,30,187,29,191,28,192,27,190,26,186,25,183,24,184,23,190,22,188,21,188,20,191,19,192,18,189,17,193,16,215,15,226,14,235,13,239,12,246,11,261,10,266,9,263,8,260,7,260,6,262,5,266,4,271,3,274,2,276,1,279,0,280]
+```
 
 ## Anchor Phenomenon
 

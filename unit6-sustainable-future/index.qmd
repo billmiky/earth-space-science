@@ -1,4 +1,281 @@
+---
+execute:
+  echo: false
+---
+
 # Unit 6: Building a Sustainable Future {.unnumbered}
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap');
+#title-block-header { display: none; }
+
+.u6h-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  margin: 0.5rem 0 2.25rem;
+  padding: 2rem 1.5rem 1.4rem;
+  color: #f8fafc;
+  background:
+    radial-gradient(ellipse at 85% 10%, rgba(45, 212, 191, 0.22), transparent 55%),
+    radial-gradient(ellipse at 5% 95%, rgba(250, 204, 21, 0.12), transparent 50%),
+    linear-gradient(160deg, #03140f 0%, #0a2a22 55%, #0f3a33 100%);
+}
+@media (min-width: 900px) { .u6h-hero { padding: 2.5rem 2.25rem 1.75rem; } }
+@media (max-width: 600px) { .u6h-hero { padding: 1.6rem 1.1rem 1.2rem; } }
+.u6h-kicker {
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #5eead4; margin: 0 0 0.7rem;
+}
+.u6h-hero h1.u6h-title {
+  font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700;
+  font-size: clamp(1.9rem, 6vw, 3rem); line-height: 1.08; letter-spacing: -0.02em;
+  margin: 0 0 0.9rem; color: #fff; border: 0; padding: 0;
+}
+.u6h-hero h1.u6h-title span {
+  background: linear-gradient(90deg, #fbbf24, #f97316);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.u6h-q { font-size: 1.08rem; line-height: 1.5; color: #cbd5e1; margin: 0 0 1.2rem; max-width: 46rem; }
+.u6h-q b { color: #fff; }
+
+.u6h-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 0.9rem; }
+.u6h-tab {
+  min-height: 44px; padding: 0.5rem 1rem; border-radius: 999px;
+  border: 1.5px solid rgba(248, 250, 252, 0.35); background: transparent;
+  color: #e2e8f0; font-weight: 700; font-size: 0.95rem; cursor: pointer;
+}
+.u6h-tab[aria-selected="true"] { background: #f8fafc; color: #0a2a22; border-color: #f8fafc; }
+.u6h-tab:focus-visible, .u6h-play:focus-visible, .u6h-btn:focus-visible { outline: 3px solid #5eead4; outline-offset: 3px; }
+
+.u6h-panel svg { width: 100%; height: auto; display: block; touch-action: pan-y; }
+.u6h-controls { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.6rem; }
+.u6h-play {
+  flex: none; min-width: 48px; min-height: 48px; border-radius: 50%;
+  border: 0; background: linear-gradient(90deg, #fbbf24, #f97316); color: #1c1917;
+  font-size: 1.1rem; font-weight: 800; cursor: pointer;
+}
+.u6h-controls input[type=range] { flex: 1; min-width: 0; height: 44px; accent-color: #fbbf24; }
+.u6h-year { font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700; font-size: 1.25rem; min-width: 3.2em; text-align: right; }
+.u6h-read { min-height: 3em; margin: 0.6rem 0 0.2rem; font-size: 1rem; line-height: 1.45; color: #e2e8f0; }
+.u6h-read b { color: #fde68a; }
+.u6h-big { font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 1.6rem; font-weight: 700; color: #fde68a; }
+.u6h-legend { display: flex; flex-wrap: wrap; gap: 0.3rem 0.85rem; font-size: 0.82rem; color: #cbd5e1; margin-top: 0.5rem; }
+.u6h-legend i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 0.3rem; vertical-align: -1px; }
+.u6h-note { font-size: 0.85rem; color: #94a3b8; margin: 0.4rem 0 0; }
+
+.u6h-cta { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.2rem; }
+.u6h-btn {
+  display: inline-flex; align-items: center; min-height: 48px; padding: 0.7rem 1.25rem;
+  border-radius: 999px; font-weight: 700; text-decoration: none !important;
+}
+.u6h-btn-primary { background: linear-gradient(90deg, #fbbf24, #f97316); color: #1c1917 !important; box-shadow: 0 6px 20px rgba(249,115,22,0.3); }
+.u6h-btn-ghost { color: #f8fafc !important; border: 1.5px solid rgba(248, 250, 252, 0.45); }
+.u6h-btn-ghost:hover { background: rgba(248, 250, 252, 0.1); }
+.u6h-source { font-size: 0.75rem; color: #94a3b8; margin: 1rem 0 0; line-height: 1.45; }
+.u6h-source a { color: #5eead4 !important; }
+</style>
+```
+
+```{=html}
+<section class="u6h-hero" aria-labelledby="u6h-title">
+  <p class="u6h-kicker">Unit 6 · A Sustainable Future</p>
+  <h1 class="u6h-title" id="u6h-title"><span>81%</span> of the world's energy still comes from burning fossil fuels.</h1>
+  <p class="u6h-q">Burning them keeps the lights on, and it also fills the air with pollution that harms people's health. This unit asks: <b>How can we reduce the negative impacts of human activities on the environment while still meeting our needs?</b></p>
+```
+
+```{ojs}
+//| output: true
+u6hViz = {
+  // World primary energy by source, terawatt-hours (substitution method).
+  // Columns: year, traditional biomass, coal, oil, gas, nuclear, hydro, wind, solar, other renewables (incl. biofuels)
+  // Energy Institute Statistical Review of World Energy (2026) + Smil (2017), via Our World in Data.
+  const raw = [[1800,5556,97,0,0,0,0,0,0,0],[1810,5833,128,0,0,0,0,0,0,0],[1820,6111,153,0,0,0,0,0,0,0],[1830,6389,264,0,0,0,0,0,0,0],[1840,6944,356,0,0,0,0,0,0,0],[1850,7222,569,0,0,0,0,0,0,0],[1860,6944,1061,0,0,0,0,0,0,0],[1870,6944,1642,6,0,0,0,0,0,0],[1880,6944,2542,33,0,0,0,0,0,0],[1890,6667,3856,89,33,0,14,0,0,0],[1900,6111,5728,181,64,0,17,0,0,0],[1910,6389,8656,397,142,0,33,0,0,0],[1920,6944,9833,889,233,0,64,0,0,0],[1930,7222,10125,1756,603,0,131,0,0,0],[1940,7222,11586,2653,875,0,192,0,0,0],[1950,7500,12603,5444,2092,0,333,0,0,0],[1960,8889,15442,11097,4472,0,689,0,0,0],[1965,9162,16178,18008,6304,77,923,0,0,92],[1966,9218,16359,19423,6869,104,984,0,0,98],[1967,9274,16096,20775,7374,124,1006,0,0,98],[1968,9331,16333,22507,8044,158,1059,0,0,108],[1969,9387,16847,24441,8833,187,1122,0,0,114],[1970,9444,17087,26680,9615,239,1175,0,0,125],[1971,9499,16988,28112,10293,332,1227,0,0,132],[1972,9553,17168,30332,10862,461,1285,0,0,145],[1973,9608,17684,32726,11378,618,1303,0,0,155],[1974,9663,17696,32226,11660,808,1431,0,0,169],[1975,9718,18045,31997,11660,1121,1449,0,0,178],[1976,9774,18700,34062,12354,1311,1443,0,0,196],[1977,9830,19267,35195,12760,1632,1492,0,0,206],[1978,9886,19467,36713,13294,1896,1614,0,0,217],[1979,9943,20371,37184,14118,1972,1695,0,0,246],[1980,10000,20878,35569,14237,2157,1732,0,0,280],[1981,10106,21158,34290,14396,2548,1769,0,0,307],[1982,10213,21395,33267,14470,2764,1801,0,0,338],[1983,10321,22051,33101,14704,3133,1878,0,0,383],[1984,10430,23008,33627,15903,3802,1941,0,0,435],[1985,10541,23997,33681,16263,4512,1979,0,0,465],[1986,10653,24264,34711,16422,4833,2006,0,0,521],[1987,10765,25228,35506,17282,5257,2033,0,0,552],[1988,10879,25983,36634,18089,5731,2098,0,0,566],[1989,10995,26231,37234,18889,5894,2088,3,0,644],[1990,11111,25926,37663,19482,6062,2159,4,0,717],[1991,11243,25684,37727,19973,6352,2209,4,1,746],[1992,11376,25581,38254,20063,6401,2208,5,0,779],[1993,11511,25706,38091,20265,6621,2341,6,1,804],[1994,11647,25812,38945,20390,6745,2356,7,1,833],[1995,11785,25996,39497,21104,7038,2483,8,1,847],[1996,11925,26614,40393,22159,7293,2517,9,1,872],[1997,12066,26560,41472,22030,7243,2561,12,1,919],[1998,12209,26392,41629,22434,7367,2581,16,1,965],[1999,12414,26505,42310,23072,7648,2600,21,1,1018],[2000,12500,27453,42987,23994,7820,2647,31,1,1048],[2001,12500,27876,43388,24317,8041,2579,38,1,1066],[2002,12470,28978,43718,25052,8170,2626,52,2,1135],[2003,12329,31459,44654,25729,8004,2623,63,2,1203],[2004,12160,33611,46419,26782,8368,2817,86,3,1302],[2005,12076,36223,46891,27439,8390,2911,105,4,1399],[2006,11993,38155,47462,28179,8494,3022,134,6,1522],[2007,11911,40315,48010,29339,8321,3072,172,8,1712],[2008,11829,40799,47600,30052,8295,3252,221,13,1938],[2009,11747,40149,46564,29403,8178,3246,277,21,2086],[2010,11667,41981,48191,31593,8390,3432,347,34,2278],[2011,11553,43923,48617,32350,8037,3494,441,66,2376],[2012,11441,44112,49345,33231,7492,3661,531,102,2512],[2013,11330,44754,49865,33703,7546,3789,636,139,2684],[2014,11220,44868,50270,33900,7702,3890,706,197,2875],[2015,11111,43692,51281,34705,7806,3880,832,257,3048],[2016,11111,42719,52248,35552,7921,4018,963,328,3145],[2017,11111,43127,53143,36561,7991,4070,1142,445,3248],[2018,11111,43898,53727,38288,8181,4190,1271,576,3487],[2019,11111,43412,53768,39041,8475,4244,1422,708,3654],[2020,11111,41867,48859,38693,8155,4358,1596,861,3693],[2021,11111,44229,51643,40233,8493,4290,1862,1061,3864],[2022,11111,44745,53405,40040,8122,4336,2109,1338,3970],[2023,11111,45501,54656,40152,8293,4265,2322,1678,4126],[2024,11111,45931,55289,41312,8531,4473,2515,2167,4275],[2025,11111,46120,55826,41860,8622,4479,2714,2811,4322]];
+  // Deaths from accidents + air pollution per TWh of electricity.
+  // Markandya & Wilkinson (2007); Sovacool et al. (2016); UNSCEAR, via Our World in Data.
+  const deaths = [
+    ["Brown coal", 32.72], ["Coal", 24.62], ["Oil", 18.43], ["Biomass", 4.63], ["Gas", 2.821],
+    ["Hydropower", 1.3], ["Wind", 0.035], ["Nuclear", 0.03], ["Solar", 0.019]
+  ];
+
+  const keys = [
+    {k: "trad",  name: "Wood & crop waste", color: "#b45309", fossil: false},
+    {k: "coal",  name: "Coal",    color: "#a8a29e", fossil: true},
+    {k: "oil",   name: "Oil",     color: "#f97316", fossil: true},
+    {k: "gas",   name: "Gas",     color: "#f43f5e", fossil: true},
+    {k: "nuc",   name: "Nuclear", color: "#a78bfa", fossil: false},
+    {k: "hydro", name: "Hydro",   color: "#38bdf8", fossil: false},
+    {k: "wind",  name: "Wind",    color: "#2dd4bf", fossil: false},
+    {k: "solar", name: "Solar",   color: "#facc15", fossil: false},
+    {k: "other", name: "Other renewables", color: "#4ade80", fossil: false}
+  ];
+  const data = raw.map(r => Object.fromEntries([["year", r[0]], ...keys.map((s, i) => [s.k, r[i + 1]])]));
+  const years = data.map(d => d.year);
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pct = x => (x * 100).toFixed(x < 0.01 ? 1 : 0) + "%";
+
+  const root = html`<div class="u6h-viz"></div>`;
+  const tabs = html`<div class="u6h-tabs" role="tablist" aria-label="Choose a view">
+    <button class="u6h-tab" role="tab" aria-selected="true" data-v="mix">⚡ Where energy comes from</button>
+    <button class="u6h-tab" role="tab" aria-selected="false" data-v="safe">⚖️ Which energy is safest?</button></div>`;
+  const read = html`<p class="u6h-read" aria-live="polite"></p>`;
+
+  // ---------- View 1: stacked area ----------
+  // Narrow screens get a narrower drawing so labels stay readable
+  const narrow = width < 640;
+  const W = narrow ? 460 : 800, H = narrow ? 300 : 320, m = {t: 10, r: 14, b: 26, l: 44};
+  const x = d3.scaleLinear([1800, 2025], [m.l, W - m.r]);
+  const stack = d3.stack().keys(keys.map(s => s.k))(data);
+  const y = d3.scaleLinear([0, d3.max(data, d => d3.sum(keys, s => d[s.k]))], [H - m.b, m.t]).nice();
+  const area = d3.area().x(d => x(d.data.year)).y0(d => y(d[0])).y1(d => y(d[1])).curve(d3.curveMonotoneX);
+  const clipId = "u6h-clip-" + Math.random().toString(36).slice(2, 8);
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("role", "img")
+    .attr("aria-label", "Stacked area chart of world energy use by source from 1800 to 2025. In 1800 almost all energy came from wood and crop waste. Coal took off in the 1800s, then oil and gas after 1950. By 2025 world energy use is about 30 times larger and fossil fuels supply about 81% of it; solar and wind are thin slivers at the top.");
+  svg.append("clipPath").attr("id", clipId).append("rect")
+    .attr("x", 0).attr("y", 0).attr("height", H).attr("width", W);
+  const gy = svg.append("g").attr("transform", `translate(${m.l},0)`)
+    .call(d3.axisLeft(y).ticks(4).tickFormat(d => d === 0 ? "0" : (d / 1000) + "k"))
+    .call(g => g.select(".domain").remove())
+    .call(g => g.selectAll("line").attr("x2", W - m.l - m.r).attr("stroke", "rgba(148,163,184,0.18)"))
+    .call(g => g.selectAll("text").attr("fill", "#94a3b8").attr("font-size", 13));
+  svg.append("text").attr("x", m.l).attr("y", m.t + 4).attr("dx", 6).attr("dy", "0.7em")
+    .attr("fill", "#94a3b8").attr("font-size", 13).text("TWh per year");
+  svg.append("g").attr("transform", `translate(0,${H - m.b})`)
+    .call(d3.axisBottom(x).tickValues(narrow ? [1800, 1900, 1950, 2025] : [1800, 1850, 1900, 1950, 2000, 2025]).tickFormat(d3.format("d")).tickSize(0).tickPadding(8))
+    .call(g => g.select(".domain").attr("stroke", "rgba(148,163,184,0.4)"))
+    .call(g => g.selectAll("text").attr("fill", "#94a3b8").attr("font-size", 13));
+  svg.append("g").attr("clip-path", `url(#${clipId})`)
+    .selectAll("path").data(stack).join("path")
+    .attr("d", area).attr("fill", (d, i) => keys[i].color).attr("fill-opacity", 0.92);
+  const clipRect = svg.select(`#${clipId} rect`);
+  const rule = svg.append("line").attr("y1", m.t).attr("y2", H - m.b)
+    .attr("stroke", "#fff").attr("stroke-width", 1.5).attr("stroke-dasharray", "3,3");
+
+  const slider = html`<input type="range" min="0" max="${years.length - 1}" step="1" value="${years.length - 1}" aria-label="Year">`;
+  const play = html`<button class="u6h-play" type="button" aria-label="Play the years from 1800">▶</button>`;
+  const yearLbl = html`<span class="u6h-year" aria-hidden="true"></span>`;
+  const legend = html`<div class="u6h-legend" aria-hidden="true">${keys.slice().reverse().map(s => html`<span><i style="background:${s.color}"></i>${s.name}</span>`)}</div>`;
+  const note = html`<p class="u6h-note">Drag the slider or the chart, or press ▶ to watch 225 years of energy history.</p>`;
+  const mixPanel = html`<div class="u6h-panel">${svg.node()}<div class="u6h-controls">${play}${slider}${yearLbl}</div>${legend}${note}</div>`;
+
+  function showYear(i) {
+    const d = data[i];
+    const total = d3.sum(keys, s => d[s.k]);
+    const fossil = d.coal + d.oil + d.gas;
+    const sw = d.solar + d.wind;
+    const xv = x(d.year);
+    clipRect.attr("width", xv);
+    rule.attr("x1", xv).attr("x2", xv);
+    slider.value = i;
+    yearLbl.textContent = d.year;
+    const top = keys.reduce((a, s) => d[s.k] > d[a.k] ? s : a, keys[0]);
+    read.innerHTML = `<span class="u6h-big">${pct(fossil / total)}</span> fossil fuels in <b>${d.year}</b>. ` +
+      `Biggest source: <b>${top.name.toLowerCase()}</b> (${pct(d[top.k] / total)}). ` +
+      `Solar + wind: <b>${pct(sw / total)}</b>.`;
+  }
+
+  // Drag across the chart to pick a year
+  const svgNode = svg.node();
+  const pickYear = e => {
+    const b = svgNode.getBoundingClientRect();
+    const yr = x.invert((e.clientX - b.left) / b.width * W);
+    const i = d3.minIndex(years, v => Math.abs(v - yr));
+    stopPlay(); showYear(i);
+  };
+  svgNode.addEventListener("pointerdown", pickYear);
+  svgNode.addEventListener("pointermove", e => { if (e.pointerType === "mouse" || e.buttons) pickYear(e); });
+  slider.addEventListener("input", () => { stopPlay(); showYear(+slider.value); });
+
+  let timer = null;
+  function stopPlay() { if (timer) { timer.stop(); timer = null; } play.textContent = "▶"; play.setAttribute("aria-label", "Play the years from 1800"); }
+  function startPlay() {
+    if (reduceMotion) { showYear(years.length - 1); return; }
+    let i = +slider.value >= years.length - 1 ? 0 : +slider.value;
+    showYear(i);
+    play.textContent = "❚❚"; play.setAttribute("aria-label", "Pause");
+    let last = 0;
+    timer = d3.timer(el => {
+      // Decades before 1965 are single data points, so step a little slower there
+      if (el - last < (years[i] < 1965 ? 260 : 110)) return;
+      last = el; i++;
+      if (i >= years.length) { stopPlay(); return; }
+      showYear(i);
+    });
+  }
+  play.addEventListener("click", () => timer ? stopPlay() : startPlay());
+
+  // ---------- View 2: deaths per TWh ----------
+  const W2 = narrow ? 460 : 800, rowH = narrow ? 36 : 34, m2 = {t: 6, r: 56, b: 6, l: 104};
+  const H2 = m2.t + m2.b + rowH * deaths.length;
+  const x2 = d3.scaleLinear([0, 33], [m2.l, W2 - m2.r]);
+  const colorOf = n => ({"Brown coal": "#78716c", "Coal": "#a8a29e", "Oil": "#f97316", "Biomass": "#b45309", "Gas": "#f43f5e",
+    "Hydropower": "#38bdf8", "Wind": "#2dd4bf", "Nuclear": "#a78bfa", "Solar": "#facc15"})[n];
+  const svg2 = d3.create("svg").attr("viewBox", `0 0 ${W2} ${H2}`).attr("role", "img")
+    .attr("aria-label", "Bar chart of deaths per terawatt-hour of electricity, from accidents and air pollution. Brown coal 32.7, coal 24.6, oil 18.4, biomass 4.6, gas 2.8, hydropower 1.3, wind 0.035, nuclear 0.03, solar 0.019. Coal causes about 1,000 times more deaths than solar, wind, or nuclear for the same electricity.");
+  const rows = svg2.selectAll("g").data(deaths).join("g")
+    .attr("transform", (d, i) => `translate(0,${m2.t + i * rowH})`)
+    .style("cursor", "pointer");
+  rows.append("rect").attr("x", 0).attr("width", W2).attr("height", rowH).attr("fill", "transparent");
+  rows.append("text").attr("x", m2.l - 10).attr("y", rowH / 2).attr("dy", "0.35em").attr("text-anchor", "end")
+    .attr("fill", "#e2e8f0").attr("font-size", 15).attr("font-weight", 600).text(d => d[0]);
+  const bars = rows.append("rect").attr("class", "u6h-bar").attr("x", m2.l).attr("y", 5).attr("height", rowH - 10).attr("rx", 4)
+    .attr("width", d => Math.max(3, x2(d[1]) - m2.l)).attr("fill", d => colorOf(d[0]));
+  rows.append("text").attr("x", d => Math.max(m2.l + 3, x2(d[1])) + 8).attr("y", rowH / 2).attr("dy", "0.35em")
+    .attr("fill", "#cbd5e1").attr("font-size", 14).text(d => d[1] < 0.1 ? d[1].toFixed(3) : d[1].toFixed(1));
+  const safeRead = d => {
+    bars.attr("fill-opacity", b => b === d ? 1 : 0.45);
+    const solar = 0.019;
+    const ratio = d[1] / solar;
+    const comp = d[0] === "Solar" ? "the lowest of any source" :
+      ratio >= 2 ? `about <b>${d3.format(",")(Math.round(ratio / (ratio > 100 ? 10 : 1)) * (ratio > 100 ? 10 : 1))}×</b> solar's rate` : "about the same as solar";
+    read.innerHTML = `<span class="u6h-big">${d[1] < 0.1 ? d[1].toFixed(3) : d[1].toFixed(1)}</span> deaths per TWh from <b>${d[0].toLowerCase()}</b>: ${comp}.`;
+  };
+  rows.on("click", (e, d) => safeRead(d)).on("pointerenter", (e, d) => { if (e.pointerType === "mouse") safeRead(d); });
+  const safePanel = html`<div class="u6h-panel" hidden>${svg2.node()}
+    <p class="u6h-note"><b style="color:#e2e8f0">Deaths per terawatt-hour (TWh)</b> from accidents and air pollution, for the same amount of electricity. 1 TWh is about a year of electricity for 150,000 people in Europe. Tap a bar to compare.</p></div>`;
+
+  // ---------- Tabs ----------
+  tabs.querySelectorAll("button").forEach(btn => btn.addEventListener("click", () => {
+    const v = btn.dataset.v;
+    tabs.querySelectorAll("button").forEach(b => b.setAttribute("aria-selected", b === btn));
+    mixPanel.hidden = v !== "mix";
+    safePanel.hidden = v !== "safe";
+    stopPlay();
+    if (v === "mix") showYear(+slider.value); else safeRead(deaths[1]);
+  }));
+
+  root.append(tabs, mixPanel, safePanel, read);
+  showYear(years.length - 1);
+
+  // Auto-play once when the chart first scrolls into view
+  if (!reduceMotion) {
+    let played = false;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !played && !mixPanel.hidden) { played = true; slider.value = 0; startPlay(); }
+      if (!e.isIntersecting) stopPlay();
+    }, {threshold: 0.4});
+    io.observe(svgNode);
+    invalidation.then(() => { io.disconnect(); stopPlay(); });
+  }
+  return root;
+}
+```
+
+```{=html}
+  <p class="u6h-source">Data: <a href="https://ourworldindata.org/grapher/global-primary-energy-by-source" target="_blank" rel="noopener">world energy use by source</a>, Energy Institute <i>Statistical Review of World Energy</i> (2026) and Smil (2017), 1800–2025, via Our World in Data. Non-fossil electricity is counted by the fossil fuel it replaces (the "substitution method"). <a href="https://ourworldindata.org/grapher/death-rates-from-energy-production-per-twh" target="_blank" rel="noopener">Deaths per TWh</a>: Markandya &amp; Wilkinson (2007), Sovacool et al. (2016), UNSCEAR, via Our World in Data.</p>
+  <div class="u6h-cta">
+    <a class="u6h-btn u6h-btn-primary" href="unit6-opening.html">Start the unit →</a>
+    <a class="u6h-btn u6h-btn-ghost" href="#anchor-phenomenon">What's this unit about? ↓</a>
+  </div>
+</section>
+```
+
+```{ojs}
+//| output: false
+d3 = require("d3@7.9.0")
+```
 
 ## Anchor Phenomenon
 

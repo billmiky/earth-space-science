@@ -1,4 +1,449 @@
+---
+execute:
+  echo: false
+---
+
 # Unit 2: Probability of Life Elsewhere {.unnumbered}
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap');
+
+/* The hero replaces Quarto's default title block on this page only */
+#title-block-header { display: none; }
+
+.u2h-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  margin: 0.5rem 0 2.5rem;
+  padding: 2.25rem 1.5rem 1.5rem;
+  color: #f0fdfa;
+  background:
+    radial-gradient(1.5px 1.5px at 10% 14%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 31% 68%, #ccfbf1 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 47% 9%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 66% 30%, #e0f2fe 50%, transparent 51%),
+    radial-gradient(1px 1px at 84% 16%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 93% 52%, #ccfbf1 50%, transparent 51%),
+    radial-gradient(1px 1px at 5% 48%, #fff 50%, transparent 51%),
+    radial-gradient(ellipse at 85% 10%, rgba(45, 212, 191, 0.22), transparent 55%),
+    linear-gradient(160deg, #01161b 0%, #042f36 55%, #0b3346 100%);
+}
+@media (min-width: 1100px) { .u2h-hero { padding: 2.75rem 2.5rem 2rem; } }
+@media (max-width: 600px) { .u2h-hero { padding: 1.6rem 1.05rem 1.2rem; } }
+
+.u2h-kicker {
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #5eead4; margin: 0 0 0.75rem;
+}
+.u2h-hero h1.u2h-title {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 6vw, 3.2rem);
+  line-height: 1.07;
+  letter-spacing: -0.02em;
+  margin: 0 0 1rem;
+  color: #fff;
+  border: 0; padding: 0;
+  max-width: 40rem;
+}
+.u2h-hero h1.u2h-title span {
+  background: linear-gradient(90deg, #5eead4, #22d3ee);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.u2h-lede { font-size: 1.1rem; line-height: 1.55; color: #cbd5e1; margin: 0 0 1rem; max-width: 42rem; }
+.u2h-lede b { color: #fff; }
+.u2h-dq {
+  margin: 0 0 1.3rem; padding: 0.7rem 1rem; max-width: 42rem;
+  border-left: 4px solid #2dd4bf; border-radius: 0 12px 12px 0;
+  background: rgba(45, 212, 191, 0.1); color: #e2e8f0; font-size: 0.98rem; line-height: 1.45;
+}
+.u2h-dq b { color: #99f6e4; }
+@media (max-width: 600px) { .u2h-lede { font-size: 1rem; } .u2h-kicker { font-size: 0.7rem; } }
+
+.u2h-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.6rem; }
+.u2h-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  min-height: 48px; padding: 0.7rem 1.25rem; border-radius: 999px;
+  font-weight: 700; text-decoration: none !important;
+  transition: transform 0.15s ease;
+}
+.u2h-btn:hover { transform: translateY(-2px); }
+.u2h-btn:focus-visible { outline: 3px solid #5eead4; outline-offset: 3px; }
+.u2h-btn-primary {
+  background: linear-gradient(90deg, #5eead4, #22d3ee); color: #042f2e !important;
+  box-shadow: 0 6px 20px rgba(34, 211, 238, 0.3);
+}
+.u2h-btn-ghost { color: #f0fdfa !important; border: 1.5px solid rgba(240, 253, 250, 0.45); }
+.u2h-btn-ghost:hover { background: rgba(240, 253, 250, 0.1); }
+
+/* ---------- Cosmic Calendar ---------- */
+.u2h-cal {
+  border-radius: 18px;
+  padding: 1rem 1rem 0.9rem;
+  background: rgba(2, 6, 23, 0.45);
+  border: 1px solid rgba(94, 234, 212, 0.22);
+}
+.u2h-cal-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 1rem; margin-bottom: 0.4rem; }
+.u2h-cal-head h2 {
+  font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700; font-size: 1.2rem;
+  margin: 0; color: #fff !important; border: 0; padding: 0;
+}
+.u2h-cal-head span { font-size: 0.82rem; color: #94a3b8; }
+
+.u2h-readout {
+  margin: 0.3rem 0 0.9rem;
+  min-height: 6.4em;
+}
+.u2h-clock {
+  font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700;
+  font-size: clamp(1.45rem, 5vw, 2rem); color: #fff; line-height: 1.15;
+}
+.u2h-real { font-size: 0.95rem; color: #99f6e4; margin-top: 0.1rem; }
+.u2h-event { font-size: 0.98rem; color: #e2e8f0; margin-top: 0.45rem; line-height: 1.4; }
+.u2h-event b { color: #fde68a; }
+.u2h-ext { display: inline-block; margin-top: 0.4rem; font-size: 0.85rem; color: #fecaca; }
+
+.u2h-row { margin-bottom: 0.55rem; }
+.u2h-row-label { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 0.6rem; font-size: 0.82rem; margin-bottom: 0.2rem; }
+.u2h-row-label b { color: #e2e8f0; }
+.u2h-row-label span { color: #94a3b8; }
+.u2h-track {
+  position: relative;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(148, 163, 184, 0.12);
+  cursor: pointer;
+  touch-action: none;
+  outline: none;
+}
+.u2h-track:focus-visible { box-shadow: 0 0 0 3px #5eead4; }
+.u2h-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  border-radius: 10px 0 0 10px;
+  background: linear-gradient(90deg, rgba(45, 212, 191, 0.08), rgba(45, 212, 191, 0.28));
+  pointer-events: none;
+}
+.u2h-zoom {
+  position: absolute; top: 0; bottom: 0; right: 0;
+  border-left: 1px dashed rgba(253, 230, 138, 0.8);
+  background: rgba(253, 230, 138, 0.12);
+  pointer-events: none;
+  min-width: 2px;
+}
+.u2h-dot {
+  position: absolute; top: 50%;
+  width: 12px; height: 12px; margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  border: 1.5px solid var(--u2h-c);
+  background: transparent;
+  opacity: 0.55;
+  pointer-events: none;
+  transition: background 0.2s, opacity 0.2s, box-shadow 0.2s;
+}
+.u2h-dot.u2h-lit { background: var(--u2h-c); opacity: 1; box-shadow: 0 0 8px var(--u2h-c); }
+.u2h-dot.u2h-active { width: 16px; height: 16px; margin: -8px 0 0 -8px; box-shadow: 0 0 0 3px rgba(255,255,255,0.85), 0 0 14px var(--u2h-c); }
+.u2h-handle {
+  position: absolute; top: -3px; bottom: -3px; width: 3px; margin-left: -1.5px;
+  background: #fff; border-radius: 2px; pointer-events: none;
+  box-shadow: 0 0 8px rgba(255,255,255,0.7);
+}
+.u2h-handle.u2h-off { background: rgba(255,255,255,0.3); box-shadow: none; }
+.u2h-ticks { position: relative; height: 1.1rem; font-size: 0.7rem; color: #94a3b8; }
+.u2h-ticks span { position: absolute; top: 0.15rem; transform: translateX(-50%); white-space: nowrap; }
+
+.u2h-controls { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
+.u2h-controls button {
+  min-height: 44px; min-width: 44px; padding: 0.45rem 1rem;
+  border-radius: 999px; font-weight: 700; font-size: 0.95rem;
+  border: 1.5px solid rgba(240, 253, 250, 0.4); background: transparent; color: #f0fdfa;
+  cursor: pointer;
+}
+.u2h-controls button:hover { background: rgba(240, 253, 250, 0.1); }
+.u2h-controls button:focus-visible { outline: 3px solid #5eead4; outline-offset: 2px; }
+.u2h-controls button.u2h-play { background: #2dd4bf; border-color: #2dd4bf; color: #042f2e; }
+@media (max-width: 600px) {
+  .u2h-controls { display: grid; grid-template-columns: 1.3fr 1fr 1fr; }
+  .u2h-controls button { padding: 0.45rem 0.5rem; }
+  .u2h-readout { min-height: 11.5em; }
+  .u2h-cal { padding: 0.85rem 0.75rem 0.8rem; }
+}
+.u2h-legend { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; font-size: 0.78rem; color: #94a3b8; margin-top: 0.75rem; }
+.u2h-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 0.3rem; vertical-align: 0; }
+.u2h-source { font-size: 0.75rem; color: #94a3b8; margin: 0.8rem 0 0; line-height: 1.45; }
+.u2h-source b { color: #cbd5e1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .u2h-btn, .u2h-dot { transition: none; }
+  .u2h-btn:hover { transform: none; }
+}
+</style>
+```
+
+```{=html}
+<section class="u2h-hero" aria-labelledby="u2h-hero-title">
+  <p class="u2h-kicker">Unit 2 · Probability of Life Elsewhere</p>
+  <h1 class="u2h-title" id="u2h-hero-title">Humans showed up at <span>11:48 pm on New Year's Eve.</span></h1>
+  <p class="u2h-lede">Squeeze all <b>13.8 billion years</b> of cosmic history into one calendar year, and each day stands for about <b>38 million years</b>. Life took <b>billions of years</b> and survived <b>5 mass extinctions</b> before we came along. Press play and watch it happen.</p>
+  <p class="u2h-dq"><b>Unit driving question:</b> Are we alone? Does life exist somewhere outside of Earth, maybe even life with technology like ours?</p>
+  <div class="u2h-cta">
+    <a class="u2h-btn u2h-btn-primary" href="unit2-opening.html">Start the unit →</a>
+    <a class="u2h-btn u2h-btn-ghost" href="#what-youll-figure-out">What you'll figure out ↓</a>
+  </div>
+```
+
+```{ojs}
+//| output: true
+u2hCalendar = {
+  // ---- Real dates (years before present) ----
+  // Age of universe: Planck Collaboration 2018 (13.787 ± 0.020 Gyr).
+  // Sun: oldest solar-system solids, Connelly et al. 2012. Earth: USGS (4.54 ± 0.05 Gyr).
+  // Zircons: Wilde et al. 2001. Stromatolites: Djokic et al. 2017 (Dresser Fm., ~3.48 Gyr).
+  // Great Oxidation Event: Lyons et al. 2014. Ediacaran biota: ~575 Myr (Narbonne 2005).
+  // Cambrian, extinctions, Triassic: International Commission on Stratigraphy chart v2023/09.
+  // Sahelanthropus: Brunet et al. 2002. Homo sapiens: Hublin et al. 2017 (Jebel Irhoud).
+  const AGE = 13.8e9;
+  const SEC = 365 * 86400;
+  const thisYear = new Date().getFullYear();
+  const C = {cosmic: "#a78bfa", earth: "#38bdf8", life: "#4ade80", ext: "#f87171", human: "#fbbf24"};
+  const events = [
+    {age: 13.8e9,   e: "💥", name: "The Big Bang", type: "cosmic", note: "The universe begins, hot and incredibly dense, and starts expanding."},
+    {age: 13.6e9,   e: "✨", name: "First stars and galaxies", type: "cosmic", note: "Gravity pulls hydrogen gas into the first stars and galaxies.", about: true},
+    {age: 4.567e9,  e: "☀️", name: "The Sun forms", type: "earth", note: "A cloud of gas and dust collapses and our Sun ignites."},
+    {age: 4.54e9,   e: "🌍", name: "Earth forms", type: "earth", note: "Rocks and dust circling the young Sun clump together into Earth."},
+    {age: 4.4e9,    e: "💧", name: "Oldest minerals hint at oceans", type: "earth", note: "Tiny zircon crystals from Australia suggest liquid water already existed."},
+    {age: 3.48e9,   e: "🦠", name: "Earliest strong evidence of life", type: "life", note: "Mats of microbes build layered rocks called stromatolites."},
+    {age: 2.4e9,    e: "🫧", name: "The Great Oxidation Event", type: "life", note: "Oxygen made by photosynthesizing microbes finally builds up in the air.", about: true},
+    {age: 575e6,    e: "🪼", name: "First large, complex life", type: "life", note: "Soft-bodied Ediacaran creatures spread across the sea floor.", about: true},
+    {age: 538.8e6,  e: "🦐", name: "The Cambrian explosion", type: "life", note: "Animals with shells, eyes, and legs appear in a burst of new life."},
+    {age: 445e6,    e: "💀", name: "Mass extinction #1 (end-Ordovician)", type: "ext", note: "An ice age and falling sea levels wipe out about 85% of species.", ext: 1, about: true},
+    {age: 372e6,    e: "💀", name: "Mass extinction #2 (Late Devonian)", type: "ext", note: "Oceans lose oxygen; about 75% of species die out.", ext: 2, about: true},
+    {age: 251.9e6,  e: "💀", name: "Mass extinction #3 (end-Permian, “the Great Dying”)", type: "ext", note: "Giant volcanic eruptions in Siberia; roughly 90% of species vanish.", ext: 3},
+    {age: 231e6,    e: "🦖", name: "First dinosaurs", type: "life", note: "The earliest dinosaurs appear, small and fast on two legs.", about: true},
+    {age: 201.4e6,  e: "💀", name: "Mass extinction #4 (end-Triassic)", type: "ext", note: "Massive volcanoes as the Atlantic Ocean starts to open; about 75% of species lost.", ext: 4},
+    {age: 66e6,     e: "💀", name: "Mass extinction #5 (end-Cretaceous)", type: "ext", note: "An asteroid slams into Mexico and the non-bird dinosaurs die out.", ext: 5},
+    {age: 7e6,      e: "🚶", name: "Earliest human relatives", type: "human", note: "The oldest known fossils from our branch of the family tree (hominins).", about: true},
+    {age: 300e3,    e: "🧑", name: "Homo sapiens appear", type: "human", note: "Our species, <i>Homo sapiens</i>, shows up in Africa.", about: true},
+    {age: 12e3,     e: "🌾", name: "Farming begins", type: "human", note: "People start growing crops and raising animals.", about: true},
+    {age: 5.2e3,    e: "✍️", name: "Writing is invented", type: "human", note: "All of written human history fits in the last 12 seconds of the year.", about: true},
+    {age: thisYear - 1609, e: "🔭", name: "Galileo points a telescope at the sky", type: "human", note: "Humans start looking closely at other worlds, less than 1 second before midnight."},
+    {age: 0,        e: "📍", name: "Today", type: "human", note: "You, reading this. Is anyone else out there?"}
+  ].map(d => ({...d, t: 1 - d.age / AGE}));
+
+  // ---- Zoom rows (positions are fractions of the calendar year) ----
+  const DEC1 = 334 / 365, DEC31 = 364 / 365, LASTMIN = 1 - 60 / SEC;
+  const dayT = (d) => d / 365;
+  const rows = [
+    {name: "The whole year", sub: "1 day ≈ 38 million years", a: 0, b: 1, zoomFrom: DEC1,
+     ticks: ["J","F","M","A","M","J","J","A","S","O","N","D"].map((m, i) => [dayT([0,31,59,90,120,151,181,212,243,273,304,334][i] + 15), m])},
+    {name: "Zoom: December", sub: "1 day ≈ 38 million years", a: DEC1, b: 1, zoomFrom: DEC31,
+     ticks: [1, 8, 15, 22, 29].map(d => [dayT(333 + d), d === 1 ? "Dec 1" : String(d)])},
+    {name: "Zoom: December 31", sub: "1 hour ≈ 1.6 million years", a: DEC31, b: 1, zoomFrom: LASTMIN,
+     ticks: [[0, "12 am"], [6, "6 am"], [12, "noon"], [18, "6 pm"]].map(([h, l]) => [DEC31 + h / 24 / 365, l])},
+    {name: "Zoom: the last minute", sub: "1 second ≈ 440 years", a: LASTMIN, b: 1, zoomFrom: null,
+     ticks: [[0, "11:59:00"], [15, ":15"], [30, ":30"], [45, ":45"]].map(([s, l]) => [LASTMIN + s / SEC, l])}
+  ];
+  // Play moves through each row's own stretch, so every zoom level gets equal screen time
+  const segs = rows.map((r, i) => [r.a, i < rows.length - 1 ? rows[i + 1].a : 1]);
+  const tFromP = p => {
+    const i = Math.min(segs.length - 1, Math.floor(p));
+    const [a, b] = segs[i];
+    return a + (b - a) * Math.min(1, p - i);
+  };
+  const pFromT = t => {
+    for (let i = 0; i < segs.length; i++) {
+      const [a, b] = segs[i];
+      if (t < b || i === segs.length - 1) return i + Math.max(0, Math.min(1, (t - a) / (b - a)));
+    }
+    return segs.length;
+  };
+
+  // ---- Formatting ----
+  const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const MSTART = [0,31,59,90,120,151,181,212,243,273,304,334];
+  function clock(t) {
+    if (t >= 1) return "Dec 31 · midnight";
+    const s = t * SEC;
+    const day = Math.floor(s / 86400);
+    let m = 11; while (MSTART[m] > day) m--;
+    const r = s - day * 86400;
+    const h = Math.floor(r / 3600), mi = Math.floor((r % 3600) / 60), se = Math.floor(r % 60);
+    const h12 = ((h + 11) % 12) + 1, ap = h < 12 ? "am" : "pm";
+    const showSec = t >= 1 - 3600 / SEC;
+    return `${MONTHS[m]} ${day - MSTART[m] + 1} · ${h12}:${String(mi).padStart(2, "0")}${showSec ? ":" + String(se).padStart(2, "0") : ""} ${ap}`;
+  }
+  function realAge(age, about) {
+    const pre = about ? "about " : "";
+    if (age <= 0) return "Today";
+    if (age >= 1e9) return `${pre}${parseFloat((age / 1e9).toFixed(2))} billion years ago`;
+    if (age >= 1e6) return `${pre}${+(age / 1e6).toFixed(1)} million years ago`;
+    return `${pre}${Math.round(age).toLocaleString()} years ago`;
+  }
+
+  // ---- Build DOM ----
+  const root = html`<div class="u2h-cal">
+    <div class="u2h-cal-head"><h2>🗓️ The Cosmic Calendar</h2><span>Real dates, squeezed into one year</span></div>
+    <div class="u2h-readout" aria-live="polite"></div>
+  </div>`;
+  const readout = root.querySelector(".u2h-readout");
+  const rowEls = rows.map((r, ri) => {
+    const lo = r.a, span = r.b - r.a;
+    const pct = t => ((t - lo) / span) * 100;
+    const wrap = html`<div class="u2h-row">
+      <div class="u2h-row-label"><b>${r.name}</b><span>${r.sub}</span></div>
+    </div>`;
+    const track = html`<div class="u2h-track" tabindex="0" role="slider"
+      aria-label="${r.name} of the Cosmic Calendar" aria-valuemin="0" aria-valuemax="100"></div>`;
+    const fill = html`<div class="u2h-fill"></div>`;
+    track.append(fill);
+    if (r.zoomFrom != null) {
+      const z = html`<div class="u2h-zoom" title="Zoomed in on the next row"></div>`;
+      z.style.left = pct(r.zoomFrom) + "%";
+      track.append(z);
+    }
+    const dots = events.filter(ev => ev.t >= lo && ev.t <= r.b).map(ev => {
+      const d = html`<span class="u2h-dot"></span>`;
+      d.style.left = Math.min(99.2, Math.max(0.8, pct(ev.t))) + "%";
+      d.style.setProperty("--u2h-c", C[ev.type]);
+      track.append(d);
+      return {ev, d};
+    });
+    const handle = html`<div class="u2h-handle"></div>`;
+    track.append(handle);
+    const ticks = html`<div class="u2h-ticks" aria-hidden="true"></div>`;
+    for (const [t, l] of r.ticks) {
+      const s = html`<span>${l}</span>`;
+      const x = pct(t);
+      s.style.left = x + "%";
+      if (x < 4) s.style.transform = "none";
+      ticks.append(s);
+    }
+    wrap.append(track, ticks);
+    root.append(wrap);
+
+    // Drag / tap on a row sets the time within that row
+    const setFromX = e => {
+      const b = track.getBoundingClientRect();
+      const f = Math.max(0, Math.min(1, (e.clientX - b.left) / b.width));
+      stopPlay();
+      setT(lo + f * span);
+    };
+    track.addEventListener("pointerdown", e => { track.setPointerCapture(e.pointerId); setFromX(e); });
+    track.addEventListener("pointermove", e => { if (track.hasPointerCapture(e.pointerId)) setFromX(e); });
+    track.addEventListener("keydown", e => {
+      const step = e.shiftKey ? 0.1 : 0.01;
+      if (e.key === "ArrowRight" || e.key === "ArrowUp") { stopPlay(); setT(Math.min(r.b, Math.max(lo, state.t) + span * step)); e.preventDefault(); }
+      if (e.key === "ArrowLeft" || e.key === "ArrowDown") { stopPlay(); setT(Math.max(lo, Math.min(r.b, state.t) - span * step)); e.preventDefault(); }
+    });
+    return {r, lo, span, pct, track, fill, handle, dots};
+  });
+
+  const controls = html`<div class="u2h-controls">
+    <button type="button" class="u2h-play">▶ Play</button>
+    <button type="button" class="u2h-prev" aria-label="Previous event">◀ Prev</button>
+    <button type="button" class="u2h-next" aria-label="Next event">Next ▶</button>
+  </div>`;
+  const legend = html`<div class="u2h-legend" aria-hidden="true">
+    <span><i style="background:${C.cosmic}"></i>Universe</span>
+    <span><i style="background:${C.earth}"></i>Sun &amp; Earth</span>
+    <span><i style="background:${C.life}"></i>Life</span>
+    <span><i style="background:${C.ext}"></i>Mass extinction</span>
+    <span><i style="background:${C.human}"></i>Humans</span>
+  </div>`;
+  const src = html`<p class="u2h-source"><b>This is a model:</b> the Cosmic Calendar (an idea made famous by Carl Sagan) shrinks real dates to fit one year. Dates: Planck Collaboration 2018 (age of the universe); USGS (age of Earth); Connelly et al. 2012 (Sun); Wilde et al. 2001 (zircons); Djokic et al. 2017 (stromatolites); Lyons et al. 2014 (oxygen); International Commission on Stratigraphy 2023 (Cambrian and extinctions); Brunet et al. 2002 and Hublin et al. 2017 (human origins). Many dates have uncertainties of millions of years.</p>`;
+  root.append(controls, legend, src);
+  root.setAttribute("role", "group");
+  root.setAttribute("aria-label", "Interactive Cosmic Calendar: 13.8 billion years of history scaled to one calendar year, shown at four zoom levels: the whole year, December, December 31, and the last minute. The Sun and Earth form around September 2, the earliest life appears around September 30, all five mass extinctions happen between December 20 and December 30, Homo sapiens appear at 11:48 pm on December 31, and all of written history fits in the last 12 seconds.");
+
+  const playBtn = controls.querySelector(".u2h-play");
+  const prevBtn = controls.querySelector(".u2h-prev");
+  const nextBtn = controls.querySelector(".u2h-next");
+
+  // ---- State + rendering ----
+  const state = {t: 0, p: 0, playing: false, raf: null, last: null};
+  function render() {
+    const t = state.t;
+    let active = null;
+    for (const ev of events) if (ev.t <= t + 1e-12) active = ev;
+    const extCount = events.filter(ev => ev.ext && ev.t <= t + 1e-12).length;
+    for (const R of rowEls) {
+      const x = Math.max(0, Math.min(100, R.pct(t)));
+      R.fill.style.width = x + "%";
+      R.handle.style.left = x + "%";
+      R.handle.classList.toggle("u2h-off", t < R.lo);
+      for (const {ev, d} of R.dots) {
+        d.classList.toggle("u2h-lit", ev.t <= t + 1e-12);
+        d.classList.toggle("u2h-active", ev === active);
+      }
+      R.track.setAttribute("aria-valuenow", Math.round(x));
+      R.track.setAttribute("aria-valuetext", `${clock(t)}, ${realAge((1 - t) * AGE, true)}`);
+    }
+    const ago = (1 - t) * AGE;
+    readout.innerHTML = `<div class="u2h-clock">${clock(t)}</div>
+      <div class="u2h-real">${t >= 1 ? "Today" : `In real time: ${realAge(ago, true)}`}</div>
+      ${active ? `<div class="u2h-event">${active.e} <b>${active.name}</b> (${realAge(active.age, active.about)}). ${active.note}</div>` : ""}
+      <span class="u2h-ext">💀 Mass extinctions so far: ${extCount} of 5</span>`;
+  }
+  function setT(t) { state.t = Math.max(0, Math.min(1, t)); state.p = pFromT(state.t); render(); }
+
+  const SEG_MS = 6500;
+  function frame(now) {
+    if (!state.playing) return;
+    if (state.last != null) state.p += (now - state.last) / SEG_MS;
+    state.last = now;
+    if (state.p >= segs.length) { state.p = segs.length; state.t = 1; render(); stopPlay(); return; }
+    state.t = tFromP(state.p);
+    render();
+    state.raf = requestAnimationFrame(frame);
+  }
+  function startPlay() {
+    if (state.t >= 1) { state.t = 0; state.p = 0; }
+    state.playing = true; state.last = null;
+    playBtn.textContent = "❚❚ Pause";
+    state.raf = requestAnimationFrame(frame);
+  }
+  function stopPlay() {
+    state.playing = false;
+    if (state.raf) cancelAnimationFrame(state.raf);
+    state.raf = null;
+    playBtn.textContent = state.t >= 1 ? "↺ Replay" : "▶ Play";
+  }
+  playBtn.addEventListener("click", () => state.playing ? stopPlay() : startPlay());
+  nextBtn.addEventListener("click", () => {
+    stopPlay();
+    const n = events.find(ev => ev.t > state.t + 1e-12);
+    setT(n ? n.t : 1); stopPlay();
+  });
+  prevBtn.addEventListener("click", () => {
+    stopPlay();
+    const prev = events.filter(ev => ev.t < state.t - 1e-12);
+    setT(prev.length ? prev[prev.length - 1].t : 0); stopPlay();
+  });
+
+  // ---- Start: auto-play once when on screen (skip if reduced motion) ----
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let autoPlayed = false;
+  if (reduceMotion) {
+    setT(1); stopPlay();
+  } else {
+    setT(0);
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !autoPlayed) { autoPlayed = true; setTimeout(() => { if (!state.playing && state.t === 0) startPlay(); }, 700); }
+      else if (!e.isIntersecting && state.playing) stopPlay();
+    }, {threshold: 0.3});
+    io.observe(root);
+    invalidation.then(() => { io.disconnect(); stopPlay(); });
+  }
+  invalidation.then(() => stopPlay());
+
+  return root;
+}
+```
+
+```{=html}
+</section>
+```
 
 ## Anchor Phenomenon
 
