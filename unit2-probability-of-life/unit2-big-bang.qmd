@@ -101,7 +101,7 @@ Plot.plot({
   marginLeft: Math.min(210, width * 0.42),
   marginRight: 16,
   marginBottom: 42,
-  x: {type: "log", label: "How many (log scale)", grid: true, domain: [1e9, 1e25], tickFormat: d => { const e = Math.round(Math.log10(d)); return e % 5 === 0 ? `10^${e}` : ""; }},
+  x: {type: "log", label: "How many (log scale)", grid: true, domain: [1e9, 1e25], tickFormat: d => { const e = Math.round(Math.log10(d)); return e % 5 === 0 ? "10" + String(e).split("").map(c => "⁰¹²³⁴⁵⁶⁷⁸⁹⁻"["0123456789-".indexOf(c)]).join("") : ""; }},
   y: {label: null, domain: bigCounts.map(d => d.thing), tickFormat: d => width < 520 ? d.replace("in the observable universe", "(universe)").replace("on Earth's beaches", "(Earth)") : d},
   marks: [
     Plot.ruleY(bigCounts, {y: "thing", x1: "low", x2: "high", stroke: "#6c5ce7", strokeWidth: 6, strokeOpacity: 0.35}),
@@ -1148,7 +1148,7 @@ viewof stretchFactor = Inputs.range([1, 1100], {label: "Times space has stretche
     title: `Glow of the early universe, stretched ${stretchFactor.toFixed(0)}×`,
     subtitle: `Temperature ≈ ${T < 100 ? T.toFixed(1) : Math.round(T).toLocaleString()} K · brightest wavelength ≈ ${fmtNm(peak)} (${region})`,
     width: width, height: 300, marginLeft: 20, marginBottom: 44, marginRight: 14,
-    x: {type: "log", label: "Wavelength (nm, log scale) → longer wavelength, lower energy", domain: [10, 1e9], tickFormat: d => { const e = Math.log10(d); return Number.isInteger(Math.round(e * 1000) / 1000) && e % 2 === 0 ? `10^${e}` : ""; }},
+    x: {type: "log", label: "Wavelength (nm, log scale) → longer wavelength, lower energy", domain: [10, 1e9], tickFormat: d => { const e = Math.log10(d); return Number.isInteger(Math.round(e * 1000) / 1000) && e % 2 === 0 ? "10" + String(e).split("").map(c => "⁰¹²³⁴⁵⁶⁷⁸⁹⁻"["0123456789-".indexOf(c)]).join("") : ""; }},
     y: {axis: null, domain: [0, 1.25]},
     marks: [
       Plot.rect(regions, {x1: "lo", x2: "hi", y1: 0, y2: 1.25, fill: "fill", fillOpacity: 0.35}),
@@ -1355,8 +1355,8 @@ viewof bbStep = Inputs.range([1, 7], {label: "Stage:", step: 1, value: 1})
     title: "Temperature of the universe over time",
     subtitle: "Both axes are log scales: the universe cooled as it expanded",
     width: width, height: 290, marginLeft: 56, marginBottom: 42, marginRight: 20,
-    x: {type: "log", label: "Time since the beginning (seconds, log scale)", domain: [1e-35, 1e18], tickFormat: d => { const e = Math.round(Math.log10(d)); return e % 10 === 0 ? `10^${e}` : ""; }},
-    y: {type: "log", label: "Temperature (K)", domain: [1, 1e28], tickFormat: d => { const e = Math.round(Math.log10(d)); return e % 5 === 0 ? `10^${e}` : ""; }},
+    x: {type: "log", label: "Time since the beginning (seconds, log scale)", domain: [1e-35, 1e18], tickFormat: d => { const e = Math.round(Math.log10(d)); return e % 10 === 0 ? "10" + String(e).split("").map(c => "⁰¹²³⁴⁵⁶⁷⁸⁹⁻"["0123456789-".indexOf(c)]).join("") : ""; }},
+    y: {type: "log", label: "Temperature (K)", domain: [1, 1e28], tickFormat: d => { const e = Math.round(Math.log10(d)); return e % 5 === 0 ? "10" + String(e).split("").map(c => "⁰¹²³⁴⁵⁶⁷⁸⁹⁻"["0123456789-".indexOf(c)]).join("") : ""; }},
     marks: [
       Plot.line(pts, {x: "sec", y: "tempK", stroke: "#e65100", strokeWidth: 2}),
       Plot.dot(pts, {x: "sec", y: "tempK", r: d => d.n === bbStep ? 9 : 5, fill: d => d.n === bbStep ? "#e65100" : "#94a3b8", stroke: "white", tip: true,

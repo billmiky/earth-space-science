@@ -112,7 +112,9 @@ viewof craterView = Inputs.radio(["Total craters found", "Craters per million km
     height: 230,
     marginLeft: 60,
     marginRight: Math.min(90, width * 0.2),
-    x: {type: "log", label: per ? "Craters per million km² →" : "Number of craters →", grid: true, tickFormat: "~s"},
+    x: {type: "log", label: per ? "Craters per million km² →" : "Number of craters →", grid: true,
+        ticks: per ? [0.1, 1, 10, 100, 1e3, 1e4, 1e5] : [1, 10, 100, 1e3, 1e4, 1e5, 1e6],
+        tickFormat: d => d >= 1e6 ? "1M" : d >= 1e3 ? (d / 1e3) + "K" : String(d)},
     y: {label: null, domain: ["Earth", "Mars", "Moon"]},
     marks: [
       Plot.barX(craterData, {x1: per ? 0.1 : 1, x2: key, y: "body", fill: "color", tip: true,
@@ -396,7 +398,9 @@ viewof datingPick = Inputs.select(datingObjects.map(d => d.name), {label: "Objec
     subtitle: "Green = can date this object (right age range AND right material)",
     width: width, height: 280,
     marginLeft: Math.min(110, width * 0.3), marginRight: 16, marginBottom: 40,
-    x: {type: "log", domain: [50, 1e10], label: "Age of object (years) →", grid: true, tickFormat: "~s"},
+    x: {type: "log", domain: [50, 1e10], label: "Age of object (years; K = thousand, M = million, B = billion) →", grid: true,
+        ticks: width < 500 ? [100, 1e4, 1e6, 1e8, 1e10] : [100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10],
+        tickFormat: d => d >= 1e9 ? (d / 1e9) + "B" : d >= 1e6 ? (d / 1e6) + "M" : d >= 1e3 ? (d / 1e3) + "K" : String(d)},
     y: {label: null, domain: datingRanges.map(d => d.iso)},
     marks: [
       Plot.barX(rows, {x1: "min", x2: "max", y: "iso", fill: d => d.ok ? "#27ae60" : "#b0bec5", rx: 4, tip: true,

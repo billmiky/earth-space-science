@@ -193,7 +193,7 @@ viewof paceZoom = Inputs.radio(["All 4.6 billion years", "Last 1 billion years",
   const maxGa = paceZoom.startsWith("All") ? 4.6 : paceZoom.includes("1 billion") ? 1.0 : 0.01;
   const shown = paceEvents.filter(d => d.ga <= maxGa + 1e-9);
   const fmtAge = g => g >= 1 ? `${g} billion years ago` : g >= 0.001 ? `${+(g * 1000).toPrecision(3)} million years ago` : `${Math.round(g * 1e9).toLocaleString()} years ago`;
-  const short = s => width < 520 ? s.replace(/ \(.*/, "") : s;
+  const short = s => width < 700 ? s.replace(/ \(.*/, "") : s;
   return Plot.plot({
     title: "When did each group first appear?",
     subtitle: `${shown.length} of ${paceEvents.length} events fall in this window. Hover or tap a dot for its age.`,
@@ -734,32 +734,15 @@ In class you watch a video and record ways oxygen changed Earth's surface. Here 
 - **Built the ozone layer:** oxygen (O₂) formed ozone (O₃), which blocks harmful UV light, so life could live on land.
 - **Changed the climate:** oxygen destroyed much of the methane (a greenhouse gas) in the air, which helped trigger Earth's first big ice age (about 2.4–2.1 Ga).
 
-```{ojs}
-//| echo: false
-{
-  // Simple illustration of banded iron formation layers
-  const W = 360, H = 170;
-  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`)
-    .attr("role", "img").attr("aria-label", "Illustration of a banded iron formation: alternating thin red iron-oxide layers and grey silica layers in a rock")
-    .style("width", "100%").style("height", "auto").style("max-width", "520px").style("display", "block").style("margin", "auto");
-  svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#2d3436").attr("rx", 12);
-  let y = 30;
-  let i = 0;
-  const rand = d3.randomLcg(7);
-  while (y < 140) {
-    const h = 3 + rand() * 7;
-    const red = i % 2 === 0;
-    const pts = d3.range(0, W - 30, 10).map(x => [15 + x, y + Math.sin(x / 40 + i) * 2.5]);
-    const top = pts, bottom = pts.map(([x, yy]) => [x, yy + h]).reverse();
-    svg.append("path").attr("d", d3.line()([...top, ...bottom]) + "Z").attr("fill", red ? "#c0392b" : "#95a5a6").attr("opacity", red ? 0.95 : 0.85);
-    y += h; i++;
-  }
-  svg.append("text").attr("x", W / 2).attr("y", 20).attr("text-anchor", "middle").attr("fill", "#fff").attr("font-size", 13).attr("font-weight", "bold").text("Banded iron formation (illustration)");
-  svg.append("text").attr("x", W / 2).attr("y", 160).attr("text-anchor", "middle").attr("fill", "#dfe6e9").attr("font-size", 10)
-    .text("Red = iron oxide (rust) · Grey = silica (chert)");
-  return svg.node();
-}
-```
+<figure style="margin: 18px auto; max-width: 560px; text-align: center;">
+  <img src="../images/unit2-co-banded-iron-hamersley-usgs.jpg"
+       alt="A tall cliff of banded iron formation in Western Australia. Hundreds of thin, dark red and rust-orange rock layers are stacked and folded into waves. Three geologists standing at the base look small next to it."
+       loading="lazy"
+       style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,.25);">
+  <figcaption style="margin-top: 8px; color: #64748b; font-size: .85em; font-style: italic; line-height: 1.4;">
+    A real banded iron formation in the Hamersley Range, Western Australia, about 2.5 billion years old (geologists for scale). Each red band is iron that rusted out of the ocean as oxygen built up. Credit: USGS Astrogeology Science Center (public domain).
+  </figcaption>
+</figure>
 
 ## Part 1: Evidence of Coevolution
 
