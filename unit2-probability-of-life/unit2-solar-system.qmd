@@ -32,6 +32,36 @@ execute:
 h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
 h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #00838f !important; }
 @media (max-width: 600px) { .big-question { font-size: 1.8em; } h1 { font-size: 2.1em !important; } }
+
+/* Interactive models (ss- prefix) */
+.ss-sim { margin: 16px auto; max-width: 720px; }
+.ss-sim canvas { display: block; width: 100%; max-width: 100%; border-radius: 12px; touch-action: pan-y; }
+.ss-ctrl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0; }
+.ss-ctrl-label { font-weight: 700; font-size: .9em; margin-right: 2px; }
+.ss-btn { min-height: 44px; min-width: 44px; padding: 8px 14px; border-radius: 10px; border: 2px solid #00838f; background: #00838f; color: #fff; font-weight: 700; font-size: .95em; line-height: 1.2; cursor: pointer; }
+.ss-btn.ss-ghost { background: transparent; color: inherit; border-color: rgba(128,128,128,.65); }
+.ss-btn[aria-pressed="true"] { background: #4A148C; border-color: #b388ff; color: #fff; }
+.ss-btn:focus-visible { outline: 3px solid #ffb300; outline-offset: 2px; }
+.ss-range { flex: 1 1 180px; min-height: 44px; min-width: 0; accent-color: #00838f; }
+.ss-readout { font-size: .95em; line-height: 1.5; padding: 10px 14px; border-radius: 8px; background: rgba(0,131,143,.12); }
+.ss-note { font-size: .85em; opacity: .85; margin: 6px 0 0 0; line-height: 1.4; }
+.ss-model-tag { display: inline-block; background: #4A148C; color: #fff; font-size: .75em; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; padding: 3px 10px; border-radius: 12px; margin-bottom: 6px; }
+.ss-moon-stage { position: relative; width: 100%; aspect-ratio: 1 / 1; background: #05070d; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+.ss-moon-stage canvas { width: 100% !important; height: 100% !important; border-radius: 0; cursor: grab; }
+.ss-moon-label { position: absolute; left: 0; top: 0; pointer-events: none; color: #ffe082; font: 700 12px/1 Inter, system-ui, sans-serif; text-shadow: 0 1px 3px #000, 0 0 6px #000; white-space: nowrap; }
+.ss-moon-label::before { content: ""; position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border: 2px solid #ffe082; border-radius: 50%; box-sizing: border-box; }
+.ss-moon-label span { position: absolute; left: 13px; top: -6px; }
+.ss-moon-label.ss-moon-label-l span { left: auto; right: 13px; }
+figure.ss-sim figcaption.ss-note { color: inherit; }
+.ss-sim .ss-btn { min-height: 44px !important; }
+.ss-sim .ss-range { height: 44px !important; min-height: 44px !important; }
+.ss-worlds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.ss-worlds .ss-world-full { grid-column: 1 / -1; }
+.ss-world-name { font-weight: 800; font-size: .95em; }
+.ss-world-desc { font-size: .78em; line-height: 1.3; opacity: .85; min-height: 2.6em; margin-bottom: 4px; }
+.ss-world-count { font-size: 1.6em; font-weight: 800; line-height: 1.1; margin-top: 4px; }
+.ss-world-count small { font-size: .5em; font-weight: 600; opacity: .85; }
+@media (max-width: 560px) { .ss-worlds { grid-template-columns: repeat(2, 1fr); } .ss-worlds .ss-world-side { grid-column: auto; } }
 </style>
 ```
 
@@ -70,19 +100,238 @@ On Earth, about <span style="color:#80deea;">128</span> impact craters have been
 Earth is the **biggest** of the three and has the **strongest gravity**, so it should attract at least as many impacts. So where did all of Earth's craters go?
 :::
 
-<figure style="margin: 18px auto; max-width: 420px; text-align: center;">
-  <img src="../images/moon-full-galileo.jpg"
-       alt="The full Moon, a mosaic of Galileo spacecraft images, showing bright cratered highlands, dark smooth lava plains called maria, and bright rays spreading out from young craters"
-       style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,.25);">
-  <figcaption style="margin-top: 8px; color: #64748b; font-size: .85em; font-style: italic; line-height: 1.4;">
-    The Moon, pocked with impact craters. Even the dark plains and bright rays are scars from impacts. Credit: NASA/JPL (Galileo spacecraft).
-  </figcaption>
-</figure>
+**Turn the Moon yourself.** Drag it (or use the buttons) to see the side that faces Earth and the **far side** we never see from the ground. Look for craters of every size, and for the dark, smooth **maria** (old lava plains) that cover some of them.
 
 ```{ojs}
 //| echo: false
 Plot = require("@observablehq/plot")
 d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+ssTHREE = import("https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js").catch(() => null)
+```
+
+```{ojs}
+//| echo: false
+// Shared helpers for the canvas models in this chapter
+ssKit = ({
+  reduced: () => !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches),
+  btn(label, {ghost = false, pressed = null} = {}) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "ss-btn" + (ghost ? " ss-ghost" : "");
+    b.textContent = label;
+    if (pressed !== null) b.setAttribute("aria-pressed", pressed ? "true" : "false");
+    return b;
+  },
+  // HiDPI 2D canvas that follows the width of its box. heightFor(w) gives the CSS height.
+  canvas(aria, heightFor, onResize) {
+    const c = document.createElement("canvas");
+    c.setAttribute("role", "img");
+    c.setAttribute("aria-label", aria);
+    const o = {canvas: c, ctx: c.getContext("2d"), w: 0, h: 0};
+    o.fit = () => {
+      const w = Math.round(c.clientWidth) || 320;
+      if (w === o.w) return false;
+      const h = Math.round(heightFor(w)), dpr = Math.min(2, window.devicePixelRatio || 1);
+      o.w = w; o.h = h;
+      c.width = Math.round(w * dpr); c.height = Math.round(h * dpr);
+      c.style.height = h + "px";
+      o.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return true;
+    };
+    o.ro = new ResizeObserver(() => { if (o.fit() && onResize) onResize(); });
+    o.ro.observe(c);
+    return o;
+  },
+  // Animation loop that only runs while playing AND on screen. tick(dt) gets seconds.
+  loop(el, tick, invalidation) {
+    let raf = 0, last = 0, playing = false, visible = true;
+    const frame = now => {
+      raf = 0;
+      if (!playing || !visible) return;
+      const dt = Math.max(0, Math.min(0.1, (now - last) / 1000));
+      last = now;
+      tick(dt);
+      if (playing && visible) raf = requestAnimationFrame(frame);
+    };
+    const kick = () => { if (!raf && playing && visible) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+    const io = new IntersectionObserver(es => { visible = es[es.length - 1].isIntersecting; kick(); });
+    io.observe(el);
+    const api = {
+      play() { playing = true; kick(); },
+      pause() { playing = false; if (raf) { cancelAnimationFrame(raf); raf = 0; } },
+      get playing() { return playing; }
+    };
+    invalidation.then(() => { api.pause(); io.disconnect(); });
+    return api;
+  }
+})
+```
+
+```{ojs}
+//| echo: false
+ssMoon3d = {
+  const wrap = html`<figure class="ss-sim" style="max-width:520px;text-align:center;"></figure>`;
+  const fallback = () => {
+    wrap.innerHTML = `<img src="../images/moon-full-galileo.jpg" loading="lazy"
+      alt="The full Moon, a mosaic of Galileo spacecraft images, showing bright cratered highlands, dark smooth lava plains called maria, and bright rays spreading out from young craters"
+      style="width:100%;max-width:420px;height:auto;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.25);">
+      <figcaption class="ss-note" style="font-style:italic;">The Moon, pocked with impact craters. Even the dark plains and bright rays are scars from impacts. (Your device could not show the 3D Moon, so here is a photo.) Credit: NASA/JPL (Galileo spacecraft).</figcaption>`;
+    return wrap;
+  };
+  const THREE = ssTHREE;
+  const probe = document.createElement("canvas");
+  if (!THREE || !probe.getContext("webgl2")) return fallback();
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({antialias: true, powerPreference: "low-power"}); }
+  catch (e) { return fallback(); }
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+
+  const stage = html`<div class="ss-moon-stage"></div>`;
+  const cv = renderer.domElement;
+  cv.setAttribute("role", "img");
+  cv.setAttribute("aria-label", "A 3D globe of the Moon that you can turn, made from NASA Lunar Reconnaissance Orbiter maps. The near side has dark lava plains called maria among thousands of craters. The far side is almost completely covered in craters.");
+  cv.tabIndex = 0;
+  cv.style.touchAction = "pan-y";
+  stage.append(cv);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50);
+  camera.position.set(0, 0, 4.5);
+  const group = new THREE.Group();
+  scene.add(group);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+  const sun = new THREE.DirectionalLight(0xffffff, 3.0);
+  sun.position.set(-3, 1.6, 3.2);
+  scene.add(sun);
+
+  let failed = false;
+  const loader = new THREE.TextureLoader();
+  const map = loader.load("../images/unit2-ss-moon-lro-2k.jpg", () => draw(), undefined, () => { failed = true; cleanup(); fallback(); });
+  map.colorSpace = THREE.SRGBColorSpace;
+  map.anisotropy = 4;
+  const bump = loader.load("../images/unit2-ss-moon-lro-elevation-1k.jpg", () => draw());
+  const geo = new THREE.SphereGeometry(1, 96, 64);
+  const mat = new THREE.MeshStandardMaterial({map, bumpMap: bump, bumpScale: 6, roughness: 1, metalness: 0});
+  group.add(new THREE.Mesh(geo, mat));
+
+  // Real named craters (IAU Gazetteer of Planetary Nomenclature): latitude, east longitude
+  const craters = [
+    {name: "Tycho", lat: -43.3, lon: -11.4},
+    {name: "Copernicus", lat: 9.6, lon: -20.1},
+    {name: "Kepler", lat: 8.1, lon: -38.0, left: true},
+    {name: "Plato", lat: 51.6, lon: -9.4}
+  ].map(c => {
+    const la = c.lat * Math.PI / 180, lo = c.lon * Math.PI / 180;
+    const el = html`<div class="ss-moon-label${c.left ? " ss-moon-label-l" : ""}"><span>${c.name}</span></div>`;
+    stage.append(el);
+    return {...c, el, p: new THREE.Vector3(Math.cos(la) * Math.cos(lo), Math.sin(la), -Math.cos(la) * Math.sin(lo))};
+  });
+
+  let yaw = 0, pitch = 0, labels = true, spin = !ssKit.reduced(), dragging = false, tween = null, size = 0;
+  const v = new THREE.Vector3();
+  const readout = html`<div class="ss-readout" style="text-align:left;margin-top:8px;" aria-live="off"></div>`;
+
+  function draw() {
+    if (failed) return;
+    const w = Math.round(stage.clientWidth);
+    if (w && w !== size) { size = w; renderer.setSize(w, w, false); }
+    group.rotation.set(pitch, yaw - Math.PI / 2, 0);
+    group.updateMatrixWorld(true);
+    renderer.render(scene, camera);
+    for (const c of craters) {
+      v.copy(c.p).applyMatrix4(group.matrixWorld);
+      const facing = v.z > 0.18;
+      v.project(camera);
+      c.el.style.display = labels && facing ? "block" : "none";
+      c.el.style.transform = `translate(${((v.x + 1) / 2 * size).toFixed(1)}px, ${((1 - v.y) / 2 * size).toFixed(1)}px)`;
+    }
+    let lon = (-yaw * 180 / Math.PI) % 360;
+    if (lon > 180) lon -= 360;
+    if (lon < -180) lon += 360;
+    const side = Math.abs(lon) < 60 ? "the <b>near side</b> (the face we see from Earth)" : Math.abs(lon) > 120 ? "the <b>far side</b> (never visible from Earth)" : "the <b>edge</b> between the near and far sides";
+    const txt = `You are looking at ${side}. Centre of view: ${Math.abs(Math.round(lon))}° ${lon < 0 ? "W" : "E"} longitude.`;
+    if (readout.dataset.t !== txt) { readout.dataset.t = txt; readout.innerHTML = txt; }
+  }
+
+  let raf = 0, last = 0, visible = true;
+  const active = () => visible && !failed && (spin || tween);
+  function frame(now) {
+    raf = 0;
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    if (tween) {
+      tween.k = Math.min(1, tween.k + dt / 0.9);
+      const e = 1 - Math.pow(1 - tween.k, 3);
+      yaw = tween.y0 + (tween.y1 - tween.y0) * e; pitch = tween.p0 * (1 - e);
+      if (tween.k >= 1) tween = null;
+    } else if (spin && !dragging) yaw += dt * 0.12;
+    draw();
+    if (active()) raf = requestAnimationFrame(frame);
+  }
+  const kick = () => { if (!raf && active()) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+  const io = new IntersectionObserver(es => { visible = es[es.length - 1].isIntersecting; kick(); });
+  io.observe(stage);
+  const ro = new ResizeObserver(() => draw());
+  ro.observe(stage);
+
+  // Pointer drag: sideways drag turns the Moon. Up/down tilt only with a mouse, so touch can still scroll the page.
+  let px = 0, py = 0;
+  cv.addEventListener("pointerdown", e => { dragging = true; tween = null; px = e.clientX; py = e.clientY; cv.style.cursor = "grabbing"; try { cv.setPointerCapture(e.pointerId); } catch (err) {} });
+  cv.addEventListener("pointermove", e => {
+    if (!dragging) return;
+    yaw += (e.clientX - px) * 0.008;
+    if (e.pointerType !== "touch") pitch = Math.max(-1.2, Math.min(1.2, pitch + (e.clientY - py) * 0.008));
+    px = e.clientX; py = e.clientY;
+    if (!raf) draw();
+  });
+  const endDrag = () => { dragging = false; cv.style.cursor = "grab"; };
+  cv.addEventListener("pointerup", endDrag);
+  cv.addEventListener("pointercancel", endDrag);
+  cv.addEventListener("keydown", e => {
+    const k = {ArrowLeft: [-0.15, 0], ArrowRight: [0.15, 0], ArrowUp: [0, -0.1], ArrowDown: [0, 0.1]}[e.key];
+    if (!k) return;
+    e.preventDefault(); tween = null;
+    yaw += k[0]; pitch = Math.max(-1.2, Math.min(1.2, pitch + k[1]));
+    if (!raf) draw();
+  });
+
+  const goTo = target => {
+    // shortest way round to the target longitude
+    let y0 = yaw % (2 * Math.PI);
+    let d = target - y0;
+    while (d > Math.PI) d -= 2 * Math.PI;
+    while (d < -Math.PI) d += 2 * Math.PI;
+    yaw = y0;
+    if (ssKit.reduced()) { yaw = y0 + d; pitch = 0; draw(); return; }
+    tween = {y0, y1: y0 + d, p0: pitch, k: 0};
+    kick();
+  };
+  const bNear = ssKit.btn("Near side"), bFar = ssKit.btn("Far side");
+  const bSpin = ssKit.btn("Spin", {ghost: true, pressed: spin});
+  const bLab = ssKit.btn("Crater names", {ghost: true, pressed: labels});
+  bNear.onclick = () => goTo(0);
+  bFar.onclick = () => goTo(Math.PI);
+  bSpin.onclick = () => { spin = !spin; bSpin.setAttribute("aria-pressed", spin); kick(); };
+  bLab.onclick = () => { labels = !labels; bLab.setAttribute("aria-pressed", labels); draw(); };
+  const ctrl = html`<div class="ss-ctrl" style="justify-content:center;"></div>`;
+  ctrl.append(bNear, bFar, bSpin, bLab);
+
+  function cleanup() {
+    if (raf) cancelAnimationFrame(raf);
+    io.disconnect(); ro.disconnect();
+    geo.dispose(); mat.dispose(); map.dispose(); bump.dispose(); renderer.dispose();
+  }
+  invalidation.then(cleanup);
+
+  wrap.append(stage, ctrl, readout, html`<figcaption class="ss-note" style="font-style:italic;text-align:left;">
+    The real Moon in 3D. Drag sideways to turn it, or tap a button. On a keyboard, click the Moon and use the arrow keys. Colour and elevation maps were measured by NASA's Lunar Reconnaissance Orbiter. The shadows are exaggerated so craters stand out. Named craters are placed at their real latitude and longitude. Credit: NASA's Scientific Visualization Studio, CGI Moon Kit (public domain).</figcaption>`);
+  kick();
+  draw();
+  return wrap;
+}
 ```
 
 ```{ojs}
@@ -243,85 +492,166 @@ To compare when Earth, Mars, and the Moon formed and when they were hit, scienti
 
 ## Part 1: Radioactive Decay and Absolute Dating
 
-In class you use the PhET [Radioactive Dating Game](https://phet.colorado.edu/en/simulations/radioactive-dating-game) simulation. The model below works the same way. A **parent isotope** (like carbon-14) decays into a **daughter product** (like nitrogen-14). The **half-life** is the time it takes for **half** of the parent atoms to decay.
+In class you use the PhET [Radioactive Dating Game](https://phet.colorado.edu/en/simulations/radioactive-dating-game) simulation. The model below works the same way: press **Play** and watch atoms decay one by one, at random, while the graph draws itself. Use **+1 half-life** to stop at 1, 2, and 3 half-lives for your packet sketches. A **parent isotope** (like carbon-14) decays into a **daughter product** (like nitrogen-14). The **half-life** is the time it takes for **half** of the parent atoms to decay.
 
 ```{ojs}
 //| echo: false
-viewof decayIso = Inputs.radio(["Carbon-14", "Uranium-238"], {label: "Isotope:", value: "Carbon-14"})
-```
+ssDecaySim = {
+  const isos = {
+    "Carbon-14": {parent: "Carbon-14", daughter: "Nitrogen-14", hl: 5730, col: "#2ecc71", hlText: "5,730 years",
+      fmt: y => Math.round(y).toLocaleString() + " years"},
+    "Uranium-238": {parent: "Uranium-238", daughter: "Lead-206", hl: 4.5e9, col: "#f1c40f", hlText: "4.5 billion years",
+      fmt: y => (y / 1e9).toFixed(2) + " billion years"}
+  };
+  const MAXHL = 5, SECS_PER_HL = 4, GRAY = "#6b7785";
+  let isoName = "Carbon-14", N = 100, atoms = [], tau = 0, target = MAXHL, hist = [[0, 100]], flashOn = true;
+  const alive = () => atoms.reduce((n, a) => n + (a < 0 ? 1 : 0), 0);
 
-```{ojs}
-//| echo: false
-viewof decayHalfLives = Inputs.range([0, 5], {label: "Half-lives passed:", step: 0.05, value: 0})
-```
+  const wrap = html`<div class="ss-sim"></div>`;
+  const cv = ssKit.canvas("Radioactive decay model. A grid of model atoms changes from parent atoms to daughter atoms at random while a graph draws the percent of parent atoms left over time next to the smooth theory curve.",
+    w => w >= 560 ? 330 : Math.round(w * 0.62) + 250, () => draw());
+  const ctx = cv.ctx;
 
-```{ojs}
-//| echo: false
-{
-  const iso = decayIso === "Carbon-14"
-    ? {parent: "Carbon-14", daughter: "Nitrogen-14", hl: 5730, unit: "years", pc: "#2ecc71", dc: "#7f8c8d"}
-    : {parent: "Uranium-238", daughter: "Lead-206", hl: 4.5e9, unit: "years", pc: "#f1c40f", dc: "#7f8c8d"};
-  const n = decayHalfLives;
-  const frac = Math.pow(0.5, n);
-  const years = n * iso.hl;
-  const yrText = iso.hl > 1e6 ? `${(years / 1e9).toFixed(2)} billion years` : `${Math.round(years).toLocaleString()} years`;
+  function reset() {
+    atoms = new Array(N).fill(-1);   // -1 = still a parent atom, otherwise the time (in half-lives) it decayed
+    tau = 0; target = MAXHL; hist = [[0, 100]];
+  }
 
-  // 100 atoms, each with a fixed random "decay order" so decay looks random but repeatable
-  let s = 12345;
-  const rand = () => { s = (s * 16807) % 2147483647; return s / 2147483647; };
-  const order = d3.shuffle(d3.range(100), rand);
-  const decayedCount = Math.round((1 - frac) * 100);
-  const decayed = new Set(order.slice(0, decayedCount));
+  function draw() {
+    const W = cv.w, H = cv.h;
+    if (!W) return;
+    const iso = isos[isoName], wide = W >= 560;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = "#0d1b2a";
+    ctx.fillRect(0, 0, W, H);
+    // ---- atom grid ----
+    const ax = 14, ay = 34, aw = (wide ? W * 0.4 : W) - 28, ah = (wide ? H : Math.round(W * 0.62)) - 78;
+    const cols = N === 100 ? 10 : 20, rows = N / cols;
+    const cell = Math.min(aw / cols, ah / rows), r = cell * 0.4;
+    const gx = ax + (aw - cell * cols) / 2, gy = ay + (ah - cell * rows) / 2;
+    ctx.font = "700 14px Inter, system-ui, sans-serif";
+    ctx.fillStyle = "#fff"; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+    ctx.fillText(`${N} model atoms`, ax, 22);
+    for (let i = 0; i < N; i++) {
+      const x = gx + (i % cols + 0.5) * cell, y = gy + (Math.floor(i / cols) + 0.5) * cell, d = atoms[i];
+      ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832);
+      ctx.fillStyle = d < 0 ? iso.col : GRAY; ctx.fill();
+      if (flashOn && d >= 0 && tau - d < 0.15) {       // flash when an atom has just decayed
+        const k = (tau - d) / 0.15;
+        ctx.beginPath(); ctx.arc(x, y, r * (1 + 1.2 * k), 0, 6.2832);
+        ctx.strokeStyle = `rgba(255,255,255,${(1 - k).toFixed(2)})`; ctx.lineWidth = 2; ctx.stroke();
+      }
+    }
+    const ly = ay + ah + 18;
+    ctx.font = "600 12px Inter, system-ui, sans-serif";
+    ctx.fillStyle = iso.col; ctx.beginPath(); ctx.arc(ax + 6, ly - 4, 5, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = "#e6edf5"; ctx.fillText(`parent (${iso.parent})`, ax + 16, ly);
+    // second legend entry: beside the first if it fits in the atom column, otherwise underneath
+    const wPar = ctx.measureText(`parent (${iso.parent})`).width, wDau = ctx.measureText(`daughter (${iso.daughter})`).width;
+    const fits = ax + 26 + wPar + 16 + wDau < ax + aw;
+    const off = fits ? ax + 26 + wPar : ax, ly2 = fits ? ly : ly + 17;
+    ctx.fillStyle = GRAY; ctx.beginPath(); ctx.arc(off + 6, ly2 - 4, 5, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = "#e6edf5"; ctx.fillText(`daughter (${iso.daughter})`, off + 16, ly2);
 
-  const W = 640, H = 300;
-  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`)
-    .style("width", "100%").style("height", "auto").style("max-width", "640px").style("display", "block").style("margin", "auto");
-  svg.append("rect").attr("width", W).attr("height", H).attr("rx", 14).attr("fill", "#0d1b2a");
-  svg.append("text").attr("x", 20).attr("y", 30).attr("fill", "white").attr("font-size", 18).attr("font-weight", 700)
-    .text(`Time passed: ${yrText}`);
+    // ---- live decay curve ----
+    const cx0 = (wide ? W * 0.4 : 0) + 46, cy0 = (wide ? 0 : Math.round(W * 0.62)) + 30;
+    const cw = W - cx0 - 16, ch = (wide ? H : 250) - 30 - 52;
+    const X = t => cx0 + t / MAXHL * cw, Y = p => cy0 + (1 - p / 100) * ch;
+    ctx.strokeStyle = "rgba(255,255,255,.14)"; ctx.lineWidth = 1;
+    ctx.fillStyle = "#b8c4d4"; ctx.font = "12px Inter, system-ui, sans-serif";
+    ctx.textAlign = "right"; ctx.textBaseline = "middle";
+    for (const p of [0, 25, 50, 75, 100]) {
+      ctx.beginPath(); ctx.moveTo(cx0, Y(p)); ctx.lineTo(cx0 + cw, Y(p)); ctx.stroke();
+      ctx.fillText(p + "%", cx0 - 6, Y(p));
+    }
+    ctx.textAlign = "center"; ctx.textBaseline = "top";
+    for (let t = 0; t <= MAXHL; t++) {
+      ctx.beginPath(); ctx.moveTo(X(t), cy0); ctx.lineTo(X(t), cy0 + ch); ctx.stroke();
+      ctx.fillText(t, X(t), cy0 + ch + 5);
+    }
+    ctx.fillStyle = "#e6edf5"; ctx.font = "600 12px Inter, system-ui, sans-serif";
+    ctx.fillText(`Half-lives passed (1 half-life = ${iso.hlText})`, cx0 + cw / 2, cy0 + ch + 24);
+    ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+    ctx.fillText("Parent atoms left", cx0 - 40, cy0 - 12);
+    // theory curve (dashed)
+    ctx.setLineDash([5, 4]); ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 1.5; ctx.beginPath();
+    for (let t = 0; t <= MAXHL + 1e-9; t += 0.05) { const x = X(t), y = Y(100 * Math.pow(0.5, t)); t === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }
+    ctx.stroke(); ctx.setLineDash([]);
+    // model curve (solid)
+    ctx.strokeStyle = iso.col; ctx.lineWidth = 2.5; ctx.lineJoin = "round"; ctx.beginPath();
+    hist.forEach(([t, p], i) => i ? ctx.lineTo(X(t), Y(p)) : ctx.moveTo(X(t), Y(p)));
+    ctx.stroke();
+    const pNow = hist[hist.length - 1][1];
+    ctx.beginPath(); ctx.arc(X(tau), Y(pNow), 5, 0, 6.2832); ctx.fillStyle = "#ff5252"; ctx.fill();
+    ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5; ctx.stroke();
+    // legend + pie in the empty upper right of the chart
+    const pr = Math.min(34, ch * 0.2), pcx = cx0 + cw - pr - 6, pcy = cy0 + pr + 6, f = pNow / 100;
+    ctx.beginPath(); ctx.arc(pcx, pcy, pr, 0, 6.2832); ctx.fillStyle = GRAY; ctx.fill();
+    if (f > 0) { ctx.beginPath(); ctx.moveTo(pcx, pcy); ctx.arc(pcx, pcy, pr, -Math.PI / 2, -Math.PI / 2 + f * 6.2832); ctx.closePath(); ctx.fillStyle = iso.col; ctx.fill(); }
+    ctx.strokeStyle = "#0d1b2a"; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(pcx, pcy, pr, 0, 6.2832); ctx.stroke();
+    ctx.textAlign = "right"; ctx.font = "600 12px Inter, system-ui, sans-serif";
+    const lx = pcx - pr - 10;
+    ctx.fillStyle = iso.col; ctx.fillText("■ your model atoms", lx, cy0 + 16);
+    ctx.fillStyle = "#fff"; ctx.fillText("- - theory (halves each time)", lx, cy0 + 34);
+    ctx.textAlign = "left";
+  }
 
-  // Atom grid
-  d3.range(100).forEach(i => {
-    const cx = 40 + (i % 10) * 24, cy = 64 + Math.floor(i / 10) * 23;
-    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 9)
-      .attr("fill", decayed.has(i) ? iso.dc : iso.pc).attr("stroke", "#fff").attr("stroke-width", 0.6);
+  const readout = html`<div class="ss-readout" role="status" aria-live="off"></div>`;
+  function report() {
+    const iso = isos[isoName], n = alive(), pct = 100 * n / N, th = 100 * Math.pow(0.5, tau);
+    readout.innerHTML = `<b>Time passed:</b> ${iso.fmt(tau * iso.hl)} (${tau.toFixed(2)} half-lives)<br>` +
+      `<b>${iso.parent} left:</b> ${n} of ${N} atoms (${pct.toFixed(pct % 1 ? 1 : 0)}%). Theory predicts ${th.toFixed(1)}%.<br>` +
+      `<b>${iso.daughter} made:</b> ${N - n} atoms`;
+  }
+
+  const bPlay = ssKit.btn("▶ Play"), bStep = ssKit.btn("+1 half-life", {ghost: true}), bReset = ssKit.btn("↺ Reset", {ghost: true});
+  const setPlayLabel = () => { bPlay.textContent = loop.playing ? "⏸ Pause" : "▶ Play"; };
+  const loop = ssKit.loop(cv.canvas, dt => {
+    const dTau = Math.min(dt / SECS_PER_HL, target - tau);
+    const p = 1 - Math.pow(0.5, dTau);          // chance that one atom decays during this small step
+    tau += dTau;
+    for (let i = 0; i < N; i++) if (atoms[i] < 0 && Math.random() < p) atoms[i] = tau;
+    hist.push([tau, 100 * alive() / N]);
+    if (tau >= target - 1e-9) { tau = target; loop.pause(); setPlayLabel(); settle(); }
+    draw(); report();
+  }, invalidation);
+  // after pausing, let the last decay flashes fade out
+  let settleTimer = 0;
+  const settle = () => { clearTimeout(settleTimer); settleTimer = setTimeout(() => { if (!loop.playing) { flashOn = false; draw(); flashOn = true; } }, 250); };
+  invalidation.then(() => clearTimeout(settleTimer));
+
+  bPlay.onclick = () => {
+    if (loop.playing) { loop.pause(); settle(); }
+    else { if (tau >= MAXHL - 1e-9) reset(); target = MAXHL; loop.play(); }
+    setPlayLabel();
+  };
+  bStep.onclick = () => {
+    if (tau >= MAXHL - 1e-9) reset();
+    target = Math.min(MAXHL, Math.floor(tau + 1e-6) + 1);
+    loop.play(); setPlayLabel();
+  };
+  const restart = () => { loop.pause(); reset(); setPlayLabel(); draw(); report(); };
+  bReset.onclick = restart;
+
+  const isoRow = html`<div class="ss-ctrl"><span class="ss-ctrl-label">Isotope:</span></div>`;
+  const isoBtns = Object.keys(isos).map(name => {
+    const b = ssKit.btn(name, {ghost: true, pressed: name === isoName});
+    b.onclick = () => { isoName = name; isoBtns.forEach(o => o.setAttribute("aria-pressed", o === b)); restart(); };
+    isoRow.append(b); return b;
   });
-
-  // Pie chart
-  const pie = d3.pie().sort(null)([frac, 1 - frac]);
-  const arc = d3.arc().innerRadius(0).outerRadius(85);
-  const g = svg.append("g").attr("transform", "translate(450,150)");
-  g.selectAll("path").data(pie).join("path").attr("d", arc)
-    .attr("fill", (d, i) => i === 0 ? iso.pc : iso.dc).attr("stroke", "#0d1b2a").attr("stroke-width", 2);
-  svg.append("text").attr("x", 450).attr("y", 262).attr("text-anchor", "middle").attr("fill", iso.pc).attr("font-size", 16).attr("font-weight", 700)
-    .text(`${iso.parent} left: ${(frac * 100).toFixed(1)}%`);
-  svg.append("text").attr("x", 450).attr("y", 284).attr("text-anchor", "middle").attr("fill", "#bdc3c7").attr("font-size", 14)
-    .text(`${iso.daughter} made: ${((1 - frac) * 100).toFixed(1)}%`);
-  svg.append("text").attr("x", 160).attr("y", 296).attr("text-anchor", "middle").attr("fill", "#bdc3c7").attr("font-size", 12)
-    .text("● colored = parent atom   ● gray = daughter atom");
-  return svg.node();
-}
-```
-
-```{ojs}
-//| echo: false
-{
-  const hl = decayIso === "Carbon-14" ? 5730 : 4.5;
-  const unit = decayIso === "Carbon-14" ? "Years" : "Billions of years";
-  const curve = d3.range(0, 5.001, 0.02).map(n => ({t: n * hl, p: 100 * Math.pow(0.5, n)}));
-  const marks = [0, 1, 2, 3, 4, 5].map(n => ({t: n * hl, p: 100 * Math.pow(0.5, n), n}));
-  return Plot.plot({
-    title: `${decayIso} decay curve`,
-    subtitle: "The amount drops by half every half-life, so it never quite reaches zero",
-    width: width, height: 260, marginLeft: 50, marginBottom: 40,
-    x: {label: `${unit} →`, grid: true},
-    y: {label: "↑ Parent remaining (%)", domain: [0, 100], grid: true},
-    marks: [
-      Plot.line(curve, {x: "t", y: "p", stroke: "#00838f", strokeWidth: 2.5}),
-      Plot.dot(marks, {x: "t", y: "p", r: 4, fill: "#00838f", tip: true, title: d => `${d.n} half-lives: ${d.p}% left`}),
-      Plot.dot([{t: decayHalfLives * hl, p: 100 * Math.pow(0.5, decayHalfLives)}], {x: "t", y: "p", r: 8, fill: "#e74c3c", stroke: "white"})
-    ]
+  const nRow = html`<div class="ss-ctrl"><span class="ss-ctrl-label">Model atoms:</span></div>`;
+  const nBtns = [100, 200, 400].map(n => {
+    const b = ssKit.btn(String(n), {ghost: true, pressed: n === N});
+    b.onclick = () => { N = n; nBtns.forEach(o => o.setAttribute("aria-pressed", o === b)); restart(); };
+    nRow.append(b); return b;
   });
+  const runRow = html`<div class="ss-ctrl"></div>`;
+  runRow.append(bPlay, bStep, bReset);
+
+  reset(); report();
+  wrap.append(html`<span class="ss-model-tag">Model</span>`, isoRow, nRow, cv.canvas, runRow, readout,
+    html`<p class="ss-note"><b>This is a model, not measured data.</b> Each model atom has the same random chance of decaying in every moment, set so that half are expected to decay in one half-life (carbon-14: 5,730 years; uranium-238: 4.5 billion years). Run it twice and the jagged line changes, but it always stays close to the dashed theory curve. Real samples hold trillions of atoms, so their curves are almost perfectly smooth.</p>`);
+  return wrap;
 }
 ```
 
@@ -447,7 +777,7 @@ Rule: **years = number of half-lives × half-life**. (Your packet prints 13.4 bi
 //| echo: false
 buildQuiz("ss-decay-quiz", "☢️ Check Your Understanding — Half-Life", [
   {
-    q: "Set the slider to 2 half-lives. What percent of the parent isotope is left?",
+    q: "Run the decay model to 2 half-lives. About what percent of the parent isotope does the theory curve say is left?",
     options: ["0%", "25%", "50%", "75%"],
     correct: 1,
     explanation: "Each half-life cuts the amount in half: 100% → 50% → 25%. It does not run out after two half-lives."
@@ -664,35 +994,131 @@ Plot.plot({
 - **Effects on life:** asteroids may have **delivered water and key molecules** to Earth, or the impacts may have **disrupted** life that had already started.
 :::
 
-Slide through time to see what a **2 : 1 orbital resonance** means: the two planets line up again and again at the same spots, so their gravitational tugs add up.
+Press **Play** to see what a **2 : 1 orbital resonance** means: the two planets line up again and again at the **same spot**, so their gravitational tugs add up. Then switch to **today's real orbits** and compare where the line-ups land.
 
 ```{ojs}
 //| echo: false
-viewof resTime = Inputs.range([0, 3], {label: "Saturn orbits completed:", step: 0.01, value: 0})
-```
+ssResonance = {
+  // Two cases. "model" = the 2 : 1 resonance in the Late Heavy Bombardment hypothesis.
+  // "today" = the real orbital periods (NASA Planetary Fact Sheet): Jupiter 11.86 years, Saturn 29.46 years.
+  const modes = {
+    model: {label: "2 : 1 resonance (the hypothesis)", ratio: 2},
+    today: {label: "Today's real orbits", ratio: 29.46 / 11.86}
+  };
+  const SECS_PER_SATURN = 6, MAX_ORBITS = 6, RJ = 0.42, RS = 0.74;
+  let mode = "model", s = 0, marks = [], flash = 0;     // s = Saturn orbits completed
 
-```{ojs}
-//| echo: false
-{
-  const W = 360, H = 330, cx = 180, cy = 160;
-  const aJ = 2 * Math.PI * 2 * resTime - Math.PI / 2, aS = 2 * Math.PI * resTime - Math.PI / 2;
-  const jx = cx + 80 * Math.cos(aJ), jy = cy + 80 * Math.sin(aJ);
-  const sx = cx + 135 * Math.cos(aS), sy = cy + 135 * Math.sin(aS);
-  const lined = Math.abs(((2 * resTime) % 1) - (resTime % 1)) < 0.015 || Math.abs(((2 * resTime) % 1) - (resTime % 1)) > 0.985;
-  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`)
-    .style("width", "100%").style("height", "auto").style("max-width", "460px").style("display", "block").style("margin", "auto");
-  svg.append("rect").attr("width", W).attr("height", H).attr("rx", 12).attr("fill", "#0a0a2e");
-  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 80).attr("fill", "none").attr("stroke", "#e67e22").attr("stroke-opacity", 0.6);
-  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 135).attr("fill", "none").attr("stroke", "#f1c40f").attr("stroke-opacity", 0.6);
-  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 9).attr("fill", "#ffcc33");
-  if (lined) svg.append("line").attr("x1", cx).attr("y1", cy).attr("x2", sx).attr("y2", sy).attr("stroke", "#ff5252").attr("stroke-width", 2).attr("stroke-dasharray", "4,3");
-  svg.append("circle").attr("cx", jx).attr("cy", jy).attr("r", 11).attr("fill", "#e67e22");
-  svg.append("circle").attr("cx", sx).attr("cy", sy).attr("r", 9).attr("fill", "#f1c40f");
-  svg.append("text").attr("x", 12).attr("y", 22).attr("fill", "#e67e22").attr("font-size", 14).attr("font-weight", 700).text(`Jupiter orbits: ${(2 * resTime).toFixed(2)}`);
-  svg.append("text").attr("x", 12).attr("y", 42).attr("fill", "#f1c40f").attr("font-size", 14).attr("font-weight", 700).text(`Saturn orbits: ${resTime.toFixed(2)}`);
-  svg.append("text").attr("x", W / 2).attr("y", H - 12).attr("text-anchor", "middle").attr("fill", lined ? "#ff8a80" : "#9aa7bd").attr("font-size", 13).attr("font-weight", 700)
-    .text(lined ? "Lined up! Another gravitational tug in the same place." : "Not to scale. Drag to 1.00, 2.00, 3.00…");
-  return svg.node();
+  const wrap = html`<div class="ss-sim" style="max-width:480px;"></div>`;
+  const cv = ssKit.canvas("Animated model of Jupiter and Saturn orbiting the Sun. Red marks show every place where the two planets line up on the same side of the Sun.", w => w, () => draw());
+  const ctx = cv.ctx;
+  // fixed background stars
+  let seed = 77;
+  const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  const stars = d3.range(60).map(() => [rnd(), rnd(), 0.4 + rnd() * 0.9]);
+  const ang = turns => 2 * Math.PI * turns - Math.PI / 2;
+
+  function reset() { s = 0; flash = 1; marks = [{a: ang(0), n: 1}]; }
+  function addMark(a) {
+    const two = 2 * Math.PI;
+    const near = marks.find(m => { const d = Math.abs(((m.a - a) % two + two + Math.PI) % two - Math.PI); return d < 0.05; });
+    if (near) near.n++; else marks.push({a, n: 1});
+    flash = 1;
+  }
+
+  function draw() {
+    const S = cv.w;
+    if (!S) return;
+    const c = S / 2, rj = RJ * c, rs = RS * c, ratio = modes[mode].ratio;
+    ctx.fillStyle = "#0a0a2e"; ctx.fillRect(0, 0, S, S);
+    ctx.fillStyle = "rgba(255,255,255,.7)";
+    for (const [x, y, r] of stars) { ctx.beginPath(); ctx.arc(x * S, y * S, r, 0, 6.2832); ctx.fill(); }
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = "rgba(230,126,34,.6)"; ctx.beginPath(); ctx.arc(c, c, rj, 0, 6.2832); ctx.stroke();
+    ctx.strokeStyle = "rgba(241,196,15,.6)"; ctx.beginPath(); ctx.arc(c, c, rs, 0, 6.2832); ctx.stroke();
+    const aJ = ang(s * ratio), aS = ang(s);
+    // short trails
+    for (let i = 1; i <= 14; i++) {
+      const k = 1 - i / 15;
+      ctx.fillStyle = `rgba(230,126,34,${(0.5 * k).toFixed(2)})`;
+      ctx.beginPath(); ctx.arc(c + rj * Math.cos(aJ - i * 0.07), c + rj * Math.sin(aJ - i * 0.07), 5 * k + 1, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = `rgba(241,196,15,${(0.5 * k).toFixed(2)})`;
+      ctx.beginPath(); ctx.arc(c + rs * Math.cos(aS - i * 0.035), c + rs * Math.sin(aS - i * 0.035), 4 * k + 1, 0, 6.2832); ctx.fill();
+    }
+    // line-up marks, just outside Saturn's orbit
+    ctx.font = "700 12px Inter, system-ui, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    for (const m of marks) {
+      const mx = c + (rs + 14) * Math.cos(m.a), my = c + (rs + 14) * Math.sin(m.a);
+      ctx.beginPath(); ctx.arc(mx, my, 5 + Math.min(6, m.n), 0, 6.2832); ctx.fillStyle = "rgba(255,82,82,.35)"; ctx.fill();
+      ctx.beginPath(); ctx.arc(mx, my, 4, 0, 6.2832); ctx.fillStyle = "#ff5252"; ctx.fill();
+      if (m.n > 1) { ctx.fillStyle = "#ffcdd2"; ctx.fillText("×" + m.n, c + (rs + 34) * Math.cos(m.a) + (Math.abs(Math.cos(m.a)) < 0.3 ? 22 : 0), c + (rs + 14) * Math.sin(m.a)); }
+    }
+    // tug line while a line-up has just happened
+    if (flash > 0) {
+      const last = marks[marks.length - 1], a = flash === 1 && s === 0 ? ang(0) : aS;
+      ctx.strokeStyle = `rgba(255,82,82,${flash.toFixed(2)})`; ctx.lineWidth = 3; ctx.setLineDash([6, 4]);
+      ctx.beginPath(); ctx.moveTo(c, c); ctx.lineTo(c + (rs + 8) * Math.cos(a), c + (rs + 8) * Math.sin(a)); ctx.stroke(); ctx.setLineDash([]);
+    }
+    // Sun and planets
+    const g = ctx.createRadialGradient(c, c, 2, c, c, 22);
+    g.addColorStop(0, "#fff7c2"); g.addColorStop(0.45, "#ffcc33"); g.addColorStop(1, "rgba(255,204,51,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(c, c, 22, 0, 6.2832); ctx.fill();
+    const jx = c + rj * Math.cos(aJ), jy = c + rj * Math.sin(aJ), sx = c + rs * Math.cos(aS), sy = c + rs * Math.sin(aS);
+    ctx.fillStyle = "#e67e22"; ctx.beginPath(); ctx.arc(jx, jy, 11, 0, 6.2832); ctx.fill();
+    ctx.strokeStyle = "#f8e1a0"; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 15, 5, -0.4, 0, 6.2832); ctx.stroke();
+    ctx.fillStyle = "#f1c40f"; ctx.beginPath(); ctx.arc(sx, sy, 9, 0, 6.2832); ctx.fill();
+    // labels
+    ctx.textAlign = "left"; ctx.textBaseline = "alphabetic"; ctx.font = "700 13px Inter, system-ui, sans-serif";
+    ctx.fillStyle = "#ffa64d"; ctx.fillText(`Jupiter orbits: ${(s * ratio).toFixed(2)}`, 10, 20);
+    ctx.fillStyle = "#f1c40f"; ctx.fillText(`Saturn orbits: ${s.toFixed(2)}`, 10, 38);
+    ctx.fillStyle = "#ff8a80"; ctx.textAlign = "right"; ctx.fillText(`Line-ups: ${d3.sum(marks, m => m.n)}`, S - 10, 20);
+    ctx.fillStyle = "#9aa7bd"; ctx.font = "12px Inter, system-ui, sans-serif"; ctx.textAlign = "center";
+    ctx.fillText("Model. Orbit sizes and planet sizes are not to scale.", c, S - 10);
+  }
+
+  const readout = html`<div class="ss-readout" role="status" aria-live="off"></div>`;
+  function report() {
+    const ratio = modes[mode].ratio, total = d3.sum(marks, m => m.n), spots = marks.length;
+    const head = mode === "model"
+      ? `<b>2 : 1 resonance (model of the hypothesis).</b> Jupiter goes around exactly twice for each Saturn orbit.`
+      : `<b>Today (real periods).</b> Jupiter takes 11.86 years and Saturn 29.46 years, so Jupiter goes around about ${ratio.toFixed(2)} times for each Saturn orbit. Years passed: ${(s * 29.46).toFixed(0)}.`;
+    const tail = total < 2 ? "Press Play and watch where the red line-up marks land."
+      : spots === 1 ? `<b>${total} line-ups, all at the same spot.</b> Each gravitational tug lands in the same place, so the tugs add up.`
+      : `<b>${total} line-ups at ${spots} different spots.</b> The tugs are spread around the orbit, so they do not pile up in one place.`;
+    readout.innerHTML = `${head}<br>Jupiter orbits: ${(s * ratio).toFixed(2)} · Saturn orbits: ${s.toFixed(2)}<br>${tail}`;
+  }
+
+  const bPlay = ssKit.btn("▶ Play"), bReset = ssKit.btn("↺ Reset", {ghost: true});
+  const setPlayLabel = () => { bPlay.textContent = loop.playing ? "⏸ Pause" : "▶ Play"; };
+  const loop = ssKit.loop(cv.canvas, dt => {
+    const rel = modes[mode].ratio - 1;                 // how many times Jupiter laps Saturn per Saturn orbit
+    const before = Math.floor(s * rel + 1e-9);
+    s = Math.min(MAX_ORBITS, s + dt / SECS_PER_SATURN);
+    const after = Math.floor(s * rel + 1e-9);
+    for (let k = before + 1; k <= after; k++) addMark(ang(k / rel));
+    flash = Math.max(0, flash - dt / 0.8);
+    if (s >= MAX_ORBITS) { loop.pause(); setPlayLabel(); flash = 0; }
+    draw(); report();
+  }, invalidation);
+  bPlay.onclick = () => {
+    if (loop.playing) loop.pause(); else { if (s >= MAX_ORBITS - 1e-9) reset(); loop.play(); }
+    setPlayLabel();
+  };
+  const restart = () => { loop.pause(); reset(); setPlayLabel(); draw(); report(); };
+  bReset.onclick = restart;
+  const modeRow = html`<div class="ss-ctrl"></div>`;
+  const modeBtns = Object.keys(modes).map(k => {
+    const b = ssKit.btn(modes[k].label, {ghost: true, pressed: k === mode});
+    b.onclick = () => { mode = k; modeBtns.forEach(o => o.setAttribute("aria-pressed", o === b)); restart(); };
+    modeRow.append(b); return b;
+  });
+  const runRow = html`<div class="ss-ctrl"></div>`;
+  runRow.append(bPlay, bReset);
+  invalidation.then(() => cv.ro.disconnect());
+
+  reset(); report();
+  wrap.append(html`<span class="ss-model-tag">Model of a hypothesis</span>`, modeRow, cv.canvas, runRow, readout,
+    html`<p class="ss-note"><b>This is a model, not a recording.</b> It only shows the timing of the two orbits as circles. The 2 : 1 case is what one computer model says happened about 4 billion years ago. The "today" case uses the planets' real orbital periods (NASA Planetary Fact Sheet).</p>`);
+  return wrap;
 }
 ```
 
@@ -898,7 +1324,7 @@ Water can **dissolve** a huge range of substances, including gases like **carbon
 
 ### 🎛️ Model: Which craters survive?
 
-This simplified model drops impacts onto a patch of surface over **4.5 billion years**: lots early (including the Late Heavy Bombardment), fewer later. Pick a world and move through time. Craters fade as **weathering, erosion, plate tectonics, and volcanism** erase them.
+This simplified model drops impacts onto a patch of surface over **4.5 billion years**: lots early (including the Late Heavy Bombardment), fewer later. Press **Play** to watch the **same impacts** land on three worlds side by side. Craters fade as **weathering, erosion, plate tectonics, and volcanism** erase them.
 
 ```{ojs}
 //| echo: false
@@ -928,60 +1354,133 @@ ssWorlds = ({
 
 ```{ojs}
 //| echo: false
-viewof craterWorld = Inputs.radio(Object.keys(ssWorlds), {label: "World:", value: "Moon: no liquid water, no plate tectonics"})
-```
-
-```{ojs}
-//| echo: false
-viewof craterTime = Inputs.range([0, 4.5], {label: "Billion years since formation:", step: 0.05, value: 4.5})
-```
-
-```{ojs}
-//| echo: false
 ssSurvive = (world, c, T) => c.t <= T && c.u < Math.exp(-(world.K(T) - world.K(c.t)))
 ```
 
 ```{ojs}
 //| echo: false
-{
-  const world = ssWorlds[craterWorld];
-  const visible = ssCraterSim.filter(c => ssSurvive(world, c, craterTime));
-  const W = 400, H = 400;
-  const wrap = d3.create("div").style("display", "flex").style("flex-wrap", "wrap").style("gap", "12px").style("align-items", "flex-start");
-  const svg = wrap.append("svg").attr("viewBox", `0 0 ${W} ${H}`)
-    .style("width", "100%").style("max-width", "380px").style("height", "auto").style("border-radius", "12px");
-  svg.append("rect").attr("width", W).attr("height", H).attr("fill", world.short === "Earth" ? "#5d7a3a" : world.short === "Mars" ? "#b5653b" : "#8f8f8f");
-  svg.selectAll("circle").data(visible).join("circle")
-    .attr("cx", d => d.x * W).attr("cy", d => d.y * H).attr("r", d => d.r * W)
-    .attr("fill", "rgba(0,0,0,0.25)").attr("stroke", "rgba(255,255,255,0.55)").attr("stroke-width", 1);
-  const gyrAgo = (4.5 - craterTime).toFixed(2);
-  wrap.append("div").style("flex", "1 1 200px").style("font-size", "1.05em").html(
-    `<div style="font-size:2.2em;font-weight:800;color:${world.color};">${visible.length}</div>` +
-    `<div>craters visible on this patch</div>` +
-    `<div style="margin-top:8px;color:#64748b;">${ssCraterSim.filter(c => c.t <= craterTime).length} impacts so far · ${gyrAgo} billion years ago</div>` +
-    `<div style="margin-top:8px;font-size:.85em;color:#64748b;">Simplified model, not to scale. Real crater counts depend on size, age, and how hard scientists have looked.</div>`);
-  return wrap.node();
-}
-```
+ssCraterModel = {
+  const TMAX = 4.5, SECS = 30;                       // the whole 4.5 billion years plays in 30 seconds
+  const order = ["Moon", "Earth", "Mars"];
+  const look = {
+    Moon: {bg: "#8f8f8f", line: "#cfd8dc", desc: "No liquid water, no plate tectonics"},
+    Earth: {bg: "#5d7a3a", line: "#4fc3f7", desc: "Liquid water + plate tectonics + volcanism"},
+    Mars: {bg: "#b5653b", line: "#ff8a65", desc: "Some water and volcanism early, then almost none"}
+  };
+  const worlds = order.map(short => ({short, ...look[short], w: Object.values(ssWorlds).find(d => d.short === short)}));
+  // visible-crater counts on a time grid, for the chart
+  const grid = d3.range(0, TMAX + 1e-9, 0.05);
+  worlds.forEach(o => { o.series = grid.map(T => ssCraterSim.filter(c => ssSurvive(o.w, c, T)).length); });
+  const yMax = d3.max(worlds, o => d3.max(o.series));
+  const countAt = (o, T) => ssCraterSim.reduce((n, c) => n + (ssSurvive(o.w, c, T) ? 1 : 0), 0);
+  let T = 0;
 
-```{ojs}
-//| echo: false
-{
-  const times = d3.range(0, 4.501, 0.1);
-  const rows = Object.entries(ssWorlds).flatMap(([name, w]) =>
-    times.map(T => ({world: w.short, T, n: ssCraterSim.filter(c => ssSurvive(w, c, T)).length})));
-  return Plot.plot({
-    title: "Visible craters over time in the model",
-    width: width, height: 240, marginLeft: 46, marginBottom: 40,
-    x: {label: "Billion years since the solar system formed →", domain: [0, 4.5], grid: true},
-    y: {label: "↑ Visible craters", grid: true},
-    color: {domain: ["Moon", "Mars", "Earth"], range: ["#7f8c8d", "#e74c3c", "#2e86de"], legend: true},
-    marks: [
-      Plot.rectX([{a: 0.45, b: 0.75}], {x1: "a", x2: "b", fill: "#e67e22", fillOpacity: 0.12}),
-      Plot.line(rows, {x: "T", y: "n", stroke: "world", strokeWidth: 2.5}),
-      Plot.ruleX([craterTime], {stroke: "#333", strokeDasharray: "4,3"})
-    ]
+  const wrap = html`<div class="ss-sim"></div>`;
+  const gridEl = html`<div class="ss-worlds"></div>`;
+  worlds.forEach(o => {
+    o.cv = ssKit.canvas(`Model patch of ${o.short}'s surface. Craters appear as impacts land. ${o.desc}.`, w => w, () => drawAll());
+    o.countEl = html`<div class="ss-world-count" style="color:${o.short === "Moon" ? "inherit" : o.line};"></div>`;
+    gridEl.append(html`<div><div class="ss-world-name">${o.short}</div><div class="ss-world-desc">${o.desc}</div>${o.cv.canvas}${o.countEl}</div>`);
   });
+  const side = html`<div class="ss-readout ss-world-full ss-world-side" role="status" aria-live="off" style="align-self:center;"></div>`;
+  gridEl.append(side);
+  const chart = ssKit.canvas("Line graph of visible craters over time in the model for the Moon, Earth and Mars. The Moon's line keeps rising, Mars levels off below it, and Earth stays close to zero.", w => 230, () => drawAll());
+
+  function drawPatch(o) {
+    const ctx = o.cv.ctx, S = o.cv.w;
+    if (!S) return;
+    ctx.fillStyle = o.bg; ctx.fillRect(0, 0, S, S);
+    for (const c of ssCraterSim) {
+      if (c.t > T) break;                             // sorted by impact time
+      const sv = Math.exp(-(o.w.K(T) - o.w.K(c.t)));  // chance this crater has survived so far
+      const x = c.x * S, y = c.y * S, r = Math.max(1.2, c.r * S);
+      if (c.u < sv) {
+        const a = sv >= 1 ? 1 : Math.min(1, (sv - c.u) / 0.12 + 0.15);   // craters fade as they wear down
+        ctx.globalAlpha = a;
+        ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832);
+        ctx.fillStyle = "rgba(0,0,0,0.28)"; ctx.fill();
+        ctx.strokeStyle = "rgba(255,255,255,0.6)"; ctx.lineWidth = 1; ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+      const age = T - c.t;
+      if (flashOn && age < 0.05) {                    // impact flash
+        const k = age / 0.05;
+        ctx.beginPath(); ctx.arc(x, y, r + 2 + 8 * k, 0, 6.2832);
+        ctx.strokeStyle = `rgba(255,236,150,${(1 - k).toFixed(2)})`; ctx.lineWidth = 2; ctx.stroke();
+      }
+    }
+  }
+
+  function drawChart() {
+    const ctx = chart.ctx, W = chart.w, H = chart.h;
+    if (!W) return;
+    ctx.fillStyle = "#0d1b2a"; ctx.fillRect(0, 0, W, H);
+    const x0 = 44, y0 = 30, cw = W - x0 - 14, ch = H - y0 - 44;
+    const X = t => x0 + t / TMAX * cw, Y = n => y0 + (1 - n / yMax) * ch;
+    ctx.fillStyle = "rgba(230,126,34,.22)"; ctx.fillRect(X(0.45), y0, X(0.75) - X(0.45), ch);
+    ctx.font = "12px Inter, system-ui, sans-serif"; ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgba(255,255,255,.14)"; ctx.fillStyle = "#b8c4d4";
+    ctx.textAlign = "right"; ctx.textBaseline = "middle";
+    for (let n = 0; n <= yMax; n += 300) { ctx.beginPath(); ctx.moveTo(x0, Y(n)); ctx.lineTo(x0 + cw, Y(n)); ctx.stroke(); ctx.fillText(n, x0 - 6, Y(n)); }
+    ctx.textAlign = "center"; ctx.textBaseline = "top";
+    for (let t = 0; t <= TMAX; t += (W < 420 ? 1 : 0.5)) { ctx.beginPath(); ctx.moveTo(X(t), y0); ctx.lineTo(X(t), y0 + ch); ctx.stroke(); ctx.fillText(t, X(t), y0 + ch + 5); }
+    ctx.fillStyle = "#e6edf5"; ctx.font = "600 12px Inter, system-ui, sans-serif";
+    ctx.fillText("Billion years since the solar system formed", x0 + cw / 2, y0 + ch + 24);
+    ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+    ctx.fillText("Visible craters in the model", 8, 18);
+    ctx.fillStyle = "#ffb74d"; ctx.font = "600 11px Inter, system-ui, sans-serif";
+    ctx.fillText("LHB", X(0.45) + 3, y0 + 12);
+    const iMax = Math.min(grid.length - 1, Math.floor(T / 0.05 + 1e-6));
+    worlds.forEach(o => {
+      ctx.strokeStyle = o.line; ctx.lineWidth = 2.5; ctx.lineJoin = "round"; ctx.beginPath();
+      for (let i = 0; i <= iMax; i++) i ? ctx.lineTo(X(grid[i]), Y(o.series[i])) : ctx.moveTo(X(grid[i]), Y(o.series[i]));
+      const now = countAt(o, T);
+      ctx.lineTo(X(T), Y(now)); ctx.stroke();
+      ctx.beginPath(); ctx.arc(X(T), Y(now), 4, 0, 6.2832); ctx.fillStyle = o.line; ctx.fill();
+    });
+    // legend
+    ctx.font = "700 12px Inter, system-ui, sans-serif"; ctx.textAlign = "right";
+    let lx = W - 12;
+    [...worlds].reverse().forEach(o => { ctx.fillStyle = o.line; ctx.fillText("● " + o.short, lx, 18); lx -= ctx.measureText("● " + o.short).width + 12; });
+    ctx.textAlign = "left";
+  }
+
+  let flashOn = true;
+  function drawAll() {
+    worlds.forEach(drawPatch);
+    drawChart();
+    worlds.forEach(o => { o.countEl.innerHTML = `${countAt(o, T)} <small>craters visible</small>`; });
+    const ago = TMAX - T;
+    const era = T < 0.45 ? "Early bombardment: leftover debris from planet formation is still falling."
+      : T < 0.75 ? "<b>Late Heavy Bombardment:</b> a burst of extra impacts."
+      : T < TMAX - 1e-6 ? "Calmer solar system: only a slow trickle of impacts." : "<b>Today.</b> Compare the three worlds.";
+    side.innerHTML = `<b>${ago < 0.005 ? "Today" : ago.toFixed(2) + " billion years ago"}</b> (${T.toFixed(2)} billion years after formation)<br>` +
+      `Impacts so far on <b>each</b> world: ${ssCraterSim.filter(c => c.t <= T).length}<br>${era}`;
+    slider.value = T;
+  }
+
+  const slider = html`<input class="ss-range" type="range" min="0" max="${TMAX}" step="0.05" value="0" aria-label="Billion years since the solar system formed">`;
+  const bPlay = ssKit.btn("▶ Play"), bReset = ssKit.btn("↺ Reset", {ghost: true});
+  const setPlayLabel = () => { bPlay.textContent = loop.playing ? "⏸ Pause" : "▶ Play"; };
+  const loop = ssKit.loop(wrap, dt => {
+    T = Math.min(TMAX, T + dt * TMAX / SECS);
+    if (T >= TMAX) { loop.pause(); setPlayLabel(); }
+    drawAll();
+  }, invalidation);
+  bPlay.onclick = () => {
+    if (loop.playing) loop.pause(); else { if (T >= TMAX - 1e-6) T = 0; loop.play(); }
+    setPlayLabel();
+  };
+  bReset.onclick = () => { loop.pause(); T = 0; setPlayLabel(); drawAll(); };
+  slider.oninput = () => { loop.pause(); setPlayLabel(); T = +slider.value; flashOn = false; drawAll(); flashOn = true; };
+  const ctrl = html`<div class="ss-ctrl"></div>`;
+  ctrl.append(bPlay, bReset, html`<span class="ss-ctrl-label">Time:</span>`, slider);
+  invalidation.then(() => { worlds.forEach(o => o.cv.ro.disconnect()); chart.ro.disconnect(); });
+
+  wrap.append(html`<span class="ss-model-tag">Model</span>`, ctrl, gridEl, html`<div style="margin-top:10px;"></div>`, chart.canvas,
+    html`<p class="ss-note"><b>This is a simplified model, not real crater data.</b> The same ${ssCraterSim.length} model impacts land on all three patches at the same times. The only difference is how fast each world erases them. Not to scale: real crater counts also depend on crater size, age, and how hard scientists have looked.</p>`);
+  drawAll();
+  return wrap;
 }
 ```
 
@@ -1009,7 +1508,7 @@ buildQuiz("ss-water-quiz", "💧 Check Your Understanding — The Role of Water"
     explanation: "CO₂ + H₂O ⇌ H₂CO₃. This weak acid makes rain slightly acidic and slowly dissolves rock: chemical weathering."
   },
   {
-    q: "In the crater model, set the world to Earth and the time to 4.5. Why are so few craters left compared with the Moon?",
+    q: "Run the crater model to the end (today). Why does Earth have so few craters left compared with the Moon?",
     options: ["Earth was hit less often", "Water-driven weathering and erosion, plus plate tectonics and volcanism, erase old craters on Earth", "Earth's craters are too small to see", "The model only counts craters on the Moon"],
     correct: 1,
     explanation: "All three worlds get the same impacts in the model. Only the erasing processes differ, which is the key idea behind the real crater numbers (128 vs. 300,000 vs. 1,000,000)."

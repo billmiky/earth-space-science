@@ -31,6 +31,33 @@ execute:
 @keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
 h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #00a8a5 !important; }
+/* co- : shared styles for this chapter's interactives (own dark background, so they read the same in light and dark mode) */
+.co-card { background: #0f1b2d; color: #e9f0fa; border-radius: 14px; padding: 14px; margin: 14px 0 20px; box-shadow: 0 6px 20px rgba(0,0,0,.2); font-family: Inter, system-ui, sans-serif; max-width: 100%; overflow: hidden; }
+.co-card svg, .co-card canvas { max-width: 100%; display: block; }
+.co-card svg text { font-family: Inter, system-ui, sans-serif; }
+.co-title { font-weight: 800; font-size: 1.08em; margin: 0 0 2px; color: #fff; }
+.co-sub { font-size: .86em; color: #b9c6d8; margin: 0 0 10px; line-height: 1.4; }
+.co-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; }
+.co-btn { min-height: 44px; min-width: 44px; padding: 8px 14px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,.3); background: rgba(255,255,255,.08); color: #e9f0fa; font-weight: 700; font-size: .9em; cursor: pointer; line-height: 1.2; }
+.co-btn:hover { background: rgba(255,255,255,.17); }
+.co-btn[aria-pressed="true"] { background: #19c2b8; border-color: #19c2b8; color: #04222a; }
+.co-btn.co-primary { background: #ffb84d; border-color: #ffb84d; color: #2a1a00; }
+.co-btn:disabled { opacity: .45; cursor: default; }
+.co-select, .co-input { min-height: 44px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,.3); background: #1b2a42; color: #e9f0fa; padding: 6px 10px; font-size: .95em; max-width: 100%; }
+.co-select { width: 100%; }
+.co-label { display: block; font-size: .82em; font-weight: 700; color: #b9c6d8; margin: 8px 0 4px; }
+.co-read { background: rgba(255,255,255,.07); border-radius: 10px; padding: 10px 12px; font-size: .93em; line-height: 1.45; margin-top: 8px; }
+.co-read ul { margin: 4px 0 8px; padding-left: 18px; }
+.co-stat { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.co-stat > div { flex: 1 1 130px; background: rgba(255,255,255,.07); border-radius: 10px; padding: 8px 10px; }
+.co-stat b { display: block; font-size: 1.15em; color: #fff; }
+.co-stat span { font-size: .78em; color: #b9c6d8; }
+.co-model { display: inline-block; background: #ffd166; color: #2a1a00; font-weight: 800; font-size: .7em; padding: 2px 8px; border-radius: 20px; letter-spacing: .04em; text-transform: uppercase; vertical-align: middle; }
+.co-range { width: 100%; min-height: 44px; accent-color: #19c2b8; touch-action: pan-y; margin: 0; }
+.co-check { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: .9em; font-weight: 600; cursor: pointer; padding-right: 8px; }
+.co-check input { flex: 0 0 22px; width: 22px; height: 22px; accent-color: #19c2b8; }
+.co-src { font-size: .78em; color: #9fb0c6; margin: 8px 0 0; line-height: 1.4; }
+.co-tl-jump { display: block; width: 100%; min-height: 44px; text-align: left; background: none; border: 0; color: #fff; font-weight: 700; padding: 6px 0 2px; cursor: pointer; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; font-size: 1em; }
 </style>
 ```
 
@@ -61,6 +88,56 @@ This chapter follows the same steps as your **Coevolution of Earth and Life 5E**
 //| echo: false
 Plot = require("@observablehq/plot")
 d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+// Shared helpers for this chapter's interactives (all names start with co)
+coKit = {
+  const reduced = () => !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const el = (tag, cls, inner) => { const e = document.createElement(tag); if (cls) e.className = cls; if (inner != null) e.innerHTML = inner; return e; };
+  const btn = (label, cls) => { const b = el("button", "co-btn" + (cls ? " " + cls : ""), label); b.type = "button"; return b; };
+  // Tell the caller when the node scrolls on or off screen (used to pause animations)
+  const watch = (node, cb) => {
+    if (!("IntersectionObserver" in window)) { cb(true); return {stop() {}}; }
+    const io = new IntersectionObserver(es => cb(es[es.length - 1].isIntersecting), {threshold: 0.05});
+    io.observe(node);
+    return {stop: () => io.disconnect()};
+  };
+  // Call cb(width) whenever the node's width changes
+  const onResize = (node, cb) => {
+    let last = -1;
+    const fire = () => { const w = Math.round(node.clientWidth); if (w > 0 && w !== last) { last = w; cb(w); } };
+    if (!("ResizeObserver" in window)) { setTimeout(fire, 0); return {stop() {}}; }
+    const ro = new ResizeObserver(fire);
+    ro.observe(node);
+    return {stop: () => ro.disconnect()};
+  };
+  const fmtGa = ga => ga >= 1 ? `${+ga.toFixed(2)} billion years ago`
+    : ga >= 0.001 ? `${Math.round(ga * 1000)} million years ago`
+    : ga > 0 ? `about ${Math.round(ga * 1e9).toLocaleString()} years ago` : "today";
+  const fmtYears = y => y >= 1e9 ? `${+(y / 1e9).toPrecision(3)} billion` : y >= 1e6 ? `${+(y / 1e6).toPrecision(3)} million` : Math.round(y).toLocaleString();
+  // Read a value off the same smooth (monotone) curve that d3 draws through the points.
+  // pts = [[x, y], ...] with x increasing. Returns f(x).
+  const curveFn = pts => {
+    const segs = []; let cur = null;
+    const ctx = {
+      moveTo(x, y) { cur = [x, y]; },
+      lineTo(x, y) { segs.push([cur[0], cur[1], cur[1] + (y - cur[1]) / 3, cur[1] + 2 * (y - cur[1]) / 3, x, y]); cur = [x, y]; },
+      bezierCurveTo(x1, y1, x2, y2, x, y) { segs.push([cur[0], cur[1], y1, y2, x, y]); cur = [x, y]; },
+      closePath() {}
+    };
+    d3.line().curve(d3.curveMonotoneX).context(ctx)(pts);
+    return x => {
+      if (x <= pts[0][0]) return pts[0][1];
+      if (x >= pts[pts.length - 1][0]) return pts[pts.length - 1][1];
+      const s = segs.find(g => x >= g[0] && x <= g[4]);
+      const t = (x - s[0]) / (s[4] - s[0]), u = 1 - t;
+      return u * u * u * s[1] + 3 * u * u * t * s[2] + 3 * u * t * t * s[3] + t * t * t * s[5];
+    };
+  };
+  return {reduced, el, btn, watch, onResize, fmtGa, fmtYears, curveFn};
+}
 ```
 
 ```{ojs}
@@ -265,7 +342,7 @@ The fossil record formed over billions of years as layers of sediment were depos
 
 ## Part 1: Reconstructing Earth's Geological and Evolutionary History
 
-In class, you sort event cards onto a timeline from 4 billion years ago to now: **life on Earth** on top, **other Earth's systems** on the bottom. Here is a digital version. Hover or tap a dot for details, then pick an event below to see which events it may be connected to.
+In class, you sort event cards onto a timeline from 4 billion years ago to now: **life on Earth** on top, **other Earth's systems** on the bottom. Here is a digital version. **Tap a dot** (or use the event menu) to read its card. Arrows point to the events it may be connected to. Press **Play through time** to watch the events appear in order, and look for changes in Earth's systems that come just before changes in life.
 
 ```{ojs}
 //| echo: false
@@ -325,58 +402,224 @@ timelineLinks = [
 
 ```{ojs}
 //| echo: false
-{
-  const wrap = d3.create("div");
-  wrap.append(() => Plot.plot({
-    title: "Earth's geological and evolutionary history",
-    subtitle: "Top row: life on Earth. Bottom row: other Earth's systems.",
-    width: width,
-    height: 240,
-    marginLeft: 16,
-    marginRight: 16,
-    marginBottom: 40,
-    x: {label: "Billion years ago (Ga)", domain: [4.6, 0], grid: true},
-    fy: {label: null, axis: null, domain: ["Life on Earth", "Other Earth's systems"]},
-    facet: {label: null},
-    color: {domain: ["Life on Earth", "Other Earth's systems"], range: ["#00a8a5", "#b8721a"]},
-    marks: [
-      Plot.frame({strokeOpacity: 0.2}),
-      Plot.text(["Life on Earth", "Other Earth's systems"], {fy: d => d, text: d => d, frameAnchor: "top-left", dx: 6, dy: 6, fontWeight: "bold", fontSize: 12}),
-      Plot.dot(timelineEvents, Plot.dodgeY({anchor: "bottom", x: "ga", fy: "sys", fill: "sys", r: 5, stroke: "#333", strokeWidth: 0.5, tip: true,
-        title: d => `${d.ga >= 1 ? d.ga + " billion" : Math.round(d.ga * 1000) + " million"} years ago\n${d.event}`}))
-    ]
-  }));
-  return wrap.node();
-}
-```
+// Interactive deep-time timeline: two linked tracks, tap an event, zoom, play through time.
+coTimeline = {
+  const K = coKit;
+  const LIFE = "Life on Earth";
+  const isLife = d => d.sys === LIFE;
+  const evs = [...timelineEvents].sort((a, b) => b.ga - a.ga || (isLife(a) ? 1 : 0) - (isLife(b) ? 1 : 0));
+  const byId = Object.fromEntries(evs.map(d => [d.id, d]));
+  const order = Object.fromEntries(evs.map((d, i) => [d.id, i]));
+  const views = [{label: "All 4.6 billion years", max: 4.6}, {label: "Last 1 billion years", max: 1}, {label: "Last 600 million years", max: 0.6}];
+  const C = {life: "#19c2b8", earth: "#f0a43a", cause: "#ffd166", effect: "#8fd3ff"};
+  const col = d => isLife(d) ? C.life : C.earth;
+  let sel = "e7", view = views[0], shown = evs.length, allLinks = false, timer = null, W = 0;
 
-```{ojs}
-//| echo: false
-viewof tlPick = Inputs.select(
-  [...timelineEvents].sort((a, b) => b.ga - a.ga),
-  {label: "Pick an event:", format: d => `${d.ga >= 1 ? d.ga + " Ga" : Math.round(d.ga * 1000) + " Ma"}: ${d.event.length > 60 ? d.event.slice(0, 58) + "…" : d.event}`,
-   value: timelineEvents.find(d => d.id === "e7")}
-)
-```
+  const wrap = K.el("div", "co-card");
+  const root = d3.select(wrap);
+  root.append("div").attr("class", "co-title").text("Earth's geological and evolutionary history");
+  root.append("div").attr("class", "co-sub").html(`<span style="color:${C.life}">●</span> Top: <strong>life on Earth</strong>. <span style="color:${C.earth}">●</span> Bottom: <strong>other Earth's systems</strong>. Tap a dot to read its card. Arrows show events that may be connected.`);
 
-```{ojs}
-//| echo: false
-{
-  const ev = tlPick;
-  const byId = Object.fromEntries(timelineEvents.map(d => [d.id, d]));
-  const causes = timelineLinks.filter(l => l.to === ev.id);
-  const effects = timelineLinks.filter(l => l.from === ev.id);
-  const age = ev.ga >= 1 ? `${ev.ga} billion years ago` : ev.ga >= 0.001 ? `${Math.round(ev.ga * 1000)} million years ago` : "about 200,000 years ago";
-  const item = (l, other) => `<li style="margin:6px 0;"><strong>${byId[other].event}</strong> <span style="opacity:.75;">(${byId[other].sys})</span><br><span style="font-size:.92em;">${l.why}</span></li>`;
-  const box = d3.create("div").style("padding", "14px 18px").style("border-radius", "12px")
-    .style("background", "rgba(0,168,165,0.10)").style("border-left", "5px solid #00a8a5").style("margin-bottom", "16px");
-  box.html(`<div style="font-weight:800;font-size:1.05em;">${ev.event}</div>
-    <div style="opacity:.8;margin-bottom:8px;">${age} · ${ev.sys}</div>
-    <div style="font-weight:700;">⬅️ May have been caused or helped by:</div>
-    ${causes.length ? `<ul style="margin:4px 0 10px;">${causes.map(l => item(l, l.from)).join("")}</ul>` : `<p style="margin:4px 0 10px;opacity:.8;">No link drawn on this timeline.</p>`}
-    <div style="font-weight:700;">➡️ May have led to:</div>
-    ${effects.length ? `<ul style="margin:4px 0 0;">${effects.map(l => item(l, l.to)).join("")}</ul>` : `<p style="margin:4px 0 0;opacity:.8;">No link drawn on this timeline.</p>`}`);
-  return box.node();
+  const viewRow = root.append("div").attr("class", "co-row").attr("role", "group").attr("aria-label", "Zoom the timeline");
+  const viewBtns = views.map(v => {
+    const b = K.btn(v.label);
+    b.onclick = () => { view = v; update(true); };
+    viewRow.node().append(b);
+    return b;
+  });
+
+  const svg = root.append("svg").attr("role", "img").style("width", "100%").style("touch-action", "pan-y")
+    .attr("aria-label", `Timeline from 4.6 billion years ago to today with two tracks. Top track: ${evs.filter(isLife).length} events in the history of life. Bottom track: ${evs.filter(d => !isLife(d)).length} events in Earth's other systems. Most life events are crowded into the last 600 million years. Use the event menu below the timeline to read every event.`);
+  const defs = svg.append("defs");
+  const clipId = "co-tl-clip";
+  const clipRect = defs.append("clipPath").attr("id", clipId).append("rect");
+  for (const [k, c] of [["cause", C.cause], ["effect", C.effect], ["all", "#9fb0c6"]]) {
+    defs.append("marker").attr("id", `co-tl-arrow-${k}`).attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
+      .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto")
+      .append("path").attr("d", "M0,0 L10,5 L0,10 Z").attr("fill", c);
+  }
+  const gAxis = svg.append("g");
+  const gClip = svg.append("g").attr("clip-path", `url(#${clipId})`);
+  const gCursor = gClip.append("line").attr("stroke", "rgba(255,255,255,.35)").attr("stroke-dasharray", "3,4");
+  const gLinks = gClip.append("g").attr("fill", "none");
+  const gDots = gClip.append("g");
+  const dots = gDots.selectAll("g").data(evs, d => d.id).join("g").style("cursor", "pointer")
+    .on("click", (e, d) => { stop(); pick(d.id); });
+  dots.append("circle").attr("class", "co-tl-hit").attr("fill", "transparent");
+  dots.append("circle").attr("class", "co-tl-dot").attr("fill", col).attr("r", 0);
+
+  const ctl = root.append("div").attr("class", "co-row");
+  const prevBtn = K.btn("◀ Earlier"), nextBtn = K.btn("Later ▶"), playBtn = K.btn("▶ Play through time", "co-primary"), linkBtn = K.btn("Show all links");
+  prevBtn.setAttribute("aria-label", "Go to the earlier event");
+  nextBtn.setAttribute("aria-label", "Go to the later event");
+  linkBtn.setAttribute("aria-pressed", "false");
+  ctl.node().append(prevBtn, nextBtn, playBtn, linkBtn);
+  prevBtn.onclick = () => { stop(); pick(evs[Math.max(0, order[sel] - 1)].id); };
+  nextBtn.onclick = () => { stop(); pick(evs[Math.min(evs.length - 1, order[sel] + 1)].id); };
+  playBtn.onclick = () => timer ? stop() : play();
+  linkBtn.onclick = () => { allLinks = !allLinks; linkBtn.setAttribute("aria-pressed", String(allLinks)); update(false); };
+
+  root.append("label").attr("class", "co-label").attr("for", "co-tl-menu").text("Event menu:");
+  const menu = root.append("select").attr("class", "co-select").attr("id", "co-tl-menu");
+  menu.selectAll("option").data(evs).join("option").attr("value", d => d.id)
+    .text(d => `${d.ga >= 1 ? d.ga + " Ga" : d.ga >= 0.001 ? Math.round(d.ga * 1000) + " Ma" : "200,000 yr"}: ${d.event.length > 60 ? d.event.slice(0, 58) + "…" : d.event}`);
+  menu.on("change", function() { stop(); pick(this.value); });
+
+  const card = root.append("div").attr("class", "co-read");
+  card.on("click", e => { const b = e.target.closest(".co-tl-jump"); if (b) { stop(); pick(b.dataset.id); } });
+  root.append("p").attr("class", "co-src").text("Events and dates: the event cards and readings in your packet (New Visions ESS Unit 2, Coevolution of Earth and Life). Arrows are scientists' proposed connections, not proof.");
+
+  function pick(id) {
+    sel = id;
+    if (!timer) shown = evs.length;
+    const d = byId[id];
+    // If the event is outside the zoomed window, zoom out so it can be seen
+    if (d.ga > view.max + 1e-9) { view = views.find(v => d.ga <= v.max + 1e-9) || views[0]; update(true); }
+    else update(false);
+  }
+  function play() {
+    if (shown >= evs.length) shown = 0;
+    playBtn.innerHTML = "⏸ Pause";
+    tick();
+    timer = setInterval(tick, 1100);
+  }
+  function tick() {
+    if (shown >= evs.length) return stop();
+    shown++;
+    sel = evs[shown - 1].id;
+    if (byId[sel].ga > view.max + 1e-9) view = views[0];
+    update(false);
+    if (shown >= evs.length) stop();
+  }
+  function stop() {
+    if (timer) { clearInterval(timer); timer = null; }
+    playBtn.innerHTML = shown >= evs.length ? "▶ Play through time" : "▶ Keep playing";
+  }
+
+  function layout(v) {
+    const r = W < 520 ? 8 : 9, step = 2 * r + 3;
+    const x = d3.scaleLinear().domain([v.max, 0]).range([12 + r, W - 12 - r]);
+    const pos = {}, maxK = {life: 0, earth: 0};
+    for (const life of [true, false]) {
+      const placed = [];
+      for (const d of evs.filter(e => isLife(e) === life)) {
+        const px = x(d.ga); let k = 0;
+        if (d.ga <= v.max + 1e-9) {
+          while (placed.some(p => p.k === k && Math.abs(p.x - px) < step)) k++;
+          placed.push({x: px, k});
+          const key = life ? "life" : "earth";
+          maxK[key] = Math.max(maxK[key], k);
+        }
+        pos[d.id] = {x: px, k};
+      }
+    }
+    return {r, step, x, pos, maxK};
+  }
+
+  function update(animate) {
+    if (!W) return;
+    const dur = animate && !K.reduced() ? 700 : 0;
+    const full = layout(views[0]), L = layout(view), r = L.r, step = L.step;
+    const lifeBase = 24 + (full.maxK.life + 1) * step + 4;
+    const strip = 26, earthTop = lifeBase + strip;
+    const H = earthTop + (full.maxK.earth + 1) * step + 8 + 26;
+    svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H);
+    clipRect.attr("x", 2).attr("y", 0).attr("width", W - 4).attr("height", H);
+    const P = {};
+    for (const d of evs) {
+      const p = L.pos[d.id];
+      P[d.id] = {x: p.x, y: isLife(d) ? lifeBase - r - 4 - p.k * step : earthTop + r + 4 + p.k * step};
+    }
+    viewBtns.forEach((b, i) => b.setAttribute("aria-pressed", String(views[i] === view)));
+
+    // Axis strip between the two tracks
+    gAxis.selectAll("*").remove();
+    gAxis.append("rect").attr("x", 0).attr("y", lifeBase).attr("width", W).attr("height", strip).attr("fill", "rgba(255,255,255,.08)");
+    const inMa = view.max <= 1;
+    const ticks = L.x.ticks(W < 520 ? 5 : 9);
+    for (const t of ticks) {
+      const tx = L.x(t);
+      gAxis.append("line").attr("x1", tx).attr("x2", tx).attr("y1", 20).attr("y2", H - 24).attr("stroke", "rgba(255,255,255,.08)");
+      gAxis.append("text").attr("x", tx).attr("y", lifeBase + strip / 2 + 4).attr("text-anchor", t === 0 ? "end" : "middle")
+        .attr("fill", "#dbe5f2").attr("font-size", 11).attr("font-weight", 600)
+        .text(t === 0 ? "today" : inMa ? Math.round(t * 1000) : t);
+    }
+    gAxis.append("text").attr("x", 8).attr("y", 15).attr("fill", C.life).attr("font-size", 11).attr("font-weight", 800).text("LIFE ON EARTH");
+    gAxis.append("text").attr("x", 8).attr("y", H - 7).attr("fill", C.earth).attr("font-size", 11).attr("font-weight", 800).text("OTHER EARTH'S SYSTEMS");
+    gAxis.append("text").attr("x", W - 8).attr("y", H - 7).attr("text-anchor", "end").attr("fill", "#b9c6d8").attr("font-size", 11)
+      .text(inMa ? "Million years ago" : "Billion years ago");
+
+    // Dots
+    const related = new Map();
+    for (const l of timelineLinks) {
+      if (l.to === sel) related.set(l.from, "cause");
+      if (l.from === sel) related.set(l.to, "effect");
+    }
+    const vis = d => order[d.id] < shown;
+    dots.style("pointer-events", d => vis(d) ? "auto" : "none");
+    dots.transition().duration(dur).attr("transform", d => `translate(${P[d.id].x},${P[d.id].y})`);
+    dots.select(".co-tl-hit").attr("r", r + 5);
+    dots.select(".co-tl-dot")
+      .attr("stroke", d => d.id === sel ? "#fff" : related.has(d.id) ? C[related.get(d.id)] : "rgba(0,0,0,.45)")
+      .attr("stroke-width", d => d.id === sel ? 3 : related.has(d.id) ? 2.5 : 1)
+      .attr("opacity", d => d.id === sel || related.has(d.id) || !related.size ? 1 : 0.62)
+      .transition().duration(K.reduced() ? 0 : 280)
+      .attr("r", d => !vis(d) ? 0 : d.id === sel ? r + 2 : r);
+    gCursor.transition().duration(dur).attr("x1", P[sel].x).attr("x2", P[sel].x).attr("y1", 20).attr("y2", H - 24);
+
+    // Link arrows
+    const path = l => {
+      const a = P[l.from], b = P[l.to], da = byId[l.from], db = byId[l.to];
+      let c1, c2;
+      if (isLife(da) !== isLife(db)) {
+        const mid = lifeBase + strip / 2;
+        c1 = [a.x, mid]; c2 = [b.x, mid];
+      } else {
+        const bulge = Math.min(46, 16 + Math.abs(a.x - b.x) * 0.25) * (isLife(da) ? -1 : 1);
+        c1 = [a.x + (b.x - a.x) * 0.25, Math.min(a.y, b.y) * (isLife(da) ? 1 : 0) + Math.max(a.y, b.y) * (isLife(da) ? 0 : 1) + bulge];
+        c2 = [a.x + (b.x - a.x) * 0.75, c1[1]];
+      }
+      // stop the arrow at the edge of the target dot
+      let dx = b.x - c2[0], dy = b.y - c2[1]; const len = Math.hypot(dx, dy) || 1;
+      const ex = b.x - dx / len * (r + 5), ey = b.y - dy / len * (r + 5);
+      return `M${a.x},${a.y} C${c1[0]},${c1[1]} ${c2[0]},${c2[1]} ${ex},${ey}`;
+    };
+    const links = timelineLinks.filter(l => order[l.from] < shown && order[l.to] < shown)
+      .map(l => ({...l, kind: l.to === sel ? "cause" : l.from === sel ? "effect" : "all"}))
+      .filter(l => allLinks || l.kind !== "all")
+      .sort((a, b) => (a.kind === "all" ? 0 : 1) - (b.kind === "all" ? 0 : 1));
+    gLinks.selectAll("path").remove();
+    gLinks.selectAll("path").data(links).join("path")
+      .attr("d", path)
+      .attr("stroke", l => l.kind === "all" ? "#9fb0c6" : C[l.kind])
+      .attr("stroke-width", l => l.kind === "all" ? 1.2 : 2.4)
+      .attr("stroke-dasharray", l => l.kind === "cause" ? "6,4" : null)
+      .attr("marker-end", l => `url(#co-tl-arrow-${l.kind})`)
+      .attr("opacity", 0)
+      .transition().delay(dur).duration(K.reduced() ? 0 : 250)
+      .attr("opacity", l => l.kind === "all" ? 0.45 : 1);
+
+    // Card
+    menu.property("value", sel);
+    prevBtn.disabled = order[sel] === 0;
+    nextBtn.disabled = order[sel] === evs.length - 1;
+    const ev = byId[sel];
+    const causes = timelineLinks.filter(l => l.to === sel), effects = timelineLinks.filter(l => l.from === sel);
+    const item = (l, other) => `<li style="margin:2px 0 8px;"><button type="button" class="co-tl-jump" data-id="${other}">${byId[other].event}</button>
+      <span style="font-size:.85em;color:#b9c6d8;">${byId[other].sys} · ${K.fmtGa(byId[other].ga)}</span><br><span style="font-size:.92em;">${l.why}</span></li>`;
+    card.html(`<div style="font-size:.8em;font-weight:800;color:${col(ev)};text-transform:uppercase;letter-spacing:.04em;">${ev.sys} · event ${order[sel] + 1} of ${evs.length}</div>
+      <div style="font-weight:800;font-size:1.08em;color:#fff;">${ev.event}</div>
+      <div style="color:#b9c6d8;margin-bottom:8px;">${K.fmtGa(ev.ga)}</div>
+      <div style="font-weight:700;"><span style="color:${C.cause};">⇢</span> May have been caused or helped by:</div>
+      ${causes.length ? `<ul>${causes.map(l => item(l, l.from)).join("")}</ul>` : `<p style="margin:4px 0 10px;color:#b9c6d8;">No link drawn on this timeline.</p>`}
+      <div style="font-weight:700;"><span style="color:${C.effect};">→</span> May have led to:</div>
+      ${effects.length ? `<ul>${effects.map(l => item(l, l.to)).join("")}</ul>` : `<p style="margin:4px 0 0;color:#b9c6d8;">No link drawn on this timeline.</p>`}`);
+  }
+
+  const ro = K.onResize(wrap, w => { W = Math.max(280, w - 28); update(false); });
+  const io = K.watch(wrap, v => { if (!v && timer) stop(); });
+  invalidation.then(() => { stop(); ro.stop(); io.stop(); });
+  return wrap;
 }
 ```
 
@@ -456,55 +699,211 @@ isotopeData = [
 
 ### 🧪 Half-life simulator
 
-Pick an isotope and a sample age. The curve shows how much of the parent isotope is left after each half-life.
+This is a **model** of radioactive decay. Pick an isotope and press **Play**. Watch the parent atoms decay at random, and see how the amount left still follows the half-life rule. Then try the challenge: date a mystery sample.
 
 ```{ojs}
 //| echo: false
-viewof isoPick = Inputs.select(isotopeData.map(d => d.parent), {label: "Isotope:", value: "Uranium-235"})
-```
+// Half-life MODEL: 400 model atoms that each decay at random with the right probability.
+coDecay = {
+  const K = coKit;
+  const N = 400, COLS = 20, MAXH = 6, RATE = 0.25; // RATE = half-lives per second at 1x speed
+  const C = {parent: "#4da3ff", daughter: "#ff9f43"};
+  let iso = isotopeData.find(d => d.parent === "Uranium-235");
+  let atoms = [], t = 0, trace = [], running = false, speed = 1, raf = null, lastTs = 0, S = 0, onScreen = true, mystery = null;
 
-```{ojs}
-//| echo: false
-viewof isoLogAge = Inputs.range([2, Math.log10(4.6e9)], {label: "Sample age (slide):", step: 0.01, value: Math.log10(2.5e9)})
-```
+  const wrap = K.el("div", "co-card");
+  const root = d3.select(wrap);
+  root.append("div").attr("class", "co-title").html(`Half-life simulator <span class="co-model">Model</span>`);
+  root.append("div").attr("class", "co-sub").html(`Each dot is one model atom. Every moment, each <strong style="color:${C.parent}">parent atom ●</strong> has the same chance of decaying into a <strong style="color:${C.daughter}">daughter atom ○</strong>. Nobody can say which atom goes next, but half of them are gone after each half-life. The half-life values are the real ones from your packet's table.`);
 
-```{ojs}
-//| echo: false
-{
-  const iso = isotopeData.find(d => d.parent === isoPick);
-  const age = 10 ** isoLogAge;
-  const nHalf = age / iso.half;
-  const left = 100 * 0.5 ** nHalf;
-  const fmtYears = y => y >= 1e9 ? `${+(y / 1e9).toPrecision(3)} billion` : y >= 1e6 ? `${+(y / 1e6).toPrecision(3)} million` : Math.round(y).toLocaleString();
-  const inRange = age >= iso.min && age <= iso.max;
-  const note = inRange ? "✅ This age is inside the useful dating range."
-    : age < iso.min ? "⚠️ Too young: so little has decayed that the change is too small to measure accurately."
-    : "⚠️ Too old: almost all of the parent has decayed, so too little is left to measure accurately.";
-  const maxH = Math.max(4.5, Math.min(nHalf * 1.15, 12));
-  const curve = d3.range(0, maxH + 0.001, maxH / 200).map(h => ({h, pct: 100 * 0.5 ** h}));
-  const steps = [0, 1, 2, 3, 4].map(h => ({h, pct: 100 * 0.5 ** h}));
-  const wrap = d3.create("div");
-  wrap.append("div").style("padding", "12px 16px").style("border-radius", "10px")
-    .style("background", inRange ? "rgba(46,204,113,0.13)" : "rgba(246,173,85,0.18)").style("margin-bottom", "8px")
-    .html(`<strong>${iso.parent}</strong> (half-life ${iso.halfText} years) in a sample <strong>${fmtYears(age)} years</strong> old:<br>
-      ${fmtYears(age)} ÷ ${iso.halfText} = <strong>${nHalf < 0.001 ? nHalf.toExponential(2) : +nHalf.toPrecision(3)} half-lives</strong> → about <strong>${left > 99.99 ? "99.99+" : left < 0.01 ? "less than 0.01" : +left.toPrecision(3)}%</strong> of the original parent remains.<br>${note}`);
-  wrap.append(() => Plot.plot({
-    title: `${iso.parent} decay curve`,
-    width: width,
-    height: 300,
-    marginLeft: 46,
-    marginBottom: 42,
-    x: {label: "Number of half-lives", domain: [0, maxH], grid: true},
-    y: {label: "Original parent remaining (%)", domain: [0, 100], grid: true},
-    marks: [
-      Plot.line(curve, {x: "h", y: "pct", stroke: "#0870c0", strokeWidth: 2.5}),
-      Plot.dot(steps, {x: "h", y: "pct", fill: "#0870c0", r: 4, tip: true,
-        title: d => `${d.h} half-lives = ${fmtYears(d.h * iso.half)} years\n${d.pct}% remains`}),
-      Plot.text(steps, {x: "h", y: "pct", text: d => `${d.pct}%`, dx: 8, dy: -8, textAnchor: "start", fontSize: 10}),
-      ...(nHalf <= maxH ? [Plot.dot([{h: nHalf, pct: left}], {x: "h", y: "pct", r: 7, fill: "#e17055", stroke: "#fff", strokeWidth: 1.5})] : [])
-    ]
-  }));
-  return wrap.node();
+  root.append("label").attr("class", "co-label").attr("for", "co-decay-iso").text("Isotope:");
+  const isoSel = root.append("select").attr("class", "co-select").attr("id", "co-decay-iso");
+  isoSel.selectAll("option").data(isotopeData).join("option").attr("value", d => d.parent)
+    .text(d => `${d.parent} → ${d.daughter} (half-life ${d.halfText} years)`);
+  isoSel.property("value", iso.parent);
+
+  const ctl = root.append("div").attr("class", "co-row");
+  const playBtn = K.btn("▶ Play", "co-primary"), stepBtn = K.btn("+1 half-life"), speedBtn = K.btn("Speed: 1×"), resetBtn = K.btn("↺ Reset");
+  ctl.node().append(playBtn, stepBtn, speedBtn, resetBtn);
+
+  const body = root.append("div").style("display", "flex").style("flex-wrap", "wrap").style("gap", "12px").style("align-items", "flex-start");
+  const left = body.append("div").style("flex", "1 1 260px").style("min-width", "0").style("max-width", "380px");
+  const canvas = left.append("canvas").attr("role", "img").style("width", "100%").style("border-radius", "10px").style("background", "#091322").node();
+  const ctx = canvas.getContext("2d");
+  const right = body.append("div").style("flex", "1 1 280px").style("min-width", "0");
+  const CW = 340, CH = 264, m = {l: 40, r: 10, t: 12, b: 66};
+  const chart = right.append("svg").attr("viewBox", `0 0 ${CW} ${CH}`).attr("role", "img").style("width", "100%").style("height", "auto");
+  const cx = d3.scaleLinear().domain([0, MAXH]).range([m.l, CW - m.r]);
+  const cy = d3.scaleLinear().domain([0, 100]).range([CH - m.b, m.t]);
+  const gGrid = chart.append("g");
+  for (const p of [0, 25, 50, 75, 100]) {
+    gGrid.append("line").attr("x1", m.l).attr("x2", CW - m.r).attr("y1", cy(p)).attr("y2", cy(p)).attr("stroke", "rgba(255,255,255,.14)");
+    gGrid.append("text").attr("x", m.l - 5).attr("y", cy(p) + 4).attr("text-anchor", "end").attr("fill", "#cfd9e6").attr("font-size", 10).text(p + "%");
+  }
+  const yearTicks = gGrid.append("g");
+  for (let h = 0; h <= MAXH; h++) {
+    gGrid.append("line").attr("x1", cx(h)).attr("x2", cx(h)).attr("y1", m.t).attr("y2", CH - m.b).attr("stroke", "rgba(255,255,255,.14)");
+    gGrid.append("text").attr("x", cx(h)).attr("y", CH - m.b + 13).attr("text-anchor", "middle").attr("fill", "#cfd9e6").attr("font-size", 10).text(h);
+  }
+  gGrid.append("text").attr("x", (m.l + CW - m.r) / 2).attr("y", CH - 20).attr("text-anchor", "middle").attr("fill", "#cfd9e6").attr("font-size", 10.5).text("Time passed: half-lives (top row), years (bottom row)");
+  gGrid.append("text").attr("x", (m.l + CW - m.r) / 2).attr("y", CH - 6).attr("text-anchor", "middle").attr("fill", "#9fb0c6").attr("font-size", 9.5).text("k = thousand, M = million, B = billion");
+  const expected = d3.range(0, MAXH + 0.01, 0.05).map(h => [cx(h), cy(100 * 0.5 ** h)]);
+  chart.append("path").attr("d", d3.line()(expected)).attr("fill", "none").attr("stroke", "#cfd9e6").attr("stroke-width", 1.5).attr("stroke-dasharray", "5,4");
+  const legend = chart.append("g");
+  legend.append("text").attr("x", cx(2.6)).attr("y", cy(82)).attr("fill", "#cfd9e6").attr("font-size", 10).text("- - expected curve (half-life rule)");
+  legend.append("text").attr("x", cx(2.6)).attr("y", cy(82) - 14).attr("fill", C.parent).attr("font-size", 10).attr("font-weight", 700).text("━ this run of the model");
+  const sampleLine = chart.append("line").attr("x1", m.l).attr("x2", CW - m.r).attr("stroke", "#ffd166").attr("stroke-width", 2).style("display", "none");
+  const sampleText = chart.append("text").attr("x", CW - m.r - 4).attr("text-anchor", "end").attr("fill", "#ffd166").attr("font-size", 11).attr("font-weight", 700).style("display", "none");
+  const tracePath = chart.append("path").attr("fill", "none").attr("stroke", C.parent).attr("stroke-width", 2.5).attr("stroke-linejoin", "round");
+  const traceDot = chart.append("circle").attr("r", 5).attr("fill", C.parent).attr("stroke", "#fff").attr("stroke-width", 1.5);
+
+  const stats = root.append("div").attr("class", "co-stat");
+  const sTime = stats.append("div"), sHalf = stats.append("div"), sParent = stats.append("div"), sDaughter = stats.append("div");
+  const note = root.append("div").attr("class", "co-read");
+
+  // "Date this sample" challenge
+  const ch = root.append("div").attr("class", "co-read").style("margin-top", "12px").style("border", "1.5px dashed rgba(255,209,102,.6)");
+  ch.append("div").style("font-weight", "800").style("color", "#fff").html(`🔍 Challenge: date this sample <span class="co-model">Model sample</span>`);
+  const chText = ch.append("div").style("margin", "4px 0 8px").text("Get a mystery sample of the isotope you picked. Read how much parent is left, use the curve to find how many half-lives have passed, then work out its age.");
+  const newBtn = K.btn("🎲 New mystery sample", "co-primary");
+  ch.node().append(newBtn);
+  const form = ch.append("div").attr("class", "co-row").style("display", "none");
+  form.append("label").attr("for", "co-decay-ans").style("font-weight", "700").style("flex", "1 1 100%").text("Your estimate of the sample's age:");
+  const ans = form.append("input").attr("class", "co-input").attr("id", "co-decay-ans").attr("type", "number").attr("inputmode", "decimal").attr("step", "any").attr("min", "0").attr("placeholder", "number").style("width", "7.5em");
+  const unit = form.append("select").attr("class", "co-select").attr("aria-label", "Units for your estimate").style("width", "auto");
+  unit.selectAll("option").data([["years", 1], ["thousand years", 1e3], ["million years", 1e6], ["billion years", 1e9]]).join("option").attr("value", d => d[1]).text(d => d[0]);
+  const checkBtn = K.btn("Check"), showBtn = K.btn("Show me how");
+  form.node().append(checkBtn, showBtn);
+  const fb = ch.append("div").attr("aria-live", "polite").style("margin-top", "6px");
+  root.append("p").attr("class", "co-src").text("Half-lives and useful dating ranges: 'Geologically Important Radioactive Elements Used for Radiometric Dating' table in your packet. The atoms, the random decays and the mystery samples are a model, not measurements of real rocks.");
+
+  const left400 = () => atoms.reduce((s, a) => s + (a.dec ? 0 : 1), 0);
+  const shortYears = y => y === 0 ? "0" : y >= 1e9 ? `${+(y / 1e9).toPrecision(2)} B` : y >= 1e6 ? `${+(y / 1e6).toPrecision(3)} M` : y >= 1e4 ? `${+(y / 1e3).toPrecision(3)} k` : `${Math.round(y).toLocaleString()}`;
+
+  function reset() {
+    running = false; mystery = null;
+    atoms = d3.range(N).map(() => ({dec: false, at: -1e9}));
+    t = 0; trace = [[0, 100]];
+    sampleLine.style("display", "none"); sampleText.style("display", "none");
+    form.style("display", "none"); fb.html("");
+    yearTicks.selectAll("*").remove();
+    for (let h = 0; h <= MAXH; h++)
+      yearTicks.append("text").attr("x", cx(h)).attr("y", CH - m.b + 27).attr("text-anchor", h === MAXH ? "end" : h === 0 ? "start" : "middle").attr("dx", h === MAXH ? 8 : h === 0 ? -3 : 0).attr("fill", "#cfd9e6").attr("font-size", 9.5).text(shortYears(h * iso.half));
+    refresh();
+  }
+  function advance(dH) {
+    if (dH <= 0) return;
+    const p = 1 - 0.5 ** dH, now = performance.now();
+    for (const a of atoms) if (!a.dec && Math.random() < p) { a.dec = true; a.at = now; }
+    t += dH;
+    trace.push([t, 100 * left400() / N]);
+  }
+  function frame(ts) {
+    raf = null;
+    if (running) {
+      const dt = Math.min(0.1, (ts - lastTs) / 1000 || 0);
+      lastTs = ts;
+      advance(Math.min(dt * RATE * speed, MAXH - t));
+      if (t >= MAXH - 1e-9 || left400() === 0) running = false;
+      refresh();
+    } else draw();
+    const flashing = atoms.some(a => a.dec && performance.now() - a.at < 500);
+    if ((running || flashing) && onScreen) raf = requestAnimationFrame(frame);
+  }
+  function kick() { if (!raf && onScreen) { lastTs = performance.now(); raf = requestAnimationFrame(frame); } }
+
+  function draw() {
+    if (!S) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    if (canvas.width !== Math.round(S * dpr)) { canvas.width = canvas.height = Math.round(S * dpr); canvas.style.height = S + "px"; }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, S, S);
+    const cell = S / COLS, rad = cell * 0.36, now = performance.now(), still = K.reduced();
+    atoms.forEach((a, i) => {
+      const x = (i % COLS + 0.5) * cell, y = (Math.floor(i / COLS) + 0.5) * cell;
+      ctx.beginPath();
+      if (!a.dec) { ctx.arc(x, y, rad, 0, 6.2832); ctx.fillStyle = C.parent; ctx.fill(); }
+      else {
+        const k = still ? 1 : Math.min(1, (now - a.at) / 500);
+        if (k < 1) { ctx.arc(x, y, rad * (1 + 1.2 * (1 - k)), 0, 6.2832); ctx.fillStyle = `rgba(255,255,255,${0.5 * (1 - k)})`; ctx.fill(); ctx.beginPath(); }
+        ctx.arc(x, y, rad * 0.72, 0, 6.2832); ctx.lineWidth = Math.max(1.5, rad * 0.4); ctx.strokeStyle = C.daughter; ctx.stroke();
+      }
+    });
+  }
+  function refresh() {
+    const L = left400(), pct = 100 * L / N, yrs = t * iso.half;
+    draw();
+    tracePath.attr("d", mystery ? null : d3.line()(trace.map(d => [cx(d[0]), cy(d[1])]))).style("display", mystery ? "none" : null);
+    traceDot.attr("cx", cx(t)).attr("cy", cy(pct)).style("display", mystery ? "none" : null);
+    legend.style("display", mystery ? "none" : null);
+    sTime.html(`<span>Time passed (years)</span><b>${mystery ? "?" : t === 0 ? "0" : K.fmtYears(yrs)}</b>`);
+    sHalf.html(`<span>Half-lives passed</span><b>${mystery ? "?" : t.toFixed(2)}</b>`);
+    sParent.html(`<span>Parent atoms left</span><b style="color:${C.parent}">${L} of ${N} (${+pct.toFixed(1)}%)</b>`);
+    sDaughter.html(`<span>Daughter atoms</span><b style="color:${C.daughter}">${N - L}</b>`);
+    canvas.setAttribute("aria-label", `Model of ${N} ${iso.parent} atoms in a grid. ${L} are still parent atoms (${+pct.toFixed(1)} percent) and ${N - L} have decayed into ${iso.daughter}.`);
+    chart.attr("aria-label", mystery ? `Decay curve. A line marks the mystery sample at ${+pct.toFixed(1)} percent parent remaining.`
+      : `Decay curve: percent of parent atoms left against time. After ${t.toFixed(2)} half-lives this run has ${+pct.toFixed(1)} percent left. The expected value is ${+(100 * 0.5 ** t).toFixed(1)} percent.`);
+    playBtn.innerHTML = running ? "⏸ Pause" : t >= MAXH - 1e-9 ? "▶ Play again" : "▶ Play";
+    stepBtn.disabled = !mystery && t >= MAXH - 1e-9;
+    if (mystery) note.html(`This is a <strong>mystery sample</strong>. The clock is hidden. Use the yellow line on the curve.`);
+    else if (t === 0) note.html(`<strong>${iso.parent}</strong> decays into <strong>${iso.daughter}</strong>. Half-life: <strong>${iso.halfText} years</strong>. Useful dating range: ${iso.range} years. Press <strong>Play</strong>, or step one half-life at a time.`);
+    else {
+      const inRange = yrs >= iso.min && yrs <= iso.max;
+      note.html(`After <strong>${K.fmtYears(yrs)} years</strong>, the rule predicts ${+(100 * 0.5 ** t).toFixed(1)}% left. This run of the model has <strong>${+pct.toFixed(1)}%</strong>. Random decay makes small differences.<br>${
+        inRange ? "✅ This age is inside the isotope's useful dating range."
+        : yrs < iso.min ? "⚠️ Too young to date with this isotope: so little has decayed that the change is too small to measure accurately."
+        : "⚠️ Too old to date with this isotope: almost all of the parent has decayed, so too little is left to measure accurately."}`);
+    }
+  }
+
+  playBtn.onclick = () => {
+    if (mystery || t >= MAXH - 1e-9) reset();
+    running = !running; refresh(); kick();
+  };
+  stepBtn.onclick = () => { if (mystery) reset(); running = false; advance(Math.min(1, MAXH - t)); refresh(); kick(); };
+  speedBtn.onclick = () => { speed = speed === 1 ? 3 : 1; speedBtn.innerHTML = `Speed: ${speed}×`; };
+  resetBtn.onclick = reset;
+  isoSel.on("change", function() { iso = isotopeData.find(d => d.parent === this.value); reset(); });
+
+  newBtn.onclick = () => {
+    reset();
+    const hi = Math.min(3.5, iso.max / iso.half);
+    const lo = hi < 0.3 ? hi * 0.4 : Math.max(0.25, iso.min / iso.half);
+    let n, L;
+    do {
+      n = lo + Math.random() * (hi - lo);
+      const p = 1 - 0.5 ** n;
+      atoms.forEach(a => { a.dec = Math.random() < p; a.at = -1e9; });
+      L = left400();
+    } while (L === 0 || L === N);
+    const pct = 100 * L / N, nRead = -Math.log2(L / N);
+    mystery = {n, pct, nRead, age: nRead * iso.half, tries: 0, hard: hi < 0.3};
+    sampleLine.attr("y1", cy(pct)).attr("y2", cy(pct)).style("display", null);
+    sampleText.attr("y", cy(pct) + (pct > 85 ? 14 : -5)).text(`sample: ${+pct.toFixed(1)}% left`).style("display", null);
+    form.style("display", "flex"); ans.property("value", ""); fb.html("");
+    chText.html(`A model sample contains <strong>${iso.parent}</strong> (half-life ${iso.halfText} years). <strong>${L} of ${N}</strong> parent atoms are left (${+pct.toFixed(1)}%). How old is it?`);
+    refresh();
+  };
+  const how = () => `<strong>${+mystery.pct.toFixed(1)}%</strong> left → the yellow line crosses the curve at about <strong>${mystery.nRead.toFixed(2)} half-lives</strong> → ${mystery.nRead.toFixed(2)} × ${iso.halfText} years ≈ <strong>${K.fmtYears(mystery.age)} years</strong>.`;
+  checkBtn.onclick = () => {
+    if (!mystery) return;
+    const v = +ans.property("value") * +unit.property("value");
+    if (!(v > 0)) { fb.html("Type a number and pick the units first."); return; }
+    mystery.tries++;
+    const err = Math.abs(v - mystery.age) / mystery.age, tol = mystery.hard ? 0.4 : 0.15;
+    if (err <= tol) {
+      fb.html(`✅ <strong>Good dating!</strong> ${how()}<br>The model set this sample to ${K.fmtYears(mystery.n * iso.half)} years. Random decay means a reading is never perfect. Real dates have an uncertainty range too.${mystery.hard ? "<br>Notice how few atoms had decayed. With such a long half-life, a small counting error changes the age a lot." : ""}`);
+    } else {
+      fb.html(`❌ Not yet. Your estimate is too ${v > mystery.age ? "old" : "young"}. Find where the yellow line crosses the dashed curve, read the number of half-lives below it, then multiply by ${iso.halfText} years.${mystery.tries >= 2 ? " Tap <strong>Show me how</strong> if you are stuck." : ""}${mystery.hard ? "<br>Hint: only a few atoms have decayed, so this one is hard to read. That is why scientists pick an isotope whose half-life is close to the age of the sample." : ""}`);
+    }
+  };
+  showBtn.onclick = () => { if (mystery) fb.html(`💡 ${how()}`); };
+
+  const ro = K.onResize(left.node(), w => { S = Math.min(380, w); draw(); });
+  const io = K.watch(wrap, v => { onScreen = v; if (!v && running) { running = false; refresh(); } });
+  invalidation.then(() => { running = false; if (raf) cancelAnimationFrame(raf); ro.stop(); io.stop(); });
+  reset();
+  return wrap;
 }
 ```
 
@@ -603,7 +1002,7 @@ buildQuiz("dating-quiz", "⏳ Check Your Understanding: Radiometric Dating", [
 
 ## Part 3: Oxygen in Earth's History
 
-Using isotopes, fossils and oxidized (rusted) rocks and minerals, scientists have reconstructed how much **oxygen** was in the atmosphere over time. This is the packet's **Stages of Atmospheric Oxygen** graph. Turn on the timeline events to compare the graph with your timeline.
+Using isotopes, fossils and oxidized (rusted) rocks and minerals, scientists have reconstructed how much **oxygen** was in the atmosphere over time. This is the packet's **Stages of Atmospheric Oxygen** graph. **Drag through time** to read the oxygen level, the stage, and what was alive. Turn on the timeline events to compare the graph with your timeline.
 
 ```{ojs}
 //| echo: false
@@ -630,37 +1029,164 @@ o2Stages = [
 
 ```{ojs}
 //| echo: false
-viewof o2Overlay = Inputs.toggle({label: "Show timeline events", value: false})
+// Builder for the two scrubbable oxygen charts (Part 3 and Extinction Events and Oxygen).
+coO2Chart = function(cfg) {
+  const K = coKit;
+  const wrap = K.el("div", "co-card");
+  const root = d3.select(wrap);
+  root.append("div").attr("class", "co-title").text(cfg.title);
+  root.append("div").attr("class", "co-sub").text(cfg.sub);
+  const state = Object.fromEntries((cfg.toggles || []).map(g => [g.key, g.value]));
+  const svg = root.append("svg").attr("role", "img").attr("aria-label", cfg.aria).style("width", "100%").style("touch-action", "pan-y").style("cursor", "ew-resize");
+  const tOld = cfg.data[0].t;                       // oldest time with data
+  const yAt = K.curveFn(cfg.data.map(p => [-p.t, p.y]));
+  const hasBand = cfg.data[0].lo != null;
+  const loAt = hasBand ? K.curveFn(cfg.data.map(p => [-p.t, p.lo])) : null;
+  const hiAt = hasBand ? K.curveFn(cfg.data.map(p => [-p.t, p.hi])) : null;
+  let t = cfg.start, W = 0, H = 0, x = null, y = null, raf = null, playing = false, onScreen = true, lastTs = 0;
+  const m = {l: 38, r: 12, t: 24, b: 38};
+
+  const sl = root.append("div");
+  const slider = sl.append("input").attr("type", "range").attr("class", "co-range").attr("min", 0).attr("max", 1000).attr("step", 1)
+    .attr("aria-label", "Move through time: left is older, right is today").node();
+  sl.append("div").style("display", "flex").style("justify-content", "space-between").style("font-size", ".78em").style("color", "#b9c6d8")
+    .html(`<span>← ${cfg.fmtT(tOld)}</span><span>today →</span>`);
+  const ctl = root.append("div").attr("class", "co-row");
+  const playBtn = K.btn("▶ Play through time", "co-primary");
+  ctl.node().append(playBtn);
+  for (const g of cfg.toggles || []) {
+    const lab = ctl.append("label").attr("class", "co-check");
+    lab.append("input").attr("type", "checkbox").property("checked", g.value).on("change", function() { state[g.key] = this.checked; render(); });
+    lab.append("span").text(g.label);
+  }
+  const read = root.append("div").attr("class", "co-read");
+  root.append("p").attr("class", "co-src").text(cfg.source);
+
+  const gStatic = svg.append("g"), gCur = svg.append("g").style("pointer-events", "none");
+  const curLine = gCur.append("line").attr("stroke", "#fff").attr("stroke-width", 1.5);
+  const curBand = gCur.append("line").attr("stroke", "#fff").attr("stroke-width", 5).attr("stroke-opacity", 0.45).attr("stroke-linecap", "round");
+  const curDot = gCur.append("circle").attr("r", 6.5).attr("fill", cfg.color).attr("stroke", "#fff").attr("stroke-width", 2);
+  const curText = gCur.append("text").attr("fill", "#fff").attr("font-size", 13).attr("font-weight", 800)
+    .attr("paint-order", "stroke").attr("stroke", "#0f1b2d").attr("stroke-width", 4);
+
+  function render() {
+    if (!W) return;
+    H = W < 520 ? 300 : 360;
+    svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H);
+    x = d3.scaleLinear().domain(cfg.xDomain).range([m.l, W - m.r]);
+    y = d3.scaleLinear().domain(cfg.yDomain).range([H - m.b, m.t]);
+    const small = W < 520;
+    gStatic.selectAll("*").remove();
+    for (const b of cfg.bands || []) {
+      gStatic.append("rect").attr("x", x(b.x1)).attr("width", x(b.x2) - x(b.x1)).attr("y", m.t).attr("height", H - m.b - m.t).attr("fill", b.fill).attr("fill-opacity", 0.2);
+      gStatic.append("text").attr("x", (x(b.x1) + x(b.x2)) / 2).attr("y", m.t + 16).attr("text-anchor", "middle").attr("fill", "#fff").attr("font-size", 13).attr("font-weight", 800).text(b.label);
+    }
+    for (const v of y.ticks(5)) {
+      gStatic.append("line").attr("x1", m.l).attr("x2", W - m.r).attr("y1", y(v)).attr("y2", y(v)).attr("stroke", "rgba(255,255,255,.13)");
+      gStatic.append("text").attr("x", m.l - 5).attr("y", y(v) + 4).attr("text-anchor", "end").attr("fill", "#cfd9e6").attr("font-size", 11).text(v);
+    }
+    for (const v of x.ticks(small ? 5 : 8)) {
+      gStatic.append("line").attr("x1", x(v)).attr("x2", x(v)).attr("y1", H - m.b).attr("y2", H - m.b + 5).attr("stroke", "#cfd9e6");
+      gStatic.append("text").attr("x", x(v)).attr("y", H - m.b + 17).attr("text-anchor", "middle").attr("fill", "#cfd9e6").attr("font-size", 11).text(v);
+    }
+    gStatic.append("text").attr("x", (m.l + W - m.r) / 2).attr("y", H - 5).attr("text-anchor", "middle").attr("fill", "#cfd9e6").attr("font-size", 11).text(cfg.xLabel);
+    gStatic.append("text").attr("x", 4).attr("y", 13).attr("fill", "#cfd9e6").attr("font-size", 11).text(cfg.yLabel);
+    const pts = cfg.data.map(p => [x(p.t), y(p.y)]);
+    if (hasBand) gStatic.append("path").attr("fill", cfg.color).attr("fill-opacity", 0.28)
+      .attr("d", d3.area().curve(d3.curveMonotoneX).x(p => x(p.t)).y0(p => y(p.lo)).y1(p => y(p.hi))(cfg.data));
+    gStatic.append("line").attr("x1", m.l).attr("x2", W - m.r).attr("y1", y(21)).attr("y2", y(21)).attr("stroke", "#5fe08f").attr("stroke-dasharray", "6,4");
+    gStatic.append("text").attr("x", m.l + 4).attr("y", y(21) - 5).attr("fill", "#5fe08f").attr("font-size", 11).attr("font-weight", 700).text("Today: 21%");
+    if (cfg.extra) cfg.extra({g: gStatic, x, y, W, H, m, small, state});
+    gStatic.append("path").attr("fill", "none").attr("stroke", cfg.color).attr("stroke-width", 3).attr("d", d3.line().curve(d3.curveMonotoneX)(pts));
+    if (cfg.over) cfg.over({g: gStatic, x, y, W, H, m, small, state});
+    place();
+  }
+  function place() {
+    if (!x) return;
+    const v = yAt(-t), px = x(t), py = y(v);
+    curLine.attr("x1", px).attr("x2", px).attr("y1", m.t).attr("y2", H - m.b);
+    curDot.attr("cx", px).attr("cy", py);
+    if (hasBand) curBand.attr("x1", px).attr("x2", px).attr("y1", y(loAt(-t))).attr("y2", y(hiAt(-t))).style("display", null);
+    else curBand.style("display", "none");
+    const rightSide = px < (m.l + W - m.r) / 2;
+    curText.attr("x", px + (rightSide ? 11 : -11)).attr("y", Math.max(m.t + 34, py - 12)).attr("text-anchor", rightSide ? "start" : "end").text(cfg.fmtY(v));
+    slider.value = Math.round(1000 * (1 - t / tOld));
+    slider.setAttribute("aria-valuetext", `${cfg.fmtT(t)}, oxygen ${cfg.fmtY(v)}`);
+    read.html(cfg.readout(t, v, hasBand ? [loAt(-t), hiAt(-t)] : null, state));
+  }
+  const setT = v => { t = Math.max(0, Math.min(tOld, v)); place(); };
+  slider.addEventListener("input", () => { stop(); setT(tOld * (1 - slider.value / 1000)); });
+  const fromPointer = e => { const r = svg.node().getBoundingClientRect(); setT(x.invert((e.clientX - r.left) * (W / r.width))); };
+  let dragging = false;
+  svg.on("pointerdown", e => { if (!x) return; stop(); dragging = true; try { svg.node().setPointerCapture(e.pointerId); } catch (err) {} fromPointer(e); })
+    .on("pointermove", e => { if (dragging) fromPointer(e); })
+    .on("pointerup pointercancel", () => { dragging = false; });
+
+  function frame(ts) {
+    raf = null;
+    if (!playing || !onScreen) return;
+    const dt = Math.min(0.1, (ts - lastTs) / 1000 || 0); lastTs = ts;
+    t = Math.max(0, t - tOld * dt / (cfg.playSeconds || 16));
+    place();
+    if (t <= 0) return stop();
+    raf = requestAnimationFrame(frame);
+  }
+  function stop() { playing = false; if (raf) { cancelAnimationFrame(raf); raf = null; } playBtn.innerHTML = "▶ Play through time"; }
+  playBtn.onclick = () => {
+    if (playing) return stop();
+    if (t <= tOld * 0.002) t = tOld;
+    playing = true; playBtn.innerHTML = "⏸ Pause"; lastTs = performance.now(); raf = requestAnimationFrame(frame);
+  };
+
+  const ro = K.onResize(wrap, w => { W = Math.max(280, w - 28); render(); });
+  const io = K.watch(wrap, v => { onScreen = v; if (!v && playing) stop(); });
+  if (cfg.invalidation) cfg.invalidation.then(() => { stop(); ro.stop(); io.stop(); });
+  return wrap;
+}
 ```
 
 ```{ojs}
 //| echo: false
-{
+coO2Story = {
   const stageFill = ["#dfe6e9", "#ffeaa7", "#fab1a0", "#81ecec", "#a29bfe"];
+  const isLife = d => d.sys === "Life on Earth";
+  const sorted = [...timelineEvents].sort((a, b) => b.ga - a.ga);
   const evs = timelineEvents.filter(d => d.ga <= 3.85);
-  return Plot.plot({
+  return coO2Chart({
     title: "Stages of atmospheric oxygen in Earth's history",
-    subtitle: "Red line traced from the packet graph. Hover or tap the stage numbers for what happened.",
-    width: width,
-    height: 380,
-    marginLeft: 46,
-    marginRight: 14,
-    marginBottom: 42,
-    x: {label: "Time (billion years ago, Ga)", domain: [3.85, 0], grid: false},
-    y: {label: "Percent oxygen in the atmosphere", domain: [0, 42], grid: true},
-    marks: [
-      Plot.rectX(o2Stages, {x1: "start", x2: "end", y1: 0, y2: 42, fill: (d, i) => stageFill[i], fillOpacity: 0.35}),
-      Plot.text(o2Stages, {x: d => (d.start + d.end) / 2, y: 40, text: "stage", fontSize: 14, fontWeight: "bold", tip: true,
-        title: d => `Stage ${d.stage} (${d.start}–${d.end} Ga)\n${d.text}`}),
-      ...(o2Overlay ? [
-        Plot.ruleX(evs, {x: "ga", stroke: d => d.sys.startsWith("Life") ? "#00a8a5" : "#b8721a", strokeOpacity: 0.6, strokeDasharray: "3,3"}),
-        Plot.dot(evs, {x: "ga", y: d => d.sys.startsWith("Life") ? 2 : 6, fill: d => d.sys.startsWith("Life") ? "#00a8a5" : "#b8721a", r: 4, tip: true,
-          title: d => `${d.ga} Ga · ${d.sys}\n${d.event}`})
-      ] : []),
-      Plot.line(o2History, {x: "ga", y: "o2", stroke: "#c0392b", strokeWidth: 3, curve: "monotone-x"}),
-      Plot.ruleY([21], {stroke: "#2ecc71", strokeDasharray: "6,4"}),
-      Plot.text([{ga: 3.7, o2: 24}], {x: "ga", y: "o2", text: () => "Today: 21%", fill: "#27ae60", textAnchor: "start", fontSize: 11, fontWeight: "bold"})
-    ]
+    sub: "Drag the slider (or drag on the graph) to travel through time. The red line is traced from the packet graph. The numbers 1 to 5 are the stages.",
+    aria: "Line graph of percent oxygen in the atmosphere from 3.8 billion years ago to today, in five stages. Oxygen is about 0 percent until about 2.4 billion years ago, rises to about 4 percent and stays there until about 0.85 billion years ago, climbs steeply to a peak of about 36 percent near 0.33 billion years ago, then settles at 21 percent today. Use the slider under the graph to read the value at any time.",
+    data: o2History.map(d => ({t: d.ga, y: d.o2})),
+    xDomain: [3.85, 0], yDomain: [0, 42],
+    xLabel: "Time (billion years ago, Ga)", yLabel: "Percent oxygen in the atmosphere",
+    color: "#ff6b5e", start: 2.4, playSeconds: 18,
+    fmtT: coKit.fmtGa,
+    fmtY: v => v < 0.5 ? "about 0%" : v < 1 ? "less than 1%" : `about ${Math.round(v)}%`,
+    bands: o2Stages.map((s, i) => ({x1: s.start, x2: s.end, fill: stageFill[i], label: s.stage})),
+    toggles: [{key: "events", label: "Show timeline events", value: false}],
+    over: ({g, x, y, H, m, state}) => {
+      if (!state.events) return;
+      for (const d of evs) {
+        const c = isLife(d) ? "#19c2b8" : "#f0a43a";
+        g.append("line").attr("x1", x(d.ga)).attr("x2", x(d.ga)).attr("y1", m.t + 22).attr("y2", H - m.b).attr("stroke", c).attr("stroke-opacity", 0.55).attr("stroke-dasharray", "3,3");
+        g.append("circle").attr("cx", x(d.ga)).attr("cy", y(isLife(d) ? 2 : 6)).attr("r", 4).attr("fill", c).attr("stroke", "#0f1b2d")
+          .append("title").text(`${d.ga} Ga · ${d.sys}\n${d.event}`);
+      }
+    },
+    readout: (t, v, band, state) => {
+      const st = o2Stages.find(s => t <= s.start && t >= s.end) || o2Stages[0];
+      const life = sorted.filter(d => isLife(d) && d.ga >= t - 1e-9).slice(-2).reverse();
+      const earth = sorted.filter(d => !isLife(d) && d.ga >= t - 1e-9).slice(-1)[0];
+      const li = d => `<li>${d.event} <span style="color:#b9c6d8;">(${coKit.fmtGa(d.ga)})</span></li>`;
+      return `<div style="font-weight:800;font-size:1.1em;color:#fff;">${coKit.fmtGa(t)} · oxygen ${v < 0.5 ? "about 0%" : v < 1 ? "less than 1%" : "about " + Math.round(v) + "%"}</div>
+        <div style="margin:2px 0 8px;"><strong>Stage ${st.stage}</strong> (${st.start} to ${st.end} Ga): ${st.text}.</div>
+        <div style="font-weight:700;color:#19c2b8;">Newest life so far${state.events ? " (teal dots)" : ""}:</div>
+        ${life.length ? `<ul>${life.map(li).join("")}</ul>` : `<p style="margin:2px 0 8px;color:#b9c6d8;">No signs of life yet.</p>`}
+        <div style="font-weight:700;color:#f0a43a;">Latest change in Earth's other systems${state.events ? " (orange dots)" : ""}:</div>
+        ${earth ? `<ul style="margin-bottom:0;">${li(earth)}</ul>` : ""}`;
+    },
+    source: "Oxygen curve and stages: traced from the 'Stages of Atmospheric Oxygen' graph in your packet. Values between the traced points are read off the smooth line, so treat them as estimates. Events: your packet's timeline cards.",
+    invalidation
   });
 }
 ```
@@ -1075,7 +1601,7 @@ buildQuiz("extinction-table-quiz", "💥 Check Your Understanding: Mass Extincti
 
 ## Extinction Events and Oxygen
 
-Your packet's graph shows that **each major extinction event coincided with a decrease in atmospheric oxygen**, and that **after each extinction, oxygen levels increased again**. The shaded band shows the range of possible values (scientists aren't certain of exact oxygen levels this far back).
+Your packet's graph shows that **each major extinction event coincided with a decrease in atmospheric oxygen**, and that **after each extinction, oxygen levels increased again**. The shaded band shows the range of possible values (scientists aren't certain of exact oxygen levels this far back). **Drag through time** and watch what oxygen does before and after each extinction line.
 
 ```{ojs}
 //| echo: false
@@ -1095,48 +1621,62 @@ o2Phanero = [
 
 ```{ojs}
 //| echo: false
-viewof o2ExtLabels = Inputs.checkbox(["Mark the extinctions", "Show labels (gigantism, ocean anoxia, mammal size increase)"], {label: "Options:", value: ["Mark the extinctions"]})
-```
-
-```{ojs}
-//| echo: false
-{
-  const marks = o2ExtLabels.includes("Mark the extinctions");
-  const labels = o2ExtLabels.includes("Show labels (gigantism, ocean anoxia, mammal size increase)");
+coO2Ext = {
   const ord = ["1st", "2nd", "3rd", "4th", "5th"];
   const ext = extinctionEvents.map((d, i) => ({...d, n: ord[i], o2: d3.least(o2Phanero, p => Math.abs(p.ma - d.ma)).o2}));
   const notes = [
-    {x1: 330, x2: 280, y: 10.5, tx: 305, anchor: "middle", text: "widespread gigantism"},
-    {x1: 252, x2: 245, y: 3.5, tx: 226, anchor: "middle", text: "ocean anoxia"},
-    {x1: 205, x2: 198, y: 3.5, tx: 226, anchor: "middle", text: ""},
-    {x1: 40, x2: 25, y: 3, tx: 5, anchor: "end", text: "mammal size\nincrease"}
+    {x1: 330, x2: 280, name: "widespread gigantism"},
+    {x1: 252, x2: 245, name: "ocean anoxia"},
+    {x1: 205, x2: 198, name: "ocean anoxia"},
+    {x1: 40, x2: 25, name: "mammal size increase"}
   ];
-  return Plot.plot({
+  const life = timelineEvents.filter(d => d.sys === "Life on Earth").sort((a, b) => b.ga - a.ga);
+  const fmtT = t => t < 0.5 ? "today" : `${Math.round(t)} million years ago`;
+  return coO2Chart({
     title: "Atmospheric oxygen over the last 600 million years",
-    subtitle: "Blue line: best estimate. Light band: range of possible values. Traced from the packet graph.",
-    width: width,
-    height: 380,
-    marginLeft: 46,
-    marginRight: 14,
-    marginBottom: 42,
-    x: {label: "Age (millions of years ago, Ma)", domain: [600, 0], grid: false},
-    y: {label: "Atmospheric oxygen (%)", domain: [0, 40], grid: true},
-    marks: [
-      Plot.areaY(o2Phanero, {x: "ma", y1: "lo", y2: "hi", fill: "#74b9ff", fillOpacity: 0.35, curve: "monotone-x"}),
-      Plot.line(o2Phanero, {x: "ma", y: "o2", stroke: "#0984e3", strokeWidth: 3, curve: "monotone-x"}),
-      Plot.ruleY([21], {stroke: "#2ecc71", strokeDasharray: "6,4", strokeOpacity: 0.7}),
-      ...(marks ? [
-        Plot.ruleX(ext, {x: "ma", stroke: "currentColor", strokeDasharray: "5,4", strokeWidth: 1.5}),
-        Plot.text(ext, {x: "ma", y: 38, text: "n", fontWeight: "bold", fontSize: 12, dx: -12}),
-        Plot.dot(ext, {x: "ma", y: "o2", r: 6, fill: "#c0392b", stroke: "#fff", tip: true,
-          title: d => `${d.n} extinction: ${d.name}\n${d.ma} Ma · ${d.rate}% of species lost\nOxygen about ${d.o2}%`})
-      ] : []),
-      ...(labels ? [
-        Plot.rectX(notes, {x1: "x1", x2: "x2", y1: 6.5, y2: 7.5, fill: "currentColor"}),
-        Plot.text(notes.filter(d => d.text && d.anchor === "middle"), {x: "tx", y: "y", text: "text", fontSize: width < 520 ? 9 : 11}),
-        Plot.text(notes.filter(d => d.text && d.anchor === "end"), {x: "tx", y: "y", text: "text", textAnchor: "end", fontSize: width < 520 ? 9 : 11})
-      ] : [])
-    ]
+    sub: "Blue line: best estimate. Light band: range of possible values. Both are traced from the packet graph. Drag the slider (or drag on the graph) to travel through time.",
+    aria: "Line graph of atmospheric oxygen over the last 575 million years with a shaded uncertainty band. Oxygen is near 18 to 24 percent early on, dips to about 15 percent near 380 to 365 million years ago, peaks at about 30 percent near 280 million years ago, falls to about 14 percent near 200 to 150 million years ago, then rises to 21 percent today. Dashed lines mark the five mass extinctions at 444, 360, 252, 201 and 66 million years ago. Use the slider under the graph to read the value at any time.",
+    data: o2Phanero.map(d => ({t: d.ma, y: d.o2, lo: d.lo, hi: d.hi})),
+    xDomain: [600, 0], yDomain: [0, 40],
+    xLabel: "Age (millions of years ago, Ma)", yLabel: "Atmospheric oxygen (%)",
+    color: "#4da3ff", start: 300, playSeconds: 20,
+    fmtT, fmtY: v => `about ${Math.round(v)}%`,
+    toggles: [
+      {key: "marks", label: "Mark the extinctions", value: true},
+      {key: "labels", label: "Show labels (gigantism, ocean anoxia, mammal size increase)", value: false}
+    ],
+    over: ({g, x, y, H, m, small, state}) => {
+      if (state.marks) for (const d of ext) {
+        g.append("line").attr("x1", x(d.ma)).attr("x2", x(d.ma)).attr("y1", m.t + 18).attr("y2", H - m.b).attr("stroke", "#ff8a7a").attr("stroke-width", 1.5).attr("stroke-dasharray", "5,4");
+        g.append("text").attr("x", x(d.ma)).attr("y", m.t + 13).attr("text-anchor", "middle").attr("fill", "#ffb3a8").attr("font-size", 11).attr("font-weight", 800).text(d.n);
+        g.append("circle").attr("cx", x(d.ma)).attr("cy", y(d.o2)).attr("r", 5).attr("fill", "#e2483a").attr("stroke", "#fff")
+          .append("title").text(`${d.n} extinction: ${d.name}\n${d.ma} Ma · ${d.rate}% of species lost\nOxygen about ${d.o2}%`);
+      }
+      if (state.labels) {
+        const fs = small ? 9.5 : 11;
+        for (const n of notes) g.append("rect").attr("x", x(n.x1)).attr("width", x(n.x2) - x(n.x1)).attr("y", y(7.5)).attr("height", y(6.5) - y(7.5)).attr("fill", "#fff");
+        const txt = (tx, ty, anchor, s) => g.append("text").attr("x", tx).attr("y", ty).attr("text-anchor", anchor).attr("fill", "#fff").attr("font-size", fs).text(s);
+        txt(x(305), y(9), "middle", "widespread gigantism");
+        txt(x(226), y(3.2), "middle", "ocean anoxia");
+        txt(x(4), y(3.6), "end", "mammal size");
+        txt(x(4), y(3.6) + fs + 2, "end", "increase");
+      }
+    },
+    readout: (t, v, band, state) => {
+      const near = ext.find(d => Math.abs(d.ma - t) <= 5);
+      const prev = ext.filter(d => d.ma > t + 5).slice(-1)[0], next = ext.find(d => d.ma < t - 5);
+      const newest = life.filter(d => d.ga * 1000 >= t - 1e-6).slice(-1)[0];
+      const note = state.labels ? notes.find(n => t <= n.x1 && t >= n.x2) : null;
+      const vs = Math.round(v) > 21 ? "higher than today" : Math.round(v) < 21 ? "lower than today" : "the same as today";
+      return `<div style="font-weight:800;font-size:1.1em;color:#fff;">${fmtT(t)} · oxygen about ${Math.round(v)}%</div>
+        <div style="margin:2px 0 8px;">Possible range: <strong>${Math.round(band[0])}% to ${Math.round(band[1])}%</strong>. The best estimate is ${vs} (21%).</div>
+        ${near ? `<div style="background:rgba(226,72,58,.25);border-left:4px solid #ff8a7a;border-radius:8px;padding:8px 10px;margin-bottom:8px;">💥 <strong>${near.n} mass extinction: ${near.name}</strong>, ${near.ma} million years ago. About <strong>${near.rate}%</strong> of all species lost. ${near.later}</div>`
+          : `<div style="margin-bottom:8px;">${prev ? `Last mass extinction: <strong>${prev.name}</strong>, ${Math.round(prev.ma - t)} million years earlier.` : "None of the five mass extinctions has happened yet."} ${next ? `Next: <strong>${next.name}</strong>, in ${Math.round(t - next.ma)} million years.` : ""}</div>`}
+        ${note ? `<div style="margin-bottom:8px;">Packet label for this time: <strong>${note.name}</strong>.</div>` : ""}
+        <div><span style="font-weight:700;color:#19c2b8;">Newest life so far:</span> ${newest ? `${newest.event} <span style="color:#b9c6d8;">(${coKit.fmtGa(newest.ga)})</span>` : ""}</div>`;
+    },
+    source: "Oxygen curve, uncertainty band and labels: traced from the 'Extinction Events and Oxygen' graph in your packet. Values between the traced points are read off the smooth line, so treat them as estimates. Extinction dates and rates: your packet's mass extinction table.",
+    invalidation
   });
 }
 ```

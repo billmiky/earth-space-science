@@ -31,6 +31,32 @@ execute:
 @keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.8em !important; margin-top: 40px !important; }
 h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #00a8a3 !important; }
+/* Upgraded simulations (bb- prefix) */
+.bb-sim { max-width: 760px; margin: 14px auto 18px auto; }
+.bb-sim canvas { display: block; width: 100%; max-width: 100%; border-radius: 12px; touch-action: pan-y; }
+.bb-ctl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; }
+.bb-btn { min-height: 44px; min-width: 44px; padding: 8px 14px; border-radius: 10px; border: 2px solid #6c5ce7; background: rgba(108, 92, 231, 0.12); color: inherit; font: inherit; font-weight: 700; font-size: 0.92em; line-height: 1.2; cursor: pointer; }
+.bb-btn[aria-pressed="true"] { background: #6c5ce7; color: #fff; }
+.bb-btn:focus-visible, .bb-range:focus-visible { outline: 3px solid #00cec9; outline-offset: 2px; }
+.bb-lab { font-weight: 700; font-size: 0.92em; flex: 1 1 100%; }
+.bb-range { flex: 1 1 160px; min-width: 0; min-height: 44px; margin: 0; accent-color: #6c5ce7; touch-action: pan-y; }
+.bb-val { font-weight: 800; min-width: 5.5em; text-align: right; font-variant-numeric: tabular-nums; font-size: 0.92em; }
+.bb-read { border: 1px solid rgba(148, 163, 184, 0.6); border-radius: 10px; padding: 10px 12px; margin-top: 8px; font-size: 0.95em; line-height: 1.45; background: rgba(148, 163, 184, 0.12); }
+.bb-read strong { font-variant-numeric: tabular-nums; }
+.bb-note { font-size: 0.85em; opacity: 0.85; margin: 6px 0 0 0; line-height: 1.4; }
+.bb-stage { position: relative; background: #05051a; border-radius: 12px; overflow: hidden; }
+.bb-stage canvas { border-radius: 0; }
+.bb-stage .bb-over { position: absolute; left: 0; top: 0; pointer-events: none; }
+.bb-meter { position: relative; height: 14px; border-radius: 7px; margin: 8px 0 2px 0; background: linear-gradient(90deg, #475569 0%, #cbd5e1 50%, #6c5ce7 100%); }
+.bb-meter-mid { position: absolute; left: 50%; top: -3px; width: 2px; height: 20px; background: currentColor; opacity: 0.7; }
+.bb-meter-dot { position: absolute; top: -4px; width: 22px; height: 22px; margin-left: -11px; border-radius: 50%; background: #fff; border: 3px solid #111827; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4); left: 50%; }
+.bb-meter-ends { display: flex; justify-content: space-between; font-size: 0.8em; opacity: 0.85; }
+.bb-swatch { display: inline-block; width: 1.1em; height: 1.1em; border-radius: 4px; border: 1px solid rgba(100, 116, 139, 0.9); vertical-align: -0.15em; margin-right: 4px; }
+.bb-tablewrap { overflow-x: auto; }
+.bb-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin: 6px 0 0 0; }
+.bb-table th, .bb-table td { padding: 4px 6px; text-align: left; border-bottom: 1px solid rgba(148, 163, 184, 0.4); white-space: nowrap; }
+.bb-table th { white-space: normal; vertical-align: bottom; }
+.bb-table td.bb-num, .bb-table th.bb-num { text-align: right; font-variant-numeric: tabular-nums; }
 </style>
 ```
 
@@ -76,6 +102,42 @@ Where did all of those stars and planets come from? In this chapter you will use
 //| echo: false
 Plot = require("@observablehq/plot")
 d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+// Shared helpers for the upgraded simulations (bb prefix): canvas sizing and a render loop
+// that only runs while the simulation is on screen.
+bbUtil = {
+  const reduced = () => !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  function fit(canvas, cssH) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const host = canvas.parentNode;
+    const w = Math.max(220, Math.round((host && host.clientWidth) || canvas.clientWidth || 600));
+    canvas.style.height = cssH + "px";
+    const pw = Math.round(w * dpr), ph = Math.round(cssH * dpr);
+    if (canvas.width !== pw || canvas.height !== ph) { canvas.width = pw; canvas.height = ph; }
+    return {w, h: cssH, dpr};
+  }
+  function loop(el, frame) {
+    let raf = 0, wanted = false, visible = false, last = 0, dead = false;
+    const tick = ts => {
+      raf = 0;
+      if (dead || !wanted || !visible) return;
+      const dt = Math.max(0, Math.min((ts - last) / 1000, 0.1)); last = ts;
+      frame(dt);
+      if (!dead && wanted && visible && !raf) raf = requestAnimationFrame(tick);
+    };
+    const kick = () => { if (!raf && wanted && visible && !dead) { last = performance.now(); raf = requestAnimationFrame(tick); } };
+    const io = new IntersectionObserver(es => { visible = es[es.length - 1].isIntersecting; kick(); }, {rootMargin: "60px"});
+    io.observe(el);
+    return {
+      run(b) { wanted = b; kick(); },
+      stop() { dead = true; io.disconnect(); if (raf) cancelAnimationFrame(raf); }
+    };
+  }
+  return {reduced, fit, loop};
+}
 ```
 
 How big is "more stars than grains of sand"? Each bar uses a **log scale**: every grid line is **10 times** bigger than the one before.
@@ -413,120 +475,284 @@ Light and sound are both forms of **energy** that travel from a **source** (like
 
 To make sense of the shifted lines, start with **sound**, which behaves like light but is easier to notice. Think of an ambulance siren: it sounds **higher** as it comes toward you and **lower** as it drives away. This is the **Doppler effect**.
 
-In this model the **blue dot** is the source. It gives off a sound wave (a circle) at a **steady rate** while it moves left to right. The **receiver** (microphone) turns **green** each time a wave passes through it.
+In this model the **blue dot** is the source. It gives off a sound wave (a circle) at a **steady rate** while it moves left to right. The **receiver** (microphone) turns **green** each time a wave passes through it, and each arrival leaves a green tick on the strip at the bottom. **Drag the speed slider** and watch the circles bunch up in front of the source and stretch out behind it. Tap **Hear the pitch** to listen to what the receiver hears. *(This is a model, not a recording.)*
 
 ```{ojs}
 //| echo: false
-dopplerSim = function({mode = "sound", speed = 0.5, motion = "right", audio = false, invalidation}) {
-  const W = 700, H = mode === "sound" ? 210 : 230;
-  const c = 130;                 // wave speed (pixels per second)
-  const emitEvery = 0.32;        // seconds between waves at the source
-  const v = speed * c;
-  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`)
-    .style("width", "100%").style("height", "auto").style("max-width", "760px")
-    .style("display", "block").style("margin", "auto").style("border-radius", "10px")
-    .style("touch-action", "pan-y");
-  svg.append("rect").attr("width", W).attr("height", H).attr("rx", 10)
-    .attr("fill", mode === "sound" ? "#f8fafc" : "#05051a").attr("stroke", "#94a3b8");
-  const clip = svg.append("defs").append("clipPath").attr("id", `ou-clip-${mode}`);
-  clip.append("rect").attr("width", W).attr("height", H).attr("rx", 10);
-  const waveG = svg.append("g").attr("clip-path", `url(#ou-clip-${mode})`);
-  const waveColor = mode === "sound" ? "#334155" : "#cbd5e1";
+// Real-time canvas Doppler model. mode "sound" = Model 1, mode "light" = Model 3.
+// Controls live inside the cell, so moving the slider never rebuilds the simulation.
+bbDoppler = function(mode, invalidation) {
+  const light = mode === "light";
+  const H = 250, areaH = 186;
+  const uid = "bb-dop-" + mode;
+  const emitEvery = 0.32, fEmit = 1 / emitEvery;   // the source makes about 3.1 waves per second
+  const root = document.createElement("div");
+  root.className = "bb-sim";
+  root.innerHTML = `
+    <div class="bb-ctl">
+      <button type="button" class="bb-btn" data-k="play"></button>
+      ${light
+        ? `<button type="button" class="bb-btn" data-k="toward">← Toward Earth</button>
+           <button type="button" class="bb-btn" data-k="none">Not moving</button>
+           <button type="button" class="bb-btn" data-k="away">Away from Earth →</button>`
+        : `<button type="button" class="bb-btn" data-k="click" aria-pressed="false">🔊 Snare click at the receiver</button>
+           <button type="button" class="bb-btn" data-k="tone" aria-pressed="false">🎵 Hear the pitch</button>`}
+    </div>
+    <div class="bb-ctl">
+      <label class="bb-lab" for="${uid}-speed">${light
+        ? "Galaxy speed: drag left for toward Earth, right for away (speeds hugely exaggerated)"
+        : "Source speed: drag to change"}</label>
+      <input class="bb-range" id="${uid}-speed" type="range" ${light ? 'min="-0.4" max="0.4" step="0.05" value="0.3"' : 'min="0" max="0.8" step="0.05" value="0.5"'}>
+      <output class="bb-val" for="${uid}-speed"></output>
+    </div>
+    <canvas role="img" aria-label="${light
+      ? "Animated model: a galaxy gives off light waves as expanding circles. When the galaxy moves away from Earth the circles reaching Earth are stretched apart and the spectrum line moves toward red. When it moves toward Earth they bunch together and the line moves toward blue."
+      : "Animated model: a source moves left to right giving off sound waves as expanding circles at a steady rate. The circles bunch together in front of the source and stretch apart behind it. A receiver flashes green each time a wave reaches it."}"></canvas>
+    <div class="bb-read">${light
+      ? `<div data-k="r1"></div>
+         <div><span class="bb-swatch" data-k="sw0"></span>Light given off: <strong>550 nm</strong> &nbsp; <span class="bb-swatch" data-k="sw1"></span>Light seen on Earth: <strong data-k="obs"></strong></div>
+         <div><strong>Change in frequency on Earth:</strong> <span data-k="fw"></span></div>
+         <div><strong>Change of color:</strong> <span data-k="cw"></span></div>
+         <div class="bb-note" data-k="formula"></div>`
+      : `<div data-k="r1"></div>
+         <div class="bb-meter" aria-hidden="true"><div class="bb-meter-mid"></div><div class="bb-meter-dot" data-k="dot"></div></div>
+         <div class="bb-meter-ends" aria-hidden="true"><span>lower pitch</span><span>same as source</span><span>higher pitch</span></div>
+         <div data-k="r2"></div>
+         <div data-k="r3"></div>`}
+    </div>`;
+  const $ = k => root.querySelector(`[data-k="${k}"]`);
+  const canvas = root.querySelector("canvas"), ctx = canvas.getContext("2d");
+  const slider = root.querySelector("input"), out = root.querySelector("output");
+  const setText = (el, s) => { if (el && el.textContent !== s) el.textContent = s; };
 
-  // Layout
-  let srcY, rx, ry, startX, endX;
-  if (mode === "sound") { srcY = 85; rx = 470; ry = 130; startX = 40; endX = 660; }
-  else { srcY = 105; rx = 70; ry = 105;
-    startX = motion === "toward" ? 620 : motion === "away" ? 260 : 450;
-    endX = motion === "toward" ? 230 : motion === "away" ? 660 : 450; }
-  const dirSign = endX > startX ? 1 : endX < startX ? -1 : 0;
+  let W = 600, dpr = 1;
+  let beta = +slider.value;            // light: + away from Earth, - toward Earth
+  let playing = !bbUtil.reduced();
+  let t = 0, cycleStart = 0, nextEmit = 0, waves = [], arrivals = [], flash = 0, srcX = 0;
+  let clickOn = false, toneOn = false, actx = null, osc = null, og = null;
+  let stripGrad = null;
+  let seed = 11; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  const stars = Array.from({length: 46}, () => [rnd(), rnd(), 0.4 + rnd() * 0.9]);
 
-  // Receiver / observer
-  const recv = svg.append("g");
-  let recvMark;
-  if (mode === "sound") {
-    recv.append("rect").attr("x", rx - 4).attr("y", ry).attr("width", 8).attr("height", 16).attr("rx", 3).attr("fill", "#334155");
-    recvMark = recv.append("circle").attr("cx", rx).attr("cy", ry).attr("r", 7).attr("fill", "#334155");
-    svg.append("text").attr("x", rx).attr("y", ry + 34).attr("text-anchor", "middle").attr("font-size", 12).attr("fill", "#334155").text("Receiver");
-  } else {
-    recvMark = recv.append("circle").attr("cx", rx).attr("cy", ry).attr("r", 12).attr("fill", "#4fa3e0");
-    svg.append("text").attr("x", rx).attr("y", ry + 30).attr("text-anchor", "middle").attr("font-size", 12).attr("fill", "#e2e8f0").text("Earth");
+  function geom() {
+    const c = W * 0.24, sp = Math.abs(beta), dir = light ? Math.sign(beta) : (sp > 0 ? 1 : 0);
+    if (!light) return {c, v: sp * c, dir, startX: dir ? W * 0.04 : W * 0.3, endX: W * 0.96, srcY: 80, rx: W * 0.66, ry: 124};
+    return {c, v: sp * c, dir, srcY: 92, rx: Math.max(34, W * 0.1), ry: 92,
+      startX: dir > 0 ? W * 0.36 : dir < 0 ? W * 0.93 : W * 0.62,
+      endX: dir > 0 ? W * 0.95 : dir < 0 ? W * 0.32 : W * 0.62};
   }
-  const src = svg.append("circle").attr("r", mode === "sound" ? 7 : 11).attr("fill", mode === "sound" ? "#1d4ed8" : "#ffffff").attr("cy", srcY);
-  const srcLabel = svg.append("text").attr("text-anchor", "middle").attr("font-size", 12)
-    .attr("fill", mode === "sound" ? "#1d4ed8" : "#e2e8f0").attr("y", srcY - 18).text(mode === "sound" ? "Source" : "Galaxy");
-  svg.append("rect").attr("x", 6).attr("y", H - 50).attr("width", W - 12).attr("height", 44).attr("rx", 6)
-    .attr("fill", mode === "sound" ? "rgba(248,250,252,0.88)" : "rgba(5,5,26,0.85)");
-  const readout = svg.append("text").attr("x", 14).attr("y", H - 30).attr("font-size", 14).attr("font-weight", 700)
-    .attr("fill", mode === "sound" ? "#0f172a" : "#e2e8f0");
-  const readout2 = svg.append("text").attr("x", 14).attr("y", H - 10).attr("font-size", 13)
-    .attr("fill", mode === "sound" ? "#334155" : "#cbd5e1");
-
-  let ctx = null;
-  function click() {
-    if (!audio) return;
+  function reset() {
+    cycleStart = t; nextEmit = t; waves = []; arrivals = []; srcX = geom().startX;
+  }
+  function ringGrad(x, y, dir, sp) {
+    // Color each part of a light wave by the wavelength an observer in that direction would see
+    if (!ctx.createConicGradient || sp === 0) return wlColor(550);
+    const gr = ctx.createConicGradient(0, x, y);
+    for (let i = 0; i <= 24; i++) {
+      const phi = 2 * Math.PI * i / 24;
+      gr.addColorStop(i / 24, wlColor(Math.max(381, Math.min(779, 550 * (1 - sp * dir * Math.cos(phi))))));
+    }
+    return gr;
+  }
+  function ensureAudio() {
     try {
-      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
-      const o = ctx.createOscillator(), g = ctx.createGain();
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      if (actx.state === "suspended") actx.resume();
+    } catch (e) { actx = null; }
+  }
+  function snare() {
+    if (!clickOn || !actx) return;
+    try {
+      const o = actx.createOscillator(), g = actx.createGain();
       o.type = "triangle"; o.frequency.value = 180;
-      g.gain.setValueAtTime(0.25, ctx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-      o.connect(g).connect(ctx.destination); o.start(); o.stop(ctx.currentTime + 0.09);
+      g.gain.setValueAtTime(0.25, actx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.08);
+      o.connect(g).connect(actx.destination); o.start(); o.stop(actx.currentTime + 0.09);
     } catch (e) {}
   }
-
-  let waves = [], arrivals = [], t = 0, lastEmit = -1, flash = 0, raf = 0, last = performance.now();
-  let cycleStart = 0;
-  const travelTime = dirSign === 0 ? 8 : Math.abs(endX - startX) / Math.max(v, 1e-6);
-  const cycle = dirSign === 0 || v === 0 ? 8 : Math.min(travelTime, 30) + 1.5;
-
-  function step(ts) {
-    const dt = Math.min((ts - last) / 1000, 0.05); last = ts; t += dt;
-    let local = t - cycleStart;
-    if (local > cycle) { cycleStart = t; local = 0; waves = []; arrivals = []; lastEmit = -1; }
-    const moving = local < travelTime;
-    const sx = startX + dirSign * v * Math.min(local, travelTime);
-    if (moving && (lastEmit < 0 || t - lastEmit >= emitEvery)) { waves.push({x: sx, y: srcY, t0: t, hit: false}); lastEmit = t; }
-    waves.forEach(w => {
-      const r = c * (t - w.t0);
-      if (!w.hit && r >= Math.hypot(rx - w.x, ry - w.y)) { w.hit = true; arrivals.push(t); flash = 0.12; click(); }
-    });
-    waves = waves.filter(w => c * (t - w.t0) < 900);
-    src.attr("cx", sx); srcLabel.attr("x", sx);
-    waveG.selectAll("circle").data(waves).join("circle")
-      .attr("cx", w => w.x).attr("cy", w => w.y).attr("r", w => c * (t - w.t0))
-      .attr("fill", "none").attr("stroke", waveColor).attr("stroke-width", 1.4).attr("stroke-opacity", w => Math.max(0.15, 1 - c * (t - w.t0) / 900));
-    flash = Math.max(0, flash - dt);
-    if (mode === "sound") recvMark.attr("fill", flash > 0 ? "#22c55e" : "#334155");
-    const fEmit = 1 / emitEvery;
-    if (arrivals.length >= 2) {
-      const fObs = 1 / (arrivals[arrivals.length - 1] - arrivals[arrivals.length - 2]);
-      const ratio = fObs / fEmit;
-      const word = ratio > 1.03 ? (mode === "sound" ? "HIGHER pitch" : "HIGHER frequency") : ratio < 0.97 ? (mode === "sound" ? "LOWER pitch" : "LOWER frequency") : "no change";
-      readout.text(`Receiver detects ${fObs.toFixed(1)} waves/s → ${word}`);
-    } else readout.text("Waiting for waves to reach the receiver…");
-    readout2.text(`Source gives off ${fEmit.toFixed(1)} waves/s (constant). Source speed = ${(speed * 100).toFixed(0)}% of wave speed.`);
-    raf = requestAnimationFrame(step);
+  function tone(ratio) {
+    if (!actx) return;
+    try {
+      if (toneOn && !osc) {
+        osc = actx.createOscillator(); og = actx.createGain();
+        osc.type = "sawtooth"; osc.frequency.value = 330; og.gain.value = 0;
+        osc.connect(og).connect(actx.destination); osc.start();
+      }
+      if (!osc) return;
+      const on = toneOn && playing && ratio != null;
+      og.gain.setTargetAtTime(on ? 0.05 : 0, actx.currentTime, 0.05);
+      if (on) osc.frequency.setTargetAtTime(330 * ratio, actx.currentTime, 0.06);
+    } catch (e) {}
   }
-  raf = requestAnimationFrame(step);
-  if (invalidation) invalidation.then(() => { cancelAnimationFrame(raf); if (ctx) try { ctx.close(); } catch (e) {} });
-  return svg.node();
+  function observedRatio() {
+    const n = arrivals.length;
+    if (n < 2) return null;
+    const gap = arrivals[n - 1] - arrivals[n - 2];
+    if (t - arrivals[n - 1] > 2.5 * gap + 0.4) return null;
+    return 1 / gap / fEmit;
+  }
+
+  function step(dt) {
+    t += dt;
+    const g = geom();
+    const travel = g.dir === 0 ? Infinity : Math.abs(g.endX - g.startX) / g.v;
+    const cycle = g.dir === 0 ? Infinity : Math.min(travel, 30) + 1.5;
+    if (t - cycleStart > cycle) reset();
+    const local = t - cycleStart;
+    srcX = g.startX + g.dir * g.v * Math.min(local, travel);
+    while (nextEmit <= t) {
+      const le = nextEmit - cycleStart;
+      if (le <= travel) {
+        const x = g.startX + g.dir * g.v * le;
+        waves.push({x, y: g.srcY, t0: nextEmit, hit: false, grad: light ? ringGrad(x, g.srcY, g.dir, Math.abs(beta)) : null});
+      }
+      nextEmit += emitEvery;
+    }
+    for (const w of waves) {
+      if (w.hit) continue;
+      const ta = w.t0 + Math.hypot(g.rx - w.x, g.ry - w.y) / g.c;
+      if (t >= ta) { w.hit = true; arrivals.push(ta); flash = 0.12; snare(); }
+    }
+    if (arrivals.length > 40) arrivals.splice(0, arrivals.length - 40);
+    waves = waves.filter(w => g.c * (t - w.t0) < W * 1.3);
+    flash = Math.max(0, flash - dt);
+  }
+
+  function draw() {
+    const g = geom();
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = light ? "#05051a" : "#0b1020";
+    ctx.fillRect(0, 0, W, H);
+    ctx.save();
+    ctx.beginPath(); ctx.rect(0, 0, W, areaH); ctx.clip();
+    if (light) { ctx.fillStyle = "#cbd5e1"; for (const s of stars) { ctx.globalAlpha = 0.25 + 0.3 * s[2]; ctx.fillRect(s[0] * W, s[1] * areaH, s[2], s[2]); } }
+    ctx.lineWidth = light ? 2.2 : 1.6;
+    for (const w of waves) {
+      const r = g.c * (t - w.t0);
+      if (r <= 0.5) continue;
+      ctx.globalAlpha = Math.max(0.14, 1 - r / (W * 1.3));
+      ctx.strokeStyle = w.grad || "#a5c8ff";
+      ctx.beginPath(); ctx.arc(w.x, w.y, r, 0, 2 * Math.PI); ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+    ctx.font = "600 12px system-ui, sans-serif"; ctx.textAlign = "center";
+    if (light) {
+      ctx.fillStyle = "#4fa3e0"; ctx.beginPath(); ctx.arc(g.rx, g.ry, 11, 0, 2 * Math.PI); ctx.fill();
+      ctx.fillStyle = "#3fb950"; ctx.beginPath(); ctx.arc(g.rx - 3, g.ry - 2, 4, 0, 2 * Math.PI); ctx.fill();
+      ctx.fillStyle = "#e2e8f0"; ctx.fillText("Earth", g.rx, g.ry + 28);
+      const glow = ctx.createRadialGradient(srcX, g.srcY, 0, srcX, g.srcY, 20);
+      glow.addColorStop(0, "rgba(255,255,255,1)"); glow.addColorStop(0.35, "rgba(220,225,255,0.75)"); glow.addColorStop(1, "rgba(160,170,255,0)");
+      ctx.save(); ctx.translate(srcX, g.srcY); ctx.rotate(-0.35); ctx.scale(1, 0.45);
+      ctx.translate(-srcX, -g.srcY); ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(srcX, g.srcY, 20, 0, 2 * Math.PI); ctx.fill(); ctx.restore();
+      ctx.fillStyle = "#e2e8f0"; ctx.fillText("Galaxy", Math.max(26, Math.min(W - 26, srcX)), g.srcY - 20);
+    } else {
+      const on = flash > 0;
+      ctx.fillStyle = on ? "#22c55e" : "#cbd5e1";
+      ctx.fillRect(g.rx - 3, g.ry + 6, 6, 14);
+      ctx.beginPath(); ctx.arc(g.rx, g.ry, on ? 10 : 8, 0, 2 * Math.PI); ctx.fill();
+      ctx.fillStyle = "#e2e8f0"; ctx.fillText("Receiver", g.rx, g.ry + 36);
+      ctx.fillStyle = "#3b82f6"; ctx.beginPath(); ctx.arc(srcX, g.srcY, 8, 0, 2 * Math.PI); ctx.fill();
+      ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.fillStyle = "#93c5fd"; ctx.fillText("Source", Math.max(26, Math.min(W - 26, srcX)), g.srcY - 15);
+    }
+    ctx.restore();
+
+    // Bottom strip
+    ctx.fillStyle = light ? "#0d0d2b" : "#111a33";
+    ctx.fillRect(0, areaH, W, H - areaH);
+    ctx.font = "600 11px system-ui, sans-serif"; ctx.textAlign = "left"; ctx.fillStyle = "#cbd5e1";
+    if (light) {
+      const lo = 330, hi = 790, x0 = 10, x1 = W - 10, X = nm => x0 + (nm - lo) / (hi - lo) * (x1 - x0);
+      ctx.fillText("Spectrum line: dashed = given off, solid = seen on Earth", 10, areaH + 14);
+      ctx.fillStyle = stripGrad; ctx.fillRect(x0, areaH + 20, x1 - x0, 24);
+      const obs = 550 * (1 + beta);
+      ctx.setLineDash([4, 3]); ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(X(550), areaH + 17); ctx.lineTo(X(550), areaH + 47); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = "#fff"; ctx.fillRect(X(obs) - 3.5, areaH + 18, 7, 28);
+      ctx.fillStyle = "#000"; ctx.fillRect(X(obs) - 2, areaH + 18, 4, 28);
+      ctx.fillStyle = "#cbd5e1"; ctx.textAlign = "center";
+      for (const nm of [400, 500, 600, 700]) ctx.fillText(nm === 700 ? "700 nm" : String(nm), X(nm), areaH + 59);
+    } else {
+      ctx.fillText("Waves reaching the receiver (newest on the right)", 10, areaH + 15);
+      const win = 5, x0 = 8, x1 = W - 8;
+      ctx.fillStyle = "rgba(148,163,184,0.18)"; ctx.fillRect(x0, areaH + 24, x1 - x0, 30);
+      ctx.fillStyle = "#22c55e";
+      for (const ta of arrivals) {
+        const x = x1 - (t - ta) / win * (x1 - x0);
+        if (x >= x0) ctx.fillRect(x - 1.5, areaH + 26, 3, 26);
+      }
+    }
+  }
+
+  function readout() {
+    const sp = Math.abs(beta), ratio = observedRatio();
+    $("play").textContent = playing ? "⏸ Pause" : "▶ Start";
+    $("play").setAttribute("aria-pressed", playing ? "true" : "false");
+    if (light) {
+      setText(out, beta === 0 ? "not moving" : `${Math.round(sp * 100)}% ${beta > 0 ? "away" : "toward"}`);
+      setText($("r1"), ratio == null
+        ? `Waiting for waves to reach Earth… (the galaxy gives off ${fEmit.toFixed(1)} waves per second)`
+        : `Earth receives ${(ratio * fEmit).toFixed(1)} waves per second. The galaxy gives off ${fEmit.toFixed(1)} per second (constant).`);
+      const obs = 550 * (1 + beta);
+      setText($("obs"), `${obs.toFixed(0)} nm`);
+      $("sw0").style.background = wlColor(550);
+      $("sw1").style.background = wlColor(Math.max(381, Math.min(779, obs)));
+      setText($("fw"), beta > 0 ? "Decrease" : beta < 0 ? "Increase" : "No change");
+      setText($("cw"), beta > 0 ? "Shift toward RED (redshift)" : beta < 0 ? "Shift toward BLUE (blueshift)" : "No shift");
+      setText($("formula"), `In this model: wavelength seen = 550 nm × (1 ${beta >= 0 ? "+" : "−"} ${sp.toFixed(2)}) ≈ ${obs.toFixed(0)} nm`);
+      for (const k of ["toward", "none", "away"])
+        $(k).setAttribute("aria-pressed", (k === "toward" ? beta < 0 : k === "away" ? beta > 0 : beta === 0) ? "true" : "false");
+    } else {
+      setText(out, `${Math.round(sp * 100)}% of sound speed`);
+      const word = ratio == null ? "" : ratio > 1.03 ? "HIGHER pitch" : ratio < 0.97 ? "LOWER pitch" : "no change in pitch";
+      setText($("r1"), ratio == null ? "Waiting for waves to reach the receiver…" : `Receiver detects ${(ratio * fEmit).toFixed(1)} waves/s → ${word}`);
+      $("dot").style.left = (50 + 50 * Math.max(-1, Math.min(1, Math.log(ratio == null ? 1 : ratio) / Math.log(5)))) + "%";
+      $("dot").style.opacity = ratio == null ? 0.35 : 1;
+      setText($("r2"), `Source gives off ${fEmit.toFixed(1)} waves/s (constant). Source speed = ${Math.round(sp * 100)}% of wave speed.`);
+      setText($("r3"), sp === 0 ? "Wavelength is the same in every direction."
+        : `Wavelength in front of the source: ${Math.round((1 - sp) * 100)}% of normal. Behind it: ${Math.round((1 + sp) * 100)}% of normal.`);
+      tone(ratio);
+    }
+  }
+
+  function resize() {
+    const f = bbUtil.fit(canvas, H);
+    const changed = f.w !== W; W = f.w; dpr = f.dpr;
+    if (light) {
+      stripGrad = ctx.createLinearGradient(10, 0, W - 10, 0);
+      for (let i = 0; i <= 46; i++) stripGrad.addColorStop(i / 46, wlColor(330 + i * 10));
+    }
+    if (changed) reset();
+    draw();
+  }
+
+  const loop = bbUtil.loop(root, dt => { step(dt); draw(); readout(); });
+  const setPlaying = b => { playing = b; loop.run(b); readout(); };
+  $("play").onclick = () => setPlaying(!playing);
+  slider.oninput = () => { beta = +slider.value; reset(); draw(); readout(); };
+  if (light) {
+    const preset = v => { beta = v; slider.value = v; reset(); draw(); readout(); };
+    $("toward").onclick = () => preset(-(Math.abs(beta) || 0.3));
+    $("none").onclick = () => preset(0);
+    $("away").onclick = () => preset(Math.abs(beta) || 0.3);
+  } else {
+    $("click").onclick = e => { clickOn = !clickOn; if (clickOn) ensureAudio(); e.currentTarget.setAttribute("aria-pressed", clickOn ? "true" : "false"); };
+    $("tone").onclick = e => { toneOn = !toneOn; if (toneOn) ensureAudio(); e.currentTarget.setAttribute("aria-pressed", toneOn ? "true" : "false"); readout(); };
+  }
+  const ro = new ResizeObserver(resize);
+  ro.observe(root);
+  reset(); readout(); loop.run(playing);
+  if (invalidation) invalidation.then(() => {
+    loop.stop(); ro.disconnect();
+    try { if (osc) osc.stop(); if (actx) actx.close(); } catch (e) {}
+  });
+  return root;
 }
 ```
 
 ```{ojs}
 //| echo: false
-viewof soundSpeed = Inputs.range([0, 0.8], {label: "Source speed (fraction of sound speed):", step: 0.05, value: 0.5})
-```
-
-```{ojs}
-//| echo: false
-viewof soundOn = Inputs.toggle({label: "🔊 Snare click at the receiver", value: false})
-```
-
-```{ojs}
-//| echo: false
-dopplerSim({mode: "sound", speed: soundSpeed, motion: "right", audio: soundOn, invalidation})
+bbDoppler("sound", invalidation)
 ```
 
 ::: {.key-idea}
@@ -659,43 +885,11 @@ So the siren sounds higher as it approaches and lower as it drives away, even th
 
 ## Model 3: Light Waves from a Moving Galaxy
 
-Now apply the same idea to **light** traveling from a galaxy to Earth. Light is also energy: it comes **from the galaxy** (its stars) and travels outward in every direction. Choose how the galaxy moves and watch the waves that reach Earth. *(The speeds are hugely exaggerated so you can see the effect.)*
+Now apply the same idea to **light** traveling from a galaxy to Earth. Light is also energy: it comes **from the galaxy** (its stars) and travels outward in every direction. Choose how the galaxy moves, or **drag the speed slider**, and watch the waves that reach Earth. Each wave is colored by the wavelength an observer in that direction would see, and the **spectrum line** at the bottom slides toward red or blue. *(This is a model. The speeds are hugely exaggerated so you can see the effect.)*
 
 ```{ojs}
 //| echo: false
-viewof galaxyMotion = Inputs.radio(["Not moving", "Moving toward Earth", "Moving away from Earth"], {label: "The galaxy is:", value: "Moving away from Earth"})
-```
-
-```{ojs}
-//| echo: false
-viewof galaxySpeed = Inputs.range([0.1, 0.4], {label: "Galaxy speed (fraction of light speed, exaggerated):", step: 0.05, value: 0.3})
-```
-
-```{ojs}
-//| echo: false
-dopplerSim({mode: "light", speed: galaxyMotion === "Not moving" ? 0 : galaxySpeed,
-  motion: galaxyMotion === "Moving toward Earth" ? "toward" : galaxyMotion === "Moving away from Earth" ? "away" : "none", invalidation})
-```
-
-```{ojs}
-//| echo: false
-{
-  const emitted = 550;
-  const vr = galaxyMotion === "Moving away from Earth" ? galaxySpeed : galaxyMotion === "Moving toward Earth" ? -galaxySpeed : 0;
-  const observed = emitted * (1 + vr);
-  const freqWord = vr > 0 ? "Decrease" : vr < 0 ? "Increase" : "No change";
-  const shiftWord = vr > 0 ? "Shift toward RED (redshift)" : vr < 0 ? "Shift toward BLUE (blueshift)" : "No shift";
-  const box = d3.create("div").style("display", "flex").style("flex-wrap", "wrap").style("gap", "12px").style("justify-content", "center").style("margin", "10px 0");
-  const swatch = (label, nm) => box.append("div").style("text-align", "center").style("min-width", "130px").html(
-    `<div style="width:110px;height:60px;margin:auto;border-radius:10px;border:2px solid #334155;background:${wlColor(Math.min(779, Math.max(381, nm)))}"></div>` +
-    `<div style="font-size:.85em;margin-top:4px;"><strong>${label}</strong><br>${nm.toFixed(0)} nm</div>`);
-  swatch("Light given off", emitted);
-  swatch("Light seen on Earth", observed);
-  box.append("div").style("flex", "1 1 220px").style("padding", "10px 14px").style("border-radius", "10px")
-    .style("background", vr > 0 ? "rgba(231,76,60,.12)" : vr < 0 ? "rgba(52,152,219,.14)" : "rgba(148,163,184,.18)")
-    .html(`<strong>Change in frequency on Earth:</strong> ${freqWord}<br><strong>Change of color:</strong> ${shiftWord}<br><span style="font-size:.85em;">Wavelength seen = ${emitted} nm × (1 ${vr >= 0 ? "+" : "−"} ${Math.abs(vr).toFixed(2)}) ≈ ${observed.toFixed(0)} nm</span>`);
-  return box.node();
-}
+bbDoppler("light", invalidation)
 ```
 
 ::: {.student-task}
@@ -851,6 +1045,116 @@ viewof predScenario = Inputs.radio(["The universe is expanding", "The universe i
 That's exactly what the packet's spectra show: **every galaxy's lines are redshifted**, and the **farther** the galaxy, the **larger** the redshift. Galaxies are moving away from us, and farther ones are moving away faster. The best explanation is that **space itself is expanding**, carrying galaxies apart from each other in every direction.
 :::
 
+### Try it: slide real spectral lines toward red
+
+The packet's spectra are a drawing. This tool uses **real absorption lines** that astronomers look for in galaxy light. Their **rest wavelengths** (measured in a lab that is not moving) come from the NIST Atomic Spectra Database. Drag the slider to make the galaxy move away faster, or tap a real object.
+
+```{ojs}
+//| echo: false
+// Real rest wavelengths in air, nm (NIST Atomic Spectra Database)
+bbRestLines = [
+  {name: "Ca K", element: "calcium", nm: 393.4},
+  {name: "Ca H", element: "calcium", nm: 396.8},
+  {name: "H-gamma", element: "hydrogen", nm: 434.0},
+  {name: "H-beta", element: "hydrogen", nm: 486.1},
+  {name: "Na D", element: "sodium", nm: 589.0},
+  {name: "H-alpha", element: "hydrogen", nm: 656.3}
+]
+```
+
+```{ojs}
+//| echo: false
+bbShiftLab = {
+  const C = 299792.458;   // speed of light, km/s
+  const root = document.createElement("div");
+  root.className = "bb-sim";
+  root.innerHTML = `
+    <div class="bb-ctl">
+      <button type="button" class="bb-btn" data-v="0">Not moving</button>
+      <button type="button" class="bb-btn" data-v="6930">Coma Cluster</button>
+      <button type="button" class="bb-btn" data-v="23200">Abell 2029</button>
+      <button type="button" class="bb-btn" data-v="43700">Quasar 3C 273</button>
+    </div>
+    <div class="bb-ctl">
+      <label class="bb-lab" for="bb-lab-speed">Speed the galaxy is moving away from us:</label>
+      <input class="bb-range" id="bb-lab-speed" type="range" min="0" max="60000" step="100" value="0">
+      <output class="bb-val" for="bb-lab-speed" style="min-width:7em;"></output>
+    </div>
+    <canvas role="img" aria-label="Two rainbow spectra with dark absorption lines. The top one is a lab sample that is not moving. The bottom one is a galaxy moving away. As the speed slider increases, every line in the galaxy spectrum slides toward the red end and some move past red into infrared."></canvas>
+    <div class="bb-read">
+      <div data-k="sum"></div>
+      <div class="bb-tablewrap"><table class="bb-table">
+        <thead><tr><th>Line</th><th class="bb-num">At rest (nm)</th><th class="bb-num">Seen on Earth (nm)</th><th>Where</th></tr></thead>
+        <tbody data-k="rows"></tbody></table></div>
+      <div class="bb-note" data-k="formula"></div>
+      <div class="bb-note" data-k="hub"></div>
+    </div>`;
+  const $ = k => root.querySelector(`[data-k="${k}"]`);
+  const canvas = root.querySelector("canvas"), ctx = canvas.getContext("2d");
+  const slider = root.querySelector("input"), out = root.querySelector("output");
+  const H = 214, lo = 380, hi = 850;
+  let v = 0;
+  const where = nm => nm < 380 ? "ultraviolet" : nm < 450 ? "violet" : nm < 495 ? "blue" : nm < 570 ? "green" : nm < 590 ? "yellow" : nm < 620 ? "orange" : nm <= 750 ? "red" : "infrared";
+
+  function draw() {
+    const f = bbUtil.fit(canvas, H), W = f.w;
+    const x0 = 10, x1 = W - 10, X = nm => x0 + (nm - lo) / (hi - lo) * (x1 - x0);
+    const k = Math.sqrt((1 + v / C) / (1 - v / C));
+    ctx.setTransform(f.dpr, 0, 0, f.dpr, 0, 0);
+    ctx.fillStyle = "#0b1020"; ctx.fillRect(0, 0, W, H);
+    const grad = ctx.createLinearGradient(x0, 0, x1, 0);
+    for (let i = 0; i <= 47; i++) { const nm = lo + i * 10; grad.addColorStop(i / 47, nm <= 779 ? wlColor(Math.max(381, nm)) : "#1c0b0b"); }
+    const rows = [{y: 24, label: "Lab sample (not moving)", s: 1}, {y: 98, label: v === 0 ? "Galaxy (not moving)" : `Galaxy moving away at ${v.toLocaleString()} km/s`, s: k}];
+    ctx.font = "700 12px system-ui, sans-serif"; ctx.textBaseline = "alphabetic";
+    for (const r of rows) {
+      ctx.textAlign = "left"; ctx.fillStyle = "#e2e8f0"; ctx.fillText(r.label, x0, r.y - 7);
+      ctx.fillStyle = grad; ctx.fillRect(x0, r.y, x1 - x0, 40);
+      ctx.fillStyle = "rgba(226,232,240,0.75)"; ctx.textAlign = "right"; ctx.font = "600 11px system-ui, sans-serif";
+      ctx.fillText(X(850) - X(785) > 56 ? "infrared" : "IR", x1 - 4, r.y + 24);
+      ctx.font = "700 12px system-ui, sans-serif";
+      for (const l of bbRestLines) {
+        const nm = l.nm * r.s; if (nm > hi) continue;
+        const w = l.element === "hydrogen" ? 3 : 2;
+        ctx.fillStyle = nm > 760 ? "#e2e8f0" : "#000"; ctx.fillRect(X(nm) - w / 2, r.y, w, 40);
+      }
+    }
+    // connectors from each rest line to where it is seen
+    ctx.strokeStyle = "rgba(226,232,240,0.8)"; ctx.lineWidth = 1;
+    for (const l of bbRestLines) { ctx.beginPath(); ctx.moveTo(X(l.nm), 64); ctx.lineTo(X(Math.min(hi, l.nm * k)), 98 - 16); ctx.stroke(); }
+    // short labels under the galaxy spectrum
+    ctx.textAlign = "center"; ctx.fillStyle = "#ffe082"; ctx.font = "700 12px system-ui, sans-serif";
+    for (const [txt, nm] of [["Ca", 395.1], ["Hγ", 434.0], ["Hβ", 486.1], ["Na", 589.0], ["Hα", 656.3]]) {
+      if (nm * k <= hi) ctx.fillText(txt, Math.max(x0 + 8, Math.min(x1 - 8, X(nm * k))), 154);
+    }
+    ctx.fillStyle = "#cbd5e1"; ctx.strokeStyle = "#cbd5e1"; ctx.font = "600 11px system-ui, sans-serif";
+    for (let nm = 400; nm <= 800; nm += 100) { ctx.beginPath(); ctx.moveTo(X(nm), 162); ctx.lineTo(X(nm), 168); ctx.stroke(); ctx.fillText(String(nm), X(nm), 181); }
+    ctx.fillText("Wavelength (nm)", (x0 + x1) / 2, 202);
+
+    // text readouts
+    out.textContent = `${v.toLocaleString()} km/s`;
+    slider.setAttribute("aria-valuetext", `${v.toLocaleString()} kilometers per second`);
+    $("sum").innerHTML = v === 0
+      ? "<strong>Not moving:</strong> the galaxy's lines sit exactly where the lab lines are."
+      : `Moving away at <strong>${(v / C * 100).toFixed(1)}%</strong> of the speed of light. Every line is stretched by the same factor: <strong>×${k.toFixed(3)}</strong> (${((k - 1) * 100).toFixed(1)}% longer). The pattern stays the same; it slides toward red.`;
+    $("rows").innerHTML = bbRestLines.map(l => {
+      const nm = l.nm * k;
+      return `<tr><td><span class="bb-swatch" style="background:${nm > 779 ? "#3a1010" : wlColor(Math.max(381, nm))}"></span>${l.name}<br><span style="opacity:.75;font-size:.85em;">${l.element}</span></td><td class="bb-num">${l.nm.toFixed(1)}</td><td class="bb-num"><strong>${nm.toFixed(1)}</strong></td><td>${where(nm)}</td></tr>`;
+    }).join("");
+    $("formula").textContent = `Doppler formula for light: wavelength seen = rest wavelength × √((1 + v/c) ÷ (1 − v/c)), with c = 299,792 km/s. At slow speeds this is almost the same as rest wavelength × (1 + v/c).`;
+    $("hub").textContent = v === 0 ? "" : `Rough estimate from Hubble's law (v = 70 × d, see the extension below): a galaxy moving this fast is about ${(Math.round(v / 70 / 10) * 10 || Math.round(v / 70)).toLocaleString()} Mpc away, or about ${(Math.round(v / 70 * 3.26 / 10) * 10 || Math.round(v / 70 * 3.26)).toLocaleString()} million light-years.`;
+    root.querySelectorAll("button[data-v]").forEach(b => b.setAttribute("aria-pressed", +b.dataset.v === v ? "true" : "false"));
+  }
+  slider.oninput = () => { v = +slider.value; draw(); };
+  root.querySelectorAll("button[data-v]").forEach(b => b.onclick = () => { v = +b.dataset.v; slider.value = v; draw(); });
+  const ro = new ResizeObserver(draw);
+  ro.observe(root);
+  invalidation.then(() => ro.disconnect());
+  return root;
+}
+```
+
+<p style="font-size:.85em;color:#64748b;">Rest wavelengths: NIST Atomic Spectra Database (hydrogen Balmer lines, calcium K and H, sodium D). Speeds for the Coma Cluster (6,930 km/s) and Abell 2029 (23,200 km/s) are the approximate values in the Hubble's Law table below. Quasar 3C 273 has lines stretched by 15.8% (Schmidt, 1963), which the Doppler formula turns into about 43,700 km/s. The slider itself is a <strong>what-if model</strong>: it shows where the lines <em>would</em> be at any speed you pick.</p>
+
 ```{ojs}
 //| echo: false
 buildQuiz("ou-explain-quiz", "🔴 Check Your Understanding — Static, Contracting, or Expanding?", [
@@ -979,7 +1283,11 @@ The universe is expanding! So what was it like **in the past**? In class you use
 
 ## Part 1: What Did the Universe Look Like in the Past?
 
-Drag the slider to go **back in time**. The galaxies stay the same size; it's the **space between them** (the balloon) that changes. The squiggles are light waves traveling through that space.
+This **3D model** works like the balloon, but you can look at it from any side. Drag the slider to go **back in time**, or press **Play forward** to watch space expand from the beginning. The galaxies stay the same size; it's the **space between them** that changes. The squiggles are **light waves** traveling to the home galaxy: they stretch (and get redder) as space stretches. The orange **arrows** show how fast each galaxy is moving away from home.
+
+**Try this:** tap any galaxy to make it **home**. Every other galaxy still moves away from it, and the farthest ones still move fastest. No galaxy is the center.
+
+*This is a model: the galaxy positions are made up (placed at random), and the wave colors are only a guide. The size of space over time follows the standard expansion history.*
 
 ```{ojs}
 //| echo: false
@@ -993,64 +1301,389 @@ ouScale = function(gyrAgo) {
 
 ```{ojs}
 //| echo: false
-viewof balloonAgo = Inputs.range([0, 13.7], {label: "Billions of years ago:", step: 0.1, value: 0})
+// three.js (pinned). If it cannot load, the model below falls back to a simpler 2D drawing.
+bbTHREE = import("https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js").catch(() => null)
 ```
 
 ```{ojs}
 //| echo: false
-{
-  const a = ouScale(balloonAgo);
-  const W = 640, H = 400, cx = W / 2, cy = 190, R0 = 170;
-  let s = 7; const rand = () => { s = (s * 16807) % 2147483647; return s / 2147483647; };
-  const gal = d3.range(18).map(i => { const r = 0.88 * Math.sqrt(rand()), th = 2 * Math.PI * rand(); return {x: r * Math.cos(th), y: r * Math.sin(th), tilt: rand() * 180}; });
-  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`).style("width", "100%").style("height", "auto")
-    .style("max-width", "640px").style("display", "block").style("margin", "auto");
-  svg.append("rect").attr("width", W).attr("height", H).attr("rx", 12).attr("fill", "#0b0b24");
-  const R = Math.max(R0 * a, 2);
-  const T = a > 0 ? 2.725 / a : Infinity;
-  const glow = a < 0.02 ? "#fff3b0" : a < 0.1 ? "#ffb74d" : "#e57373";
-  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", R).attr("fill", glow).attr("fill-opacity", a < 0.05 ? 0.9 : 0.25).attr("stroke", "#ef9a9a").attr("stroke-width", 2);
-  if (a > 0.04) {
-    gal.forEach((g, i) => {
-      const gx = cx + g.x * R, gy = cy + g.y * R;
-      const lam = 9 * a;  // wavelength of the drawn light stretches with space
-      const pts = d3.range(0, 3 * 2 * Math.PI + 0.01, 0.3).map(p => [gx + 9 + (p / (2 * Math.PI)) * lam, gy + 4 * Math.sin(p)]);
-      svg.append("path").attr("d", d3.line()(pts)).attr("fill", "none").attr("stroke", "#fff59d").attr("stroke-width", 1.2);
-      svg.append("ellipse").attr("cx", gx).attr("cy", gy).attr("rx", 6).attr("ry", 2.6).attr("transform", `rotate(${g.tilt},${gx},${gy})`)
-        .attr("fill", i === 0 || i === 1 ? "#4fc3f7" : "#ffffff");
-    });
-    const A = gal[0], B = gal[1];
-    svg.append("line").attr("x1", cx + A.x * R).attr("y1", cy + A.y * R).attr("x2", cx + B.x * R).attr("y2", cy + B.y * R)
-      .attr("stroke", "#4fc3f7").attr("stroke-dasharray", "4,3");
+// 3D model of expanding space. Galaxy positions are randomly placed (NOT real galaxies).
+// The size of space over time comes from ouScale() above (standard expansion history).
+bbUniverse = {
+  const THREE = bbTHREE;
+  const AGE = 13.7, K = 0.0899, RMPC = 300, D = 2.7, FOV = 50;
+  const F = 1 / Math.tan(FOV * Math.PI / 360);
+  const root = document.createElement("div");
+  root.className = "bb-sim";
+  root.innerHTML = `
+    <div class="bb-ctl">
+      <button type="button" class="bb-btn" data-k="fwd">▶ Play forward</button>
+      <button type="button" class="bb-btn" data-k="back">◀ Rewind</button>
+      <button type="button" class="bb-btn" data-k="home">🏠 Pick another home</button>
+    </div>
+    <div class="bb-ctl">
+      <label class="bb-lab" for="bb-uni-ago">Billions of years ago (drag right to go back in time):</label>
+      <input class="bb-range" id="bb-uni-ago" type="range" min="0" max="13.7" step="0.1" value="0">
+      <output class="bb-val" for="bb-uni-ago"></output>
+    </div>
+    <div class="bb-stage">
+      <canvas data-k="gl" role="img" aria-label="3D model of space filled with randomly placed model galaxies around a home galaxy at the center. As time runs forward every galaxy moves away from the home galaxy, and the farthest ones move fastest. Running time backward pulls them all together into a hot, dense glow."></canvas>
+      <canvas data-k="over" class="bb-over" aria-hidden="true"></canvas>
+    </div>
+    <div class="bb-ctl">
+      <button type="button" class="bb-btn" data-k="arrows" aria-pressed="true">Speed arrows</button>
+      <button type="button" class="bb-btn" data-k="waves" aria-pressed="true">Light waves</button>
+      <button type="button" class="bb-btn" data-k="spin" aria-pressed="${bbUtil.reduced() ? "false" : "true"}">Slow spin</button>
+    </div>
+    <div class="bb-read">
+      <div data-k="title" style="font-weight:800;"></div>
+      <div data-k="l1"></div>
+      <div data-k="l2"></div>
+      <div class="bb-tablewrap"><table class="bb-table">
+        <thead><tr><th>Galaxy</th><th class="bb-num">Distance from home (million light-years)</th><th class="bb-num">Speed moving away (km/s)</th></tr></thead>
+        <tbody data-k="rows"></tbody></table></div>
+      <div class="bb-note" data-k="law"></div>
+    </div>
+    <div class="bb-lab" style="margin-top:12px;">Size of the universe compared with today (the dot follows the slider)</div>
+    <canvas data-k="curve" role="img" aria-label="Line graph of the size of the universe as a percent of today's size, rising from 0 percent 13.7 billion years ago to 100 percent today. A dot marks the time chosen with the slider."></canvas>
+    <p class="bb-note" data-k="fallback" style="display:none;">3D graphics are not available on this device, so this is a simpler 2D drawing of the same model.</p>`;
+  const $ = k => root.querySelector(`[data-k="${k}"]`);
+  const stage = root.querySelector(".bb-stage"), glc = $("gl"), over = $("over"), octx = over.getContext("2d");
+  const curve = $("curve"), cctx = curve.getContext("2d");
+  const slider = root.querySelector("input"), out = root.querySelector("output");
+  const setText = (el, s) => { if (el.textContent !== s) el.textContent = s; };
+
+  // ---- model galaxies: random positions in a cube that repeats, so there is no edge and no center
+  let seed = 20240; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  const N = 300;
+  const gal = Array.from({length: N}, () => ({
+    p: [rnd() * 2 - 1, rnd() * 2 - 1, rnd() * 2 - 1],
+    size: 0.13 + rnd() * 0.11, rot: rnd() * Math.PI, flat: 0.3 + rnd() * 0.7,
+    col: [[1, 0.95, 0.85], [0.8, 0.88, 1], [1, 0.85, 0.7], [0.92, 0.92, 1]][Math.floor(rnd() * 4)],
+    rel: [0, 0, 0], r0: 0, fade: 0, sx: 0, sy: 0, vz: 0
+  }));
+  const wrap = d => d - 2 * Math.round(d / 2);
+
+  // ---- state
+  let W = 600, H = 400, dpr = 1;
+  let ago = 0, a = 1, play = 0;                 // play: +1 forward in time, -1 backward, 0 paused
+  let yaw = 0.5, pitch = 0.28, spin = !bbUtil.reduced();
+  let showArrows = true, showWaves = true, phase = 0, dirty = true;
+  let homeIdx = 0, homeFrom = gal[0].p.slice(), homeTo = gal[0].p.slice(), homeT = 1, hpos = gal[0].p.slice();
+  let tracked = [];
+  const hubble = () => { const t = AGE - ago; return t <= 0 ? Infinity : (2 / 3) * K / Math.tanh(K * t) * 977.8; };   // km/s per Mpc in this model
+
+  function pickTracked() {
+    const c = gal.map((g, i) => ({i, r: Math.hypot(wrap(g.p[0] - homeTo[0]), wrap(g.p[1] - homeTo[1]), wrap(g.p[2] - homeTo[2]))})).filter(o => o.i !== homeIdx);
+    tracked = [0.36, 0.6, 0.84].map(target => c.reduce((b, o) => Math.abs(o.r - target) < Math.abs(b.r - target) ? o : b).i);
   }
-  const lines = balloonAgo >= 13.7
-    ? ["The beginning of time: all of space is squeezed to a tiny point.", "Extremely hot and dense: no atoms, no stars, no galaxies yet."]
-    : [`Size of the universe: ${(a * 100).toFixed(a < 0.1 ? 1 : 0)}% of today · distance between the blue galaxies: ${(a * 100).toFixed(a < 0.1 ? 1 : 0)}% of today`,
-       `Light traveling since then gets stretched ${(1 / a).toFixed(1)}× · temperature of the leftover radiation: ${T < 1000 ? T.toFixed(1) : Math.round(T).toLocaleString()} K`];
-  svg.append("text").attr("x", W / 2).attr("y", 26).attr("text-anchor", "middle").attr("fill", "white").attr("font-size", 16).attr("font-weight", 700)
-    .text(balloonAgo === 0 ? "The universe today (13.7 billion years after the beginning)" : `The universe ${balloonAgo.toFixed(1)} billion years ago`);
-  lines.forEach((l, i) => svg.append("text").attr("x", W / 2).attr("y", H - 34 + i * 20).attr("text-anchor", "middle").attr("fill", "#cbd5e1").attr("font-size", 12.5).text(l));
-  if (a > 0 && a <= 0.04) svg.append("text").attr("x", W / 2).attr("y", cy + R + 22).attr("text-anchor", "middle").attr("fill", "#fff3b0").attr("font-size", 12)
-    .text("Too early for galaxies: matter is packed together, hot and glowing");
-  return svg.node();
-}
-```
+  pickTracked();
 
-```{ojs}
-//| echo: false
-{
-  const curve = d3.range(0, 13.71, 0.05).map(ago => ({ago, size: ouScale(ago) * 100}));
-  return Plot.plot({
-    title: "Size of the universe compared with today",
-    subtitle: "Simplified model based on the standard expansion history. The dot follows the slider.",
-    width: width, height: 230, marginLeft: 46, marginBottom: 40,
-    x: {label: "← Billions of years ago (time runs left to right)", domain: [13.7, 0], grid: true},
-    y: {label: "Size (% of today)", domain: [0, 100], grid: true},
-    marks: [
-      Plot.line(curve, {x: "ago", y: "size", stroke: "#e65100", strokeWidth: 2.5}),
-      Plot.dot([{ago: balloonAgo, size: ouScale(balloonAgo) * 100}], {x: "ago", y: "size", r: 7, fill: "#e65100", stroke: "white"})
-    ]
+  // ---- three.js setup (optional)
+  let gl = null;
+  if (THREE && !/bb2d/.test(location.search)) {
+    try {
+      const renderer = new THREE.WebGLRenderer({canvas: glc, antialias: false, powerPreference: "low-power"});
+      renderer.setClearColor(0x05051a, 1);
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 20);
+      camera.position.set(0, 0, D);
+      const geo = new THREE.BufferGeometry();
+      const pos = new Float32Array(N * 3), col = new Float32Array(N * 3);
+      geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+      geo.setAttribute("aCol", new THREE.BufferAttribute(col, 3));
+      geo.setAttribute("aSize", new THREE.BufferAttribute(Float32Array.from(gal, g => g.size), 1));
+      geo.setAttribute("aRot", new THREE.BufferAttribute(Float32Array.from(gal, g => g.rot), 1));
+      geo.setAttribute("aFlat", new THREE.BufferAttribute(Float32Array.from(gal, g => g.flat), 1));
+      const mat = new THREE.ShaderMaterial({
+        uniforms: {uScale: {value: 300}},
+        transparent: true, depthTest: false, depthWrite: false, blending: THREE.AdditiveBlending,
+        vertexShader: `
+          attribute vec3 aCol; attribute float aSize; attribute float aRot; attribute float aFlat;
+          uniform float uScale; varying vec3 vCol; varying float vRot; varying float vFlat;
+          void main() {
+            vec4 mv = modelViewMatrix * vec4(position, 1.0);
+            gl_Position = projectionMatrix * mv;
+            gl_PointSize = max(3.0, aSize * uScale / -mv.z);
+            vCol = aCol; vRot = aRot; vFlat = aFlat;
+          }`,
+        fragmentShader: `
+          varying vec3 vCol; varying float vRot; varying float vFlat;
+          void main() {
+            vec2 p = gl_PointCoord * 2.0 - 1.0;
+            float c = cos(vRot), s = sin(vRot);
+            vec2 q = vec2(c * p.x + s * p.y, (-s * p.x + c * p.y) / vFlat);
+            float disk = exp(-dot(q, q) * 4.5) * 0.7;
+            float core = exp(-dot(p, p) * 30.0);
+            float edge = 1.0 - smoothstep(0.8, 1.0, length(p));
+            gl_FragColor = vec4(vCol * (disk + core) * edge, 1.0);
+          }`
+      });
+      const points = new THREE.Points(geo, mat);
+      points.frustumCulled = false;
+      scene.add(points);
+      gl = {renderer, scene, camera, geo, mat, pos, col};
+      glc.addEventListener("webglcontextlost", e => { e.preventDefault(); useFallback(); requestDraw(); });
+    } catch (e) { gl = null; }
+  }
+  function useFallback() {
+    if (gl) { try { gl.geo.dispose(); gl.mat.dispose(); gl.renderer.dispose(); } catch (e) {} }
+    gl = null; $("fallback").style.display = ""; glc.style.visibility = "hidden";
+  }
+  if (!gl) useFallback();
+
+  // ---- projection (same camera as three.js)
+  function project(x, y, z, o) {
+    const cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    const x1 = x * cy + z * sy, z1 = -x * sy + z * cy;
+    const y2 = y * cp - z1 * sp, z2 = y * sp + z1 * cp;
+    const w = D - z2;
+    o.x = x1; o.y = y2; o.z = z2;
+    o.sx = (1 + F / (W / H) * x1 / w) * W / 2; o.sy = (1 - F * y2 / w) * H / 2;
+    return o;
+  }
+  const tmp = {}, tmp2 = {};
+  const smooth = (e0, e1, x) => { const u = Math.max(0, Math.min(1, (x - e0) / (e1 - e0))); return u * u * (3 - 2 * u); };
+
+  function update() {
+    a = ouScale(ago);
+    const e = homeT < 1 ? homeT * homeT * (3 - 2 * homeT) : 1;
+    for (let k = 0; k < 3; k++) hpos[k] = homeFrom[k] + wrap(homeTo[k] - homeFrom[k]) * e;
+    const early = smooth(0.03, 0.09, a);
+    for (let i = 0; i < N; i++) {
+      const g = gal[i];
+      for (let k = 0; k < 3; k++) g.rel[k] = wrap(g.p[k] - hpos[k]);
+      g.r0 = Math.hypot(g.rel[0], g.rel[1], g.rel[2]);
+      g.fade = (1 - smooth(0.78, 1, g.r0)) * early;
+      project(g.rel[0] * a, g.rel[1] * a, g.rel[2] * a, tmp);
+      g.sx = tmp.sx; g.sy = tmp.sy; g.vz = tmp.z;
+      if (gl) {
+        gl.pos[3 * i] = tmp.x; gl.pos[3 * i + 1] = tmp.y; gl.pos[3 * i + 2] = tmp.z;
+        const b = g.fade * (i === homeIdx && homeT >= 1 ? 1.6 : 1);
+        gl.col[3 * i] = g.col[0] * b; gl.col[3 * i + 1] = g.col[1] * b; gl.col[3 * i + 2] = g.col[2] * b;
+      }
+    }
+  }
+
+  function drawOverlay() {
+    const c = octx;
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    c.clearRect(0, 0, W, H);
+    const Rpx = a > 0 ? (H / 2) * F * a / Math.sqrt(D * D - a * a) : 0;
+    // hot, dense glow of the early universe
+    const hot = 1 - smooth(0.0, 0.3, a);
+    if (hot > 0.01) {
+      const r = Math.max(10, Rpx * 1.15);
+      const gr = c.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, r);
+      gr.addColorStop(0, `rgba(255,248,200,${hot})`); gr.addColorStop(0.5, `rgba(255,170,70,${hot * 0.7})`); gr.addColorStop(1, "rgba(255,90,40,0)");
+      c.fillStyle = gr; c.beginPath(); c.arc(W / 2, H / 2, r, 0, 2 * Math.PI); c.fill();
+    }
+    // the patch of space we are watching
+    if (Rpx > 2) { c.strokeStyle = "rgba(239,154,154,0.45)"; c.lineWidth = 1.2; c.setLineDash([5, 5]); c.beginPath(); c.arc(W / 2, H / 2, Rpx, 0, 2 * Math.PI); c.stroke(); c.setLineDash([]); }
+    if (!gl) {   // 2D fallback: draw the galaxies here
+      c.globalCompositeOperation = "lighter";
+      for (const g of gal) {
+        if (g.fade < 0.03) continue;
+        const r = Math.max(1.5, g.size * 22 * (H / 400) / (D - g.vz) * 2.2);
+        c.fillStyle = `rgba(${Math.round(g.col[0] * 255)},${Math.round(g.col[1] * 255)},${Math.round(g.col[2] * 255)},${0.85 * g.fade})`;
+        c.beginPath(); c.arc(g.sx, g.sy, r, 0, 2 * Math.PI); c.fill();
+      }
+      c.globalCompositeOperation = "source-over";
+    }
+    const settled = homeT >= 1;
+    // speed arrows: length shows how fast each galaxy moves away from home (Hubble's law)
+    if (showArrows && a > 0.03) {
+      const Hn = hubble();
+      c.lineWidth = 1.2; c.strokeStyle = "#ffb74d"; c.fillStyle = "#ffb74d";
+      for (let i = 0; i < N; i++) {
+        const g = gal[i];
+        if (i === homeIdx || g.fade < 0.25 || g.r0 < 0.06) continue;
+        const v = Hn * g.r0 * a * RMPC;                         // km/s
+        const len = Math.min(0.32, 0.6 * a, v / 21000 * 0.2);
+        const s = a + len / g.r0;
+        project(g.rel[0] * s, g.rel[1] * s, g.rel[2] * s, tmp);
+        const dx = tmp.sx - g.sx, dy = tmp.sy - g.sy, L = Math.hypot(dx, dy);
+        if (L < 3) continue;
+        c.globalAlpha = 0.6 * g.fade * (settled ? 1 : 0.3) * smooth(0.06, 0.2, a);
+        c.beginPath(); c.moveTo(g.sx, g.sy); c.lineTo(tmp.sx, tmp.sy); c.stroke();
+        const ux = dx / L, uy = dy / L;
+        c.beginPath(); c.moveTo(tmp.sx + ux * 3, tmp.sy + uy * 3); c.lineTo(tmp.sx - ux * 4 - uy * 3.5, tmp.sy - uy * 4 + ux * 3.5); c.lineTo(tmp.sx - ux * 4 + uy * 3.5, tmp.sy - uy * 4 - ux * 3.5); c.closePath(); c.fill();
+      }
+      c.globalAlpha = 1;
+    }
+    // light waves traveling from galaxies A, B, C to home: they stretch as space stretches
+    if (settled && a > 0.05) {
+      c.font = "800 13px system-ui, sans-serif"; c.textAlign = "center"; c.textBaseline = "middle";
+      tracked.forEach((gi, n) => {
+        const g = gal[gi];
+        if (showWaves) {
+          let ux = g.rel[2], uy = 0, uz = -g.rel[0];
+          let ul = Math.hypot(ux, uz); if (ul < 1e-3) { ux = 1; uz = 0; ul = 1; } ux /= ul; uz /= ul;
+          const cycles = g.r0 * 9, amp = 0.035 * Math.sqrt(a), steps = Math.max(40, Math.round(cycles * 14));
+          c.strokeStyle = wlColor(400 + 270 * a); c.lineWidth = 2; c.globalAlpha = 0.95;
+          c.beginPath();
+          for (let k = 0; k <= steps; k++) {
+            const s = k / steps, env = Math.sin(Math.PI * s);
+            const off = amp * env * Math.sin(2 * Math.PI * cycles * s - phase);
+            project(g.rel[0] * a * (1 - s) + ux * off, g.rel[1] * a * (1 - s) + uy * off, g.rel[2] * a * (1 - s) + uz * off, tmp2);
+            if (k === 0) c.moveTo(tmp2.sx, tmp2.sy); else c.lineTo(tmp2.sx, tmp2.sy);
+          }
+          c.stroke(); c.globalAlpha = 1;
+        }
+        const lx = Math.max(12, Math.min(W - 12, g.sx + 13)), ly = Math.max(12, Math.min(H - 12, g.sy - 12));
+        c.lineWidth = 3; c.strokeStyle = "rgba(5,5,26,0.9)"; c.strokeText("ABC"[n], lx, ly);
+        c.fillStyle = "#ffe082"; c.fillText("ABC"[n], lx, ly);
+        c.strokeStyle = "#ffe082"; c.lineWidth = 1.5; c.beginPath(); c.arc(g.sx, g.sy, 8, 0, 2 * Math.PI); c.stroke();
+      });
+    }
+    // home marker (always at the center)
+    if (a > 0.05) {
+      c.strokeStyle = "#4fc3f7"; c.lineWidth = 2; c.beginPath(); c.arc(W / 2, H / 2, 11, 0, 2 * Math.PI); c.stroke();
+      c.font = "800 12px system-ui, sans-serif"; c.textAlign = "center"; c.textBaseline = "middle";
+      c.lineWidth = 3; c.strokeStyle = "rgba(5,5,26,0.9)"; c.strokeText("HOME", W / 2, H / 2 + 23);
+      c.fillStyle = "#4fc3f7"; c.fillText("HOME", W / 2, H / 2 + 23);
+    }
+    c.font = "600 11px system-ui, sans-serif"; c.textAlign = "left"; c.textBaseline = "alphabetic";
+    c.fillStyle = "rgba(226,232,240,0.85)";
+    c.fillText("MODEL: galaxy positions are made up", 8, 16);
+    c.textAlign = "right"; c.fillText("Tap a galaxy to make it home. Drag to turn.", W - 8, H - 8);
+    if (a > 0 && a <= 0.05) { c.textAlign = "center"; c.fillStyle = "#fff3b0"; c.font = "600 12px system-ui, sans-serif"; c.fillText("Too early for galaxies: matter is hot, dense and glowing", W / 2, H / 2 + 46); }
+  }
+
+  function drawCurve() {
+    const f = bbUtil.fit(curve, 150), w = f.w, h = 150, c = cctx;
+    c.setTransform(f.dpr, 0, 0, f.dpr, 0, 0);
+    c.clearRect(0, 0, w, h);
+    c.fillStyle = "#0b1020"; c.fillRect(0, 0, w, h);
+    const x0 = 44, x1 = w - 14, y0 = 14, y1 = h - 34;
+    const X = g => x0 + (AGE - g) / AGE * (x1 - x0), Y = p => y1 - p / 100 * (y1 - y0);
+    c.font = "600 11px system-ui, sans-serif"; c.fillStyle = "#cbd5e1"; c.strokeStyle = "rgba(148,163,184,0.3)"; c.lineWidth = 1;
+    c.textAlign = "right"; c.textBaseline = "middle";
+    for (const p of [0, 50, 100]) { c.beginPath(); c.moveTo(x0, Y(p)); c.lineTo(x1, Y(p)); c.stroke(); c.fillText(p + "%", x0 - 6, Y(p)); }
+    c.textAlign = "center"; c.textBaseline = "top";
+    for (const g of [12, 10, 8, 6, 4, 2, 0]) { c.beginPath(); c.moveTo(X(g), y0); c.lineTo(X(g), y1); c.stroke(); c.fillText(String(g), X(g), y1 + 4); }
+    c.fillText("Billions of years ago (time runs left to right)", (x0 + x1) / 2, y1 + 18);
+    c.strokeStyle = "#ff8a3d"; c.lineWidth = 2.5; c.beginPath();
+    for (let g = AGE; g >= 0; g -= 0.05) { const px = X(g), py = Y(ouScale(g) * 100); if (g === AGE) c.moveTo(px, py); else c.lineTo(px, py); }
+    c.lineTo(X(0), Y(100)); c.stroke();
+    c.fillStyle = "#ff8a3d"; c.strokeStyle = "#fff"; c.lineWidth = 2;
+    c.beginPath(); c.arc(X(ago), Y(a * 100), 7, 0, 2 * Math.PI); c.fill(); c.stroke();
+  }
+
+  let lastRows = "";
+  function readout() {
+    setText(out, ago === 0 ? "today" : `${ago.toFixed(1)} ago`);
+    slider.setAttribute("aria-valuetext", `${ago.toFixed(1)} billion years ago`);
+    const pct = `${(a * 100).toFixed(a < 0.1 ? 1 : 0)}%`;
+    if (ago >= AGE - 1e-6) {
+      setText($("title"), "The beginning of time");
+      setText($("l1"), "All of space is squeezed to a tiny point.");
+      setText($("l2"), "Extremely hot and dense: no atoms, no stars, no galaxies yet.");
+    } else {
+      const T = 2.725 / a;
+      setText($("title"), ago === 0 ? "The universe today (13.7 billion years after the beginning)" : `The universe ${ago.toFixed(1)} billion years ago`);
+      setText($("l1"), `Size of the universe: ${pct} of today. Every distance between galaxies: ${pct} of today.`);
+      setText($("l2"), `Light traveling since then gets stretched ${(1 / a).toFixed(1)}×. Temperature of the leftover radiation: ${T < 1000 ? T.toFixed(1) : Math.round(T).toLocaleString()} K.`);
+    }
+    const Hn = hubble();
+    const rows = a > 0.05 ? tracked.map((gi, n) => {
+      const d = gal[gi].r0 * a * RMPC, v = Hn * d;
+      return `<tr><td><strong>${"ABC"[n]}</strong></td><td class="bb-num">${(Math.round(d * 3.26 / 10) * 10).toLocaleString()}</td><td class="bb-num">${(Math.round(v / 100) * 100).toLocaleString()}</td></tr>`;
+    }).join("") : `<tr><td colspan="3">No galaxies yet.</td></tr>`;
+    if (rows !== lastRows && homeT >= 1) { $("rows").innerHTML = rows; lastRows = rows; }
+    setText($("law"), "Model distances and speeds (not measurements). Notice the pattern: the galaxy that is about twice as far moves away about twice as fast. That pattern is Hubble's law.");
+    $("fwd").textContent = play > 0 ? "⏸ Pause" : "▶ Play forward";
+    $("back").textContent = play < 0 ? "⏸ Pause" : "◀ Rewind";
+  }
+
+  function render() {
+    update();
+    if (gl) {
+      gl.geo.attributes.position.needsUpdate = true; gl.geo.attributes.aCol.needsUpdate = true;
+      gl.mat.uniforms.uScale.value = H * dpr * 0.5 * F;
+      gl.renderer.render(gl.scene, gl.camera);
+    }
+    drawOverlay();
+  }
+  function frame(dt) {
+    if (play !== 0) {
+      ago = Math.max(0, Math.min(AGE, ago - play * dt * 1.1));
+      if ((play > 0 && ago <= 0) || (play < 0 && ago >= AGE)) play = 0;
+      slider.value = ago;
+    }
+    if (spin) yaw += dt * 0.12;
+    if (homeT < 1) { homeT = Math.min(1, homeT + dt / 0.9); if (homeT >= 1) lastRows = ""; }
+    if (showWaves && !bbUtil.reduced()) phase += dt * 3;
+    render(); readout(); if (play !== 0 || dirty) drawCurve();
+    dirty = false;
+    // keep animating only while something is moving
+    if (!(play !== 0 || spin || homeT < 1 || (showWaves && !bbUtil.reduced() && a > 0.05))) loop.run(false);
+  }
+  const loop = bbUtil.loop(root, frame);
+  function requestDraw() { dirty = true; loop.run(true); }
+
+  function resize() {
+    W = Math.max(220, Math.round(stage.clientWidth || 600));
+    H = Math.round(Math.max(300, Math.min(480, W * 0.78)));
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    stage.style.height = H + "px";
+    over.style.width = W + "px"; over.style.height = H + "px";
+    over.width = Math.round(W * dpr); over.height = Math.round(H * dpr);
+    glc.style.height = H + "px";
+    if (gl) { gl.renderer.setPixelRatio(dpr); gl.renderer.setSize(W, H, false); gl.camera.aspect = W / H; gl.camera.updateProjectionMatrix(); }
+    render(); readout(); drawCurve(); requestDraw();
+  }
+
+  function setHome(i) {
+    if (i === homeIdx || homeT < 1) return;
+    homeFrom = hpos.slice(); homeTo = gal[i].p.slice(); homeIdx = i; homeT = bbUtil.reduced() ? 1 : 0;
+    pickTracked(); lastRows = ""; requestDraw();
+  }
+
+  // ---- controls
+  $("fwd").onclick = () => { if (play > 0) play = 0; else { if (ago <= 0.001) ago = AGE; play = 1; } requestDraw(); };
+  $("back").onclick = () => { if (play < 0) play = 0; else { if (ago >= AGE - 0.001) ago = 0; play = -1; } requestDraw(); };
+  $("home").onclick = () => {
+    const c = gal.map((g, i) => i).filter(i => i !== homeIdx && gal[i].r0 > 0.35 && gal[i].r0 < 0.75);
+    if (c.length) setHome(c[Math.floor(Math.random() * c.length)]);
+  };
+  slider.oninput = () => { play = 0; ago = +slider.value; requestDraw(); };
+  const toggle = (k, fn) => { $(k).onclick = e => { const v = fn(); e.currentTarget.setAttribute("aria-pressed", v ? "true" : "false"); requestDraw(); }; };
+  toggle("arrows", () => (showArrows = !showArrows));
+  toggle("waves", () => (showWaves = !showWaves));
+  toggle("spin", () => (spin = !spin));
+
+  // drag to turn, tap to choose a home galaxy (vertical swipes still scroll the page)
+  let drag = null;
+  stage.style.touchAction = "pan-y"; stage.style.cursor = "grab";
+  stage.addEventListener("pointerdown", e => { drag = {x: e.clientX, y: e.clientY, x0: e.clientX, y0: e.clientY, t: performance.now(), moved: false}; });
+  stage.addEventListener("pointermove", e => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) > 6) drag.moved = true;
+    if (drag.moved) { yaw += dx * 0.008; if (e.pointerType === "mouse") pitch = Math.max(-1.2, Math.min(1.2, pitch + dy * 0.008)); requestDraw(); }
+    drag.x = e.clientX; drag.y = e.clientY;
   });
+  const endDrag = e => {
+    if (drag && !drag.moved && e.type === "pointerup" && performance.now() - drag.t < 600) {
+      const b = stage.getBoundingClientRect(), px = e.clientX - b.left, py = e.clientY - b.top;
+      let best = -1, bd = 30;
+      gal.forEach((g, i) => { if (g.fade < 0.2 || i === homeIdx) return; const d = Math.hypot(g.sx - px, g.sy - py); if (d < bd) { bd = d; best = i; } });
+      if (best >= 0) setHome(best);
+    }
+    drag = null;
+  };
+  stage.addEventListener("pointerup", endDrag);
+  stage.addEventListener("pointercancel", endDrag);
+  stage.addEventListener("pointerleave", endDrag);
+
+  const ro = new ResizeObserver(resize);
+  ro.observe(root);
+  invalidation.then(() => {
+    loop.stop(); ro.disconnect();
+    if (gl) { try { gl.geo.dispose(); gl.mat.dispose(); gl.renderer.dispose(); gl.renderer.forceContextLoss(); } catch (e) {} }
+  });
+  return root;
 }
 ```
 
