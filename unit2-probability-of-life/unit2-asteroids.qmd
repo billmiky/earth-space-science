@@ -33,6 +33,31 @@ h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !impo
 h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #00838f !important; }
 .ao-table { width: 100%; border-collapse: collapse; font-size: .9em; margin: 6px 0 16px; }
 .ao-table th, .ao-table td { padding: 6px 8px; border-bottom: 1px solid rgba(128,128,128,.3); text-align: left; }
+.ao-sim { max-width: 640px; margin: 14px auto 18px; padding: 10px; box-sizing: border-box; border-radius: 14px; background: #0b1026; color: #e8ecf8; box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+.ao-sim canvas { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 10px; touch-action: pan-y; }
+.ao-sim-stage { position: relative; overflow: hidden; border-radius: 10px; background: #050816; }
+.ao-sim-stage canvas { cursor: grab; }
+.ao-sim-lab { position: absolute; left: 0; top: 0; pointer-events: none; font-size: 12px; font-weight: 700; white-space: nowrap; text-shadow: 0 0 4px #000, 0 0 4px #000; }
+.ao-sim-title { font-weight: 800; font-size: .95em; margin: 2px 2px 8px; color: #fff; }
+.ao-sim-row { display: flex; align-items: center; gap: 4px 10px; flex-wrap: wrap; min-height: 44px; font-size: .88em; margin-top: 4px; }
+.ao-sim-row label { flex: 1 1 150px; color: #e8ecf8; margin: 0; }
+.ao-sim-row input[type=range] { flex: 3 1 170px; min-width: 0; height: 44px; margin: 0; accent-color: #4dd0e1; }
+.ao-sim-row output { flex: 0 0 auto; min-width: 4.2em; text-align: right; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
+.ao-sim-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.ao-sim-btn { min-height: 44px; min-width: 44px; padding: 6px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.1); color: #fff; font-weight: 700; font-size: .85em; cursor: pointer; }
+.ao-sim-btn:hover { background: rgba(255,255,255,.2); }
+.ao-sim-btn[aria-pressed="true"] { background: #00838f; border-color: #4dd0e1; }
+.ao-sim-btn:focus-visible, .ao-sim-row input:focus-visible { outline: 3px solid #ffd54f; outline-offset: 2px; }
+.ao-sim-read { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 6px; margin-top: 8px; }
+.ao-sim-read > div { background: rgba(255,255,255,.08); border-radius: 8px; padding: 6px 9px; font-size: .8em; color: #c9d2ea; line-height: 1.3; }
+.ao-sim-read b { display: block; font-size: 1.2em; color: #fff; font-variant-numeric: tabular-nums; }
+.ao-sim-note { font-size: .78em; color: #c0c9e2; margin: 8px 2px 2px; line-height: 1.4; }
+.ao-sim-status { font-size: .88em; font-weight: 700; color: #ffe082; margin: 8px 2px 0; min-height: 1.4em; }
+.ao-sim-tablewrap { overflow-x: auto; margin-top: 8px; }
+.ao-sim table { width: 100%; border-collapse: collapse; font-size: .8em; color: #e8ecf8; margin: 0; background: transparent; }
+.ao-sim thead, .ao-sim tbody, .ao-sim tr { background: transparent !important; }
+.ao-sim th, .ao-sim td { padding: 5px 7px; border-bottom: 1px solid rgba(255,255,255,.18); text-align: left; color: #e8ecf8 !important; background: transparent !important; font-variant-numeric: tabular-nums; }
+.ao-sim-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
 </style>
 ```
 
@@ -89,6 +114,97 @@ Your packet's video follows a NASA scientist who tracks dangerous asteroids. Her
 //| echo: false
 Plot = require("@observablehq/plot")
 d3 = require("d3@7")
+```
+
+```{ojs}
+//| echo: false
+// Shared helpers for this chapter's animated models (controls, canvas sizing, pausing off-screen)
+aoKit = {
+  const reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  let uid = 0;
+  const h = (tag, props = {}, kids = []) => {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)) {
+      if (k === "style") n.style.cssText = v;
+      else if (k === "text") n.textContent = v;
+      else if (k === "html") n.innerHTML = v;
+      else if (k === "className") n.className = v;
+      else n.setAttribute(k, v);
+    }
+    for (const c of [].concat(kids)) if (c) n.append(c);
+    return n;
+  };
+  const slider = ({label, min, max, step, value, fmt = v => String(v)}) => {
+    const id = "ao-sl-" + (++uid);
+    const input = h("input", {type: "range", id, min, max, step});
+    input.value = value;
+    const out = h("output", {for: id});
+    const row = h("div", {className: "ao-sim-row"}, [h("label", {for: id, text: label}), input, out]);
+    const sync = () => { out.textContent = fmt(+input.value); };
+    input.addEventListener("input", sync);
+    sync();
+    return {row, input, sync, get value() { return +input.value; }, set value(v) { input.value = v; sync(); }};
+  };
+  const button = (text, pressed) => {
+    const b = h("button", {type: "button", className: "ao-sim-btn", text});
+    if (pressed !== undefined) b.setAttribute("aria-pressed", String(pressed));
+    return b;
+  };
+  const readout = label => {
+    const b = h("b"), node = h("div", {}, [b, label]);
+    return {node, set(t) { if (b.textContent !== t) b.textContent = t; }};
+  };
+  // 2D canvas with a fixed logical size (W x H); the backing store follows the real width, device pixel ratio capped at 2
+  const canvas2d = (W, H, label) => {
+    const c = h("canvas", {role: "img", "aria-label": label, width: W, height: H});
+    c.style.aspectRatio = `${W} / ${H}`;
+    const ctx = c.getContext("2d");
+    const fit = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const bw = Math.max(1, Math.round((c.clientWidth || W) * dpr));
+      if (c.width !== bw) { c.width = bw; c.height = Math.round(bw * H / W); }
+      ctx.setTransform(c.width / W, 0, 0, c.width / W, 0, 0);
+    };
+    return {c, ctx, fit};
+  };
+  // Animation loop that only runs while playing AND on screen; stops for good when the cell is invalidated
+  const runner = (target, tick, draw, invalidation) => {
+    let raf = 0, visible = false, playing = false, last = 0;
+    const frame = ts => {
+      raf = 0;
+      const dt = Math.min(Math.max((ts - last) / 1000, 0), 0.05);
+      last = ts;
+      tick(dt);
+      draw();
+      if (visible && playing) raf = requestAnimationFrame(frame);
+    };
+    const kick = () => { if (visible && playing && !raf) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+    const halt = () => { if (raf) cancelAnimationFrame(raf); raf = 0; };
+    const io = new IntersectionObserver(es => { visible = es[es.length - 1].isIntersecting; if (visible) kick(); else halt(); });
+    io.observe(target);
+    const ro = new ResizeObserver(() => draw());
+    ro.observe(target);
+    invalidation.then(() => { halt(); io.disconnect(); ro.disconnect(); });
+    return {play() { playing = true; kick(); }, pause() { playing = false; halt(); }, get playing() { return playing; }};
+  };
+  const arrow = (ctx, x1, y1, x2, y2, color, w = 2.5) => {
+    const a = Math.atan2(y2 - y1, x2 - x1), hd = 7;
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = w; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2 - Math.cos(a) * hd * 0.7, y2 - Math.sin(a) * hd * 0.7); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - hd * Math.cos(a - 0.45), y2 - hd * Math.sin(a - 0.45));
+    ctx.lineTo(x2 - hd * Math.cos(a + 0.45), y2 - hd * Math.sin(a + 0.45));
+    ctx.closePath(); ctx.fill();
+  };
+  // Fixed decorative background stars (same every time, not data)
+  const stars = (ctx, W, H, n = 60) => {
+    let s = 12345;
+    const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    ctx.fillStyle = "rgba(255,255,255,.45)";
+    for (let i = 0; i < n; i++) { const r = rnd() < 0.15 ? 1 : 0.6; ctx.beginPath(); ctx.arc(rnd() * W, rnd() * H, r, 0, 7); ctx.fill(); }
+  };
+  return {reduce, h, slider, button, readout, canvas2d, runner, arrow, stars};
+}
 ```
 
 ```{ojs}
@@ -423,7 +539,8 @@ All objects in the solar system move in **ellipses**. Planets' ellipses are near
 
 - Change the **eccentricity**: what happens to the shape?
 - Set eccentricity **0.7** and semi-major axis **3 AU**. Each colored wedge is the area swept by the line from the Sun to the object in **1/16 of its orbit**.
-- Move **your sweep** (blue) around the orbit and compare it with the others.
+- Press **Play** and watch **your sweep** (blue) follow the object. Its shape keeps changing. Does its **area** change?
+- Press **Pause** and use the last slider to park the object anywhere. Compare your sweep with the other two in the table.
 
 ```{ojs}
 //| echo: false
@@ -432,88 +549,99 @@ aoSolveE = (M, e) => { let E = e > 0.8 ? Math.PI : M; for (let i = 0; i < 30; i+
 
 ```{ojs}
 //| echo: false
-viewof k2e = Inputs.range([0, 0.9], {label: "Eccentricity:", step: 0.01, value: 0.7})
-```
+aoK2Sim = {
+  const K = aoKit, W = 360, H = 250, TAU = 2 * Math.PI;
+  const cv = K.canvas2d(W, H, "Animated model of an object orbiting the Sun on an ellipse, with the Sun at one focus. Three colored wedges each show the area swept in one sixteenth of the orbit: one near the Sun, one far from the Sun, and one that trails the moving object.");
+  const ctx = cv.ctx;
+  const sE = K.slider({label: "Eccentricity", min: 0, max: 0.9, step: 0.01, value: 0.7, fmt: v => v.toFixed(2)});
+  const sA = K.slider({label: "Semi-major axis (AU)", min: 0.5, max: 5, step: 0.01, value: 3, fmt: v => v.toFixed(2)});
+  const sP = K.slider({label: "Move the object (fraction of one orbit after its closest point)", min: 0, max: 1, step: 0.005, value: 0.25, fmt: v => v.toFixed(2)});
+  const bPlay = K.button(K.reduce ? "▶ Play" : "⏸ Pause");
+  const rR = K.readout("Distance from the Sun now"), rV = K.readout("Speed now"), rT = K.readout("Time for one full orbit");
+  const sweeps = [
+    {name: "Near the Sun", color: "#f1c40f"},
+    {name: "Far from the Sun", color: "#e84393"},
+    {name: "Your sweep", color: "#00cec9"}
+  ];
+  const tbody = K.h("tbody");
+  for (const sw of sweeps) {
+    sw.cells = [0, 1, 2, 3].map(() => K.h("td"));
+    tbody.append(K.h("tr", {}, [K.h("td", {}, [K.h("span", {className: "ao-sim-dot", style: `background:${sw.color}`}), sw.name]), ...sw.cells]));
+  }
+  const table = K.h("div", {className: "ao-sim-tablewrap"}, K.h("table", {}, [
+    K.h("thead", {}, K.h("tr", {}, ["Sweep", "Time (yr)", "Area (AU²)", "Distance traveled (AU)", "Average speed (km/s)"].map(t => K.h("th", {text: t})))),
+    tbody]));
+  const root = K.h("div", {className: "ao-sim"}, [
+    K.h("div", {className: "ao-sim-title", text: "Model: Kepler's Second Law"}),
+    cv.c,
+    K.h("div", {className: "ao-sim-btns"}, [bPlay]),
+    sE.row, sA.row, sP.row,
+    K.h("div", {className: "ao-sim-read"}, [rR.node, rV.node, rT.node]),
+    table,
+    K.h("div", {className: "ao-sim-note", text: "This is a mathematical model built from Kepler's laws for an object orbiting our Sun. Each wedge covers 1/16 of the orbit's time. The green arrow shows the object's speed and direction. The picture is zoomed to fit, so use the scale bar."})
+  ]);
 
-```{ojs}
-//| echo: false
-viewof k2a = Inputs.range([0.5, 5], {label: "Semi-major axis (AU):", step: 0.01, value: 3})
-```
-
-```{ojs}
-//| echo: false
-viewof k2start = Inputs.range([0, 1], {label: "Your sweep starts at (fraction of orbit after closest point):", step: 0.01, value: 0.25})
-```
-
-```{ojs}
-//| echo: false
-k2Sweeps = {
-  const a = k2a, e = k2e, b = a * Math.sqrt(1 - e * e), T = Math.pow(a, 1.5);
-  const pos = M => { const E = aoSolveE(M, e); return {x: a * (Math.cos(E) - e), y: b * Math.sin(E)}; };
-  const make = (name, M0, color) => {
-    const pts = d3.range(0, 121).map(i => pos(M0 + (i / 120) * 2 * Math.PI / 16));
+  let frac = 0.25;
+  const pos = (M, a, e) => {
+    const E = aoSolveE(((M % TAU) + TAU) % TAU, e);
+    return {x: a * (Math.cos(E) - e), y: a * Math.sqrt(1 - e * e) * Math.sin(E)};
+  };
+  const sweep = (M0, a, e, T) => {
+    const pts = [];
+    for (let i = 0; i <= 60; i++) pts.push(pos(M0 + (i / 60) * TAU / 16, a, e));
     let arc = 0, area = 0;
     for (let i = 1; i < pts.length; i++) {
-      arc += Math.hypot(pts[i].x - pts[i-1].x, pts[i].y - pts[i-1].y);
-      area += 0.5 * Math.abs(pts[i-1].x * pts[i].y - pts[i].x * pts[i-1].y);   // triangle from the Sun
+      arc += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y);
+      area += 0.5 * Math.abs(pts[i - 1].x * pts[i].y - pts[i].x * pts[i - 1].y);   // thin triangle from the Sun
     }
-    const mid = pos(M0 + Math.PI / 16);
-    return {name, color, pts, arc, area, dur: T / 16, r: Math.hypot(mid.x, mid.y), speed: arc / (T / 16) * 4.74};
+    return {pts, arc, area, dur: T / 16, speed: arc / (T / 16) * 4.74};
   };
-  return [
-    make("Near the Sun", -Math.PI / 16, "#f1c40f"),
-    make("Far from the Sun", Math.PI - Math.PI / 16, "#e84393"),
-    make("Your sweep", (k2start % 1) * 2 * Math.PI, "#00cec9")
-  ];
-}
-```
-
-```{ojs}
-//| echo: false
-{
-  const a = k2a, e = k2e, b = a * Math.sqrt(1 - e * e), T = Math.pow(a, 1.5);
-  const W = 360, H = 250;
-  const s = Math.min((W - 30) / (2 * a), (H - 60) / (2 * b));
-  const sunX = W / 2 + a * e * s, sunY = H / 2 + 6;
-  const X = p => sunX + p.x * s, Y = p => sunY - p.y * s;
-  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`)
-    .attr("role", "img").attr("aria-label", "Elliptical orbit with the Sun at one focus and three colored wedges, each swept in one sixteenth of the orbit")
-    .style("width", "100%").style("height", "auto").style("max-width", "560px").style("display", "block").style("margin", "auto");
-  svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#0a0a2e").attr("rx", 12);
-  svg.append("ellipse").attr("cx", sunX - a * e * s).attr("cy", sunY).attr("rx", a * s).attr("ry", b * s)
-    .attr("fill", "none").attr("stroke", "#9aa7bd").attr("stroke-width", 1.2);
-  for (const sw of k2Sweeps) {
-    const d = `M${sunX},${sunY} ` + sw.pts.map(p => `L${X(p)},${Y(p)}`).join(" ") + " Z";
-    svg.append("path").attr("d", d).attr("fill", sw.color).attr("fill-opacity", 0.55).attr("stroke", sw.color);
+  function draw() {
+    cv.fit();
+    const a = sA.value, e = sE.value, b = a * Math.sqrt(1 - e * e), T = Math.pow(a, 1.5);
+    const s = Math.min((W - 36) / (2 * a), (H - 74) / (2 * b));
+    const sunX = W / 2 + a * e * s, sunY = H / 2 + 6;
+    const X = p => sunX + p.x * s, Y = p => sunY - p.y * s;
+    ctx.fillStyle = "#0a0a2e"; ctx.fillRect(0, 0, W, H);
+    K.stars(ctx, W, H);
+    ctx.strokeStyle = "#9aa7bd"; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.ellipse(sunX - a * e * s, sunY, a * s, b * s, 0, 0, TAU); ctx.stroke();
+    const starts = [-Math.PI / 16, Math.PI - Math.PI / 16, TAU * (frac - 1 / 16)];
+    sweeps.forEach((sw, i) => {
+      const r = sweep(starts[i], a, e, T);
+      ctx.beginPath(); ctx.moveTo(sunX, sunY);
+      for (const p of r.pts) ctx.lineTo(X(p), Y(p));
+      ctx.closePath();
+      ctx.globalAlpha = 0.5; ctx.fillStyle = sw.color; ctx.fill();
+      ctx.globalAlpha = 1; ctx.strokeStyle = sw.color; ctx.lineWidth = 1; ctx.stroke();
+      [r.dur.toFixed(4), r.area.toFixed(3), r.arc.toFixed(3), r.speed.toFixed(1)].forEach((t, j) => { if (sw.cells[j].textContent !== t) sw.cells[j].textContent = t; });
+    });
+    ctx.fillStyle = "#f39c12"; ctx.beginPath(); ctx.arc(sunX, sunY, 6, 0, TAU); ctx.fill();
+    const p = pos(TAU * frac, a, e), q = pos(TAU * frac + 0.002, a, e);
+    const r = Math.hypot(p.x, p.y), v = 29.78 * Math.sqrt(Math.max(2 / r - 1 / a, 0));
+    const dx = q.x - p.x, dy = q.y - p.y, dl = Math.hypot(dx, dy) || 1, al = Math.min(12 + v * 0.9, 70);
+    K.arrow(ctx, X(p), Y(p), X(p) + dx / dl * al, Y(p) - dy / dl * al, "#2ecc71");
+    ctx.fillStyle = "#fff"; ctx.strokeStyle = "#00cec9"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(X(p), Y(p), 5, 0, TAU); ctx.fill(); ctx.stroke();
+    // scale bar
+    const bar = s <= 110 ? 1 : s <= 220 ? 0.5 : 0.25;
+    ctx.strokeStyle = "#e2e8f0"; ctx.lineWidth = 2; ctx.beginPath();
+    ctx.moveTo(12, H - 14); ctx.lineTo(12 + bar * s, H - 14); ctx.stroke();
+    ctx.fillStyle = "#e2e8f0"; ctx.font = "11px sans-serif"; ctx.textBaseline = "middle"; ctx.textAlign = "left";
+    ctx.fillText(bar + " AU", 18 + bar * s, H - 14);
+    ctx.font = "bold 11px sans-serif"; ctx.fillStyle = "#fff";
+    ctx.fillText(`e = ${e.toFixed(2)}    a = ${a.toFixed(2)} AU`, 10, 14);
+    rR.set(r.toFixed(2) + " AU"); rV.set(v.toFixed(1) + " km/s"); rT.set(T.toFixed(2) + " years");
   }
-  svg.append("circle").attr("cx", sunX).attr("cy", sunY).attr("r", 6).attr("fill", "#f39c12");
-  svg.append("text").attr("x", 10).attr("y", 18).attr("fill", "white").attr("font-size", 11).attr("font-weight", "bold")
-    .text(`e = ${e.toFixed(2)}   a = ${a.toFixed(2)} AU   period = ${T.toFixed(2)} yr`);
-  svg.append("text").attr("x", 10).attr("y", H - 10).attr("fill", "#9aa7bd").attr("font-size", 9)
-    .text("The moving dot travels at the correct relative speed. Watch it near the Sun!");
-  const dot = svg.append("circle").attr("r", 5).attr("fill", "white").attr("stroke", "#00cec9").attr("stroke-width", 2);
-  let t = 0, last = performance.now(), raf = 0;
-  function frame(ts) {
-    t += Math.min((ts - last) / 1000, 0.05) / 8;   // one full orbit every 8 seconds
-    last = ts;
-    const E = aoSolveE(2 * Math.PI * (t % 1), e);
-    dot.attr("cx", X({x: a * (Math.cos(E) - e)})).attr("cy", Y({y: b * Math.sin(E)}));
-    raf = requestAnimationFrame(frame);
-  }
-  raf = requestAnimationFrame(frame);
-  invalidation.then(() => cancelAnimationFrame(raf));
-  return svg.node();
+  const run = K.runner(root, dt => { frac = (frac + dt / 9) % 1; sP.value = frac; }, draw, invalidation);
+  bPlay.onclick = () => { if (run.playing) { run.pause(); bPlay.textContent = "▶ Play"; } else { run.play(); bPlay.textContent = "⏸ Pause"; } };
+  sP.input.addEventListener("input", () => { run.pause(); bPlay.textContent = "▶ Play"; frac = sP.value % 1; draw(); });
+  sE.input.addEventListener("input", draw);
+  sA.input.addEventListener("input", draw);
+  draw();
+  if (!K.reduce) run.play();
+  return root;
 }
-```
-
-```{ojs}
-//| echo: false
-html`<div style="overflow-x:auto;"><table class="ao-table">
-  <thead><tr><th>Sweep</th><th>Time (yr)</th><th>Area (AU²)</th><th>Distance traveled (AU)</th><th>Average speed (km/s)</th></tr></thead>
-  <tbody>${k2Sweeps.map(sw => html`<tr>
-    <td><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${sw.color};margin-right:6px;"></span>${sw.name}</td>
-    <td>${sw.dur.toFixed(4)}</td><td>${sw.area.toFixed(3)}</td><td>${sw.arc.toFixed(3)}</td><td>${sw.speed.toFixed(1)}</td></tr>`)}</tbody>
-</table></div>`
 ```
 
 ::: {.callout-tip}
@@ -600,83 +728,95 @@ viewof gR = Inputs.range([1, 5], {label: "Distance between centers:", step: 0.5,
 
 ### Gravity and orbits
 
-Like the packet's *Gravity and Orbits* simulation: a planet starts 1 AU from its star, moving at Earth's speed. **Change the star's mass** and watch the path. The **blue arrow** is the gravity force (toward the star); the **green arrow** is the velocity.
+Like the packet's *Gravity and Orbits* simulation: a planet starts 1 AU from its star, moving at Earth's speed. **Change the star's mass** and watch the path. The **blue arrow** is the gravity force (toward the star); the **green arrow** is the velocity. Then try a different **planet mass** or **starting speed**. Each change to the star or the speed restarts the planet from the same spot, so you can compare paths fairly.
 
 ```{ojs}
 //| echo: false
-viewof goStar = Inputs.range([0.7, 2], {label: "Star mass (× Sun):", step: 0.05, value: 1})
-```
+aoGOSim = {
+  const K = aoKit, W = 360, H = 320, TAU = 2 * Math.PI, S = 84, CX = 250, CY = 160;
+  const cv = K.canvas2d(W, H, "Animated physics model of a planet orbiting a star. A blue arrow shows the gravity force pointing at the star, a green arrow shows the planet's velocity, and a purple line traces the path.");
+  const ctx = cv.ctx;
+  const sM = K.slider({label: "Star mass (× Sun)", min: 0.7, max: 2, step: 0.05, value: 1, fmt: v => v.toFixed(2)});
+  const sP = K.slider({label: "Planet mass (× Earth)", min: 0.5, max: 3, step: 0.5, value: 1, fmt: v => v.toFixed(1)});
+  const sV = K.slider({label: "Starting speed (× Earth's speed)", min: 0.6, max: 1.2, step: 0.05, value: 1, fmt: v => v.toFixed(2)});
+  const bPlay = K.button(K.reduce ? "▶ Play" : "⏸ Pause"), bReset = K.button("↺ Restart");
+  const show = {force: true, vel: true, path: true};
+  const toggles = [["force", "Gravity force", "#4aa3ff"], ["vel", "Velocity", "#2ecc71"], ["path", "Path", "#a29bfe"]].map(([key, text, color]) => {
+    const b = K.button(text, true);
+    b.prepend(K.h("span", {className: "ao-sim-dot", style: `background:${color}`}));
+    b.onclick = () => { show[key] = !show[key]; b.setAttribute("aria-pressed", String(show[key])); draw(); };
+    return b;
+  });
+  const rD = K.readout("Distance from the star"), rF = K.readout("Gravity force (× today's Sun-Earth force)"), rS = K.readout("Speed");
+  const status = K.h("div", {className: "ao-sim-status", role: "status"});
+  const root = K.h("div", {className: "ao-sim"}, [
+    K.h("div", {className: "ao-sim-title", text: "Model: gravity and orbits"}),
+    cv.c,
+    K.h("div", {className: "ao-sim-btns"}, [bPlay, bReset, ...toggles]),
+    sM.row, sP.row, sV.row,
+    K.h("div", {className: "ao-sim-read"}, [rD.node, rF.node, rS.node]),
+    status,
+    K.h("div", {className: "ao-sim-note", text: "This is a physics model, not real data. Each instant, the computer uses F = G·m₁·m₂/r² to work out the pull, then moves the planet a tiny step. The planet always starts 1 AU from the star. Sizes are not to scale."})
+  ]);
 
-```{ojs}
-//| echo: false
-viewof goPlanet = Inputs.range([0.5, 3], {label: "Planet mass (× Earth):", step: 0.5, value: 1})
-```
-
-```{ojs}
-//| echo: false
-{
-  const M = goStar, mp = goPlanet, mu = 4 * Math.PI * Math.PI * M;
-  // Starting state: 1 AU from the star, Earth's orbital speed (2π AU/yr), moving sideways
-  const aOrb = 1 / (2 - (4 * Math.PI * Math.PI) / mu);
-  const rOther = 2 * aOrb - 1;
-  const eOrb = Math.abs(rOther - 1) / (rOther + 1);
-  const bOrb = aOrb * Math.sqrt(1 - eOrb * eOrb);
-  const W = 360, H = 300;
-  const s = Math.min((W - 70) / (1 + rOther), (H - 90) / (2 * bOrb));
-  const starX = W / 2 + ((rOther - 1) / 2) * s, starY = H / 2 + 8;
-  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`)
-    .attr("role", "img").attr("aria-label", "Animated planet orbiting a star, with a blue gravity force arrow pointing at the star and a green velocity arrow along the path")
-    .style("width", "100%").style("height", "auto").style("max-width", "560px").style("display", "block").style("margin", "auto");
-  const defs = svg.append("defs");
-  for (const [id, c] of [["ao-arr-blue", "#4aa3ff"], ["ao-arr-green", "#2ecc71"]]) {
-    defs.append("marker").attr("id", id).attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
-      .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto")
-      .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", c);
-  }
-  svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#0a0a2e").attr("rx", 12);
-  svg.append("circle").attr("cx", starX).attr("cy", starY).attr("r", 5 + 3 * M).attr("fill", "#f39c12");
-  const trail = svg.append("path").attr("fill", "none").attr("stroke", "#a29bfe").attr("stroke-width", 1.2);
-  const fArrow = svg.append("line").attr("stroke", "#4aa3ff").attr("stroke-width", 2.5).attr("marker-end", "url(#ao-arr-blue)");
-  const vArrow = svg.append("line").attr("stroke", "#2ecc71").attr("stroke-width", 2.5).attr("marker-end", "url(#ao-arr-green)");
-  const planet = svg.append("circle").attr("r", 4 + mp).attr("fill", "#74b9ff").attr("stroke", "white");
-  const t1 = svg.append("text").attr("x", 10).attr("y", 18).attr("fill", "white").attr("font-size", 11).attr("font-weight", "bold");
-  const t2 = svg.append("text").attr("x", 10).attr("y", 34).attr("fill", "#4aa3ff").attr("font-size", 11);
-  const t3 = svg.append("text").attr("x", 10).attr("y", 50).attr("fill", "#2ecc71").attr("font-size", 11);
-  svg.append("text").attr("x", 10).attr("y", H - 10).attr("fill", "#9aa7bd").attr("font-size", 9)
-    .text(M === 1 ? "Star = 1 Sun: the path is a circle." : "The changed star mass makes the path an ellipse.");
-
-  let x = 1, y = 0, vx = 0, vy = 2 * Math.PI;
-  const pts = [];
-  const acc = (x, y) => { const r = Math.hypot(x, y); return [-mu * x / r ** 3, -mu * y / r ** 3]; };
-  let last = performance.now(), raf = 0;
-  function frame(ts) {
-    const dtReal = Math.min((ts - last) / 1000, 0.05); last = ts;
-    const steps = 60, dt = (dtReal * 0.35) / steps;   // 0.35 years of orbit per second
+  let x, y, vx, vy, pts, done;
+  const mu = () => 4 * Math.PI * Math.PI * sM.value;          // AU³/yr², so Earth's speed is 2π AU/yr
+  function reset() { x = 1; y = 0; vx = 0; vy = TAU * sV.value; pts = []; done = false; }
+  function tick(dt) {
+    if (done) return;
+    const m = mu(), steps = 40, h = (dt * 0.35) / steps;     // 0.35 model years per second
     for (let i = 0; i < steps; i++) {
-      let [ax, ay] = acc(x, y);
-      vx += ax * dt / 2; vy += ay * dt / 2;
-      x += vx * dt; y += vy * dt;
-      [ax, ay] = acc(x, y);
-      vx += ax * dt / 2; vy += ay * dt / 2;
+      let r3 = Math.pow(x * x + y * y, 1.5);
+      vx -= m * x / r3 * h / 2; vy -= m * y / r3 * h / 2;
+      x += vx * h; y += vy * h;
+      r3 = Math.pow(x * x + y * y, 1.5);
+      vx -= m * x / r3 * h / 2; vy -= m * y / r3 * h / 2;
     }
-    pts.push([starX + x * s, starY - y * s]);
-    if (pts.length > 1500) pts.shift();
-    trail.attr("d", "M" + pts.map(p => p.join(",")).join("L"));
-    const r = Math.hypot(x, y), v = Math.hypot(vx, vy);
-    const Frel = M * mp / (r * r);                  // force compared with Sun-Earth today
-    const px = starX + x * s, py = starY - y * s;
-    const fl = Math.min(18 + 22 * Frel, 95), vl = 14 + 22 * (v / (2 * Math.PI));
-    planet.attr("cx", px).attr("cy", py);
-    fArrow.attr("x1", px).attr("y1", py).attr("x2", px - (x / r) * fl).attr("y2", py + (y / r) * fl);
-    vArrow.attr("x1", px).attr("y1", py).attr("x2", px + (vx / v) * vl).attr("y2", py - (vy / v) * vl);
-    t1.text(`Distance from star: ${r.toFixed(2)} AU`);
-    t2.text(`Gravity force: ${Frel.toFixed(2)} × today's Sun–Earth force`);
-    t3.text(`Speed: ${(v * 4.74).toFixed(1)} km/s`);
-    raf = requestAnimationFrame(frame);
+    pts.push(CX + x * S, CY - y * S);
+    if (pts.length > 5000) pts.splice(0, 2);
+    if (Math.hypot(x, y) > 12) done = true;
   }
-  raf = requestAnimationFrame(frame);
-  invalidation.then(() => cancelAnimationFrame(raf));
-  return svg.node();
+  function draw() {
+    cv.fit();
+    const M = sM.value, mp = sP.value, m = mu();
+    ctx.fillStyle = "#0a0a2e"; ctx.fillRect(0, 0, W, H);
+    K.stars(ctx, W, H);
+    // faint reference circle: 1 AU from the star
+    ctx.strokeStyle = "rgba(255,255,255,.22)"; ctx.setLineDash([3, 4]); ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(CX, CY, S, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = "rgba(255,255,255,.6)"; ctx.font = "10.5px sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+    ctx.fillText("1 AU from the star", CX, CY + S + 12);
+    if (show.path && pts.length > 3) {
+      ctx.strokeStyle = "#a29bfe"; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(pts[0], pts[1]);
+      for (let i = 2; i < pts.length; i += 2) ctx.lineTo(pts[i], pts[i + 1]);
+      ctx.stroke();
+    }
+    const g = ctx.createRadialGradient(CX, CY, 1, CX, CY, 14 + 8 * M);
+    g.addColorStop(0, "rgba(255,200,80,.55)"); g.addColorStop(1, "rgba(255,200,80,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(CX, CY, 14 + 8 * M, 0, TAU); ctx.fill();
+    ctx.fillStyle = "#f39c12"; ctx.beginPath(); ctx.arc(CX, CY, 5 + 3 * M, 0, TAU); ctx.fill();
+    const r = Math.hypot(x, y), v = Math.hypot(vx, vy), Frel = M * mp / (r * r);
+    const px = CX + x * S, py = CY - y * S;
+    if (show.force) { const fl = Math.min(14 + 20 * Frel, 100); K.arrow(ctx, px, py, px - (x / r) * fl, py + (y / r) * fl, "#4aa3ff"); }
+    if (show.vel) { const vl = 12 + 20 * (v / TAU); K.arrow(ctx, px, py, px + (vx / v) * vl, py - (vy / v) * vl, "#2ecc71"); }
+    ctx.fillStyle = "#74b9ff"; ctx.strokeStyle = "#fff"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(px, py, 3 + 1.3 * mp, 0, TAU); ctx.fill(); ctx.stroke();
+    rD.set(r.toFixed(2) + " AU"); rF.set(Frel.toFixed(2) + " ×"); rS.set((v * 4.74).toFixed(1) + " km/s");
+    const energy = v * v / 2 - m / r, hh = x * vy - y * vx, ecc = Math.sqrt(Math.max(0, 1 + 2 * energy * hh * hh / (m * m)));
+    status.textContent = energy >= 0 ? "The planet escapes! At this speed the star's gravity is too weak to hold it."
+      : ecc < 0.02 ? "The path is a circle: distance, force, and speed stay the same."
+      : `The path is an ellipse (eccentricity ${ecc.toFixed(2)}). Watch the arrows change as the planet moves in and out.`;
+  }
+  const run = K.runner(root, tick, draw, invalidation);
+  bPlay.onclick = () => { if (run.playing) { run.pause(); bPlay.textContent = "▶ Play"; } else { run.play(); bPlay.textContent = "⏸ Pause"; } };
+  const restart = () => { reset(); draw(); };
+  bReset.onclick = restart;
+  sM.input.addEventListener("input", restart);
+  sV.input.addEventListener("input", restart);
+  sP.input.addEventListener("input", draw);
+  reset(); draw();
+  if (!K.reduce) run.play();
+  return root;
 }
 ```
 
@@ -920,55 +1060,248 @@ Put all the laws together and you can predict an orbit completely:
 
 ### 🗓️ Where will Apophis be on April 13, 2029?
 
-Slide through time. Earth (green) takes **1 year** per orbit; Apophis (red) takes **0.886 years**. Because the periods are different, they line up only once in a while, and 2029 is one of those times.
+Press **Play** or slide through time. Earth (green orbit) takes **1 year** per orbit; Apophis (red orbit) takes **0.886 years**. Because the periods are different, they line up only once in a while, and 2029 is one of those times.
+
+Apophis's orbit is **tilted about 3.3°** compared with Earth's. Tap **Edge-on view** to see the tilt. The two orbits only come close near the line where the two orbit planes cross, which is one more reason close passes are rare.
 
 ```{ojs}
 //| echo: false
-viewof apDays = Inputs.range([-2990, 0], {label: "Days from April 13, 2029 (negative = before):", step: 1, value: -730})
+// Real orbital elements (ecliptic J2000). Apophis: NASA/JPL Small-Body Database, orbit solution 220, epoch JD 2461200.5 (2026-Jun-09).
+// Earth: JPL "Approximate Positions of the Planets" (Earth-Moon barycenter, valid 1800-2050), values at J2000 plus change per century.
+aoElements = ({
+  apophis: {a: 0.9223592207, e: 0.1911492280, i: 3.3409968799, node: 203.8936514241, peri: 126.6795706896, M0: 175.3304026593, n: 1.1126381153, epoch: 2461200.5},
+  earth: {a: [1.00000261, 0.00000562], e: [0.01671123, -0.00004392], i: [-0.00001531, -0.01294668], L: [100.46457166, 35999.37244981], longPeri: [102.93768193, 0.32327364], node: [0, 0]},
+  // Real close approaches from the JPL Close Approach Data API (distance from Earth's center)
+  real2029: {date: "April 13, 2029, 21:46 UTC", km: 38012},
+  real2021: {date: "March 6, 2021", au: 0.1127}
+})
 ```
 
 ```{ojs}
 //| echo: false
-{
-  const a = 0.922, e = 0.191, b = a * Math.sqrt(1 - e * e), Tap = Math.pow(a, 1.5) * 365.25;
-  // Simplified 2D model: put the 2029 meeting point where Apophis's orbit crosses r = 1 AU
-  const nu0 = Math.acos((a * (1 - e * e) - 1) / e);
-  const E0 = 2 * Math.atan(Math.sqrt((1 - e) / (1 + e)) * Math.tan(nu0 / 2));
-  const M0 = E0 - e * Math.sin(E0);
-  const E = aoSolveE((((M0 + 2 * Math.PI * apDays / Tap) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI), e);
-  const ap = {x: a * (Math.cos(E) - e), y: b * Math.sin(E)};
-  const th = nu0 + 2 * Math.PI * apDays / 365.25;
-  const ea = {x: Math.cos(th), y: Math.sin(th)};
-  const distAU = Math.hypot(ap.x - ea.x, ap.y - ea.y);
-  const date = new Date(Date.UTC(2029, 3, 13) + apDays * 86400000).toISOString().slice(0, 10);
-
-  const W = 360, H = 300, s = 118, cx = W / 2, cy = H / 2 + 12;
-  const X = p => cx + p.x * s, Y = p => cy - p.y * s;
-  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`)
-    .attr("role", "img").attr("aria-label", "Top-down model of Earth's nearly circular orbit and Apophis's elliptical orbit around the Sun, with both positions on the chosen date")
-    .style("width", "100%").style("height", "auto").style("max-width", "560px").style("display", "block").style("margin", "auto");
-  svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#0a0a2e").attr("rx", 12);
-  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", s).attr("fill", "none").attr("stroke", "#2ecc71").attr("stroke-opacity", 0.6);
-  svg.append("ellipse").attr("cx", cx - a * e * s).attr("cy", cy).attr("rx", a * s).attr("ry", b * s)
-    .attr("fill", "none").attr("stroke", "#d63031").attr("stroke-opacity", 0.7);
-  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 7).attr("fill", "#f39c12");
-  svg.append("line").attr("x1", X(ea)).attr("y1", Y(ea)).attr("x2", X(ap)).attr("y2", Y(ap)).attr("stroke", "#9aa7bd").attr("stroke-dasharray", "3,3");
-  svg.append("circle").attr("cx", X(ea)).attr("cy", Y(ea)).attr("r", 6).attr("fill", "#2ecc71").attr("stroke", "white");
-  svg.append("circle").attr("cx", X(ap)).attr("cy", Y(ap)).attr("r", 5).attr("fill", "#d63031").attr("stroke", "white");
-  svg.append("text").attr("x", 10).attr("y", 18).attr("fill", "white").attr("font-size", 12).attr("font-weight", "bold").text(`Date: ${date}`);
-  svg.append("text").attr("x", 10).attr("y", 34).attr("fill", "#e2e8f0").attr("font-size", 11)
-    .text(apDays === 0 ? "Flyby! Real miss distance: ~38,000 km from Earth's center"
-      : `Earth–Apophis distance: ${distAU.toFixed(2)} AU (${(distAU * 149.6).toFixed(0)} million km)`);
-  svg.append("text").attr("x", 10).attr("y", H - 10).attr("fill", "#9aa7bd").attr("font-size", 9)
-    .text("Simplified 2D model (Apophis's 3.3° tilt ignored). Not to scale for sizes.");
-  return svg.node();
+// Two-body (Kepler) positions around the Sun, in AU, for a Julian date
+aoOrbitModel = {
+  const D = Math.PI / 180, TAU = 2 * Math.PI;
+  const place = (a, e, i, node, argPeri, M) => {
+    const E = aoSolveE(((M % TAU) + TAU) % TAU, e);
+    const xp = a * (Math.cos(E) - e), yp = a * Math.sqrt(1 - e * e) * Math.sin(E);
+    const cw = Math.cos(argPeri), sw = Math.sin(argPeri), cO = Math.cos(node), sO = Math.sin(node), ci = Math.cos(i), si = Math.sin(i);
+    return [(cw * cO - sw * sO * ci) * xp + (-sw * cO - cw * sO * ci) * yp,
+            (cw * sO + sw * cO * ci) * xp + (-sw * sO + cw * cO * ci) * yp,
+            sw * si * xp + cw * si * yp];
+  };
+  const A = aoElements.apophis, Ea = aoElements.earth;
+  const apophis = jd => place(A.a, A.e, A.i * D, A.node * D, A.peri * D, (A.M0 + A.n * (jd - A.epoch)) * D);
+  const earth = jd => {
+    const T = (jd - 2451545.0) / 36525, v = k => Ea[k][0] + Ea[k][1] * T;
+    return place(v("a"), v("e"), v("i") * D, v("node") * D, (v("longPeri") - v("node")) * D, (v("L") - v("longPeri")) * D);
+  };
+  return {apophis, earth};
 }
 ```
+
+```{ojs}
+//| echo: false
+aoAp3 = {
+  const K = aoKit, D = Math.PI / 180, AUKM = 149597870.7, MOONKM = 384400;
+  const JD0 = 2459215.5, NDAYS = 3024;               // Jan 1, 2021 (UTC) to April 13, 2029
+  const A = aoElements.apophis;
+  let THREE = null;
+  try { THREE = await import("https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js"); } catch (err) { THREE = null; }
+
+  const fmtDate = d => new Date(Date.UTC(2021, 0, 1) + Math.round(d) * 86400000).toLocaleDateString("en-US", {timeZone: "UTC", year: "numeric", month: "short", day: "numeric"});
+  const sDay = K.slider({label: "Date", min: 0, max: NDAYS, step: 1, value: 2293, fmt: fmtDate});
+  const bPlay = K.button("▶ Play"), bSpeed = K.button("Speed: 40 days/s");
+  const b2021 = K.button("Mar 6, 2021"), b2029 = K.button("Apr 13, 2029");
+  const bTop = K.button("Top view"), bTilt = K.button("Tilted view"), bEdge = K.button("Edge-on view");
+  const bIn = K.button("＋"), bOut = K.button("－");
+  bIn.setAttribute("aria-label", "Zoom in"); bOut.setAttribute("aria-label", "Zoom out");
+  const bCenter = K.button("Center on Earth", false), bStretch = K.button("Stretch the tilt ×5 (not real)", false);
+  const rDate = K.readout("Date"), rDist = K.readout("Earth to Apophis (model)"), rSun = K.readout("Apophis: distance from Sun, speed"), rZ = K.readout("Apophis vs. Earth's orbit plane");
+  const status = K.h("div", {className: "ao-sim-status", role: "status"});
+  const stage = K.h("div", {className: "ao-sim-stage"});
+  const labels = [["Sun", "#ffd54f"], ["Earth", "#7bed9f"], ["Apophis", "#ff8a80"]].map(([t, c]) => K.h("div", {className: "ao-sim-lab", text: t, style: `color:${c}`, "aria-hidden": "true"}));
+  const root = K.h("div", {className: "ao-sim"}, [
+    K.h("div", {className: "ao-sim-title", text: "3D model: the orbits of Earth and Apophis, 2021 to 2029"}),
+    stage,
+    K.h("div", {className: "ao-sim-btns"}, [bPlay, bSpeed, b2021, b2029]),
+    sDay.row,
+    K.h("div", {className: "ao-sim-btns"}, [bTop, bTilt, bEdge, bIn, bOut, bCenter, bStretch]),
+    K.h("div", {className: "ao-sim-read"}, [rDate.node, rDist.node, rSun.node, rZ.node]),
+    status,
+    K.h("div", {className: "ao-sim-note", text: "Drag sideways on the picture to spin it (with a mouse you can also drag up and down). The Sun, Earth, and Apophis are drawn far too big so you can see them; the orbits and distances are to scale."})
+  ]);
+
+  // ---- state ----
+  let day = 2293, rate = 40, az = -60, el = 38, dist = 4.3, zk = 1, center = false, drag = null;
+  const orbitPts = (fn, period) => { const p = []; for (let i = 0; i < 240; i++) p.push(fn(JD0 + NDAYS - period * i / 240)); return p; };
+  const earthOrbit = orbitPts(aoOrbitModel.earth, 365.256), apOrbit = orbitPts(aoOrbitModel.apophis, 360 / A.n);
+  let pE = [1, 0, 0], pA = [1, 0, 0];
+
+  // ---- renderer: three.js if WebGL works, otherwise a simple 2D drawing ----
+  let gl = null, canvas, proj, paint, resize, dispose = () => {};
+  if (THREE) {
+    try { gl = new THREE.WebGLRenderer({antialias: true, powerPreference: "low-power"}); } catch (err) { gl = null; }
+  }
+  const ARIA = "3D model of the Sun with Earth's orbit in green and the orbit of asteroid Apophis in red, tilted about 3 degrees. Dots show where Earth and Apophis are on the chosen date. The values are repeated as text below.";
+  if (gl) {
+    canvas = gl.domElement;
+    gl.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    gl.setClearColor(0x050816, 1);
+    const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(35, 1.4, 0.05, 200);
+    cam.up.set(0, 0, 1);
+    const tilted = new THREE.Group(); scene.add(tilted);       // everything that the "stretch" button scales in z
+    const mat = (color, o = {}) => new THREE.MeshBasicMaterial({color, ...o});
+    const tube = (pts, color, r) => new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map(p => new THREE.Vector3(...p)), true), 240, r, 6, true), mat(color));
+    const tE = tube(earthOrbit, 0x2ecc71, 0.009), tA = tube(apOrbit, 0xff5252, 0.009), tA5 = tube(apOrbit.map(p => [p[0], p[1], p[2] * 5]), 0xff5252, 0.009);
+    tilted.add(tE, tA, tA5);
+    const disc = new THREE.Mesh(new THREE.CircleGeometry(1.3, 72), mat(0x4dd0e1, {transparent: true, opacity: 0.09, side: THREE.DoubleSide, depthWrite: false}));
+    scene.add(disc);
+    const sun = new THREE.Mesh(new THREE.SphereGeometry(0.055, 24, 16), mat(0xffc107));
+    const glow = new THREE.Mesh(new THREE.SphereGeometry(0.1, 24, 16), mat(0xffc107, {transparent: true, opacity: 0.25, depthWrite: false}));
+    const mE = new THREE.Mesh(new THREE.SphereGeometry(0.034, 20, 14), mat(0x4aa3ff));
+    const mA = new THREE.Mesh(new THREE.SphereGeometry(0.026, 16, 12), mat(0xffffff));
+    scene.add(sun, glow, mE, mA);
+    const lineGeo = new THREE.BufferGeometry(); lineGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(6), 3));
+    const link = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({color: 0xffffff, transparent: true, opacity: 0.7}));
+    const dropGeo = new THREE.BufferGeometry(); dropGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(6), 3));
+    const drop = new THREE.Line(dropGeo, new THREE.LineBasicMaterial({color: 0xff8a80}));
+    link.frustumCulled = false; drop.frustumCulled = false;
+    scene.add(link, drop);
+    let seed = 987;
+    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const sp = new Float32Array(900);
+    for (let i = 0; i < 300; i++) { const t = rnd() * 2 * Math.PI, zz = rnd() * 2 - 1, q = Math.sqrt(1 - zz * zz); sp.set([60 * q * Math.cos(t), 60 * q * Math.sin(t), 60 * zz], i * 3); }
+    const starGeo = new THREE.BufferGeometry(); starGeo.setAttribute("position", new THREE.BufferAttribute(sp, 3));
+    scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xffffff, size: 1.6, sizeAttenuation: false, transparent: true, opacity: 0.6})));
+    const tmp = new THREE.Vector3();
+    let cw = 1, ch = 1;
+    resize = () => {
+      cw = stage.clientWidth || 600; ch = Math.round(Math.max(250, Math.min(cw * 0.7, 440)));
+      gl.setSize(cw, ch, false); canvas.style.width = "100%"; canvas.style.height = ch + "px";
+      cam.aspect = cw / ch; cam.updateProjectionMatrix();
+    };
+    proj = p => { tmp.set(p[0], p[1], p[2] * zk).project(cam); return [(tmp.x + 1) / 2 * cw, (1 - tmp.y) / 2 * ch, tmp.z < 1]; };
+    paint = () => {
+      tA.visible = zk === 1; tA5.visible = zk !== 1;
+      const bs = Math.max(0.5, Math.min(1.3, dist / 4.3));
+      for (const o of [sun, glow, mE, mA]) o.scale.setScalar(bs);
+      mE.position.set(pE[0], pE[1], pE[2] * zk); mA.position.set(pA[0], pA[1], pA[2] * zk);
+      lineGeo.attributes.position.array.set([pE[0], pE[1], pE[2] * zk, pA[0], pA[1], pA[2] * zk]); lineGeo.attributes.position.needsUpdate = true;
+      dropGeo.attributes.position.array.set([pA[0], pA[1], pA[2] * zk, pA[0], pA[1], 0]); dropGeo.attributes.position.needsUpdate = true;
+      const t = center ? [pE[0], pE[1], pE[2] * zk] : [0, 0, 0], ce = Math.cos(el * D);
+      cam.position.set(t[0] + dist * ce * Math.cos(az * D), t[1] + dist * ce * Math.sin(az * D), t[2] + dist * Math.sin(el * D));
+      cam.lookAt(t[0], t[1], t[2]);
+      cam.updateMatrixWorld();
+      gl.render(scene, cam);
+    };
+    dispose = () => { scene.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); }); gl.dispose(); };
+  } else {
+    // 2D fallback (no WebGL, or three.js could not load): same model, drawn with a simple projection
+    canvas = K.h("canvas");
+    const ctx = canvas.getContext("2d");
+    let cw = 1, ch = 1, sc = 1, t = [0, 0, 0];
+    resize = () => {
+      cw = stage.clientWidth || 600; ch = Math.round(Math.max(250, Math.min(cw * 0.7, 440)));
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(cw * dpr); canvas.height = Math.round(ch * dpr);
+      canvas.style.width = "100%"; canvas.style.height = ch + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    proj = p => {
+      const ca = Math.cos(az * D), sa = Math.sin(az * D), ce = Math.cos(el * D), se = Math.sin(el * D);
+      const x = p[0] - t[0], y = p[1] - t[1], z = p[2] * zk - t[2];
+      return [cw / 2 + (-sa * x + ca * y) * sc, ch / 2 - (-se * ca * x - se * sa * y + ce * z) * sc, true];
+    };
+    paint = () => {
+      t = center ? [pE[0], pE[1], pE[2] * zk] : [0, 0, 0];
+      sc = Math.min(cw, ch * 1.3) / (dist * 0.66);
+      ctx.fillStyle = "#050816"; ctx.fillRect(0, 0, cw, ch);
+      const path = (pts, color) => { ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.beginPath(); pts.forEach((p, i) => { const [x, y] = proj(p); if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y); }); ctx.closePath(); ctx.stroke(); };
+      path(earthOrbit, "#2ecc71"); path(apOrbit, "#ff5252");
+      const dot = (p, r, color) => { const [x, y] = proj(p); ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill(); };
+      const [x1, y1] = proj(pE), [x2, y2] = proj(pA);
+      ctx.strokeStyle = "rgba(255,255,255,.7)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+      dot([0, 0, 0], 8, "#ffc107"); dot(pE, 6, "#4aa3ff"); dot(pA, 4.5, "#fff");
+    };
+    root.append(K.h("div", {className: "ao-sim-note", text: "Your device could not start 3D graphics, so this is a simpler flat drawing of the same model. All the buttons and numbers still work."}));
+  }
+  canvas.setAttribute("role", "img");
+  canvas.setAttribute("aria-label", ARIA);
+  stage.append(canvas, ...labels);
+
+  function draw() {
+    const jd = JD0 + day;
+    pE = aoOrbitModel.earth(jd); pA = aoOrbitModel.apophis(jd);
+    paint();
+    [[0, 0, 0], pE, pA].forEach((p, i) => {
+      const [x, y, ok] = proj(p), lab = labels[i];
+      lab.style.display = ok ? "" : "none";
+      lab.style.transform = `translate(${Math.round(x + 9)}px, ${Math.round(y + (i === 1 ? -22 : 6))}px)`;
+    });
+    const d = Math.hypot(pA[0] - pE[0], pA[1] - pE[1], pA[2] - pE[2]);
+    const r = Math.hypot(pA[0], pA[1], pA[2]), v = 29.78 * Math.sqrt(2 / r - 1 / A.a);
+    rDate.set(fmtDate(day));
+    rDist.set(d < 0.01 ? "less than 0.01 AU" : `${d.toFixed(3)} AU = ${(d * AUKM / 1e6).toFixed(1)} million km`);
+    rSun.set(`${r.toFixed(3)} AU, ${v.toFixed(1)} km/s`);
+    const zkm = pA[2] * AUKM / 1e6;
+    rZ.set(`${Math.abs(zkm).toFixed(1)} million km ${zkm >= 0 ? "above (north)" : "below (south)"}`);
+    status.textContent = d < 0.01
+      ? `Flyby! This simple model cannot work out the final distance. The real value, from NASA/JPL: ${aoElements.real2029.km.toLocaleString("en-US")} km from Earth's center on ${aoElements.real2029.date}.`
+      : `That is about ${Math.round(d * AUKM / MOONKM).toLocaleString("en-US")} times the Moon's distance from Earth.`;
+  }
+  let pending = 0;
+  const request = () => { if (!pending) pending = requestAnimationFrame(() => { pending = 0; draw(); }); };
+  const stopPlay = () => { run.pause(); bPlay.textContent = "▶ Play"; };
+  const run = K.runner(root, dt => {
+    day += rate * dt;
+    if (day >= NDAYS) { day = NDAYS; stopPlay(); }
+    sDay.value = Math.round(day);
+  }, () => { resize(); draw(); }, invalidation);
+  bPlay.onclick = () => {
+    if (run.playing) return stopPlay();
+    if (day >= NDAYS) day = 0;
+    run.play(); bPlay.textContent = "⏸ Pause";
+  };
+  bSpeed.onclick = () => { rate = rate === 40 ? 160 : rate === 160 ? 10 : 40; bSpeed.textContent = `Speed: ${rate} days/s`; };
+  const jump = d => { stopPlay(); day = d; sDay.value = d; request(); };
+  b2021.onclick = () => jump(64); b2029.onclick = () => jump(NDAYS);
+  sDay.input.addEventListener("input", () => { stopPlay(); day = sDay.value; request(); });
+  bTop.onclick = () => { el = 89.5; request(); };
+  bTilt.onclick = () => { el = 38; az = -60; request(); };
+  bEdge.onclick = () => { el = 0; az = A.node; request(); };     // look along the line where the two orbit planes cross
+  bIn.onclick = () => { dist = Math.max(0.5, dist * 0.75); request(); };
+  bOut.onclick = () => { dist = Math.min(6, dist / 0.75); request(); };
+  bCenter.onclick = () => { center = !center; bCenter.setAttribute("aria-pressed", String(center)); request(); };
+  bStretch.onclick = () => { zk = zk === 1 ? 5 : 1; bStretch.setAttribute("aria-pressed", String(zk === 5)); request(); };
+  canvas.addEventListener("pointerdown", e => { drag = {x: e.clientX, y: e.clientY, az, el}; try { canvas.setPointerCapture(e.pointerId); } catch (err) {} canvas.style.cursor = "grabbing"; });
+  canvas.addEventListener("pointermove", e => {
+    if (!drag) return;
+    az = drag.az - (e.clientX - drag.x) * 0.45;
+    if (e.pointerType !== "touch") el = Math.max(-89.5, Math.min(89.5, drag.el + (e.clientY - drag.y) * 0.45));
+    request();
+  });
+  const endDrag = () => { drag = null; canvas.style.cursor = ""; };
+  canvas.addEventListener("pointerup", endDrag); canvas.addEventListener("pointercancel", endDrag);
+  invalidation.then(() => { if (pending) cancelAnimationFrame(pending); dispose(); });
+  resize(); draw();
+  return root;
+}
+```
+
+::: {.callout-note collapse="true"}
+## 📊 Where the numbers in this model come from
+
+- **Apophis's orbit:** real orbital elements from NASA/JPL's [Small-Body Database](https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr=99942) (orbit solution 220, epoch June 9, 2026): average distance 0.9224 AU, eccentricity 0.1911, tilt 3.341°, period 323.6 days.
+- **Earth's orbit:** JPL's [Approximate Positions of the Planets](https://ssd.jpl.nasa.gov/planets/approx_pos.html) (Earth-Moon system, valid 1800 to 2050).
+- **Real close approaches:** JPL's [Close Approach Data](https://cneos.jpl.nasa.gov/ca/): 0.113 AU on March 6, 2021 and 38,012 km from Earth's center on April 13, 2029.
+- **What the model leaves out:** it is a **simplified two-body model**. Each object feels only the Sun's gravity, exactly as Kepler's laws describe. It ignores the small tugs from the planets. From 2021 to 2029 its Earth-to-Apophis distances stay within a few percent of JPL's full calculation, but it is **not** precise enough to give the final flyby distance, so the model does not show one. The model stops on April 13, 2029, because Earth's gravity changes Apophis's orbit that day.
+:::
 
 ::: {.callout-important}
 ## 🎯 Why precision matters
 
-On this scale, Apophis's real 2029 miss distance (about 38,000 km from Earth's center) is **less than 1/1000 of a pixel**. A tiny error in the orbit would turn a "miss" into a "hit" on paper. That's why scientists keep measuring Apophis with telescopes and radar, and why each new measurement improves the prediction.
+On the scale of this model, Apophis's real 2029 miss distance (about 38,000 km from Earth's center) is **much smaller than one pixel**. A tiny error in the orbit would turn a "miss" into a "hit" on paper. That's why scientists keep measuring Apophis with telescopes and radar, and why each new measurement improves the prediction.
 :::
 
 ```{ojs}
@@ -987,7 +1320,7 @@ buildQuiz("ao-predict-quiz", "🔮 Check Your Understanding — Predicting Apoph
     explanation: "Apophis gains on Earth a little each orbit. Its close approaches come about every 7–8 years (8 Apophis orbits ≈ 7 Earth years), like 2021 and 2029."
   },
   {
-    q: "Slide to about −2,950 days (March 2021). What did scientists do then that made the 2029 prediction so precise?",
+    q: "Tap the 'Mar 6, 2021' button in the 3D model. What did scientists do then that made the 2029 prediction so precise?",
     options: ["They guessed", "They tracked Apophis with radar during an earlier pass, measuring its position and motion very precisely", "They landed on Apophis", "They pushed it with a spacecraft"],
     correct: 1,
     explanation: "In March 2021 Apophis passed about 17 million km away. Radar measured its distance and speed so precisely that NASA could rule out any impact for at least 100 years."
@@ -1021,11 +1354,117 @@ buildQuiz("ao-predict-quiz", "🔮 Check Your Understanding — Predicting Apoph
 Apophis will miss Earth on April 13, 2029. But it will pass so close that **Earth's gravity will change its trajectory**. Scientists asked: *could that change put Apophis on a path to collide with Earth in the 2030s?*
 :::
 
-During the flyby, Earth's pull (about 46× the Sun's) acts on Apophis for several hours. The closer the pass, the stronger the pull, and the more the path bends. Try different closest distances:
+During the flyby, Earth's pull (about 46× the Sun's) acts on Apophis for several hours. The closer the pass, the stronger the pull, and the more the path bends. Change the **closest distance** and watch the path. The **dashed line** is where Apophis would go with no Earth gravity; the **yellow angle** is how much the path bends.
 
 ```{ojs}
 //| echo: false
-viewof fbDist = Inputs.range([7000, 400000], {label: "Closest distance from Earth's center (km):", step: 500, value: 38000, transform: Math.log})
+viewof fbDist = {
+  const K = aoKit, W = 360, H = 270, TAU = 2 * Math.PI;
+  const MU = 398600.4, VINF = 5.84;       // Earth's GM (km³/s²); Apophis's approach speed far from Earth (km/s, JPL)
+  const RE = 6371, GEO = 42164, MOON = 384400, LO = 7000, HI = 400000;
+  const cv = K.canvas2d(W, H, "Animated model of Apophis flying past Earth. The red curved path bends toward Earth. A dashed gray line shows the straight path it would take with no gravity.");
+  const ctx = cv.ctx;
+  const toRp = t => { const v = LO * Math.pow(HI / LO, t / 1000); return Math.min(HI, Math.max(LO, Math.round(v / 500) * 500)); };
+  const toT = rp => 1000 * Math.log(rp / LO) / Math.log(HI / LO);
+  const sD = K.slider({label: "Closest distance from Earth's center (km)", min: 0, max: 1000, step: 1, value: toT(38000), fmt: t => toRp(t).toLocaleString("en-US") + " km"});
+  sD.input.setAttribute("aria-valuetext", "38,000 km");
+  const bPlay = K.button(K.reduce ? "▶ Play" : "⏸ Pause");
+  const bA = K.button("Apophis 2029: 38,000 km"), bG = K.button("10× farther: 380,000 km"), bC = K.button("Very close: 10,000 km");
+  const rB = K.readout("Path bent by"), rT = K.readout("Time from closest point"), rR = K.readout("Distance from Earth's center now"), rV = K.readout("Speed compared with Earth now");
+  const root = K.h("div", {className: "ao-sim"}, [
+    K.h("div", {className: "ao-sim-title", text: "Model: Earth's gravity bends the flyby path"}),
+    cv.c,
+    K.h("div", {className: "ao-sim-btns"}, [bPlay, bA, bG, bC]),
+    sD.row,
+    K.h("div", {className: "ao-sim-read"}, [rB.node, rT.node, rR.node, rV.node]),
+    K.h("div", {className: "ao-sim-note", text: "This is a what-if model with only two objects: Earth and Apophis. It uses Apophis's real approach speed (5.84 km/s far from Earth, from NASA/JPL) and Earth's real gravity. Only the 38,000 km pass is the real 2029 flyby. Earth and the distances are drawn to scale; the picture zooms to fit."})
+  ]);
+  let rp = 38000, u = 0.5;
+  root.value = rp;
+
+  function orbit() {
+    const a = MU / (VINF * VINF), e = 1 + rp / a, b = a * Math.sqrt(e * e - 1);
+    const bend = 2 * Math.asin(1 / e), phi = bend / 2 - Math.PI / 2, n = Math.sqrt(MU / (a * a * a));
+    return {a, e, b, bend, phi, n};
+  }
+  function draw() {
+    cv.fit();
+    const o = orbit(), s = 70 / o.b, EX = 196, EY = 122;
+    const cp = Math.cos(o.phi), sp = Math.sin(o.phi);
+    const scr = (xp, yp) => [EX + (xp * cp - yp * sp) * s, EY - (xp * sp + yp * cp) * s];
+    const at = Hh => scr(o.a * (o.e - Math.cosh(Hh)), o.b * Math.sinh(Hh));
+    ctx.fillStyle = "#0a0a2e"; ctx.fillRect(0, 0, W, H);
+    K.stars(ctx, W, H);
+    ctx.font = "10.5px sans-serif"; ctx.textBaseline = "alphabetic";
+    // reference rings (real distances from Earth's center)
+    for (const [km, label] of [[GEO, "Geostationary satellites"], [MOON, "Moon's distance"]]) {
+      const rr = km * s;
+      if (rr < 9 || rr > 330) continue;
+      ctx.strokeStyle = "rgba(116,185,255,.55)"; ctx.setLineDash([2, 4]); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(EX, EY, rr, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = "rgba(160,205,255,.95)"; ctx.textAlign = "center";
+      if (EY - rr > 22) ctx.fillText(label, EX, EY - rr - 4);
+      else { ctx.textAlign = "right"; ctx.fillText(label, W - 6, Math.min(H - 8, EY + Math.sqrt(Math.max(rr * rr - (W - 40 - EX) ** 2, 0)) + 14)); }
+    }
+    // straight path with no gravity (dashed)
+    const yIn = EY + o.b * s;
+    ctx.strokeStyle = "#9aa7bd"; ctx.setLineDash([5, 4]); ctx.lineWidth = 1.3;
+    ctx.beginPath(); ctx.moveTo(0, yIn); ctx.lineTo(W, yIn); ctx.stroke(); ctx.setLineDash([]);
+    // bend angle marker where the incoming and outgoing directions cross
+    const [qx, qy] = scr(o.a * o.e, 0);
+    ctx.strokeStyle = "rgba(255,255,255,.35)"; ctx.lineWidth = 1; ctx.setLineDash([2, 3]);
+    ctx.beginPath(); ctx.moveTo(qx, qy); ctx.lineTo(qx + 400 * Math.cos(o.bend), qy - 400 * Math.sin(o.bend)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.strokeStyle = "#ffd54f"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(qx, qy, 34, -o.bend, 0); ctx.stroke();
+    ctx.fillStyle = "#ffd54f"; ctx.font = "bold 11px sans-serif"; ctx.textAlign = "left";
+    ctx.fillText((o.bend * 180 / Math.PI).toFixed(1) + "°", Math.min(qx + 40, W - 40), qy - Math.max(9, 17 * Math.sin(o.bend / 2)) + 1);
+    // the real (curved) path
+    const Hmax = Math.acosh((5.2 * o.b / o.a + 1) / o.e);
+    ctx.strokeStyle = "#ff5252"; ctx.lineWidth = 2.4; ctx.beginPath();
+    for (let i = 0; i <= 160; i++) { const [px, py] = at(-Hmax + 2 * Hmax * i / 160); if (i) ctx.lineTo(px, py); else ctx.moveTo(px, py); }
+    ctx.stroke();
+    // Earth, to scale
+    const er = RE * s;
+    ctx.fillStyle = "#2e86de"; ctx.strokeStyle = "#7bed9f"; ctx.lineWidth = er > 4 ? 1.5 : 0.8;
+    ctx.beginPath(); ctx.arc(EX, EY, Math.max(er, 1.6), 0, TAU); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = "#fff"; ctx.font = "bold 11px sans-serif"; ctx.textAlign = "center";
+    ctx.fillText("Earth", EX, EY - Math.max(er, 1.6) - 5);
+    // Apophis now
+    const tmax = (o.e * Math.sinh(Hmax) - Hmax) / o.n, t = -tmax + 2 * tmax * u, Mh = o.n * t;
+    let Hh = Math.asinh(Mh / o.e);
+    for (let i = 0; i < 25; i++) Hh -= (o.e * Math.sinh(Hh) - Hh - Mh) / (o.e * Math.cosh(Hh) - 1);
+    const [ax, ay] = at(Hh), r = o.a * (o.e * Math.cosh(Hh) - 1), v = Math.sqrt(VINF * VINF + 2 * MU / r);
+    ctx.strokeStyle = "rgba(255,255,255,.3)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(EX, EY); ctx.lineTo(ax, ay); ctx.stroke();
+    ctx.fillStyle = "#fff"; ctx.strokeStyle = "#ff5252"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(ax, ay, 4.5, 0, TAU); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = "#ffb3b3"; ctx.font = "bold 11px sans-serif"; ctx.textAlign = ax > W - 60 ? "right" : "left";
+    ctx.fillText("Apophis", ax + (ax > W - 60 ? -8 : 8), ay - 8);
+    ctx.fillStyle = "#c0c9e2"; ctx.font = "10.5px sans-serif"; ctx.textAlign = "left";
+    ctx.fillText("Dashed: path with no Earth gravity", 8, Math.min(yIn + 14, H - 6));
+    // scale bar
+    const nice = [1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000].find(k => k * s >= 36) || 500000;
+    ctx.strokeStyle = "#e2e8f0"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(10, 14); ctx.lineTo(10 + nice * s, 14); ctx.stroke();
+    ctx.fillStyle = "#e2e8f0"; ctx.fillText(nice.toLocaleString("en-US") + " km", 15 + nice * s, 17);
+    const hrs = t / 3600, ah = Math.abs(hrs);
+    rB.set((o.bend * 180 / Math.PI).toFixed(1) + "°");
+    rT.set(ah < 0.05 ? "closest point" : (ah >= 48 ? (ah / 24).toFixed(1) + " days " : ah.toFixed(1) + " hours ") + (hrs < 0 ? "before" : "after"));
+    rR.set((Math.round(r / 100) * 100).toLocaleString("en-US") + " km");
+    rV.set(v.toFixed(2) + " km/s");
+  }
+  const run = K.runner(root, dt => { u += dt / 9; if (u > 1) u = 0; }, draw, invalidation);
+  bPlay.onclick = () => { if (run.playing) { run.pause(); bPlay.textContent = "▶ Play"; } else { run.play(); bPlay.textContent = "⏸ Pause"; } };
+  const setRp = (v, fromSlider) => {
+    rp = v; root.value = rp;
+    if (!fromSlider) { sD.value = toT(rp); root.dispatchEvent(new Event("input", {bubbles: true})); }
+    sD.input.setAttribute("aria-valuetext", rp.toLocaleString("en-US") + " km");
+    draw();
+  };
+  sD.input.addEventListener("input", () => setRp(toRp(sD.value), true));
+  bA.onclick = () => setRp(38000); bG.onclick = () => setRp(380000); bC.onclick = () => setRp(10000);
+  draw();
+  if (!K.reduce) run.play();
+  return root;
+}
 ```
 
 ```{ojs}
@@ -1050,19 +1489,6 @@ viewof fbDist = Inputs.range([7000, 400000], {label: "Closest distance from Eart
       Plot.dot([{rp: fbDist, d: cur}], {x: "rp", y: "d", r: 8, fill: "none", stroke: "#0984e3", strokeWidth: 3})
     ]
   }));
-  // Schematic: incoming straight path, outgoing path rotated by the bend angle
-  const W = 360, H = 170, ex = 200, ey = 58, L = 120, rad = cur * Math.PI / 180;
-  const svg = wrap.append("svg").attr("viewBox", `0 0 ${W} ${H}`)
-    .attr("role", "img").attr("aria-label", `Schematic showing Apophis's path bending by ${cur.toFixed(0)} degrees as it passes Earth`)
-    .style("width", "100%").style("height", "auto").style("max-width", "520px").style("display", "block").style("margin", "10px auto");
-  svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#0a0a2e").attr("rx", 12);
-  svg.append("circle").attr("cx", ex).attr("cy", ey + 22).attr("r", 12).attr("fill", "#0984e3");
-  svg.append("text").attr("x", ex).attr("y", ey + 48).attr("text-anchor", "middle").attr("fill", "#9aa7bd").attr("font-size", 10).text("Earth (not to scale)");
-  svg.append("line").attr("x1", ex - L).attr("y1", ey).attr("x2", ex).attr("y2", ey).attr("stroke", "#d63031").attr("stroke-width", 2.5);
-  svg.append("line").attr("x1", ex).attr("y1", ey).attr("x2", ex + L * 0.9).attr("y2", ey).attr("stroke", "#9aa7bd").attr("stroke-dasharray", "4,3");
-  svg.append("line").attr("x1", ex).attr("y1", ey).attr("x2", ex + L * 0.9 * Math.cos(rad)).attr("y2", ey + L * 0.9 * Math.sin(rad)).attr("stroke", "#d63031").attr("stroke-width", 2.5);
-  svg.append("text").attr("x", 12).attr("y", 20).attr("fill", "white").attr("font-size", 11).attr("font-weight", "bold").text(`Path bent toward Earth by ${cur.toFixed(1)}°`);
-  svg.append("text").attr("x", 12).attr("y", 36).attr("fill", "#9aa7bd").attr("font-size", 10).text("Dashed = path with no Earth gravity");
   return wrap.node();
 }
 ```
@@ -1081,7 +1507,7 @@ viewof fbDist = Inputs.range([7000, 400000], {label: "Closest distance from Eart
 //| echo: false
 buildQuiz("ao-flyby-quiz", "🌀 Check Your Understanding — The 2029 Flyby", [
   {
-    q: "Move the slider from 38,000 km to 380,000 km (10× farther). What happens to the bending?",
+    q: "Change the closest distance from 38,000 km to 380,000 km (10× farther). What happens to the bending?",
     options: ["It stays the same", "It becomes much smaller (a few degrees at most)", "It becomes 10× bigger", "Apophis would crash"],
     correct: 1,
     explanation: "Farther away, Earth's pull is much weaker (inverse-square), so the path barely bends. Close passes cause big changes."
