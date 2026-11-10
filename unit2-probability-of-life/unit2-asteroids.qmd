@@ -112,7 +112,7 @@ neoSurvey = [
     width: width,
     height: 190,
     marginLeft: Math.min(130, width * 0.34),
-    marginRight: 16,
+    marginRight: 34,
     x: {label: "Number of near-Earth asteroids", grid: true},
     y: {label: null},
     color: {domain: ["Found so far", "Not found yet"], range: ["#00838f", "#ff7043"], legend: true},
@@ -143,11 +143,17 @@ Plot.plot({
   height: 230,
   marginLeft: Math.min(170, width * 0.4),
   marginRight: 20,
-  x: {label: "Average years between impacts", type: "log", grid: true, tickFormat: d => d >= 1e6 ? (d / 1e6) + "M" : d.toLocaleString()},
+  x: {label: "Average years between impacts", type: "log", domain: [10, 1e9], grid: true, ticks: [10, 1e3, 1e5, 1e7, 1e9],
+      tickFormat: d => width < 500 ? (d >= 1e9 ? "1B" : d >= 1e6 ? (d / 1e6) + "M" : d >= 1e3 ? (d / 1e3) + "K" : String(d))
+        : d >= 1e9 ? "1 billion" : d >= 1e6 ? (d / 1e6) + " million" : d.toLocaleString()},
   y: {label: null, domain: impactFreq.map(d => d.size), tickFormat: d => width < 500 ? d.replace(/ \(.*/, "") : d},
   marks: [
-    Plot.barX(impactFreq, {x: "years", y: "size", fill: "#6c5ce7", tip: true,
-      title: d => `${d.size}\nAbout once every ${d.years.toLocaleString()} years\n${d.effect}`})
+    Plot.barX(impactFreq, {x1: 10, x2: "years", y: "size", fill: "#6c5ce7", rx: 4, tip: true,
+      title: d => `${d.size}\nAbout once every ${d.years.toLocaleString()} years\n${d.effect}`}),
+    Plot.text(impactFreq.filter(d => d.years < 1e5), {x: "years", y: "size", fontWeight: "bold", fontSize: 12,
+      text: d => `${d.years.toLocaleString()} yr`, textAnchor: "start", dx: 6}),
+    Plot.text(impactFreq.filter(d => d.years >= 1e5), {x: "years", y: "size", fontWeight: "bold", fontSize: 12, fill: "white",
+      text: d => d.years >= 1e6 ? `${d.years / 1e6} million yr` : `${d.years.toLocaleString()} yr`, textAnchor: "end", dx: -6})
   ]
 })
 ```
@@ -292,18 +298,75 @@ approachData = [
 
 ```{ojs}
 //| echo: false
+viewof aoScaleView = Inputs.radio(["Earth to the Moon", "Zoom in near Earth"], {label: "View:", value: "Earth to the Moon"})
+```
+
+```{ojs}
+//| echo: false
+{
+  // To-scale strip: distance above Earth's surface runs left to right.
+  const zoom = aoScaleView !== "Earth to the Moon";
+  const W = 360, H = 170, MID = 92, X0 = zoom ? 46 : 20, maxKm = zoom ? 42000 : 400000;
+  const k = (W - X0 - 22) / maxKm, x = km => X0 + km * k, rE = 6371 * k;
+  const col = {Satellite: "#74b9ff", Asteroid: "#ff7675", Moon: "#dfe6e9"};
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("role", "img")
+    .attr("aria-label", "Scale diagram of distances above Earth: the International Space Station at 420 km, GPS satellites at 20,200 km, Apophis in 2029 at 32,000 km, geostationary satellites at 35,786 km, and the Moon at 384,400 km. Apophis passes about twelve times closer than the Moon, inside the ring of geostationary satellites.")
+    .style("width", "100%").style("height", "auto").style("max-width", "680px").style("display", "block").style("margin", "6px auto 0");
+  svg.append("clipPath").attr("id", "ao-scale-clip").append("rect").attr("width", W).attr("height", H).attr("rx", 12);
+  const g = svg.append("g").attr("clip-path", "url(#ao-scale-clip)");
+  g.append("rect").attr("width", W).attr("height", H).attr("fill", "#0b1026");
+  const text = (tx, ty, s, o = {}) => g.append("text").attr("x", tx).attr("y", ty).attr("text-anchor", o.anchor || "middle")
+    .attr("font-size", o.size || 9.5).attr("font-weight", o.bold ? "bold" : "normal").attr("fill", o.fill || "#dfe6e9").text(s);
+  text(W / 2, 16, zoom ? "Zoomed in: the first 42,000 km above Earth" : "Earth to the Moon, drawn to scale", {bold: true, size: 11, fill: "#fff"});
+  g.append("line").attr("x1", x(0)).attr("x2", W).attr("y1", MID).attr("y2", MID).attr("stroke", "#4b5a86").attr("stroke-dasharray", "2,3");
+  g.append("circle").attr("cx", x(0) - rE).attr("cy", MID).attr("r", Math.max(rE, 2)).attr("fill", "#2e86de").attr("stroke", "#7bed9f").attr("stroke-width", zoom ? 2 : 0.8);
+  if (zoom) {
+    text(x(0) - 6, MID + 4, "Earth", {anchor: "end", bold: true, fill: "#fff"});
+    // label positions: [row above/below the line, text anchor]
+    const lay = {"International Space Station": [-1, "start", "ISS"], "GPS satellites": [1, "middle", "GPS satellites"],
+      "Apophis on April 13, 2029": [-1, "middle", "Apophis, 2029"], "Geostationary satellites": [1, "middle", "Geostationary"]};
+    approachData.filter(d => lay[d.name]).forEach(d => {
+      const [side, anchor, label] = lay[d.name], px = x(d.distance), ast = d.kind === "Asteroid";
+      g.append("line").attr("x1", px).attr("x2", px).attr("y1", MID).attr("y2", MID + side * 30).attr("stroke", col[d.kind]).attr("stroke-width", 1);
+      g.append("circle").attr("cx", px).attr("cy", MID).attr("r", ast ? 4.5 : 3).attr("fill", col[d.kind]);
+      text(px, MID + side * 30 + (side < 0 ? -15 : 11), label, {anchor, bold: true, fill: col[d.kind]});
+      text(px, MID + side * 30 + (side < 0 ? -4 : 22), d.distance.toLocaleString() + " km", {anchor, size: 9});
+    });
+    text(W - 8, 31, "The Moon is 9× farther this way →", {anchor: "end", size: 9, fill: "#b2bec3"});
+  } else {
+    const moon = approachData.find(d => d.kind === "Moon"), geo = approachData.find(d => d.name.startsWith("Geostationary")), ap = approachData.find(d => d.kind === "Asteroid");
+    g.append("circle").attr("cx", x(moon.distance)).attr("cy", MID).attr("r", 2.6).attr("fill", col.Moon);
+    text(x(moon.distance), MID - 12, "Moon", {bold: true, fill: "#fff"});
+    text(x(moon.distance) + 8, MID + 18, moon.distance.toLocaleString() + " km", {anchor: "end", size: 9});
+    g.append("rect").attr("x", x(0)).attr("y", MID - 7).attr("width", x(geo.distance) - x(0)).attr("height", 14).attr("fill", "#74b9ff").attr("opacity", 0.3);
+    g.append("circle").attr("cx", x(ap.distance)).attr("cy", MID).attr("r", 3).attr("fill", col.Asteroid);
+    g.append("path").attr("d", `M${x(ap.distance)},${MID + 6} L${x(ap.distance) + 22},${MID + 34}`).attr("stroke", col.Asteroid).attr("stroke-width", 1).attr("fill", "none");
+    text(x(ap.distance) + 26, MID + 40, "Apophis, 2029: " + ap.distance.toLocaleString() + " km", {anchor: "start", bold: true, fill: col.Asteroid});
+    text(x(ap.distance) + 26, MID + 52, "All our satellites orbit in this thin blue band.", {anchor: "start", size: 9});
+    text(x(0) - rE, MID - 14, "Earth", {anchor: "start", bold: true, fill: "#fff"});
+  }
+  text(W / 2, H - 8, "Earth and the distances are to scale. The other dots are enlarged.", {size: 8, fill: "#b2bec3"});
+  return svg.node();
+}
+```
+
+```{ojs}
+//| echo: false
 Plot.plot({
-  title: "How close will Apophis get?",
+  title: "The same distances as a chart",
   subtitle: "Approximate distance above Earth (log scale)",
   width: width,
   height: 250,
   marginLeft: Math.min(180, width * 0.42),
   marginRight: 20,
-  x: {label: "Distance from Earth (km)", type: "log", grid: true, tickFormat: d => d.toLocaleString()},
+  x: {label: "Distance above Earth (km)", type: "log", domain: [100, 1e6], grid: true, ticks: [100, 1e3, 1e4, 1e5, 1e6],
+      tickFormat: d => width < 500 ? (d >= 1e6 ? "1M" : d >= 1e3 ? (d / 1e3) + "K" : String(d)) : d >= 1e6 ? "1 million" : d.toLocaleString()},
   y: {label: null, domain: approachData.map(d => d.name), tickFormat: d => width < 500 ? d.replace(" on April 13, 2029", " (2029)").replace("International Space Station", "ISS") : d},
   color: {domain: ["Satellite", "Asteroid", "Moon"], range: ["#0984e3", "#d63031", "#636e72"], legend: true},
   marks: [
-    Plot.barX(approachData, {x: "distance", y: "name", fill: "kind", tip: true, title: d => `${d.name}\nabout ${d.distance.toLocaleString()} km`})
+    Plot.barX(approachData, {x1: 100, x2: "distance", y: "name", fill: "kind", rx: 4, tip: true, title: d => `${d.name}\nabout ${d.distance.toLocaleString()} km`}),
+    Plot.text(approachData.filter(d => d.distance >= 1000), {x: "distance", y: "name", text: d => d.distance.toLocaleString() + " km", textAnchor: "end", dx: -6, fill: "white", fontWeight: "bold", fontSize: 11}),
+    Plot.text(approachData.filter(d => d.distance < 1000), {x: "distance", y: "name", text: d => d.distance.toLocaleString() + " km", textAnchor: "start", dx: 6, fontWeight: "bold", fontSize: 11})
   ]
 })
 ```
@@ -977,7 +1040,7 @@ viewof fbDist = Inputs.range([7000, 400000], {label: "Closest distance from Eart
     title: "How much Earth's gravity bends Apophis's path",
     subtitle: `Closest distance ${Math.round(fbDist).toLocaleString()} km → path bent by about ${cur.toFixed(1)}°`,
     width: width, height: 300, marginLeft: 48, marginBottom: 42, marginRight: 16,
-    x: {label: "Closest distance from Earth's center (km)", type: "log", grid: true, tickFormat: d => d.toLocaleString()},
+    x: {label: "Closest distance from Earth's center (km)", type: "log", grid: true, ticks: [10000, 20000, 50000, 100000, 200000], tickFormat: d => d.toLocaleString()},
     y: {label: "Path bent by (degrees)", grid: true},
     marks: [
       Plot.line(curve, {x: "rp", y: "d", stroke: "#e17055", strokeWidth: 2.5}),
