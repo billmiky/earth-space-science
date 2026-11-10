@@ -34,6 +34,11 @@ h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !impo
 .pb-table th, .pb-table td { padding: 6px 8px; border-bottom: 1px solid rgba(128,128,128,.3); text-align: left; vertical-align: top; }
 .pb-stat { display: inline-block; min-width: 130px; padding: 8px 12px; margin: 4px; border-radius: 10px; background: rgba(225,112,85,.12); border-left: 4px solid #e17055; font-size: .92em; }
 .pb-note { font-size: .9em; opacity: .85; font-style: italic; }
+@keyframes pb-quake-pulse { 0%, 55%, 100% { transform: scale(1); opacity: .75; } 12% { transform: scale(1.9); opacity: 1; } 30% { transform: scale(1); opacity: 1; } }
+@keyframes pb-move-nudge { 0% { transform: translate(0, 0); } 70%, 100% { transform: translate(var(--pb-dx, 0), var(--pb-dy, 0)); } }
+.pb-quake { transform-box: fill-box; transform-origin: center; animation: pb-quake-pulse 2.7s ease-out infinite; }
+.pb-move { animation: pb-move-nudge 1.8s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .pb-quake, .pb-move { animation: none; } }
 </style>
 ```
 
@@ -58,6 +63,7 @@ This chapter follows the same steps as your **Surface Features & Plate Boundarie
 | Explore 2: Coastal and Continental Seismic Activity (Parts 1–4) | [Explore 2](#explore-2-coastal-and-continental-seismic-activity) |
 | Making Sense of the Coastal and Continental Seismic Activity Investigation | [Making Sense](#making-sense-of-the-coastal-and-continental-investigation) |
 | Explain 2: Modeling Natural Hazards and Surface Features + Summary Task | [Explain 2](#explain-2-modeling-natural-hazards-and-surface-features) |
+| *Extra models (not in the packet):* stick–slip earthquakes and tsunamis | [Earthquake model](#pb-stickslip) · [Tsunami model](#pb-tsunami) |
 | Elaborate: Constructing New York State (Steps 1–4, Adirondack cards) | [Elaborate](#elaborate-constructing-new-york-state) |
 | Evaluate: Who is Most at Risk? + Model and Argument Rubrics | [Evaluate](#evaluate-who-is-most-at-risk) |
 :::
@@ -1148,7 +1154,7 @@ Geologists agreed that **new crust forms at mid-ocean ridges**. But then where d
 The evidence (ocean floor never older than ~200 million years, deep slanted earthquake zones, volcanoes and mountains beside trenches) supports **plate tectonics**.
 :::
 
-Explore each type of plate boundary in this cross-section model (like the *Cross Section Model of Earth's Surface and Interior* in your packet). ⭐ = typical earthquake locations.
+Explore each type of plate boundary in this cross-section model (like the *Cross Section Model of Earth's Surface and Interior* in your packet). ⭐ = typical earthquake locations. The arrows show which way each plate moves, and the ⭐ flash in order from shallow to deep.
 
 ```{ojs}
 //| echo: false
@@ -1214,9 +1220,11 @@ viewof pbBoundary = Inputs.select(Object.keys(pbBoundaryInfo), {label: "Boundary
   defs.append("marker").attr("id", "pb-arrow").attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
     .attr("markerWidth", 5).attr("markerHeight", 5).attr("orient", "auto")
     .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", "#fff");
-  const arrow = (x1, y1, x2, y2) => svg.append("line").attr("x1", x1).attr("y1", y1).attr("x2", x2).attr("y2", y2)
-    .attr("stroke", "#fff").attr("stroke-width", 3).attr("marker-end", "url(#pb-arrow)");
-  const star = (x, y) => svg.append("text").attr("x", x).attr("y", y).attr("text-anchor", "middle").attr("dominant-baseline", "middle").attr("font-size", 11).text("⭐");
+  const arrow = (x1, y1, x2, y2) => { const L = Math.hypot(x2 - x1, y2 - y1); return svg.append("line").attr("class", "pb-move").attr("x1", x1).attr("y1", y1).attr("x2", x2).attr("y2", y2)
+    .attr("stroke", "#fff").attr("stroke-width", 3).attr("marker-end", "url(#pb-arrow)")
+    .style("--pb-dx", `${(x2 - x1) / L * 9}px`).style("--pb-dy", `${(y2 - y1) / L * 9}px`); };
+  let starN = 0;
+  const star = (x, y) => svg.append("text").attr("class", "pb-quake").style("animation-delay", `${(starN++ * 0.45).toFixed(2)}s`).attr("x", x).attr("y", y).attr("text-anchor", "middle").attr("dominant-baseline", "middle").attr("font-size", 11).text("⭐");
   const label = (x, y, s, anchor = "middle", color = "#222") => svg.append("text").attr("x", x).attr("y", y).attr("text-anchor", anchor)
     .attr("font-size", 10).attr("font-weight", "bold").attr("fill", color).text(s);
   const volcano = (x, base, h) => {
@@ -1233,8 +1241,7 @@ viewof pbBoundary = Inputs.select(Object.keys(pbBoundaryInfo), {label: "Boundary
     svg.append("path").attr("d", "M180,150 C220,150 280,145 345,150").attr("stroke", "#1e88e5").attr("stroke-width", 4).attr("fill", "none");
     label(100, 88, "stream", "middle", "#0d47a1");
     label(265, 168, "same stream, offset", "middle", "#0d47a1");
-    svg.append("line").attr("x1", 120).attr("y1", 200).attr("x2", 120).attr("y2", 40).attr("stroke", "#fff").attr("stroke-width", 3).attr("marker-end", "url(#pb-arrow)");
-    svg.append("line").attr("x1", 240).attr("y1", 40).attr("x2", 240).attr("y2", 200).attr("stroke", "#fff").attr("stroke-width", 3).attr("marker-end", "url(#pb-arrow)");
+    arrow(120, 200, 120, 40); arrow(240, 40, 240, 200);
     [50, 80, 125, 170, 200].forEach(y => star(180, y));
     label(180, 14, "MAP VIEW (looking down from above): the fault", "middle");
     return svg.node();
@@ -1330,6 +1337,207 @@ buildQuiz("pb-boundary-quiz", "🏗️ Check Your Understanding: Plate Boundarie
     options: ["No plate is sinking deep into the mantle there, so little magma forms", "They are too cold", "Volcanoes were all eroded away", "Earthquakes stop volcanoes"],
     correct: 0,
     explanation: "In continent–continent collisions neither plate subducts deeply, and at transform boundaries crust is neither made nor destroyed. Without subduction or spreading, little magma rises."
+  }
+])
+```
+
+### 🧪 Model: slow plates, sudden earthquakes {#pb-stickslip}
+
+Plates move only a few centimeters a year, about as fast as your fingernails grow. So why are earthquakes so sudden? Because plate edges get **stuck**. The plates keep moving, the rock near the fault **bends and stores energy** like a stretched rubber band, and then the fault **slips all at once**. Geologists call this **stick–slip**.
+
+Press **Start** and watch the fence lines that cross the fault. This is a **model** (a simplified what-if, not data from a real fault): every fault here slips after exactly the same amount of bending, but real faults are much less regular.
+
+```{ojs}
+//| echo: false
+{
+  const W = 360, H = 190, FX = 180, PXM = 5; // PXM: screen pixels per meter of plate motion
+  const speed = Inputs.range([1, 10], {label: "Plate speed (cm/yr)", step: 1, value: 5});
+  const strength = Inputs.range([2, 12], {label: "Fault slips after bending (m)", step: 1, value: 6});
+  const btn = html`<button style="min-height:44px;padding:8px 18px;border-radius:10px;border:none;background:#e17055;color:#fff;font-weight:700;font-size:1em;cursor:pointer;">▶ Start</button>`;
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("role", "img")
+    .attr("aria-label", "Map-view model of a fault. Fence lines crossing the fault bend slowly as the plates move, then snap straight and offset when the fault slips in an earthquake.")
+    .style("width", "100%").style("height", "auto").style("max-width", "640px").style("display", "block").style("margin", "8px auto 0");
+  svg.append("clipPath").attr("id", "pb-ss-clip").append("rect").attr("x", 0).attr("y", 18).attr("width", W).attr("height", H - 18).attr("rx", 10);
+  svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#eef6fb").attr("rx", 12);
+  const g = svg.append("g").attr("clip-path", "url(#pb-ss-clip)");
+  g.append("rect").attr("x", 0).attr("y", 18).attr("width", FX).attr("height", H).attr("fill", "#c9b48a");
+  g.append("rect").attr("x", FX).attr("y", 18).attr("width", FX).attr("height", H).attr("fill", "#d8c49c");
+  const flash = g.append("rect").attr("x", FX - 14).attr("y", 18).attr("width", 28).attr("height", H).attr("fill", "#e74c3c").attr("opacity", 0);
+  const fences = g.append("g").attr("fill", "none").attr("stroke", "#5d4037").attr("stroke-width", 2.5);
+  g.append("line").attr("x1", FX).attr("y1", 18).attr("x2", FX).attr("y2", H).attr("stroke", "#6d4c1f").attr("stroke-width", 3).attr("stroke-dasharray", "8,4");
+  svg.append("text").attr("x", W / 2).attr("y", 13).attr("text-anchor", "middle").attr("font-size", 10).attr("font-weight", "bold").attr("fill", "#222").text("MAP VIEW (looking down): fence lines crossing a fault");
+  const tag = (x, s) => svg.append("text").attr("x", x).attr("y", H - 8).attr("text-anchor", "middle").attr("font-size", 10).attr("font-weight", "bold").attr("fill", "#3e2c12").attr("stroke", "#f3e6c8").attr("stroke-width", 3).attr("paint-order", "stroke").text(s);
+  tag(60, "Plate A ↑"); tag(300, "Plate B ↓");
+  const banner = svg.append("text").attr("x", W / 2).attr("y", 40).attr("text-anchor", "middle").attr("font-size", 15).attr("font-weight", "bold")
+    .attr("fill", "#c0392b").attr("stroke", "#fff").attr("stroke-width", 3).attr("paint-order", "stroke").attr("opacity", 0).text("💥 EARTHQUAKE!");
+
+  // stored-bending chart (sawtooth)
+  const CW = 360, CH = 90, SPAN = 800;
+  const chart = d3.create("svg").attr("viewBox", `0 0 ${CW} ${CH}`).attr("role", "img")
+    .attr("aria-label", "Line chart of stored bending over time. It rises slowly, then drops straight to zero at each earthquake, making a sawtooth pattern.")
+    .style("width", "100%").style("height", "auto").style("max-width", "640px").style("display", "block").style("margin", "4px auto 0");
+  chart.append("rect").attr("width", CW).attr("height", CH).attr("fill", "rgba(128,128,128,.1)").attr("rx", 10);
+  chart.append("text").attr("x", 8).attr("y", 13).attr("font-size", 9.5).attr("font-weight", "bold").attr("fill", "currentColor").text("Stored bending (m): builds slowly, released suddenly");
+  chart.append("text").attr("x", CW - 8).attr("y", CH - 5).attr("text-anchor", "end").attr("font-size", 9).attr("fill", "currentColor").text(`time → (last ${SPAN} years)`);
+  const line = chart.append("path").attr("fill", "none").attr("stroke", "#e17055").attr("stroke-width", 2.2).attr("stroke-linejoin", "round");
+  const out = html`<div style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:6px;"></div>`;
+
+  let years = 0, stored = 0, released = 0, quakes = 0, lastSlip = 0, sinceQuake = 0, flashT = 0, running = false, raf = null, prev = null;
+  const hist = [[0, 0]];
+  const draw = () => {
+    const far = (released / 2 + stored / 2) * PXM, near = (released / 2) * PXM, gap = 38;
+    const wrap = v => ((v % gap) + gap) % gap;
+    let d = "";
+    for (let y = -gap; y < H + gap; y += gap) {
+      d += `M0,${y - wrap(far)} L${FX},${y - wrap(far) + (far - near)}`;      // plate A moves up the screen
+      d += `M${FX},${y + wrap(far) - (far - near)} L${W},${y + wrap(far)}`;    // plate B moves down
+    }
+    fences.selectAll("path").data([d]).join("path").attr("d", d => d);
+    flash.attr("opacity", flashT * 0.55); banner.attr("opacity", Math.min(1, flashT * 1.5));
+    const t0 = Math.max(0, years - SPAN), x = t => 8 + (t - t0) / SPAN * (CW - 16), y = v => CH - 16 - v / 12 * (CH - 36);
+    line.attr("d", "M" + hist.filter(p => p[0] >= t0).map(p => `${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join("L"));
+    out.innerHTML = `<span class="pb-stat">Years since last earthquake<br><strong>${Math.round(sinceQuake)}</strong></span>
+      <span class="pb-stat">Stored bending<br><strong>${stored.toFixed(1)} m</strong></span>
+      <span class="pb-stat">Earthquakes so far<br><strong>${quakes}</strong>${quakes ? ` (last slip: ${lastSlip.toFixed(0)} m)` : ""}</span>`;
+  };
+  const tick = now => {
+    if (!running) return;
+    const dt = Math.min(0.05, (now - (prev ?? now)) / 1000); prev = now;
+    const dy = dt * 25; // 1 second of animation = 25 model years
+    years += dy; sinceQuake += dy; stored += speed.value / 100 * dy; flashT = Math.max(0, flashT - dt * 1.2);
+    if (stored >= strength.value) {
+      hist.push([years, stored]); lastSlip = stored; released += stored; stored = 0; quakes++; sinceQuake = 0; flashT = 1;
+    }
+    hist.push([years, stored]); if (hist.length > 4000) hist.splice(0, 1000);
+    draw(); raf = requestAnimationFrame(tick);
+  };
+  btn.onclick = () => {
+    running = !running; btn.textContent = running ? "⏸ Pause" : "▶ Start"; prev = null;
+    if (running) raf = requestAnimationFrame(tick);
+  };
+  invalidation.then(() => { running = false; cancelAnimationFrame(raf); });
+  draw();
+  return html`<div>${speed}${strength}<div style="margin:6px 0;">${btn}</div>${svg.node()}${chart.node()}${out}
+    <p class="pb-note">Model, not real data. 1 second ≈ 25 years. Bending on screen is hugely exaggerated so you can see it.</p></div>`;
+}
+```
+
+::: {.key-idea}
+### 💡 What the model shows
+- **Plate motion is slow and steady. Earthquakes are sudden.** The energy is stored for decades or centuries, then released in seconds.
+- **Faster plates** reach the breaking point sooner, so earthquakes come **more often**.
+- A fault that **stays stuck longer** stores more bending, so when it finally slips, it slips farther and the earthquake is **bigger**. Do the math: at 8 cm/yr, 500 quiet years store 8 × 500 = 4,000 cm = **40 m** of motion.
+- This is why a long quiet time on a plate boundary is **not** a sign of safety.
+:::
+
+### 🌊 Model: how an earthquake makes a tsunami {#pb-tsunami}
+
+At a subduction zone, the stuck edge of the upper plate gets dragged down. When the fault slips, that edge **springs back up** and lifts the whole ocean above it. That bulge of water spreads out as a **tsunami**. This is what happened off Japan on March 11, 2011.
+
+How fast a tsunami moves depends on **how deep the water is**:
+
+$$\text{speed} = \sqrt{g \times \text{depth}} \qquad (g = 9.8\ \text{m/s}^2)$$
+
+Press **Trigger earthquake** and follow the wave from the deep ocean to the shore. Watch the **speed** and the **height**.
+
+```{ojs}
+//| echo: false
+{
+  const W = 360, H = 200, SEA = 62, KM = 320, X0 = 20, SHORE = 300, PXKM = W / KM;
+  // model seafloor: deep ocean basin, continental slope, shallow shelf, shore
+  const depth = x => x <= 180 ? 4000 : x <= 250 ? 4000 - (x - 180) / 70 * 3800 : x <= SHORE ? 200 - (x - 250) / 50 * 200 : 0;
+  const floorY = x => x <= SHORE ? SEA + depth(x) / 4000 * 118 : SEA - (x - SHORE) / 20 * 16;
+  const btn = html`<button style="min-height:44px;padding:8px 18px;border-radius:10px;border:none;background:#0870c0;color:#fff;font-weight:700;font-size:1em;cursor:pointer;">💥 Trigger earthquake</button>`;
+  const svg = d3.create("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("role", "img")
+    .attr("aria-label", "Cross-section model of a tsunami. A low, wide wave starts above a subduction zone in deep water, then slows down, bunches up, and grows taller as the water gets shallow near the shore.")
+    .style("width", "100%").style("height", "auto").style("max-width", "640px").style("display", "block").style("margin", "8px auto 0");
+  svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#eef6fb").attr("rx", 12);
+  const water = svg.append("path").attr("fill", "#a9d4f5");
+  const xs = d3.range(0, KM + 1, 2);
+  svg.append("path").attr("fill", "#8d7a62")
+    .attr("d", "M" + xs.map(x => `${(x * PXKM).toFixed(1)},${floorY(x).toFixed(1)}`).join("L") + `L${W},${H} L0,${H} Z`);
+  // town on the coast, ship in deep water, fault under the source
+  svg.append("text").attr("x", 312 * PXKM).attr("y", floorY(312) - 2).attr("text-anchor", "middle").attr("font-size", 13).text("🏘️");
+  const ship = svg.append("text").attr("x", 120 * PXKM).attr("text-anchor", "middle").attr("font-size", 12).text("🚢");
+  svg.append("line").attr("x1", 4).attr("y1", H - 6).attr("x2", 44).attr("y2", floorY(X0) + 4).attr("stroke", "#e74c3c").attr("stroke-width", 2.5).attr("stroke-dasharray", "5,3");
+  const uplift = svg.append("text").attr("x", X0 * PXKM).attr("y", floorY(X0) - 6).attr("text-anchor", "middle").attr("font-size", 13).attr("opacity", 0).text("⬆️");
+  const lab = (x, y, s, c = "#fff", a = "middle") => svg.append("text").attr("x", x).attr("y", y).attr("text-anchor", a).attr("font-size", 9.5).attr("font-weight", "bold").attr("fill", c).text(s);
+  lab(60, H - 22, "fault slips,"); lab(60, H - 11, "seafloor jumps up");
+  lab(110, 110, "Deep ocean: 4,000 m", "#0d47a1");
+  lab(292, 92, "shallow shelf");
+  lab(W - 6, 16, "wave height exaggerated", "#555", "end");
+  const marker = svg.append("line").attr("y1", SEA - 34).attr("y2", SEA - 4).attr("stroke", "#c0392b").attr("stroke-width", 1.5).attr("stroke-dasharray", "3,2").attr("opacity", 0);
+  const out = html`<div style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:6px;"></div>`;
+
+  let pos = X0, t = 0, running = false, done = false, raf = null, prev = null;
+  const speedAt = x => Math.sqrt(9.8 * Math.max(depth(x), 5));              // m/s
+  const heightAt = x => Math.pow(4000 / Math.max(depth(x), 10), 0.25);     // m, for a wave that starts 1 m high (Green's law)
+  const compare = v => v > 600 ? "as fast as a passenger jet ✈️" : v > 200 ? "as fast as a race car 🏎️" : v > 80 ? "as fast as a car on the highway 🚗" : v > 35 ? "as fast as a car in the city 🚙" : "about as fast as a sprinter 🏃";
+  const draw = () => {
+    const active = running || done, h = heightAt(pos), sig = 3 + 26 * Math.sqrt(Math.max(depth(pos), 5) / 4000);
+    const surf = x => { if (!active) return SEA; const p = x * PXKM - pos * PXKM; return SEA - h * 6 * Math.exp(-p * p / (2 * sig * sig)); };
+    const wx = d3.range(0, SHORE + 0.01, 0.5);
+    water.attr("d", "M" + wx.map(x => `${(x * PXKM).toFixed(1)},${surf(x).toFixed(1)}`).join("L")
+      + "L" + wx.slice().reverse().map(x => `${(x * PXKM).toFixed(1)},${floorY(x).toFixed(1)}`).join("L") + "Z");
+    ship.attr("y", surf(120) - 1);
+    marker.attr("x1", pos * PXKM).attr("x2", pos * PXKM).attr("opacity", active ? 1 : 0);
+    uplift.attr("opacity", running && t < 300 ? 1 : 0);
+    const v = speedAt(pos) * 3.6;
+    out.innerHTML = !active ? `<span class="pb-stat" style="min-width:240px;">Ready. The ocean is calm.</span>` :
+      `<span class="pb-stat">Time since earthquake<br><strong>${Math.round(t / 60)} min</strong></span>
+       <span class="pb-stat">Water depth under wave<br><strong>${d3.format(",")(Math.round(Math.max(depth(pos), 0) / 10) * 10)} m</strong></span>
+       <span class="pb-stat">Wave speed<br><strong>${Math.round(v)} km/h</strong><br><small>${compare(v)}</small></span>
+       <span class="pb-stat">Wave height<br><strong>${h.toFixed(1)} m</strong>${done ? "<br><small>🏘️ reached the coast</small>" : ""}</span>`;
+  };
+  const tick = now => {
+    if (!running) return;
+    const dt = Math.min(0.05, (now - (prev ?? now)) / 1000) * 240; prev = now; // 1 second of animation = 4 model minutes
+    t += dt; pos += speedAt(pos) * dt / 1000;
+    if (pos >= SHORE - 2.5) { pos = SHORE - 2.5; running = false; done = true; btn.textContent = "↺ Run again"; }
+    draw(); if (running) raf = requestAnimationFrame(tick);
+  };
+  btn.onclick = () => { cancelAnimationFrame(raf); pos = X0; t = 0; done = false; running = true; prev = null; btn.textContent = "↺ Restart"; raf = requestAnimationFrame(tick); };
+  invalidation.then(() => { running = false; cancelAnimationFrame(raf); });
+  draw();
+  return html`<div><div style="margin:6px 0;">${btn}</div>${svg.node()}${out}
+    <p class="pb-note">Model, not a recording of a real tsunami. The wave starts 1 m high. Speed uses the formula above; height uses a standard rule (Green's law) for waves moving into shallow water, and stops at 10 m depth where that rule breaks down. Real waves can run much higher up the land.</p></div>`;
+}
+```
+
+::: {.key-idea}
+### 💡 What the model shows
+- **In deep water a tsunami is fast but low.** At 4,000 m deep it moves about **700 km/h**, yet a ship on top of it rises only about a meter and may not notice.
+- **Near shore it slows down and piles up.** The front of the wave slows first, the back catches up, and the same energy is squeezed into less water. The wave gets **shorter and taller**.
+- **Warning time depends on distance.** Coasts next to the trench may have only minutes. Coasts across an ocean have hours, which is why warning systems save lives.
+- **Feel a long, strong earthquake at the coast? Go to high ground right away.** The shaking is the warning.
+:::
+
+```{ojs}
+//| echo: false
+buildQuiz("pb-hazardmodel-quiz", "🌊 Check Your Understanding: From Plate Motion to Hazards", [
+  {
+    q: "Plates move steadily, a few centimeters every year. Why do earthquakes happen suddenly?",
+    options: ["The plate edges get stuck, energy builds up as rock bends, and then the fault slips all at once", "Plates stop moving for centuries and then jump forward", "Earthquakes only happen when a volcano erupts", "The mantle suddenly speeds up"],
+    correct: 0,
+    explanation: "The plates never stop. Where their edges are stuck, the rock bends and stores energy until the fault can't hold, then it slips in seconds. This is stick–slip."
+  },
+  {
+    q: "In the stick–slip model, a fault has been quiet for a very long time while the plates kept moving. What does that mean?",
+    options: ["A lot of bending is stored, so the next earthquake could be large", "The fault is no longer active", "The plates have stopped moving", "The stored energy has leaked away safely"],
+    correct: 0,
+    explanation: "Motion that hasn't been released is stored as bending. The longer the fault stays stuck, the more there is to release."
+  },
+  {
+    q: "A tsunami crosses water 4,000 m deep, then reaches water 40 m deep. What happens to it?",
+    options: ["It slows down and gets taller", "It speeds up and gets taller", "It slows down and gets lower", "Nothing changes"],
+    correct: 0,
+    explanation: "Speed = √(g × depth), so shallower water means a slower wave. As the wave slows, it bunches up and its height grows."
+  },
+  {
+    q: "Which plate boundary is most likely to cause a large tsunami?",
+    options: ["Convergent (subduction), because the seafloor moves up and down", "Transform, because plates slide sideways", "Divergent, because the earthquakes are deep", "Continent–continent, because the mountains are tall"],
+    correct: 0,
+    explanation: "A tsunami needs a large area of seafloor to move vertically. That happens at subduction zones like Japan, Sumatra, Chile, and Cascadia. Sideways (transform) motion barely lifts the water."
   }
 ])
 ```
