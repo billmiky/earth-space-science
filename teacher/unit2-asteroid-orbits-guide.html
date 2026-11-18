@@ -1,0 +1,1139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}.strata-7{grid-template-columns:repeat(7,1fr)}
+</style>
+<title>Asteroid Orbits Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky day bar on top, one day visible at a time, single reading column (~760px). Days are "rock layers" colored by 5E phase. */
+:root{
+  --bg:#F2F5F4; --surface:#FFFFFF; --ink:#15212A; --muted:#55646B; --line:#D5DDDB; --tint:#E7EDEB;
+  --iron:#AE4229; --ocean:#1C6784; --ochre:#A8731A; --moss:#4C7634; --dusk:#5A4A8C;
+  --ok:#2E7D4F; --warn:#9A5B00;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--ocean)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* phase colors */
+[data-phase="engage"]{--ph:var(--ochre)} [data-phase="explore"]{--ph:var(--iron)} [data-phase="explain"]{--ph:var(--ocean)}
+[data-phase="elaborate"]{--ph:var(--moss)} [data-phase="evaluate"]{--ph:var(--dusk)} [data-phase="overview"]{--ph:var(--ink)}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:thin}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--ph)}
+.chip[aria-current="page"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--ocean);outline-offset:2px}
+
+/* hero */
+.hero{padding-block:28px 8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.hero h1{font-size:clamp(32px,7vw,52px);font-weight:800;letter-spacing:-.02em;margin:8px 0 10px}
+.dq{font-size:clamp(18px,3.4vw,22px);color:var(--ink);max-width:40ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0 0;color:var(--muted);font-size:15px}
+.meta b{color:var(--ink)}
+
+/* strata bar */
+.strata{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin:22px 0 6px;border-radius:10px;overflow:hidden}
+.strata a{display:flex;flex-direction:column;justify-content:flex-end;min-height:76px;padding:8px 7px;background:var(--ph);color:#fff;text-decoration:none;font-size:12px;line-height:1.2;position:relative}
+.strata a::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(0,0,0,.10) 9px 11px);pointer-events:none}
+.strata b{font-family:var(--f-display);font-size:20px;display:block}
+.strata span{opacity:.92}
+.strata-cap{font-size:13px;color:var(--muted)}
+@media (max-width:520px){.strata span{display:none}.strata a{min-height:56px}}
+
+/* views */
+.view{padding-block:8px 48px;scroll-margin-top:calc(64px + env(safe-area-inset-top,0px))}
+.view[hidden]{display:none!important}
+.dayhead{padding-block:26px 6px;border-bottom:4px solid var(--ph);margin-bottom:8px}
+.dayhead .eyebrow{color:var(--ph)}
+.dayhead h2{font-size:clamp(28px,5.6vw,40px);font-weight:800;margin:6px 0 8px;letter-spacing:-.01em}
+.dayhead .q{font-style:italic;color:var(--muted);margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
+.tag{font-size:13px;padding:3px 9px;border-radius:6px;background:var(--tint);color:var(--ink)}
+
+section.block{padding-block:18px 4px}
+section.block>h3{font-size:22px;font-weight:800;margin-bottom:12px;display:flex;align-items:baseline;gap:10px}
+section.block>h3 small{font-family:var(--f-body);font-weight:600;font-size:14px;color:var(--muted)}
+p{margin:0 0 10px} ul,ol{margin:0 0 10px;padding-left:22px} li{margin-bottom:5px}
+
+/* goals */
+.goals{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--ph);border-radius:8px;padding:14px 16px}
+.goals h3{font-size:17px;margin-bottom:8px}
+.goals ul{margin:0}
+
+/* schedule */
+.sched{list-style:none;padding:0;margin:0;border-left:2px solid var(--line)}
+.sched li{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:10px 0 12px 22px;margin:0;position:relative}
+.sched li::before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:3px solid var(--ph)}
+.t{font-family:var(--f-mono);font-size:14px;color:var(--ph);font-weight:500;padding-top:2px;font-variant-numeric:tabular-nums}
+.t small{display:block;color:var(--muted);font-size:12px}
+.sched h4{font-size:17px;font-weight:600;margin-bottom:3px}
+.sched p,.sched ul{font-size:16px;color:var(--ink);margin-bottom:4px}
+.sched .say{border-left:3px solid var(--tint);padding-left:10px;color:var(--muted);font-style:italic}
+@media (max-width:480px){.sched li{grid-template-columns:1fr;gap:2px}}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.card .lbl{font-size:12px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;color:var(--ph);margin-bottom:6px}
+.card p:last-child{margin-bottom:0}
+.ans{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:15px;color:var(--muted)}
+.ans b{color:var(--ok)}
+
+/* conferring */
+.confer{list-style:none;padding:0;display:grid;gap:8px}
+.confer li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0}
+.confer li span{display:block;font-size:14px;color:var(--muted);margin-top:3px}
+
+/* CFU */
+.cfu{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.cfu h4{font-size:16px;margin-bottom:6px;font-family:var(--f-body);font-weight:700}
+.opts{list-style:none;padding:0;margin:6px 0}
+.opts li{padding:5px 10px;border-radius:6px;margin-bottom:4px;background:var(--tint)}
+.opts li.right{outline:2px solid var(--ok)}
+.opts li em{display:block;font-size:14px;color:var(--muted);font-style:normal}
+.when{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* answer key */
+.key{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.key>summary{cursor:pointer;padding:13px 16px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.key>summary::-webkit-details-marker{display:none}
+.key>summary::after{content:"+";font-family:var(--f-mono);font-size:20px;color:var(--ph)}
+.key[open]>summary::after{content:"−"}
+.key>summary small{display:block;font-weight:400;color:var(--muted);font-size:14px}
+.keybody{padding:2px 16px 14px;border-top:1px solid var(--line)}
+.qa{padding:10px 0;border-bottom:1px solid var(--tint)}
+.qa:last-child{border-bottom:0}
+.qa .qq{font-weight:700;margin-bottom:4px}
+.qa .aa{margin:0}
+.note{font-size:15px;background:var(--tint);border-radius:8px;padding:10px 12px;margin:8px 0}
+.note b{color:var(--warn)}
+.scroll{overflow-x:auto;margin:8px 0 12px;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--surface)}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--tint);font-weight:700}
+td.num,th.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* homework */
+.hw{background:var(--surface);border:2px solid var(--ph);border-radius:12px;padding:16px}
+.hw h4{font-size:20px;font-weight:800;margin-bottom:6px}
+.hw .why{font-size:15px;color:var(--muted)}
+.checks{list-style:none;padding:0;margin:8px 0 0}
+.checks li{padding-left:24px;position:relative}
+.checks li::before{content:"✓";position:absolute;left:2px;color:var(--ok);font-weight:700}
+
+/* overview bits */
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:6px}
+.glance .card b{font-family:var(--f-display);font-size:18px;display:block;margin-bottom:2px}
+.prep{list-style:none;padding:0}
+.prep li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--tint);margin:0}
+.prep input{width:20px;height:20px;margin-top:3px;accent-color:var(--ocean);flex:0 0 auto}
+.prep label{flex:1;min-width:0}
+.prep .when{display:block}
+.mis{display:grid;gap:8px}
+.mis div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.mis s{color:var(--iron);text-decoration-thickness:2px}
+
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:30px;flex-wrap:wrap}
+.pager a{flex:1 1 200px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.pager a small{display:block;color:var(--muted);font-size:13px}
+.pager a.next{text-align:right}
+footer{color:var(--muted);font-size:13px;padding-block:20px 40px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+.strata-7{grid-template-columns:repeat(7,1fr)}
+</style>
+</head>
+<body>
+<nav class="bar" aria-label="Days">
+  <div class="wrap" id="chips">
+    <a class="chip" data-phase="overview" href="#overview"><i></i>Before you teach</a>
+    <a class="chip" data-phase="engage" href="#day-1"><i></i>Day 1</a>
+    <a class="chip" data-phase="explore" href="#day-2"><i></i>Day 2</a>
+    <a class="chip" data-phase="explore" href="#day-3"><i></i>Day 3</a>
+    <a class="chip" data-phase="explain" href="#day-4"><i></i>Day 4</a>
+    <a class="chip" data-phase="explain" href="#day-5"><i></i>Day 5</a>
+    <a class="chip" data-phase="elaborate" href="#day-6"><i></i>Day 6</a>
+    <a class="chip" data-phase="evaluate" href="#day-7"><i></i>Day 7</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ===================== OVERVIEW ===================== -->
+<div class="view" id="overview" data-phase="overview">
+  <header class="hero">
+    <div class="eyebrow">Teacher guide · Earth &amp; Space Science · Unit 2 · Probability of Life Elsewhere · 5E 2.4</div>
+    <h1>Asteroid Orbits</h1>
+    <p class="dq">Will a major asteroid ever hit the Earth again? How do we know, and what can humans do to survive?</p>
+    <div class="meta">
+      <span><b>PE</b> HS-ESS1-4</span>
+      <span><b>Length</b> 7 days × 50 min (curriculum says 5–7)</span>
+      <span><b>Anchor routines</b> Domino Discover · Class Consensus · Read-Generate-Sort-Solve · Idea Carousel</span>
+    </div>
+    <div class="strata strata-7" aria-label="Seven days, colored by 5E phase">
+      <a href="#day-1" data-phase="engage"><b>1</b><span>Engage</span></a>
+      <a href="#day-2" data-phase="explore"><b>2</b><span>Explore</span></a>
+      <a href="#day-3" data-phase="explore"><b>3</b><span>Explore</span></a>
+      <a href="#day-4" data-phase="explain"><b>4</b><span>Explain</span></a>
+      <a href="#day-5" data-phase="explain"><b>5</b><span>Explain</span></a>
+      <a href="#day-6" data-phase="elaborate"><b>6</b><span>Elaborate</span></a>
+      <a href="#day-7" data-phase="evaluate"><b>7</b><span>Evaluate</span></a>
+    </div>
+    <p class="strata-cap">Tap a day to open it. Each day has a minute-by-minute plan, Do Nows, conferring questions, checks for understanding, the answer key, exit slips and drawn homework.</p>
+  </header>
+
+  <section class="block">
+    <h3>The phenomenon in one paragraph</h3>
+    <p><b>Apophis</b> is an asteroid about 340 m wide (the packet says 300 m), roughly three football fields. On <b>April 13, 2029</b> it will pass about <b>32,000 km above Earth's surface</b>. That's closer than the TV and weather satellites in geostationary orbit, and close enough to see without a telescope. Nothing that big has come so close in recorded history. How can NASA know exactly where a 340 m rock will be years from now? Students rediscover the patterns in orbits. Orbits are <b>ellipses</b> (Kepler's 1st law). Objects <b>speed up near the Sun and slow down far from it</b>, sweeping equal areas in equal times (Kepler's 2nd law). The period depends on the average distance (Kepler's 3rd law). <b>Gravity</b> explains all of it: Newton's F = Gm₁m₂/r². Because those patterns are so stable, orbits can be predicted precisely. Gravity can also <i>change</i> an orbit, which is both the worry (Earth's pull on Apophis in 2029) and the solution (a gravity tractor or a kinetic impactor to nudge a dangerous asteroid).</p>
+  </section>
+
+  <section class="block">
+    <h3>The 5E storyline</h3>
+    <div class="glance">
+      <div class="card" data-phase="engage"><div class="lbl">Engage · Day 1</div><b>Asteroids in the Solar System</b>What are the chances of another major asteroid hitting Earth?</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore · Days 2–3</div><b>Asteroid Paths and Velocities</b>What patterns do objects follow as they travel through space?</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain · Days 4–5</div><b>Mathematical Modeling of Orbits</b>How do we predict motions of asteroids and planets?</div>
+      <div class="card" data-phase="elaborate"><div class="lbl">Elaborate · Day 6</div><b>Will Apophis hit Earth in the 2030s?</b>How can Earth's gravity change Apophis's path?</div>
+      <div class="card" data-phase="evaluate"><div class="lbl">Evaluate · Day 7</div><b>Deflecting Asteroids</b>What can humans do to defend the planet from another mass extinction?</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="goals" data-phase="explain">
+      <h3>By the end of the 5E, every student should be able to…</h3>
+      <ul>
+        <li><b>Kepler's 1st law:</b> every orbit is an <b>ellipse</b> with the Sun at one focus. Eccentricity 0 is a circle; planets are near 0; comets and many asteroids are much more stretched.</li>
+        <li><b>Kepler's 2nd law:</b> an orbiting object sweeps <b>equal areas in equal times</b>, so it moves <b>fastest when closest</b> to the Sun and <b>slowest when farthest</b>.</li>
+        <li><b>Kepler's 3rd law:</b> the period depends on the average distance: <b>P² = a³</b> (years, AU). Farther objects take longer to orbit.</li>
+        <li><b>Newton's law of gravity:</b> <b>F = G·m₁m₂/r²</b>. Force grows with mass and falls off with the <b>square</b> of distance. Double the distance and the force drops to ¼.</li>
+        <li>Explain <i>why</i> Kepler's 2nd law works: closer to the Sun, gravity is stronger and speeds the object up; farther away, it pulls back and slows it down.</li>
+        <li>Explain that orbits are <b>stable and predictable</b>, which is how NASA predicts Apophis. They can <b>change</b> through gravity from other bodies (like Earth's pull during a flyby) or through collisions.</li>
+        <li>Argue for a way to deflect a dangerous asteroid (gravity tractor or kinetic impactor) using the math of gravity and the importance of early warning.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Prep checklist <small>check off as you go · saved on this device</small></h3>
+    <ul class="prep" id="prep">
+      <li><input type="checkbox" id="p1"><label for="p1"><span class="when">1 week out</span>Copy the student packet (20 pp). Copy the <b>Revisiting the Performance Task: Asteroid Orbits 5E</b> handout (the performance task research organizer) for Day 7. It isn't in the packet, but the rubric is (pp. 19–20).</label></li>
+      <li><input type="checkbox" id="p2"><label for="p2"><span class="when">1 week out</span>Test every link on student devices: <b>Meet the NASA Scientist Who Tracks Dangerous Asteroids</b>, the <b>Apophis</b> video, <b>Kepler's Second Law</b> sim, the <b>Gravity</b> sim, <b>Gravity and Orbits</b>, and the <b>Rusty Schweickart gravity tractor</b> video. Some orbit sims are older and may be blocked or need a different browser. Have a projector backup.</label></li>
+      <li><input type="checkbox" id="p3"><label for="p3"><span class="when">Optional, Day 1</span>Open <b>NASA's Eyes on Asteroids</b> (eyes.nasa.gov) and search "Apophis." It shows the real 2029 flyby in 3D, and the teacher materials' summary mentions it. Try it on your projector first.</label></li>
+      <li><input type="checkbox" id="p4"><label for="p4"><span class="when">Before Day 2</span>Optional demo: <b>2 push pins (or thumbtacks), a loop of string, a pencil and cardboard</b> to draw an ellipse. Moving the pins apart increases the eccentricity. This also sets up Day 2's homework.</label></li>
+      <li><input type="checkbox" id="p5"><label for="p5"><span class="when">Before Day 5</span>Plan which 2–3 Apophis models to project in the Class Consensus Discussion. Have a document camera or phone ready. Post the consensus discussion steps.</label></li>
+      <li><input type="checkbox" id="p6"><label for="p6"><span class="when">Before Day 6</span>Chart paper and markers for each table (Read-Generate-Sort-Solve), plus calculators.</label></li>
+      <li><input type="checkbox" id="p7"><label for="p7"><span class="when">Before Day 7</span>More chart paper, sticky notes and markers for the group models and the Idea Carousel.</label></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Content crib: the numbers students will use</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>Idea</th><th>Value</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Apophis size</td><td class="num">~340 m (packet: 300 m)</td><td>About 3 football fields</td></tr>
+        <tr><td>2029 closest approach</td><td class="num">April 13, 2029 · ~32,000 km above the surface (~38,000 km from Earth's center)</td><td>Closer than geostationary satellites (~36,000 km up)</td></tr>
+        <tr><td>Earth–Moon distance</td><td class="num">~384,000 km</td><td>Apophis passes at ~1/10 of that</td></tr>
+        <tr><td>Apophis orbit before 2029</td><td class="num">a ≈ 0.92 AU · e ≈ 0.19 · P ≈ 0.89 yr (323 days)</td><td>Check with P² = a³: 0.92³ = 0.78, √0.78 = 0.88 ✓</td></tr>
+        <tr><td>Apophis orbit after 2029</td><td class="num">P ≈ 1.16 yr · a ≈ 1.1 AU</td><td>Earth's gravity enlarges its orbit</td></tr>
+        <tr><td>Impact risk</td><td class="num">None for at least 100 years (NASA, 2021)</td><td>Based on 2021 radar tracking</td></tr>
+        <tr><td>Kepler's 3rd law</td><td class="num">P² = a³</td><td>P in Earth years, a in AU, for objects orbiting the Sun</td></tr>
+        <tr><td>Newton's law of gravity</td><td class="num">F = G·m₁m₂ / r²</td><td>2× distance → ¼ force; ½ distance → 4× force</td></tr>
+        <tr><td>Eccentricity</td><td class="num">Earth 0.017 · Pluto 0.25 · Halley's Comet 0.97</td><td>0 = circle, close to 1 = very stretched</td></tr>
+        <tr><td>Main asteroid belt</td><td class="num">Between Mars and Jupiter; perhaps ~1 billion objects</td><td>From the Day 1 video</td></tr>
+        <tr><td>Chelyabinsk, Russia (2013)</td><td class="num">~17–20 m asteroid; ~1,500 injured</td><td>Video says "over a thousand"</td></tr>
+        <tr><td>DART mission (2022)</td><td class="num">Changed moonlet Dimorphos's orbit by ~32 minutes</td><td>First real test of a kinetic impactor</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="block">
+    <h3>Corrections to the curriculum</h3>
+    <div class="mis">
+      <div><b>Flyby date.</b> The teacher materials' overview says <s>April 23, 2029 at around 4:30 PM EST</s>. The student packet (p. 14) says April 13, which is correct. Closest approach is about 5:46 PM EDT (21:46 UTC) on <b>April 13, 2029</b>.</div>
+      <div><b>Kepler's 2nd law model (p. 10).</b> The packet writes <s>r = Cw</s> ("distance = constant × orbital velocity"). That would mean the farther the object, the <i>faster</i> it goes, which is the opposite of what students observe. The correct relationship (at closest and farthest points) is <b>r × v = C</b>, or <b>v = C / r</b>: smaller distance, larger speed. Have students fix it before Day 4, and use it as a "does this model match our data?" moment.</div>
+      <div><b>The 2030s impact framing (Elaborate, p. 16) is out of date.</b> In 2004, a small chance of a 2029 hit or a later "keyhole" return (2036, 2068) worried scientists. Radar tracking in 2021 <b>ruled out any impact for at least 100 years</b>. Keep the task, since the mechanism of how Earth's gravity bends Apophis's path is real and important. Have students conclude that the risk is now known to be very low <i>because</i> precise tracking and these math models let NASA check.</div>
+      <div><b>Example sweep image (p. 11).</b> The pictured sweeps (0.0479 yr, 0.104 AU²) come from different settings than the directions on p. 6 (e = 0.7, a = 3 AU). Students' numbers won't match the picture. That's fine; what matters is that the two values match <i>each other</i>.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Misconceptions to listen for</h3>
+    <div class="mis">
+      <div><s>"There's no gravity in space."</s> Gravity reaches everywhere, getting weaker with distance. It's what keeps everything in orbit.</div>
+      <div><s>"Orbits are circles, and planets move at a constant speed."</s> Orbits are ellipses, and speed changes all the way around.</div>
+      <div><s>"An object goes faster when it's farther away because it has more distance to cover."</s> It's the reverse (the r = Cw error in the packet). It's slowest when farthest.</div>
+      <div><s>"Heavier objects orbit faster."</s> An orbiting object's mass barely matters. The Sun's mass and the distance set the speed.</div>
+      <div><s>"Apophis is going to hit us in 2029."</s> It will miss by ~32,000 km. Make this clear on Day 1 to head off anxiety.</div>
+      <div><s>"Just blow it up."</s> Fragments could still hit. Real plans <i>nudge</i> the orbit years in advance.</div>
+      <div><s>"A gravity tractor pulls with a cable or tractor beam."</s> It uses only the spacecraft's own gravity: a tiny force, applied for years.</div>
+      <div><s>"If we know an orbit now, we know it forever."</s> Gravity from planets (and even sunlight warming the asteroid) slowly changes orbits, so they must keep being tracked.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Key vocabulary</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Orbit / trajectory</div>The path an object follows through space.</div>
+      <div class="card"><div class="lbl">Ellipse</div>A stretched circle with two focus points. The Sun sits at one focus.</div>
+      <div class="card"><div class="lbl">Eccentricity</div>How stretched an ellipse is: 0 = circle, near 1 = very stretched.</div>
+      <div class="card"><div class="lbl">Semimajor axis (a)</div>Half the long axis of the ellipse; the object's average distance from the Sun.</div>
+      <div class="card"><div class="lbl">AU (astronomical unit)</div>Earth's average distance from the Sun, about 150 million km.</div>
+      <div class="card"><div class="lbl">Perihelion / aphelion</div>Closest point to the Sun / farthest point from the Sun.</div>
+      <div class="card"><div class="lbl">Period (P)</div>Time for one full orbit.</div>
+      <div class="card"><div class="lbl">Near-Earth object (NEO)</div>An asteroid or comet whose orbit brings it close to Earth's orbit.</div>
+      <div class="card"><div class="lbl">Gravitational keyhole</div>A small region near Earth. If an asteroid passes through it, Earth's gravity bends its orbit onto a future collision course.</div>
+      <div class="card"><div class="lbl">Gravity tractor / kinetic impactor</div>Deflect an asteroid by hovering a spacecraft near it (gravity) or by crashing into it (collision).</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Pacing and logistics notes</h3>
+    <ul>
+      <li><b>Period length.</b> Every plan assumes 50 minutes. For 45-minute periods, cut the Do Now to 3 minutes and move the item marked <i>flex</i> to homework.</li>
+      <li><b>Do Now / Exit Slip boxes.</b> The packet has boxes for Classes 1–6. On Day 7, students write on the back of the performance-task handout.</li>
+      <li><b>Five- or six-day version.</b> Combine Days 4 and 5 by giving the Apophis model (p. 14) as homework and holding a shorter consensus discussion. For five days, also fold Day 6's Read-Generate-Sort-Solve into the start of Day 7.</li>
+      <li><b>Sims need devices.</b> Days 2–3 need one device per pair. Without them, project each sim and have pairs predict before you click.</li>
+      <li><b>Math support.</b> Some students will be nervous about the equations. Keep the focus on direction ("if r goes up, what happens to F?") before plugging in numbers, which is also what the rubric's "Scale, Proportion and Quantity" row asks for.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>How the homework stays AI-proof</h3>
+    <p>Each night's homework is a <b>hand-drawn model</b>: a diagram, map, graph or comic, often drawn to scale with a ruler or string. Four rules make it hard to outsource:</p>
+    <ul>
+      <li><b>Paper, pencil and ruler only.</b> No printed or digitally made images.</li>
+      <li><b>Every task references something only your class has</b>, or a number the student chooses, so no two drawings match.</li>
+      <li><b>Every drawing has one personal "I chose…" annotation</b> explaining a decision the student made.</li>
+      <li><b>30-second check the next day.</b> During the Do Now, pick 3–4 students to explain one part of their drawing out loud.</li>
+    </ul>
+  </section>
+
+  <div class="pager"><span></span><a class="next" href="#day-1"><small>Start</small>Day 1 · Engage →</a></div>
+</div>
+
+<!-- ===================== DAY 1 ===================== -->
+<div class="view" id="day-1" data-phase="engage" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 1 · Engage</div>
+    <h2>Asteroids in the Solar System</h2>
+    <p class="q">What are the chances of another major asteroid hitting Earth?</p>
+    <div class="tags"><span class="tag">Packet pp. 3–4</span><span class="tag">Individual → whole class</span><span class="tag">Domino Discover</span><span class="tag">Video: Meet the NASA Scientist…</span><span class="tag">Video: Apophis</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Most asteroids come from the <b>belt between Mars and Jupiter</b>. Gravity from Jupiter and Saturn can nudge some toward Earth.</li>
+      <li>There are millions of objects at least 50 m wide. NASA tracks them, and even a 17 m asteroid injured over a thousand people.</li>
+      <li><b>Apophis</b> will pass extremely close to Earth on <b>April 13, 2029</b>, but it won't hit. Our question is: how can scientists predict that so precisely?</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Class 1 box. Pick an option below.</p></div></li>
+      <li><div class="t">5–10</div><div><h4>Launch from the DQB</h4><p>Bring up the questions from the Driving Question Board and the last 5E: <i>Where did the dinosaur-killing asteroid come from? How many like it still exist? Can another large asteroid hit Earth?</i> Connect the questions to the unit: <i>"If intelligent life exists elsewhere, what are the odds it gets wiped out? What about us?"</i></p></div></li>
+      <li><div class="t">10–22</div><div><h4>Video 1 + Part 1 (p. 3)</h4><p>Hand out <i>Asteroids in the Solar System</i>. Show <b>Meet the NASA Scientist Who Tracks Dangerous Asteroids in Earth's Orbit</b>. Students note ideas for Q1a–c, then write their new questions (Q2). Take 2–3 shares.</p></div></li>
+      <li><div class="t">22–24</div><div><h4>Reassure</h4><p class="say">"Before the next video: Apophis is <b>not</b> going to hit us in 2029. NASA is sure. What we want to figure out is <i>how</i> they can be so sure."</p></div></li>
+      <li><div class="t">24–33</div><div><h4>Video 2: Apophis + See-Think-Wonder (p. 4)</h4><p>Show the <b>Apophis</b> video. Students fill in the See-Think-Wonder as they watch, then finish it after. <i>Optional:</i> open NASA's Eyes on Asteroids, search Apophis, and play the April 2029 flyby.</p></div></li>
+      <li><div class="t">33–45</div><div><h4>Domino Discover</h4><p>Students share in order, one idea or question each, building on the person before. Chart questions on a <b>"How do they know?"</b> board. Steer toward the look-fors below, especially "How do they know its path is correct, or that it'll stay the same?"</p></div></li>
+      <li><div class="t">45–47</div><div><h4>Preview</h4><p class="say">"Some of you said we already have models for orbits from Unit 1, Kepler's laws. Tomorrow we'll test whether those patterns hold for asteroids and comets, and find out what else we need."</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Recall</div><p>What happened to life on Earth 66 million years ago? What evidence do we have? (Coevolution 5E, Day 7)</p><div class="ans">The K–Pg extinction: an asteroid impact, ~75% of species lost, the end of the dinosaurs. Mammals then took over.</div></div>
+      <div class="card"><div class="lbl">Option B · Estimate</div><p>How often do you think a city-destroying asteroid hits Earth: every year, every 100 years, every 10,000 years, or every million years? Why?</p><div class="ans">Roughly every few thousand years for a ~50–140 m object. Come back to it after the video.</div></div>
+      <div class="card"><div class="lbl">Option C · Unit 1 recall</div><p>What shape are planet orbits, and what did Kepler figure out about them?</p><div class="ans">Ellipses (1st law); period depends on distance (3rd law). The 2nd law is new this week.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Where did the video say most asteroids come from? What moves them out of the belt?</li>
+      <li>If NASA found one headed for us, how much time would we have? What could we do?</li>
+      <li>How do you think NASA knows exactly how close Apophis will come?</li>
+      <li>What would they need to know about Apophis to predict its path?<span>Its shape of orbit, speed, position and the forces on it.</span></li>
+      <li>Could Apophis's path ever change? What could change it?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After video 1 · hinge question</div>
+      <h4>According to the video, what nudges asteroids out of the main belt toward Earth?</h4>
+      <ul class="opts">
+        <li>A. Solar wind</li>
+        <li class="right">B. Gravity from Jupiter and Saturn<em>Correct, and it plants "gravity changes orbits."</em></li>
+        <li>C. Earth's magnetic field</li>
+        <li>D. Collisions with comets<em>Collisions can do it too, but that wasn't the video's point.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After the Apophis video · fist to five</div>
+      <h4>"How worried are you about Apophis?" then "How confident are you that NASA can predict its path?"</h4>
+      <p>Low worry with high confidence is the goal by Day 5. Ask again then.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 1: video questions<small>p. 3 · check against the video you show</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1a. Where do asteroids in our solar system come from?</div><p class="aa">Mostly a huge reservoir between the orbits of <b>Mars and Jupiter</b>, the asteroid belt, with perhaps about a billion objects. <b>Gravity from Jupiter and Saturn</b> nudges some of them closer to Earth.</p></div>
+      <div class="qa"><div class="qq">1b. How many large asteroids are there?</div><p class="aa">Millions of objects at least <b>50 m</b> wide, which is big enough to destroy a city.</p></div>
+      <div class="qa"><div class="qq">1c. Will another large asteroid ever strike Earth?</div><p class="aa">Eventually, yes, it's possible. Even a small ~17 m asteroid exploded in the atmosphere and injured over a thousand people (Chelyabinsk, 2013). NASA tracks these objects closely. If one were found on a collision course, we would probably have <b>a few years</b> of warning to act, for example by crashing a spacecraft into it to knock it off course.</p></div>
+      <div class="qa"><div class="qq">2. Questions?</div><p class="aa">Answers vary. Good ones: "Is NASA especially worried about any asteroid?" · "How do they know where it will go?" · "How do you change an asteroid's path?"</p></div>
+    </div></details>
+    <details class="key"><summary><span>Apophis See-Think-Wonder<small>p. 4 · sample responses</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>See</th><th>Think</th><th>Wonder</th></tr></thead><tbody>
+        <tr><td>Apophis is ~340 m wide and will pass closer than some satellites on April 13, 2029; you'll see it without a telescope.</td><td>NASA seems to know exactly how far it will be from Earth and its whole trajectory.</td><td>How do they know the path is correct, or that it'll stay the same?</td></tr>
+        <tr><td>Its orbit crosses Earth's orbit.</td><td>If it hit, it could cause a lot of damage to life on Earth.</td><td>Could Earth's gravity change its path when it passes so close?</td></tr>
+        <tr><td>Scientists will study it during the flyby.</td><td>We have models (Kepler's laws) for orbit shape and distance. What else do we need?</td><td>What would we do if it <i>were</i> going to hit?</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Look and listen for:</b> it could cause a lot of damage · NASA seems to know exactly how far Apophis will come and its trajectory · we have models for average distance and orbit shape, but what else do we need to know? · how do they know the path is correct or will stay the same? Students don't need all of these yet.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Write the one question about Apophis you most want answered this week, and say why.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Name two things scientists would need to know about Apophis to predict where it will be in 2029.</p><div class="ans">Examples: orbit shape, current position, speed, and the forces (gravity) acting on it.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>The 2029 Flyby to Scale</h4>
+      <p>Use a ruler and the scale <b>1 cm = 20,000 km</b>. Draw Earth as a dot (its radius is only 0.3 cm at this scale). Then mark: geostationary satellites (36,000 km up, or 1.8 cm from Earth's surface), <b>Apophis at closest approach</b> (~32,000 km up, or 1.6 cm), and the Moon (384,000 km, or 19.2 cm, so tape on extra paper if needed). Draw Apophis's path as a curved line passing Earth.</p>
+      <ul class="checks">
+        <li>All 4 objects placed to scale, with the measurements written in cm</li>
+        <li>An arrow from Earth to Apophis labeled "Earth's gravity pulls here"</li>
+        <li>One sentence: how many times closer than the Moon is Apophis?</li>
+        <li>"I chose…" note: <b>one question from our "How do they know?" board</b> that your drawing makes you wonder about even more</li>
+      </ul>
+      <p class="why">Answer: 384,000 ÷ 32,000 ≈ 12, so about 12× closer than the Moon (about 10× measured from Earth's center).</p>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#overview"><small>Back</small>← Before you teach</a><a class="next" href="#day-2"><small>Next</small>Day 2 · Orbit shapes and sweeps →</a></div>
+</div>
+
+<!-- ===================== DAY 2 ===================== -->
+<div class="view" id="day-2" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 2 · Explore</div>
+    <h2>Orbit Shapes and Equal Sweeps</h2>
+    <p class="q">What patterns do different objects follow as they travel through space?</p>
+    <div class="tags"><span class="tag">Packet pp. 5–6 (Part 1)</span><span class="tag">Pairs</span><span class="tag">Kepler's Second Law sim</span><span class="tag">Optional: string-and-pins ellipse</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Orbits are <b>ellipses</b>. Eccentricity 0 is a circle (close to planets); 0.7 is very stretched (like many comets and asteroids), and the distance from the Sun keeps changing.</li>
+      <li>Equal-time sweeps cover <b>equal areas</b>, even though the arc length is different each time.</li>
+      <li>So the object moves <b>faster near the Sun</b> and <b>slower far away</b>.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 2 box. Call on 3–4 students to explain their scale drawings.</p></div></li>
+      <li><div class="t">4–10</div><div><h4>Launch: Unit 1 connection</h4><p>Ask: <i>When we learned Kepler's 1st and 3rd laws, how did we figure them out?</i> Listen for: patterns in the motion of many objects, tech tools, a mathematical model.</p><p class="say">"We'll use the same approach to see how we can predict asteroid paths."</p><p><i>Optional demo (3 min):</i> string loop plus two pins makes an ellipse. Move the pins apart and it gets more eccentric.</p></div></li>
+      <li><div class="t">10–22</div><div><h4>Kepler's Second Law sim: eccentricity (p. 5 Q1–3)</h4><p>Pairs open the sim, click "Kepler's 2nd Law," slide eccentricity, and answer Q1–3. Point out Pluto's eccentricity was one reason it was reclassified.</p></div></li>
+      <li><div class="t">22–38</div><div><h4>Sweeps (p. 6 Q1–2)</h4><p>Set e = 0.7 and a ≈ 3 AU. Do several sweeps near the Sun and far from it, and record the area and time for each in the margin. Confer with every pair (questions below).</p></div></li>
+      <li><div class="t">38–46</div><div><h4>Quick share + chart</h4><p>Ask 3 pairs to share their sweep numbers, and record them on the board. Ask: <i>Same area? Same time? Same length of orbit covered?</i> Circle the pattern: <b>same area, same time, different arc length → different speed</b>.</p></div></li>
+      <li><div class="t">46–50</div><div><h4>Exit slip</h4><p class="say">"Tomorrow: <i>why</i> does it speed up near the Sun?"</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Sketch</div><p>Sketch a circle orbit and a very stretched ellipse orbit around a Sun. Where is the Sun in each?</p><div class="ans">Center of the circle; at one <b>focus</b> (off-center) of the ellipse.</div></div>
+      <div class="card"><div class="lbl">Option B · Predict</div><p>A comet swings close to the Sun, then far out. Is it faster when it's close or far? Guess and explain.</p></div>
+      <div class="card"><div class="lbl">Option C · 3rd law warm-up</div><p>Using P² = a³, how long does an asteroid at a = 4 AU take to orbit the Sun?</p><div class="ans">4³ = 64, √64 = <b>8 years</b>.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What do you notice about the amount of area between the planet and the Sun for each sweep?</li>
+      <li>What is the relationship between the distance from the Sun and the length of orbit covered during a sweep?</li>
+      <li>How might that relationship account for equal areas, no matter where the object is?</li>
+      <li>How long does each sweep take? Does the length of orbit covered change the time?</li>
+      <li>What do you notice about distance from the Sun and the object's velocity?</li>
+      <li>How does the velocity at different times relate to how close it is to the Sun? Does that explain the sweep pattern?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the sweeps · hinge question</div>
+      <h4>Two sweeps on the same orbit take the same time. The sweep near the Sun is short and wide; the far one is long and skinny. Which is true?</h4>
+      <ul class="opts">
+        <li class="right">A. Their areas are equal, and the object covered more orbit near the Sun, so it was faster there<em>Correct.</em></li>
+        <li>B. The far sweep has more area because it's longer<em>Confuses length with area.</em></li>
+        <li>C. The object moves at the same speed in both<em>Assumes constant speed.</em></li>
+        <li>D. The object was faster far away because it had farther to go<em>The r = Cw misconception.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During the eccentricity work · thumbs</div>
+      <h4>"At eccentricity 0, does the distance from the Sun change?" (thumbs down = no) "At 0.7?" (thumbs up = yes)</h4>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 1: Motion of Asteroids and Comets<small>pp. 5–6</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Change eccentricity. What happens?</div><p class="aa">The orbit's shape changes. At low eccentricity it's nearly a circle. As eccentricity increases, the ellipse gets more stretched and flattened, and the Sun ends up closer to one end.</p></div>
+      <div class="qa"><div class="qq">2. What shape is e = 0.0?</div><p class="aa">A <b>circle</b>. The distance from the Sun is the same all the way around. Most planets are close to this (Earth's e ≈ 0.017).</p></div>
+      <div class="qa"><div class="qq">3. What shape is e = 0.7? Same distance from the Sun?</div><p class="aa">A long, stretched <b>ellipse</b>. <b>No</b>: the object gets very close to the Sun at one end (perihelion) and much farther at the other (aphelion).</p></div>
+      <div class="qa"><div class="qq">Sweeps 1. What do you notice?</div><p class="aa">Every sweep has the <b>same area</b> and takes the <b>same amount of time</b>, but the shapes differ. Near the Sun the slice is short and fat and covers a <b>long stretch of orbit</b>; far away it's long and skinny and covers a <b>short stretch</b>.</p><div class="note"><b>Expected numbers (a = 3 AU, e = 0.7, sweep = 1/16 of an orbit):</b> each sweep ≈ <b>0.32 yr</b> and ≈ <b>1.26 AU²</b> (total orbit ≈ 5.2 yr and ≈ 20.2 AU²). Values depend on the exact settings. The key is that the two sweeps match each other.</div></div>
+      <div class="qa"><div class="qq">Sweeps 2. What does this tell you about speed near and far?</div><p class="aa">Because it covers more orbit in the same time, the object moves <b>fastest when closest to the Sun</b> and <b>slowest when farthest</b>. That's <b>Kepler's 2nd law</b>: equal areas in equal times.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>State Kepler's 2nd law in your own words and use it to describe how a comet's speed changes during one orbit.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Why do you think an object would speed up as it gets closer to the Sun? Make a prediction for tomorrow.</p><div class="ans">Listen for "the Sun's gravity is stronger up close." That is tomorrow's mechanism.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>String-and-Pins Ellipse with Equal Sweeps</h4>
+      <p>Draw a real ellipse: put two pins or tacks (or tape two pencils) about <b>8 cm apart</b> on cardboard, loop a 12 cm string around them, and trace with a pencil kept tight against the string. One pin is the Sun. Then draw <b>two "pizza slice" sweeps</b> from the Sun with roughly equal area: one near the Sun (short and fat) and one far away (long and skinny). Use a ruler to measure and label the arc length of each.</p>
+      <ul class="checks">
+        <li>A traced ellipse with the Sun marked at one focus</li>
+        <li>Two shaded sweeps of roughly equal area, with arc lengths measured in cm</li>
+        <li>Arrows on the orbit: long arrows (fast) near the Sun, short arrows (slow) far away</li>
+        <li>"I chose…" note: how far apart you put your pins, and what would happen to the ellipse if you moved them closer</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-1"><small>Back</small>← Day 1 · Engage</a><a class="next" href="#day-3"><small>Next</small>Day 3 · Gravity →</a></div>
+</div>
+
+<!-- ===================== DAY 3 ===================== -->
+<div class="view" id="day-3" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 3 · Explore</div>
+    <h2>Gravity Behind the Pattern</h2>
+    <p class="q">Why do orbiting objects speed up near the Sun?</p>
+    <div class="tags"><span class="tag">Packet pp. 6–9 (Part 2, See-Think-Wonder)</span><span class="tag">Pairs → table groups</span><span class="tag">Gravity sim · Gravity and Orbits sim</span><span class="tag">Domino Discover</span><span class="tag">Investigation rubric</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Gravitational force <b>increases with mass</b> (either object) and <b>decreases with distance</b>.</li>
+      <li>On an elliptical orbit, gravity is <b>strongest at the closest point</b> and the object moves <b>fastest</b> there; both are weakest and slowest at the farthest point.</li>
+      <li>Gravity is the <b>cause</b> behind Kepler's 2nd law pattern.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 3 box. Call on students to explain their ellipses.</p></div></li>
+      <li><div class="t">4–16</div><div><h4>Gravity sim (pp. 6–7 Q1–2)</h4><p>Pairs hold the distance constant and change the mass, then hold the mass constant and change the distance. Push for numbers: <i>Double the mass; what does the force do? Double the distance?</i></p></div></li>
+      <li><div class="t">16–30</div><div><h4>Gravity and Orbits sim (p. 7 Q3–4)</h4><p>Choose a model. Check Gravity Force, Velocity and Path. Pairs change the masses, press play, and make the orbit elliptical. They watch the lengths of the blue (gravity) and green (velocity) arrows around the ellipse. Confer.</p></div></li>
+      <li><div class="t">30–36</div><div><h4>See-Think-Wonder (p. 9, individual)</h4><p>Students record patterns from Days 2–3.</p></div></li>
+      <li><div class="t">36–46</div><div><h4>Making Sense: Domino Discover</h4><p>Table groups pick one important idea and share in sequence. Chart the ideas. Check them against the look-fors. If "velocity faster near the Sun explains different arc lengths in the same time" doesn't come up, send groups back to the sweep numbers.</p></div></li>
+      <li><div class="t">46–48<small>flex</small></div><div><h4>Rubric self-check</h4><p>Asteroid Paths and Velocities Investigation Rubric: self- and peer-assess.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Everyday gravity</div><p>Why does a ball you throw up come back down? What would change on the Moon?</p><div class="ans">Earth's gravity pulls it back. The Moon has less mass, so weaker gravity, and the ball goes higher and falls slower.</div></div>
+      <div class="card"><div class="lbl">Option B · Predict</div><p>If you moved twice as far from a magnet, would its pull be ½ as strong, ¼ as strong, or the same? Guess.</p><div class="ans">Sets up the inverse-square idea: gravity drops to ¼.</div></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>Yesterday's pattern: where in its orbit is an object fastest? Slowest?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>When you doubled one mass, what happened to the force? When you doubled the distance?<span>Mass ×2 → force ×2. Distance ×2 → force ÷4.</span></li>
+      <li>Where on the ellipse is the blue gravity arrow longest? Where is the green velocity arrow longest? Same place?</li>
+      <li>As the Earth falls toward the Sun on the ellipse, is gravity helping it speed up or slowing it down? On the way out?</li>
+      <li>How does this explain the sweep pattern from yesterday?</li>
+      <li>What would happen to the orbit if the Sun suddenly had more mass?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the Gravity sim · whiteboards</div>
+      <h4>Force between two objects = 100 units. What's the force if you (a) double one mass, (b) double the distance, (c) halve the distance?</h4>
+      <p>Answers: (a) 200 · (b) 25 · (c) 400. If many say (b) = 50, they're thinking linearly. Point to the r² in tomorrow's equation.</p>
+    </div>
+    <div class="cfu">
+      <div class="when">After Gravity and Orbits · hinge question</div>
+      <h4>On an elliptical orbit, the object is fastest where…</h4>
+      <ul class="opts">
+        <li class="right">A. it's closest to the Sun and gravity is strongest<em>Correct.</em></li>
+        <li>B. it's farthest from the Sun and gravity is weakest</li>
+        <li>C. it moves at the same speed everywhere</li>
+        <li>D. gravity is zero<em>Gravity is never zero in the orbit.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 2: The Force of Gravity Q1–4<small>pp. 6–7</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Distance constant, change the mass?</div><p class="aa">More mass on either object means <b>more gravitational force</b>; less mass means less. It's proportional: double one mass and the force doubles.</p></div>
+      <div class="qa"><div class="qq">2. Mass constant, change the distance?</div><p class="aa">Farther apart means <b>weaker force</b>; closer means stronger. It falls off quickly: double the distance and the force drops to about <b>¼</b>.</p></div>
+      <div class="qa"><div class="qq">3. Increase the mass of the Earth or Sun?</div><p class="aa">The gravity force arrow gets <b>longer</b> (stronger pull). With a heavier Sun, Earth is pulled in harder, so its orbit gets tighter or more stretched unless its speed changes. Make one mass big enough and the path can curve sharply or crash.</p></div>
+      <div class="qa"><div class="qq">4a. Change in gravity over the ellipse?</div><p class="aa">Gravity is <b>strongest at the closest point</b> to the Sun and <b>weakest at the farthest point</b>, changing smoothly in between.</p></div>
+      <div class="qa"><div class="qq">4b. Change in velocity over the ellipse?</div><p class="aa">The velocity arrow is <b>longest (fastest) at the closest point</b> and <b>shortest (slowest) at the farthest</b>. The object speeds up as it falls inward and slows down as it climbs back out, which matches Kepler's 2nd law.</p></div>
+    </div></details>
+    <details class="key"><summary><span>See-Think-Wonder<small>p. 9 · sample responses</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>See</th><th>Think</th><th>Wonder</th></tr></thead><tbody>
+        <tr><td>Equal-time sweeps have equal areas but different arc lengths.</td><td>The object must change speed.</td><td>Does every object follow this, even asteroids?</td></tr>
+        <tr><td>Near the Sun: strong gravity and fast velocity. Far away: weak gravity and slow velocity.</td><td>Gravity causes the speed changes.</td><td>Can another planet's gravity change an orbit?</td></tr>
+        <tr><td>Force drops a lot as distance grows.</td><td>Passing close to a planet would give a big pull.</td><td>What will Earth's gravity do to Apophis in 2029?</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Look and listen for (needed for Explain):</b> each sweep covers a different length of orbit, but the area is the same and the time is the same · as distance increases, the length covered per sweep decreases, which explains equal areas · it always takes the same time per sweep · the object is faster close to the star and slower far away · the difference in velocity explains covering different lengths in the same time.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Use gravity to explain why a comet is fastest when it's closest to the Sun.</p><div class="ans">Gravity is strongest up close; as the comet falls inward, the pull speeds it up.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Apophis will pass very close to Earth. Based on today, predict what Earth's gravity might do to it.</p><div class="ans">Pull it strongly (close distance means big force), bending its path and changing its speed and orbit.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Force and Speed Arrows Around an Orbit</h4>
+      <p>Draw an ellipse with the Sun at one focus. Mark the orbiting object at <b>4 positions</b>: closest, farthest and two in between. At each one, draw a <b>gravity arrow</b> pointing to the Sun and a <b>velocity arrow</b> along the path. Make the arrow lengths match the strength and speed. Then make a small table: if the closest distance is "1," the farthest is "3." What is the gravity at the farthest point compared with the closest? Show the math.</p>
+      <ul class="checks">
+        <li>4 positions, each with both arrows, sized correctly (longest at closest)</li>
+        <li>Math shown: at 3× the distance, the force is 1/3² = <b>1/9</b> as strong</li>
+        <li>A label for where the object speeds up and where it slows down</li>
+        <li>"I chose…" note: <b>one idea from our class Domino Discover chart</b> that your drawing shows</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-2"><small>Back</small>← Day 2 · Orbit shapes</a><a class="next" href="#day-4"><small>Next</small>Day 4 · Mathematical models →</a></div>
+</div>
+
+<!-- ===================== DAY 4 ===================== -->
+<div class="view" id="day-4" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 4 · Explain</div>
+    <h2>Orbits as Mathematical Models</h2>
+    <p class="q">How do we predict the motions of asteroids and planets?</p>
+    <div class="tags"><span class="tag">Packet pp. 10–13 (Parts 1–2)</span><span class="tag">Pairs / table groups</span><span class="tag">Calculators</span><span class="tag">Fix the r = Cw model first</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li><b>A/t = C:</b> the area swept per unit of time is constant (Kepler's 2nd law).</li>
+      <li>Distance and speed are <b>inversely</b> related: r × v = C, so when r goes down, v goes up.</li>
+      <li><b>F = G·m₁m₂/r²:</b> force goes up with the masses and down with the <b>square</b> of the distance.</li>
+      <li>Kepler's laws describe <i>what</i> orbits do (shape, speed, period). Newton's gravity explains <i>why</i>.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 4 box. Call on students to explain their arrow drawings.</p></div></li>
+      <li><div class="t">4–9</div><div><h4>Launch</h4><p>Remind students that the Explore showed orbits follow stable patterns. Ask: <i>How have you used equations before to describe orbits and make predictions?</i> Listen for: derive it with a spreadsheet or check whether an equation already exists; understand what the equation means; plug in known numbers to predict unknown ones.</p></div></li>
+      <li><div class="t">9–14</div><div><h4>Model check: fix r = Cw</h4><p>Project p. 10. Ask: <i>"This says distance = constant × velocity. Using our Day 2–3 data, if r gets bigger, what does this equation say v does? What did the sim show?"</i> Students should spot the contradiction. Have them cross it out and write <b>r × v = C</b> (or <b>v = C / r</b>).</p><p class="say">"Scientists check every model against data. When they disagree, the model gets fixed."</p></div></li>
+      <li><div class="t">14–30</div><div><h4>Part 1 Q1–2: Kepler's 2nd law verbal models</h4><p>Pairs write verbal models for both equations and answer Q2 using the sweep image. Confer: <i>If r goes up, what happens to v? Have you plugged in numbers to check?</i></p></div></li>
+      <li><div class="t">30–40</div><div><h4>Part 1 Q3–4: Newton's law</h4><p>Pairs write the verbal model and answer Q4. Quick check on the board: F = 100 at r = 1, so what is F at r = 2? At r = 0.5? Ask: <i>How does Newton's law relate to Kepler's 2nd law?</i></p></div></li>
+      <li><div class="t">40–48</div><div><h4>Part 2 Q1–4: putting it together</h4><p>Pairs answer the four prediction questions. Work one 3rd-law example together: Apophis has a = 0.92 AU, so what is P?</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Up or down?</div><p>In F = G·m₁m₂/r², what happens to F if (a) m₁ triples? (b) r triples?</p><div class="ans">(a) ×3 · (b) ÷9</div></div>
+      <div class="card"><div class="lbl">Option B · 3rd law</div><p>Mars is at a = 1.52 AU. Use P² = a³ to find its period.</p><div class="ans">1.52³ ≈ 3.51, √3.51 ≈ <b>1.87 years</b> (actual: 1.88).</div></div>
+      <div class="card"><div class="lbl">Option C · Verbal model</div><p>Say "y = 2x" in words. Then say "y = 2/x" in words. How are they different?</p><div class="ans">Direct (both go up together) vs. inverse (one up, other down). This prepares students to catch r = Cw.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What would happen to the value of this variable if that variable goes up? Down?</li>
+      <li>Have you tried plugging in numbers to check that your description holds?</li>
+      <li>How does Newton's law of gravitational force relate to Kepler's 2nd law?</li>
+      <li>Which law would you use to predict <i>when</i> an asteroid returns? <i>How fast</i> it's going? <i>Its path</i>?</li>
+      <li>What do Kepler's laws tell us, and what don't they tell us?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the model check · hinge question</div>
+      <h4>Which equation matches what you saw: an object goes <i>faster</i> when it's <i>closer</i>?</h4>
+      <ul class="opts">
+        <li>A. r = C × v<em>The packet's version; says farther means faster.</em></li>
+        <li class="right">B. r × v = C<em>Correct: inverse relationship.</em></li>
+        <li>C. r + v = C<em>Inverse-ish, but not the right form.</em></li>
+        <li>D. v = C × r</li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Part 2 · matching</div>
+      <h4>Match: (1) how long an orbit takes, (2) how fast at a given point, (3) the shape of the path → Kepler's 1st, 2nd, 3rd</h4>
+      <p>Answer: 1 → 3rd law, 2 → 2nd law, 3 → 1st law.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 1: Kepler's 2nd law verbal models + Q2<small>pp. 10–11</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">A/t = C: verbal model</div><p class="aa">The area an object sweeps out, divided by the time it takes, is always the same number. <b>Equal areas are swept in equal amounts of time</b>, anywhere in the orbit.</p></div>
+      <div class="qa"><div class="qq">r = Cw (corrected to r × v = C): verbal model</div><p class="aa">The distance from the Sun times the orbital speed stays constant, so <b>distance and speed are inversely related</b>. When the object is closer (small r), it moves faster (big v); when it's farther, it moves slower.</p><div class="note"><b>If a student writes the packet's version literally</b> ("distance equals a constant times speed, so they go up together"), they've read the equation correctly but the equation is wrong. Praise the reading, then ask whether it matches the sim.</div></div>
+      <div class="qa"><div class="qq">2. How does the right-hand model explain equal time for a longer distance near the Sun?</div><p class="aa">Near the Sun, r is small, so v must be large to keep r × v constant. Moving faster, the object covers a <b>longer stretch of orbit in the same time</b>. The near sweep is short but wide and the far sweep is long but narrow, so their areas come out equal: 0.104 AU² in 0.0479 years for both in the example.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Part 1: Newton's law Q3–4<small>pp. 11–12</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">3. Verbal model of F = G·m₁m₂/r²</div><p class="aa">The force of gravity between two objects equals a constant times their two masses multiplied, divided by the distance between their centers squared. <b>More mass means more force; more distance means much less force</b>: double the distance and the force is ¼.</p></div>
+      <div class="qa"><div class="qq">4. Why do objects move faster closer to their star?</div><p class="aa">When an object is closer, r is smaller, so the force of gravity is much larger (it depends on 1/r²). As the object falls inward, that stronger pull <b>accelerates it, so it speeds up</b>. As it moves away, gravity pulls backward on it and slows it down. So gravity is the cause of Kepler's 2nd law pattern.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Part 2: Predicting Orbital Motion Q1–4<small>p. 13</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How long to travel around the Sun?</div><p class="aa"><b>Kepler's 3rd law: P² = a³.</b> If we know the average distance (semimajor axis) in AU, we can calculate the period in years. Apophis: a ≈ 0.92 AU, so P ≈ 0.88 yr ≈ 323 days.</p></div>
+      <div class="qa"><div class="qq">2. How fast is it traveling?</div><p class="aa"><b>Kepler's 2nd law</b> (equal areas in equal times; r × v = constant): if we know where it is in its orbit, we know whether it's fast (near the Sun) or slow (far). Newton's law tells us the force changing its speed.</p></div>
+      <div class="qa"><div class="qq">3. What path does it take?</div><p class="aa"><b>Kepler's 1st law:</b> it follows an ellipse with the Sun at one focus. Repeated telescope and radar observations of its positions let scientists pin down the exact ellipse (its size, eccentricity and tilt).</p></div>
+      <div class="qa"><div class="qq">4. What's missing? Do we know why?</div><p class="aa">Kepler's laws <b>describe</b> what orbits do but don't explain why. The <i>why</i> is <b>gravity</b> (Newton's law): the Sun's pull curves the path into an ellipse and changes the speed. Kepler's laws also only consider the Sun. Gravity from <b>other objects</b>, like Earth during a close flyby, can change an orbit, so predictions must include those pulls too.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Use F = G·m₁m₂/r² to explain why Earth's gravity matters a lot for Apophis in 2029 but almost not at all the rest of the time.</p><div class="ans">In 2029, r is tiny (~38,000 km), so the force is huge. Normally Apophis is millions of km away, so the force is tiny.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Which of Kepler's laws would you use to predict when Apophis comes back around? Show the calculation.</p><div class="ans">3rd law: P = √(0.92³) ≈ 0.88 yr.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>The Orbit Rulebook Poster</h4>
+      <p>On one page, make a hand-drawn <b>4-panel poster</b>: Kepler's 1st, 2nd and 3rd laws plus Newton's law of gravity. Each panel needs (1) a small sketch, (2) the equation if there is one, and (3) a one-sentence verbal model in your own words. In a corner box, <b>invent your own asteroid</b>: pick any semimajor axis between 1.5 and 5 AU and use P² = a³ to calculate its period. Show your math.</p>
+      <ul class="checks">
+        <li>4 panels, each with a sketch, an equation where it applies, and a verbal model</li>
+        <li>The Kepler 2nd panel uses the <b>corrected</b> r × v = C</li>
+        <li>Your invented asteroid's name, a, and calculated P with work shown</li>
+        <li>"I chose…" note: why you picked that distance, and whether your asteroid could ever be a danger to Earth</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-3"><small>Back</small>← Day 3 · Gravity</a><a class="next" href="#day-5"><small>Next</small>Day 5 · Model Apophis →</a></div>
+</div>
+
+<!-- ===================== DAY 5 ===================== -->
+<div class="view" id="day-5" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 5 · Explain</div>
+    <h2>How We Know Where Apophis Will Be</h2>
+    <p class="q">How can we predict Apophis's path well enough to know whether it will hit us?</p>
+    <div class="tags"><span class="tag">Packet pp. 14–15 (Apophis model, Summary Task)</span><span class="tag">Individual → table groups</span><span class="tag">Class Consensus Discussion</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Kepler's <b>3rd</b> law predicts <i>when</i> Apophis comes around, the <b>2nd</b> law predicts <i>how fast</i> it's moving, and the <b>1st</b> law predicts <i>its path</i>.</li>
+      <li>Gravity is the mechanism behind all three.</li>
+      <li>These motions follow a <b>stable, predictable pattern</b>, so scientists can be confident in their predictions, though Earth's own gravity could change the orbit during the flyby.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 5 box. Call on students to share their invented asteroids.</p></div></li>
+      <li><div class="t">4–22</div><div><h4>Apophis model (p. 14)</h4><p>Students draw and annotate a model explaining how we can predict Apophis's path and where it will be on <b>April 13, 2029</b>. Required: Sun, Earth's orbit, Apophis's elliptical orbit crossing it, and annotations for each Kepler law and for gravity. Confer, and choose 2–3 models to share. Choose them for the ideas they surface, not at random.</p></div></li>
+      <li><div class="t">22–42</div><div><h4>Class Consensus Discussion</h4><p class="say">"We'll use a class consensus discussion, like in the last 5E, to hear all the thinking and decide what explains stability and change in asteroid orbits."</p><p>Steps: project the model → the student shares → a peer restates it → clarifying questions. Repeat for 2–3 models. Table groups confer, then the whole class agrees. Make sure the key points below come up.</p></div></li>
+      <li><div class="t">42–46</div><div><h4>Lingering questions</h4><p>Add to the board: <i>How can Earth's gravity affect Apophis's path? What would we do if Apophis, or another asteroid, were going to hit Earth? How could we change its course?</i></p></div></li>
+      <li><div class="t">46–50</div><div><h4>Exit slip = Summary Task</h4><p>Summary Task Q5 (p. 15). It can also be finished for homework.</p></div></li>
+    </ol>
+    <div class="note"><b>Take time for these key points:</b> we can predict when the asteroid will pass Earth using Kepler's 3rd law · we can predict how fast it'll be moving using Kepler's 2nd law · we can predict its trajectory and shape using Kepler's 1st law · the mechanism behind Kepler's 2nd law (distance and velocity) is gravity · these motions have followed a predictable, stable pattern, so we can feel good about our predictions.</div>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Which law?</div><p>For each, name the law: (a) Apophis takes ~323 days per orbit, (b) Apophis's path is an oval, (c) Apophis speeds up near the Sun.</p><div class="ans">(a) 3rd · (b) 1st · (c) 2nd</div></div>
+      <div class="card"><div class="lbl">Option B · Plan</div><p>List 4 things your Apophis model should show today.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Where is Apophis fastest on your model? Why there?</li>
+      <li>How does your model show <i>when</i> Apophis reaches Earth's orbit?</li>
+      <li>Where does gravity show up in your model? Only the Sun's?</li>
+      <li>What would make scientists less confident in this prediction?<span>Inaccurate measurements, or a pull from Earth or another planet.</span></li>
+      <li>Why is it important that orbits are stable patterns?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">During modeling · scan for the 4 essentials</div>
+      <h4>Ellipse with the Sun at a focus · crossing Earth's orbit · fast/slow labels · a gravity arrow</h4>
+      <p>If more than a third are missing gravity, pause and ask the class: <i>"What's the <b>cause</b> in your model?"</i></p>
+    </div>
+    <div class="cfu">
+      <div class="when">After consensus · fist to five</div>
+      <h4>"How confident are you that NASA can predict Apophis's path?"</h4>
+      <p>Compare with Day 1. Ask a few students who moved up a lot: <i>"What changed your mind?"</i></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Apophis model: what a strong model includes<small>p. 14</small></span></summary><div class="keybody">
+      <ul>
+        <li>The <b>Sun</b> at one focus; <b>Earth's orbit</b> as a near-circle at 1 AU.</li>
+        <li><b>Apophis's orbit</b> as an ellipse (a ≈ 0.92 AU, e ≈ 0.19), mostly inside Earth's orbit and <b>crossing</b> it, with its far point just outside 1 AU.</li>
+        <li><b>1st law</b> annotation: the path is an ellipse, known from repeated observations.</li>
+        <li><b>2nd law</b> annotation: fast near the Sun, slower near the crossing; equal-area sweeps drawn.</li>
+        <li><b>3rd law</b> annotation: P² = a³, so P ≈ 0.89 yr ≈ 323 days. Counting orbits forward lets NASA find when Apophis and Earth reach the same spot: <b>April 13, 2029</b>.</li>
+        <li><b>Gravity</b> arrow to the Sun, plus a note that Earth's gravity will pull hard on Apophis in 2029 because it will be so close (r small, so F large).</li>
+      </ul>
+    </div></details>
+    <details class="key"><summary><span>Summary Task Q5<small>p. 15</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">5. How are Kepler's laws used to predict whether Apophis will orbit near Earth?</div><p class="aa">Scientists observe Apophis's position many times to find its orbit. <b>Kepler's 1st law</b> tells them its path is an ellipse that crosses Earth's orbit. <b>Kepler's 3rd law</b> (P² = a³) gives its period, about 0.89 years, so they can count forward orbit by orbit to find when Apophis and Earth will be at the same place at the same time. <b>Kepler's 2nd law</b> tells them how fast it moves at each point, so they know exactly where along the ellipse it will be on a given date. Orbits follow this stable pattern, which is why NASA can predict that on April 13, 2029, Apophis will pass about 32,000 km above Earth and miss. Gravity explains all three laws, and Earth's gravity during the flyby must also be included.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Summary Task Q5</div><p>How are Kepler's laws used to make predictions about whether Apophis will orbit near Earth?</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Name one thing that could make an asteroid's orbit change, so that scientists' predictions would need updating.</p><div class="ans">Gravity from a planet during a close pass (like Earth in 2029), a collision, or sunlight slowly pushing it.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Apophis Before and After 2029</h4>
+      <p>On one page, draw the Sun, Earth's orbit (1 AU), and two Apophis orbits: <b>before 2029</b> (period 0.89 yr, mostly inside Earth's orbit) and <b>after 2029</b> (period about 1.16 yr). Use P² = a³ to calculate the "after" semimajor axis and draw that orbit bigger. Mark the April 13, 2029 flyby point with a big arrow labeled "Earth's gravity."</p>
+      <ul class="checks">
+        <li>Both orbits drawn, with the "after" orbit visibly larger</li>
+        <li>Math shown: a = P<sup>2/3</sup> = 1.16<sup>2/3</sup> ≈ <b>1.10 AU</b></li>
+        <li>An annotation explaining, with F = G·m₁m₂/r², why Earth's pull is strong enough to do this</li>
+        <li>"I chose…" note: <b>which model shared in today's consensus discussion</b> helped you draw this, and what you borrowed from it</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-4"><small>Back</small>← Day 4 · Math models</a><a class="next" href="#day-6"><small>Next</small>Day 6 · Will Apophis hit? →</a></div>
+</div>
+
+<!-- ===================== DAY 6 ===================== -->
+<div class="view" id="day-6" data-phase="elaborate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 6 · Elaborate</div>
+    <h2>Will Apophis Hit Earth in the 2030s?</h2>
+    <p class="q">How could Earth's gravity during the 2029 flyby change Apophis's path?</p>
+    <div class="tags"><span class="tag">Packet pp. 16–17</span><span class="tag">Table groups</span><span class="tag">Read-Generate-Sort-Solve</span><span class="tag">Chart paper</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Because force depends on <b>1/r²</b>, Earth's gravity during a close flyby is strong enough to <b>bend Apophis's path and change its speed</b>, giving it a new orbit.</li>
+      <li>If an asteroid passed through a small <b>"gravitational keyhole,"</b> its new orbit could bring it back to hit Earth later.</li>
+      <li>Precise tracking (radar in 2021) and these math models let scientists <b>rule out any Apophis impact for at least 100 years</b>.</li>
+      <li>Understanding stable paths, and how gravity and collisions change them, is what lets us predict, and possibly prevent, impacts.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 6 box. Call on students to explain their before/after orbits.</p></div></li>
+      <li><div class="t">4–8</div><div><h4>Launch</h4><p>Bring back the lingering questions. Hand out <i>Will Apophis hit Earth in the 2030s?</i> and read the intro and guiding prompt aloud.</p><p class="say">"Your job: use gravity to build a model of how Earth's pull during the flyby could change Apophis's trajectory."</p></div></li>
+      <li><div class="t">8–14</div><div><h4>Read</h4><p>Individuals review their Explain models and the Day 4 equations.</p></div></li>
+      <li><div class="t">14–24</div><div><h4>Generate</h4><p>Each student writes ideas in their own box (p. 16) and on the group's chart paper: evidence, equations and data that help answer the prompt.</p></div></li>
+      <li><div class="t">24–30</div><div><h4>Sort</h4><p>Each person states 1–2 ideas they think are most relevant, and the group stars them.</p></div></li>
+      <li><div class="t">30–42</div><div><h4>Solve</h4><p>Groups build their response and model (p. 17 box or chart paper). Confer and push for math: <i>"How much stronger is Earth's pull at 38,000 km than at 1 million km?"</i></p></div></li>
+      <li><div class="t">42–48</div><div><h4>Update with real data</h4><p>Share: <i>"In 2004 scientists did worry about a later return. In 2021, radar measured Apophis's orbit so precisely that NASA ruled out any impact for at least 100 years."</i> Ask groups to add a sticky note to their model: <i>How did math models and better data make that possible?</i></p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Inverse square</div><p>Earth's pull on Apophis at 1,000,000 km is "1 unit." What is it at 38,000 km? (Hint: 1,000,000 ÷ 38,000 ≈ 26.)</p><div class="ans">26² ≈ <b>~690 times stronger</b>.</div></div>
+      <div class="card"><div class="lbl">Option B · Slingshot</div><p>Spacecraft use planets' gravity to change direction and speed ("gravity assist"). How is that like what Earth will do to Apophis?</p></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>Last night you found that Apophis's period gets longer after 2029. What does that say about its new orbit's size?</p><div class="ans">It's bigger (larger a), by Kepler's 3rd law.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Which equation best explains why the flyby matters so much? Why that one?</li>
+      <li>What changes about Apophis after the flyby: its speed, direction, period or path?</li>
+      <li>If Apophis's new orbit had a period that lined up with Earth's, what could happen years later?</li>
+      <li>What evidence would scientists need to know for sure whether it's safe?</li>
+      <li>Could a collision also change an orbit? How?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">During Solve · hinge question</div>
+      <h4>Why will Earth's gravity change Apophis's orbit in 2029 but not much in other years?</h4>
+      <ul class="opts">
+        <li>A. Earth's mass is larger in 2029</li>
+        <li class="right">B. Apophis will be extremely close, and gravity grows with 1/r²<em>Correct.</em></li>
+        <li>C. Apophis's mass changes</li>
+        <li>D. The Sun's gravity turns off near Earth<em>The Sun's gravity never turns off.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After the real-data update · thumbs</div>
+      <h4>"Apophis will hit Earth in the 2030s." True or false, and what's the evidence?</h4>
+      <p>False. 2021 radar tracking plus orbit models rule out an impact for at least 100 years.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Solve: exemplar model and explanation<small>pp. 16–17</small></span></summary><div class="keybody">
+      <p><b>Model:</b> the Sun, Earth's orbit, and Apophis's orbit crossing it. A zoomed-in inset of Earth shows Apophis's path curving as it passes about 38,000 km from Earth's center, with a large gravity arrow toward Earth. After the flyby, a new, larger orbit is drawn. A small "keyhole" target near Earth leads to a dashed "what if" orbit that comes back to Earth years later.</p>
+      <p><b>Explanation:</b> Most of the time, Apophis is millions of kilometers from Earth, so Earth's gravity on it is tiny and the Sun controls its orbit. In 2029 it passes only ~38,000 km from Earth's center. <b>Because</b> F = G·m₁m₂/r², a much smaller r means a much larger force, hundreds of times stronger than when it's a million km away. That strong pull <b>bends Apophis's path and speeds it up</b>, changing its orbit: its period goes from about 0.89 years to about 1.16 years, so by P² = a³ its orbit gets bigger. If the flyby sent it through a tiny "keyhole," the new orbit could line up with Earth's on a later pass and cause a collision, which is why scientists studied the 2030s. <b>Therefore</b>, to know whether we're safe, scientists must measure Apophis's position very precisely and run these gravity models forward. They did, and in 2021 NASA ruled out any impact for at least 100 years.</p>
+      <div class="note"><b>Look and listen for:</b> scientists have extensively investigated orbits and found empirical evidence for stable patterns · they used gravity and mathematical representations of gravity to explain those patterns · Kepler's mathematical models let us predict paths, including near-Earth objects like Apophis · understanding stable paths and how gravity and collisions change orbits lets us better predict when an asteroid is likely to hit Earth.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>In 2–3 sentences, explain how Earth's gravity during the 2029 flyby will change Apophis's orbit. Use the words <i>distance</i>, <i>force</i> and <i>period</i>.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>If scientists found an asteroid that <i>would</i> hit Earth in 20 years, what's one way you could change its orbit?</p><div class="ans">Crash a spacecraft into it (collision) or park a heavy spacecraft near it (gravity). This leads into Day 7.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Three Possible Futures</h4>
+      <p>Draw a zoomed-in view of Earth with Apophis arriving from the left. From the flyby point, draw <b>three possible paths</b> in three colors: (1) <b>safe miss</b>, the real prediction; (2) <b>keyhole</b>, the "what if" path that returns to hit Earth on a later orbit; (3) <b>deflected</b>, a path changed by a human mission before the flyby. Label each one with what caused it.</p>
+      <ul class="checks">
+        <li>3 colored paths with a key, plus Earth and a gravity arrow</li>
+        <li>Each path labeled with its cause (Earth's gravity, a keyhole, a human mission)</li>
+        <li>One equation written where it explains something on your drawing</li>
+        <li>"I chose…" note: <b>one idea your group starred in today's Sort step</b> that your drawing uses</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-5"><small>Back</small>← Day 5 · Model Apophis</a><a class="next" href="#day-7"><small>Next</small>Day 7 · Evaluate →</a></div>
+</div>
+
+<!-- ===================== DAY 7 ===================== -->
+<div class="view" id="day-7" data-phase="evaluate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 7 · Evaluate</div>
+    <h2>Deflecting Asteroids</h2>
+    <p class="q">What can humans do to defend the planet from another asteroid mass extinction?</p>
+    <div class="tags"><span class="tag">Packet pp. 18–20</span><span class="tag">Independent → table groups</span><span class="tag">Video: Rusty Schweickart on gravity tractors</span><span class="tag">Revisiting the Performance Task handout</span><span class="tag">Idea Carousel</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>A <b>gravity tractor</b> is a heavy spacecraft that hovers near an asteroid. Its own small gravity tugs the asteroid for years, gradually changing its orbit. More spacecraft mass and a closer hover give a bigger force.</li>
+      <li>A <b>kinetic impactor</b> crashes a spacecraft into the asteroid to change its orbit by collision. NASA's DART did this in 2022.</li>
+      <li>Both methods depend on <b>early warning</b>: a tiny nudge years ahead becomes a big miss later. That's why tracking and orbit prediction matter.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Back of the performance-task handout.</p></div></li>
+      <li><div class="t">4–12</div><div><h4>Deflecting Asteroids (p. 18) + video</h4><p>Read the text together, study the image, and show <b>Rusty Schweickart: What is the Gravity Tractor Deflection Method?</b> Ask: <i>Which equation explains how this works?</i></p><p>Add one real example: <i>"In 2022, NASA's DART spacecraft crashed into the small asteroid Dimorphos and changed its orbit by 32 minutes."</i></p></div></li>
+      <li><div class="t">12–28</div><div><h4>Individual: Revisiting the Performance Task</h4><p>Students answer their performance task research organizer prompts, using the rubric (pp. 19–20). They need evidence for how scientists predict where asteroids will be, evidence for how gravity tractors work, gravity's effect on trajectory and velocity, because/therefore logic, and <b>algebraic thinking</b> about how changing one variable changes another. Confer.</p></div></li>
+      <li><div class="t">28–36</div><div><h4>Group models</h4><p>Table groups build a model on chart paper: how we'd detect a threatening asteroid → predict its path → deflect it.</p></div></li>
+      <li><div class="t">36–44</div><div><h4>Idea Carousel</h4><p>Groups rotate and leave sticky notes: <b>✓</b> resonates · <b>+</b> add this · <b>?</b> may not be relevant · <b>Δ</b> clarify. They return and revise. If an important idea showed up in only some groups, have those groups share it.</p></div></li>
+      <li><div class="t">44–48</div><div><h4>Close the loop</h4><p>Return to the driving question: <i>Will a major asteroid ever hit Earth again? How do we know? What can humans do?</i> Ask how this changes their thinking about the odds of intelligent life surviving elsewhere.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Tiny nudge</div><p>You nudge a pool ball so its direction changes by a tiny angle. Does it miss its target by more if the target is 10 cm away or 10 m away? What does that mean for asteroids?</p><div class="ans">10 m away. A small nudge made early creates a big miss later, so early detection matters.</div></div>
+      <div class="card"><div class="lbl">Option B · Variables</div><p>A gravity tractor's pull on an asteroid is F = G·m₁m₂/r². Name two ways engineers could make the pull stronger.</p><div class="ans">A heavier spacecraft (bigger m) or hovering closer (smaller r).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What evidence did you generate in this 5E sequence?</li>
+      <li>Where did that evidence come from?</li>
+      <li>How well does that evidence support the claim?</li>
+      <li>What ideas or contradictory evidence weaken the claim?</li>
+      <li>What happens to the tractor's force if it hovers twice as far away? Twice as close?<span>÷4 and ×4. That's the algebraic thinking the rubric asks for.</span></li>
+      <li>Why would a gravity tractor need years, while an impactor works in an instant?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the video · hinge question</div>
+      <h4>A gravity tractor changes an asteroid's path by…</h4>
+      <ul class="opts">
+        <li>A. towing it with a cable</li>
+        <li>B. blowing it up with explosives</li>
+        <li class="right">C. using the spacecraft's own gravity to pull it steadily over a long time<em>Correct.</em></li>
+        <li>D. blocking sunlight</li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During the Idea Carousel</div>
+      <h4>Read the sticky notes</h4>
+      <p>A lot of <b>?</b> notes on "just blow it up" means students need the fragment problem. If there are few + notes about warning time, make sure "detect early" gets added to every model.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Performance task: exemplar explanation<small>Score with the rubric on pp. 19–20</small></span></summary><div class="keybody">
+      <p><b>Claim:</b> Humans can defend Earth from a dangerous asteroid by detecting it early, predicting its orbit with Kepler's and Newton's laws, and then changing its path with a gravity tractor (or a kinetic impactor) years before it would hit.</p>
+      <p><b>How scientists predict where asteroids will be:</b> In our investigation, orbits followed stable patterns. They are ellipses (Kepler's 1st law). They sweep equal areas in equal times, so they move fastest near the Sun (2nd law). Their periods follow P² = a³ (3rd law). With repeated observations, NASA uses these laws to predict that Apophis will pass about 32,000 km above Earth on April 13, 2029, and miss.</p>
+      <p><b>How gravity changes orbits:</b> Gravity follows F = G·m₁m₂/r². In the Gravity and Orbits sim, stronger gravity near the Sun made Earth speed up, and changing a mass changed the path. <b>Because</b> force grows quickly as distance shrinks, Earth's pull during the 2029 flyby will change Apophis's orbit (period ~0.89 → ~1.16 yr).</p>
+      <p><b>How a gravity tractor works:</b> A heavy spacecraft hovers close to the asteroid. Its gravity pulls on the asteroid, and the asteroid's pull on the craft is balanced by its thrusters. If the craft's mass doubles, the force doubles. If it hovers at half the distance, the force is 4 times as strong. The force is tiny, but applied for years it changes the asteroid's velocity a little. A small change in velocity changes the orbit (Kepler's laws), and years later that adds up to a miss of thousands of kilometers. <b>Therefore</b>, early detection is what makes the plan work.</p>
+      <div class="note"><b>Rubric quick check:</b> evidence about predicting asteroid positions ✓ · evidence about gravity tractors ✓ · gravity's effect on trajectory and velocity ✓ · because/therefore logic ✓ · algebraic thinking (doubling mass, halving distance) ✓ → <b>Proficient</b>.</div>
+    </div></details>
+    <div class="note"><b>Look and listen for:</b> understanding stable paths and how gravity and collisions change orbits lets us predict impacts and plan to change an asteroid's path to save life · send a large spaceship and use its gravity to change the path; it needs enough mass to have enough gravity · send a large spaceship to collide with the asteroid to change its path.</div>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Compare</div><p>Gravity tractor vs. kinetic impactor: give one advantage of each.</p><div class="ans">Tractor: gentle, precise and controllable, with no fragments. Impactor: fast and proven (DART) but less precise.</div></div>
+      <div class="card"><div class="lbl">Option B · Bridge</div><p>Does knowing we could deflect asteroids change your estimate of how likely an intelligent civilization is to survive long-term? Why?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Planetary Defense Mission Blueprint</h4>
+      <p>Design a mission to deflect a made-up asteroid headed for Earth in <b>a year you choose</b> (at least 10 years from now). Draw a blueprint: the spacecraft (label its mass), the asteroid (label its size), the hover distance or impact point, and arrows for the gravity or collision force. Add a timeline strip: detection → launch → push → "miss" date. Pick gravity tractor <i>or</i> kinetic impactor.</p>
+      <ul class="checks">
+        <li>A labeled spacecraft and asteroid with the force arrows drawn</li>
+        <li>F = G·m₁m₂/r² written next to your design, plus one "if I double ___, the force ___" statement</li>
+        <li>A timeline strip with your chosen years</li>
+        <li>"I chose…" note: why you picked your method over the other, and <b>one sticky note from today's Idea Carousel</b> that shaped your design</li>
+      </ul>
+      <p class="why">Keep the best blueprints for a "Planetary Defense" bulletin board.</p>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-6"><small>Back</small>← Day 6 · Will Apophis hit?</a><a class="next" href="#overview"><small>Done</small>Back to overview ↺</a></div>
+</div>
+
+<footer><a href="index.html">← Back to Teacher Hub</a><br>Built from the New Visions Earth &amp; Space Science Unit 2 teacher and student materials for Asteroid Orbits 5E (SY 26-27). Schedules assume 50-minute periods.</footer>
+</main>
+
+<script>
+(function(){
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('#chips .chip'));
+  var ids = views.map(function(v){return v.id});
+  function show(){
+    var id = (location.hash || '').slice(1);
+    if (ids.indexOf(id) === -1) id = 'overview';
+    views.forEach(function(v){ v.hidden = v.id !== id; });
+    chips.forEach(function(c){
+      if (c.getAttribute('href') === '#' + id) { c.setAttribute('aria-current','page'); var r=c.parentNode; r.scrollLeft = c.offsetLeft - (r.clientWidth - c.offsetWidth)/2; }
+      else c.removeAttribute('aria-current');
+    });
+    window.scrollTo({top:0,left:0,behavior:'instant'});
+  }
+  window.addEventListener('hashchange', show);
+  show();
+
+  // prep checklist memory (per device)
+  var boxes = document.querySelectorAll('#prep input[type=checkbox]');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem('asteroid-prep') || '{}'); } catch(e) {}
+  Array.prototype.forEach.call(boxes, function(b){
+    if (saved[b.id]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[b.id] = b.checked;
+      try { localStorage.setItem('asteroid-prep', JSON.stringify(saved)); } catch(e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>
