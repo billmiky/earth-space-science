@@ -1927,6 +1927,8 @@ Combine this with evidence from earlier chapters (the Big Bang and elements, the
 
 # End-of-Chapter Quiz
 
+This quiz checks the big ideas from the chapter **and** practices the thinking skills you'll need on your next task: reading the steps in a cause-and-effect chain, choosing the row that completes an argument, using specific data as evidence, connecting moving continents to climate and life, and evaluating someone else's argument. After the multiple choice, try the three short writing practices.
+
 ```{ojs}
 //| echo: false
 function buildCoevoQuiz(id, title, questions) {
@@ -1939,7 +1941,7 @@ function buildCoevoQuiz(id, title, questions) {
   questions.forEach((qq, qi) => {
     const card = document.createElement("div");
     card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
-    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
+    card.innerHTML = `<div style="font-weight:700;margin:0 0 10px;color:#1e1b4b;line-height:1.45;">${qi+1}. ${qq.q}</div>`;
     qq.options.forEach((opt, oi) => {
       const btn = document.createElement("button");
       btn.textContent = opt;
@@ -1981,66 +1983,221 @@ function buildCoevoQuiz(id, title, questions) {
 
 ```{ojs}
 //| echo: false
+coevoQTable = (head, rows) => `<div style="overflow-x:auto;margin:10px 0 4px;"><table style="border-collapse:collapse;width:100%;min-width:${head.length > 3 ? 420 : 0}px;font-size:.88em;font-weight:400;color:#1e1b4b;background:#fff;">
+  <thead><tr>${head.map(h => `<th style="border:1px solid #c7d2fe;background:#eef2ff;padding:6px 8px;text-align:left;">${h}</th>`).join("")}</tr></thead>
+  <tbody>${rows.map(r => `<tr>${r.map(c => `<td style="border:1px solid #c7d2fe;padding:6px 8px;vertical-align:top;">${c}</td>`).join("")}</tr>`).join("")}</tbody>
+</table></div>`
+```
+
+```{ojs}
+//| echo: false
 buildCoevoQuiz("coevolution-summative-quiz", "🦠 Summative Quiz: Coevolution of Earth and Life", [
   {
-    q: "Complex cells (eukaryotes) appeared about 2.0 billion years ago and simple cells about 3.8 billion years ago. How long did simple cells have Earth to themselves?",
-    options: ["About 0.8 billion years", "About 1.8 billion years", "About 3.8 billion years", "About 5.8 billion years"],
+    q: `The first land plants appear about 470 million years ago. Between about 444 and 410 million years ago, plants spread across the land, and the packet's oxygen graph shows oxygen rising from about 20% to about 24%. Select the row that correctly describes how the plants changed the atmosphere.
+      ${coevoQTable(["Row", "Description"], [
+        ["A", "Plants took in oxygen from the air and released carbon dioxide, so the amount of oxygen in the atmosphere increased."],
+        ["B", "Plants took in carbon dioxide from the air and released oxygen during photosynthesis, so the amount of oxygen in the atmosphere increased."],
+        ["C", "Plant roots broke up rock, and the weathered rock released oxygen into the atmosphere."],
+        ["D", "Plants covered the land and blocked volcanoes, so less carbon dioxide and more oxygen entered the air."]
+      ])}`,
+    options: ["Row A", "Row B", "Row C", "Row D"],
     correct: 1,
-    explanation: "3.8 − 2.0 = 1.8 billion years. That long wait, compared with how fast animals diversified in the last billion years, is the 'pace of evolution' phenomenon."
+    explanation: "Photosynthesis: carbon dioxide + water + sunlight → sugar (glucose) + oxygen. Plants take CO₂ IN and give O₂ OUT. Row A has the gases backwards, which is a very common mistake. Watch the direction of each gas!"
   },
   {
-    q: "A volcanic ash layer is about 1.3 billion years old. What percent of its original Potassium-40 (half-life 1.3 billion years) remains?",
-    options: ["100%", "50%", "25%", "6.25%"],
+    q: "Animals, fungi and plants all use aerobic cellular respiration to get energy. Which statement describes it correctly?",
+    options: [
+      "Carbon dioxide + water → glucose + oxygen, which stores energy from sunlight",
+      "Glucose + oxygen → carbon dioxide + water + energy (ATP) that the cell can use",
+      "Oxygen + energy → glucose + carbon dioxide",
+      "Glucose → oxygen + energy, with no other gases involved"
+    ],
     correct: 1,
-    explanation: "1.3 billion years is exactly one half-life of Potassium-40, so half (50%) of the original parent isotope remains."
+    explanation: "Respiration happens in the mitochondria and is roughly the reverse of photosynthesis: cells use glucose AND oxygen and release carbon dioxide, water and usable energy (ATP). Less oxygen means less energy, which matters most for big, active bodies. The first option is photosynthesis."
   },
   {
-    q: "A rock sample has 25% of its original Uranium-235 left. About how old is it? (Half-life: 713 million years)",
-    options: ["About 356 million years", "About 713 million years", "About 1.43 billion years", "About 2.85 billion years"],
+    q: `The packet's extinction table lists <strong>"widespread oxygen depletion in the oceans"</strong> and the <strong>collapse of reef ecosystems</strong> during the Devonian extinction. Complete the argument:<br><br>
+      <em>"In the Late Devonian, ___A___ in the oceans meant that sea animals could take in less ___B___ for cellular respiration. Their cells could produce less ___C___, so large, active reef animals were ___D___ likely to survive."</em>
+      ${coevoQTable(["Row", "A", "B", "C", "D"], [
+        ["1", "an increase of oxygen", "oxygen", "energy", "more"],
+        ["2", "a decrease of oxygen", "carbon dioxide", "oxygen", "more"],
+        ["3", "a decrease of oxygen", "oxygen", "energy", "less"],
+        ["4", "an increase of carbon dioxide", "carbon dioxide", "glucose", "less"]
+      ])}`,
+    options: ["Row 1", "Row 2", "Row 3", "Row 4"],
     correct: 2,
-    explanation: "25% remaining means 2 half-lives have passed: 2 × 713 million = 1.426 billion years."
+    explanation: "Follow the chain one link at a time: less oxygen in the water → less oxygen for respiration → less energy (ATP) → big, active animals struggle most. Each blank has to match the one before it. Check every column, not just the first one."
   },
   {
-    q: "On the Stages of Atmospheric Oxygen graph, oxygen is nearly 0% in Stage 1, rises to a few percent in Stage 2, and then stays flat through Stage 3 (1.85–0.85 Ga). What was happening to the oxygen during Stage 3?",
-    options: ["Nothing produced oxygen", "Oxygen was being produced, but much of it was absorbed by rocks on land and in forming the ozone layer", "Oxygen was turning into nitrogen", "Volcanoes removed all life"],
+    q: "Which sequence describes a FEEDBACK between life and Earth's systems, where the change loops back to affect life again (not just a one-way chain)?",
+    options: [
+      "An asteroid hits Earth → dust blocks sunlight → the dinosaurs go extinct",
+      "Photosynthesizers release O₂ → O₂ forms the ozone layer → ozone blocks UV, so plants can live on land → more plants make even more O₂",
+      "A volcano erupts → lava flows downhill → the lava cools into new rock",
+      "Earth forms → the oceans form → the first cells appear"
+    ],
     correct: 1,
-    explanation: "Oxygen 'sinks' such as iron in rocks on land kept soaking up oxygen. Only once they filled (Stage 4) could oxygen rise sharply."
+    explanation: "In a feedback loop, life changes an Earth system, and that change comes back to affect life. Here, life (photosynthesis) changed the atmosphere (ozone), and the new atmosphere let more life spread, which changed the atmosphere even more. The other options only go one direction."
   },
   {
-    q: "Which observation is the BEST evidence that early life changed ocean chemistry?",
-    options: ["Dinosaur bones", "Banded iron formations: rust layers that formed when oxygen from cyanobacteria reacted with dissolved iron", "Coal deposits", "Giant insect fossils"],
+    q: "During the Ordovician, the supercontinent Gondwana drifted over the South Pole. Most sea life lived in warm, shallow seas covering the edges of the continents. Which statement correctly explains how this plate movement changed the environment for Ordovician sea life?",
+    options: [
+      "Gondwana moved closer to the equator, so the shallow seas warmed up and more habitat formed",
+      "Ice sheets grew on Gondwana over the pole, locking up water as ice. Sea level dropped, so many shallow seas drained and sea life lost its habitat",
+      "The moving plate created deeper oceans, which added more shallow-sea habitat",
+      "Plate movement changed only the land, so sea life was not affected"
+    ],
     correct: 1,
-    explanation: "Iron only settles out of seawater as rust when it meets oxygen. The oxygen came from photosynthesizing microbes, so these rocks record life changing the ocean."
+    explanation: "Where a continent sits changes its climate. Over the pole, ice built up on land, sea level fell, and the shallow seas where most species lived shrank. That is one cause of the Ordovician extinction (85% of species). Geosphere → climate → hydrosphere → biosphere."
   },
   {
-    q: "Red beds (rusted rocks on land) are found only in rocks younger than about 2 billion years. What does this show?",
-    options: ["Earth's land was always red", "Oxygen built up in the atmosphere and began to rust rocks exposed on land", "There was no iron before 2 billion years ago", "Red beds were made by dinosaurs"],
+    q: "Fossils of a 380-million-year-old forest, including tree stumps and roots that grew in a warm, wet climate, are found on Svalbard, a group of Arctic islands that today are mostly covered in ice. What is the BEST explanation?",
+    options: [
+      "Plants evolved to grow on ice and later died out",
+      "Moving tectonic plates carried Svalbard from a warm region near the equator to the Arctic over hundreds of millions of years",
+      "The coal formed recently from Arctic moss",
+      "Earth's poles have always been warmer than the equator"
+    ],
     correct: 1,
-    explanation: "Iron minerals on land only rust when there is oxygen in the air. Red beds show the atmosphere had changed, which is a geological change caused by biological oxygen."
+    explanation: "Plates move only centimeters per year, but over hundreds of millions of years that adds up to thousands of kilometers. When reading an ancient map, check where each continent was compared with the equator, because latitude controls climate, and climate controls what can live there."
   },
   {
-    q: "The first land plants appear about 470 million years ago. Which change in Earth's systems helped make this possible?",
-    options: ["The Moon formed", "The ozone layer, made from oxygen, blocked harmful UV light", "Oxygen dropped to 0%", "The K–Pg asteroid impact"],
-    correct: 1,
-    explanation: "Ozone (O₃) forms from atmospheric oxygen and shields the surface from UV radiation, so life could survive outside the water."
+    q: `<strong>Claim:</strong> <em>Mass extinctions were caused by changes in more than one of Earth's systems.</em> Use this data from the packet's table. Which statement BEST supports the claim with specific evidence?
+      ${coevoQTable(["Extinction", "Million years ago", "Species lost", "Some contributing factors"], [
+        ["Ordovician", "444", "85%", "Gondwana moved into the southern hemisphere; ice age; sea levels rose and fell; oxygen loss in the water"],
+        ["Permian", "252", "90%", "Massive volcanic eruptions; more methane and CO₂; rapid warming; ocean acidification"],
+        ["K–Pg", "66", "75%", "Asteroid impact; drop in global temperature; massive volcanic activity"]
+      ])}`,
+    options: [
+      "Extinctions happened many times and killed a lot of species.",
+      "The Permian extinction happened 252 million years ago.",
+      "In the Ordovician extinction (85% of species lost), moving plates, an ice age and oxygen loss in the water all played a part. In the Permian extinction (90% lost), volcanoes added CO₂ to the air, which warmed the climate and made the oceans more acidic.",
+      "The K–Pg extinction was caused only by an asteroid, so each extinction had just one cause."
+    ],
+    correct: 2,
+    explanation: "Strong evidence names specific data (which event, how many species, which factors) AND connects it to the claim (several systems: geosphere, atmosphere, hydrosphere). The second option has a real number but doesn't support the claim. The last option contradicts the table."
   },
   {
-    q: "Using the extinction table: which TWO extinctions both list massive volcanic activity, more CO₂, warming and ocean acidification?",
-    options: ["Ordovician and Devonian", "Permian and Triassic", "Devonian and K–Pg", "Ordovician and K–Pg"],
+    q: "After the Ordovician extinction, fish spread into the spaces left by extinct sea invertebrates and became much more diverse. Which explanation uses NATURAL SELECTION correctly?",
+    options: [
+      "Individual fish changed their bodies during their lives because they needed to fill the empty spaces",
+      "Fish whose traits suited the new conditions survived and reproduced more, passing those traits on, so over many generations fish populations changed and new species formed",
+      "The extinction created brand-new fish all at once",
+      "The fish chose to evolve so they could take over"
+    ],
     correct: 1,
-    explanation: "The Permian (252 Ma, 90%) and Triassic (201 Ma, 76%) both involved massive volcanism, rising methane and CO₂, severe warming and ocean acidification."
-  },
-  {
-    q: "Which is an example of a POSITIVE impact of a geological event on the evolution of life?",
-    options: ["The Permian extinction wiped out 90% of species", "After the K–Pg asteroid impact ended the dinosaurs, mammals spread into their niches and diversified", "Reef ecosystems collapsed in the Devonian", "Ocean acidification killed marine invertebrates"],
-    correct: 1,
-    explanation: "Extinctions are destructive, but they open niches. Mammals, including our primate ancestors, diversified after the dinosaurs disappeared."
+    explanation: "Individuals don't evolve; populations do. Earth-system changes alter the environment, and the individuals with helpful traits leave more offspring. Over many generations the population changes. A complete argument about life changing over time should include this mechanism."
   },
   {
     q: "A student argues: 'Oxygen dropped at the same time as each extinction, so low oxygen caused every extinction.' What is the best critique?",
     options: ["The argument is fully proven", "Matching timing shows correlation; the student needs a mechanism and more evidence, and should note the uncertainty in oxygen estimates and dates", "Oxygen has nothing to do with life", "Extinctions never happened"],
     correct: 1,
-    explanation: "The table shows each extinction had several contributing factors, and the oxygen curve has a wide uncertainty band. A strong argument separates correlation from causation and discusses the reliability of the evidence."
+    explanation: "The table shows each extinction had several contributing factors, and the oxygen curve has a wide uncertainty band. A strong evaluation says what the argument explains well, what it leaves out, and how reliable the evidence is."
+  },
+  {
+    q: "A rock sample has 25% of its original Uranium-235 left. About how old is it? (Half-life: 713 million years)",
+    options: ["About 356 million years", "About 713 million years", "About 1.43 billion years", "About 2.85 billion years"],
+    correct: 2,
+    explanation: "25% remaining means 2 half-lives have passed (100% → 50% → 25%): 2 × 713 million = 1.426 billion years."
+  }
+])
+```
+
+## ✍️ Practice: Writing with Evidence
+
+Multiple choice is only half of it. Many science tasks also ask you to **write** a short answer using evidence. Try each one **in your own words first**, then compare with a strong answer.
+
+```{ojs}
+//| echo: false
+function buildCoevoWrite(id, items) {
+  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif;max-width:720px;margin:18px auto;"></div>`;
+  items.forEach((it, i) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.1);border-left:6px solid #764ba2;";
+    card.innerHTML = `<p style="font-weight:800;margin:0 0 6px;color:#5b3c99;">✍️ Practice ${i + 1}: ${it.skill}</p>
+      <div style="margin:0 0 10px;line-height:1.5;">${it.prompt}</div>`;
+    const ta = document.createElement("textarea");
+    ta.rows = 5;
+    ta.setAttribute("aria-label", `Your answer to practice ${i + 1}`);
+    ta.placeholder = "Type your answer here (it is not saved or graded)…";
+    ta.style.cssText = "width:100%;box-sizing:border-box;min-height:110px;padding:10px;border:2px solid #c7d2fe;border-radius:8px;font:inherit;font-size:.95em;color:#1e1b4b;background:#fff;";
+    const btn = document.createElement("button");
+    btn.textContent = "🔑 Compare with a strong answer";
+    btn.style.cssText = "margin-top:10px;min-height:44px;padding:10px 16px;border:none;border-radius:10px;background:#764ba2;color:#fff;font-weight:700;cursor:pointer;font-size:.95em;";
+    const hint = document.createElement("div");
+    hint.style.cssText = "font-size:.85em;color:#6b5a8e;margin-top:6px;";
+    const ans = document.createElement("div");
+    ans.style.cssText = "display:none;margin-top:12px;padding:12px 14px;border-radius:10px;background:#f5f0ff;color:#1e1b4b;line-height:1.5;font-size:.93em;";
+    ans.innerHTML = `<p style="margin:0 0 6px;font-weight:800;">A strong answer includes:</p>
+      <ul style="margin:0 0 10px;padding-left:20px;">${it.checklist.map(c => `<li>${c}</li>`).join("")}</ul>
+      <p style="margin:0 0 4px;font-weight:800;">Example:</p><p style="margin:0;">${it.model}</p>`;
+    btn.onclick = () => {
+      if (ta.value.trim().length < 25 && !btn.dataset.warned) {
+        btn.dataset.warned = "true";
+        hint.textContent = "Try writing your own answer first; you'll remember it much better. Tap again if you're really stuck.";
+        return;
+      }
+      ans.style.display = "block";
+      hint.textContent = "Check your answer against each item in the list. What did you miss?";
+    };
+    card.append(ta, btn, hint, ans);
+    outer.appendChild(card);
+  });
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+buildCoevoWrite("coevolution-writing-practice", [
+  {
+    skill: "Support a claim with specific data",
+    prompt: `<strong>Claim:</strong> <em>Increases in atmospheric oxygen were linked to the evolution of more complex life.</em><br>
+      Describe the evidence that supports this claim. Use <strong>specific data examples</strong> from the table.
+      ${coevoQTable(["Time (billion years ago)", "Atmospheric oxygen (about)", "Most complex life at the time"], [
+        ["2.5", "0%", "Single-celled prokaryotes (no nucleus)"],
+        ["1.85", "4%", "Single-celled eukaryotes (cells with a nucleus)"],
+        ["0.85", "5%", "Simple multicellular algae"],
+        ["0.55", "16%", "Large animals (Ediacaran and Cambrian)"],
+        ["0.43", "22%", "Plants and animals living on land"]
+      ])}
+      <div style="font-size:.8em;color:#64748b;">Oxygen values read from the packet's Stages of Atmospheric Oxygen graph (Explore, Part 3).</div>`,
+    checklist: [
+      "At least <strong>two specific data values</strong> (numbers with units and times), not just \"it went up\"",
+      "The <strong>trend</strong>: as oxygen rose, life became more complex",
+      "A comparison between two points in time that shows the change",
+      "Bonus: a sentence of <strong>reasoning</strong> (aerobic respiration gives more energy, so bigger, more complex bodies are possible)"
+    ],
+    model: "As atmospheric oxygen increased, the most complex life also became more complex. About 2.5 billion years ago there was almost 0% oxygen, and the only life was single-celled prokaryotes. By 0.55 billion years ago oxygen had risen to about 16%, and large animals appeared. By 0.43 billion years ago, oxygen was about 22% and plants and animals were living on land. More oxygen allows more aerobic respiration, which releases more energy, so larger, more complex bodies became possible."
+  },
+  {
+    skill: "Construct an argument about a feedback",
+    prompt: `In the Devonian period (about 420–360 million years ago), the first forests spread across the land. Tree roots broke up rock, which speeds up <strong>chemical weathering</strong>, a process that pulls CO₂ out of the air. Weathered soil also washed nutrients into the oceans, which can cause huge algae blooms that use up the oxygen in seawater when they die and decay. Near the end of the Devonian, the climate cooled, glaciers formed, ocean oxygen dropped and about <strong>75% of species</strong> went extinct.<br><br>
+      How could the spread of land plants have created a feedback that affected life in the oceans? <strong>Make a claim and support it with scientific reasoning.</strong>
+      <div style="font-size:.8em;color:#64748b;margin-top:6px;">This is one leading scientific hypothesis for part of the Devonian extinction; scientists are still testing it.</div>`,
+    checklist: [
+      "A clear <strong>claim</strong> that connects plants (biosphere) to a change in another Earth system",
+      "A <strong>step-by-step chain</strong>: plants → weathering removes CO₂ → less greenhouse effect → cooling and glaciers (and/or nutrients → algae blooms → less oxygen in the water)",
+      "How that change came back to affect <strong>life</strong> (reef and sea animals lost habitat, oxygen or warmth; 75% of species lost)",
+      "Words like <em>because</em>, <em>which caused</em> and <em>as a result</em> to show cause and effect"
+    ],
+    model: "Claim: The spread of land plants changed the atmosphere and oceans in ways that then harmed ocean life. As forests spread, roots broke up rock and sped up weathering, which removed CO₂ from the atmosphere. Less CO₂ means less heat is trapped, so the climate cooled and glaciers formed. At the same time, nutrients washed from the new soils into the sea caused algae blooms, and their decay used up oxygen in the water. Colder water and less oxygen meant sea animals could not get enough energy from respiration, so reefs collapsed and about 75% of species went extinct. Life changed Earth, and Earth's changes then changed life."
+  },
+  {
+    skill: "Evaluate an argument",
+    prompt: `Some scientists argue that mammals became larger and more varied after the K–Pg extinction (66 million years ago) <em>because the dinosaurs were gone, so mammals no longer had to compete with them for food and space.</em><br><br>
+      Evaluate this argument. In your evaluation, consider:
+      <ul style="margin:6px 0 0;padding-left:20px;">
+        <li>How does this argument help explain the <strong>coevolution</strong> of Earth's systems and life?</li>
+        <li>What ideas does this argument <strong>leave out</strong>?</li>
+      </ul>`,
+    checklist: [
+      "A <strong>strength</strong>: it links an Earth-system event (asteroid impact, climate change) to a change in life (empty niches → mammals diversify)",
+      "At least one <strong>missing idea</strong>, for example: it does not explain <em>how</em> mammals changed (natural selection: individuals with helpful traits survived and reproduced over many generations)",
+      "Other possible gaps: it doesn't mention other Earth-system factors such as climate or atmospheric changes after the impact, or the many millions of years the change took",
+      "Your overall judgment: is the argument complete, partly complete, or weak?"
+    ],
+    model: "This argument helps explain coevolution because it shows how a change to Earth's systems (the asteroid impact and the cooling that followed) caused the dinosaurs to go extinct, which opened niches for mammals. That is Earth changing life. However, the argument is incomplete. It does not explain the process by which mammals changed: through natural selection, mammals with traits suited to the new niches survived and reproduced more, so over many generations their populations became larger and more varied. It also leaves out other Earth-system factors, such as how climate and the atmosphere changed after the impact, which could also have affected which mammals survived."
   }
 ])
 ```
