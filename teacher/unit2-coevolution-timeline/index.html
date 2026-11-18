@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Coevolution Timeline</title>
+<meta name="description" content="Full-screen, touch-friendly version of the Unit 2 Coevolution of Earth and Life timeline cards for the classroom smart board.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%AA%A8%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+/* Full-screen smart-board timeline. Everything is prefixed tl- to stay out of the way of shared styles. */
+:root{
+  --bg:#F2F5F4; --surface:#FFFFFF; --ink:#15212A; --muted:#55646B; --line:#C9D3D1; --tint:#E7EDEB;
+  --bio:#3F7A2E; --bio-tint:#E6F0DF; --geo:#9A5A1E; --geo-tint:#F4E9DC;
+  --cause:#C0392B; --cplx:#1C67B0; --focus:#1C6784;
+  --shadow:0 2px 6px rgba(20,33,42,.14),0 8px 24px rgba(20,33,42,.08);
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",system-ui,-apple-system,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1518; --surface:#172228; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2C3C43; --tint:#1C2A30;
+  --bio:#8DC56E; --bio-tint:#1D2C1C; --geo:#E0A563; --geo-tint:#2E2418;
+  --cause:#FF7A6B; --cplx:#6DB3FF; --focus:#5DB2D2; --shadow:0 2px 8px rgba(0,0,0,.5);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1518; --surface:#172228; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2C3C43; --tint:#1C2A30;
+  --bio:#8DC56E; --bio-tint:#1D2C1C; --geo:#E0A563; --geo-tint:#2E2418;
+  --cause:#FF7A6B; --cplx:#6DB3FF; --focus:#5DB2D2; --shadow:0 2px 8px rgba(0,0,0,.5);
+  color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);-webkit-text-size-adjust:100%;
+  -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+[hidden]{display:none!important}
+
+.tl-app{display:grid;grid-template-rows:auto 1fr auto;height:100vh;height:100dvh}
+
+/* Top bar */
+.tl-top{display:flex;align-items:center;gap:12px;padding:8px 14px;background:var(--surface);border-bottom:1px solid var(--line)}
+.tl-title{display:flex;flex-direction:column;min-width:0;flex:1}
+.tl-title small{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.tl-title h1{margin:0;font-family:var(--f-display);font-weight:800;font-size:clamp(18px,1.6vw,28px);line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tl-btn{min-height:48px;min-width:48px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--bg);
+  font-weight:700;font-size:16px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.tl-btn:hover{border-color:var(--muted)}
+.tl-btn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tl-btn svg{width:22px;height:22px}
+.tl-seg{display:inline-flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg)}
+.tl-seg button{min-height:48px;padding:0 16px;border:0;background:transparent;font-weight:700;font-size:16px;cursor:pointer}
+.tl-seg button+button{border-left:1px solid var(--line)}
+.tl-seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+
+/* Stage */
+.tl-stage{position:relative;overflow:hidden;touch-action:manipulation}
+.tl-band{position:absolute;left:0;right:0;pointer-events:none}
+.tl-band.bio{top:0;background:linear-gradient(to bottom,transparent,var(--bio-tint))}
+.tl-band.geo{bottom:0;background:linear-gradient(to top,transparent,var(--geo-tint))}
+.tl-bandlabel{position:absolute;left:14px;font-family:var(--f-display);font-weight:800;font-size:clamp(16px,1.35vw,26px);letter-spacing:.04em;text-transform:uppercase;pointer-events:none;opacity:.9}
+.tl-bandlabel span{display:block;font-family:var(--f-body);font-weight:600;text-transform:none;letter-spacing:0;font-size:.62em;color:var(--muted)}
+.tl-bandlabel.bio{top:10px;color:var(--bio)}
+.tl-bandlabel.geo{bottom:10px;color:var(--geo)}
+svg.tl-layer{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.tl-axis-line{stroke:var(--ink);stroke-width:3}
+.tl-tick{stroke:var(--ink);stroke-width:2}
+.tl-ticklabel{fill:var(--ink);font-family:var(--f-display);font-weight:800;text-anchor:middle}
+.tl-ticklabel.minor{fill:var(--muted);font-weight:600}
+.tl-break{fill:var(--bg);stroke:var(--ink);stroke-width:2}
+.tl-breaknote{fill:var(--muted);font-family:var(--f-body);font-weight:600}
+.tl-leader{stroke-width:2;fill:none;opacity:.75;transition:opacity .3s}
+.tl-leader.bio{stroke:var(--bio)} .tl-leader.geo{stroke:var(--geo)}
+.tl-dot{stroke:var(--surface);stroke-width:2;transition:opacity .3s}
+.tl-dot.bio{fill:var(--bio)} .tl-dot.geo{fill:var(--geo)}
+.tl-range{stroke-width:9;stroke-linecap:round;opacity:.75;transition:opacity .3s}
+.tl-range.bio{stroke:var(--bio)} .tl-range.geo{stroke:var(--geo)}
+
+/* Cards */
+.tl-card{position:absolute;display:flex;flex-direction:column;padding:0;border-radius:12px;overflow:hidden;cursor:pointer;
+  background:var(--surface);border:2px solid var(--line);box-shadow:var(--shadow);text-align:left;
+  transition:left .45s ease,top .45s ease,width .45s ease,height .45s ease,opacity .3s,transform .15s,filter .3s}
+.tl-card:hover{transform:translateY(-2px)}
+.tl-card:active{transform:scale(.97)}
+.tl-card.bio{border-top:6px solid var(--bio)} .tl-card.geo{border-bottom:6px solid var(--geo)}
+.tl-card img{display:block;width:100%;flex:1 1 auto;min-height:0;object-fit:cover;background:#222;pointer-events:none}
+.tl-card .tl-cap{flex:0 0 auto;padding:.32em .45em .38em;line-height:1.12}
+.tl-card .tl-cap b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:700}
+.tl-card .tl-cap i{display:block;font-style:normal;font-weight:700;margin-top:.15em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-card.bio .tl-cap i{color:var(--bio)} .tl-card.geo .tl-cap i{color:var(--geo)}
+.tl-card.is-hidden{opacity:0;pointer-events:none;transform:scale(.85)}
+.tl-card.is-dim{opacity:.28;filter:grayscale(.6)}
+.tl-card.is-new{animation:tl-pop .6s ease}
+.tl-card.is-focus{box-shadow:0 0 0 4px var(--focus),var(--shadow)}
+@keyframes tl-pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.06);opacity:1}100%{transform:scale(1)}}
+.is-faded{opacity:.12!important}
+
+/* Arrows */
+.tl-arrow{fill:none;stroke-width:5;stroke-linecap:round;transition:opacity .3s}
+.tl-arrow.cause{stroke:var(--cause)} .tl-arrow.cplx{stroke:var(--cplx);stroke-dasharray:12 8}
+.tl-arrow-halo{fill:none;stroke:var(--surface);stroke-width:11;stroke-linecap:round;opacity:.85}
+.tl-num circle{stroke:var(--surface);stroke-width:2}
+.tl-num.cause circle{fill:var(--cause)} .tl-num.cplx circle{fill:var(--cplx)}
+.tl-num text{fill:#fff;font-family:var(--f-display);font-weight:800;text-anchor:middle;dominant-baseline:central}
+.tl-arrowlabel{position:absolute;max-width:min(30vw,420px);padding:8px 12px;border-radius:10px;background:var(--surface);
+  border:3px solid var(--cause);font-weight:700;font-size:clamp(15px,1.15vw,22px);line-height:1.2;box-shadow:var(--shadow);
+  pointer-events:none;transform:translate(-50%,-50%)}
+.tl-arrowlabel.cplx{border-color:var(--cplx)}
+
+/* Bottom presenter bar */
+.tl-bar{display:flex;align-items:center;gap:14px;padding:8px 14px;background:var(--surface);border-top:1px solid var(--line);min-height:66px}
+.tl-step{display:flex;align-items:center;gap:8px}
+.tl-count{font-family:var(--f-display);font-weight:800;font-size:20px;min-width:4.6em;text-align:center}
+.tl-caption{flex:1;min-width:0;font-size:clamp(16px,1.25vw,24px);line-height:1.25}
+.tl-caption .tag{display:inline-block;padding:2px 10px;border-radius:999px;color:#fff;font-weight:700;font-size:.72em;vertical-align:.12em;margin-right:8px}
+.tl-caption .tag.cause{background:var(--cause)} .tl-caption .tag.cplx{background:var(--cplx)}
+.tl-caption .tag.bio{background:var(--bio)} .tl-caption .tag.geo{background:var(--geo)}
+.tl-caption em{color:var(--muted);font-style:normal}
+.tl-legend{display:flex;gap:16px;align-items:center;color:var(--muted);font-weight:600;font-size:15px;flex-wrap:wrap}
+.tl-legend svg{width:40px;height:12px;vertical-align:middle;margin-right:6px}
+
+/* Modal */
+dialog.tl-modal{width:min(94vw,1500px);height:min(90vh,940px);max-width:none;max-height:none;padding:0;border:0;border-radius:18px;
+  background:var(--surface);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.4);overflow:hidden}
+dialog.tl-modal::backdrop{background:rgba(8,14,18,.62);backdrop-filter:blur(3px)}
+.tl-m{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);height:100%}
+.tl-m-media{position:relative;background:#0c1114;display:flex;align-items:center;justify-content:center;min-height:0}
+.tl-m-media img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.tl-m-media .credit{position:absolute;left:12px;bottom:10px;right:12px;color:#c9d2d6;font-size:13px;text-shadow:0 1px 2px #000}
+.tl-m-body{display:flex;flex-direction:column;min-height:0}
+.tl-m-scroll{overflow-y:auto;padding:26px 30px 18px;font-size:clamp(18px,1.32vw,24px);line-height:1.45;user-select:text;-webkit-user-select:text;overscroll-behavior:contain}
+.tl-m-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tl-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-weight:700;font-size:.72em;color:#fff}
+.tl-chip.bio{background:var(--bio)} .tl-chip.geo{background:var(--geo)}
+.tl-chip.date{background:var(--ink);color:var(--surface)}
+.tl-m h2{font-family:var(--f-display);font-weight:800;font-size:1.55em;line-height:1.1;margin:.1em 0 .5em}
+.tl-m h3{font-family:var(--f-display);font-size:.8em;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:1.1em 0 .35em}
+.tl-m p{margin:0 0 .6em}
+.tl-m .oncard{border-left:5px solid var(--line);padding:.35em .9em;background:var(--tint);border-radius:0 10px 10px 0}
+.tl-m .oncard p{margin:.2em 0}
+.tl-m .link{border-radius:12px;padding:.7em .9em;background:var(--bio-tint);border:2px solid var(--bio)}
+.tl-m .link.geo{background:var(--geo-tint);border-color:var(--geo)}
+.tl-m .link b:first-child{display:block;font-family:var(--f-display);margin-bottom:.15em}
+.tl-conns{display:flex;flex-direction:column;gap:8px}
+.tl-conn{display:flex;gap:10px;align-items:flex-start;text-align:left;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--bg);cursor:pointer;font-size:.86em;line-height:1.3;min-height:48px}
+.tl-conn.cause{border-left:8px solid var(--cause)} .tl-conn.cplx{border-left:8px dashed var(--cplx)}
+.tl-conn b{white-space:nowrap}
+.tl-m details{margin-top:1em;border:1px dashed var(--muted);border-radius:12px;padding:.5em .9em;font-size:.82em}
+.tl-m summary{cursor:pointer;font-weight:700;min-height:40px;display:flex;align-items:center}
+.tl-m-nav{display:flex;gap:10px;align-items:center;padding:12px 18px;border-top:1px solid var(--line)}
+.tl-m-nav .grow{flex:1;text-align:center;color:var(--muted);font-weight:600;font-size:15px}
+.tl-close{position:absolute;top:12px;right:12px;z-index:2;width:56px;height:56px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:30px;line-height:1;cursor:pointer}
+.tl-close:hover{background:rgba(0,0,0,.8)}
+
+/* Info dialog */
+dialog.tl-info{width:min(92vw,820px);max-height:86vh;border:0;border-radius:18px;padding:26px 30px;background:var(--surface);color:var(--ink);font-size:18px;line-height:1.45;user-select:text}
+dialog.tl-info::backdrop{background:rgba(8,14,18,.62)}
+.tl-info h2{font-family:var(--f-display);margin:0 0 .4em}
+.tl-info h3{font-family:var(--f-display);margin:1em 0 .3em;font-size:1.05em}
+.tl-info kbd{font-family:inherit;font-weight:700;border:1px solid var(--line);border-bottom-width:3px;border-radius:6px;padding:0 7px;background:var(--bg)}
+.tl-info ul{margin:.2em 0;padding-left:1.2em}
+.tl-info a{color:var(--focus)}
+
+@media (max-width:900px){
+  .tl-m{grid-template-columns:1fr;grid-template-rows:38% 1fr}
+  .tl-top{flex-wrap:wrap}
+  .tl-legend{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="tl-app">
+  <header class="tl-top">
+    <div class="tl-title">
+      <small>Unit 2 · Coevolution of Earth &amp; Life</small>
+      <h1>How did life and Earth change each other?</h1>
+    </div>
+    <div class="tl-tools">
+      <div class="tl-seg" role="group" aria-label="Timeline scale">
+        <button type="button" id="tl-scale-stretch" aria-pressed="true" title="Stretch the last billion years so the cards fit">Stretched</button>
+        <button type="button" id="tl-scale-true" aria-pressed="false" title="Every billion years gets the same width">True scale</button>
+      </div>
+      <button class="tl-btn" type="button" id="tl-theme" title="Light or dark" aria-label="Switch light or dark theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <button class="tl-btn" type="button" id="tl-info-btn" aria-label="How to use and sources" title="How to use · sources">?</button>
+      <button class="tl-btn" type="button" id="tl-fs" title="Full screen (F)" aria-label="Full screen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="tl-stage" id="tl-stage" aria-label="Timeline: oldest on the left, today on the right. Life on Earth above the line, rocks and other Earth systems below.">
+    <div class="tl-band bio" id="tl-band-bio"></div>
+    <div class="tl-band geo" id="tl-band-geo"></div>
+    <div class="tl-bandlabel bio">Biosphere<span>Life on Earth</span></div>
+    <div class="tl-bandlabel geo">Geosphere<span>Rocks, oceans, air &amp; continents</span></div>
+    <svg class="tl-layer" id="tl-under" aria-hidden="true"></svg>
+    <div id="tl-cards"></div>
+    <svg class="tl-layer" id="tl-over" aria-hidden="true">
+      <defs>
+        <marker id="tl-head-cause" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--cause)"/></marker>
+        <marker id="tl-head-cplx" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--cplx)"/></marker>
+      </defs>
+      <g id="tl-arrows"></g>
+    </svg>
+    <div id="tl-labels"></div>
+  </main>
+
+  <footer class="tl-bar">
+    <div class="tl-seg" role="group" aria-label="Presenter mode">
+      <button type="button" data-mode="all" aria-pressed="true">All cards</button>
+      <button type="button" data-mode="build" aria-pressed="false">Build it</button>
+      <button type="button" data-mode="conn" aria-pressed="false">Connections</button>
+    </div>
+    <div class="tl-step" id="tl-step" hidden>
+      <button class="tl-btn" type="button" id="tl-prev" aria-label="Previous step">◀</button>
+      <span class="tl-count" id="tl-count" aria-live="polite"></span>
+      <button class="tl-btn" type="button" id="tl-next" aria-label="Next step">▶</button>
+      <button class="tl-btn" type="button" id="tl-allarrows" aria-pressed="false" hidden>Show all</button>
+    </div>
+    <div class="tl-caption" id="tl-caption" aria-live="polite"></div>
+    <div class="tl-legend" id="tl-legend">
+      <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" stroke="var(--cause)" stroke-width="5" stroke-linecap="round"/></svg>Causes</span>
+      <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" stroke="var(--cplx)" stroke-width="5" stroke-dasharray="9 6"/></svg>More complex</span>
+    </div>
+  </footer>
+</div>
+
+<dialog class="tl-modal" id="tl-modal" aria-labelledby="tl-m-title">
+  <button class="tl-close" type="button" id="tl-close" aria-label="Close">×</button>
+  <div class="tl-m">
+    <div class="tl-m-media"><img id="tl-m-img" alt=""><div class="credit">Card image: New Visions ESS Unit 2 timeline cards</div></div>
+    <div class="tl-m-body">
+      <div class="tl-m-scroll" id="tl-m-scroll"></div>
+      <div class="tl-m-nav">
+        <button class="tl-btn" type="button" id="tl-m-prev">◀ Older</button>
+        <span class="grow" id="tl-m-pos"></span>
+        <button class="tl-btn" type="button" id="tl-m-next">Newer ▶</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="tl-info" id="tl-info" aria-labelledby="tl-info-title">
+  <h2 id="tl-info-title">Using this timeline</h2>
+  <ul>
+    <li><b>Tap any card</b> to open it. The popup shows the card's own text, the bigger story, and how it connects to other cards. <b>Older / Newer</b> (or swipe) moves through time.</li>
+    <li><b>All cards</b>: the finished timeline. <b>Build it</b>: add cards one at a time, oldest first, so the class can predict where the next one goes. <b>Connections</b>: step through sample arrows from the packet's student work (red = causes, blue dashed = increasing complexity).</li>
+    <li><b>Stretched</b> makes the last billion years 7× wider so the crowded cards fit. Switch to <b>True scale</b> to show how recent complex life really is. Each card has a line to its exact date on the axis.</li>
+  </ul>
+  <h3>Keyboard (or clicker)</h3>
+  <p><kbd>→</kbd> / <kbd>←</kbd> next or previous step (or card, when a popup is open) · <kbd>Enter</kbd> open the current step's card · <kbd>Esc</kbd> close · <kbd>F</kbd> full screen · <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> switch modes</p>
+  <h3>Placement and corrections</h3>
+  <p>Card placement follows the Coevolution teacher guide's answer key. A few cards differ from current science (for example, the Rodinia card's date and the "first plants" wording on the algae card). Each one has a <b>Teacher note</b> in its popup.</p>
+  <h3>Sources</h3>
+  <ul>
+    <li>Card images, card text and the sample arrows: New Visions for Public Schools, <i>Earth and Space Science Unit 2: Probability of Life Elsewhere</i>, Explore timeline cards and sample student work (pp. 91–100).</li>
+    <li>Extra background: NASA Astrobiology; USGS; Smithsonian National Museum of Natural History "Deep Time"; University of California Museum of Paleontology; Lyons, Reinhard &amp; Planavsky (2014), "The rise of oxygen in Earth's early ocean and atmosphere," <i>Nature</i> 506; Bobrovskiy et al. (2018), <i>Science</i> 361 (Dickinsonia); Brookfield et al. (2020), <i>Historical Biology</i> (Kampecaris).</li>
+  </ul>
+  <p style="margin-top:1em"><button class="tl-btn" type="button" id="tl-info-close">Close</button></p>
+</dialog>
+
+<script>
+(() => {
+"use strict";
+
+/* ---------- Data: the 24 packet cards ----------
+   age = start in millions of years ago (Ma); end = for ranges.
+   card = the card's own text (bold title, then the italic lines), kept as written.
+   more / link / note = added for this interactive. */
+const CARDS = [
+ {id:"acasta", sphere:"geo", age:4000, img:"acasta-gneiss", short:"Acasta Gneiss", date:"≈ 4 billion years ago",
+  title:"Acasta Gneiss",
+  card:["Very rare sample of the oldest rock found on Earth"],
+  alt:"A block of gneiss rock with light pink and dark gray stripes.",
+  more:["The Acasta Gneiss comes from near the Acasta River in northern Canada. Tiny <b>zircon crystals</b> inside it were dated with <b>radiometric dating</b> (uranium decaying to lead) to about 4.0 billion years.",
+        "<b>Gneiss</b> is a metamorphic rock. It was heated and squeezed deep underground, which pulled its minerals into light and dark stripes.",
+        "Rocks this old are rare because the rock cycle and plate tectonics have melted, eroded, or recycled almost all of Earth's first crust."],
+  link:["The starting line","Earth already had solid rock, and oceans formed early. The air had almost <b>no free oxygen (O₂)</b>, and there is no evidence of life in this rock."],
+  note:"Single mineral grains are older than this rock: zircon crystals from the Jack Hills in Western Australia are about 4.4 billion years old. The Acasta Gneiss is among the oldest intact rock."},
+
+ {id:"strom", sphere:"bio", age:3400, img:"stromatolite", short:"Stromatolite", date:"≈ 3.4 billion years ago",
+  title:"Stromatolite formation, found in the ocean",
+  card:["Characteristic striped pattern indicates mats of microscopic cells, called microbes"],
+  alt:"A cut and polished rock with wavy yellow, white and brown layers.",
+  more:["<b>Stromatolites</b> are layered mounds built by mats of <b>microbes</b> in shallow water. The sticky mat traps mud and sand. New microbes grow up on top, toward the light. Layer by layer, the mound grows.",
+        "Some of the oldest stromatolites, about 3.4 billion years old, are in the Strelley Pool rocks of Western Australia. Living stromatolites still grow today in places like Shark Bay, Australia."],
+  link:["Life begins small","Some of the oldest evidence of life. All life is <b>single-celled</b> and lives in water."],
+  note:"Scientists do not know whether these earliest mats made oxygen. The 2.7-billion-year card is the stronger evidence for photosynthesis."},
+
+ {id:"stromps", sphere:"bio", age:2700, img:"stromatolite-photosynthesis", short:"Stromatolites + photosynthesis", date:"≈ 2.7 billion years ago",
+  title:"Fossils of Stromatolite Formations with evidence of photosynthesis",
+  card:["Photosynthesis is the process of using light and water to form glucose and oxygen","Light + water + carbon dioxide → glucose + oxygen"],
+  alt:"Microscope view of a fossil stromatolite with stacked, arched layers. A 1 mm scale bar is shown.",
+  more:["In stromatolites from about 2.7 billion years ago, like the ones in the Tumbiana Formation of Western Australia, the shapes and chemical traces point to microbes that used <b>sunlight</b> for energy.",
+        "The balanced equation is 6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂. For these microbes, <b>oxygen was a waste product</b>.",
+        "At first the oxygen did not build up in the air. It reacted right away with <b>dissolved iron</b> in the ocean and with gases from volcanoes."],
+  link:["The oxygen source","Life starts changing the planet. The oxygen made here will rust the ocean's iron (next card)."],
+  note:"Scientists still debate exactly when oxygen-making photosynthesis began. Chemical clues suggest small amounts of oxygen around 3.0–2.7 billion years ago, before it built up in the air about 2.4–2.3 billion years ago."},
+
+ {id:"bif", sphere:"geo", age:2500, img:"banded-iron", short:"Banded Iron Formation", date:"≈ 2.5 billion years ago",
+  title:"Banded Iron Formation · From the ocean",
+  card:["Red color is Iron Oxide (rust) formed by iron in the oceans mixing with oxygen","This is the first oxygen recorded in the geological record"],
+  alt:"Polished rock with wavy red, black and gold bands.",
+  more:["Early oceans held lots of <b>dissolved iron</b>. When oxygen from photosynthesis met it, the iron <b>rusted</b> into iron oxide and sank to the seafloor. The result was red, iron-rich layers between gray, silica-rich layers.",
+        "Most of the world's iron ore, the iron in steel, comes from banded iron formations about 2.5 billion years old, like the Hamersley Range in Australia.",
+        "The iron worked like an <b>oxygen sponge</b>. Only after most of it was used up could oxygen build up in the air. That build-up is the <b>Great Oxidation Event</b>, about 2.4–2.3 billion years ago."],
+  link:["Life changes rock","A big <b>biosphere → geosphere</b> arrow: oxygen made by microbes changed what kind of rock formed on the seafloor."],
+  note:"Some banded iron formations are older (about 3.7 billion years in Greenland). Their iron may have been rusted in other ways, so \"first oxygen\" is a simplification. The 2.5-billion-year pulse is the largest one, and it is linked to oxygen from photosynthesis."},
+
+ {id:"euk", sphere:"bio", age:2100, img:"eukaryotes", short:"Early eukaryotic cells", date:"≈ 2.1 billion years ago",
+  title:"Fossils of early Eukaryotic (complex) cells in the ocean",
+  card:["Eukaryotic cells use oxygen to perform aerobic respiration, which is a more efficient type of harnessing energy than respiration without oxygen"],
+  alt:"Four microscope images of round fossil cells with dark centers.",
+  more:["<b>Eukaryotic cells</b> have a nucleus and organelles. Their <b>mitochondria</b> use oxygen to release energy from glucose. That is <b>aerobic respiration</b>.",
+        "With oxygen, a cell gets roughly 15 times more usable energy (ATP) from each glucose molecule than without it. Bigger, more complex cells need that extra energy.",
+        "Mitochondria probably started as bacteria living inside another cell. This idea is called <b>endosymbiosis</b>."],
+  link:["Oxygen → complexity","Complex cells appear after oxygen builds up. More oxygen means more energy, so cells can be bigger and more complex."],
+  note:"Eukaryote fossils this old are debated. The oldest widely accepted eukaryotic fossils are about 1.6–1.8 billion years old. Use this as a \"how do we know?\" moment."},
+
+ {id:"cyano", sphere:"bio", age:2100, img:"cyanobacteria", short:"Cyanobacteria microfossils", date:"≈ 2.1 billion years ago",
+  title:"Microfossils of cyanobacteria, called Eoentophysalis belcherensis",
+  card:["First confirmed fossils of cyanobacteria cells, which perform photosynthesis","Photosynthesis is the process of using light and water to form glucose and oxygen","Light + water + carbon dioxide → glucose + oxygen"],
+  alt:"Microscope image of a rounded cluster of tiny fossil cells.",
+  more:["These fossils come from the Belcher Islands in Hudson Bay, Canada. They look almost exactly like a living <b>cyanobacterium</b> (<i>Entophysalis</i>) that still forms mats today. That match is how scientists identify them.",
+        "Cyanobacteria were Earth's first oxygen-making photosynthesizers. Their descendants still live inside every plant and algae cell as <b>chloroplasts</b>."],
+  link:["Who made the oxygen?","This fossil confirms the organisms behind the oxygen in the banded iron and red beds."],
+  note:"Why does this card come after the 2.7-billion-year photosynthesis evidence? Tiny cells rarely fossilize, so body fossils show up later than chemical clues. Some studies date these rocks a little younger, closer to 2.0–1.9 billion years."},
+
+ {id:"red", sphere:"geo", age:2000, img:"red-beds", short:"Red Beds", date:"≈ 2 billion years ago",
+  title:"Red Beds of Sedimentary Rock",
+  card:["These sedimentary rocks are the result of 1. weathering from oxygen in the air, which turned particles red and crumbled them from the rock they came from, and then 2. deposition of those soils into these red beds"],
+  alt:"A hillside of red-brown sedimentary rock in thin horizontal layers.",
+  more:["<b>Red beds</b> are sandstones and shales stained red by iron oxide (rust). They form <b>on land</b>, when oxygen in the air rusts iron in the sediments.",
+        "Before about 2.3 billion years ago, red beds are basically missing from the rock record. Older sediments instead hold minerals (like pyrite grains) that oxygen would have destroyed.",
+        "Banded iron shows oxygen in the <b>ocean</b>. Red beds show oxygen in the <b>air</b>."],
+  link:["Oxygen reaches the air","Evidence of the <b>Great Oxidation Event</b>. Oxygen made by life is now changing rocks on land."],
+  note:"Red beds keep forming to this day, and the photo may show younger red beds. The card's date refers to when red beds first appear."},
+
+ {id:"algae", sphere:"bio", age:1000, img:"algae", short:"Multicellular algae", date:"≈ 1 billion years ago",
+  title:"Fossils of abundant, multicellular algae (early plants) · From the Ocean",
+  card:["Plants perform photosynthesis which is the process of using light and water to form glucose and oxygen","Light + water + carbon dioxide → glucose + oxygen"],
+  alt:"Dark, thread-like fossil algae on pale rock.",
+  more:["<b>Multicellular algae</b> are seaweeds: many cells living and working together. Examples include <i>Bangiomorpha</i>, a red alga about 1.05 billion years old from Arctic Canada, and <i>Proterocladus</i>, a green alga about 1 billion years old from China.",
+        "More photosynthesizers in the ocean meant <b>more oxygen and more food</b>."],
+  link:["One cell → many cells","A big step up in complexity. These algae also pumped more oxygen into the ocean."],
+  note:"The card calls algae \"early plants.\" Algae are not true plants, but green algae are the ancestors of land plants."},
+
+ {id:"rodinia", sphere:"geo", age:900, img:"map-900", short:"Rodinia supercontinent", date:"≈ 900 million years ago (map)",
+  title:"Breakup of the supercontinent Rodinia",
+  card:["The breakup of the mega continent Rodinia around 1 billion years ago caused huge amounts of erosion and sedimentation, adding nutrients to the ocean and burying decaying matter."],
+  alt:"World map from 900 million years ago showing the continents joined into one supercontinent, Rodinia.",
+  more:["<b>Rodinia</b> was a supercontinent. Almost all land was joined into one mass, as shown on the 900-million-year map.",
+        "As it rifted apart, new mountains and coastlines eroded. Rivers washed <b>nutrients</b> like phosphorus into the sea, feeding algae.",
+        "Sediment also <b>buried dead organisms</b>. Decay uses up oxygen, so burying dead matter let more oxygen stay in the ocean and air."],
+  link:["Rock changes life","A <b>geosphere → biosphere</b> arrow: moving continents fed ocean life and helped oxygen rise."],
+  note:"The card says Rodinia broke up \"around 1 billion years ago.\" Geologists date Rodinia's assembly to about 1.1–0.9 billion years ago and its breakup to about 750–600 million years ago. The map shows Rodinia whole at 900 Ma, and this card sits at that date."},
+
+ {id:"bif750", sphere:"geo", age:750, img:"banded-iron-750", short:"Banded iron returns", date:"≈ 750 million years ago",
+  title:"Recurrence of Banded Iron Formations · Correlates to time of dramatic tectonic changes",
+  card:["Increased erosion and sedimentation due to tectonic activity 1) increases nutrients in the ocean, increasing plant life and 2) decreases decomposition, which would otherwise absorb oxygen"],
+  alt:"Three dark rock samples with coins for scale. Labels point to iron-rich bands and silica-rich bands.",
+  more:["After about 1.8 billion years ago, banded iron mostly disappeared for about a billion years. It came back briefly about 750–600 million years ago, while Rodinia was breaking apart.",
+        "The same period had Earth's most extreme ice ages, the <b>\"Snowball Earth\"</b> glaciations (about 720–635 million years ago).",
+        "Around this time oxygen rose a <b>second time</b>, setting the stage for animals."],
+  link:["Second oxygen rise","Tectonics plus life pushed oxygen higher again, and multicellular life followed."],
+  note:"The card says \"plant life.\" In the ocean at this time that means algae and cyanobacteria, not plants. Many scientists link these younger banded irons to ice covering the oceans, which let iron build up in the water until the ice melted."},
+
+ {id:"map650", sphere:"geo", age:650, img:"map-650", short:"Continents spread out", date:"≈ 650 million years ago (map)",
+  title:"Late Proterozoic Earth",
+  card:["When Rodinia broke up, it resulted in smaller continents that were more spread out"],
+  alt:"World map from 650 million years ago showing smaller continents spread across the globe.",
+  more:["More, smaller continents mean <b>more coastline</b> and more <b>shallow seas</b>. Sunny, shallow, nutrient-rich water is ideal for algae and early animals.",
+        "Spread-out continents also changed ocean currents and climate."],
+  link:["Setting the stage","Shallow seas around many small continents are where the first animals show up next."]},
+
+ {id:"multi", sphere:"bio", age:600, img:"multicellular", short:"Multicellular organisms", date:"≈ 600 million years ago",
+  title:"Fossils of multicellular organisms",
+  card:["Multicellular organisms use oxygen to perform aerobic respiration, which is a more efficient type of harnessing energy than respiration without oxygen"],
+  alt:"Microscope image of a round fossil made of many small cells. Arrows point to individual cells.",
+  more:["Tiny ball-shaped fossils about 600 million years old, like those from the Doushantuo Formation in southern China, show <b>clusters of cells</b>. Some may be early embryos of animals or their close relatives.",
+        "Every cell needs oxygen, and oxygen has to spread in from outside. Bigger bodies only work when there is <b>more oxygen</b> around."],
+  link:["Many cells, one body","More oxygen made it possible for many cells to live and work together as one organism."],
+  note:"Scientists still debate what these round fossils are: animal embryos, algae, or single-celled relatives of animals."},
+
+ {id:"soft", sphere:"bio", age:560, img:"soft-animals", short:"Earliest soft animals", date:"≈ 560 million years ago",
+  title:"Fossils of the Earliest Soft Animals",
+  card:["These animals would have used oxygen to perform efficient respiration allowing for more cells to survive and work together"],
+  alt:"Imprint in sandstone of a round, ridged soft-bodied organism.",
+  more:["These are the <b>Ediacaran</b> organisms (about 575–539 million years ago). Examples include <i>Dickinsonia</i>, a flat, ribbed oval, and <i>Charnia</i>, a feather-shaped frond.",
+        "They had no shells or bones, so they survive only as <b>imprints</b> in sandstone.",
+        "In 2018, scientists found cholesterol-type molecules in <i>Dickinsonia</i> fossils. That evidence showed it was an <b>animal</b>."],
+  link:["First large animals","They appear right after the second oxygen rise."]},
+
+ {id:"coral", sphere:"bio", age:548, end:470, img:"coral-reef", short:"Coral reef", date:"470–548 million years ago", cdate:"470–548 mya",
+  title:"Fossil of Coral Reef",
+  card:[],
+  alt:"A round fossil coral colony made of many radiating ridges.",
+  more:["Reefs are built by animals that make hard skeletons of <b>calcium carbonate</b>.",
+        "The first animal reefs (about 548 million years ago) were built by tiny tube animals like <i>Cloudina</i>. Sponge-like animals built Cambrian reefs. True corals became major reef-builders by about 470–450 million years ago.",
+        "Buried reefs turn into <b>limestone</b>, a rock made by life."],
+  link:["Life builds rock","A <b>biosphere → geosphere</b> link: reef skeletons become limestone. Reefs are also hot spots of diversity."]},
+
+ {id:"cambrian", sphere:"bio", age:518, img:"ocean-diversity", short:"Ocean animal diversity", date:"≈ 518 million years ago",
+  title:"Fossils of ocean animal diversity",
+  card:[],
+  alt:"Grid of fossil photos: trilobites, coiled shells and other ocean animals.",
+  more:["This is the <b>Cambrian explosion</b>. Between about 539 and 515 million years ago, most major animal groups appear in the fossil record.",
+        "Animals evolved <b>shells, eyes, legs and jaws</b>. Predators and prey appear. The Chengjiang fossils in China (about 518 million years old) even preserve soft body parts."],
+  link:["Complexity takes off","Higher oxygen let animals be bigger and more active. Hunting and fleeing take a lot of energy."],
+  note:"Some fossils in the collage, like the coiled ammonites, lived later. The collage shows the kinds of shelled ocean animals that followed."},
+
+ {id:"landplants", sphere:"bio", age:457, end:455, img:"first-land-plants", short:"First land plants", date:"457–455 million years ago", cdate:"457–455 mya",
+  title:"Fossils of first land plants",
+  card:["Plants perform photosynthesis which is the process of using light and water to form glucose and oxygen","Light + water + carbon dioxide → glucose + oxygen"],
+  alt:"Eighteen microscope images of round and oval brown fossil spores, labeled A through R.",
+  more:["These fossils are <b>spores</b>, tiny reproductive cells from the earliest land plants. These plants were small and related to today's liverworts and mosses.",
+        "A tough coating on the spores kept them from drying out. Life on land meant new problems: <b>drying out, gravity, and getting water</b>.",
+        "Land plants began breaking down rock and holding it in place, which started real <b>soil</b>."],
+  link:["Life moves onto land","Plants add oxygen on land and prepare the ground, literally, for animals."],
+  note:"Land-plant spores have been found in rocks as old as about 470 million years. Dates vary by site."},
+
+ {id:"landanimal", sphere:"bio", age:425, img:"first-land-animal", short:"Oldest land animal", date:"≈ 425 million years ago",
+  title:"Oldest Fossil of Land Animal",
+  card:[],
+  alt:"A curved, segmented fossil millipede on gray rock with a 1 cm scale bar.",
+  more:["One of the oldest known land animals is a <b>millipede</b>, <i>Kampecaris obanensis</i>, about 425 million years old, from the island of Kerrera in Scotland.",
+        "A tough outer skeleton kept water in. Small holes along the body let it breathe air.",
+        "Millipedes eat dead plants, so they also helped make soil."],
+  link:["Animals follow plants","Land plants gave the first land animals food, shelter, and oxygen to breathe."],
+  note:"Older tracks in rock suggest some animals visited land earlier. This is the oldest body fossil of a land animal on the card set."},
+
+ {id:"vascular", sphere:"bio", age:420, img:"vascular-plants", short:"Vascular plants", date:"≈ 420 million years ago",
+  title:"Fossil of vascular plants (plants with stems)",
+  card:["Plants perform photosynthesis which is the process of using light and water to form glucose and oxygen","Light + water + carbon dioxide → glucose + oxygen"],
+  alt:"Fossil of thin, branching plant stems on pale rock.",
+  more:["<b>Vascular plants</b> have tubes (xylem and phloem) that carry water up and food around. With those tubes, plants can stand <b>taller</b>.",
+        "Early ones, like <i>Cooksonia</i>, were only a few centimeters tall with simple branching stems.",
+        "Their roots and stems helped break rock apart, making soil deeper."],
+  link:["Taller plants, deeper soil","Plumbing let plants grow taller, which led to more photosynthesis and more oxygen on land."]},
+
+ {id:"soil", sphere:"geo", age:407, img:"soil", short:"Preserved soil", date:"≈ 407 million years ago",
+  title:"Preserved soil deposit",
+  card:["Soil shows remnants of early plants that spread by spores and microbes that do cellular respiration and cycle organic matter"],
+  alt:"Close-up of an ancient soil layer with blue-gray and orange-brown streaks.",
+  more:["Fossil soils are called <b>paleosols</b>.",
+        "Soil is a <b>geosphere–biosphere mix</b>: broken rock plus dead organic matter plus living microbes and fungi.",
+        "Rocks of about this age, like the 407-million-year-old Rhynie chert in Scotland, preserve early plants, fungi and tiny animals in amazing detail."],
+  link:["Where the spheres meet","Life helped make soil, and soil let bigger plants grow. It counts as both spheres, which is coevolution."],
+  note:"Judgment call: some students put this card in the biosphere because plants and microbes made it. Accept it if they can defend it. Watch for one arrow in the sample student work, \"soil supported the evolution of vascular plants.\" It points backward in time (407 → 420 Ma). Use it to ask: can an effect come before its cause?"},
+
+ {id:"landanimals", sphere:"bio", age:350, end:0, img:"land-animals", short:"Abundant land animals", date:"350 million years ago → today", cdate:"350 mya → today",
+  title:"Abundant Fossils of Land Animals",
+  card:["including arthropods, amphibians, reptiles, birds, dinosaurs, and mammals (including humans!)","Dating from 350 million years ago to present"],
+  alt:"Fossil skeleton of a four-legged, lizard-like animal in pale rock.",
+  more:["Fish with limb-like fins, like <i>Tiktaalik</i> (about 375 million years ago), led to four-legged animals living on land by about 350 million years ago.",
+        "The <b>amniotic egg</b> (reptiles, about 310 million years ago) let animals lay eggs away from water. Dinosaurs ruled from about 230 to 66 million years ago. Our species, <i>Homo sapiens</i>, appeared only about 300,000 years ago."],
+  link:["Built on everything before","Large, active land animals need plenty of oxygen and plants to eat."]},
+
+ {id:"map356", sphere:"geo", age:356, img:"map-356", short:"Continents at the equator", date:"≈ 356 million years ago (map)",
+  title:"Early Carboniferous Earth",
+  card:["Land and shallow bodies of water concentrated around the equator promoted plant growth in swamps and on land"],
+  alt:"World map from 356 million years ago with large continents grouped near the equator.",
+  more:["The continents were coming together to form <b>Pangaea</b>. Much of the land sat in the warm, wet tropics.",
+        "Low, flat, wet land became huge <b>swamp forests</b>. Their buried plants became <b>coal</b>. \"Carboniferous\" means \"coal-bearing.\""],
+  link:["Rock changes life","A <b>geosphere → biosphere</b> arrow: where the continents were helped decide where plants could thrive."]},
+
+ {id:"swamp", sphere:"bio", age:300, img:"swamp-plants", short:"Swamp plants", date:"≈ 300 million years ago",
+  title:"Fossils of abundant plants that filled swamps",
+  card:["Plants perform photosynthesis which is the process of using light and water to form glucose and oxygen","Light + water + carbon dioxide → glucose + oxygen"],
+  alt:"Large slab of gray rock covered in fossil fern fronds.",
+  more:["Swamp forests were full of giant club mosses (some 30 m tall), horsetails and ferns.",
+        "When they died, waterlogged swamps buried them before they could rot. They became peat, then <b>coal</b>.",
+        "Buried plants do not decay, so they do not use up oxygen. Oxygen in the air may have reached about <b>30–35%</b>. Today it is 21%."],
+  link:["Peak oxygen","Life raised oxygen to its highest level ever, and life's remains became rock (coal)."]},
+
+ {id:"dragonfly", sphere:"bio", age:300, img:"dragonfly", short:"Giant dragonfly", date:"≈ 300 million years ago",
+  title:"Fossil of 21 inch long dragonfly",
+  card:["Scientists believe that the only way that insects could have been this large is if oxygen was more abundant than it is today"],
+  alt:"Dark slab of rock with the faint outline of a large fossil insect wing, beside a ruler.",
+  more:["Giant dragonfly-like insects called <b>griffinflies</b> (like <i>Meganeura</i>) had wingspans of up to about 70 cm, over 2 feet.",
+        "Insects have no lungs. Air travels through tiny tubes into their bodies. With <b>more oxygen in the air</b>, a much bigger insect could still get enough."],
+  link:["Oxygen sets size limits","Evidence that the high oxygen from swamp plants changed what animals could become."],
+  note:"The card's \"only way\" is stronger than the science. High oxygen is the leading explanation, but scientists also point to the lack of flying predators (no birds yet), and the debate continues. Reported sizes vary by specimen."},
+
+ {id:"modern", sphere:"geo", age:0, img:"map-modern", short:"Modern world", date:"Today",
+  title:"Modern World",
+  card:["The current arrangement of continents supports the climate humans evolved in and the range of species that exist in different environments"],
+  alt:"Map of today's continents and oceans.",
+  more:["Pangaea broke apart starting about 200 million years ago. The continents still move a few centimeters a year, about as fast as your fingernails grow.",
+        "Today the air is about <b>21% oxygen</b>, almost all of it made by photosynthesis."],
+  link:["The story continues","Humans are now a force that changes the geosphere and atmosphere, for example by adding CO₂. Coevolution is still happening."]}
+];
+
+/* Sample arrows, adapted from the packet's sample student work (pp. 96–99) and the teacher guide.
+   cause = red causal arrow; cplx = blue "increasing complexity" arrow. */
+const CONNS = [
+ {from:"strom", to:"stromps", type:"cplx", text:"Simple microbial mats → mats that use sunlight to make food"},
+ {from:"stromps", to:"bif", type:"cause", text:"Oxygen from photosynthesis rusted iron in the ocean, making banded iron formations"},
+ {from:"cyano", to:"euk", type:"cause", text:"Free oxygen allowed eukaryotic, aerobic cells to evolve"},
+ {from:"bif", to:"red", type:"cause", text:"Once the ocean's iron was used up, oxygen built up in the air and rusted rocks on land"},
+ {from:"euk", to:"algae", type:"cplx", text:"Single complex cells → many cells working together"},
+ {from:"rodinia", to:"algae", type:"cause", text:"Erosion from Rodinia breaking up added nutrients that supported abundant algae"},
+ {from:"algae", to:"multi", type:"cause", text:"A burst of oxygen from abundant algae allowed aerobic multicellular organisms to evolve"},
+ {from:"bif750", to:"soft", type:"cause", text:"Tectonic changes buried dead matter and let ocean oxygen rise, supporting a burst of complex ocean life"},
+ {from:"multi", to:"soft", type:"cplx", text:"Small clusters of cells → the first large, soft-bodied animals"},
+ {from:"soft", to:"cambrian", type:"cplx", text:"Soft bodies → shells, eyes, legs and many kinds of animals"},
+ {from:"landplants", to:"soil", type:"cause", text:"Plants and microbes on land broke down rock and created soil"},
+ {from:"landplants", to:"landanimal", type:"cause", text:"Land plants supported the movement of animals to land (food, shelter, oxygen)"},
+ {from:"map356", to:"swamp", type:"cause", text:"Warm, wet land near the equator supported abundant swamp plants"},
+ {from:"swamp", to:"dragonfly", type:"cause", text:"Abundant oxygen from swamp plants allowed for huge insects"},
+ {from:"cambrian", to:"landanimals", type:"cplx", text:"Life moves from the ocean onto land: amphibians, reptiles, mammals and humans"}
+];
+
+const byId = Object.fromEntries(CARDS.map(c => [c.id, c]));
+// Chronological order (oldest first); ties keep the packet's order.
+const ORDER = CARDS.map((c,i)=>({c,i})).sort((a,b)=> b.c.age - a.c.age || a.i - b.i).map(o=>o.c);
+// Connections in time order of their source card.
+CONNS.sort((a,b)=> byId[b.from].age - byId[a.from].age || byId[b.to].age - byId[a.to].age);
+
+/* ---------- State ---------- */
+const S = { scale:"stretch", mode:"all", build:1, conn:0, allArrows:false, rects:{}, axisY:0, L:0, R:0, modalIdx:-1 };
+try { const t = localStorage.getItem("tl-theme"); if (t) document.documentElement.dataset.theme = t; } catch(e){}
+
+const $ = id => document.getElementById(id);
+const stage = $("tl-stage"), cardsEl = $("tl-cards"), under = $("tl-under"), arrowsG = $("tl-arrows"), labels = $("tl-labels");
+const NS = "http://www.w3.org/2000/svg";
+const svgEl = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+const esc = s => s.replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+
+/* ---------- Build card elements once ---------- */
+CARDS.forEach(c => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "tl-card " + c.sphere; b.dataset.id = c.id;
+  b.setAttribute("aria-label", `${c.short}, ${c.date}. Open details.`);
+  b.innerHTML = `<img src="img/${c.img}.jpg" alt="" loading="eager" decoding="async"><span class="tl-cap"><b>${esc(c.short)}</b><i>${esc(c.cdate || c.date.replace(" (map)",""))}</i></span>`;
+  b.addEventListener("click", () => openModal(c.id));
+  cardsEl.appendChild(b);
+  c.el = b;
+});
+
+/* ---------- Scale ---------- */
+const BREAK = 1000, SPLIT = 0.30; // stretched: 4000→1000 Ma uses 30% of width, 1000→0 uses 70%
+function frac(age){
+  if (S.scale === "true") return (4000 - age) / 4000;
+  return age >= BREAK ? (4000 - age) / 3000 * SPLIT : SPLIT + (BREAK - age) / BREAK * (1 - SPLIT);
+}
+const X = age => S.L + frac(age) * (S.R - S.L);
+
+/* ---------- Layout ---------- */
+function layout(){
+  const W = stage.clientWidth, H = stage.clientHeight;
+  const pad = Math.max(16, W * 0.012);
+  const labelW = Math.min(230, W * 0.12);           // room for band labels at far left
+  S.L = pad + labelW * 0.55; S.R = W - pad - Math.min(60, W*0.03);
+  S.axisY = Math.round(H * 0.6);
+  $("tl-band-bio").style.height = S.axisY + "px";
+  $("tl-band-geo").style.height = (H - S.axisY) + "px";
+
+  const axisGapTop = Math.max(26, H*0.03), axisGapBot = Math.max(44, H*0.06);
+  const bioTop = Math.max(54, H*0.07), geoBottom = H - Math.max(54, H*0.075);
+  let base = Math.min(210, W / 9.2, H / 4.6);
+  let placed = null;
+  for (let k = 0; k < 14 && !placed; k++){
+    const cw = base * Math.pow(0.93, k), ch = cw * 1.02, gx = Math.max(10, cw*0.09), gy = Math.max(12, ch*0.11);
+    const bio = place(CARDS.filter(c=>c.sphere==="bio"), cw, ch, gx, gy, S.axisY - axisGapTop, bioTop, -1);
+    const geo = bio && place(CARDS.filter(c=>c.sphere==="geo"), cw, ch, gx, gy, S.axisY + axisGapBot, geoBottom, 1);
+    if (bio && geo){
+      placed = {cw, ch, bio, geo};
+      // Grow cards taller to use the spare height (bigger photos on the board).
+      const nb = Math.max(...bio.map(p=>p.lane)) + 1, ng = Math.max(...geo.map(p=>p.lane)) + 1;
+      const bioSpace = S.axisY - axisGapTop - bioTop, geoSpace = geoBottom - S.axisY - axisGapBot;
+      const ch2 = Math.min(cw*1.32, (bioSpace - gy*(nb-1))/nb, (geoSpace - gy*(ng-1))/ng) - 1;
+      if (ch2 > ch){
+        const b2 = place(CARDS.filter(c=>c.sphere==="bio"), cw, ch2, gx, gy, S.axisY - axisGapTop, bioTop, -1);
+        const g2 = b2 && place(CARDS.filter(c=>c.sphere==="geo"), cw, ch2, gx, gy, S.axisY + axisGapBot, geoBottom, 1);
+        if (b2 && g2) placed = {cw, ch:ch2, bio:b2, geo:g2};
+      }
+    }
+  }
+  if (!placed) return;
+  const fs = Math.max(11, placed.cw / 11.5);
+  S.rects = {};
+  [...placed.bio, ...placed.geo].forEach(p => {
+    const st = p.c.el.style;
+    st.left = p.x + "px"; st.top = p.y + "px"; st.width = placed.cw + "px"; st.height = placed.ch + "px"; st.fontSize = fs + "px";
+    S.rects[p.c.id] = {x:p.x, y:p.y, w:placed.cw, h:placed.ch};
+  });
+  drawAxis(W, H);
+  render();
+}
+
+// Greedy lane packing. Lane 0 sits next to the axis; dir -1 = lanes stack upward, +1 = downward.
+function place(list, cw, ch, gx, gy, edge, limit, dir){
+  const lanes = Math.floor((Math.abs(limit - edge) + gy) / (ch + gy));
+  if (lanes < 1) return null;
+  const lastRight = Array(lanes).fill(-Infinity), laneCards = Array.from({length:lanes}, () => []);
+  const sorted = [...list].sort((a,b)=> b.age - a.age);
+  const minX = S.L - cw*0.5, maxX = S.R + cw*0.35;
+  for (const c of sorted){
+    const ideal = Math.min(Math.max(X(c.age) - cw/2, minX), maxX - cw);
+    let best = -1, bestCost = Infinity, bestLeft = 0;
+    for (let j = 0; j < lanes; j++){
+      const left = Math.max(ideal, lastRight[j] + gx);
+      let cost = (left - ideal) + j * cw * 0.35;
+      if (left + cw > maxX) cost += 1e5 + (left + cw - maxX);
+      if (cost < bestCost){ bestCost = cost; best = j; bestLeft = left; }
+    }
+    const p = {c, x:bestLeft, lane:best};
+    laneCards[best].push(p); lastRight[best] = bestLeft + cw;
+  }
+  // Pull overflowing lanes back from the right edge.
+  for (const lc of laneCards){
+    let limitR = maxX;
+    for (let i = lc.length - 1; i >= 0; i--){ lc[i].x = Math.min(lc[i].x, limitR - cw); limitR = lc[i].x - gx; }
+    if (lc.length && lc[0].x < minX - 1) return null;
+  }
+  const out = [];
+  laneCards.forEach((lc, j) => lc.forEach(p => { p.y = dir < 0 ? edge - ch - j*(ch+gy) : edge + j*(ch+gy); out.push(p); }));
+  return out;
+}
+
+function drawAxis(W, H){
+  under.innerHTML = "";
+  const y = S.axisY, fsMaj = Math.max(15, Math.min(26, W/70)), fsMin = fsMaj*0.78;
+  // leaders + dots first (behind)
+  const lg = svgEl("g", {}, under);
+  CARDS.forEach(c => {
+    const r = S.rects[c.id]; if (!r) return;
+    const ax = X(c.age), cx = r.x + r.w/2, cy = c.sphere === "bio" ? r.y + r.h : r.y;
+    const midY = (cy + y) / 2;
+    const g = svgEl("g", {"data-id":c.id, class:"tl-lead-g"}, lg);
+    svgEl("path", {class:"tl-leader "+c.sphere, d:`M${cx},${cy} C${cx},${midY} ${ax},${midY} ${ax},${y}`}, g);
+    if (c.end !== undefined) svgEl("line", {class:"tl-range "+c.sphere, x1:X(c.age), x2:X(c.end), y1:y + (c.sphere==="bio"?-7:7), y2:y + (c.sphere==="bio"?-7:7)}, g);
+    svgEl("circle", {class:"tl-dot "+c.sphere, cx:ax, cy:y, r:7}, g);
+  });
+  svgEl("line", {class:"tl-axis-line", x1:S.L - 10, x2:S.R + 14, y1:y, y2:y}, under);
+  svgEl("path", {d:`M${S.R+14},${y-9} L${S.R+28},${y} L${S.R+14},${y+9}z`, fill:"var(--ink)"}, under);
+  const ticks = S.scale === "true"
+    ? [[4000,"4 bya",1],[3500,"",0],[3000,"3 bya",1],[2500,"",0],[2000,"2 bya",1],[1500,"",0],[1000,"1 bya",1],[500,"500 mya",0],[0,"Now",1]]
+    : [[4000,"4 bya",1],[3000,"3 bya",1],[2000,"2 bya",1],[1000,"1 bya",1],[800,"800 mya",0],[600,"600 mya",0],[400,"400 mya",0],[200,"200 mya",0],[0,"Now",1]];
+  ticks.forEach(([a, lab, maj]) => {
+    const x = X(a);
+    svgEl("line", {class:"tl-tick", x1:x, x2:x, y1:y-(maj?12:7), y2:y+(maj?12:7)}, under);
+    if (lab){ const t = svgEl("text", {class:"tl-ticklabel"+(maj?"":" minor"), x, y:y + 14 + fsMaj, "font-size": maj?fsMaj:fsMin}, under); t.textContent = lab; }
+  });
+  if (S.scale === "stretch"){
+    const x = X(BREAK) + Math.max(28, W*0.02);
+    svgEl("path", {class:"tl-break", d:`M${x-7},${y-16} L${x+3},${y-16} L${x-3},${y+16} L${x-13},${y+16}z`}, under);
+    svgEl("path", {class:"tl-break", d:`M${x+5},${y-16} L${x+15},${y-16} L${x+9},${y+16} L${x-1},${y+16}z`}, under);
+  }
+  const k = svgEl("text", {class:"tl-breaknote", x:S.R + 14, y:H - 12, "font-size":fsMin*0.85, "text-anchor":"end"}, under);
+  k.textContent = (S.scale === "stretch" ? "Scale changes at // : the last billion years is drawn 7× wider · " : "True scale: every billion years is the same width · ")
+    + "bya = billion years ago · mya = million years ago";
+}
+
+/* ---------- Arrows ---------- */
+function anchor(r, tx, ty){
+  // point on rect edge toward (tx,ty)
+  const cx = r.x + r.w/2, cy = r.y + r.h/2, dx = tx - cx, dy = ty - cy;
+  const sx = dx ? (r.w/2) / Math.abs(dx) : Infinity, sy = dy ? (r.h/2) / Math.abs(dy) : Infinity;
+  const s = Math.min(sx, sy);
+  return [cx + dx*s, cy + dy*s];
+}
+function arrowGeom(cn){
+  const a = S.rects[cn.from], b = S.rects[cn.to];
+  const ac = [a.x+a.w/2, a.y+a.h/2], bc = [b.x+b.w/2, b.y+b.h/2];
+  const p1 = anchor(a, bc[0], bc[1]), p2 = anchor(b, ac[0], ac[1]);
+  const mx = (p1[0]+p2[0])/2, my = (p1[1]+p2[1])/2, dx = p2[0]-p1[0], dy = p2[1]-p1[1];
+  const len = Math.hypot(dx, dy) || 1, bend = Math.min(80, len*0.22);
+  const c = [mx - dy/len*bend, my + dx/len*bend];
+  // pull the end back slightly so the head doesn't hide under the card border
+  const ex = p2[0] - (p2[0]-c[0]) / (Math.hypot(p2[0]-c[0], p2[1]-c[1])||1) * 6;
+  const ey = p2[1] - (p2[1]-c[1]) / (Math.hypot(p2[0]-c[0], p2[1]-c[1])||1) * 6;
+  return {d:`M${p1[0]},${p1[1]} Q${c[0]},${c[1]} ${ex},${ey}`, mid:[(p1[0]+2*c[0]+p2[0])/4, (p1[1]+2*c[1]+p2[1])/4]};
+}
+function drawArrows(){
+  arrowsG.innerHTML = ""; labels.innerHTML = "";
+  if (S.mode !== "conn") return;
+  const show = S.allArrows ? CONNS.map((_,i)=>i) : CONNS.map((_,i)=>i).filter(i => i <= S.conn);
+  show.forEach(i => {
+    const cn = CONNS[i], g = arrowGeom(cn), cur = !S.allArrows && i === S.conn;
+    const grp = svgEl("g", {opacity: (S.allArrows || cur) ? 1 : 0.22}, arrowsG);
+    svgEl("path", {class:"tl-arrow-halo", d:g.d}, grp);
+    svgEl("path", {class:"tl-arrow "+cn.type, d:g.d, "marker-end":`url(#tl-head-${cn.type})`}, grp);
+    const n = svgEl("g", {class:"tl-num "+cn.type}, grp);
+    svgEl("circle", {cx:g.mid[0], cy:g.mid[1], r:15}, n);
+    const t = svgEl("text", {x:g.mid[0], y:g.mid[1], "font-size":15}, n); t.textContent = i+1;
+    if (cur){
+      const l = document.createElement("div");
+      l.className = "tl-arrowlabel " + cn.type; l.textContent = cn.text;
+      labels.appendChild(l);
+      // keep the label on-screen and off the axis
+      const W = stage.clientWidth, H = stage.clientHeight;
+      const lw = l.offsetWidth, lh = l.offsetHeight;
+      // Try spots around the arrow; avoid covering its two cards (heavily) and other cards (lightly).
+      const ov = (ax, ay, r) => Math.max(0, Math.min(ax+lw/2, r.x+r.w) - Math.max(ax-lw/2, r.x)) * Math.max(0, Math.min(ay+lh/2, r.y+r.h) - Math.max(ay-lh/2, r.y));
+      const ends = [S.rects[cn.from], S.rects[cn.to]];
+      let best = null;
+      for (const [dx, dy] of [[0,-1],[0,1],[1,0],[-1,0],[1,-1],[-1,-1],[1,1],[-1,1],[0,-2],[0,2],[2,0],[-2,0]]){
+        let x = g.mid[0] + dx*(lw/2 + 30), y = g.mid[1] + dy*(lh/2 + 26);
+        x = Math.min(Math.max(x, lw/2 + 10), W - lw/2 - 10);
+        y = Math.min(Math.max(y, lh/2 + 10), H - lh/2 - 10);
+        let cost = Math.hypot(x - g.mid[0], y - g.mid[1]) * 2;
+        ends.forEach(r => cost += ov(x, y, r) * 20);
+        Object.values(S.rects).forEach(r => cost += ov(x, y, r) * 0.6);
+        if (Math.abs(y - S.axisY) < lh/2 + 4) cost += lw * 30;
+        if (!best || cost < best.cost) best = {x, y, cost};
+      }
+      l.style.left = best.x + "px"; l.style.top = best.y + "px";
+    }
+  });
+}
+
+/* ---------- Render state (visibility, dimming, captions) ---------- */
+function render(){
+  const visible = new Set(), focus = new Set();
+  if (S.mode === "build") ORDER.slice(0, S.build).forEach(c => visible.add(c.id));
+  else CARDS.forEach(c => visible.add(c.id));
+  if (S.mode === "build" && S.build > 0) focus.add(ORDER[S.build-1].id);
+  if (S.mode === "conn" && !S.allArrows){ focus.add(CONNS[S.conn].from); focus.add(CONNS[S.conn].to); }
+
+  CARDS.forEach(c => {
+    const el = c.el, vis = visible.has(c.id);
+    el.classList.toggle("is-hidden", !vis);
+    el.tabIndex = vis ? 0 : -1;
+    el.classList.toggle("is-dim", S.mode === "conn" && !S.allArrows && !focus.has(c.id));
+    el.classList.toggle("is-focus", focus.has(c.id) && S.mode !== "all");
+    const lead = under.querySelector(`[data-id="${c.id}"]`);
+    if (lead) lead.style.opacity = !vis ? 0 : (S.mode === "conn" && !S.allArrows && !focus.has(c.id)) ? 0.15 : 1;
+  });
+  drawArrows();
+
+  $("tl-step").hidden = S.mode === "all";
+  $("tl-allarrows").hidden = S.mode !== "conn";
+  $("tl-allarrows").setAttribute("aria-pressed", S.allArrows);
+  $("tl-legend").style.visibility = S.mode === "conn" ? "visible" : "hidden";
+  const cap = $("tl-caption");
+  if (S.mode === "all"){
+    $("tl-legend").style.visibility = "hidden";
+    cap.innerHTML = `<em>Tap any card to learn more. Oldest on the left → today on the right.</em>`;
+  } else if (S.mode === "build"){
+    $("tl-count").textContent = `${S.build} / ${ORDER.length}`;
+    const c = ORDER[S.build-1];
+    cap.innerHTML = c ? `<span class="tag ${c.sphere}">${c.sphere==="bio"?"Biosphere":"Geosphere"}</span><b>${esc(c.short)}</b> <em>· ${esc(c.date)}</em>` : "";
+    $("tl-prev").disabled = S.build <= 1; $("tl-next").disabled = S.build >= ORDER.length;
+  } else {
+    if (S.allArrows){
+      $("tl-count").textContent = `${CONNS.length} arrows`;
+      const cross = CONNS.filter(c => byId[c.from].sphere !== byId[c.to].sphere).length;
+      cap.innerHTML = `<em>${CONNS.filter(c=>c.type==="cause").length} causal and ${CONNS.filter(c=>c.type==="cplx").length} complexity arrows. ${cross} cross the midline between the geosphere and biosphere.</em>`;
+    } else {
+      const cn = CONNS[S.conn], a = byId[cn.from], b = byId[cn.to];
+      $("tl-count").textContent = `${S.conn+1} / ${CONNS.length}`;
+      const crosses = a.sphere !== b.sphere ? ` <em>· crosses the midline</em>` : "";
+      cap.innerHTML = `<span class="tag ${cn.type}">${cn.type==="cause"?"Causes":"More complex"}</span><b>${esc(a.short)} → ${esc(b.short)}</b>${crosses}`;
+    }
+    $("tl-prev").disabled = !S.allArrows && S.conn <= 0; $("tl-next").disabled = !S.allArrows && S.conn >= CONNS.length-1;
+  }
+}
+
+function setMode(m){
+  S.mode = m;
+  document.querySelectorAll("[data-mode]").forEach(b => b.setAttribute("aria-pressed", b.dataset.mode === m));
+  if (m === "build") S.build = 1;
+  if (m === "conn"){ S.conn = 0; S.allArrows = false; }
+  render();
+}
+function step(d){
+  if (S.mode === "build"){
+    const nb = Math.min(Math.max(1, S.build + d), ORDER.length);
+    if (nb !== S.build){ S.build = nb; render(); if (d > 0){ const el = ORDER[nb-1].el; el.classList.remove("is-new"); void el.offsetWidth; el.classList.add("is-new"); } }
+  } else if (S.mode === "conn"){
+    if (S.allArrows){ S.allArrows = false; }
+    else S.conn = Math.min(Math.max(0, S.conn + d), CONNS.length-1);
+    render();
+  }
+}
+
+/* ---------- Modal ---------- */
+const modal = $("tl-modal");
+function openModal(id){
+  const idx = ORDER.findIndex(c => c.id === id); if (idx < 0) return;
+  S.modalIdx = idx; fillModal();
+  if (!modal.open) modal.showModal();
+}
+function fillModal(){
+  const c = ORDER[S.modalIdx];
+  const img = $("tl-m-img"); img.src = `img/${c.img}.jpg`; img.alt = c.alt;
+  const out = CONNS.filter(x => x.from === c.id), inc = CONNS.filter(x => x.to === c.id);
+  const connHTML = [...inc.map(x => ({x, other:byId[x.from], dir:"in"})), ...out.map(x => ({x, other:byId[x.to], dir:"out"}))]
+    .map(({x, other, dir}) => `<button type="button" class="tl-conn ${x.type}" data-go="${other.id}"><b>${dir==="in" ? "← From " : "→ To "}${esc(other.short)}</b><span>${esc(x.text)}</span></button>`).join("");
+  $("tl-m-scroll").innerHTML = `
+    <div class="tl-m-chips"><span class="tl-chip ${c.sphere}">${c.sphere==="bio"?"Biosphere · Life":"Geosphere · Earth systems"}</span><span class="tl-chip date">${esc(c.date)}</span></div>
+    <h2 id="tl-m-title">${esc(c.title)}</h2>
+    ${c.card.length ? `<h3>On the card</h3><div class="oncard">${c.card.map(t => `<p><i>${esc(t)}</i></p>`).join("")}</div>` : ""}
+    <h3>The bigger story</h3>
+    ${c.more.map(p => `<p>${p}</p>`).join("")}
+    <div class="link ${c.sphere}"><b>${c.link[0]}</b>${c.link[1]}</div>
+    ${connHTML ? `<h3>Arrows in the sample timeline</h3><div class="tl-conns">${connHTML}</div>` : ""}
+    ${c.note ? `<details><summary>Teacher note</summary><p>${esc(c.note)}</p></details>` : ""}`;
+  $("tl-m-scroll").scrollTop = 0;
+  $("tl-m-scroll").querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => openModal(b.dataset.go)));
+  $("tl-m-pos").textContent = `${S.modalIdx+1} of ${ORDER.length} · oldest → newest`;
+  $("tl-m-prev").disabled = S.modalIdx === 0; $("tl-m-next").disabled = S.modalIdx === ORDER.length-1;
+}
+function modalStep(d){ const n = S.modalIdx + d; if (n >= 0 && n < ORDER.length){ S.modalIdx = n; fillModal(); } }
+$("tl-close").addEventListener("click", () => modal.close());
+$("tl-m-prev").addEventListener("click", () => modalStep(-1));
+$("tl-m-next").addEventListener("click", () => modalStep(1));
+modal.addEventListener("click", e => { if (e.target === modal) modal.close(); }); // tap backdrop
+// swipe left/right on the photo or text
+let sx = null, sy = null;
+modal.addEventListener("pointerdown", e => { sx = e.clientX; sy = e.clientY; });
+modal.addEventListener("pointerup", e => {
+  if (sx === null) return;
+  const dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
+  if (Math.abs(dx) > 90 && Math.abs(dx) > Math.abs(dy) * 1.6) modalStep(dx < 0 ? 1 : -1);
+});
+
+/* ---------- Info dialog ---------- */
+const info = $("tl-info");
+$("tl-info-btn").addEventListener("click", () => info.showModal());
+$("tl-info-close").addEventListener("click", () => info.close());
+info.addEventListener("click", e => { if (e.target === info) info.close(); });
+
+/* ---------- Controls ---------- */
+document.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode)));
+$("tl-prev").addEventListener("click", () => step(-1));
+$("tl-next").addEventListener("click", () => step(1));
+$("tl-allarrows").addEventListener("click", () => { S.allArrows = !S.allArrows; render(); });
+function setScale(s){
+  S.scale = s;
+  $("tl-scale-stretch").setAttribute("aria-pressed", s === "stretch");
+  $("tl-scale-true").setAttribute("aria-pressed", s === "true");
+  layout();
+}
+$("tl-scale-stretch").addEventListener("click", () => setScale("stretch"));
+$("tl-scale-true").addEventListener("click", () => setScale("true"));
+$("tl-theme").addEventListener("click", () => {
+  const dark = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  const next = dark ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem("tl-theme", next); } catch(e){}
+});
+function toggleFS(){
+  const d = document;
+  if (d.fullscreenElement || d.webkitFullscreenElement) (d.exitFullscreen || d.webkitExitFullscreen).call(d);
+  else { const r = d.documentElement; (r.requestFullscreen || r.webkitRequestFullscreen || (()=>{})).call(r); }
+}
+$("tl-fs").addEventListener("click", toggleFS);
+if (!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen)) $("tl-fs").hidden = true;
+
+document.addEventListener("keydown", e => {
+  if (e.altKey || e.ctrlKey || e.metaKey) return;
+  if (modal.open){
+    if (e.key === "ArrowRight" || e.key === "PageDown"){ modalStep(1); e.preventDefault(); }
+    else if (e.key === "ArrowLeft" || e.key === "PageUp"){ modalStep(-1); e.preventDefault(); }
+    return;
+  }
+  if (info.open) return;
+  if (e.key === "ArrowRight" || e.key === "PageDown" || (e.key === " " && S.mode !== "all")){ step(1); e.preventDefault(); }
+  else if (e.key === "ArrowLeft" || e.key === "PageUp"){ step(-1); e.preventDefault(); }
+  else if (e.key === "f" || e.key === "F") toggleFS();
+  else if (e.key === "1") setMode("all");
+  else if (e.key === "2") setMode("build");
+  else if (e.key === "3") setMode("conn");
+  else if (e.key === "Enter" && document.activeElement === document.body){
+    if (S.mode === "build") openModal(ORDER[S.build-1].id);
+    else if (S.mode === "conn" && !S.allArrows) openModal(CONNS[S.conn].to);
+  }
+});
+
+let rt;
+new ResizeObserver(() => { clearTimeout(rt); rt = setTimeout(layout, 60); }).observe(stage);
+layout();
+})();
+</script>
+</body>
+</html>
