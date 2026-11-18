@@ -1,0 +1,1202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}.strata-7{grid-template-columns:repeat(7,1fr)}
+</style>
+<title>Origin of the Universe Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky day bar on top, one day visible at a time, single reading column (~760px). Days are "rock layers" colored by 5E phase. */
+:root{
+  --bg:#F2F5F4; --surface:#FFFFFF; --ink:#15212A; --muted:#55646B; --line:#D5DDDB; --tint:#E7EDEB;
+  --iron:#AE4229; --ocean:#1C6784; --ochre:#A8731A; --moss:#4C7634; --dusk:#5A4A8C;
+  --ok:#2E7D4F; --warn:#9A5B00;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--ocean)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* phase colors */
+[data-phase="engage"]{--ph:var(--ochre)} [data-phase="explore"]{--ph:var(--iron)} [data-phase="explain"]{--ph:var(--ocean)}
+[data-phase="elaborate"]{--ph:var(--moss)} [data-phase="evaluate"]{--ph:var(--dusk)} [data-phase="overview"]{--ph:var(--ink)}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:thin}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--ph)}
+.chip[aria-current="page"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--ocean);outline-offset:2px}
+
+/* hero */
+.hero{padding-block:28px 8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.hero h1{font-size:clamp(32px,7vw,52px);font-weight:800;letter-spacing:-.02em;margin:8px 0 10px}
+.dq{font-size:clamp(18px,3.4vw,22px);color:var(--ink);max-width:40ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0 0;color:var(--muted);font-size:15px}
+.meta b{color:var(--ink)}
+
+/* strata bar */
+.strata{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin:22px 0 6px;border-radius:10px;overflow:hidden}
+.strata a{display:flex;flex-direction:column;justify-content:flex-end;min-height:76px;padding:8px 7px;background:var(--ph);color:#fff;text-decoration:none;font-size:12px;line-height:1.2;position:relative}
+.strata a::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(0,0,0,.10) 9px 11px);pointer-events:none}
+.strata b{font-family:var(--f-display);font-size:20px;display:block}
+.strata span{opacity:.92}
+.strata-cap{font-size:13px;color:var(--muted)}
+@media (max-width:520px){.strata span{display:none}.strata a{min-height:56px}}
+
+/* views */
+.view{padding-block:8px 48px;scroll-margin-top:calc(64px + env(safe-area-inset-top,0px))}
+.view[hidden]{display:none!important}
+.dayhead{padding-block:26px 6px;border-bottom:4px solid var(--ph);margin-bottom:8px}
+.dayhead .eyebrow{color:var(--ph)}
+.dayhead h2{font-size:clamp(28px,5.6vw,40px);font-weight:800;margin:6px 0 8px;letter-spacing:-.01em}
+.dayhead .q{font-style:italic;color:var(--muted);margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
+.tag{font-size:13px;padding:3px 9px;border-radius:6px;background:var(--tint);color:var(--ink)}
+
+section.block{padding-block:18px 4px}
+section.block>h3{font-size:22px;font-weight:800;margin-bottom:12px;display:flex;align-items:baseline;gap:10px}
+section.block>h3 small{font-family:var(--f-body);font-weight:600;font-size:14px;color:var(--muted)}
+p{margin:0 0 10px} ul,ol{margin:0 0 10px;padding-left:22px} li{margin-bottom:5px}
+
+/* goals */
+.goals{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--ph);border-radius:8px;padding:14px 16px}
+.goals h3{font-size:17px;margin-bottom:8px}
+.goals ul{margin:0}
+
+/* schedule */
+.sched{list-style:none;padding:0;margin:0;border-left:2px solid var(--line)}
+.sched li{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:10px 0 12px 22px;margin:0;position:relative}
+.sched li::before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:3px solid var(--ph)}
+.t{font-family:var(--f-mono);font-size:14px;color:var(--ph);font-weight:500;padding-top:2px;font-variant-numeric:tabular-nums}
+.t small{display:block;color:var(--muted);font-size:12px}
+.sched h4{font-size:17px;font-weight:600;margin-bottom:3px}
+.sched p,.sched ul{font-size:16px;color:var(--ink);margin-bottom:4px}
+.sched .say{border-left:3px solid var(--tint);padding-left:10px;color:var(--muted);font-style:italic}
+@media (max-width:480px){.sched li{grid-template-columns:1fr;gap:2px}}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.card .lbl{font-size:12px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;color:var(--ph);margin-bottom:6px}
+.card p:last-child{margin-bottom:0}
+.ans{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:15px;color:var(--muted)}
+.ans b{color:var(--ok)}
+
+/* conferring */
+.confer{list-style:none;padding:0;display:grid;gap:8px}
+.confer li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0}
+.confer li span{display:block;font-size:14px;color:var(--muted);margin-top:3px}
+
+/* CFU */
+.cfu{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.cfu h4{font-size:16px;margin-bottom:6px;font-family:var(--f-body);font-weight:700}
+.opts{list-style:none;padding:0;margin:6px 0}
+.opts li{padding:5px 10px;border-radius:6px;margin-bottom:4px;background:var(--tint)}
+.opts li.right{outline:2px solid var(--ok)}
+.opts li em{display:block;font-size:14px;color:var(--muted);font-style:normal}
+.when{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* answer key */
+.key{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.key>summary{cursor:pointer;padding:13px 16px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.key>summary::-webkit-details-marker{display:none}
+.key>summary::after{content:"+";font-family:var(--f-mono);font-size:20px;color:var(--ph)}
+.key[open]>summary::after{content:"−"}
+.key>summary small{display:block;font-weight:400;color:var(--muted);font-size:14px}
+.keybody{padding:2px 16px 14px;border-top:1px solid var(--line)}
+.qa{padding:10px 0;border-bottom:1px solid var(--tint)}
+.qa:last-child{border-bottom:0}
+.qa .qq{font-weight:700;margin-bottom:4px}
+.qa .aa{margin:0}
+.note{font-size:15px;background:var(--tint);border-radius:8px;padding:10px 12px;margin:8px 0}
+.note b{color:var(--warn)}
+.scroll{overflow-x:auto;margin:8px 0 12px;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--surface)}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--tint);font-weight:700}
+td.num,th.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* homework */
+.hw{background:var(--surface);border:2px solid var(--ph);border-radius:12px;padding:16px}
+.hw h4{font-size:20px;font-weight:800;margin-bottom:6px}
+.hw .why{font-size:15px;color:var(--muted)}
+.checks{list-style:none;padding:0;margin:8px 0 0}
+.checks li{padding-left:24px;position:relative}
+.checks li::before{content:"✓";position:absolute;left:2px;color:var(--ok);font-weight:700}
+
+/* overview bits */
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:6px}
+.glance .card b{font-family:var(--f-display);font-size:18px;display:block;margin-bottom:2px}
+.prep{list-style:none;padding:0}
+.prep li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--tint);margin:0}
+.prep input{width:20px;height:20px;margin-top:3px;accent-color:var(--ocean);flex:0 0 auto}
+.prep label{flex:1;min-width:0}
+.prep .when{display:block}
+.mis{display:grid;gap:8px}
+.mis div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.mis s{color:var(--iron);text-decoration-thickness:2px}
+
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:30px;flex-wrap:wrap}
+.pager a{flex:1 1 200px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.pager a small{display:block;color:var(--muted);font-size:13px}
+.pager a.next{text-align:right}
+footer{color:var(--muted);font-size:13px;padding-block:20px 40px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+.strata-7{grid-template-columns:repeat(7,1fr)}
+</style>
+</head>
+<body>
+<nav class="bar" aria-label="Days">
+  <div class="wrap" id="chips">
+    <a class="chip" data-phase="overview" href="#overview"><i></i>Before you teach</a>
+    <a class="chip" data-phase="engage" href="#day-1"><i></i>Day 1</a>
+    <a class="chip" data-phase="explore" href="#day-2"><i></i>Day 2</a>
+    <a class="chip" data-phase="explore" href="#day-3"><i></i>Day 3</a>
+    <a class="chip" data-phase="explain" href="#day-4"><i></i>Day 4</a>
+    <a class="chip" data-phase="elaborate" href="#day-5"><i></i>Day 5</a>
+    <a class="chip" data-phase="elaborate" href="#day-6"><i></i>Day 6</a>
+    <a class="chip" data-phase="evaluate" href="#day-7"><i></i>Day 7</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ===================== OVERVIEW ===================== -->
+<div class="view" id="overview" data-phase="overview">
+  <header class="hero">
+    <div class="eyebrow">Teacher guide · Earth &amp; Space Science · Unit 2 · Probability of Life Elsewhere · 5E 2.3</div>
+    <h1>Origin of the Universe</h1>
+    <p class="dq">How many solar systems and galaxies are out there? Were they formed the same way?</p>
+    <div class="meta">
+      <span><b>PE</b> HS-ESS1-2</span>
+      <span><b>Length</b> 7 days × 50 min (curriculum says 6–7)</span>
+      <span><b>Anchor routines</b> Rumors · Domino Discover · Class Consensus</span>
+    </div>
+    <div class="strata strata-7" aria-label="Seven days, colored by 5E phase">
+      <a href="#day-1" data-phase="engage"><b>1</b><span>Engage</span></a>
+      <a href="#day-2" data-phase="explore"><b>2</b><span>Explore</span></a>
+      <a href="#day-3" data-phase="explore"><b>3</b><span>Explore</span></a>
+      <a href="#day-4" data-phase="explain"><b>4</b><span>Explain</span></a>
+      <a href="#day-5" data-phase="elaborate"><b>5</b><span>Elaborate</span></a>
+      <a href="#day-6" data-phase="elaborate"><b>6</b><span>Elaborate</span></a>
+      <a href="#day-7" data-phase="evaluate"><b>7</b><span>Evaluate</span></a>
+    </div>
+    <p class="strata-cap">Tap a day to open it. Each day has a minute-by-minute plan, Do Nows, conferring questions, checks for understanding, the answer key, exit slips and drawn homework.</p>
+  </header>
+
+  <section class="block">
+    <h3>The phenomenon in one paragraph</h3>
+    <p>There are more stars in the universe than grains of sand on Earth, and most of them probably have planets. Students ask: did all of those galaxies and solar systems form the same way ours did? They follow the evidence scientists used. Light from other galaxies shows the same hydrogen and helium absorption lines as the Sun, but <b>shifted toward red</b>, and the farther the galaxy, the bigger the shift. Using sound and light models of the <b>Doppler effect</b>, students explain the redshift: galaxies are moving away, so <b>the universe is expanding</b>. Running the expansion backward means the universe began <b>small, hot and dense</b>: the Big Bang. Because energy and matter are conserved, that early universe should have left traces we can see today. The traces are there: the <b>cosmic microwave background</b> (the early light, stretched into microwaves) and a universe that is still about <b>3/4 hydrogen and 1/4 helium</b>. The same processes happened everywhere, so other solar systems are probably a lot like ours.</p>
+  </section>
+
+  <section class="block">
+    <h3>The 5E storyline</h3>
+    <div class="glance">
+      <div class="card" data-phase="engage"><div class="lbl">Engage · Day 1</div><b>How did the universe form?</b>Where did everything in the universe come from? Has the universe always been the same?</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore · Days 2–3</div><b>Light Spectra from Other Galaxies</b>Sound and light Doppler models explain why galaxy spectra are shifted.</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain · Day 4</div><b>What does the light tell us?</b>Explain redshift: the universe is expanding.</div>
+      <div class="card" data-phase="elaborate"><div class="lbl">Elaborate · Days 5–6</div><b>How did it all start?</b>Balloon model, early-universe conditions, the CMB and the hydrogen-to-helium ratio.</div>
+      <div class="card" data-phase="evaluate"><div class="lbl">Evaluate · Day 7</div><b>Could there be other Earth-like planets?</b>Use the Big Bang model to predict whether life exists elsewhere.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="goals" data-phase="explain">
+      <h3>By the end of the 5E, every student should be able to…</h3>
+      <ul>
+        <li>Explain the <b>Doppler effect</b>: when a source and an observer move apart, waves arrive stretched (longer wavelength, lower frequency). When they move together, waves arrive squished (shorter wavelength, higher frequency).</li>
+        <li>Connect wavelength to color: for light, longer wavelength means <b>redder</b> and shorter wavelength means <b>bluer</b>. So a source moving away is <b>redshifted</b>.</li>
+        <li>Read galaxy spectra: the same H and He absorption-line pattern appears in every galaxy, shifted toward red, and <b>more distant galaxies shift more</b>. So the <b>universe is expanding</b>.</li>
+        <li>Infer from expansion that the universe was once <b>small, hot, dense and bright</b>, and began about 13.8 billion years ago.</li>
+        <li>Use <b>conservation of energy and matter</b> to predict what should remain today: the early light is now stretched into <b>microwaves</b> (the CMB), and matter is still about <b>75% hydrogen and 25% helium</b>. Fusion in stars and supernovae made the small amount of heavier elements.</li>
+        <li>Build a claim–evidence–reasoning explanation of the Big Bang from three lines of evidence: redshift, CMB and H/He ratio.</li>
+        <li>Argue that the same processes formed galaxies and solar systems <b>everywhere</b>, so with trillions of stars, Earth-like planets (and possibly life) are likely elsewhere.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Prep checklist <small>check off as you go · saved on this device</small></h3>
+    <ul class="prep" id="prep">
+      <li><input type="checkbox" id="p1"><label for="p1"><span class="when">1 week out</span>Copy the student packet (27 pp). Copy the <b>Revisiting the Performance Task: Origin of the Universe 5E</b> handout for Day 7. It isn't in the packet, but the rubric is (pp. 26–27).</label></li>
+      <li><input type="checkbox" id="p2"><label for="p2"><span class="when">1 week out</span>Test every link on the devices students will use: <b>How Many Stars?</b> video (0:00–2:51), <b>Siren Doppler Effect</b>, <b>Model 1: Doppler Effect #1</b>, <b>Model 2: Piano</b>, <b>Model 3: Doppler Effect #2</b>, <b>Model 4: Electromagnetic Spectrum</b>, <b>Origins of the Universe 101</b> (to 1:10), <b>Murmur of a Bang</b>. Make sure the simulators load on the school network and that sound works. Model 1 needs audio, so plan for headphones or one shared speaker per pair.</label></li>
+      <li><input type="checkbox" id="p3"><label for="p3"><span class="when">Before Day 5</span><b>Balloons</b>: 2 per pair. One gets galaxies drawn on it in Part 1. The second starts un-inflated for the H/He and light-wave drawing in Part 3. Buy extras, because some will pop. Ask about latex allergies, and keep a few latex-free balloons on hand.</label></li>
+      <li><input type="checkbox" id="p4"><label for="p4"><span class="when">Before Day 5</span><b>Permanent markers</b> (fine tip), 1–2 per pair. Washable markers smear on balloons.</label></li>
+      <li><input type="checkbox" id="p5"><label for="p5"><span class="when">Before Day 1</span>Sticky notes for Rumors (Day 1) and the Idea Carousel (Day 7); chart paper and markers for Day 7 group models.</label></li>
+      <li><input type="checkbox" id="p6"><label for="p6"><span class="when">Optional</span>Handheld <b>spectroscopes</b> or diffraction glasses, plus a hydrogen or helium gas tube if your school has one. They are the curriculum's suggested support for students who struggle to picture how spectra form.</label></li>
+      <li><input type="checkbox" id="p7"><label for="p7"><span class="when">Before Day 4</span>Plan which 2–3 group claims to project in the Class Consensus Discussion. Have a document camera or phone ready. Don't let groups only read their claims aloud; the class needs to see them.</label></li>
+      <li><input type="checkbox" id="p8"><label for="p8"><span class="when">Before Day 4</span>Post the Class Consensus Discussion steps in the room. This is the first time students do one in this 5E, so focus on the process.</label></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Content crib: the numbers students will use</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>Idea</th><th>Value</th><th>Where it comes up</th></tr></thead>
+      <tbody>
+        <tr><td>Age of the universe</td><td class="num">~13.8 billion years</td><td>Packet says 13.7; the infographic says 15. See the note below.</td></tr>
+        <tr><td>Visible light</td><td class="num">~400 nm (violet) to ~700 nm (red)</td><td>Galaxy spectra, ESSRT p. 3</td></tr>
+        <tr><td>Hydrogen-alpha line (lab)</td><td class="num">656 nm (red)</td><td>Easiest line to track on the spectra image</td></tr>
+        <tr><td>Microwaves</td><td class="num">~1 mm to 1 m</td><td>CMB peaks near ~1 mm, about 2,000× longer than visible light</td></tr>
+        <tr><td>CMB temperature today</td><td class="num">~2.7 K (−270 °C)</td><td>Infographic: "present day −270 °C"</td></tr>
+        <tr><td>Big Bang prediction (by mass)</td><td class="num">75% H · 25% He</td><td>Elaborate Part 2 Claim 1</td></tr>
+        <tr><td>Observed today (by mass)</td><td class="num">~74% H · ~24% He · ~1–2% heavier</td><td>Elaborate Part 4</td></tr>
+        <tr><td>First atoms form; light can travel</td><td class="num">~300,000–380,000 years after the Big Bang</td><td>Infographic step 5 (that light is the CMB)</td></tr>
+        <tr><td>Stars in the observable universe</td><td class="num">~10²²–10²⁴</td><td>Grains of sand on Earth ≈ 10¹⁸–10¹⁹</td></tr>
+        <tr><td>Hubble discovers other galaxies</td><td class="num">1920s</td><td>Packet p. 4</td></tr>
+        <tr><td>CMB discovered</td><td class="num">1964–65 (Penzias &amp; Wilson)</td><td>Murmur of a Bang; predicted in the 1940s</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>Number mismatches in the materials:</b> the packet uses 13.7 billion years and the infographic (p. 25) says 15 billion; today's best value is <b>13.8 billion</b>. In Part 4, the text says the universe is "slightly less than 75% H, slightly less than 25% He, about 2% other." The observed pie chart shows 70% H, 28% He, 1% O and 1% other, and the evidence table says 74% and 25%. Tell students the exact numbers vary by source. The point is that today's mix is still very close to 3 : 1.</div>
+  </section>
+
+  <section class="block">
+    <h3>Corrections to the student packet</h3>
+    <div class="mis">
+      <div><b>p. 10, Model 4, Q4</b> reads "…why light from galaxies moving further from Earth appears <s>blue</s> in Model 3?" It should say <b>red</b>. Tell students before they start Model 4, or they will try to justify blue.</div>
+      <div><b>p. 4 spectra image:</b> the wavelength axis has no units. They're <b>nanometers</b> (nm). Add it on the board.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Handle the Engage with care</h3>
+    <p>Students may share ideas about creation rooted in religion or culture. The curriculum asks you to <b>acknowledge and honor all of them</b> during Rumors. Then frame the course's job: <i>"In science class we'll look at the evidence scientists have gathered and build a scientific explanation. A scientific explanation isn't necessarily in conflict with religious or philosophical beliefs. Many scientists are religious and see the two as ideas that can coexist."</i> Say this on Day 1 before the first idea is challenged. Also say it again on Day 4 when the class eliminates or changes ideas from the Engage list. There, eliminate <i>scientific claims the evidence doesn't support</i> (like "the universe has always been the same size"), not students' beliefs.</p>
+  </section>
+
+  <section class="block">
+    <h3>Misconceptions to listen for</h3>
+    <div class="mis">
+      <div><s>"The Big Bang was an explosion at one spot that threw galaxies out into empty space."</s> Space itself is expanding everywhere at once. There is no center and no edge it is expanding into.</div>
+      <div><s>"We're at the center, because everything moves away from us."</s> Every galaxy sees all the others moving away. Check this with the balloon: pick any dot as "home."</div>
+      <div><s>"Redshift means the galaxy is red."</s> The light is <i>shifted toward</i> longer wavelengths; the galaxy itself isn't red.</div>
+      <div><s>"The Doppler effect makes sounds louder and softer."</s> It changes <b>pitch</b> (frequency). Loudness changes because of distance, which is a separate effect.</div>
+      <div><s>"The source is making waves faster when it moves."</s> The source emits at a <b>constant</b> rate (Model 1, finger-snapping). Only the spacing the observer receives changes.</div>
+      <div><s>"The light from the Big Bang is gone."</s> Energy can't be destroyed. It's still here, stretched into microwaves.</div>
+      <div><s>"Longer wavelength = more energy."</s> It's the reverse: longer wavelength means lower frequency and lower energy (ESSRT p. 3 arrows).</div>
+      <div><s>"Galaxies and planets stretch as the universe expands."</s> Gravity holds galaxies together. The balloon model is misleading here, because the marker galaxies grow. Name this limitation out loud.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Key vocabulary</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Wavelength</div>Distance from one wave peak to the next.</div>
+      <div class="card"><div class="lbl">Frequency</div>How many peaks pass a point each second. Higher frequency = shorter wavelength.</div>
+      <div class="card"><div class="lbl">Doppler effect</div>A change in the observed wavelength and frequency when the source and observer move toward or away from each other.</div>
+      <div class="card"><div class="lbl">Absorption spectrum</div>A rainbow with dark lines where specific elements absorb light. Each element's lines act like a fingerprint.</div>
+      <div class="card"><div class="lbl">Redshift / blueshift</div>Spectral lines shifted to longer (red) or shorter (blue) wavelengths because of motion away from or toward us.</div>
+      <div class="card"><div class="lbl">Big Bang theory</div>The universe began extremely small, hot and dense about 13.8 billion years ago, and has been expanding and cooling since.</div>
+      <div class="card"><div class="lbl">Cosmic microwave background (CMB)</div>Leftover light from the early universe, stretched into microwaves, coming from every direction.</div>
+      <div class="card"><div class="lbl">Conservation of matter and energy</div>In a closed system, matter and energy change form but the total stays the same.</div>
+      <div class="card"><div class="lbl">Nuclear fusion</div>Light nuclei joining to form heavier ones (H → He in stars), releasing energy.</div>
+      <div class="card"><div class="lbl">Theory</div>An explanation that has survived repeated testing against evidence. It is not a guess.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Pacing and logistics notes</h3>
+    <ul>
+      <li><b>Period length.</b> Every plan assumes 50 minutes. For 45-minute periods, cut the Do Now to 3 minutes and move the item marked <i>flex</i> to homework.</li>
+      <li><b>Do Now / Exit Slip boxes.</b> The packet has boxes for Classes 1–6. On Day 7, students write on the back of the performance-task handout.</li>
+      <li><b>Six-day version.</b> Combine Days 5 and 6 by assigning Part 2 (the reading and Q1–3) as homework on Day 5 and skipping the Origins 101 video.</li>
+      <li><b>Simulators need devices.</b> Days 2–3 need one device per pair. If devices are short, project Models 1–4 and have pairs record observations together.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>How the homework stays AI-proof</h3>
+    <p>Each night's homework is a <b>hand-drawn model</b>: a diagram, map, graph or comic. Four rules make it hard to outsource:</p>
+    <ul>
+      <li><b>Paper and pencil (or colored pencils) only.</b> No printed or digitally made images.</li>
+      <li><b>Every task references something only your class has.</b> Examples: their Rumors post-it, the siren they heard, their own balloon, or a sticky note from the carousel.</li>
+      <li><b>Every drawing has one personal "I chose…" annotation</b> explaining a decision the student made.</li>
+      <li><b>30-second check the next day.</b> During the Do Now, pick 3–4 students to explain one part of their drawing out loud.</li>
+    </ul>
+  </section>
+
+  <div class="pager"><span></span><a class="next" href="#day-1"><small>Start</small>Day 1 · Engage →</a></div>
+</div>
+
+<!-- ===================== DAY 1 ===================== -->
+<div class="view" id="day-1" data-phase="engage" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 1 · Engage → Explore launch</div>
+    <h2>How Did the Universe Form?</h2>
+    <p class="q">Where did everything in the universe come from? Has the universe always been the same?</p>
+    <div class="tags"><span class="tag">Packet pp. 3–4</span><span class="tag">Individual → whole class</span><span class="tag">Rumors</span><span class="tag">Video: How Many Stars? (0:00–2:51)</span><span class="tag">Sticky notes</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>There are more stars in the universe than grains of sand on Earth, and most stars probably have planets.</li>
+      <li>One way to find out whether other solar systems are like ours is to figure out <b>how the universe formed</b>.</li>
+      <li>Hubble found that faint "clouds" were other galaxies. Their spectra show the same absorption-line pattern as stars in our galaxy, but <b>shifted toward red</b>, and more for more distant galaxies.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Class 1 box. Pick an option below.</p></div></li>
+      <li><div class="t">5–8</div><div><h4>Connect to the DQB</h4><p>Remind students of two Driving Question Board categories: <i>How many stars and planets are there in the universe?</i> and <i>Are other galaxies and solar systems similar to ours?</i></p></div></li>
+      <li><div class="t">8–14</div><div><h4>Video: How Many Stars? (0:00–2:51 only)</h4><p>Afterward, take 3–4 reactions. Then share that scientists predict each star has several planets.</p><p class="say">"One way scientists figure out whether other solar systems are like ours is to understand how the universe itself began and became what it is today."</p></div></li>
+      <li><div class="t">14–22</div><div><h4>Brainstorm (individual)</h4><p>Students fill in 2–5 rows on p. 3: <i>How did all the stars and planets in the universe come into existence?</i> and <i>What makes you think this?</i> Each student copies their most confident idea onto a sticky note.</p><p>Before they start, say the framing line from the overview: all ideas are welcome, including ones from religion or culture.</p></div></li>
+      <li><div class="t">22–32</div><div><h4>Rumors</h4><p>Students stand, find a partner, trade ideas, then swap sticky notes and find a new partner, sharing the idea they're now holding. Run 3–4 rounds. Then ask: <i>What ideas did you hear more than once? What surprised you?</i> Sort the sticky notes into idea categories on chart paper, such as "explosion," "always existed," "gravity pulled things together," "created." Keep the chart for Day 4.</p></div></li>
+      <li><div class="t">32–35</div><div><h4>Frame the investigation</h4><p class="say">"We have lots of ideas. In this unit we'll look at the evidence scientists used to build the explanation most of the scientific community accepts, and you'll decide what the evidence tells us. The first piece of evidence: the discovery of other galaxies, and the light that comes from them."</p></div></li>
+      <li><div class="t">35–46</div><div><h4>Light Spectra from Other Galaxies (p. 4, Q1–3)</h4><p>Pairs compare the five spectra. Write "units = nanometers (nm)" on the board. Suggest a ruler as a straightedge: line it up with the lab reference lines and slide down. Discuss briefly, then ask the two Look &amp; Listen questions: <i>If the galaxies are so far away, how does their light get here? What might explain why more distant galaxies' lines are shifted more?</i> Post student questions on a "Spectra wonderings" chart.</p></div></li>
+      <li><div class="t">46–50</div><div><h4>Exit slip + preview</h4><p class="say">"Tomorrow we'll investigate how waves travel from a source to an observer, starting with sound."</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Estimate</div><p>Which do you think there are more of: grains of sand on all of Earth's beaches, or stars in the universe? Explain your guess.</p><div class="ans"><b>Answer:</b> stars, by roughly 10,000 times or more. Reveal it after the video.</div></div>
+      <div class="card"><div class="lbl">Option B · Unit 1 recall</div><p>In Unit 1 we used a star's spectrum to learn about it. What can the dark lines in a spectrum tell us?</p><div class="ans">Which elements are in the star (each element has its own line "fingerprint").</div></div>
+      <div class="card"><div class="lbl">Option C · Same or different?</div><p>Do you think other solar systems look like ours? Give one reason.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What makes you think that? Is it something you've seen, read or learned?<span>Pushes students from idea to evidence on p. 3.</span></li>
+      <li>Do you think the universe has always looked the way it does now? What would be different?</li>
+      <li>Look at the lab reference. Can you find the same pattern of lines in the nearby galaxy? Where did it go?</li>
+      <li>Follow one line, like the dark line near 400 nm, down the spectra. What happens to it?</li>
+      <li>What's the difference between the "nearby" and "very distant" galaxy spectra?</li>
+      <li>How could light from something that far away reach us?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">During p. 4 · hinge question</div>
+      <h4>Compared with the laboratory reference, the absorption lines in the very distant galaxy are…</h4>
+      <ul class="opts">
+        <li>A. in a completely different pattern<em>Thinks distant galaxies are made of different elements.</em></li>
+        <li class="right">B. the same pattern, shifted toward the red (longer wavelength) side<em>Correct.</em></li>
+        <li>C. the same pattern, shifted toward the blue side<em>Mixed up which end is red.</em></li>
+        <li>D. exactly the same<em>Not comparing positions on the axis.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Rumors · fist to five</div>
+      <h4>"How confident are you that your idea about how the universe formed is right?"</h4>
+      <p>Expect lots of 2s and 3s. Say: <i>"Good, that's why we need evidence."</i> Ask again on Day 6 and compare.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>How did the universe form? brainstorm<small>p. 3 · no single right answer; look for idea + reason</small></span></summary><div class="keybody">
+      <p>Common ideas: a giant explosion (Big Bang), gravity pulling gas and dust together into stars and planets (accurate for <i>solar system</i> formation, from Unit 1), the universe always existing, a creator, collisions of matter, stars "giving birth" to other stars. Accept everything. Reward the <b>right column</b>: "I learned in Unit 1 that the Sun formed from a collapsing cloud" is evidence-based thinking.</p>
+    </div></details>
+    <details class="key"><summary><span>Investigating Light Spectra Q1–3<small>p. 4</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. What similarities or patterns do you notice across all the spectra?</div><p class="aa">Every spectrum has the <b>same pattern</b> of dark absorption lines with the same spacing, matching the hydrogen and helium laboratory reference. The galaxies and the star contain the same elements as the lab gas.</p></div>
+      <div class="qa"><div class="qq">2. What is different about each spectrum?</div><p class="aa">The lines sit at <b>different wavelengths</b>. In the galaxies they are moved to the right, toward longer (red) wavelengths. The nearby star is barely shifted, the nearby galaxy is shifted a little (~15–20 nm), the distant galaxy more (~50–60 nm), and the very distant galaxy most (~100 nm or more; some lines move off the red end).</p></div>
+      <div class="qa"><div class="qq">3. Is there a relationship between line wavelength and distance?</div><p class="aa">Yes. <b>The farther the galaxy, the more its absorption lines are shifted toward longer, redder wavelengths.</b></p></div>
+      <div class="note"><b>Look and listen for:</b> "Like stars in our galaxy, the lines match hydrogen and helium, except they're shifted right, toward red." · "More distant galaxy, bigger shift." · "The light travels through space from the galaxies." · "Something might be happening to the light on the way, and more to light that travels farther." That last idea is a reasonable early hypothesis. Keep it on the wonderings chart.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Describe one pattern you saw in the galaxy spectra, and one question it raises for you.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>What do you think we should investigate to explain why the lines shift more for distant galaxies?</p><div class="ans">Look for "how waves travel," "how light changes," or "whether galaxies are moving." That sets up Day 2.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Your Cosmic Address</h4>
+      <p>Draw a set of <b>7 nested shapes</b> (circles inside circles, or zoomed-out boxes) showing where you are: your school or home → New York City → Earth → Solar System → Milky Way Galaxy → Local Group of galaxies → observable universe. In each one, write one fact or number: e.g. "8 planets," "100–400 billion stars," "~2 trillion galaxies."</p>
+      <ul class="checks">
+        <li>7 labeled levels, each drawn bigger than the one inside it</li>
+        <li>At least 4 levels have a number or fact</li>
+        <li>A small arrow labeled "light from a distant galaxy" coming in from the outermost level</li>
+        <li>"I chose…" note: the idea on <b>the sticky note you ended Rumors holding</b>. Do you agree with it now? Why or why not?</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#overview"><small>Back</small>← Before you teach</a><a class="next" href="#day-2"><small>Next</small>Day 2 · Sound waves →</a></div>
+</div>
+
+<!-- ===================== DAY 2 ===================== -->
+<div class="view" id="day-2" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 2 · Explore</div>
+    <h2>Sound Waves on the Move</h2>
+    <p class="q">What happens to sound waves when they travel from a moving source to an observer?</p>
+    <div class="tags"><span class="tag">Packet pp. 5–8, See-Think-Wonder rows 1–2 (p. 11)</span><span class="tag">Pairs</span><span class="tag">Siren video · Model 1 · Model 2</span><span class="tag">Domino Discover</span><span class="tag">Devices + audio</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Wavelength and frequency are <b>inversely related</b>: shorter wavelength means higher frequency.</li>
+      <li>For sound, higher frequency means <b>higher pitch</b>.</li>
+      <li>A moving source emits waves at a constant rate, but the waves <b>bunch up in front</b> of it and <b>spread out behind</b> it. An observer it approaches hears a higher pitch; once it passes, a lower pitch. That is the <b>Doppler effect</b>.</li>
+      <li>The energy in a wave isn't destroyed. It moves outward through the system.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 2 box. Call on 3–4 students to explain their Cosmic Address drawing.</p></div></li>
+      <li><div class="t">4–10</div><div><h4>Waves 101 (p. 5)</h4><p>Read the intro together. Pairs answer p. 5 Q1–2. Draw the two waves on the board and label wavelength.</p><p class="say">"Light and sound both travel as waves. To figure out what's happening to galaxy light, we'll start with sound, because it behaves similarly and its changes are easier to hear."</p></div></li>
+      <li><div class="t">10–15</div><div><h4>Siren video (p. 6 Q1–2)</h4><p>Play the Siren Doppler Effect video once for the whole class. Students answer what they heard and their initial explanation.</p></div></li>
+      <li><div class="t">15–30</div><div><h4>Model 1: Doppler Effect #1 (pp. 6–7)</h4><p>Pairs open the simulator. First, the energy question. Then mute the snare and snap fingers each time a wave leaves the blue dot (the rate stays constant). Unmute and watch the receiver turn green. Answer Q1–3. Confer.</p></div></li>
+      <li><div class="t">30–38</div><div><h4>Model 2: Piano (p. 8)</h4><p>Pairs play high and low keys and watch the wave. Answer Q1–2, then the two "How can we explain the siren?" prompts. Try the challenge question if time allows.</p></div></li>
+      <li><div class="t">38–42</div><div><h4>See-Think-Wonder rows 1–2 (p. 11)</h4><p>Pairs complete the sound rows.</p></div></li>
+      <li><div class="t">42–48</div><div><h4>Domino Discover</h4><p>Each pair shares one idea from their See-Think-Wonder; the next pair builds on it. Chart the ideas. Check them against the look-fors below. If "waves bunch up in front / spread out behind" doesn't come up, send pairs back to Model 1 and ask: <i>Where are the circles closest together?</i></p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Everyday sound</div><p>Describe what an ambulance siren or a passing motorcycle sounds like as it drives toward you and then away.</p><div class="ans">Higher pitch coming toward you, a drop in pitch as it passes ("neee-owww").</div></div>
+      <div class="card"><div class="lbl">Option B · Wave sketch</div><p>Sketch a wave with a long wavelength and one with a short wavelength. Label which has the higher frequency.</p><div class="ans">The short-wavelength wave has the higher frequency.</div></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>Yesterday the galaxy spectral lines were shifted toward red. What is one possible reason?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li><b>Model 1:</b> What do you notice about the sound?</li>
+      <li>What else do you notice in Model 1 that might explain the changes in the sound?</li>
+      <li>Are the waves different when the source is moving toward the microphone versus away from it? Why?</li>
+      <li>Is the blue dot making waves faster when it moves? How do you know?<span>Finger-snapping check: the rate is constant.</span></li>
+      <li>How does this relate to the siren you heard?</li>
+      <li><b>Model 2:</b> How do the wave characteristics change as the pitch gets higher? Lower?</li>
+      <li>Put Models 1 and 2 together. Why does the siren's pitch drop as it passes?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Model 1 · hinge question</div>
+      <h4>A source moves toward a microphone. Compared with when it is still, the microphone detects waves…</h4>
+      <ul class="opts">
+        <li class="right">A. more often (higher frequency), because the waves are bunched closer together<em>Correct.</em></li>
+        <li>B. more often, because the source is producing waves faster<em>The source's rate is constant.</em></li>
+        <li>C. less often, because the waves are spread out<em>That's behind the source.</em></li>
+        <li>D. louder but at the same frequency<em>Confuses pitch and volume.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Model 2 · quick hands</div>
+      <h4>"Hands high = high pitch, hands low = low pitch. Short wavelength?" (high) "Long wavelength?" (low) "Siren coming toward you?" (high) "Siren driving away?" (low)</h4>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Waves intro Q1–2<small>p. 5</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How are frequency and wavelength related?</div><p class="aa">They are <b>inversely related</b>. Short wavelength means more peaks pass in the same time (high frequency). Long wavelength means fewer peaks (low frequency).</p></div>
+      <div class="qa"><div class="qq">2. How does galaxy distance relate to the frequency of its light?</div><p class="aa">More distant galaxies' lines are shifted to <b>longer wavelengths</b>, so their light arrives at a <b>lower frequency</b>. The farther the galaxy, the lower the frequency.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Siren + Model 1<small>pp. 6–7</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Siren Q1. What happens to the sound?</div><p class="aa">The pitch is high as the vehicle approaches, then drops suddenly to a lower pitch as it passes and moves away. It also gets louder, then quieter.</p></div>
+      <div class="qa"><div class="qq">Siren Q2. Initial ideas?</div><p class="aa">Answers vary: "the motion changes the sound," "the waves get pushed together." Accept any reasonable hypothesis.</p></div>
+      <div class="qa"><div class="qq">Energy Q1. What happens to the energy in the sound wave over time?</div><p class="aa">It moves outward from the source in all directions and spreads over a larger area, so it gets weaker at any one spot. It is <b>not destroyed</b>; it moves through the system and eventually transfers to the surroundings (air molecules, the receiver).</p></div>
+      <div class="qa"><div class="qq">Q2a. How often is a wave produced? Faster, slower or constant?</div><p class="aa"><b>Constant.</b> The snapping rhythm doesn't change as the source moves.</p></div>
+      <div class="qa"><div class="qq">Receiver Q1. How often do waves come out of the blue dot?</div><p class="aa">At a steady, constant rate.</p></div>
+      <div class="qa"><div class="qq">Receiver Q2. How does the sound at the microphone change?</div><p class="aa">As the dot moves toward the microphone, the snare clicks come <b>faster</b> (higher frequency). After it passes and moves away, they come <b>slower</b> (lower frequency).</p></div>
+      <div class="qa"><div class="qq">Receiver Q3. Why?</div><p class="aa">The source moves forward between waves, so each new wave starts a little closer to the waves ahead of it. In front, the circles <b>bunch together</b> (shorter wavelength) and reach the microphone more often. Behind, they <b>spread apart</b> (longer wavelength) and reach it less often.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Model 2 + siren explanation + challenge<small>p. 8</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. What happens to the sound as frequency increases?</div><p class="aa">The pitch gets <b>higher</b>.</p></div>
+      <div class="qa"><div class="qq">2. What happens to the wavelength as frequency increases?</div><p class="aa">The wavelength gets <b>shorter</b>; the peaks are closer together.</p></div>
+      <div class="qa"><div class="qq">How does the frequency the observer perceives change as the source moves? (with evidence)</div><p class="aa">It increases while the source approaches and decreases once the source moves away. Evidence: in Model 1, the receiver turned green more often as the dot approached and less often after it passed, and the circles were closer together in front of the dot.</p></div>
+      <div class="qa"><div class="qq">How would you explain the change in the siren's sound?</div><p class="aa">As the siren approaches, its sound waves are bunched together, so we hear a higher frequency and a <b>higher pitch</b>. As it moves away, the waves are spread out, so we hear a lower frequency and a <b>lower pitch</b>. The siren itself never changes its sound.</p></div>
+      <div class="qa"><div class="qq">Challenge: what does the driver hear?</div><p class="aa">A <b>constant pitch</b>, with no Doppler effect. The driver moves along with the source, so there's no relative motion between them and the waves reach the driver evenly spaced.</p></div>
+    </div></details>
+    <details class="key"><summary><span>See-Think-Wonder rows 1–2<small>p. 11 · sample responses</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Row</th><th>See</th><th>Think</th><th>Wonder</th></tr></thead><tbody>
+        <tr><td>Sound heard vs. emitted as the source moves</td><td>The source emits steadily, but the observer hears faster clicks when it approaches and slower when it leaves.</td><td>The motion squishes or stretches the waves between the source and the observer.</td><td>Does this happen with light too?</td></tr>
+        <tr><td>Sound, wavelength, frequency</td><td>Higher keys = shorter wavelength = higher frequency.</td><td>Pitch is set by frequency, so the siren pitch changes because the frequency we receive changes.</td><td>What would a "higher pitch" of light look like?</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Look and listen for (needed for Explain):</b> the sound changes as the source moves · it's heard more frequently when the source moves toward the observer and less frequently when moving away · waves are closer together in the direction the drum moves and farther apart behind · this is what happened with the siren · different keys = different pitches · high frequency (short wavelength) = high pitch · as wavelength increases, frequency decreases.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Explain why a siren's pitch drops as it passes you. Use the words <i>wavelength</i> and <i>frequency</i>.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Predict: if light acts like sound, what would happen to light from a galaxy moving away from us?</p><div class="ans">Its waves would be stretched: longer wavelength, lower frequency. That sets up Model 3.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Doppler Street Diagram</h4>
+      <p>Draw a bird's-eye view of a street with an ambulance driving left to right. Draw the sound waves as <b>circles</b> the way Model 1 showed them: bunched in front, spread out behind. Put three people on the sidewalk: one ahead of the ambulance, one behind it, and the driver.</p>
+      <ul class="checks">
+        <li>At least 5 wave circles, visibly closer together in front</li>
+        <li>Each person labeled with what they hear: higher, lower or unchanged pitch, plus "short or long wavelength"</li>
+        <li>A small wave sketch next to each person showing the wavelength they receive</li>
+        <li>"I chose…" note: something <b>you noticed in the siren video</b> that your drawing explains</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-1"><small>Back</small>← Day 1 · Engage</a><a class="next" href="#day-3"><small>Next</small>Day 3 · Light waves →</a></div>
+</div>
+
+<!-- ===================== DAY 3 ===================== -->
+<div class="view" id="day-3" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 3 · Explore</div>
+    <h2>Light Waves and Color</h2>
+    <p class="q">What happens to light waves from a moving galaxy, and why does the color change?</p>
+    <div class="tags"><span class="tag">Packet pp. 9–11 (Models 3–4, See-Think-Wonder rows 3–4)</span><span class="tag">Pairs → lab groups</span><span class="tag">Domino Discover</span><span class="tag">Investigation rubric</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Light behaves like sound: when a light source and an observer move <b>apart</b>, the light arrives with a <b>longer wavelength and lower frequency</b>, shifted toward <b>red</b>.</li>
+      <li>When they move <b>together</b>, the light arrives with a <b>shorter wavelength and higher frequency</b>, shifted toward <b>blue</b>.</li>
+      <li>Light's energy comes from the galaxy's stars, travels outward through space and isn't destroyed.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 3 box. Call on students to explain their Doppler street diagrams.</p></div></li>
+      <li><div class="t">4–7</div><div><h4>Bridge to light + packet fix</h4><p class="say">"Now we take the same ideas from sound and apply them to light traveling from galaxies to Earth."</p><p><b>Correction:</b> have students cross out "blue" in Model 4 Q4 (p. 10) and write <b>red</b>.</p></div></li>
+      <li><div class="t">7–22</div><div><h4>Model 3: Doppler Effect #2 (p. 9–10)</h4><p>Pairs answer the energy questions Q1–3, then move the galaxy toward Earth, away from it, and keep it still, recording frequency change and color in the table. Confer.</p></div></li>
+      <li><div class="t">22–32</div><div><h4>Model 4: Electromagnetic Spectrum (p. 10)</h4><p>Pairs slide between red and violet and answer Q1–4. Point to ESSRT p. 3 if available: the arrows show that increasing frequency means increasing energy.</p></div></li>
+      <li><div class="t">32–37</div><div><h4>See-Think-Wonder rows 3–4 (p. 11)</h4></div></li>
+      <li><div class="t">37–46</div><div><h4>Making Sense: Domino Discover</h4><p>Lab groups pick their most important idea about light, then share in sequence. Chart the ideas next to Day 2's sound chart and draw arrows between matching ideas (sound bunched = light blue, sound spread = light red). Go back to the Day 1 "Spectra wonderings" chart: <i>Which wonderings can we answer now?</i></p></div></li>
+      <li><div class="t">46–48<small>flex</small></div><div><h4>Rubric self-check</h4><p>Students self- and peer-assess with the Light Spectra from Other Galaxies Investigation Rubric.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Rainbow order</div><p>List the colors of visible light in order from longest to shortest wavelength.</p><div class="ans">Red, orange, yellow, green, blue, (indigo), violet.</div></div>
+      <div class="card"><div class="lbl">Option B · Transfer</div><p>Sound from an approaching source gets higher pitched. If light worked the same way, what would change about light from an approaching object?</p><div class="ans">Its frequency rises and its wavelength gets shorter, so the color shifts toward blue.</div></div>
+      <div class="card"><div class="lbl">Option C · Energy</div><p>Where does the light energy from a galaxy come from in the first place?</p><div class="ans">Its stars, through nuclear fusion (Unit 1).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li><b>Model 3:</b> How do the light waves change depending on the galaxy's motion?</li>
+      <li>How do your observations of light waves relate to what you learned about sound waves?</li>
+      <li>What colors does the model use for the changes in wavelength?</li>
+      <li><b>Model 4:</b> What's the relationship between the frequency of light and the color an observer sees?</li>
+      <li>How does that relationship explain the color changes in Model 3?</li>
+      <li>Does the galaxy itself change color, or only the light that reaches us?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Model 3 · whiteboards</div>
+      <h4>Fill in: galaxy moving AWAY → wavelength ____ → frequency ____ → color shifts toward ____</h4>
+      <p>Answer: longer, lower, red. Watch for students who write "blue" for away; they may be thinking "away = cold = blue."</p>
+    </div>
+    <div class="cfu">
+      <div class="when">Before Domino Discover · hinge question</div>
+      <h4>The very distant galaxy's lines are shifted the most toward red. The best explanation from today's models is that it is…</h4>
+      <ul class="opts">
+        <li>A. moving toward us very fast</li>
+        <li class="right">B. moving away from us, faster than closer galaxies<em>Correct, and it previews the expansion claim.</em></li>
+        <li>C. made of redder elements<em>Line pattern = same elements.</em></li>
+        <li>D. hotter than other galaxies<em>Mixes in star color and temperature from Unit 1.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Model 3 · energy questions + table<small>pp. 9–10</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Where does this energy come from?</div><p class="aa">From the galaxy: the stars in it make light energy through <b>nuclear fusion</b>.</p></div>
+      <div class="qa"><div class="qq">2. Where does this energy go?</div><p class="aa">It travels outward through space in all directions as light waves. Some reaches the observer on Earth.</p></div>
+      <div class="qa"><div class="qq">3. After it leaves the space in Model 3, where does it go?</div><p class="aa">It keeps traveling through space until it's absorbed by something (a planet, gas, dust, an eye or a telescope), where it turns into other forms like heat. It isn't destroyed; it moves and changes form.</p></div>
+      <div class="scroll"><table><thead><tr><th>Situation</th><th>Change in frequency perceived on Earth</th><th>Color shift</th></tr></thead><tbody>
+        <tr><td>Galaxy not moving</td><td>No change</td><td>No shift (the model shows white)</td></tr>
+        <tr><td>Galaxy moving toward Earth</td><td><b>Increase</b> (shorter wavelength)</td><td>Toward <b>blue</b></td></tr>
+        <tr><td>Galaxy moving away from Earth</td><td><b>Decrease</b> (longer wavelength)</td><td>Toward <b>red</b></td></tr>
+      </tbody></table></div>
+    </div></details>
+    <details class="key"><summary><span>Model 4 Q1–4<small>p. 10 · note the Q4 typo</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Color as frequency increases and wavelength decreases?</div><p class="aa">It shifts from red toward orange, yellow, green, <b>blue and violet</b>.</p></div>
+      <div class="qa"><div class="qq">2. Why does light from galaxies moving closer appear blue in Model 3?</div><p class="aa">When the galaxy approaches, its light waves are squished together: shorter wavelength, higher frequency. Shorter wavelengths are at the <b>blue</b> end of the spectrum, so the light looks bluer.</p></div>
+      <div class="qa"><div class="qq">3. Color as frequency decreases and wavelength increases?</div><p class="aa">It shifts toward <b>red</b>.</p></div>
+      <div class="qa"><div class="qq">4. Why does light from galaxies moving away appear <s>blue</s> red in Model 3?</div><p class="aa">When the galaxy moves away, its light waves are stretched: longer wavelength, lower frequency. Longer wavelengths are at the <b>red</b> end of the spectrum, so the light is <b>redshifted</b>.</p></div>
+    </div></details>
+    <details class="key"><summary><span>See-Think-Wonder rows 3–4<small>p. 11 · sample responses</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Row</th><th>See</th><th>Think</th><th>Wonder</th></tr></thead><tbody>
+        <tr><td>Light emitted vs. perceived</td><td>The galaxy emits the same light, but Earth sees bluer light when it approaches and redder light when it moves away.</td><td>Light acts like sound: motion stretches or squishes the waves.</td><td>Are real galaxies moving away from us? Why?</td></tr>
+        <tr><td>Color, wavelength, frequency</td><td>Red = long wavelength, low frequency; blue/violet = short wavelength, high frequency.</td><td>The redshifted galaxy lines mean their light is stretched.</td><td>Why would more distant galaxies be moving away faster?</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Look and listen for (needed for Explain):</b> when a light source and observer move away from each other, the light is perceived as lower frequency (longer wavelength) and shifts toward red · when they move toward each other, the light is perceived as higher frequency (shorter wavelength) and shifts toward blue.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Use today's models to explain what the redshift in the Day 1 galaxy spectra might mean.</p><div class="ans">The galaxies are moving away from us, so their light is stretched to longer, redder wavelengths.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>How is the Doppler effect for light like the Doppler effect for sound? Give one similarity and one difference.</p><div class="ans">Similar: motion stretches or squishes waves. Different: sound changes pitch, light changes color; light can travel through empty space.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Hand-Drawn Spectra Strips</h4>
+      <p>With colored pencils or markers, draw <b>three rainbow strips</b> stacked like the packet's spectra, with a wavelength axis from 400 to 700 nm. Strip 1: "Lab hydrogen." Draw 4 dark lines at about 410, 434, 486 and 656 nm. Strip 2: "Galaxy moving toward us." Strip 3: "Galaxy moving away." Shift the same 4 lines the correct direction and label by about how many nm you shifted them.</p>
+      <ul class="checks">
+        <li>3 colored strips with a labeled nm axis, red on the right</li>
+        <li>The same line pattern in each strip, shifted the correct way (toward blue = left, toward red = right)</li>
+        <li>Next to strips 2 and 3, a small galaxy with an arrow showing its direction and a squished or stretched wave</li>
+        <li>"I chose…" note: how far you shifted the lines, and how you'd draw a galaxy that's even farther away</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-2"><small>Back</small>← Day 2 · Sound waves</a><a class="next" href="#day-4"><small>Next</small>Day 4 · Explain redshift →</a></div>
+</div>
+
+<!-- ===================== DAY 4 ===================== -->
+<div class="view" id="day-4" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 4 · Explain</div>
+    <h2>What Does the Light Tell Us?</h2>
+    <p class="q">Is the universe static, contracting, or expanding?</p>
+    <div class="tags"><span class="tag">Packet pp. 12–15</span><span class="tag">Table groups</span><span class="tag">Read-Generate-Sort-Solve</span><span class="tag">Class Consensus Discussion</span><span class="tag">Summary Task</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Galaxy spectra show the H and He signature shifted to the red, and more distant galaxies are shifted more.</li>
+      <li>Redshift means galaxies are moving away from us, so <b>the universe is expanding</b>.</li>
+      <li>Models (like Models 1 and 3) can be used as evidence, and they show energy moving between places without being destroyed.</li>
+      <li>So far we know the universe is expanding, but we haven't explained its origin yet.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 4 box. Call on students to explain their spectra strips.</p></div></li>
+      <li><div class="t">4–14</div><div><h4>Predictions (p. 12)</h4><p class="say">"A prediction isn't a guess. You need to use the Doppler effect to justify it."</p><p>Pairs complete the three scenario tables: expanding (fill-in-the-blank), contracting and static.</p></div></li>
+      <li><div class="t">14–28</div><div><h4>Read-Generate-Sort-Solve (pp. 13–14)</h4><p><b>Read:</b> fill the blanks and look back at the spectra. <b>Generate:</b> each person writes ideas in their own column. <b>Sort:</b> star the most useful ideas. <b>Solve:</b> each student writes the claim–evidence–reasoning on p. 14. Confer and pick 2–3 groups to share.</p></div></li>
+      <li><div class="t">28–43</div><div><h4>Class Consensus Discussion</h4><p>Explain the purpose and the steps, which are posted in the room. Project the first group's claim → they share → someone restates it → clarifying questions. Repeat for 2–3 groups. Table groups then confer using these prompts: <i>What in Models 1 and 3 helped explain the shift? How did the models serve as evidence? Was the energy in the models ever destroyed? Where did it come from? Why was it useful to have four models, and what were each one's limits?</i> Whole class reaches agreement.</p></div></li>
+      <li><div class="t">43–47</div><div><h4>Revisit the Engage chart</h4><p>Bring out the Rumors categories. Which <i>scientific claims</i> can we <b>eliminate</b> (for example, "the universe has always been the same size"), <b>change</b>, or <b>add</b> ("the universe is expanding")? Then ask: <i>Where did all the matter come from? What was the universe like in the past?</i></p><p class="say">"So far we only have evidence the universe is expanding. Next we'll test what that means about its beginning."</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Exit slip = Summary Task Q2</h4><p>Summary Task Q1 for homework, or replace it with the drawn homework.</p></div></li>
+    </ol>
+    <div class="note"><b>Take time for these key points:</b> the galaxy spectra have the H/He signature shifted to the red · the farther the galaxy, the bigger the shift · in the simulations, waves look longer when the source moves away and shorter when it moves toward the observer · longer wavelengths in more distant galaxies mean they're moving away, so the universe is expanding · redshift is explained by expansion.</div>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Quick sort</div><p>Match: (1) moving toward us, (2) moving away, (3) not moving → (a) no shift, (b) redshift, (c) blueshift.</p><div class="ans"><b>Answer:</b> 1-c, 2-b, 3-a.</div></div>
+      <div class="card"><div class="lbl">Option B · Claim it</div><p>Based on the spectra from Day 1, write one sentence: "Distant galaxies are…"</p><div class="ans">"…moving away from us, and the farther ones are moving away faster."</div></div>
+      <div class="card"><div class="lbl">Option C · Evidence vs. reasoning</div><p>Is "light from a source moving away is stretched to longer wavelengths" evidence or reasoning?</p><div class="ans">Reasoning: it's a scientific principle. The evidence is the shifted lines in the spectra.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Which scenario's prediction matches what we actually see in the galaxy spectra?</li>
+      <li>What's your evidence? Point to a specific line and tell me where it moved.</li>
+      <li>What scientific concept links your evidence to your claim?</li>
+      <li>Why does it matter that <i>more distant</i> galaxies shift <i>more</i>?<span>It points to expansion everywhere, not one galaxy moving by chance.</span></li>
+      <li>How did Models 1 and 3 count as evidence for your explanation?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Solve · hinge question</div>
+      <h4>Which observation would convince you the universe is <i>contracting</i>?</h4>
+      <ul class="opts">
+        <li>A. All galaxies' lines are shifted toward red</li>
+        <li class="right">B. All galaxies' lines are shifted toward blue<em>Correct: blueshift means approaching.</em></li>
+        <li>C. Galaxies' lines match the lab reference exactly<em>That's a static universe.</em></li>
+        <li>D. Distant galaxies look dimmer<em>Brightness is about distance, not motion.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During consensus · cold call</div>
+      <h4>"Was the energy in Models 1 or 3 ever destroyed? Where did it go?"</h4>
+      <p>Answer: no. It moved from the source outward and was received by the observer or kept traveling. This plants the conservation idea for Days 5–6.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Predictions: three scenarios<small>p. 12</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Scenario</th><th>Claim</th><th>Evidence (predicted)</th><th>Reasoning</th></tr></thead><tbody>
+        <tr><td>Expanding</td><td>Light shifts toward the <b>red</b> spectrum</td><td>Source moving away → <b>longer</b> wavelengths and <b>lower</b> frequency</td><td>Light with <b>longer</b> wavelengths appears <b>red</b></td></tr>
+        <tr><td>Contracting</td><td>Light shifts toward the <b>blue</b> spectrum</td><td>Source moving toward Earth → shorter wavelengths and higher frequency</td><td>Light with shorter wavelengths appears blue</td></tr>
+        <tr><td>Static</td><td>No shift; lines match the lab reference</td><td>No relative motion → wavelengths and frequency unchanged</td><td>The waves aren't stretched or squished, so the color stays the same</td></tr>
+      </tbody></table></div>
+    </div></details>
+    <details class="key"><summary><span>Read-Generate-Sort-Solve<small>pp. 13–14</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Read fill-ins</div><p class="aa">"…the wavelengths would become <b>longer</b>… the absorption lines would move toward the <b>red</b> color."</p></div>
+      <div class="qa"><div class="qq">Generate: useful ideas to star</div><p class="aa">Same H/He line pattern in every spectrum · every galaxy's lines shifted right/red · more distant galaxies shifted more · moving away = stretched = red (Model 3) · no galaxy here is blueshifted.</p></div>
+      <div class="qa"><div class="qq">Solve: exemplar CER</div><p class="aa"><b>Claim:</b> The universe is <b>expanding</b>. <b>Evidence:</b> The galaxies show the same hydrogen and helium absorption lines as the lab reference, but every galaxy's lines are shifted toward longer, red wavelengths. The nearby galaxy is shifted a little and the very distant galaxy the most, with some lines past 600 nm that are near 500 nm in the lab. <b>Reasoning:</b> By the Doppler effect (Model 3), light from a source moving away is stretched to longer wavelengths and lower frequency, which appears redder. Since all galaxies are redshifted, they're all moving away from us. And since farther galaxies move away faster, space itself must be expanding, not just a few galaxies drifting.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Summary Task Q1–2<small>p. 15</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How are Models 1 and 3 examples of models that simulate systems and energy flow?</div><p class="aa">Both show a <b>system</b> with a source, waves and an observer, and show <b>energy flowing</b> from the source to the observer. In Model 1, sound energy moves from the drum through the air to the microphone. In Model 3, light energy moves from the galaxy through space to Earth. Both let us change one variable (the source's motion) and watch how the energy the observer receives changes. That's something we can't do with real galaxies.</p></div>
+      <div class="qa"><div class="qq">2. Was the energy ever destroyed? Explain.</div><p class="aa"><b>No.</b> The energy moved outward from the source and spread out, and the observer received it more or less often. Its wavelength looked different, but the energy wasn't lost. It moved from place to place and could change form when absorbed. That matches the idea that energy cannot be created or destroyed.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Summary Task Q2</div><p>Based on Models 1 and 3, was the energy within those systems ever destroyed? Explain.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>If the universe is expanding today, what do you think it was like a long time ago?</p><div class="ans">Smaller, with galaxies closer together. That's a preview of Day 5.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Dot Universe: Before and After</h4>
+      <p>On one sheet, draw a grid of <b>9 dots</b> 1 cm apart (3 × 3), labeled A–I. This is "Universe now." Next to it, draw the same 9 dots <b>2 cm apart</b>: "Universe later." Pick any dot as "home." With a ruler, measure how far each other dot moved away from home between the two drawings and write it next to the dot. Then pick a different home dot and check again.</p>
+      <ul class="checks">
+        <li>Two grids drawn to scale (1 cm and 2 cm spacing)</li>
+        <li>Measurements written for at least 4 dots from your home dot</li>
+        <li>One sentence: what's true about dots that started <b>farther</b> from home?</li>
+        <li>"I chose…" note: which dot you chose as home, and whether the pattern changed when you switched. What does that say about whether Earth is the center?</li>
+      </ul>
+      <p class="why">What students should find: distant dots move farther in the same time, so they're receding faster. This is the pattern in the galaxy spectra (Hubble's law), and it looks the same from every dot.</p>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-3"><small>Back</small>← Day 3 · Light waves</a><a class="next" href="#day-5"><small>Next</small>Day 5 · Balloon universe →</a></div>
+</div>
+
+<!-- ===================== DAY 5 ===================== -->
+<div class="view" id="day-5" data-phase="elaborate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 5 · Elaborate</div>
+    <h2>Running the Universe Backward</h2>
+    <p class="q">If the universe is expanding, what did it look like over 13 billion years ago?</p>
+    <div class="tags"><span class="tag">Packet pp. 16–20 (Parts 1–2, start of Part 3)</span><span class="tag">Pairs</span><span class="tag">Balloons + permanent markers</span><span class="tag">Video: Origins of the Universe 101 (to 1:10)</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>If the universe is expanding, then in the past it was <b>smaller</b> and galaxies were <b>closer together</b>. At the beginning, everything was packed together.</li>
+      <li>Packed together, the early universe was <b>extremely hot, dense and bright</b>. As it expanded, it cooled and spread out. That is the <b>Big Bang theory</b>.</li>
+      <li>Computational models say the first atoms were <b>75% hydrogen and 25% helium</b>, and the early universe gave off huge amounts of visible light.</li>
+      <li><b>Energy and matter can't be created or destroyed</b>, only moved and changed.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 5 box. Call on students to share their dot measurements.</p></div></li>
+      <li><div class="t">4–20</div><div><h4>Part 1: balloon model (pp. 16–17)</h4><p>Pose: <i>If the universe is expanding, what was it like over 13 billion years ago?</i> Pairs blow the balloon to medium size and hold it closed (don't tie it). They draw 15–20 galaxies with wave lines, inflate it more, then answer Q3–4. For Q5–8 they let air out to "rewind" to 5 and 10 billion years ago and the beginning. Probe: <i>What happens to the galaxies as you go further back?</i></p><p><b>Name the limitation:</b> the drawn galaxies also stretch, but real galaxies don't, because gravity holds them together.</p></div></li>
+      <li><div class="t">20–28</div><div><h4>Part 2 Q1–3 + discussion (p. 18)</h4><p>Pairs answer the three boxes. Discuss until the class agrees the early universe was <b>very hot, bright and dense</b>.</p><p class="say">"That's the same claim scientists made from galaxy spectra. They called it the Big Bang theory."</p></div></li>
+      <li><div class="t">28–34</div><div><h4>Finish the Part 2 reading + video</h4><p>Students read p. 19 (top), including Claims 1 and 2. Show <b>Origins of the Universe 101</b> up to 1:10.</p></div></li>
+      <li><div class="t">34–44</div><div><h4>Energy and matter conservation talk</h4><p>Read the start of Part 3 together: how scientists test a theory. Then ask:</p><ul><li>"Was the energy in the sound and light models ever destroyed?"</li><li>"Where does your phone's energy come from? Can you make new energy?"</li><li>"In Unit 1, what did we learn about matter in stars?" (It isn't created or destroyed.)</li></ul><p>Confirm: <b>energy and matter cannot be created or destroyed, but they can move and change.</b></p></div></li>
+      <li><div class="t">44–48<small>flex</small></div><div><h4>Start Part 3 predictions (p. 20)</h4><p>Pairs draw H and He atoms (3 : 1) and visible light waves on an <b>un-inflated</b> balloon, and read the law box. They save Q3–6 for tomorrow. Collect the balloons.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Rewind</div><p>The universe is expanding. Press "rewind." What happens to the distances between galaxies as you go back in time?</p><div class="ans">They shrink; galaxies get closer and closer together.</div></div>
+      <div class="card"><div class="lbl">Option B · Squeeze</div><p>What happens to the temperature of air when you squeeze it into a bike pump or a sealed bottle?</p><div class="ans">It heats up. Compressed matter is hotter, which hints at a hot early universe.</div></div>
+      <div class="card"><div class="lbl">Option C · Conservation</div><p>Your phone battery dies. Was the energy destroyed? Where did it go?</p><div class="ans">No. It became light, sound and heat.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What happened to the distance between two galaxies that were close together? Far apart?</li>
+      <li>What happened to the wave lines you drew? How would that change the light an observer sees?</li>
+      <li>How will you use the balloon to show 5 billion years ago? 10 billion?</li>
+      <li>What would it feel like if all the stars were pushed together? What about the temperature? The brightness?</li>
+      <li>Did the <i>amount</i> of matter on your balloon change when it got bigger, or just its spacing?</li>
+      <li>What does the balloon get wrong about the real universe?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Part 1 · hinge question</div>
+      <h4>Based on the balloon model, 10 billion years ago the universe was…</h4>
+      <ul class="opts">
+        <li>A. the same size, with fewer galaxies<em>Thinks galaxies were added later.</em></li>
+        <li class="right">B. smaller, with galaxies closer together<em>Correct.</em></li>
+        <li>C. bigger, and it has been shrinking<em>Reversed the direction.</em></li>
+        <li>D. a single galaxy that split apart</li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Part 2 · whiteboards</div>
+      <h4>"As the universe expanded, the total amount of matter and energy… increased / decreased / stayed the same?"</h4>
+      <p>Answer: <b>stayed the same</b>. It spread out and changed form. If students say "decreased" because it "spread thin," separate <i>amount</i> from <i>density</i>.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 1: balloon model Q3–8<small>pp. 16–17</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">3a. What happened to the distances between galaxies?</div><p class="aa">They <b>increased</b>; every galaxy moved farther from every other. Galaxies that started farther apart separated by more.</p></div>
+      <div class="qa"><div class="qq">3b. Does that match your predictions?</div><p class="aa">Yes. Redshift predicted galaxies moving apart, and farther ones faster.</p></div>
+      <div class="qa"><div class="qq">4a. What happened to the light waves around each galaxy?</div><p class="aa">The waves <b>stretched out</b>; the wavelength got longer.</p></div>
+      <div class="qa"><div class="qq">4b. How would that change the light an observer sees?</div><p class="aa">Longer wavelength means lower frequency, so the light looks <b>redder</b> (redshifted).</p></div>
+      <div class="qa"><div class="qq">4c. Does that match your predictions?</div><p class="aa">Yes. It matches the Day 4 prediction for an expanding universe and the observed spectra.</p></div>
+      <div class="qa"><div class="qq">5. How can you use the model to show 5 billion years ago?</div><p class="aa">Let air out so the balloon is smaller than "today."</p></div>
+      <div class="qa"><div class="qq">6. How was the universe 5 billion years ago different?</div><p class="aa">Smaller; galaxies were closer together and more crowded (denser).</p></div>
+      <div class="qa"><div class="qq">7. 10 billion years ago?</div><p class="aa">Even smaller and denser; galaxies much closer than 5 billion years ago and than today.</p></div>
+      <div class="qa"><div class="qq">8. At the beginning of time?</div><p class="aa">All the matter was <b>packed together in a tiny space</b>. There were no separate galaxies, just one extremely dense clump: the balloon with all its air let out.</p></div>
+      <div class="note"><b>Look and listen for:</b> if expanding now, it was smaller in the past and galaxies were closer · the further back in time, the smaller the universe · at the beginning, the universe was clumped together.</div>
+    </div></details>
+    <details class="key"><summary><span>Part 2: conditions of the early universe Q1–3<small>p. 18</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How would the early universe have looked and felt, all compressed?</div><p class="aa">Extremely <b>hot</b> (like the inside of a star, everywhere), extremely <b>dense</b> and crowded, and blindingly <b>bright</b> with light energy.</p></div>
+      <div class="qa"><div class="qq">2. As it expanded, how would that change?</div><p class="aa">It would <b>cool down</b>, become <b>less dense</b>, and get <b>dimmer</b> as matter and energy spread over more space. Eventually it was cool enough for atoms, then stars and galaxies, to form.</p></div>
+      <div class="qa"><div class="qq">3. How did the amount of energy and matter change?</div><p class="aa">The <b>total amount stayed the same</b>. It spread out over a larger volume and changed form (for example, particles combining into atoms), but none was created or destroyed.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Describe the early universe in three words, and explain how the balloon model supports one of them.</p><div class="ans">Small, hot, dense (or bright). The balloon shrinks as you go back, so everything was packed together.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Name one way the balloon model is <b>not</b> like the real universe.</p><div class="ans">Real galaxies don't stretch; the universe isn't a 2D surface; the balloon has a center and an edge.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Four Balloon Snapshots</h4>
+      <p>Draw <b>four balloons in a row</b>, from smallest to largest: "Beginning (~13.8 billion years ago)," "10 billion years ago," "5 billion years ago," "Today." In each one, draw the galaxies (or the dense clump at the start) and one light wave. Make the wave visibly longer in each later balloon. Under each, write its temperature as a word (scorching, hot, warm, cold) and its density (packed, crowded, spread out).</p>
+      <ul class="checks">
+        <li>4 balloons growing in size, with the galaxies spreading apart</li>
+        <li>A light wave whose wavelength grows across the four</li>
+        <li>Temperature and density labels for each</li>
+        <li>"I chose…" note: something <b>your partner's balloon</b> did in class that a drawing can't show (a pop, the marker galaxies stretching…) and why that matters</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-4"><small>Back</small>← Day 4 · Explain</a><a class="next" href="#day-6"><small>Next</small>Day 6 · Testing the Big Bang →</a></div>
+</div>
+
+<!-- ===================== DAY 6 ===================== -->
+<div class="view" id="day-6" data-phase="elaborate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 6 · Elaborate</div>
+    <h2>Testing the Big Bang</h2>
+    <p class="q">If the Big Bang happened, what should we still be able to observe today?</p>
+    <div class="tags"><span class="tag">Packet pp. 20–23 (Part 3 Q3–6, Part 4, Bringing It Together)</span><span class="tag">Pairs → tables</span><span class="tag">Reading: Murmur of a Bang</span><span class="tag">Consensus-Building Share</span><span class="tag">ESSRT p. 3</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Conservation of matter and energy predicts that the early universe's <b>hydrogen and helium</b> and its <b>light energy</b> should still be around, maybe in a different form.</li>
+      <li>Expansion stretched the early light from visible into <b>microwaves</b>. That's why space isn't bright, and it's the <b>cosmic microwave background</b> we detect in every direction.</li>
+      <li>The universe today is still about <b>3/4 hydrogen and 1/4 helium</b>. Fusion in stars and supernovae made the small amount of heavier elements.</li>
+      <li>Three lines of evidence (redshift, CMB and H/He ratio) all support a universe that began small, hot and dense and has been expanding ever since.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 6 box. Hand back the un-inflated balloons from yesterday.</p></div></li>
+      <li><div class="t">4–16</div><div><h4>Part 3 predictions Q3–6 (p. 20–21)</h4><p>Pairs inflate the H/He balloon and watch the atoms (they keep the same 3 : 1 ratio) and the light waves (they stretch). Answer Q3–6 using the ESSRT p. 3 spectrum diagram. Confer.</p></div></li>
+      <li><div class="t">16–24</div><div><h4>Part 4 Q1: composition (pp. 21–22)</h4><p>Compare the predicted and observed pie charts. Explain the small differences: stars fuse H into He, and supernovae make heavier elements (Unit 1).</p></div></li>
+      <li><div class="t">24–34</div><div><h4>Murmur of a Bang + CMB image (p. 22)</h4><p>Students read and annotate the text: underline ideas that confirm their thinking, circle ideas that add to it, box ideas that change it. Then answer Q3 about the CMB map: microwaves compared with visible light.</p></div></li>
+      <li><div class="t">34–42</div><div><h4>Q4 + Bringing All the Evidence Together (p. 23)</h4><p>Individuals write the reasoning for all three evidence rows.</p></div></li>
+      <li><div class="t">42–48</div><div><h4>Consensus-Building Share</h4><p>Each table chooses one observation or conclusion to share. Push the class until the key points below come up. Go back to the Engage chart one more time: eliminate, change, add. Close with: <i>Is it probable that there's life elsewhere in the universe?</i> That's tomorrow.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+    <div class="note"><b>Take time for these key points:</b> conservation of matter and energy says the hydrogen, helium and energy from soon after the universe began should still be here, maybe in a different form · in the balloon model, expansion doesn't change the hydrogen : helium ratio · in the balloon model, visible light waves stretch to longer wavelengths as the universe expands.</div>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Stretch it</div><p>Visible light has a wavelength of about 500 nm. If expansion stretched it 2,000 times, about what would its wavelength be? What kind of wave is that? (Use ESSRT p. 3.)</p><div class="ans">About 1,000,000 nm = 1 mm, which is a microwave.</div></div>
+      <div class="card"><div class="lbl">Option B · Recipe</div><p>The Big Bang made 3 hydrogen atoms for every 1 helium (by mass). If no new matter is ever made, what should the universe be made of today?</p><div class="ans">Still mostly hydrogen and helium, close to 3 : 1.</div></div>
+      <div class="card"><div class="lbl">Option C · Night sky</div><p>If the early universe was blindingly bright, why is the night sky dark today?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>As your balloon inflated, did the number of H and He atoms change? Did the ratio?</li>
+      <li>What happened to the light waves you drew? Where would that put them on the ESSRT spectrum?</li>
+      <li>Why don't we see bright light from every direction?</li>
+      <li>The observed chart isn't exactly 75/25. Does that disprove the Big Bang? What could explain the difference?</li>
+      <li>How does the CMB show energy wasn't destroyed?</li>
+      <li>Which of the three lines of evidence is strongest? Why?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Part 3 · hinge question</div>
+      <h4>Why don't we see bright visible light coming from all around the universe today?</h4>
+      <ul class="opts">
+        <li>A. The light energy from the Big Bang was destroyed<em>Violates conservation of energy.</em></li>
+        <li class="right">B. Expansion stretched it to microwave wavelengths, which our eyes can't see<em>Correct.</em></li>
+        <li>C. Stars absorbed all of it</li>
+        <li>D. It all left the universe through the edge<em>The universe has no edge.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During Bringing It Together · scan</div>
+      <h4>Rubric check: does each reasoning box use <i>because</i> or <i>therefore</i>, and name a concept (Doppler, conservation, fusion)?</h4>
+      <p>That's the "Scientific Reasoning &amp; Logic" row of the rubric on p. 26. If most boxes just restate the evidence, pause and model one reasoning sentence.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 3: predictions Q3–6<small>p. 20</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">3. If the Big Bang made 75% H and 25% He, what evidence should we find today?</div><p class="aa">Matter isn't created or destroyed, so the universe should <b>still be mostly hydrogen and helium in about a 3 : 1 ratio</b>, spread out over a bigger space. On the balloon, the atoms spread apart but the ratio doesn't change.</p></div>
+      <div class="qa"><div class="qq">4. If the Big Bang made a huge amount of light energy, what evidence should we find?</div><p class="aa">That energy should <b>still exist, filling the whole universe and coming from every direction</b>, possibly in a different form.</p></div>
+      <div class="qa"><div class="qq">5. How would that light change as the universe expanded?</div><p class="aa">The light waves would be <b>stretched to longer wavelengths</b> (lower frequency and energy), shifting from visible light to red, then infrared, then microwaves.</p></div>
+      <div class="qa"><div class="qq">6. What explains the lack of visible light all around us?</div><p class="aa">The early light has been stretched so much that its wavelength is now in the <b>microwave</b> part of the spectrum (around 1 mm, far past red on ESSRT p. 3), which our eyes can't see.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Part 4: compare predictions to observations<small>pp. 21–23</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Does the observed composition support or refute the prediction?</div><p class="aa"><b>Supports it.</b> The predicted 75% H and 25% He is very close to what we observe today, about 70–74% H and 24–28% He. The universe is still almost all hydrogen and helium, as conservation of matter predicts.</p></div>
+      <div class="qa"><div class="qq">What processes account for the change and the new elements?</div><p class="aa"><b>Nuclear fusion in stars</b> has turned some hydrogen into helium (a little less H, a little more He) and into heavier elements like carbon and oxygen up to iron. <b>Supernova explosions</b> of massive stars made elements heavier than iron and spread them into space.</p></div>
+      <div class="qa"><div class="qq">2. Murmur of a Bang</div><p class="aa">Students should notice that scientists predicted in the 1940s that the early universe's light should still be detectable as faint microwave radiation from every direction. In 1964–65, Penzias and Wilson found an unexplained microwave "hiss" coming from all over the sky: the predicted leftover radiation. <i>Check this summary against the reading you assign.</i></p></div>
+      <div class="qa"><div class="qq">3. How do the microwaves compare to the visible light the early universe emitted? Does it match the prediction?</div><p class="aa">The microwaves have <b>much longer wavelengths</b> (about 1 mm vs. about 500 nm, roughly 2,000 times longer) and lower frequency and energy. Yes, it matches: we predicted expansion would stretch the visible light to longer wavelengths, and the CMB is that stretched light, coming from every direction.</p></div>
+      <div class="qa"><div class="qq">4. Do these observations support or refute that matter and energy are never created or destroyed?</div><p class="aa"><b>Support.</b> The hydrogen and helium from the early universe are still here in nearly the same ratio; only fusion has changed a small amount into other elements. The light energy is still here too, changed from visible light into microwaves but not destroyed.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Bringing all the evidence together<small>p. 23 · reasoning column</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Evidence</th><th>Reasoning (supports "small, hot, dense, expanding ever since")</th></tr></thead><tbody>
+        <tr><td>Redshift in galaxy spectra</td><td>By the Doppler effect, redshifted light comes from sources moving away. All galaxies are redshifted, and farther ones more, so the universe is expanding. Running expansion backward means it was once much smaller and denser.</td></tr>
+        <tr><td>Microwave background radiation all over the universe</td><td>A small, hot, dense universe would have glowed with light everywhere. Energy can't be destroyed, so that light should still be here. Expansion would stretch it to longer wavelengths, and we detect it as microwaves from every direction, exactly as predicted.</td></tr>
+        <tr><td>Stars and gas ~74% H, ~25% He, &lt;2% heavier elements</td><td>Models of a hot, dense early universe predict 75% H and 25% He when the first atoms formed. Matter is conserved, so that mix should remain. The observed mix matches, and the small amount of heavier elements comes later from fusion in stars and supernovae.</td></tr>
+      </tbody></table></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Pick one of the three pieces of evidence for the Big Bang and explain how conservation of energy or matter makes it possible.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Fist to five again: how confident are you now in the Big Bang explanation? What evidence changed your confidence since Day 1?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Three Pillars of the Big Bang</h4>
+      <p>Draw a building: a roof labeled <b>"The universe began small, hot and dense ~13.8 billion years ago and has been expanding ever since"</b>, held up by <b>three pillars</b>. On each pillar, sketch the evidence: (1) a redshifted spectrum strip, (2) the CMB map with a stretched wave going from visible to microwave, (3) a pie chart of H and He. Write a one-line "because…" reasoning on each pillar.</p>
+      <ul class="checks">
+        <li>A roof claim plus 3 pillars, each with a sketch and a "because…" sentence</li>
+        <li>At least one pillar mentions conservation of energy or matter</li>
+        <li>A small "foundation" labeled with the concepts underneath: Doppler effect, conservation, fusion</li>
+        <li>"I chose…" note: which pillar you made <b>thickest</b> (strongest evidence) and why</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-5"><small>Back</small>← Day 5 · Balloon universe</a><a class="next" href="#day-7"><small>Next</small>Day 7 · Evaluate →</a></div>
+</div>
+
+<!-- ===================== DAY 7 ===================== -->
+<div class="view" id="day-7" data-phase="evaluate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 7 · Evaluate</div>
+    <h2>Could There Be Other Earth-like Planets?</h2>
+    <p class="q">Is it probable that there is life elsewhere in the universe?</p>
+    <div class="tags"><span class="tag">Packet pp. 24–27</span><span class="tag">Pairs → individual → small groups</span><span class="tag">Revisiting the Performance Task handout</span><span class="tag">Idea Carousel</span><span class="tag">Driving Question Board</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>The universe began as one incredibly hot, small mass, then expanded in all directions.</li>
+      <li>The same processes (expansion, cooling, gravity pulling H and He into galaxies and stars, fusion, supernovae) happened <b>everywhere</b>. So other galaxies and solar systems probably share many features with ours.</li>
+      <li>The universe is bigger than we can imagine. With trillions of planets, the chances for life to appear are extremely high, so <b>life elsewhere seems probable</b>.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Back of the performance-task handout.</p></div></li>
+      <li><div class="t">4–14</div><div><h4>Could there be other Earth-like planets? (pp. 24–25)</h4><p>Remind students of the How Many Stars? video. Pairs answer the star count question, then use the Big Bang infographic to answer Q1–2. Point out the infographic says "15 billion yrs"; today's value is 13.8.</p></div></li>
+      <li><div class="t">14–28</div><div><h4>Individual: Revisiting the Performance Task</h4><p>Students answer the handout prompts independently, using the rubric on pp. 26–27: 3+ sources of evidence, how waves and matter change or stay the same with expansion, because/therefore logic, and energy-and-matter conservation. Confer and point to the posted argument characteristics.</p></div></li>
+      <li><div class="t">28–36</div><div><h4>Group models</h4><p>Groups of 3–4 build a model on chart paper: how the universe formed → how that led to galaxies and solar systems → how likely Earth-like planets and life are.</p></div></li>
+      <li><div class="t">36–43</div><div><h4>Idea Carousel</h4><p>Groups rotate and leave sticky notes: <b>✓</b> resonates · <b>+</b> add this · <b>?</b> not sure it's relevant · <b>Δ</b> clarify or represent it better. Groups return and revise. If an important idea showed up in only some groups, have those groups share it.</p></div></li>
+      <li><div class="t">43–48</div><div><h4>Revisit the Driving Question Board</h4><p>Which questions are answered? What's new? Add those questions. Then ask: <i>Do you think there are Earth-like planets where intelligent life evolved? Could extinction events have affected intelligent societies in the past? Could ours go extinct before we make contact?</i></p><p class="say">"Those questions lead to our next investigation, about the stability of the solar system."</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Odds</div><p>If only 1 in a billion stars had a planet with life, and there are about 10²² stars, how many planets with life would there be?</p><div class="ans">10²² ÷ 10⁹ = 10¹³, or 10 trillion.</div></div>
+      <div class="card"><div class="lbl">Option B · Same recipe</div><p>Our Sun is mostly hydrogen and helium. What do you think most other stars are made of? What's your evidence?</p><div class="ans">Also H and He. Evidence: the same absorption lines in every galaxy's spectrum.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What evidence did you generate in this 5E sequence?</li>
+      <li>Where did that evidence come from: a model, a reading, a data set?</li>
+      <li>How well does that evidence support the claim?</li>
+      <li>What ideas or contradictory evidence weaken the claim?</li>
+      <li>How do you know the processes that formed our solar system happened in other galaxies too?<span>Same spectra and the same physics everywhere.</span></li>
+      <li>Does "Earth-like planets are likely" mean "life is certain"? What else would life need?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">During the Idea Carousel</div>
+      <h4>Read the sticky notes</h4>
+      <p>A lot of <b>?</b> notes on "other planets must have life" means students are overclaiming, so return to <i>probable vs. certain</i>. A lot of <b>+</b> notes asking for "evidence that other galaxies are made of the same stuff" means the spectra link needs one more pass.</p>
+    </div>
+    <div class="cfu">
+      <div class="when">Exit · 3-2-1</div>
+      <h4>3 pieces of evidence for the Big Bang · 2 reasons other solar systems are probably like ours · 1 question about life elsewhere</h4>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Could there be other Earth-like planets?<small>pp. 24–25</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">According to the video, how many stars are there?</div><p class="aa">Use the number the video gives. Common estimates are about 10²² to 10²⁴ stars, more than all the grains of sand on Earth. <i>Watch the video to confirm its exact figure.</i></p></div>
+      <div class="qa"><div class="qq">1. Were the processes that formed galaxies the same everywhere?</div><p class="aa"><b>Yes.</b> The model shows the whole universe going through the same steps everywhere at once: inflation, a hot soup of particles, protons and neutrons forming, the first H and He atoms, light finally shining, gravity pulling gas into protogalaxies and the first stars, and stars dying and spreading heavy elements that form new stars and planets.</p></div>
+      <div class="qa"><div class="qq">2. Are other galaxies and solar systems similar to ours? (evidence + reasoning)</div><p class="aa">Probably. <b>Evidence:</b> distant galaxies' spectra show the same hydrogen and helium absorption lines as our Sun, and the whole universe is ~74% H and ~25% He. The same expansion and the same CMB are seen in every direction. Astronomers have found multiple planets around most stars they've studied. <b>Reasoning:</b> the same ingredients and the same physical processes (gravity, fusion, supernovae) happened everywhere. Therefore other stars should form with planets, including rocky ones made from heavy elements, much like our solar system.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Performance task: exemplar explanation<small>Scored with the rubric on pp. 26–27</small></span></summary><div class="keybody">
+      <p><b>Claim:</b> All the galaxies and solar systems in the universe formed the same way, from a universe that began small, hot and dense about 13.8 billion years ago and has been expanding ever since. Because there are so many of them, Earth-like planets, and possibly life, are probably common.</p>
+      <p><b>Evidence 1, redshift:</b> galaxy spectra show the same H and He lines as the lab reference, shifted toward red, and more distant galaxies shift more. <b>Because</b> stretched light means a source moving away (Doppler effect, Model 3), the universe is expanding, <b>therefore</b> it used to be much smaller and denser.</p>
+      <p><b>Evidence 2, CMB:</b> microwave radiation reaches us from every direction. A hot early universe would have been full of light, and <b>because energy cannot be created or destroyed</b>, that light is still here. Expansion stretched its waves from visible light to microwaves.</p>
+      <p><b>Evidence 3, composition:</b> the universe is still about 74% hydrogen and 25% helium, matching the 75 : 25 predicted for the early universe. <b>Because</b> matter is conserved, the mix stayed nearly the same. Fusion and supernovae added a small amount of heavier elements.</p>
+      <p><b>Same everywhere:</b> distant galaxies have the same elements and went through the same expansion, cooling, gravity and fusion. <b>Therefore</b> their stars and planets formed the same way ours did. With roughly 10²² stars, most with planets, the chances of Earth-like planets with life are very high.</p>
+      <div class="note"><b>Rubric quick check:</b> 3+ evidence sources from the 5E ✓ · how waves (stretched) and matter (ratio unchanged) change or stay the same with expansion ✓ · because/therefore logic ✓ · energy and matter conserved ✓ → <b>Proficient</b>.</div>
+    </div></details>
+    <div class="note"><b>Look and listen for:</b> the universe started as one incredibly hot, small mass, then suddenly expanded in all directions · the processes that formed our galaxy and solar system happened everywhere, so other galaxies and solar systems must share many characteristics · the universe is bigger than we can imagine · the number of chances for life is extremely high, so life elsewhere seems probable.</div>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Bridge</div><p>Earth-like planets are probably common. What else besides "being Earth-like" might a planet need for intelligent life to evolve? (Think back to the Coevolution 5E.)</p><div class="ans">Liquid water, oxygen from photosynthesis, billions of years of stability, avoiding mass extinctions.</div></div>
+      <div class="card"><div class="lbl">Option B · 3-2-1</div><p>See the CFU above.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Postcard from Another Solar System</h4>
+      <p>On an index card or half sheet, draw the <b>front of a postcard</b>: a solar system in a far-away galaxy, with its star and at least 4 planets (one rocky and in the "just right" zone). On the back, write a short postcard to Earth explaining <b>why this solar system looks so much like ours</b>, using at least two pieces of Big Bang evidence.</p>
+      <ul class="checks">
+        <li>A front drawing with a labeled star (what it's made of) and 4+ planets, one rocky planet in the habitable zone</li>
+        <li>The back names 2+ pieces of evidence (redshift, CMB, H/He, same spectra) and one process (gravity, fusion, supernova)</li>
+        <li>One sentence on whether life there is <i>certain</i> or <i>probable</i>, and why</li>
+        <li>"I chose…" note: one <b>sticky note your group got in the Idea Carousel</b> that you used to improve your thinking</li>
+      </ul>
+      <p class="why">Keep the best postcards for a bulletin board. They lead straight into the next 5E on solar system stability.</p>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-6"><small>Back</small>← Day 6 · Testing the Big Bang</a><a class="next" href="#overview"><small>Done</small>Back to overview ↺</a></div>
+</div>
+
+<footer><a href="index.html">← Back to Teacher Hub</a><br>Built from the New Visions Earth &amp; Space Science Unit 2 teacher and student materials for Origin of the Universe 5E (SY 26-27). Schedules assume 50-minute periods.</footer>
+</main>
+
+<script>
+(function(){
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('#chips .chip'));
+  var ids = views.map(function(v){return v.id});
+  function show(){
+    var id = (location.hash || '').slice(1);
+    if (ids.indexOf(id) === -1) id = 'overview';
+    views.forEach(function(v){ v.hidden = v.id !== id; });
+    chips.forEach(function(c){
+      if (c.getAttribute('href') === '#' + id) { c.setAttribute('aria-current','page'); var r=c.parentNode; r.scrollLeft = c.offsetLeft - (r.clientWidth - c.offsetWidth)/2; }
+      else c.removeAttribute('aria-current');
+    });
+    window.scrollTo({top:0,left:0,behavior:'instant'});
+  }
+  window.addEventListener('hashchange', show);
+  show();
+
+  // prep checklist memory (per device)
+  var boxes = document.querySelectorAll('#prep input[type=checkbox]');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem('origin-prep') || '{}'); } catch(e) {}
+  Array.prototype.forEach.call(boxes, function(b){
+    if (saved[b.id]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[b.id] = b.checked;
+      try { localStorage.setItem('origin-prep', JSON.stringify(saved)); } catch(e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>
