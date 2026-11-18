@@ -1,0 +1,1323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Coevolution of Earth & Life Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky day bar on top, one day visible at a time, single reading column (~760px). Days are "rock layers" colored by 5E phase. */
+:root{
+  --bg:#F2F5F4; --surface:#FFFFFF; --ink:#15212A; --muted:#55646B; --line:#D5DDDB; --tint:#E7EDEB;
+  --iron:#AE4229; --ocean:#1C6784; --ochre:#A8731A; --moss:#4C7634; --dusk:#5A4A8C;
+  --ok:#2E7D4F; --warn:#9A5B00;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--ocean)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* phase colors */
+[data-phase="engage"]{--ph:var(--ochre)} [data-phase="explore"]{--ph:var(--iron)} [data-phase="explain"]{--ph:var(--ocean)}
+[data-phase="elaborate"]{--ph:var(--moss)} [data-phase="evaluate"]{--ph:var(--dusk)} [data-phase="overview"]{--ph:var(--ink)}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:thin}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--ph)}
+.chip[aria-current="page"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--ocean);outline-offset:2px}
+
+/* hero */
+.hero{padding-block:28px 8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.hero h1{font-size:clamp(32px,7vw,52px);font-weight:800;letter-spacing:-.02em;margin:8px 0 10px}
+.dq{font-size:clamp(18px,3.4vw,22px);color:var(--ink);max-width:40ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0 0;color:var(--muted);font-size:15px}
+.meta b{color:var(--ink)}
+
+/* strata bar */
+.strata{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin:22px 0 6px;border-radius:10px;overflow:hidden}
+.strata a{display:flex;flex-direction:column;justify-content:flex-end;min-height:76px;padding:8px 7px;background:var(--ph);color:#fff;text-decoration:none;font-size:12px;line-height:1.2;position:relative}
+.strata a::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(0,0,0,.10) 9px 11px);pointer-events:none}
+.strata b{font-family:var(--f-display);font-size:20px;display:block}
+.strata span{opacity:.92}
+.strata-cap{font-size:13px;color:var(--muted)}
+@media (max-width:520px){.strata span{display:none}.strata a{min-height:56px}}
+
+/* views */
+.view{padding-block:8px 48px;scroll-margin-top:calc(64px + env(safe-area-inset-top,0px))}
+.view[hidden]{display:none!important}
+.dayhead{padding-block:26px 6px;border-bottom:4px solid var(--ph);margin-bottom:8px}
+.dayhead .eyebrow{color:var(--ph)}
+.dayhead h2{font-size:clamp(28px,5.6vw,40px);font-weight:800;margin:6px 0 8px;letter-spacing:-.01em}
+.dayhead .q{font-style:italic;color:var(--muted);margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
+.tag{font-size:13px;padding:3px 9px;border-radius:6px;background:var(--tint);color:var(--ink)}
+
+section.block{padding-block:18px 4px}
+section.block>h3{font-size:22px;font-weight:800;margin-bottom:12px;display:flex;align-items:baseline;gap:10px}
+section.block>h3 small{font-family:var(--f-body);font-weight:600;font-size:14px;color:var(--muted)}
+p{margin:0 0 10px} ul,ol{margin:0 0 10px;padding-left:22px} li{margin-bottom:5px}
+
+/* goals */
+.goals{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--ph);border-radius:8px;padding:14px 16px}
+.goals h3{font-size:17px;margin-bottom:8px}
+.goals ul{margin:0}
+
+/* schedule */
+.sched{list-style:none;padding:0;margin:0;border-left:2px solid var(--line)}
+.sched li{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:10px 0 12px 22px;margin:0;position:relative}
+.sched li::before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:3px solid var(--ph)}
+.t{font-family:var(--f-mono);font-size:14px;color:var(--ph);font-weight:500;padding-top:2px;font-variant-numeric:tabular-nums}
+.t small{display:block;color:var(--muted);font-size:12px}
+.sched h4{font-size:17px;font-weight:600;margin-bottom:3px}
+.sched p,.sched ul{font-size:16px;color:var(--ink);margin-bottom:4px}
+.sched .say{border-left:3px solid var(--tint);padding-left:10px;color:var(--muted);font-style:italic}
+@media (max-width:480px){.sched li{grid-template-columns:1fr;gap:2px}}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.card .lbl{font-size:12px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;color:var(--ph);margin-bottom:6px}
+.card p:last-child{margin-bottom:0}
+.ans{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:15px;color:var(--muted)}
+.ans b{color:var(--ok)}
+
+/* conferring */
+.confer{list-style:none;padding:0;display:grid;gap:8px}
+.confer li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0}
+.confer li span{display:block;font-size:14px;color:var(--muted);margin-top:3px}
+
+/* CFU */
+.cfu{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.cfu h4{font-size:16px;margin-bottom:6px;font-family:var(--f-body);font-weight:700}
+.opts{list-style:none;padding:0;margin:6px 0}
+.opts li{padding:5px 10px;border-radius:6px;margin-bottom:4px;background:var(--tint)}
+.opts li.right{outline:2px solid var(--ok)}
+.opts li em{display:block;font-size:14px;color:var(--muted);font-style:normal}
+.when{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* answer key */
+.key{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.key>summary{cursor:pointer;padding:13px 16px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.key>summary::-webkit-details-marker{display:none}
+.key>summary::after{content:"+";font-family:var(--f-mono);font-size:20px;color:var(--ph)}
+.key[open]>summary::after{content:"−"}
+.key>summary small{display:block;font-weight:400;color:var(--muted);font-size:14px}
+.keybody{padding:2px 16px 14px;border-top:1px solid var(--line)}
+.qa{padding:10px 0;border-bottom:1px solid var(--tint)}
+.qa:last-child{border-bottom:0}
+.qa .qq{font-weight:700;margin-bottom:4px}
+.qa .aa{margin:0}
+.note{font-size:15px;background:var(--tint);border-radius:8px;padding:10px 12px;margin:8px 0}
+.note b{color:var(--warn)}
+.scroll{overflow-x:auto;margin:8px 0 12px;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--surface)}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--tint);font-weight:700}
+td.num,th.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* homework */
+.hw{background:var(--surface);border:2px solid var(--ph);border-radius:12px;padding:16px}
+.hw h4{font-size:20px;font-weight:800;margin-bottom:6px}
+.hw .why{font-size:15px;color:var(--muted)}
+.checks{list-style:none;padding:0;margin:8px 0 0}
+.checks li{padding-left:24px;position:relative}
+.checks li::before{content:"✓";position:absolute;left:2px;color:var(--ok);font-weight:700}
+
+/* overview bits */
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:6px}
+.glance .card b{font-family:var(--f-display);font-size:18px;display:block;margin-bottom:2px}
+.prep{list-style:none;padding:0}
+.prep li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--tint);margin:0}
+.prep input{width:20px;height:20px;margin-top:3px;accent-color:var(--ocean);flex:0 0 auto}
+.prep label{flex:1;min-width:0}
+.prep .when{display:block}
+.mis{display:grid;gap:8px}
+.mis div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.mis s{color:var(--iron);text-decoration-thickness:2px}
+
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:30px;flex-wrap:wrap}
+.pager a{flex:1 1 200px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.pager a small{display:block;color:var(--muted);font-size:13px}
+.pager a.next{text-align:right}
+footer{color:var(--muted);font-size:13px;padding-block:20px 40px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+</head>
+<body>
+
+<nav class="bar" aria-label="Days">
+  <div class="wrap" id="chips">
+    <a class="chip" data-phase="overview" href="#overview"><i></i>Before you teach</a>
+    <a class="chip" data-phase="engage" href="#day-1"><i></i>Day 1</a>
+    <a class="chip" data-phase="explore" href="#day-2"><i></i>Day 2</a>
+    <a class="chip" data-phase="explore" href="#day-3"><i></i>Day 3</a>
+    <a class="chip" data-phase="explore" href="#day-4"><i></i>Day 4</a>
+    <a class="chip" data-phase="explain" href="#day-5"><i></i>Day 5</a>
+    <a class="chip" data-phase="explain" href="#day-6"><i></i>Day 6</a>
+    <a class="chip" data-phase="elaborate" href="#day-7"><i></i>Day 7</a>
+    <a class="chip" data-phase="evaluate" href="#day-8"><i></i>Day 8</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ===================== OVERVIEW ===================== -->
+<div class="view" id="overview" data-phase="overview">
+  <header class="hero">
+    <div class="eyebrow">Teacher guide · Earth &amp; Space Science · Unit 2 · Probability of Life Elsewhere · 5E 2.2</div>
+    <h1>Coevolution of Earth &amp; Life</h1>
+    <p class="dq">What set of conditions allowed intelligent life to evolve from single, simple cells?</p>
+    <div class="meta">
+      <span><b>PE</b> HS-ESS2-7</span>
+      <span><b>Length</b> 8 days × 50 min (curriculum says 7–8)</span>
+      <span><b>Anchor routine</b> Domino Discover · Class Consensus</span>
+    </div>
+    <div class="strata" aria-label="Eight days as rock layers, colored by 5E phase">
+      <a href="#day-1" data-phase="engage"><b>1</b><span>Engage</span></a>
+      <a href="#day-2" data-phase="explore"><b>2</b><span>Explore</span></a>
+      <a href="#day-3" data-phase="explore"><b>3</b><span>Explore</span></a>
+      <a href="#day-4" data-phase="explore"><b>4</b><span>Explore</span></a>
+      <a href="#day-5" data-phase="explain"><b>5</b><span>Explain</span></a>
+      <a href="#day-6" data-phase="explain"><b>6</b><span>Explain</span></a>
+      <a href="#day-7" data-phase="elaborate"><b>7</b><span>Elaborate</span></a>
+      <a href="#day-8" data-phase="evaluate"><b>8</b><span>Evaluate</span></a>
+    </div>
+    <p class="strata-cap">Tap a layer to open that day. Each day has a minute-by-minute plan, Do Nows, conferring questions, checks for understanding, the answer key, exit slips and drawn homework.</p>
+  </header>
+
+  <section class="block">
+    <h3>The phenomenon in one paragraph</h3>
+    <p>After life appeared on Earth, it took about <b>3.5 billion years</b> to go from single, simple cells to intelligent humans, and almost all complex life showed up in the <b>last billion years</b>. Students find out why. The story is <b>oxygen</b>. Photosynthesizing microbes slowly added oxygen to the oceans. The oxygen first rusted dissolved iron (banded iron formations), then built up in the air (red beds, ozone). That oxygen made aerobic respiration possible, which allowed complex cells, then many-celled life, then life on land. Living things changed the planet, and the changed planet changed what could live. That two-way relationship is <b>coevolution</b>. It explains why intelligent life took so long, and it sets up the next question: how likely is it to happen elsewhere?</p>
+  </section>
+
+  <section class="block">
+    <h3>The 5E storyline</h3>
+    <div class="glance">
+      <div class="card" data-phase="engage"><div class="lbl">Engage · Day 1</div><b>The Pace of Evolution</b>How has the pace of evolution changed over 4 billion years?</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore · Days 2–4</div><b>Beginnings of Life</b>What can the fossil record tell us about life and Earth's systems?</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain · Days 5–6</div><b>Arguing for Coevolution</b>How did Earth's systems and living things coevolve?</div>
+      <div class="card" data-phase="elaborate"><div class="lbl">Elaborate · Day 7</div><b>Mass Extinctions</b>How have extinction events affected the evolution of life?</div>
+      <div class="card" data-phase="evaluate"><div class="lbl">Evaluate · Day 8</div><b>Revisit the Performance Task</b>Why did it take so long for intelligent life to evolve?</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="goals" data-phase="explain">
+      <h3>By the end of the 5E, every student should be able to…</h3>
+      <ul>
+        <li>Explain that Earth's early atmosphere had almost no free oxygen: first hydrogen and helium, then methane, ammonia, water vapor and nitrogen by 3.8 bya. Today's air is 78% nitrogen, 21% oxygen and 1% other gases.</li>
+        <li>Identify <b>photosynthetic microbes</b> (stromatolites ~2.7 bya, cyanobacteria ~2.1 bya) as the source of Earth's oxygen.</li>
+        <li>Use <b>banded iron formations</b> (~2.5 bya) and <b>red beds</b> (~2 bya) as rock evidence that oxygen was present. Iron + oxygen → rust (iron oxide).</li>
+        <li>Connect rising oxygen to <b>aerobic respiration</b> and more complex life: eukaryotes (~2.1 bya), multicellular organisms (~600 mya), animals (~560 mya), land plants and animals (~450–425 mya).</li>
+        <li>Give examples of <b>life changing Earth's systems</b>: oxygen in the air, rust in rocks, soil formation, ozone. Give examples of <b>Earth's systems changing life</b>: nutrients from the Rodinia breakup, shallow equatorial seas → swamps, mass extinctions.</li>
+        <li>Explain why Earth's history is hard to reconstruct: the rock cycle and plate tectonics destroy old rock, microfossils are tiny, and non-living structures can look like life. Explain why the choice of isotope (half-life and dating range) matters.</li>
+        <li>Tell <b>correlation</b> (events happen at the same time) apart from <b>causation</b> (a mechanism links them). Write a claim–evidence–reasoning argument for coevolution.</li>
+        <li>Describe mass extinctions as drops in oxygen and big changes to Earth's systems that were <b>negative</b> (species lost) and <b>positive</b> (open niches, new groups such as mammals). Plant recovery brings oxygen back.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Prep checklist <small>check off as you go · saved on this device</small></h3>
+    <ul class="prep" id="prep">
+      <li><input type="checkbox" id="p1"><label for="p1"><span class="when">1 week out</span>Print <b>Printed Fossil Cards</b> (24 cards, teacher pages 91–94). One set per table group. Laminating them lets you reuse them across periods.</label></li>
+      <li><input type="checkbox" id="p2"><label for="p2"><span class="when">1 week out</span>Copy the student packet (21 pp). Print the <b>Timeline Checklist</b> and the <b>Scaffolded Explain Cards</b> for the students who need them.</label></li>
+      <li><input type="checkbox" id="p3"><label for="p3"><span class="when">1 week out</span>Copy the <b>Revisiting the Performance Task</b> handout for Day 8. It is not in the student packet.</label></li>
+      <li><input type="checkbox" id="p4"><label for="p4"><span class="when">Day 1 (needs 3+ days)</span><b>Iron nail demo:</b> 2 iron nails (not galvanized) and 2 clear test tubes or small bottles. Tube A: water covers most of the nail, top exposed to air. Tube B: water covers the whole nail, then a layer of cooking oil on top. Label both and leave them where students can see. You reveal them on Day 4.</label></li>
+      <li><input type="checkbox" id="p5"><label for="p5"><span class="when">Before Day 2</span>Chart paper (2 sheets per group, taped end to end), markers in 2 colors (red = causal arrows, blue = increasing complexity), tape or glue sticks.</label></li>
+      <li><input type="checkbox" id="p6"><label for="p6"><span class="when">Before Day 1</span>Two highlighter colors per student (living vs. non-living events) and an ESSRT for each student. Use pp. 6–7 (Geological History of NYS) and p. 15 (Radioactive Decay Data).</label></li>
+      <li><input type="checkbox" id="p7"><label for="p7"><span class="when">Before Day 5</span>Queue the video <b>The Role of Oxygen in Earth's History</b>, and before Day 7, <b>That Time Oxygen Almost Killed Everything</b>. Both are linked in the teacher materials. Watch them yourself first so you know where to pause.</label></li>
+      <li><input type="checkbox" id="p8"><label for="p8"><span class="when">Before Day 6</span>Plan which 2–3 student arguments to show in the Class Consensus Discussion. Choose them for the ideas they bring out, not at random. Have a document camera or phone ready to project them.</label></li>
+      <li><input type="checkbox" id="p9"><label for="p9"><span class="when">Before Day 8</span>Sticky notes (4 colors if possible), the groups' initial performance-task posters from the unit launch, and the Driving Question Board.</label></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Content crib: the dates students will use</h3>
+    <p>These come straight from the fossil cards. When students argue about dates, send them back to the card.</p>
+    <div class="scroll"><table>
+      <thead><tr><th class="num">When</th><th>Biosphere (top half)</th><th>Other Earth systems (bottom half)</th></tr></thead>
+      <tbody>
+        <tr><td class="num">~4.6 bya</td><td>—</td><td>Earth forms; atmosphere mostly H and He</td></tr>
+        <tr><td class="num">~4 bya</td><td>—</td><td>Acasta Gneiss, the oldest rock found on Earth</td></tr>
+        <tr><td class="num">~3.4 bya</td><td>Stromatolites: mats of microbes in the ocean</td><td></td></tr>
+        <tr><td class="num">~2.7 bya</td><td>Stromatolites with evidence of <b>photosynthesis</b></td><td></td></tr>
+        <tr><td class="num">~2.5 bya</td><td></td><td><b>Banded iron formation</b>: first oxygen in the rock record</td></tr>
+        <tr><td class="num">~2.1 bya</td><td>Cyanobacteria microfossils; <b>eukaryotic cells</b> (aerobic respiration)</td><td></td></tr>
+        <tr><td class="num">~2 bya</td><td></td><td><b>Red beds</b>: oxygen in the <i>air</i> weathered rock</td></tr>
+        <tr><td class="num">~1 bya</td><td>Abundant multicellular algae</td><td>Rodinia breaks up → erosion and nutrients</td></tr>
+        <tr><td class="num">~750 mya</td><td></td><td>Banded iron formations return (tectonic changes)</td></tr>
+        <tr><td class="num">~650 mya</td><td></td><td>Smaller continents, more spread out</td></tr>
+        <tr><td class="num">~600 mya</td><td>Multicellular organisms</td><td></td></tr>
+        <tr><td class="num">~560 mya</td><td>Earliest soft-bodied animals</td><td></td></tr>
+        <tr><td class="num">~518 mya</td><td>Ocean animal diversity (Cambrian)</td><td></td></tr>
+        <tr><td class="num">470–548 mya</td><td>Coral reef</td><td></td></tr>
+        <tr><td class="num">457–455 mya</td><td>First land plants</td><td></td></tr>
+        <tr><td class="num">~425 mya</td><td>Oldest land animal</td><td></td></tr>
+        <tr><td class="num">~420 mya</td><td>Vascular plants</td><td></td></tr>
+        <tr><td class="num">~407 mya</td><td></td><td>Preserved soil (plants + microbes)</td></tr>
+        <tr><td class="num">~356 mya</td><td></td><td>Land and shallow water at the equator → swamps</td></tr>
+        <tr><td class="num">350 mya–now</td><td>Abundant land animals, including humans</td><td></td></tr>
+        <tr><td class="num">~300 mya</td><td>Swamp plants; 21-inch dragonfly (oxygen peak)</td><td></td></tr>
+        <tr><td class="num">Today</td><td></td><td>Modern continents; 78% N₂, 21% O₂</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="block">
+    <h3>Misconceptions to listen for</h3>
+    <div class="mis">
+      <div><s>"Earth always had oxygen."</s> Free O₂ was near 0% until ~2.4 bya. Life made it.</div>
+      <div><s>"Evolution happens at a steady pace."</s> Life changed slowly for billions of years, then very fast in the last billion as oxygen rose.</div>
+      <div><s>"Animals or trees made the first oxygen."</s> Ocean microbes did, 2+ billion years before plants.</div>
+      <div><s>"Oxygen showed up in the air right after photosynthesis started."</s> No. It reacted with dissolved iron first (banded iron formations). Only after that could it build up in the air (red beds).</div>
+      <div><s>"Carbon-14 dates everything old."</s> C-14 only works from 100 to 70,000 years. 200,000-year-old human fossils need K-40 (Day 3, Q3).</div>
+      <div><s>"After 2 half-lives it's all gone."</s> Half of the remaining amount decays each time: 100 → 50 → 25 → 12.5%.</div>
+      <div><s>"If two things happen at the same time, one caused the other."</s> That is correlation. Causation needs a mechanism, like iron + O₂ → rust.</div>
+      <div><s>"Extinctions are only bad."</s> They open niches. Mammals took over after the dinosaurs.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Key vocabulary</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Coevolution</div>Two things evolving together, each causing change in the other: here, life and Earth's systems.</div>
+      <div class="card"><div class="lbl">Photosynthesis</div>Light + water + CO₂ → glucose + oxygen.</div>
+      <div class="card"><div class="lbl">Aerobic respiration</div>Using oxygen to release energy from food. It is far more efficient than doing it without oxygen.</div>
+      <div class="card"><div class="lbl">Eukaryote / prokaryote</div>Complex cells with a nucleus / simple cells without one.</div>
+      <div class="card"><div class="lbl">Banded iron formation</div>Ocean rock with red iron-oxide (rust) layers. The first oxygen in the rock record.</div>
+      <div class="card"><div class="lbl">Red beds</div>Land sediments turned red by oxygen in the air. Evidence of atmospheric O₂.</div>
+      <div class="card"><div class="lbl">Stromatolite</div>Layered structure built by mats of microbes.</div>
+      <div class="card"><div class="lbl">Half-life</div>The time for half of a radioactive parent isotope to decay.</div>
+      <div class="card"><div class="lbl">Biosignature</div>Any sign that life was present: fossils, chemicals, or changes life made to its environment.</div>
+      <div class="card"><div class="lbl">Feedback</div>A change in one system causes a change in another, which then causes more change in the first.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Pacing and logistics notes</h3>
+    <ul>
+      <li><b>Period length.</b> Every plan assumes 50 minutes. For 45-minute periods, cut the Do Now to 3 minutes and move the item marked <i>flex</i> on each day to homework.</li>
+      <li><b>Do Now / Exit Slip boxes.</b> The packet's cover pages have boxes for Classes 1–7. Days 1–7 here use them in order. On Day 8, students write on the back of the performance-task handout.</li>
+      <li><b>Outside New York?</b> Explore Part 2 (half-life dating) is written for the NYS ESSRT and is optional elsewhere. Skipping it frees about 15 minutes on Day 3.</li>
+      <li><b>Iron nail timing.</b> The reveal needs at least 3 days of rusting. Set it up on Day 1 and reveal it on Day 4.</li>
+      <li><b>Collect the timelines</b> at the end of Days 2 and 3. Students use them again on Days 4–6, so roll the posters up and label them by group.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>How the homework stays AI-proof</h3>
+    <p>Each night's homework is a <b>hand-drawn model</b>: a diagram, map, graph or comic. Four rules make it hard to outsource:</p>
+    <ul>
+      <li><b>Paper and pencil only.</b> No printed or digitally made images, which makes copy-pasting AI output useless.</li>
+      <li><b>Every task references something only your class has.</b> Examples: their group's timeline arrows, the nail demo result, or their own Day 1 brainstorm.</li>
+      <li><b>Every drawing has one personal "I chose…" annotation</b> explaining a decision the student made.</li>
+      <li><b>30-second check the next day.</b> During the Do Now, pick 3–4 students to explain one part of their drawing out loud. If they can't explain it, the work wasn't theirs.</li>
+    </ul>
+  </section>
+
+  <div class="pager"><span></span><a class="next" href="#day-1"><small>Start</small>Day 1 · Engage →</a></div>
+</div>
+
+<!-- ===================== DAY 1 ===================== -->
+<div class="view" id="day-1" data-phase="engage" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 1 · Engage</div>
+    <h2>The Pace of Evolution</h2>
+    <p class="q">How has the pace of evolution changed over the past 4 billion years?</p>
+    <div class="tags"><span class="tag">Packet pp. 2–3</span><span class="tag">Pairs</span><span class="tag">Domino Discover</span><span class="tag">Set up the nail demo</span><span class="tag">ESSRT pp. 6–7</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Earth formed ~4.6 bya, and life appeared within about the first billion years.</li>
+      <li>Life stayed single-celled for most of Earth's history. Most complex life appeared in the <b>last billion years</b>, so the pace of evolution sped up.</li>
+      <li>Students have at least one testable idea for <i>why</i> it sped up, such as oxygen, photosynthesis, water or the ozone layer.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Students write in the Class 1 Do Now box. Pick an option below.</p></div></li>
+      <li><div class="t">5–10</div><div><h4>Launch conversation</h4><p>Recall the end of the last 5E, when life appeared on Earth. Ask: <i>How do you think life got from that to humans today? What conditions might have been necessary? How could that help scientists search for life on other planets?</i></p><p>Point to the Driving Question Board questions: <i>Has Earth always had an atmosphere? How has the atmosphere changed, and how did that affect life?</i></p><p class="say">"Today we start with what we know: when different kinds of life show up on Earth."</p></div></li>
+      <li><div class="t">10–13</div><div><h4>Set up the iron nail demo</h4><p>Set it up in front of the class: Tube A (nail partly in water, open to air) and Tube B (nail fully under water with an oil layer on top). Students write a one-line prediction in the margin. Don't explain why yet. You reveal it on Day 4.</p></div></li>
+      <li><div class="t">13–25</div><div><h4>Pairs: Pace of Evolution diagram, Q1–6</h4><p>Pairs study the spiral diagram (p. 2) and answer Q1–6. Circulate and use the conferring questions. Push for <b>numbers with units</b> (billion years).</p></div></li>
+      <li><div class="t">25–35</div><div><h4>Brainstorm table</h4><p>Pairs write 2–5 ideas for what influenced the speed of evolution, plus evidence or scientific ideas for each (p. 3). Remind them to use what they learned about the solar system and Earth's formation.</p></div></li>
+      <li><div class="t">35–44</div><div><h4>Domino Discover</h4><p>Each pair shares one idea, in order around the room. No repeats, so each pair adds something new or builds on the last idea. Record ideas on chart paper titled <b>"Our first ideas: What sped up evolution?"</b> Keep it for Day 8.</p></div></li>
+      <li><div class="t">44–47<small>flex</small></div><div><h4>ESSRT pp. 6–7 highlight (NYS)</h4><p>One highlighter color for events about living things and another for non-living events. Mark the events that also appear on the Engage diagram. Assign it as homework if time runs short.</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Exit slip + preview</h4><p class="say">"Tomorrow you'll investigate your ideas using the real fossil and rock record."</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Earth clock</div><p>If all 4.6 billion years of Earth's history were squeezed into one 24-hour day, at what time do humans show up? Guess and explain.</p><div class="ans"><b>Answer:</b> about 11:59:56 pm, in the last ~4 seconds. Use this to set up "the pace changed."</div></div>
+      <div class="card"><div class="lbl">Option B · Needs of life</div><p>List three things living things need to survive. Which of them do you think early Earth had 4 billion years ago?</p><div class="ans">Likely: water, energy/food, a safe temperature, oxygen. The oxygen answer is the one to come back to.</div></div>
+      <div class="card"><div class="lbl">Option C · Atmosphere</div><p>Has Earth's air always been the same as it is now? Give one reason for your answer.</p><div class="ans">Surfaces the "always had oxygen" misconception early.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Where is Earth's formation on the diagram? How did you read the scale?<span>Checks that they read the spiral as billions of years ago.</span></li>
+      <li>Which stretch of the diagram has the most events crowded together? What does that tell you?<span>Target: the last billion years.</span></li>
+      <li>How long did life stay as single, simple cells? Why might that be?</li>
+      <li>Where does "Atmospheric oxygen" appear on the diagram? What comes right before and right after it?<span>Lead-in to photosynthesis → oxygen → complex cells.</span></li>
+      <li>What would need to change on Earth for bigger, more complex life to survive?</li>
+      <li>How could you test that idea? What evidence would you look for in rocks?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Q1–6 · hinge question</div>
+      <h4>Which statement is best supported by the diagram?</h4>
+      <ul class="opts">
+        <li>A. Life evolved at a steady pace over 4 billion years.<em>Assumes evolution is linear.</em></li>
+        <li class="right">B. Most of the variety of complex life appeared in the last billion years.<em>Correct.</em></li>
+        <li>C. Complex cells appeared before simple cells.<em>Misread the spiral direction.</em></li>
+        <li>D. Humans appeared soon after life began.<em>Doesn't grasp the time scale.</em></li>
+      </ul>
+      <p>Students hold up 1–4 fingers. If more than 20% miss it, re-read the spiral together, tracing it with your finger from 4.6 bya to now.</p>
+    </div>
+    <div class="cfu">
+      <div class="when">During brainstorm</div>
+      <h4>Show me with your hands</h4>
+      <p>"Hands wide apart = a long time. How long from simple cells to complex cells? From complex cells to animals? From dinosaurs to humans?" Their hands should get closer together each time.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Pace of Evolution Q1–6<small>p. 2–3 · accept reasonable readings of the diagram (±0.3 billion years)</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. When did the Earth form?</div><p class="aa">About <b>4.6 billion years ago</b> (the diagram shows ~4.5–4.6).</p></div>
+      <div class="qa"><div class="qq">2. How long did it take for the first signs of life to appear?</div><p class="aa">Prokaryotes appear around 4–3.8 bya, so roughly <b>0.6–0.8 billion years</b> (600–800 million years) after Earth formed.</p></div>
+      <div class="qa"><div class="qq">3. After simple cells appeared, how long until complex cells (with nuclei)?</div><p class="aa">Eukaryotes appear ~2 bya, so about <b>2 billion years</b> after the first simple cells.</p></div>
+      <div class="qa"><div class="qq">4. After complex cells appeared, how long until cells that live clustered together?</div><p class="aa">Multicellular life (sponges/fungi) appears ~1 bya, so about <b>1 billion years</b>.</p></div>
+      <div class="qa"><div class="qq">5. After clustered cells, how long until animals like jellyfish and worms?</div><p class="aa">Cambrian explosion ~0.54 bya, so about <b>400–500 million years</b>.</p></div>
+      <div class="qa"><div class="qq">6. How much change has occurred in the last billion years?</div><p class="aa"><b>Most of it.</b> Sponges and fungi, corals, the Cambrian explosion, fish, insects, plants on land, amphibians, reptiles, dinosaurs, mammals, birds, flowers, primates and humans all appeared in the last billion years. The pace sped up dramatically.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Brainstorm table: strong sample ideas<small>p. 3 · there is no single right answer; look for idea + evidence</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Idea</th><th>Evidence / scientific idea</th></tr></thead><tbody>
+        <tr><td>Oxygen built up in the atmosphere</td><td>"Atmospheric oxygen" appears on the diagram after photosynthesis; complex cells and animals come after it.</td></tr>
+        <tr><td>Photosynthesis evolved</td><td>It makes food and oxygen; the diagram shows photosynthesis early, then life gets more complex.</td></tr>
+        <tr><td>Liquid water was present</td><td>Liquid water appears on the diagram just before the first prokaryotes; all known life needs water.</td></tr>
+        <tr><td>An ozone layer formed</td><td>Life moved onto land late; something had to block UV first.</td></tr>
+        <tr><td>Earth's climate became stable</td><td>Earth's early surface was hot and violent (impacts, lava), as in the last 5E.</td></tr>
+        <tr><td>More species → more interactions → faster change</td><td>Once multicellular life appeared, new groups appeared faster and faster.</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Look and listen for:</b> evolution began ~4 bya · photosynthesis ~3.5 bya · complex cells ~2 bya · animals ~1 bya · life "exploded" in the last billion years · "Why did evolution get faster?" · "Did oxygen play a role?" · "Did water play a role?"</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Which time gap on the diagram surprised you most? Use numbers from the diagram in your answer.</p><div class="ans">A strong answer names a gap with numbers, e.g. "2 billion years from simple to complex cells."</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Name one factor you think sped up evolution, and one kind of evidence in rocks or fossils that could test your idea.</p><div class="ans">e.g. "Oxygen; look for rocks that only form when oxygen is around."</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>The 24-Hour Earth Clock</h4>
+      <p>Draw a large clock face by hand (use a cup or plate to trace the circle). One full day = 4.6 billion years, so <b>1 hour ≈ 192 million years</b>. Mark and label at least <b>6 events</b> from today's diagram at the correct time: Earth forms, first life, photosynthesis, complex cells, animals (Cambrian), dinosaurs, humans.</p>
+      <ul class="checks">
+        <li>Hand-drawn clock with all 24 hours marked</li>
+        <li>6+ events placed at the correct time, with the math shown in the margin for at least two</li>
+        <li>Shade the part of the clock where life was <i>only single cells</i></li>
+        <li>"I chose…" note: which idea from <b>our class Domino Discover chart</b> do you think explains the crowded end of the clock?</li>
+      </ul>
+      <p class="why">Answers for checking: life ~3:00–5:00 am · photosynthesis ~5:30 am · complex cells ~1:30 pm · Cambrian ~9:10 pm · dinosaurs ~10:50 pm · humans ~11:59:56 pm.</p>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#overview"><small>Back</small>← Before you teach</a><a class="next" href="#day-2"><small>Next</small>Day 2 · Build the timeline →</a></div>
+</div>
+
+<!-- ===================== DAY 2 ===================== -->
+<div class="view" id="day-2" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 2 · Explore</div>
+    <h2>Building the Fossil Timeline</h2>
+    <p class="q">What can the fossil record tell us about the evolution of living things and Earth's systems over the past 4 billion years?</p>
+    <div class="tags"><span class="tag">Packet p. 4 (Part 1)</span><span class="tag">Table groups</span><span class="tag">24 fossil cards per group</span><span class="tag">Chart paper</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Fossils and rocks are dated, so scientists can place biological and geological events on one timeline.</li>
+      <li>Life events (top half) and Earth-system events (bottom half) happen in a pattern: <b>photosynthesis comes before the first oxygen-bearing rocks</b>.</li>
+      <li>The last billion years is crowded with events, which matches what they saw on Day 1.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Class 2 box. While students write, call on 3–4 of them to explain one part of last night's Earth clock.</p></div></li>
+      <li><div class="t">5–11</div><div><h4>Launch</h4><p class="say">"Our unit is about whether life could exist on other planets. To know what to look for out there, we first need to know how life evolved here and what signals it left behind."</p><p>Ask: <i>In past science classes, how have you investigated Earth's history? What could we observe, on Earth or other planets, that gives clues about Earth's past?</i></p><p>Listen for: "We dated rocks to learn Earth's history" and "Fossils show the history of living things."</p></div></li>
+      <li><div class="t">11–15</div><div><h4>Set up the poster</h4><p>Hand out the packet, a card set and two sheets of chart paper taped end to end to each group. Model it: draw a horizontal line across the middle, mark 4, 3, 2, 1 billion years ago and Now. Label the top <b>Life on Earth</b> and the bottom <b>Other Earth's Systems</b>.</p><p><b>Tip:</b> the last billion years gets crowded. Suggest groups stretch the 1-bya-to-now section, or use the Timeline Poster Template.</p></div></li>
+      <li><div class="t">15–40</div><div><h4>Groups sort and place the cards</h4><p>Groups read each card, decide whether it goes on top (life) or bottom (Earth systems), and place it by date. Tape them down only after the group agrees. Confer with every group (questions below).</p><p>Map cards (Rodinia, Carboniferous, Modern World) are optional outside NYS but help with ESSRT pp. 6–7.</p></div></li>
+      <li><div class="t">40–46</div><div><h4>Model one causal arrow</h4><p>Pause the class. Hold up two cards: <b>Stromatolites with photosynthesis (2.7 bya)</b> and <b>Banded Iron Formation (2.5 bya)</b>. Read both captions aloud and point out the shared word <i>oxygen</i>. Draw a <b>red</b> arrow from the stromatolites to the BIF and write on it: <i>"Oxygen from photosynthesis rusted iron in the ocean."</i></p><p class="say">"Tomorrow you'll add at least five arrows like this."</p></div></li>
+      <li><div class="t">46–50</div><div><h4>Exit slip + clean-up</h4><p>Roll up the posters and label them with group names. Collect the cards in envelopes.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Order it</div><p>Put these in order from oldest to newest: dinosaurs, first cells, first land plants, humans, first animals.</p><div class="ans"><b>Answer:</b> first cells → first animals → first land plants → dinosaurs → humans.</div></div>
+      <div class="card"><div class="lbl">Option B · Spheres</div><p>What is the difference between the <b>biosphere</b> and the <b>geosphere</b>? Give one example of each.</p><div class="ans">Biosphere = all living things (e.g. algae). Geosphere = rocks, soil, minerals and the solid Earth (e.g. a red rock layer).</div></div>
+      <div class="card"><div class="lbl">Option C · Fossil age</div><p>Name two ways scientists figure out how old a fossil is.</p><div class="ans">Its position in rock layers (deeper = older, relative dating) and radioactive (radiometric) dating of nearby rock.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What patterns do you notice in how plants, animals and rocks change?</li>
+      <li>How quickly did evolution happen billions of years ago? How quickly in the last billion years?</li>
+      <li>Why did you put this card on the bottom half and not the top?<span>Banded iron, red beds, soil and the maps are Earth systems.</span></li>
+      <li>Which word shows up on a lot of cards? Why might that matter?<span>Oxygen. Highlight it on the cards.</span></li>
+      <li>How do you think plants influenced Earth's systems? How did Earth's systems influence plants?</li>
+      <li>How do you think plants influenced animals?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">Minute ~25 · quick poll</div>
+      <h4>Which card belongs on the bottom half (Other Earth's Systems)?</h4>
+      <ul class="opts">
+        <li>A. Stromatolite formation<em>A stromatolite is built by microbes, so it's life.</em></li>
+        <li class="right">B. Banded iron formation<em>Correct: a rock formed by a chemical reaction.</em></li>
+        <li>C. Early eukaryotic cells</li>
+        <li>D. 21-inch dragonfly fossil</li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">Before modeling the arrow · cold call</div>
+      <h4>"Which came first: photosynthesis or the first oxygen in rocks? By how much?"</h4>
+      <p>Answer: photosynthesis (2.7 bya), about 200 million years before the banded iron (2.5 bya). If students say "at the same time," have them re-read the dates on the cards.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key · correct card placement</h3>
+    <details class="key"><summary><span>Where each card goes<small>Use this to check timelines quickly</small></span></summary><div class="keybody">
+      <p><b>Top (Life on Earth), oldest → newest:</b> Stromatolites 3.4 bya · Stromatolites with photosynthesis 2.7 · Eukaryotic cells 2.1 · Cyanobacteria 2.1 · Multicellular algae 1 bya · Multicellular organisms 600 mya · Earliest soft animals 560 · Coral reef 470–548 · Ocean animal diversity 518 · First land plants 457–455 · Oldest land animal 425 · Vascular plants 420 · Abundant land animals 350–now · Swamp plants 300 · 21-inch dragonfly 300.</p>
+      <p><b>Bottom (Other Earth's Systems):</b> Acasta Gneiss 4 bya · Banded iron formation 2.5 · Red beds 2 · Rodinia breakup ~1 bya (900 Ma map) · Recurrence of BIFs 750 mya · Late Proterozoic map 650 · Preserved soil 407 · Early Carboniferous map 356 · Modern world map (now).</p>
+      <div class="note"><b>Judgment call:</b> some students put <i>preserved soil</i> on top because plants and microbes made it. Accept it if they can defend it. That argument is coevolution, which is the point of the lesson.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Pick one card from the top half and one from the bottom half that you think are connected. Explain the connection in one sentence.</p><div class="ans">e.g. "First land plants (457 mya) → preserved soil (407 mya): plant roots and microbes helped make soil."</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Which card was hardest for your group to place? Why?</p><div class="ans">Tells you who is struggling with reading dates and who with the life/non-life categories.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Cause-and-Effect Comic Strip</h4>
+      <p>Draw a <b>4-panel comic</b> (stick figures are fine) that tells the story of the arrow we modeled in class: microbes in the ocean → photosynthesis → oxygen → iron rusts → banded iron formation.</p>
+      <ul class="checks">
+        <li>4 panels, each with a date in billions of years</li>
+        <li>Panel 3 shows what happens to iron when oxygen meets it, at the level of atoms or particles</li>
+        <li>Each panel has a one-sentence caption using a vocab word: photosynthesis, oxygen, iron oxide, banded iron formation</li>
+        <li>"I chose…" note: which other card on <b>your group's poster</b> could be panel 5, and why?</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-1"><small>Back</small>← Day 1 · Engage</a><a class="next" href="#day-3"><small>Next</small>Day 3 · Arrows and dating →</a></div>
+</div>
+
+<!-- ===================== DAY 3 ===================== -->
+<div class="view" id="day-3" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 3 · Explore</div>
+    <h2>Arrows, Analysis and Dating Fossil Layers</h2>
+    <p class="q">How do Earth's systems and life affect each other, and how do we know when things happened?</p>
+    <div class="tags"><span class="tag">Packet pp. 4–7 (Part 1 Q1–6, Part 2)</span><span class="tag">Table groups → individual</span><span class="tag">Timeline Checklist</span><span class="tag">ESSRT p. 15</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Earth's systems affect life (nutrients, habitats, oxygen). Life affects Earth's systems (atmosphere, rock formation, soil).</li>
+      <li>Placing events in time order only shows <b>correlation</b>. Causation needs a mechanism.</li>
+      <li>Reconstructing Earth's history is hard: the rock cycle and plate tectonics destroy and change old rock.</li>
+      <li>Each half-life leaves half of what was left (100 → 50 → 25 → 12.5 → 6.25%). Choose an isotope whose dating range fits the sample's age.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Class 3 box. Call on 3–4 students to explain a panel of their comic.</p></div></li>
+      <li><div class="t">5–22</div><div><h4>Groups add arrows (Analysis Q1)</h4><p>Hand out the <b>Timeline Checklist</b>: at least 5 arrows showing causal relationships; at least 3 crossing the midline; an annotation on every arrow; the role of oxygen shown clearly; increasing complexity shown clearly. Red = causal, blue = increasing complexity.</p><p>Check off each group's timeline as it finishes. This is the gate for Day 4.</p></div></li>
+      <li><div class="t">22–31</div><div><h4>Individual: Analysis Q2–6</h4><p>Students write answers on pp. 4–5, using their group's poster as evidence.</p></div></li>
+      <li><div class="t">31–34</div><div><h4>Mini-lesson: half-life</h4><p>Draw on the board: 100% → 50% → 25% → 12.5% → 6.25%. Each step is one half-life. Work U-235 row 1 together: 713 million years, 50%.</p></div></li>
+      <li><div class="t">34–47</div><div><h4>Part 2: Dating Fossil Layers</h4><p>Pairs complete the U-235 and Rb-87 tables, Q2a–c, Q3 and the Q4 table. Calculators allowed. <b>Watch Q3:</b> most students will say Carbon-14, so send them back to the "Useful Dating Range" column.</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Exit slip</h4><p>Collect the posters again.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Half-life warm-up</div><p>A sample has 25% of its original radioactive parent left. How many half-lives have passed?</p><div class="ans"><b>Answer:</b> 2 (100 → 50 → 25).</div></div>
+      <div class="card"><div class="lbl">Option B · Correlation</div><p>Ice cream sales and sunburns both go up in July. Does ice cream cause sunburns? What is really going on?</p><div class="ans">No. Both are caused by hot, sunny weather. It's correlation, not causation. This sets up Q5.</div></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>From memory, sketch the arrow your group drew yesterday (or the one we modeled) and label both ends.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What evidence on the two cards makes you think one <i>caused</i> the other, rather than just happening first?</li>
+      <li>Which of your arrows cross the midline? What does a crossing arrow mean?<span>Life affecting the geosphere, or the reverse.</span></li>
+      <li>Where is oxygen on your poster? Can you trace one "oxygen path" from left to right?</li>
+      <li>If you only had the photos and no captions, which cards could you still figure out?</li>
+      <li>Why does each half-life leave half of what's <i>left</i>, not half of what you <i>started</i> with?</li>
+      <li>Why not use Rubidium-87 for everything? It works up to 4.6 billion years.</li>
+      <li>How do these isotopes help us put dates on the fossil cards?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the mini-lesson · whiteboards</div>
+      <h4>U-235 has a half-life of 713 million years. How much is left after 1.426 billion years?</h4>
+      <ul class="opts">
+        <li>A. 50%<em>Counted only one half-life.</em></li>
+        <li class="right">B. 25%<em>Correct: 2 half-lives.</em></li>
+        <li>C. 12.5%</li>
+        <li>D. 0%<em>Thinks two halves make a whole, so it's all gone.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">Before Q3 · fist to five</div>
+      <h4>"Carbon-14 can date a 200,000-year-old fossil." Fist = disagree, 5 = totally agree.</h4>
+      <p>Correct: <b>disagree</b>. C-14's useful range is 100–70,000 years. If many students show 4–5, stop and read the range column together.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 1 · Analysis Q1–6<small>pp. 4–5</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Which events impacted other events? (arrows)</div><div class="aa"><p>Strong arrows (★ = crosses the midline):</p><ul>
+        <li>★ Stromatolite photosynthesis (2.7 bya) → Banded iron (2.5): O₂ reacted with dissolved iron → rust layers.</li>
+        <li>★ Cyanobacteria / oxygen → Red beds (2 bya): O₂ in the air weathered rock red.</li>
+        <li>★ Banded iron / rising O₂ → Eukaryotic cells (2.1): aerobic respiration needs oxygen.</li>
+        <li>★ Rodinia breakup (~1 bya) → Multicellular algae: erosion added nutrients to the ocean.</li>
+        <li>★ Multicellular algae (oxygen burst) → BIF recurrence (750 mya): more O₂ formed more iron oxide.</li>
+        <li>Multicellular algae → Multicellular organisms (600) → Soft animals (560) → Ocean diversity (518): more O₂ → more energy → more complex life.</li>
+        <li>★ Land plants (457) / vascular plants (420) → Preserved soil (407): roots and microbes made soil.</li>
+        <li>★ Soil → more vascular plants: soil supported bigger plants.</li>
+        <li>Land plants → Oldest land animal (425): food and oxygen on land.</li>
+        <li>★ Equatorial land and shallow water (356) → Swamp plants (300): good conditions for plant growth.</li>
+        <li>Swamp plants → 21-inch dragonfly (300): high O₂ allowed giant insects.</li>
+      </ul></div></div>
+      <div class="qa"><div class="qq">2. How do Earth's systems seem to affect life?</div><p class="aa">Earth's systems set the conditions life can live in. When Rodinia broke up (~1 bya), erosion added nutrients to the oceans, and multicellular algae became abundant. Land and shallow seas near the equator (~356 mya) made swamps where plants thrived. Once oxygen built up in the oceans and atmosphere, organisms could use aerobic respiration. That allowed eukaryotes (2.1 bya), multicellular life (600 mya) and animals (560 mya).</p></div>
+      <div class="qa"><div class="qq">3. How does life seem to affect Earth's systems?</div><p class="aa">Life changed the atmosphere and the rocks. Photosynthetic microbes released oxygen, which rusted iron into banded iron formations (2.5 bya) and weathered land into red beds (2 bya). Plants and microbes on land created soil (407 mya). Plants raised oxygen to its peak around 300 mya.</p></div>
+      <div class="qa"><div class="qq">4. How easy is it to tell what the fossils show without captions?</div><p class="aa">Very hard. Many are microscopic (cyanobacteria, eukaryotic cells) and look like dots or smudges. Stromatolites and banded iron just look like striped rock. Scientists need microscopes, chemical tests and context such as the rock layer and its age to identify them.</p></div>
+      <div class="qa"><div class="qq">5. What evidence supports your conclusions? Correlative or causative? What else would you need?</div><p class="aa">The evidence is dated fossils and rocks placed in order. Most of it is <b>correlative</b>: it shows events happened one after another, not that one caused the other. Some links have a known mechanism that makes them more causal, e.g. iron only turns to iron oxide when oxygen is present, as in the nail demo. To strengthen the conclusions we'd need more samples from many locations, more precise dates, chemical signatures of life, and experiments showing the mechanisms.</p></div>
+      <div class="qa"><div class="qq">6. Why is it hard to make a complete timeline of geosphere and biosphere changes?</div><p class="aa">The rock cycle keeps destroying and changing old rock. It gets eroded, melted, or metamorphosed by heat and pressure. Plate tectonics subducts crust back into the mantle. So very old rock (like the 4-billion-year-old Acasta Gneiss) is rare, and fossils inside it get damaged or erased. Soft-bodied and microscopic organisms rarely fossilize at all, which leaves big gaps.</p></div>
+    </div></details>
+
+    <details class="key"><summary><span>Part 2 · Half-life tables and Q2–4<small>pp. 6–7</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th class="num">Half-life</th><th class="num">U-235 left</th><th class="num">Years</th><th class="num">Rb-87 left</th><th class="num">Years</th></tr></thead><tbody>
+        <tr><td class="num">0</td><td class="num">100%</td><td class="num">0</td><td class="num">100%</td><td class="num">0</td></tr>
+        <tr><td class="num">1</td><td class="num">50%</td><td class="num">713 million</td><td class="num">50%</td><td class="num">48.8 billion</td></tr>
+        <tr><td class="num">2</td><td class="num">25%</td><td class="num">1.426 billion</td><td class="num">25%</td><td class="num">97.6 billion</td></tr>
+        <tr><td class="num">3</td><td class="num">12.5%</td><td class="num">2.139 billion</td><td class="num">12.5%</td><td class="num">146.4 billion</td></tr>
+        <tr><td class="num">4</td><td class="num">6.25%</td><td class="num">2.852 billion</td><td class="num">6.25%</td><td class="num">195.2 billion</td></tr>
+      </tbody></table></div>
+      <div class="qa"><div class="qq">2a. About how much U-235 remains in a 2.5-billion-year-old sample?</div><p class="aa">2.5 billion is between 3 half-lives (2.139 billion, 12.5%) and 4 (2.852 billion, 6.25%). That leaves <b>roughly 9%</b> (exact ≈ 8.8%). Accept any answer between 6.25% and 12.5% with reasoning.</p></div>
+      <div class="qa"><div class="qq">2b. Why is it harder to determine how much Rb-87 remains?</div><p class="aa">Rb-87's half-life (48.8 billion years) is far longer than 2.5 billion years. Not even one half-life has passed, so about 96–97% of the Rb-87 is still there. The change is too small to read from the table and hard to measure precisely.</p></div>
+      <div class="qa"><div class="qq">2c. Advantage of a shorter half-life?</div><p class="aa">More of the isotope decays during the sample's lifetime, so the change is bigger and easier to measure. That gives a more precise age, as long as some parent isotope is still left.</p></div>
+      <div class="qa"><div class="qq">3. Which isotope dates early human fossils (~200,000 years)?</div><p class="aa"><b>Potassium-40.</b> Its useful dating range is 100,000 to 4.6 billion years, which includes 200,000. Carbon-14 only works from 100 to 70,000 years, so 200,000 years is out of its range. K-40 dates volcanic rock (tuff or lava) in the layers above and below the fossils.</p><div class="note"><b>Expect "Carbon-14."</b> Many students know C-14 is used for "old bones." Ask them to find 200,000 in the range column. If a student picks C-14, grade the Q4 table on correct half-life math (5,730 · 11,460 · 17,190 · 22,920 years) and the Q3 reasoning separately.</div></div>
+      <div class="qa"><div class="qq">4. Half-life table for the chosen isotope (K-40)</div>
+        <div class="scroll"><table><thead><tr><th class="num">Half-life</th><th class="num">K-40 left</th><th class="num">Years</th></tr></thead><tbody>
+          <tr><td class="num">0</td><td class="num">100%</td><td class="num">0</td></tr>
+          <tr><td class="num">1</td><td class="num">50%</td><td class="num">1.3 billion</td></tr>
+          <tr><td class="num">2</td><td class="num">25%</td><td class="num">2.6 billion</td></tr>
+          <tr><td class="num">3</td><td class="num">12.5%</td><td class="num">3.9 billion</td></tr>
+          <tr><td class="num">4</td><td class="num">6.25%</td><td class="num">5.2 billion</td></tr>
+        </tbody></table></div></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Why can't carbon-14 be used to date a 2.5-billion-year-old banded iron formation? Give two reasons.</p><div class="ans">(1) It's far outside C-14's range (70,000 years max), so no C-14 would be left. (2) C-14 dates organic material, and banded iron is rock.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Pick one arrow on your timeline. Is it causal or only correlational? How do you know?</p><div class="ans">Strong answers name the mechanism, e.g. "causal, because iron only rusts when oxygen is present."</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Decay Graph and Rock Layer Cross-Section</h4>
+      <p><b>Part 1:</b> On graph paper (or a hand-drawn grid), plot the U-235 decay curve: x-axis = time in billions of years, y-axis = % remaining. Plot the 5 points from today's table and connect them with a <i>smooth curve</i>, not straight lines. Draw a dashed line at 2.5 billion years and estimate the % left.</p>
+      <p><b>Part 2:</b> Draw a cross-section of 4 rock layers: a fossil human jaw (200,000 yrs), a coral reef (500 mya), a banded iron formation (2.5 bya), and Acasta Gneiss (4 bya). Next to each layer, write which isotope you'd use and why.</p>
+      <ul class="checks">
+        <li>Labeled axes with units; 5 plotted points; a curved line</li>
+        <li>Layers in the correct order (oldest at the bottom)</li>
+        <li>An isotope for each layer that fits its useful dating range</li>
+        <li>"I chose…" note: which layer was hardest to pick an isotope for, and why?</li>
+      </ul>
+      <p class="why">Reasonable isotopes: human jaw layer → K-40 · coral → U-235 or K-40 (volcanic ash nearby) · BIF → U-235 or Rb-87 · gneiss → Rb-87, U-238 or Sm-147.</p>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-2"><small>Back</small>← Day 2 · Build the timeline</a><a class="next" href="#day-4"><small>Next</small>Day 4 · Oxygen and sensemaking →</a></div>
+</div>
+
+<!-- ===================== DAY 4 ===================== -->
+<div class="view" id="day-4" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 4 · Explore</div>
+    <h2>Oxygen in Earth's History</h2>
+    <p class="q">How do changes in oxygen line up with the events on our timeline?</p>
+    <div class="tags"><span class="tag">Packet pp. 8–10 (Part 3, See-Think-Wonder)</span><span class="tag">Nail demo reveal</span><span class="tag">Domino Discover</span><span class="tag">Investigation rubric</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Iron rusts only when oxygen is present. The red color in banded iron and red beds is <b>evidence that oxygen existed</b> when those rocks formed.</li>
+      <li>Atmospheric O₂ was ~0% until <b>~2.4 bya</b>, rose sharply around <b>850–540 mya</b>, and peaked around <b>300 mya</b>.</li>
+      <li>Photosynthetic organisms began making oxygen ~2.7 bya. Rising O₂ ~2.2 bya allowed eukaryotes, and later multicellular life. As plant life spread on land, so did animal life.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 4 box. Return the posters to the groups.</p></div></li>
+      <li><div class="t">4–12</div><div><h4>Iron nail reveal</h4><p>Show both tubes. Tube A (air) has rusted. Tube B (under oil, no air) has little or no rust. Ask: <i>What's the only difference between the tubes?</i> Then have students find the red cards on their posters (banded iron, red beds).</p><p class="say">"That red is iron oxide, the same stuff on this nail. It only forms when oxygen is around. So when scientists find these red rocks, they're confident oxygen was present then, and not before."</p><p>Groups add a note or arrow linking the nail to their BIF and red bed cards.</p></div></li>
+      <li><div class="t">12–27</div><div><h4>Part 3: Oxygen graph Q1–7</h4><p>Pairs compare the oxygen graph (p. 8) with their timeline. Confer: <i>How do these changes compare with your timeline? How can you explain them using your cards?</i></p></div></li>
+      <li><div class="t">27–36</div><div><h4>See-Think-Wonder (individual)</h4><p>Students complete the 5-row organizer on p. 10.</p></div></li>
+      <li><div class="t">36–45</div><div><h4>Domino Discover: whole-class summary</h4><p>Each group picks <b>one important idea</b> from their See-Think-Wonder. Groups share in sequence and build on each other. Chart the ideas. Check them against the look-fors below. If one is missing, send groups back to specific cards before moving to Explain.</p></div></li>
+      <li><div class="t">45–48<small>flex</small></div><div><h4>Rubric self-check + ESSRT</h4><p>Students self-assess with the Beginnings of Life Investigation Rubric. NYS: annotate ESSRT pp. 6–7 in colored pen showing when oxygen was rising or flat.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Predict</div><p>Before we look: which nail rusted, the one with air above the water or the one under oil? Why?</p><div class="ans">The one with air. Rusting needs oxygen, and the oil blocks it.</div></div>
+      <div class="card"><div class="lbl">Option B · Sketch</div><p>Sketch what you think a graph of oxygen in the air over the last 4 billion years looks like.</p><div class="ans">Keep these. Compare them with the real graph at minute 12.</div></div>
+      <div class="card"><div class="lbl">Option C · Source</div><p>Where does the oxygen you're breathing right now come from?</p><div class="ans">Photosynthesis by plants, algae and cyanobacteria. Over half comes from ocean phytoplankton.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>How do these changes in oxygen compare with the events on your timeline?</li>
+      <li>How can you explain the changes in oxygen using your cards?</li>
+      <li>Did the changes in oxygen <i>correlate with</i> or <i>cause</i> changes in the complexity of life? How could you tell the difference?</li>
+      <li>Photosynthesis started ~2.7 bya, but oxygen in the air stays near 0% until ~2.4. Where did that early oxygen go?<span>Into the iron in the oceans: banded iron formations.</span></li>
+      <li>What's happening on your timeline when oxygen is at its highest?<span>Swamp plants and giant dragonflies, ~300 mya.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the nail reveal · thumbs</div>
+      <h4>The nail under oil didn't rust because…</h4>
+      <ul class="opts">
+        <li>A. Oil is a chemical that stops iron from reacting.</li>
+        <li class="right">B. No oxygen could reach the iron.<em>Correct.</em></li>
+        <li>C. Water alone rusts iron, but oil dried it out.<em>Thinks water alone causes rust.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Part 3 · hinge question</div>
+      <h4>Atmospheric oxygen rose ~2.4 bya mainly because…</h4>
+      <ul class="opts">
+        <li>A. Volcanoes released oxygen gas.</li>
+        <li class="right">B. Photosynthetic microbes had been making O₂, and once iron in the oceans stopped absorbing it, it built up in the air.<em>Correct.</em></li>
+        <li>C. Early animals breathed it out.<em>Mixes up respiration and photosynthesis, and the timing.</em></li>
+        <li>D. Earth cooled and oxygen came out of the rocks.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 3 · Oxygen graph Q1–7<small>pp. 8–9</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. When did oxygen start to increase from nearly 0%?</div><p class="aa">About <b>2.4–2.5 billion years ago</b>, at the start of stage 2 (the Great Oxidation Event).</p></div>
+      <div class="qa"><div class="qq">2. When did oxygen start to increase sharply?</div><p class="aa">About <b>0.85 billion years ago</b> (850 mya), in stage 4, continuing to ~0.54 bya.</p></div>
+      <div class="qa"><div class="qq">3. When did oxygen reach its highest levels?</div><p class="aa">About <b>0.3 billion years ago</b> (~300 mya), at roughly 30–35% of the atmosphere, higher than today's 21%.</p></div>
+      <div class="qa"><div class="qq">4. How does this graph compare with your timeline?</div><p class="aa">They match. Photosynthesis (2.7 bya) comes just before oxygen first rises (~2.4 bya), and banded iron (2.5) and red beds (2.0) show up as oxygen rises. Eukaryotes (2.1) appear after the first rise. Oxygen stays low and flat for a long time while life stays mostly single-celled. The sharp rise ~850–540 mya lines up with abundant algae, the Rodinia breakup, recurring BIFs, then multicellular life (600), soft animals (560) and the Cambrian (518). The peak ~300 mya matches swamp plants and the giant dragonfly.</p></div>
+      <div class="qa"><div class="qq">5. Why did oxygen increase so sharply 2.1–2.4 bya?</div><p class="aa">Photosynthetic microbes (stromatolites 2.7 bya, cyanobacteria) had been releasing oxygen for hundreds of millions of years. At first it reacted with iron dissolved in the oceans, forming banded iron formations (2.5 bya), so it didn't build up. Once that iron was used up and the microbes kept multiplying, the extra O₂ escaped into the atmosphere. The red beds (2 bya) are evidence of that.</p></div>
+      <div class="qa"><div class="qq">6. How did the rise in oxygen affect the evolution of complex organisms?</div><p class="aa">Oxygen made aerobic respiration possible, which releases far more energy from food. More energy allowed bigger, more complex cells (eukaryotes, 2.1 bya) and later multicellular organisms (600 mya) and animals (560 mya). An ozone layer formed from the oxygen and blocked UV, which let life move onto land (~450 mya). High O₂ around 300 mya even allowed giant insects.</p></div>
+      <div class="qa"><div class="qq">7. How did the rise in complex organisms affect the planet?</div><p class="aa">Complex organisms, especially plants, changed Earth's systems. They added more O₂ to the air (the peak at ~300 mya), created soil (407 mya), sped up weathering of rock, built reefs, and formed swamps whose buried plants removed CO₂. Life became a force that reshapes the planet.</p></div>
+    </div></details>
+    <details class="key"><summary><span>See-Think-Wonder · sample responses<small>p. 10 · Wonder answers will vary; look for genuine questions</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Prompt</th><th>See</th><th>Think</th><th>Wonder (examples)</th></tr></thead><tbody>
+        <tr><td>Geological factors over time</td><td>Banded iron and red beds appear 2.5–2 bya; continents break up and move; soil appears 407 mya.</td><td>Rocks record when oxygen was present; tectonics moved nutrients and made habitats.</td><td>Could tectonics on another planet do the same?</td></tr>
+        <tr><td>Biological factors over time</td><td>Microbes → photosynthesis → eukaryotes → multicellular → animals → land life.</td><td>Life got more complex and more varied, faster over time.</td><td>Why did it take 2 billion years to get complex cells?</td></tr>
+        <tr><td>Patterns between geologic and biological</td><td>Photosynthesis comes right before oxygen rocks; complex life follows oxygen rises.</td><td>Life and Earth change each other in a chain (feedback).</td><td>Would life have stayed simple without photosynthesis?</td></tr>
+        <tr><td>Role of radioactive isotopes</td><td>Different isotopes have different half-lives and ranges.</td><td>Without them, the dates on our cards wouldn't exist; picking the right isotope matters.</td><td>How accurate are those dates?</td></tr>
+        <tr><td>Fossil record vs. oxygen graph</td><td>Oxygen rises right where complex life appears on our timeline.</td><td>Oxygen was a key ingredient for complex life.</td><td>Would oxygen on an exoplanet mean there is life there?</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Look and listen for (needed before Explain):</b> photosynthetic organisms began creating oxygen ~2.7 bya · oxygen is recorded by banded iron, red beds and other rocks · O₂ rose ~2.2 bya as photosynthesizers increased · that allowed eukaryotes, which use oxygen to harness energy · as O₂ rose, complexity rose (multicellular life, animals) · as plant life increased on land, so did animal life.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>What does the red color in banded iron formations tell scientists? Connect it to our nail demo.</p><div class="ans">Red = iron oxide (rust), which only forms with oxygen, as with the nail that had air. So oxygen was in the ocean 2.5 bya.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Photosynthesis began ~2.7 bya, but oxygen didn't build up in the air until ~2.4 bya. Why the delay?</p><div class="ans">The oxygen reacted with dissolved iron first (forming BIFs). It built up only after that iron was used up.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Oxygen Curve with Icons</h4>
+      <p>From memory first, then check with your packet: redraw the oxygen graph by hand (x-axis 4 bya → now, y-axis 0–35% O₂). Add <b>6 small hand-drawn icons</b> at the right times along the curve: stromatolite, rusty iron band, eukaryotic cell, jellyfish or worm, first land plant, giant dragonfly. Under the graph, draw our two nail tubes and label them "with O₂" and "no O₂."</p>
+      <ul class="checks">
+        <li>Labeled axes; the curve shows a flat start, a rise ~2.4 bya, a sharp rise ~0.8 bya and a peak ~0.3 bya</li>
+        <li>6 icons, each with a date</li>
+        <li>The nail sketch matches what <b>our class demo</b> actually showed</li>
+        <li>"I chose…" note: circle the icon you think matters most for intelligent life and explain why in one sentence</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-3"><small>Back</small>← Day 3 · Arrows and dating</a><a class="next" href="#day-5"><small>Next</small>Day 5 · Evidence of coevolution →</a></div>
+</div>
+
+<!-- ===================== DAY 5 ===================== -->
+<div class="view" id="day-5" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 5 · Explain</div>
+    <h2>Evidence of Coevolution</h2>
+    <p class="q">How did Earth's systems and living things coevolve?</p>
+    <div class="tags"><span class="tag">Packet pp. 11–12 (Part 1)</span><span class="tag">Pairs → table groups</span><span class="tag">Video: The Role of Oxygen in Earth's History</span><span class="tag">Scaffolded Explain Cards</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li><b>Coevolution</b> means evolving together. Earth's systems and life each changed the other.</li>
+      <li>The difference between <b>evidence</b> (what is in the fossil or rock record, the bold part of a card) and <b>reasoning</b> (the process that explains it).</li>
+      <li>Oxygen linked the two: microbes → O₂ → rocks and atmosphere changed → complex life → more O₂. That is a <b>feedback mechanism</b>.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Class 5 box. Call on 3–4 students to explain the icon they circled last night.</p></div></li>
+      <li><div class="t">5–10</div><div><h4>Launch: what is "coevolution"?</h4><p>Remind students that in Explore they found patterns in how life and Earth changed, and that the two seemed to influence each other. Hand out <i>Arguing for Coevolution of Earth and Life</i>. Break the word apart: <b>co-</b> (together) + <b>evolution</b> (change over time). Ask for an example from their posters.</p></div></li>
+      <li><div class="t">10–20</div><div><h4>Video + notes</h4><p>Show <b>The Role of Oxygen in Earth's History</b>. Students record ways oxygen changed Earth's surface (4 bullets, p. 11). Pause once halfway: <i>"Turn and tell your partner one thing you've written."</i></p></div></li>
+      <li><div class="t">20–36</div><div><h4>Pairs: Part 1 Evidence of Coevolution</h4><p>Pairs add evidence and reasoning for each of the 3 claims using their timeline, the oxygen graph and the video. Give the <b>Scaffolded Explain Cards</b> to pairs who need smaller claims.</p><p class="say">"Evidence is what you can see or test, the bold description and date on a card. Reasoning is the process that connects it to the claim, often the italic text."</p></div></li>
+      <li><div class="t">36–43</div><div><h4>Table groups share</h4><p>Pairs join to make groups of four and compare evidence for each claim. Each group stars its strongest E + R pair per claim. Confer.</p></div></li>
+      <li><div class="t">43–48</div><div><h4>Feedback mechanisms (whole class)</h4><p class="say">"Not all feedback is a loop that speeds itself up or cancels itself out. Sometimes it's a chain: one system changes, the other responds, and that response changes the first system again."</p><p>Draw on the board: microbes → O₂ → iron rusts / ozone forms → complex life → more photosynthesis → more O₂.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Word work</div><p>"Co-" means together. Using one example from your timeline, explain what "coevolution of Earth and life" might mean.</p></div>
+      <div class="card"><div class="lbl">Option B · Evidence or reasoning?</div><p>Label each statement E (evidence) or R (reasoning): (1) Banded iron formations are dated to 2.5 bya. (2) Iron only rusts when oxygen is present. (3) Eukaryotic fossils appear at 2.1 bya. (4) Aerobic respiration releases more energy.</p><div class="ans"><b>Answer:</b> 1 E · 2 R · 3 E · 4 R</div></div>
+      <div class="card"><div class="lbl">Option C · Spheres</div><p>Name two of Earth's spheres (atmosphere, hydrosphere, geosphere, biosphere) and describe one way they interact on our timeline.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Which pieces of evidence are you choosing to support this claim? Why those?</li>
+      <li>What scientific reasoning links each piece of evidence to the claim?</li>
+      <li>How do these pieces of evidence causally link to each other?</li>
+      <li>Is this evidence (something in the record) or reasoning (a process)? How can you tell?</li>
+      <li>Where does the video add evidence your cards don't have?<span>For example, the ozone layer and oxidized minerals.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">Before pair work · whiteboards</div>
+      <h4>Which statement is evidence, not reasoning?</h4>
+      <ul class="opts">
+        <li>A. Photosynthesis produces oxygen.</li>
+        <li class="right">B. Red beds of sedimentary rock are dated to about 2 billion years ago.<em>Correct: an observation from the record.</em></li>
+        <li>C. Animals need oxygen for aerobic respiration.</li>
+        <li>D. Oxygen reacts with iron to form rust.</li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">End of feedback discussion · cold call</div>
+      <h4>"Which chain shows coevolution, A or B?"</h4>
+      <p><b>A:</b> Rodinia breaks up → nutrients → algae bloom → more O₂ → more banded iron. <b>B:</b> Dinosaurs evolve → dinosaurs go extinct.</p>
+      <p>Answer: <b>A</b>. Earth changes life, which changes Earth again. B is only biology.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Video notes: ways oxygen changed Earth's surface<small>p. 11 · accept any 4</small></span></summary><div class="keybody">
+      <ul>
+        <li>Oxygen reacted with iron in the oceans → <b>banded iron formations</b> (rust layers on the sea floor).</li>
+        <li>Oxygen in the air weathered rocks on land → <b>red beds</b>; weathering of rock sped up.</li>
+        <li>Oxygen formed the <b>ozone layer</b>, which blocks UV radiation and made the land surface livable.</li>
+        <li>Oxygen reacted with other metals to make <b>new oxidized minerals</b>, such as blue and green copper minerals.</li>
+        <li>Oxygen helped build <b>soil</b>, through organisms that use aerobic respiration.</li>
+        <li>Oxygen reacted with methane, a greenhouse gas, which likely <b>cooled the climate</b> (possible global glaciation).</li>
+      </ul>
+      <div class="note"><b>Check the video before class</b> so you know which of these it emphasizes. The first four match the teacher materials' look-fors.</div>
+    </div></details>
+    <details class="key"><summary><span>Part 1 · Claim / Evidence / Reasoning table<small>pp. 11–12 · students don't need every row</small></span></summary><div class="keybody">
+      <p><b>Claim 1: Early life forms influenced oxygen levels in the oceans.</b></p>
+      <div class="scroll"><table><thead><tr><th>Evidence</th><th>Reasoning</th></tr></thead><tbody>
+        <tr><td>Stromatolites with evidence of photosynthesis appear ~2.7 bya.</td><td>Photosynthesis (light + water + CO₂ → glucose + O₂) generates oxygen, so these microbes were adding O₂ to the ocean.</td></tr>
+        <tr><td>Banded iron formations from the ocean are dated to ~2.5 bya.</td><td>The red bands are iron oxide, which only forms when oxygen mixes with dissolved iron, so O₂ was in the ocean then, right after photosynthesizers appeared.</td></tr>
+      </tbody></table></div>
+      <p><b>Claim 2: Increasing oxygen influenced geological formations and processes in the ocean and on land.</b></p>
+      <div class="scroll"><table><thead><tr><th>Evidence</th><th>Reasoning</th></tr></thead><tbody>
+        <tr><td>Banded iron formations exist (~2.5 bya, again ~750 mya).</td><td>They form when oxygen reacts with iron, so oxygen shaped how ocean rock formed.</td></tr>
+        <tr><td>Red beds of sedimentary rock (~2 bya).</td><td>Oxygen in the air weathered and oxidized rock particles red before they were deposited, so O₂ changed land rock.</td></tr>
+        <tr><td>Preserved soil appears ~407 mya.</td><td>Soil forms through microbes and plants that depend on oxygen (aerobic respiration).</td></tr>
+        <tr><td>Oxidized minerals, such as blue and green copper minerals, exist.</td><td>They form only when oxygen reacts with metals.</td></tr>
+        <tr><td>The ozone layer exists.</td><td>Ozone (O₃) forms only from high levels of O₂ in the atmosphere.</td></tr>
+      </tbody></table></div>
+      <p><b>Claim 3: Increasing oxygen in the oceans and atmosphere influenced biological evolution in the ocean and on land.</b></p>
+      <div class="scroll"><table><thead><tr><th>Evidence</th><th>Reasoning</th></tr></thead><tbody>
+        <tr><td>After oxygen rose 2.5 bya (BIFs), eukaryotic cells appear 2.1–2.4 bya.</td><td>Eukaryotes use oxygen for aerobic respiration. Complex cells need that efficient energy source.</td></tr>
+        <tr><td>After oxygen rose ~800 mya (red beds and the sharp rise on the graph), multicellular organisms (~600 mya) and animals (~560 mya) appear.</td><td>Aerobic respiration releases enough energy to support many cells working together.</td></tr>
+        <tr><td>Plants moved onto land ~450 mya; land animals followed ~425 mya.</td><td>Plants added oxygen (and food) to the air on land, so animals could live there.</td></tr>
+        <tr><td>Swamps full of plants ~300 mya at the same time as a 21-inch dragonfly.</td><td>Insects get oxygen by diffusion, so giant insects need very high O₂, which the swamp plants made.</td></tr>
+      </tbody></table></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Write one evidence + reasoning pair for: "Early life forms influenced oxygen levels in the oceans."</p><div class="ans">E: stromatolites with photosynthesis at 2.7 bya. R: photosynthesis releases O₂.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Fill in the chain: life changes Earth by ______ → Earth changes life by ______.</p><div class="ans">e.g. microbes add O₂ (rust, ozone) → O₂ allows aerobic respiration and complex cells.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Earth Systems Feedback Diagram</h4>
+      <p>Draw four large labeled boxes or circles: <b>Atmosphere</b>, <b>Hydrosphere (oceans)</b>, <b>Geosphere (rocks/soil)</b> and <b>Biosphere (life)</b>. Draw at least <b>6 arrows</b> between them. Write on each arrow what changes and when, e.g. "Biosphere → Atmosphere: cyanobacteria release O₂, ~2.4 bya." Trace one complete feedback chain in a different color.</p>
+      <ul class="checks">
+        <li>4 spheres, 6+ arrows, each with a label and a date</li>
+        <li>At least 2 arrows go <i>into</i> the biosphere and 2 go <i>out</i> of it</li>
+        <li>One complete feedback chain highlighted in color</li>
+        <li>"I chose…" note: which arrow from <b>your group's poster</b> did you include, and which evidence card supports it?</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-4"><small>Back</small>← Day 4 · Oxygen</a><a class="next" href="#day-6"><small>Next</small>Day 6 · Argument and consensus →</a></div>
+</div>
+
+<!-- ===================== DAY 6 ===================== -->
+<div class="view" id="day-6" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 6 · Explain</div>
+    <h2>Constructing the Argument</h2>
+    <p class="q">The evolution of complex organisms relied on the interactions and coevolution of the biosphere and Earth's systems.</p>
+    <div class="tags"><span class="tag">Packet pp. 13–16 (Part 2, reading, reflection, Summary Task)</span><span class="tag">Individual → whole class</span><span class="tag">Class Consensus Discussion</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Earth's atmosphere went from almost no O₂ to 21%, and life caused that change.</li>
+      <li>A strong argument uses a <b>few well-chosen</b> pieces of evidence, explains the causal links, and admits the limits of the evidence.</li>
+      <li>Our conclusions are only as strong as the fossil and geological records. Missing or misread evidence leads to incomplete conclusions.</li>
+      <li>Life changed slowly with long stable periods, then changed quickly when Earth's systems changed (stability and change).</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 6 box. Call on students to explain one arrow in their feedback diagrams.</p></div></li>
+      <li><div class="t">4–20</div><div><h4>Individual written argument (Part 2)</h4><p>Students respond to the claim on p. 13, covering the 5 required elements. Tell them: <i>"Don't use every piece of evidence. Choose the few that best support your argument."</i> Confer, and note 2–3 arguments to project later. Pick them for the ideas they surface: causal versus correlational links, feedback, data quality.</p></div></li>
+      <li><div class="t">20–29</div><div><h4>Read "Signals in the Sands of Time" + reflect</h4><p>Students read p. 14 (read it aloud for the first paragraph, then independently) and answer both reflection questions on p. 15.</p></div></li>
+      <li><div class="t">29–46</div><div><h4>Class Consensus Discussion</h4><p class="say">"We're going to use a class consensus discussion, like in the last 5E, to hear all the thinking in the room and agree on how Earth's systems and life shaped each other."</p><p>Steps: (1) project the first selected argument → (2) that student shares → (3) someone restates it → (4) the class asks clarifying questions. Repeat for 2–3 arguments. (5) Table groups confer, prompted by: <i>Where do you see feedback? How is the planet today different from 4 bya, and why? How confident are we, and what affected the quality of our evidence?</i> (6) Whole class comes to agreement. Chart the consensus ideas.</p><p>Make sure the class reaches the key points below.</p></div></li>
+      <li><div class="t">46–50</div><div><h4>Exit slip = Summary Task Q1</h4><p>Summary Task Q2–3 for homework, or replace them with the drawn homework.</p></div></li>
+    </ol>
+    <div class="note"><b>Take time for these key points:</b> (1) Life changed dramatically over 4 billion years, but slowly, with long stable periods. (2) Our understanding rests on radiometric dating plus reasoning about photosynthesis, aerobic respiration and rock formation. (3) When photosynthesizers increase, so does the oxygen record in rocks, and then animal complexity increases too, which is feedback. (4) Conclusions are only as strong as the records.</div>
+    <div class="note"><b>Optional 9th day:</b> the teacher materials also have groups merge their arguments onto chart paper (bullets, flow chart or images) before the consensus discussion. If your classes need more time, split today into two days at minute 29.</div>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Strong arguments</div><p>List 3 features of a strong scientific argument.</p><div class="ans">A clear claim · relevant evidence · reasoning that links them · addresses limits or counterevidence.</div></div>
+      <div class="card"><div class="lbl">Option B · Fill in the air</div><p>When Earth first formed its atmosphere was mostly ____ and ____. Today it's 78% ____ and 21% ____.</p><div class="ans">Hydrogen, helium · nitrogen, oxygen.</div></div>
+      <div class="card"><div class="lbl">Option C · Rank it</div><p>Rank from strongest to weakest evidence that life once existed: (a) a fossil that looks like a cell, (b) a fossil that looks like a cell <i>and</i> chemical traces of photosynthesis in the same rock, (c) a striped rock that might be a stromatolite.</p><div class="ans">b &gt; a &gt; c. Multiple lines of evidence are stronger (this previews the reading).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Which pieces of evidence are you choosing, and which are you leaving out? Why?</li>
+      <li>What scientific reasoning links each piece of evidence to the claim?</li>
+      <li>How do these events show feedback between the geosphere and the biosphere? Are there other feedbacks?</li>
+      <li>How do these pieces of evidence causally link to each other?</li>
+      <li>Which part of your argument is the least certain? How could you say that honestly?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">During argument writing · scan the room</div>
+      <h4>Five-element checklist</h4>
+      <p>Circulate with a class list and tick each element as you see it: <b>①</b> atmosphere then and now <b>②</b> evidence of photosynthesizers <b>③</b> O₂ → Earth's systems <b>④</b> O₂ → biosphere <b>⑤</b> causal links or feedback. Element ⑤ is the one most often missing. If more than half the class lacks it at minute 14, pause and model one sentence: <i>"Because… this caused… which then…"</i></p>
+    </div>
+    <div class="cfu">
+      <div class="when">After the reading · thumbs</div>
+      <h4>"The fact that stromatolites appear before banded iron proves that stromatolites caused the iron bands."</h4>
+      <p>Correct: <b>thumbs sideways or down</b>. The order alone is correlation. Adding the mechanism (photosynthesis makes O₂, and O₂ + iron → rust) makes the causal case much stronger.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 2 · Exemplar argument<small>p. 13 · grade with the five-element checklist</small></span></summary><div class="keybody">
+      <p><i>Claim:</i> The evolution of complex organisms relied on the coevolution of the biosphere and Earth's systems.</p>
+      <p>When Earth formed 4.6 bya, its atmosphere was mostly hydrogen and helium, and by 3.8 bya it was methane, ammonia, water vapor and nitrogen, with almost no oxygen <b>①</b>. Today it is 78% nitrogen and 21% oxygen. Life made that difference. Stromatolite fossils with evidence of photosynthesis date to 2.7 bya, and cyanobacteria microfossils to 2.1 bya <b>②</b>. Photosynthesis releases oxygen. That oxygen changed Earth's systems: banded iron formations dated to 2.5 bya show oxygen reacting with iron in the oceans, and red beds from 2 bya show oxygen in the air weathering rock on land <b>③</b>. The oxygen then changed life. Eukaryotic cells, which use oxygen for efficient aerobic respiration, appear by 2.1 bya, and after oxygen rose sharply around 800 mya, multicellular organisms (600 mya) and animals (560 mya) appear <b>④</b>. This is feedback: microbes changed the oceans and atmosphere, those changes allowed more complex life, and that life, especially plants, added even more oxygen and built soil, which supported more life on land <b>⑤</b>. Complex life could not evolve until life had first changed the planet.</p>
+    </div></details>
+    <details class="key"><summary><span>Reflection questions<small>p. 15</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">How does the variation or uncertainty in the data affect its usefulness?</div><p class="aa">Uncertainty makes the evidence less precise but still useful when several lines agree. The coral reef card spans 470–548 mya, a range of almost 80 million years, so we can't tell exactly what came first near the Cambrian. The oxygen graph has a "?" around 3 bya, and the extinction graph shows a wide shaded uncertainty band. As the reading says, folded rocks can look like stromatolites, and very old rocks have been deformed and weathered. Single pieces of evidence can mislead. Patterns that show up across fossils, rocks <i>and</i> chemistry are much more trustworthy.</p></div>
+      <div class="qa"><div class="qq">How helpful is the data for determining causal or correlational relationships?</div><p class="aa">The dates alone only show correlation, meaning events happened in order. For example, eukaryotes appear after oxygen rises, but timing alone doesn't prove oxygen caused them. The data become more useful for causation when combined with known mechanisms: iron + oxygen → rust explains the banded iron formations, and aerobic respiration explains why complex cells need oxygen. Because there are gaps in the record, some links (like Rodinia's breakup → algae bloom) remain likely explanations rather than proven causes.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Summary Task Q1–3<small>p. 16 · use it to see each student's thinking</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How does the stability of Earth's systems, or changes to them, impact life?</div><p class="aa">When oxygen levels stayed low and stable for long periods (~2–0.8 bya), life stayed mostly simple and changed slowly. When oxygen increased (~2.4 bya and ~0.8–0.5 bya), new, more complex life appeared quickly. When oxygen dropped suddenly, during mass extinctions, many species died. Changes in Earth's systems drive changes in life.</p></div>
+      <div class="qa"><div class="qq">2. Much of science deals with explaining how things change and how they remain stable. Support with examples.</div><p class="aa">In this investigation we explained why oxygen stayed near 0% for a billion years after life began (iron absorbed it), then rose, then stayed steady. We explained why life stayed single-celled for ~2 billion years and then diversified quickly. In earlier units we explained how the solar system formed and became stable, and how Earth's surface keeps changing through plate tectonics and the rock cycle.</p></div>
+      <div class="qa"><div class="qq">3. Why discuss factors affecting data quality? Give one example.</div><p class="aa">Because a conclusion is only as strong as its evidence. If the evidence is incomplete or uncertain, the argument should say so, or readers may trust it more than they should. Examples: the rock cycle has destroyed most very old rocks; microfossils are tiny and hard to identify; the coral reef date spans 80 million years; using the wrong isotope (C-14 for old rock) gives no useful date.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Summary Task Q1</div><p>Consider oxygen levels in the atmosphere and oceans. How does the stability of Earth's systems, or changes to them, impact life?</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Name one thing that limits how sure scientists can be about Earth's earliest life, and explain why.</p><div class="ans">e.g. the rock cycle destroys old rock; non-living structures can mimic stromatolites.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Then and Now: Atmosphere Pie Charts</h4>
+      <p>Draw <b>three pie charts</b> by hand (trace a cup): Earth's atmosphere at <b>4.6 bya</b> (H, He), <b>3.8 bya</b> (methane, ammonia, water vapor, nitrogen; O₂ ≈ 0) and <b>today</b> (78% N₂, 21% O₂, 1% other). Between the charts, draw a "what changed it" arrow strip with at least 3 small sketches of the organisms or processes responsible, with dates.</p>
+      <ul class="checks">
+        <li>3 labeled pie charts; today's chart shows the right proportions (a quarter of a circle is 25%, so O₂ is a bit less than that)</li>
+        <li>An arrow strip with 3+ sketched causes and dates</li>
+        <li>One sentence of uncertainty: what part of this picture are scientists least sure about?</li>
+        <li>"I chose…" note: which argument from <b>today's class consensus discussion</b> changed or confirmed your thinking?</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-5"><small>Back</small>← Day 5 · Evidence</a><a class="next" href="#day-7"><small>Next</small>Day 7 · Mass extinctions →</a></div>
+</div>
+
+<!-- ===================== DAY 7 ===================== -->
+<div class="view" id="day-7" data-phase="elaborate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 7 · Elaborate</div>
+    <h2>Mass Extinctions</h2>
+    <p class="q">How have extinction events affected the evolution of living things?</p>
+    <div class="tags"><span class="tag">Packet pp. 17–20</span><span class="tag">Table groups</span><span class="tag">Read-Generate-Sort-Solve</span><span class="tag">Video: That Time Oxygen Almost Killed Everything</span><span class="tag">ESSRT pp. 6–7</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>The five major mass extinctions (Ordovician 444, Devonian 360, Permian 252, Triassic 201, K–Pg 66 mya) wiped out 75–90% of species.</li>
+      <li>Each involved big changes to Earth's systems (volcanism, glaciation, warming, ocean acidification, an asteroid) and coincided with a <b>drop in atmospheric oxygen</b>.</li>
+      <li>Extinctions were <b>negative</b> (lineages lost) and <b>positive</b> (open niches → new groups, such as dinosaurs after the Permian and mammals after K–Pg).</li>
+      <li>Recovery depends on plants. Regrowing photosynthesizers bring oxygen back up, which supports the return of animal life.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 7 box.</p></div></li>
+      <li><div class="t">4–9</div><div><h4>Revisit DQB questions</h4><p>Read aloud: <i>What happens to Earth when an asteroid hits it? Why don't volcanic eruptions today cause mass extinctions? What connections did eruptions have with atmospheric changes?</i></p><p class="say">"Major extinction events have wiped out huge percentages of life. They had negative <i>and</i> positive effects."</p><p>NYS: highlight the extinction events on ESSRT pp. 6–7 and look for patterns with tectonics.</p></div></li>
+      <li><div class="t">9–16</div><div><h4>Video + quick discussion</h4><p>Show <b>That Time Oxygen Almost Killed Everything</b>. Ask: <i>How was photosynthesis bad for the organisms that already existed? How was it good for those that came after?</i></p></div></li>
+      <li><div class="t">16–29</div><div><h4>Read-Generate-Sort-Solve</h4><p>Groups use the extinction table (pp. 17–18) and the oxygen graph (p. 19). <b>Read</b> the prompt: <i>"How did geological events impact evolutionary ones, and how did life influence the recovery from geological disasters?"</i> → <b>Generate</b> ideas on sticky notes → <b>Sort</b> them into causes, immediate impacts and later impacts → <b>Solve</b> by writing a group answer.</p></div></li>
+      <li><div class="t">29–32</div><div><h4>Extinction and oxygen question</h4><p>Individuals answer the question on p. 19.</p></div></li>
+      <li><div class="t">32–44</div><div><h4>Arguing from Evidence (individual)</h4><p>Students write the argument on p. 20, covering the 5 bullet requirements.</p></div></li>
+      <li><div class="t">44–48<small>flex</small></div><div><h4>Oral arguments + closing question</h4><p>2–3 students present their arguments to their table, then one to the whole class. Close with: <i>How do gradual changes with stable periods affect life compared with sudden, dramatic change? Why does that matter for finding life elsewhere?</i></p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Predict</div><p>What would happen to oxygen levels if most plants on Earth died suddenly? What would happen to animals?</p><div class="ans">O₂ would drop because photosynthesis stops; animals lose both food and oxygen.</div></div>
+      <div class="card"><div class="lbl">Option B · Disaster list</div><p>List as many natural disasters as you can that could wipe out most life on Earth.</p><div class="ans">Asteroid, supervolcano, ice age, runaway warming, ocean acidification, loss of oxygen.</div></div>
+      <div class="card"><div class="lbl">Option C · Two sides</div><p>Was the rise of oxygen good or bad for life on Earth? Defend one side in 2 sentences.</p><div class="ans">Both: it was toxic to early anaerobic microbes (an extinction) but enabled complex life.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What do the Earth-system causes of these five extinctions have in common?<span>Big changes to the atmosphere and oceans: CO₂, methane, temperature, oxygen.</span></li>
+      <li>Look at the graph. What happens to oxygen right at each dashed line? Right after?</li>
+      <li>Which groups took over after the Permian? After K–Pg? Why could they?</li>
+      <li>Why does plant recovery come before animal recovery?</li>
+      <li>How reliable is this evidence? What makes you trust or doubt the oxygen graph?<span>The shaded band shows uncertainty; dates come from isotopes and fossils.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Read-Generate-Sort-Solve · hinge question</div>
+      <h4>According to the graph on p. 19, every major extinction lines up with…</h4>
+      <ul class="opts">
+        <li>A. a rise in atmospheric oxygen</li>
+        <li class="right">B. a drop in atmospheric oxygen<em>Correct.</em></li>
+        <li>C. no change in oxygen</li>
+        <li>D. an asteroid impact<em>Overgeneralizes from the dinosaurs. Only K–Pg is an asteroid.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">Before the written argument · whiteboards</div>
+      <h4>Write one negative and one positive effect of the K–Pg extinction.</h4>
+      <p>Negative: the end of the dinosaurs, food chains collapsed because photosynthesis was disrupted. Positive: mammals took over dinosaur niches; frogs, lizards, snakes and flowering plants increased.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Extinction events and oxygen question<small>p. 19</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">What impact could organism recovery after an extinction event have on oxygen levels?</div><p class="aa">After an extinction, surviving plants, algae and phytoplankton spread into the empty space. More photosynthesizers make more oxygen, so atmospheric O₂ rises again. That rising oxygen then supports the recovery and diversification of animals, a feedback in which life helps restore the Earth system that supports life.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Arguing from Evidence · exemplar<small>p. 20 · check for all 5 bullets</small></span></summary><div class="keybody">
+      <p><b>Claim:</b> Changes in Earth's systems have had both negative and positive impacts on the evolution of life.</p>
+      <p><b>Negative:</b> In the Permian extinction (252 mya), massive volcanic eruptions released methane and CO₂, causing rapid global warming and ocean acidification. About 90% of all species died, including most marine invertebrates and many land animals and plants. The oxygen graph shows a sharp drop in O₂ at that time.</p>
+      <p><b>Positive:</b> Extinctions opened niches. In the millions of years after the Permian, new plants and animals evolved, including dinosaurs. After the K–Pg asteroid impact (66 mya) ended the dinosaurs, mammals took over their niches, and flowering plants increased. Without that, humans, who are mammals, might never have evolved.</p>
+      <p><b>Recovery and oxygen:</b> Recovery begins with plants and phytoplankton. As they regrow and photosynthesize, oxygen rises again (the graph shows levels climbing after each extinction), which supports the return of complex animal life.</p>
+      <p><b>Reliability:</b> The dates come from radiometric dating with isotopes whose ranges fit these ages, such as K-40 and U-238. But the oxygen graph has a wide uncertainty band, and the table notes that scientists are still working out the exact causes. The fossil record is incomplete because the rock cycle destroys rock and soft organisms rarely fossilize. So the timing is well supported, while some causes are best described as strong correlations.</p>
+    </div></details>
+    <div class="note"><b>Look and listen for:</b> major extinctions include large changes in atmospheric composition · large percentages of organisms die off · afterward, different organisms increase and take over · recovery includes the regrowth of plant species and the resulting rise in oxygen.</div>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Describe one negative and one positive impact of a mass extinction on evolution. Name the extinction.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Explain in 2–3 sentences how plants regrowing after an extinction affects oxygen and animals.</p><div class="ans">More photosynthesis → more O₂ → supports animal recovery and diversification.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Extinction Timeline and Recovery Panel</h4>
+      <p>Draw a horizontal timeline from <b>600 mya to now</b> (1 cm = 20 million years, so 30 cm; tape two papers together if needed). Mark the 5 extinctions with vertical lines and their % of species lost. Sketch the oxygen line above it, dipping at each extinction. Then draw a <b>"before → after" recovery panel</b> for one extinction of your choice, showing which organisms disappeared and which took over.</p>
+      <ul class="checks">
+        <li>A to-scale timeline with all 5 extinctions labeled with dates and %</li>
+        <li>The oxygen line dips at each extinction and recovers after</li>
+        <li>A recovery panel with sketched organisms, before and after</li>
+        <li>"I chose…" note: why you picked that extinction, and one way its causes were different from what a volcano would do today</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-6"><small>Back</small>← Day 6 · Argument</a><a class="next" href="#day-8"><small>Next</small>Day 8 · Evaluate →</a></div>
+</div>
+
+<!-- ===================== DAY 8 ===================== -->
+<div class="view" id="day-8" data-phase="evaluate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 8 · Evaluate</div>
+    <h2>Why Did It Take So Long?</h2>
+    <p class="q">What set of conditions allowed for the evolution of humans on Earth, and why did it take so long?</p>
+    <div class="tags"><span class="tag">Revisiting the Performance Task handout</span><span class="tag">Individual → table groups</span><span class="tag">Idea Carousel</span><span class="tag">Driving Question Board</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>It took ~3.5 billion years to go from simple cells to humans because life first had to change Earth's systems, mainly by adding oxygen, before complex life was possible.</li>
+      <li>When organisms change oxygen levels, it shows up in the geologic record: the first photosynthesizers come before banded iron, and cyanobacteria come before red beds.</li>
+      <li>When oxygen increases, more complex life follows: eukaryotes, then algae, then animals, then plants on land, then animals on land.</li>
+      <li>A planet that supports intelligent life would need a very unusual set of features and a long time.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Back of the performance-task handout.</p></div></li>
+      <li><div class="t">4–22</div><div><h4>Individual explanation</h4><p>Students write their explanation on the <i>Revisiting the Performance Task</i> handout. It must include at least <b>two organisms that changed Earth's systems</b> and at least <b>three times a change in oxygen led to more complex life</b>, each with evidence and reasoning. Confer, and point students to the scientific-argument characteristics posted in the room.</p></div></li>
+      <li><div class="t">22–32</div><div><h4>Groups revise the launch poster</h4><p>Table groups revise their initial group explanation from the performance-task launch onto new chart paper.</p></div></li>
+      <li><div class="t">32–41</div><div><h4>Idea Carousel</h4><p>Groups rotate to other posters and leave sticky notes with a symbol: <b>✓</b> an idea that works · <b>+</b> something to add · <b>?</b> an idea that may not be relevant · <b>Δ</b> a way to show something more clearly. Then groups return to their own poster and revise based on the feedback.</p></div></li>
+      <li><div class="t">41–48</div><div><h4>Revisit the Driving Question Board</h4><p>Which questions can we now answer? Move them. Which are still open? Add new ones. Point to the category still unanswered: <i>Could life exist on other planets? Are there planets like ours?</i></p><p class="say">"That's exactly what we investigate next."</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · One sentence</div><p>In one sentence: why did it take about 3.5 billion years for humans to evolve from the first cells?</p></div>
+      <div class="card"><div class="lbl">Option B · Look back</div><p>Find our Day 1 "What sped up evolution?" chart. Name one idea that turned out to be right and one that needs revising.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What evidence did you generate in this 5E sequence?</li>
+      <li>Where did that evidence come from: a card, the graph, the video, the demo?</li>
+      <li>How well does that evidence support the claim?</li>
+      <li>What ideas or contradicting evidence weaken the claim?</li>
+      <li>Which of your three oxygen examples is the strongest? Which is the weakest? Why?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">During the Idea Carousel</div>
+      <h4>Read the sticky notes</h4>
+      <p>The sticky notes are your CFU. Many <b>?</b> notes on correlation-only claims means the class needs one more round on causal reasoning. Many <b>+</b> notes about oxygen means the idea is solid.</p>
+    </div>
+    <div class="cfu">
+      <div class="when">Exit · 3-2-1</div>
+      <h4>3 conditions that allowed humans to evolve · 2 kinds of evidence we used · 1 question about life on other planets</h4>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Performance task · exemplar explanation<small>Based on the sample student work in the teacher materials</small></span></summary><div class="keybody">
+      <p><b>Claim:</b> Earth's systems and life coevolved over 3.5 billion years, with oxygen playing the central role, and that is why intelligent life took so long.</p>
+      <p>When the first life appeared ~3.5 bya, the atmosphere was methane, ammonia, water vapor and nitrogen, and life was very simple cells. About 2.7 bya, stromatolites show microbes began to <b>photosynthesize</b>, turning CO₂ and water into glucose and oxygen (<i>organism → Earth system #1</i>). Oxygen began to rise; red bands of oxidized iron appear from 2.5 to 2 bya. <b>Oxygen example 1:</b> once O₂ rose, eukaryotic cells that use aerobic respiration appear (~2.1 bya).</p>
+      <p>About 1 bya, multicellular <b>algae</b> spread in the oceans and kept photosynthesizing (<i>organism → Earth system #2</i>). Banded iron formations reappear ~750 mya. <b>Oxygen example 2:</b> the jump in oxygen correlates with the first multicellular organisms (~600 mya) and soft animals (~560 mya), which need efficient aerobic respiration.</p>
+      <p><b>Oxygen example 3:</b> plants moved onto land ~455 mya, built soil and raised O₂ toward 20–30%. Animals moved onto land (~425 mya), and in the oxygen-rich swamps of ~300 mya, insects grew huge.</p>
+      <p>Each jump in complexity came only after oxygen increased, and oxygen could only increase as photosynthetic life grew. Those parallel changes in Earth and living things took 3.5 billion years.</p>
+    </div></details>
+    <div class="note"><b>Look and listen for:</b> ~3.5 billion years from single cells to humans · when organisms change oxygen, it shows up in the geologic record (photosynthesizers before banded iron, cyanobacteria before red beds) · when plants increase oxygen, more complex life appears (red beds → eukaryotes → multicellular; algae → animals; plants on land → animals on land; swamps → large animals; high O₂ in the last billion years → rapid evolution → humans) · any other planet that supports life would need a very unusual set of features.</div>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Bridge</div><p>If astronomers found a planet with 21% oxygen in its atmosphere, what might that suggest? What else would you want to know?</p><div class="ans">Possibly photosynthetic life (a biosignature). Want to know: water? age of the planet? could it be non-biological?</div></div>
+      <div class="card"><div class="lbl">Option B · 3-2-1</div><p>See the CFU above.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Exoplanet Blueprint</h4>
+      <p>Design and draw a cross-section of a <b>made-up exoplanet</b> where intelligent life could eventually evolve. Label at least <b>6 conditions</b> we learned about: liquid water, a photosynthesizing organism, an oxygen-rich atmosphere, iron or rock evidence of oxygen, an ozone layer, plate tectonics or nutrient cycling, land for plants. Add a mini-timeline in the corner estimating how long each step would take, based on Earth.</p>
+      <ul class="checks">
+        <li>Hand-drawn cross-section with atmosphere, ocean and land layers</li>
+        <li>6+ labeled conditions, each with one line explaining <i>why</i> life needs it</li>
+        <li>A mini-timeline with time estimates based on Earth's dates</li>
+        <li>"I chose…" note: which condition do you think is the <b>rarest</b> in the universe, and what sticky note from <b>today's Idea Carousel</b> made you think about it?</li>
+      </ul>
+      <p class="why">This drawing leads directly into the next 5E on the probability of life elsewhere. Keep the best ones for the bulletin board.</p>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-7"><small>Back</small>← Day 7 · Mass extinctions</a><a class="next" href="#overview"><small>Done</small>Back to overview ↺</a></div>
+</div>
+
+<footer><a href="index.html">← Back to Teacher Hub</a><br>Built from the New Visions Earth &amp; Space Science Unit 2 teacher and student materials for Coevolution of Earth and Life 5E (SY 26-27). Schedules assume 50-minute periods.</footer>
+</main>
+
+<script>
+(function(){
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('#chips .chip'));
+  var ids = views.map(function(v){return v.id});
+  function show(){
+    var id = (location.hash || '').slice(1);
+    if (ids.indexOf(id) === -1) id = 'overview';
+    views.forEach(function(v){ v.hidden = v.id !== id; });
+    chips.forEach(function(c){
+      if (c.getAttribute('href') === '#' + id) { c.setAttribute('aria-current','page'); var r=c.parentNode; r.scrollLeft = c.offsetLeft - (r.clientWidth - c.offsetWidth)/2; }
+      else c.removeAttribute('aria-current');
+    });
+    window.scrollTo({top:0,left:0,behavior:'instant'});
+  }
+  window.addEventListener('hashchange', show);
+  show();
+
+  // prep checklist memory (per device)
+  var boxes = document.querySelectorAll('#prep input[type=checkbox]');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem('coevo-prep') || '{}'); } catch(e) {}
+  Array.prototype.forEach.call(boxes, function(b){
+    if (saved[b.id]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[b.id] = b.checked;
+      try { localStorage.setItem('coevo-prep', JSON.stringify(saved)); } catch(e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>
