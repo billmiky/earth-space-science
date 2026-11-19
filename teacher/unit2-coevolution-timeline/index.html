@@ -879,6 +879,11 @@ document.addEventListener("keydown", e => {
 let rt;
 new ResizeObserver(() => { clearTimeout(rt); rt = setTimeout(layout, 60); }).observe(stage);
 layout();
+// Optional start mode from the URL (used by the teacher dashboard): ?mode=all|build|conn
+try {
+  const m = new URLSearchParams(location.search).get("mode");
+  if (m === "build" || m === "conn") setMode(m);
+} catch(e){}
 })();
 </script>
 </body>
