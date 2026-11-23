@@ -1,0 +1,46 @@
+{% extends "base.html" %}{% block title %}Check import · {{ a.name }}{% endblock %}
+{% block content %}
+<h1>Check the import</h1>
+<p><b>{{ a.name }}</b> · {{ n_rows }} rows in the file</p>
+<form method="post">
+  <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+  <div class="card">
+    <p class="muted">The columns were guessed from the file's headers. If a guess is wrong, pick the right column and press <b>Update preview</b>.</p>
+    <div class="row">
+      <label>Student ID column
+        <select name="id_col">
+          <option value="-1">— choose —</option>
+          {% for h in headers %}<option value="{{ loop.index0 }}" {% if loop.index0 == id_col %}selected{% endif %}>{{ h }}</option>{% endfor %}
+        </select></label>
+    </div>
+    <div class="row">
+      {% for it in mc %}
+      <label>Q{{ it.position }} (ZipGrade #{{ it.zg_question or '?' }}) answer column
+        <select name="q_{{ it.id }}">
+          <option value="-1">— skip —</option>
+          {% for h in headers %}<option value="{{ loop.index0 }}" {% if loop.index0 == qcols[it.id] %}selected{% endif %}>{{ h }}</option>{% endfor %}
+        </select></label>
+      {% endfor %}
+    </div>
+    <button name="confirm" value="0" class="secondary">Update preview</button>
+  </div>
+
+  <div class="card">
+    <p><b>{{ matched|length }}</b> students matched your roster.
+      {% if unmatched %}<br>⚠ <b>{{ unmatched|length }}</b> IDs are not on your roster and will be skipped: {{ unmatched|map('first')|list|join(', ') }}
+      <br><span class="muted">Usually a mis-bubbled ID or a student you haven't added yet. Fix the roster or type their answers in by hand.</span>{% endif %}</p>
+    {% if preview %}
+    <div class="scroll"><table class="grid">
+      <tr><th>ID</th><th>Student</th>{% for it in mc %}<th class="c">Q{{ it.position }}</th>{% endfor %}</tr>
+      {% for code, name, answers in preview %}
+      <tr><td>{{ code }}</td><td>{{ name }}</td>{% for v in answers %}<td class="c">{{ v if v != '' else '(blank)' }}</td>{% endfor %}</tr>
+      {% endfor %}
+    </table></div>
+    <p class="muted">First {{ preview|length }} students shown. Answers should look like 1–4 (A=1, B=2, …). Numbers like 0/1 mean the wrong column, probably a score column instead of the answer column.</p>
+    {% endif %}
+    <label><input type="checkbox" name="keep_typed" value="1" checked> Keep answers I typed by hand (don't overwrite)</label>
+    <div class="actions"><button name="confirm" value="1">Import {{ matched|length }} students</button>
+      <a class="btn secondary" href="{{ url_for('main.assessment', aid=a.id) }}">Cancel</a></div>
+  </div>
+</form>
+{% endblock %}

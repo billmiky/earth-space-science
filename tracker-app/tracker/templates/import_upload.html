@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% block title %}Import · {{ a.name }}{% endblock %}
+{% block content %}
+<h1>Import ZipGrade results</h1>
+<p><b>{{ a.name }}</b></p>
+<div class="card">
+  <ol>
+    <li>In ZipGrade, make a quiz with only the <b>multiple-choice</b> questions ({{ mc|length }} here: Q{{ mc|map(attribute='position')|join(', Q') }}), in order. Written questions get typed in afterward.</li>
+    <li>Students bubble their <b>Student ID</b>, the same ID that's on your roster here.</li>
+    <li>Scan with your phone (or upload a copier scan to ZipGrade), then <b>export the quiz results as CSV</b>.</li>
+    <li>Upload that file below. Next you'll see a preview before anything is saved.</li>
+  </ol>
+  <form method="post" enctype="multipart/form-data" class="row">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <input type="file" name="file" accept=".csv,text/csv,text/plain" required>
+    <button>Upload &amp; preview</button>
+  </form>
+</div>
+{% endblock %}

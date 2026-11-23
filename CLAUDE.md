@@ -20,6 +20,9 @@ catch up, review, and work through their **student packets** (New Visions ESS cu
 - `teacher/` — teacher hub, unit guides, and dashboards (`noindex`, self-contained).
   Unit 1 dashboard can optionally use the Cloudflare Worker in `backend/` (manual deploy
   only — see `backend/README.md`).
+- `teacher/progress-tracking/` — standards/skills guide, Regents item map, spreadsheet tracker.
+- `tracker-app/` — self-hosted Flask + SQLite student tracker (ZipGrade import). Not part of the
+  book. Its `data/` (student data) is gitignored and must never be committed. Tests: `python -m pytest -q`.
 - `styles.css` (global), `custom.css`, and the `include-*` HTML snippets
   (`mobile-enhancements.html`, `earth-toc.html`, `copy-protection.html`, `meta-viewport.html`).
 - `_extensions/qmd-lab/closeread` — scrollytelling extension.
