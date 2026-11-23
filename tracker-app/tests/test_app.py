@@ -134,3 +134,34 @@ def test_item_bank_seeded(app):
         from tracker.db import get_db
         n = get_db().execute("SELECT COUNT(*) FROM items WHERE source LIKE 'Regents%'").fetchone()[0]
         assert n == 250
+
+
+def test_bubbled_written_scores(auth, app):
+    c = auth
+    tok = _roster(c)
+    aid = _giant_insects_id(c)
+    ids = _item_ids(c, aid)
+    form = {"csrf": tok, "name": "GI", "given_on": "", "unit": "2", "notes": ""}
+    for i, aiid in enumerate(ids):
+        form[f"pts_{aiid}"] = "1"
+        form[f"zg_{aiid}"] = str(i + 1)          # all six on the ZipGrade sheet
+        if i < 3:
+            form[f"key_{aiid}"] = "BCA"[i]
+    c.post(f"/assessments/{aid}/setup", data=form)
+    export = ("ZipGradeID,Stu1,Stu2,Stu3,Stu4,Stu5,Stu6\n"
+              "1001,B,C,A,A,B,A\n"      # all MC right; written 1,0,1
+              "1002,B,D,A,B,,A\n")      # Q5 not bubbled yet -> skipped
+    r = c.post(f"/assessments/{aid}/import", data={"csrf": tok, "file": (io.BytesIO(export.encode()), "zg.csv")},
+               content_type="multipart/form-data")
+    html = c.get(r.headers["Location"]).get_data(as_text=True)
+    assert "score bubble" in html and "1 pt" in html
+    c.post(r.headers["Location"], data={"csrf": tok, "confirm": "1", "keep_typed": "1"})
+    with app.app_context():
+        from tracker import grading
+        from tracker.db import get_db
+        db = get_db()
+        sid = {r["student_code"]: r["id"] for r in db.execute("SELECT id, student_code FROM students")}
+        m = grading.standards_mastery(db)
+        assert m[sid["1001"]]["HS-ESS2-7"] == 5 / 6
+        assert m[sid["1002"]]["HS-ESS2-7"] == 3 / 5   # Q2 wrong, Q4 B=0, Q5 skipped
+        assert grading.skills_mastery(db)[sid["1001"]]["CR"] == 2 / 3

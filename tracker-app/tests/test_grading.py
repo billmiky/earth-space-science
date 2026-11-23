@@ -38,3 +38,12 @@ def test_parse_csv_bom_and_semicolon():
 def test_clean_id():
     assert zipgrade.clean_id("1004.0") == "1004"
     assert zipgrade.clean_id(" 0123 ") == "0123"
+
+
+def test_cr_from_bubble():
+    assert grading.cr_from_bubble("A", 1) == 1
+    assert grading.cr_from_bubble("b", 1) == 0
+    assert grading.cr_from_bubble("B", 2) == 1
+    assert grading.cr_from_bubble("D", 2) == 0       # never below zero
+    assert grading.cr_from_bubble("", 1) is None      # not bubbled = not scored
+    assert grading.cr_from_bubble("AB", 1) is None

@@ -40,6 +40,18 @@ def score(fmt, answer, key, points):
     return max(0.0, min(float(points), v))
 
 
+def cr_from_bubble(raw, points):
+    """Credit for a written answer you scored by bubbling on the ZipGrade sheet.
+
+    A = full credit, B = one point less, C = two less, ... (never below 0).
+    For a 1-point question: A = 1, B = 0. Blank / unreadable = None (not scored).
+    """
+    c = normalize_choice(raw)
+    if c not in ("1", "2", "3", "4", "5"):
+        return None
+    return max(0.0, float(points) - (int(c) - 1))
+
+
 def save_response(db, ai, student_id, raw, source):
     """Insert/update one response. `ai` is an assessment_items row joined with items.fmt."""
     raw = "" if raw is None else str(raw).strip()
