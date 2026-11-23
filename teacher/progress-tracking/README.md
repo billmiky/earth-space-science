@@ -149,6 +149,22 @@ For tests given on paper, use a **paper-entry sheet**. The first one, `U2 Mid-Un
 
 The Giant Insects items follow New Visions' own alignment guide. All six assess **HS-ESS2-7** and **Stability & Change**. Q1 is analyzing data, Q3 is using models, and Q2 and Q4–Q6 are argument from evidence.
 
-For a new paper test, duplicate the sheet, change the Item IDs and the key, add the items to `Item Map`, and link the next empty `Scores` columns. You can also type 0/1 scores straight into `Scores`. If you'd rather not hand-type answers, a bubble-sheet scanning app (for example ZipGrade or Gradescope) can export each student's MC answers, which you then paste into the entry sheet.
+For a new paper test, duplicate the sheet and its `ZG` tab, change the Item IDs and the key, add the items to `Item Map`, and link the next empty `Scores` columns. You can also type 0/1 scores straight into `Scores`.
+
+### Paper tests scanned with ZipGrade
+
+Each entry sheet has a matching **`ZG` tab** (e.g., `U2 Mid-Unit 1 ZG`) where you paste a ZipGrade export. The sheet matches students **by ID**, so the order of the export and absent students don't matter.
+
+1. **IDs:** the `Student ID` column in `Scores` must hold the same numbers students bubble on ZipGrade answer sheets. ZipGrade's roster import makes this easy to keep in sync.
+2. **In ZipGrade:** make a quiz with the **MC questions only** (Q1–Q3 for Giant Insects), key 1→A, 2→B, 3→C, 4→D, and scan the sheets.
+3. **Export** the quiz results as a CSV, open it, select all, copy, and paste into the `ZG` tab at **cell A1**.
+4. **First time only:** check the green cells on the entry sheet.
+   - **B6** must match the export's student-ID column header (default `ZipGradeID`). C6 shows a number when it is found.
+   - **Row 7** must match each question's *student answer* column header (default `Stu1`, `Stu2`, `Stu3`).
+   - If your export names them differently, type the real header names in.
+   - The "In ZipGrade?" column then shows ✓ for every matched student.
+5. **Type the written-answer credits (Q4–Q6) yourself.** Anything typed on the entry sheet overrides ZipGrade, which also lets you fix a misread bubble.
+
+Letters (A–D, either case) and numbers both work.
 
 Colors: red < 50% · yellow 50–74% · green ≥ 75%. Percentages count only the items a student actually attempted. There's room for 300 item columns; for the next year or semester, start a new copy.
