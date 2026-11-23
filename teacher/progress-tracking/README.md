@@ -138,4 +138,17 @@ The textbook's end-of-chapter quizzes could report scores by standard into a das
 4. **Scores** row 1: type the Item IDs for an assessment. Rows 2–4 fill in automatically (a cell showing "not in map" means the ID is missing from Item Map). Enter points earned, and leave a cell blank if the student was absent.
 5. Check **Standards Mastery**, **Skills Mastery**, and **Student Report**.
 
+### Paper tests
+
+For tests given on paper, use a **paper-entry sheet**. The first one, `U2 Mid-Unit 1` (Unit 2 Mid-Unit Task 1, *Giant Insects*), is already built:
+
+1. Type the multiple-choice answer key once in the yellow row, using the Rating Guide. The key is left blank in this file on purpose: the repo is public, and students use the site.
+2. Holding each student's test, type the **choice number they circled** (1–4) for each MC question and the **credit you gave** (0/1) for each written question. Press Tab between cells and Enter at the end of a row. It takes about 15–20 seconds per student.
+3. The sheet grades the MC answers, totals each test, and fills the `Scores` sheet, so the standards and skills grids update right away.
+4. The **Item Analysis** below the roster shows how many students picked each choice, which points to shared misconceptions.
+
+The Giant Insects items follow New Visions' own alignment guide. All six assess **HS-ESS2-7** and **Stability & Change**. Q1 is analyzing data, Q3 is using models, and Q2 and Q4–Q6 are argument from evidence.
+
+For a new paper test, duplicate the sheet, change the Item IDs and the key, add the items to `Item Map`, and link the next empty `Scores` columns. You can also type 0/1 scores straight into `Scores`. If you'd rather not hand-type answers, a bubble-sheet scanning app (for example ZipGrade or Gradescope) can export each student's MC answers, which you then paste into the entry sheet.
+
 Colors: red < 50% · yellow 50–74% · green ≥ 75%. Percentages count only the items a student actually attempted. There's room for 300 item columns; for the next year or semester, start a new copy.
