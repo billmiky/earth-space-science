@@ -1,0 +1,10 @@
+{% if periods %}
+<form method="get" class="period-filter no-print">
+  <label>Period
+    <select name="period" onchange="this.form.submit()">
+      <option value="">All</option>
+      {% for p in periods %}<option value="{{ p }}" {% if p == period %}selected{% endif %}>{{ p }}</option>{% endfor %}
+    </select>
+  </label>
+</form>
+{% endif %}

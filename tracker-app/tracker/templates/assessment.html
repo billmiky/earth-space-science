@@ -1,0 +1,43 @@
+{% extends "base.html" %}{% block title %}{{ a.name }}{% endblock %}
+{% block content %}
+<h1>{{ a.name }}</h1>
+<p class="muted">{% if a.given_on %}Given {{ a.given_on }} · {% endif %}{% if a.unit %}Unit {{ a.unit }} · {% endif %}{{ its|length }} questions</p>
+{% if a.notes %}<p>{{ a.notes }}</p>{% endif %}
+{% if missing_keys %}<div class="flash warn">Answer key missing for Q{{ missing_keys|join(', Q') }}. MC answers are saved but not graded until you <a href="{{ url_for('main.assessment_setup', aid=a.id) }}">enter the key</a>.</div>{% endif %}
+<div class="actions no-print">
+  <a class="btn" href="{{ url_for('main.assessment_import', aid=a.id) }}">📷 Import ZipGrade results</a>
+  {% if its|selectattr('fmt', 'equalto', 'CR')|list %}<a class="btn" href="{{ url_for('main.assessment_enter', aid=a.id, only='cr', period=period or '') }}">✏️ Enter written-answer scores</a>{% endif %}
+  <a class="btn secondary" href="{{ url_for('main.assessment_enter', aid=a.id, period=period or '') }}">Type all answers</a>
+  <a class="btn secondary" href="{{ url_for('main.assessment_setup', aid=a.id) }}">Answer key &amp; settings</a>
+</div>
+
+<h2>Item analysis</h2>
+<div class="scroll"><table>
+  <tr><th>Q</th><th>Fmt</th><th>Standard</th><th>Skill</th><th>Key</th><th>1 (A)</th><th>2 (B)</th><th>3 (C)</th><th>4 (D)</th><th>Blank</th><th>% credit</th><th>What students do</th></tr>
+  {% for x in analysis %}{% set it = x.it %}
+  <tr><td>{{ it.position }}</td><td>{{ it.fmt }}</td><td>{{ it.pe }}</td><td>{{ it.sep }}</td>
+    <td>{% if it.fmt == 'MC' %}{{ it.answer_key or '—' }}{% endif %}</td>
+    {% for c in '1234' %}<td{% if it.answer_key == c %} style="font-weight:700"{% endif %}>{{ x.counts.get(c, '') }}</td>{% endfor %}
+    <td>{{ x.counts.get('blank', '') if it.fmt == 'MC' else '' }}</td>
+    <td class="b-{{ band(x.pct) }}">{{ pct(x.pct) }}</td><td class="muted">{{ it.description }}</td></tr>
+  {% endfor %}
+</table></div>
+<p class="muted">Bold = correct choice. A wrong choice that many students picked usually points to a shared misconception.</p>
+
+<h2>Scores</h2>
+{% include "_period.html" %}
+<div class="scroll"><table class="grid">
+  <tr><th class="sticky">Student</th><th>Per.</th>{% for it in its %}<th class="c">Q{{ it.position }}</th>{% endfor %}<th class="c">Total</th><th class="c">%</th></tr>
+  {% for r in rows %}
+  <tr><td class="sticky"><a href="{{ url_for('main.student_report', sid=r.s.id) }}">{{ display_name(r.s) }}</a></td><td>{{ r.s.period }}</td>
+    {% for c in r.cells %}{% set it = its[loop.index0] %}
+      {% if c is none %}<td class="c muted">·</td>
+      {% elif c.points is none %}<td class="c" title="not graded yet">{{ c.answer or '-' }}?</td>
+      {% else %}<td class="c b-{{ 'high' if c.points >= it.points else ('mid' if c.points > 0 else 'low') }}" title="answer: {{ c.answer or 'blank' }} ({{ c.source }})">{% if it.fmt == 'MC' %}{{ c.answer or '-' }}{% else %}{{ '%g'|format(c.points) }}{% endif %}</td>{% endif %}
+    {% endfor %}
+    <td class="c">{% if r.possible %}{{ '%g'|format(r.earned) }}/{{ '%g'|format(r.possible) }}{% endif %}</td>
+    <td class="c b-{{ band(r.pct) }}">{{ pct(r.pct) }}</td></tr>
+  {% endfor %}
+</table></div>
+<p class="muted">MC cells show the choice picked (1=A … 4=D); green = correct. CR cells show credit earned. · = not taken.</p>
+{% endblock %}

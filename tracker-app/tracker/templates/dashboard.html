@@ -1,0 +1,48 @@
+{% extends "base.html" %}{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+{% include "_period.html" %}
+<div class="cards">
+  <div class="card"><div class="stat">{{ counts.students }}</div><div class="muted">students{% if period %} in period {{ period }}{% endif %}</div></div>
+  <div class="card"><div class="stat">{{ counts.assessments }}</div><div class="muted">assessments</div></div>
+  <div class="card"><div class="stat">{{ counts.responses }}</div><div class="muted">answers recorded</div></div>
+</div>
+{% if counts.students == 0 %}
+<div class="card"><b>Start here:</b> <a href="{{ url_for('main.students') }}">add your roster</a>, then open an <a href="{{ url_for('main.assessments') }}">assessment</a> to enter the key and import ZipGrade results.</div>
+{% endif %}
+
+<h2>Standards — class overview</h2>
+<p class="legend muted"><span class="b-low">&lt; 50%</span><span class="b-mid">50–74%</span><span class="b-high">≥ 75%</span> Regents priority comes from how often each standard appeared on the last five exams.</p>
+<div class="scroll"><table>
+  <tr><th>Standard</th><th>Topic</th><th>Regents priority</th><th>Class avg</th><th></th><th># &lt; 50%</th><th># assessed</th></tr>
+  {% for s in stds %}{% set x = summ[s.code] %}
+  <tr>
+    <td><b>{{ s.code }}</b></td><td>{{ s.topic }}</td><td>{{ prio.get(s.code, '') }}</td>
+    <td class="b-{{ band(x.avg) }}">{{ pct(x.avg) }}</td>
+    <td><div class="bar"><i class="b-{{ band(x.avg) }}" style="width:{{ ((x.avg or 0) * 100)|round }}%"></i></div></td>
+    <td>{{ x.below if x.n else '' }}</td><td>{{ x.n or '' }}</td>
+  </tr>
+  {% endfor %}
+</table></div>
+
+<h2>Skills — class overview</h2>
+<div class="scroll"><table>
+  <tr><th>Skill</th><th>Name</th><th>Class avg</th><th></th><th># &lt; 50%</th><th># assessed</th></tr>
+  {% for s in skl %}{% set x = ssumm[s.code] %}
+  <tr>
+    <td><b>{{ s.code }}</b></td><td>{{ s.name }}</td>
+    <td class="b-{{ band(x.avg) }}">{{ pct(x.avg) }}</td>
+    <td><div class="bar"><i class="b-{{ band(x.avg) }}" style="width:{{ ((x.avg or 0) * 100)|round }}%"></i></div></td>
+    <td>{{ x.below if x.n else '' }}</td><td>{{ x.n or '' }}</td>
+  </tr>
+  {% endfor %}
+</table></div>
+
+<h2>Reteach groups (below 50%)</h2>
+{% if reteach %}
+  {% for s, low in reteach %}
+  <div class="card"><b>{{ s.code }}</b> · {{ s.topic }} <span class="pill">{{ low|length }} students</span>
+    <div class="muted">{% for n, v in low %}{{ n }} ({{ pct(v) }}){% if not loop.last %}, {% endif %}{% endfor %}</div></div>
+  {% endfor %}
+{% else %}<p class="muted">Nobody is below 50% on any standard yet.</p>{% endif %}
+{% endblock %}
