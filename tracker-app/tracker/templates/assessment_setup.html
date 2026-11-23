@@ -11,14 +11,15 @@
     </div>
     <div class="row"><label style="flex:1">Notes<input type="text" name="notes" value="{{ a.notes }}"></label></div>
   </div>
-  <p class="muted"><b>Key:</b> 1–4 or A–D. <b>ZipGrade #</b> is the question's number on the ZipGrade quiz. Make the ZipGrade quiz with only the MC questions, in order, and these are filled in for you.</p>
+  <p class="muted"><b>Key:</b> 1–4 or A–D. <b>ZipGrade #</b> is the question's number on the ZipGrade quiz. Make the ZipGrade quiz with only the MC questions, in order, and these are filled in for you.
+  <br><b>Written questions:</b> to bubble your score on the ZipGrade sheet instead of typing it, give the question a ZipGrade # too. Then bubble <b>A = full credit</b>, <b>B = one point less</b>, <b>C = two less</b>… (for a 1-point question, A = right, B = wrong). Leave it blank to type scores in the app.</p>
   <div class="scroll"><table>
     <tr><th>Q</th><th>Fmt</th><th>Standard</th><th>Skill</th><th>Key</th><th>Points</th><th>ZipGrade #</th><th>Description</th></tr>
     {% for it in its %}
     <tr><td>{{ it.position }}</td><td>{{ it.fmt }}</td><td>{{ it.pe }}</td><td>{{ it.sep }}</td>
       <td>{% if it.fmt == 'MC' %}<input class="cell" data-col="key" type="text" name="key_{{ it.id }}" value="{{ it.answer_key }}" maxlength="1" autocomplete="off">{% else %}<span class="muted">written</span>{% endif %}</td>
       <td><input class="cell" data-col="pts" type="text" inputmode="decimal" name="pts_{{ it.id }}" value="{{ '%g'|format(it.points) }}"></td>
-      <td>{% if it.fmt == 'MC' %}<input class="cell" data-col="zg" type="text" inputmode="numeric" name="zg_{{ it.id }}" value="{{ it.zg_question or '' }}">{% endif %}</td>
+      <td><input class="cell" data-col="zg" type="text" inputmode="numeric" name="zg_{{ it.id }}" value="{{ it.zg_question or '' }}"></td>
       <td class="muted">{{ it.description }}</td></tr>
     {% endfor %}
   </table></div>

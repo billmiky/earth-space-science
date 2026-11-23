@@ -52,6 +52,19 @@ If you put it behind HTTPS (Tailscale Serve, Caddy, nginx…), set `TRACKER_SECU
 6. **✏️ Enter written-answer scores:** type 0/1 for Q4–Q6. **Enter moves down** the column, so you can grade a stack of papers in order.
 7. Check the **Dashboard**, **Standards**, **Skills**, and each student's printable report.
 
+### Bubbling written-answer scores on the ZipGrade sheet
+
+You can skip typing written scores by bubbling them on each student's sheet:
+
+1. **In the app, Answer key & settings:** give each written question a ZipGrade # (Giant Insects: Q4 → 4, Q5 → 5, Q6 → 6).
+2. **In ZipGrade:** make the quiz 6 questions long. Key for Q4–Q6: **A**. ZipGrade's own score will be off, but that doesn't matter because the app does the grading.
+3. **Tell students to leave 4–6 blank.**
+4. **After hand-grading,** bubble each student's sheet:
+   - A = full credit, B = one point less, C = two less, and so on.
+   - For a 1-point question, **A = right, B = wrong**.
+   - Leave it blank if you haven't scored it yet; blank bubbles are skipped, never counted as 0.
+5. Scan and import as usual. The preview shows those columns as points.
+
 ### Rules the app follows
 
 | Situation | What happens |

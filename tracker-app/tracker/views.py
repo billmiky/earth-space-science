@@ -431,7 +431,7 @@ def assessment_setup(aid):
             zgq = request.form.get(f"zg_{it['id']}", "").strip()
             zgq = int(zgq) if zgq.isdigit() else None
             db.execute("UPDATE assessment_items SET answer_key = ?, points = ?, zg_question = ? WHERE id = ?",
-                       (key, pts, zgq if it["fmt"] == "MC" else None, it["id"]))
+                       (key, pts, zgq, it["id"]))
         for it in grading.assessment_items(db, aid):
             grading.regrade_item(db, it)
         db.commit()
@@ -507,7 +507,7 @@ def assessment_import(aid):
     db = get_db()
     a = get_assessment(aid)
     its = grading.assessment_items(db, aid)
-    mc = [it for it in its if it["fmt"] == "MC"]
+    mc = [it for it in its if it["fmt"] == "MC" or it["zg_question"]]
     if request.method == "GET":
         return render_template("import_upload.html", a=a, mc=mc)
     f = request.files.get("file")
@@ -536,7 +536,8 @@ def import_map(aid, token):
         abort(400)
     headers, rows = data["headers"], data["rows"]
     its = grading.assessment_items(db, aid)
-    mc = [it for it in its if it["fmt"] == "MC"]
+    # MC questions, plus written questions you score by bubbling on the ZipGrade sheet
+    mc = [it for it in its if it["fmt"] == "MC" or it["zg_question"]]
 
     def chosen(name, guess):
         v = request.values.get(name)
@@ -573,7 +574,13 @@ def import_map(aid, token):
                                         (it["id"], sid)).fetchone()
                         if ex and ex["source"] == "typed":
                             continue
-                    grading.save_response(db, it, sid, r[c], "zipgrade")
+                    if it["fmt"] == "CR":
+                        credit = grading.cr_from_bubble(r[c], it["points"])
+                        if credit is None:
+                            continue  # not bubbled = not scored yet
+                        grading.save_response(db, it, sid, f"{credit:g}", "zipgrade")
+                    else:
+                        grading.save_response(db, it, sid, r[c], "zipgrade")
                     n += 1
             db.commit()
             path.unlink(missing_ok=True)
@@ -586,7 +593,17 @@ def import_map(aid, token):
     preview = []
     for code, r in matched[:8]:
         s = by_code[code]
-        preview.append((code, display_name(s), [grading.normalize_choice(r[qcols[it["id"]]]) if qcols[it["id"]] is not None else "—" for it in mc]))
+        cells = []
+        for it in mc:
+            c = qcols[it["id"]]
+            if c is None:
+                cells.append("—")
+            elif it["fmt"] == "CR":
+                credit = grading.cr_from_bubble(r[c], it["points"])
+                cells.append("" if credit is None else f"{credit:g} pt")
+            else:
+                cells.append(grading.normalize_choice(r[c]))
+        preview.append((code, display_name(s), cells))
     return render_template("import_map.html", a=a, token=token, headers=headers, mc=mc, id_col=id_col, qcols=qcols,
                            matched=matched, unmatched=unmatched, preview=preview, n_rows=len(rows))
 
