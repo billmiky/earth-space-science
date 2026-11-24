@@ -20,8 +20,8 @@
       <label>Unit<input type="text" name="unit" value="{{ form.get('unit', '') }}" size="3"></label>
     </div>
     <label class="muted">Questions, one per line, in test order. Each line is either an <b>item-bank ID</b> (e.g. <code>Jun2026-Q14</code>) or a new question:
-      <code>MC | HS-ESS2-7 | SEP4 | 1 | short description</code> (format | standard | skill | points | description)</label>
-    <textarea name="items" placeholder="Jun2025-Q1&#10;Jun2025-Q2&#10;MC | HS-ESS1-4 | SEP5 | 1 | Calculate eccentricity&#10;CR | HS-ESS1-4 | SEP7 | 2 | Explain Kepler's 2nd law">{{ form.get('items', '') }}</textarea>
+      <code>MC | HS-ESS2-7 | SEP4 | 1 | short description</code> (format | standard(s) | skill | points | description). For more than one standard, separate them with commas: <code>MC | HS-ESS2-7, HS-ESS2-2 | SEP4 | 1</code></label>
+    <textarea name="items" placeholder="Jun2025-Q1&#10;Jun2025-Q2&#10;MC | HS-ESS1-4 | SEP5 | 1 | Calculate eccentricity&#10;MC | HS-ESS2-4, HS-ESS3-5 | SEP4 | 1 | Read CO2 vs temperature graph&#10;CR | HS-ESS1-4 | SEP7 | 2 | Explain Kepler's 2nd law">{{ form.get('items', '') }}</textarea>
     <div class="actions"><button>Create</button></div>
   </form>
 </div>

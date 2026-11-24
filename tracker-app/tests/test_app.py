@@ -197,3 +197,65 @@ def test_jupiter_score_column(auth, app):
     html = c.get(f"/assessments/{aid}/jupiter?order=id&value=percent&period=3").get_data(as_text=True)
     text = re.search(r'id="jp-scores"[^>]*>([^<]*)</textarea>', html).group(1)
     assert text.split("\n") == ["83", "0"]     # 1001 = 5/6, 1002 = 0/6
+
+
+def test_multiple_standards_per_question(auth, app):
+    c = auth
+    tok = _roster(c)
+    r = c.post("/assessments", data={"csrf": tok, "name": "Climate quiz", "given_on": "", "unit": "4",
+                                     "items": "MC | HS-ESS2-4, ess3-5 | SEP4 | 1 | CO2 graph\n"
+                                              "MC | HS-ESS2-4 | SEP2 | 1 | model\n"
+                                              "CR | HS-ESS3-5 | SEP7 | 2 | argue"})
+    assert r.status_code == 302
+    setup_url = r.headers["Location"]
+    aid = int(re.search(r"/assessments/(\d+)/", setup_url).group(1))
+    html = c.get(setup_url).get_data(as_text=True)
+    assert 'value="HS-ESS2-4, HS-ESS3-5"' in html          # primary first
+    ids = re.findall(r'name="pts_(\d+)"', html)
+    with app.app_context():
+        from tracker.db import get_db
+        sid = {r["student_code"]: r["id"] for r in get_db().execute("SELECT id, student_code FROM students")}
+    form = {"csrf": tok, "name": "Climate quiz", "given_on": "", "unit": "4", "notes": "",
+            f"key_{ids[0]}": "A", f"key_{ids[1]}": "B",
+            f"pts_{ids[0]}": "1", f"pts_{ids[1]}": "1", f"pts_{ids[2]}": "2",
+            f"std_{ids[0]}": "HS-ESS2-4, HS-ESS3-5", f"std_{ids[1]}": "HS-ESS2-4", f"std_{ids[2]}": "HS-ESS3-5"}
+    c.post(setup_url, data=form)
+    # 1001: Q1 right, Q2 wrong, Q3 1/2
+    c.post(f"/assessments/{aid}/enter", data={"csrf": tok, f"r_{sid['1001']}_{ids[0]}": "A",
+                                              f"r_{sid['1001']}_{ids[1]}": "C", f"r_{sid['1001']}_{ids[2]}": "1"})
+    with app.app_context():
+        from tracker import grading
+        from tracker.db import get_db
+        m = grading.standards_mastery(get_db())[sid["1001"]]
+        assert m["HS-ESS2-4"] == 1 / 2            # Q1 (right) + Q2 (wrong)
+        assert m["HS-ESS3-5"] == 2 / 3            # Q1 (1/1) + Q3 (1/2)
+
+    # retag Q2 to also count toward HS-ESS2-2; a bad code is rejected without changing anything
+    form[f"std_{ids[1]}"] = "HS-ESS2-4, HS-ESS2-2"
+    form[f"std_{ids[2]}"] = "HS-ESS3-5, HS-ESS7-1"
+    r = c.post(setup_url, data=form, follow_redirects=True)
+    assert "unknown standard HS-ESS7-1" in r.get_data(as_text=True)
+    with app.app_context():
+        from tracker import grading
+        from tracker.db import get_db
+        m = grading.standards_mastery(get_db())[sid["1001"]]
+        assert m["HS-ESS2-2"] == 0.0 and m["HS-ESS3-5"] == 2 / 3
+    assert "Climate quiz" in c.get("/items?pe=HS-ESS2-2").get_data(as_text=True)
+
+    bad = c.post("/assessments", data={"csrf": tok, "name": "x", "items": "MC | HS-ESS2-4, nope | SEP4 | 1"})
+    assert "unknown standard nope" in bad.get_data(as_text=True)
+
+
+def test_existing_database_upgrades(tmp_path):
+    """A database from before multi-standard support gets every question's standard filled in."""
+    from tracker import create_app
+    app = create_app({"DATA_DIR": str(tmp_path), "TESTING": True})
+    import sqlite3
+    db = sqlite3.connect(app.config["DATABASE"])
+    db.execute("DELETE FROM item_standards")
+    db.commit()
+    db.close()
+    app = create_app({"DATA_DIR": str(tmp_path), "TESTING": True})
+    db = sqlite3.connect(app.config["DATABASE"])
+    n_items = db.execute("SELECT COUNT(*) FROM items").fetchone()[0]
+    assert db.execute("SELECT COUNT(*) FROM item_standards").fetchone()[0] == n_items

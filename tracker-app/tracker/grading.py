@@ -1,4 +1,5 @@
 """Scoring and mastery calculations."""
+import re
 from collections import defaultdict
 
 LETTERS = "ABCDE"
@@ -76,9 +77,37 @@ def regrade_item(db, ai):
         )
 
 
+# All of a question's standards as "HS-ESS2-7, HS-ESS2-2" (primary first). Needs items aliased as i.
+PES_SQL = ("(SELECT GROUP_CONCAT(pe, ', ') FROM (SELECT st.pe FROM item_standards st "
+           "WHERE st.item_id = i.id ORDER BY st.pe = i.pe DESC, st.pe))")
+
+
+def parse_standards(text, valid):
+    """'HS-ESS2-7, ess2-2 HS-ESS2-7' -> (['HS-ESS2-7', 'HS-ESS2-2'], []) ; unknown codes go in the 2nd list."""
+    codes, bad = [], []
+    for tok in re.split(r"[\s,;/]+", text or ""):
+        if not tok:
+            continue
+        t = tok.upper()
+        if not t.startswith("HS-"):
+            t = "HS-" + t
+        if t not in valid:
+            bad.append(tok)
+        elif t not in codes:
+            codes.append(t)
+    return codes, bad
+
+
+def set_item_standards(db, item_id, codes):
+    """Replace a question's standards. The first code becomes its primary standard."""
+    db.execute("DELETE FROM item_standards WHERE item_id = ?", (item_id,))
+    db.executemany("INSERT INTO item_standards (item_id, pe) VALUES (?, ?)", [(item_id, c) for c in codes])
+    db.execute("UPDATE items SET pe = ? WHERE id = ?", (codes[0], item_id))
+
+
 def assessment_items(db, assessment_id):
     return db.execute(
-        "SELECT ai.*, i.fmt, i.pe, i.sep, i.esrt, i.description "
+        "SELECT ai.*, i.fmt, i.pe, i.sep, i.esrt, i.description, " + PES_SQL + " AS pes "
         "FROM assessment_items ai JOIN items i ON i.id = ai.item_id "
         "WHERE ai.assessment_id = ? ORDER BY ai.position",
         (assessment_id,),
@@ -96,8 +125,9 @@ _GRADED = (
 )
 
 
-def _rollup(db, key_sql, period=None):
-    sql = f"SELECT r.student_id AS sid, {key_sql} AS k, SUM(r.points) AS earned, SUM(ai.points) AS possible {_GRADED}"
+def _rollup(db, key_sql, period=None, join=""):
+    graded = _GRADED.replace("WHERE", join + " WHERE", 1) if join else _GRADED
+    sql = f"SELECT r.student_id AS sid, {key_sql} AS k, SUM(r.points) AS earned, SUM(ai.points) AS possible {graded}"
     args = []
     if period:
         sql += " AND s.period = ?"
@@ -111,8 +141,8 @@ def _rollup(db, key_sql, period=None):
 
 
 def standards_mastery(db, period=None):
-    """{student_id: {PE: fraction}}"""
-    return _rollup(db, "i.pe", period)
+    """{student_id: {PE: fraction}}. A question tagged with several standards counts fully toward each."""
+    return _rollup(db, "st.pe", period, join="JOIN item_standards st ON st.item_id = i.id")
 
 
 def skills_mastery(db, period=None):

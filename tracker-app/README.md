@@ -98,6 +98,8 @@ MC | HS-ESS1-4 | SEP5 | 1 | calculate eccentricity
 CR | HS-ESS1-4 | SEP7 | 2 | explain Kepler's 2nd law
 ```
 
+A question can count toward **more than one standard**. List them with commas, e.g. `MC | HS-ESS2-4, HS-ESS3-5 | SEP4 | 1 | CO2 graph`. You can also change any question's standards later in the **Standards** column under **Answer key & settings**. A question counts **fully toward each** of its standards (right answer raises all of them, wrong lowers all of them). Because questions are shared, a change applies everywhere that question is used, including past tests. The item bank shows Regents "also fits" standards; they only count once you add them.
+
 New MC questions are numbered for ZipGrade in order, skipping written questions. You can change the numbers under **Answer key & settings**.
 
 ## About ZipGrade's export format

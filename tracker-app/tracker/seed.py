@@ -87,6 +87,9 @@ def seed(db):
         "VALUES (?, 'U2 Mid-Unit Task 1', ?, 'Giant Insects', ?, ?, 'STAB', ?, 1, ?)",
         GIANT_INSECTS,
     )
+    # Every question counts toward at least its primary standard. Safe to run on every start:
+    # it fills in questions created before multi-standard support and never removes anything.
+    db.execute("INSERT OR IGNORE INTO item_standards (item_id, pe) SELECT id, pe FROM items WHERE pe != ''")
     seeded = db.execute("SELECT value FROM settings WHERE key = 'seeded_giant_insects'").fetchone()
     if not seeded:
         cur = db.execute(

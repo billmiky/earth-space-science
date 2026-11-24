@@ -118,6 +118,10 @@ def standards_list():
     return get_db().execute("SELECT * FROM standards ORDER BY sort").fetchall()
 
 
+def valid_standards():
+    return {r["code"] for r in get_db().execute("SELECT code FROM standards")}
+
+
 def skills_list():
     return get_db().execute("SELECT * FROM skills ORDER BY sort").fetchall()
 
@@ -296,12 +300,12 @@ def items():
     q = request.args.get("q", "").strip()
     pe = request.args.get("pe", "")
     source = request.args.get("source", "")
-    sql, args = "SELECT * FROM items WHERE 1=1", []
+    sql, args = "SELECT i.*, " + grading.PES_SQL + " AS pes FROM items i WHERE 1=1", []
     if q:
         sql += " AND (id LIKE ? OR description LIKE ? OR cluster LIKE ?)"
         args += [f"%{q}%"] * 3
     if pe:
-        sql += " AND pe = ?"
+        sql += " AND EXISTS (SELECT 1 FROM item_standards st WHERE st.item_id = i.id AND st.pe = ?)"
         args.append(pe)
     if source:
         sql += " AND source = ?"
@@ -314,7 +318,8 @@ def items():
 
 # ---------------------------------------------------------------- assessments
 
-ITEM_LINE = re.compile(r"^\s*(MC|CR)\s*\|\s*(HS-ESS\d-\d)\s*\|\s*(SEP\d)\s*\|\s*([\d.]+)\s*(?:\|\s*(.*))?$", re.I)
+# format | one or more standards | skill | points | description
+ITEM_LINE = re.compile(r"^\s*(MC|CR)\s*\|\s*([^|]+?)\s*\|\s*(SEP\d)\s*\|\s*([\d.]+)\s*(?:\|\s*(.*))?$", re.I)
 
 
 @bp.route("/assessments", methods=["GET", "POST"])
@@ -327,14 +332,19 @@ def assessments():
             flash("Give the assessment a name and at least one question.", "error")
             return render_template("assessments.html", rows=_assessment_rows(), form=request.form)
         parsed, errors = [], []
+        valid = valid_standards()
         for n, ln in enumerate(lines, 1):
             m = ITEM_LINE.match(ln)
             if m:
-                parsed.append(("new", m))
+                codes, bad = grading.parse_standards(m.group(2), valid)
+                if bad or not codes:
+                    errors.append(f"Line {n}: unknown standard {', '.join(bad) or '(none)'}. Use codes like HS-ESS2-7.")
+                else:
+                    parsed.append(("new", (m, codes)))
             elif db.execute("SELECT 1 FROM items WHERE id = ?", (ln,)).fetchone():
                 parsed.append(("bank", ln))
             else:
-                errors.append(f"Line {n}: '{ln}' is not an item ID or 'MC | HS-ESS2-7 | SEP4 | 1 | description'")
+                errors.append(f"Line {n}: '{ln}' is not an item ID or 'MC | HS-ESS2-7, HS-ESS2-2 | SEP4 | 1 | description'")
         if errors:
             for e in errors:
                 flash(e, "error")
@@ -345,10 +355,12 @@ def assessments():
         zg = 0
         for pos, (kind, val) in enumerate(parsed, 1):
             if kind == "new":
-                fmt, pe, sep, pts, desc = val.group(1).upper(), val.group(2).upper(), val.group(3).upper(), float(val.group(4)), val.group(5) or ""
+                m, codes = val
+                fmt, sep, pts, desc = m.group(1).upper(), m.group(3).upper(), float(m.group(4)), m.group(5) or ""
                 item_id = f"A{aid}-Q{pos}"
                 db.execute("INSERT INTO items (id, source, q, pe, sep, fmt, points, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                           (item_id, name, pos, pe, sep, fmt, pts, desc))
+                           (item_id, name, pos, codes[0], sep, fmt, pts, desc))
+                grading.set_item_standards(db, item_id, codes)
             else:
                 item_id = val
                 it = db.execute("SELECT fmt, points FROM items WHERE id = ?", (item_id,)).fetchone()
@@ -469,7 +481,17 @@ def assessment_setup(aid):
         db.execute("UPDATE assessments SET name = ?, given_on = ?, unit = ?, notes = ? WHERE id = ?",
                    (request.form.get("name", a["name"]).strip() or a["name"], request.form.get("given_on", ""),
                     request.form.get("unit", ""), request.form.get("notes", ""), aid))
+        valid = valid_standards()
         for it in its:
+            std_field = request.form.get(f"std_{it['id']}")
+            if std_field is not None and std_field.strip() != (it["pes"] or ""):
+                codes, bad = grading.parse_standards(std_field, valid)
+                if bad:
+                    flash(f"Q{it['position']}: unknown standard {', '.join(bad)}; its standards were not changed.", "error")
+                elif not codes:
+                    flash(f"Q{it['position']}: a question needs at least one standard; not changed.", "error")
+                else:
+                    grading.set_item_standards(db, it["item_id"], codes)
             key = grading.normalize_choice(request.form.get(f"key_{it['id']}", "")) if it["fmt"] == "MC" else ""
             if key and key not in "12345":
                 flash(f"Q{it['position']}: key must be 1-5 or A-E.", "error")
@@ -682,11 +704,11 @@ def export_standards():
 @bp.route("/export/responses.csv")
 def export_responses():
     rows = get_db().execute(
-        "SELECT s.student_code, s.period, a.name, ai.position, ai.item_id, i.pe, i.sep, i.fmt, r.answer, r.points, ai.points, r.source "
+        "SELECT s.student_code, s.period, a.name, ai.position, ai.item_id, " + grading.PES_SQL + ", i.sep, i.fmt, r.answer, r.points, ai.points, r.source "
         "FROM responses r JOIN students s ON s.id = r.student_id JOIN assessment_items ai ON ai.id = r.assessment_item_id "
         "JOIN assessments a ON a.id = ai.assessment_id JOIN items i ON i.id = ai.item_id "
         "ORDER BY a.id, s.student_code, ai.position").fetchall()
-    return _csv_response("all-responses.csv", ["student_id", "period", "assessment", "q", "item_id", "pe", "skill", "format",
+    return _csv_response("all-responses.csv", ["student_id", "period", "assessment", "q", "item_id", "standards", "skill", "format",
                                                "answer", "points", "possible", "source"], [list(r) for r in rows])
 
 
