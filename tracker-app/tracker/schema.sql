@@ -48,6 +48,13 @@ CREATE TABLE IF NOT EXISTS items (
     description TEXT NOT NULL DEFAULT ''
 );
 
+-- Every standard a question counts toward (items.pe is the first/primary one).
+CREATE TABLE IF NOT EXISTS item_standards (
+    item_id TEXT NOT NULL REFERENCES items(id) ON DELETE CASCADE,
+    pe      TEXT NOT NULL,
+    PRIMARY KEY (item_id, pe)
+);
+
 CREATE TABLE IF NOT EXISTS assessments (
     id       INTEGER PRIMARY KEY,
     name     TEXT NOT NULL,

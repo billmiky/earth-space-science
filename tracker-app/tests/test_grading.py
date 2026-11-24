@@ -47,3 +47,10 @@ def test_cr_from_bubble():
     assert grading.cr_from_bubble("D", 2) == 0       # never below zero
     assert grading.cr_from_bubble("", 1) is None      # not bubbled = not scored
     assert grading.cr_from_bubble("AB", 1) is None
+
+
+def test_parse_standards():
+    valid = {"HS-ESS2-7", "HS-ESS2-2", "HS-ESS3-5"}
+    assert grading.parse_standards("HS-ESS2-7, ess2-2  HS-ESS2-7", valid) == (["HS-ESS2-7", "HS-ESS2-2"], [])
+    assert grading.parse_standards("HS-ESS9-9, HS-ESS3-5", valid) == (["HS-ESS3-5"], ["HS-ESS9-9"])
+    assert grading.parse_standards("", valid) == ([], [])
