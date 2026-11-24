@@ -78,6 +78,16 @@ You can skip typing written scores by bubbling them on each student's sheet:
 
 Mastery = points earned ÷ points possible, **only on questions the student actually took**. Colors: red < 50%, yellow 50–74%, green ≥ 75%.
 
+## Getting scores into Jupiter
+
+Open an assessment and click **📋 Copy scores for Jupiter**:
+
+1. Pick the **period** and the **order** that matches your Jupiter roster (last name, first name, or student ID), and choose **points** or **percent**.
+2. Check the list on screen. Every student's name is beside their score, so you can confirm the order matches Jupiter.
+3. Click **Copy score column**. Only the scores are copied, one per line, and absent students are blank lines so the rows stay aligned. Paste into Excel starting at the first student's cell.
+
+Questions a student has no answer for count as 0 in this total, and the page notes how many. Enter any missing written scores first.
+
 ## Making new assessments
 
 **Assessments → New assessment.** List the questions in test order, one per line:

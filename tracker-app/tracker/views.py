@@ -410,6 +410,56 @@ def assessment(aid):
                            periods=periods(), period=period, display_name=display_name)
 
 
+JUPITER_ORDERS = {
+    "last": ("Last name, first name", lambda s: (s["last_name"].lower(), s["first_name"].lower(), s["student_code"])),
+    "first": ("First name, last name", lambda s: (s["first_name"].lower(), s["last_name"].lower(), s["student_code"])),
+    "id": ("Student ID", lambda s: (len(s["student_code"]), s["student_code"])),
+}
+
+
+@bp.route("/assessments/<int:aid>/jupiter")
+def assessment_jupiter(aid):
+    """One score per line, in roster order, ready to paste into Excel / Jupiter."""
+    db = get_db()
+    a = get_assessment(aid)
+    its = grading.assessment_items(db, aid)
+    period = request.args.get("period") or None
+    order = request.args.get("order", "last")
+    if order not in JUPITER_ORDERS:
+        order = "last"
+    value = request.args.get("value", "points")
+    if value not in ("points", "percent"):
+        value = "points"
+    studs = sorted(active_students(period), key=JUPITER_ORDERS[order][1])
+    resp = {}
+    for r in db.execute(
+        "SELECT r.* FROM responses r JOIN assessment_items ai ON ai.id = r.assessment_item_id WHERE ai.assessment_id = ?", (aid,)):
+        resp[(r["student_id"], r["assessment_item_id"])] = r
+    total_possible = sum(it["points"] for it in its)
+    rows, ungraded = [], 0
+    for s in studs:
+        cells = [resp.get((s["id"], it["id"])) for it in its]
+        taken = [c for c in cells if c is not None]
+        if not taken:
+            rows.append((s, "", "absent / not entered"))
+            continue
+        if any(c["points"] is None for c in taken):
+            ungraded += 1
+        earned = sum(c["points"] for c in taken if c["points"] is not None)
+        # Score out of the whole test: unanswered questions count as 0 for the gradebook.
+        missing = sum(c is None for c in cells)
+        note = f"{missing} question(s) not entered" if missing else ""
+        if value == "percent":
+            score = f"{round(100 * earned / total_possible)}" if total_possible else ""
+        else:
+            score = f"{earned:g}"
+        rows.append((s, score, note))
+    scores_text = "\n".join(r[1] for r in rows)
+    return render_template("jupiter.html", a=a, rows=rows, scores_text=scores_text, total_possible=total_possible,
+                           ungraded=ungraded, periods=periods(), period=period, order=order, value=value,
+                           orders={k: v[0] for k, v in JUPITER_ORDERS.items()}, display_name=display_name)
+
+
 @bp.route("/assessments/<int:aid>/setup", methods=["GET", "POST"])
 def assessment_setup(aid):
     db = get_db()
