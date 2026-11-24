@@ -8,6 +8,7 @@
   <a class="btn" href="{{ url_for('main.assessment_import', aid=a.id) }}">📷 Import ZipGrade results</a>
   {% if its|selectattr('fmt', 'equalto', 'CR')|list %}<a class="btn" href="{{ url_for('main.assessment_enter', aid=a.id, only='cr', period=period or '') }}">✏️ Enter written-answer scores</a>{% endif %}
   <a class="btn secondary" href="{{ url_for('main.assessment_enter', aid=a.id, period=period or '') }}">Type all answers</a>
+  <a class="btn secondary" href="{{ url_for('main.assessment_jupiter', aid=a.id, period=period or '') }}">📋 Copy scores for Jupiter</a>
   <a class="btn secondary" href="{{ url_for('main.assessment_setup', aid=a.id) }}">Answer key &amp; settings</a>
 </div>
 

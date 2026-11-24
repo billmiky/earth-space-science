@@ -165,3 +165,35 @@ def test_bubbled_written_scores(auth, app):
         assert m[sid["1001"]]["HS-ESS2-7"] == 5 / 6
         assert m[sid["1002"]]["HS-ESS2-7"] == 3 / 5   # Q2 wrong, Q4 B=0, Q5 skipped
         assert grading.skills_mastery(db)[sid["1001"]]["CR"] == 2 / 3
+
+
+def test_jupiter_score_column(auth, app):
+    c = auth
+    tok = _roster(c)   # 1001 Ana Diaz (3), 1002 Ben Ng (3), 1003 Cy Lo (5), 1004 Di Ra (5)
+    aid = _giant_insects_id(c)
+    ids = _item_ids(c, aid)
+    form = {"csrf": tok, "name": "GI", "given_on": "", "unit": "2", "notes": ""}
+    for i, aiid in enumerate(ids):
+        form[f"pts_{aiid}"] = "1"
+        if i < 3:
+            form[f"key_{aiid}"] = "BCA"[i]
+            form[f"zg_{aiid}"] = str(i + 1)
+    c.post(f"/assessments/{aid}/setup", data=form)
+    with app.app_context():
+        from tracker.db import get_db
+        sid = {r["student_code"]: r["id"] for r in get_db().execute("SELECT id, student_code FROM students")}
+    entry = {"csrf": tok}
+    for code, answers in (("1001", "BCA110"), ("1002", "AAD000"), ("1004", "BC")):  # 1003 absent; 1004 partial
+        for aiid, v in zip(ids, answers):
+            entry[f"r_{sid[code]}_{aiid}"] = v
+    c.post(f"/assessments/{aid}/enter", data=entry)
+
+    html = c.get(f"/assessments/{aid}/jupiter?order=last").get_data(as_text=True)
+    text = re.search(r'id="jp-scores"[^>]*>([^<]*)</textarea>', html).group(1)
+    # last-name order: Diaz(1001)=5, Lo(1003)=absent, Ng(1002)=0, Ra(1004)=2
+    assert text.split("\n") == ["5", "", "0", "2"]
+    assert "absent" in html and "question(s) not entered" in html
+
+    html = c.get(f"/assessments/{aid}/jupiter?order=id&value=percent&period=3").get_data(as_text=True)
+    text = re.search(r'id="jp-scores"[^>]*>([^<]*)</textarea>', html).group(1)
+    assert text.split("\n") == ["83", "0"]     # 1001 = 5/6, 1002 = 0/6

@@ -1,0 +1,46 @@
+{% extends "base.html" %}{% block title %}Scores for Jupiter · {{ a.name }}{% endblock %}
+{% block content %}
+<h1>Copy scores for Jupiter</h1>
+<p><b>{{ a.name }}</b> · out of {{ '%g'|format(total_possible) }} points</p>
+
+<form method="get" class="row no-print">
+  {% if periods %}
+  <label>Period
+    <select name="period">
+      <option value="">All</option>
+      {% for p in periods %}<option value="{{ p }}" {% if p == period %}selected{% endif %}>{{ p }}</option>{% endfor %}
+    </select></label>
+  {% endif %}
+  <label>Order (match your Jupiter roster)
+    <select name="order">
+      {% for k, label in orders.items() %}<option value="{{ k }}" {% if k == order %}selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select></label>
+  <label>Score as
+    <select name="value">
+      <option value="points" {% if value == 'points' %}selected{% endif %}>Points earned (out of {{ '%g'|format(total_possible) }})</option>
+      <option value="percent" {% if value == 'percent' %}selected{% endif %}>Percent (0–100)</option>
+    </select></label>
+  <button class="secondary">Update</button>
+</form>
+
+{% if ungraded %}<div class="flash warn">{{ ungraded }} student(s) have multiple-choice answers that aren't graded yet. <a href="{{ url_for('main.assessment_setup', aid=a.id) }}">Enter the answer key</a> first, or their scores will be too low.</div>{% endif %}
+
+<div class="card">
+  <div class="actions">
+    <button type="button" id="jp-copy">📋 Copy score column ({{ rows|length }} rows)</button>
+    <span id="jp-status" class="muted" role="status" aria-live="polite"></span>
+  </div>
+  <p class="muted">Copies only the scores, one per line, in the order below. In Excel, click the first score cell and paste. Absent students are left blank, so the rows stay lined up with your roster.</p>
+  <textarea id="jp-scores" readonly rows="4" aria-label="Score column to copy" style="min-height:0">{{ scores_text }}</textarea>
+</div>
+
+<h2>Check the order before pasting</h2>
+<div class="scroll"><table>
+  <tr><th>#</th><th>Student</th><th>ID</th><th>Per.</th><th>Score</th><th>Note</th></tr>
+  {% for s, score, note in rows %}
+  <tr><td>{{ loop.index }}</td><td>{{ display_name(s) }}</td><td>{{ s.student_code }}</td><td>{{ s.period }}</td>
+    <td><b>{{ score }}</b></td><td class="muted">{{ note }}</td></tr>
+  {% else %}<tr><td colspan="6" class="muted">No students{% if period %} in period {{ period }}{% endif %}.</td></tr>{% endfor %}
+</table></div>
+<p class="muted">If a student shows up in Jupiter but not here (or the other way around), the rows will shift. Add or hide them on the Students page first.</p>
+{% endblock %}
