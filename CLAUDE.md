@@ -21,8 +21,8 @@ catch up, review, and work through their **student packets** (New Visions ESS cu
   Unit 1 dashboard can optionally use the Cloudflare Worker in `backend/` (manual deploy
   only — see `backend/README.md`).
 - `teacher/progress-tracking/` — standards/skills guide, Regents item map, spreadsheet tracker.
-- `tracker-app/` — self-hosted Flask + SQLite student tracker (ZipGrade import). Not part of the
-  book. Its `data/` (student data) is gitignored and must never be committed. Tests: `python -m pytest -q`.
+- The student tracker app (Flask + SQLite, ZipGrade import) now lives in a separate **private** repo
+  (`ess-tracker`), not here. `tracker-app/` is gitignored; never commit student data or assessment PDFs.
 - `styles.css` (global), `custom.css`, and the `include-*` HTML snippets
   (`mobile-enhancements.html`, `earth-toc.html`, `copy-protection.html`, `meta-viewport.html`).
 - `_extensions/qmd-lab/closeread` — scrollytelling extension.
