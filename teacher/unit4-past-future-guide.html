@@ -1,0 +1,1297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="teacher-gate.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}.strata-7{grid-template-columns:repeat(7,1fr)}
+</style>
+<title>Past and Future Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky day bar on top, one day visible at a time, single reading column (~760px). Days are "rock layers" colored by 5E phase. */
+:root{
+  --bg:#F2F5F4; --surface:#FFFFFF; --ink:#15212A; --muted:#55646B; --line:#D5DDDB; --tint:#E7EDEB;
+  --iron:#AE4229; --ocean:#1C6784; --ochre:#A8731A; --moss:#4C7634; --dusk:#5A4A8C;
+  --ok:#2E7D4F; --warn:#9A5B00;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--ocean)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* phase colors */
+[data-phase="engage"]{--ph:var(--ochre)} [data-phase="explore"]{--ph:var(--iron)} [data-phase="explain"]{--ph:var(--ocean)}
+[data-phase="elaborate"]{--ph:var(--moss)} [data-phase="evaluate"]{--ph:var(--dusk)} [data-phase="overview"]{--ph:var(--ink)}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:thin}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--ph)}
+.chip[aria-current="page"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--ocean);outline-offset:2px}
+
+/* hero */
+.hero{padding-block:28px 8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.hero h1{font-size:clamp(32px,7vw,52px);font-weight:800;letter-spacing:-.02em;margin:8px 0 10px}
+.dq{font-size:clamp(18px,3.4vw,22px);color:var(--ink);max-width:40ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0 0;color:var(--muted);font-size:15px}
+.meta b{color:var(--ink)}
+
+/* strata bar */
+.strata{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin:22px 0 6px;border-radius:10px;overflow:hidden}
+.strata a{display:flex;flex-direction:column;justify-content:flex-end;min-height:76px;padding:8px 7px;background:var(--ph);color:#fff;text-decoration:none;font-size:12px;line-height:1.2;position:relative}
+.strata a::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(0,0,0,.10) 9px 11px);pointer-events:none}
+.strata b{font-family:var(--f-display);font-size:20px;display:block}
+.strata span{opacity:.92}
+.strata-cap{font-size:13px;color:var(--muted)}
+@media (max-width:520px){.strata span{display:none}.strata a{min-height:56px}}
+
+/* views */
+.view{padding-block:8px 48px;scroll-margin-top:calc(64px + env(safe-area-inset-top,0px))}
+.view[hidden]{display:none!important}
+.dayhead{padding-block:26px 6px;border-bottom:4px solid var(--ph);margin-bottom:8px}
+.dayhead .eyebrow{color:var(--ph)}
+.dayhead h2{font-size:clamp(28px,5.6vw,40px);font-weight:800;margin:6px 0 8px;letter-spacing:-.01em}
+.dayhead .q{font-style:italic;color:var(--muted);margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
+.tag{font-size:13px;padding:3px 9px;border-radius:6px;background:var(--tint);color:var(--ink)}
+
+section.block{padding-block:18px 4px}
+section.block>h3{font-size:22px;font-weight:800;margin-bottom:12px;display:flex;align-items:baseline;gap:10px}
+section.block>h3 small{font-family:var(--f-body);font-weight:600;font-size:14px;color:var(--muted)}
+p{margin:0 0 10px} ul,ol{margin:0 0 10px;padding-left:22px} li{margin-bottom:5px}
+
+/* goals */
+.goals{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--ph);border-radius:8px;padding:14px 16px}
+.goals h3{font-size:17px;margin-bottom:8px}
+.goals ul{margin:0}
+
+/* schedule */
+.sched{list-style:none;padding:0;margin:0;border-left:2px solid var(--line)}
+.sched li{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:10px 0 12px 22px;margin:0;position:relative}
+.sched li::before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:3px solid var(--ph)}
+.t{font-family:var(--f-mono);font-size:14px;color:var(--ph);font-weight:500;padding-top:2px;font-variant-numeric:tabular-nums}
+.t small{display:block;color:var(--muted);font-size:12px}
+.sched h4{font-size:17px;font-weight:600;margin-bottom:3px}
+.sched p,.sched ul{font-size:16px;color:var(--ink);margin-bottom:4px}
+.sched .say{border-left:3px solid var(--tint);padding-left:10px;color:var(--muted);font-style:italic}
+@media (max-width:480px){.sched li{grid-template-columns:1fr;gap:2px}}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.card .lbl{font-size:12px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;color:var(--ph);margin-bottom:6px}
+.card p:last-child{margin-bottom:0}
+.ans{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:15px;color:var(--muted)}
+.ans b{color:var(--ok)}
+
+/* conferring */
+.confer{list-style:none;padding:0;display:grid;gap:8px}
+.confer li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0}
+.confer li span{display:block;font-size:14px;color:var(--muted);margin-top:3px}
+
+/* CFU */
+.cfu{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.cfu h4{font-size:16px;margin-bottom:6px;font-family:var(--f-body);font-weight:700}
+.opts{list-style:none;padding:0;margin:6px 0}
+.opts li{padding:5px 10px;border-radius:6px;margin-bottom:4px;background:var(--tint)}
+.opts li.right{outline:2px solid var(--ok)}
+.opts li em{display:block;font-size:14px;color:var(--muted);font-style:normal}
+.when{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* answer key */
+.key{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.key>summary{cursor:pointer;padding:13px 16px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.key>summary::-webkit-details-marker{display:none}
+.key>summary::after{content:"+";font-family:var(--f-mono);font-size:20px;color:var(--ph)}
+.key[open]>summary::after{content:"−"}
+.key>summary small{display:block;font-weight:400;color:var(--muted);font-size:14px}
+.keybody{padding:2px 16px 14px;border-top:1px solid var(--line)}
+.qa{padding:10px 0;border-bottom:1px solid var(--tint)}
+.qa:last-child{border-bottom:0}
+.qa .qq{font-weight:700;margin-bottom:4px}
+.qa .aa{margin:0}
+.note{font-size:15px;background:var(--tint);border-radius:8px;padding:10px 12px;margin:8px 0}
+.note b{color:var(--warn)}
+.scroll{overflow-x:auto;margin:8px 0 12px;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--surface)}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--tint);font-weight:700}
+td.num,th.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* homework */
+.hw{background:var(--surface);border:2px solid var(--ph);border-radius:12px;padding:16px}
+.hw h4{font-size:20px;font-weight:800;margin-bottom:6px}
+.hw .why{font-size:15px;color:var(--muted)}
+.checks{list-style:none;padding:0;margin:8px 0 0}
+.checks li{padding-left:24px;position:relative}
+.checks li::before{content:"✓";position:absolute;left:2px;color:var(--ok);font-weight:700}
+
+/* overview bits */
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:6px}
+.glance .card b{font-family:var(--f-display);font-size:18px;display:block;margin-bottom:2px}
+.prep{list-style:none;padding:0}
+.prep li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--tint);margin:0}
+.prep input{width:20px;height:20px;margin-top:3px;accent-color:var(--ocean);flex:0 0 auto}
+.prep label{flex:1;min-width:0}
+.prep .when{display:block}
+.mis{display:grid;gap:8px}
+.mis div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.mis s{color:var(--iron);text-decoration-thickness:2px}
+
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:30px;flex-wrap:wrap}
+.pager a{flex:1 1 200px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.pager a small{display:block;color:var(--muted);font-size:13px}
+.pager a.next{text-align:right}
+footer{color:var(--muted);font-size:13px;padding-block:20px 40px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+.strata-7{grid-template-columns:repeat(7,1fr)}
+</style>
+</head>
+<body>
+<nav class="bar" aria-label="Days">
+  <div class="wrap" id="chips">
+    <a class="chip" data-phase="overview" href="#overview"><i></i>Before you teach</a>
+    <a class="chip" data-phase="engage" href="#day-1"><i></i>Day 1</a>
+    <a class="chip" data-phase="explore" href="#day-2"><i></i>Day 2</a>
+    <a class="chip" data-phase="explain" href="#day-3"><i></i>Day 3</a>
+    <a class="chip" data-phase="explain" href="#day-4"><i></i>Day 4</a>
+    <a class="chip" data-phase="explore" href="#day-5"><i></i>Day 5</a>
+    <a class="chip" data-phase="explain" href="#day-6"><i></i>Day 6</a>
+    <a class="chip" data-phase="evaluate" href="#day-7"><i></i>Day 7</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ===================== OVERVIEW ===================== -->
+<div class="view" id="overview" data-phase="overview">
+  <header class="hero">
+    <div class="eyebrow">Teacher guide · Earth &amp; Space Science · Unit 4 · Climate Change · 5E L4</div>
+    <h1>The Past and the Future</h1>
+    <p class="dq">Have humans experienced dramatic climate change in the past? How have human populations been impacted, and how can that inform how we might be impacted in the future?</p>
+    <div class="meta">
+      <span><b>PEs</b> HS-ESS2-4 · HS-ESS3-1 · HS-ESS3-5</span>
+      <span><b>Length</b> 7 days × 50 min (curriculum says 7)</span>
+      <span><b>Anchor routines</b> Domino Discover · Class Consensus · Read-Generate-Sort-Solve · Think-Talk-Open Exchange</span>
+    </div>
+    <div class="strata strata-7" aria-label="Seven days, colored by 5E phase">
+      <a href="#day-1" data-phase="engage"><b>1</b><span>Engage</span></a>
+      <a href="#day-2" data-phase="explore"><b>2</b><span>Explore 1</span></a>
+      <a href="#day-3" data-phase="explain"><b>3</b><span>Explain 1</span></a>
+      <a href="#day-4" data-phase="explain"><b>4</b><span>Explain 1</span></a>
+      <a href="#day-5" data-phase="explore"><b>5</b><span>Explore 2</span></a>
+      <a href="#day-6" data-phase="explain"><b>6</b><span>Explain 2</span></a>
+      <a href="#day-7" data-phase="evaluate"><b>7</b><span>Elab + Eval</span></a>
+    </div>
+    <p class="strata-cap">Tap a day to open it. Each day has a minute-by-minute plan, Do Nows, conferring questions, checks for understanding, the answer key, exit slips and drawn homework. Student-facing version: <a href="../unit4-climate-change/unit4-past-and-future.html">Unit 4 · The Past and the Future</a> chapter (same packet, interactive stand-ins for the tank lab and data tools).</p>
+  </header>
+
+  <section class="block">
+    <h3>The phenomenon in one paragraph</h3>
+    <p>Students already know <i>what</i> is warming the planet (Earth–Sun dynamics, feedbacks, CO₂). This 5E asks <b>so what?</b> They start in the past. As Earth left the last glacial period, Greenland's ice-core record (GISP2) shows warming, then a <b>sudden plunge back to near-glacial cold</b> (the <b>Younger Dryas</b>, about 12,900–11,700 years ago), then a very fast rebound. The <b>Clovis culture</b> disappears from the record at the start of that swing. A tank model shows the mechanism: <b>fresh meltwater lowers the salt concentration</b> of the North Atlantic, the water becomes <b>less dense</b>, sinking slows, and the <b>AMOC</b> weakens, so less tropical heat reaches the north. Then students turn to the future. Satellite data show sea level rising about <b>3 mm per year since 1993, and speeding up</b>. IPCC climate models project more warming, more sea level rise and more extremes under higher-emission scenarios. Real texts and data (glacial lake floods, eroding Alaska villages, crop losses, NOAA billion-dollar disasters) show that people are <b>already</b> being affected, which feeds the unit Performance Task.</p>
+  </section>
+
+  <section class="block">
+    <h3>The 5E storyline</h3>
+    <div class="glance">
+      <div class="card" data-phase="engage"><div class="lbl">Engage · Day 1</div><b>How have humans been impacted by climate change in the past?</b>Climate and Human Populations reading, migration map, GISP2 temperature graph.</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore 1 · Days 1–2</div><b>What does melting ice do to ocean currents?</b>Sea level after the ice age; fresh vs. salty tank model of the AMOC.</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain 1 · Days 3–4</div><b>How do changing currents affect climate?</b>Mechanism models, ocean heat reading, Clovis card sort, Class Consensus.</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore 2 · Day 5</div><b>How will warming affect other climate variables?</b>1993–2025 sea level spreadsheet, IPCC Interactive Atlas, sea level viewers.</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain 2 · Day 6</div><b>How will melting ice impact populations?</b>NRDC jigsaw texts (glacial lakes, mountains, poles), RGSS, Class Consensus.</div>
+      <div class="card" data-phase="elaborate"><div class="lbl">Elaborate · Day 7</div><b>How else will climate change affect us?</b>Food-supply videos, Think-Talk-Open Exchange.</div>
+      <div class="card" data-phase="evaluate"><div class="lbl">Evaluate · Day 7</div><b>How will climate change likely impact people?</b>NOAA billion-dollar disaster data + Performance Task Organizer.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="goals" data-phase="explain">
+      <h3>By the end of the 5E, every student should be able to…</h3>
+      <ul>
+        <li>Describe how <b>past climate change affected people</b>: migrations, die-offs, land bridges exposed by low sea level, and the disappearance of the Clovis culture during the Younger Dryas.</li>
+        <li>Explain that melting ice sheets add <b>fresh water</b> to the ocean, which <b>raises sea level</b> (~120 m since the last glacial maximum) and <b>lowers salt concentration and density</b>.</li>
+        <li>Use a model to give a <b>mechanism</b>: fresh water → less dense → less sinking near Greenland → <b>weaker AMOC</b> → less heat carried north → northern cooling.</li>
+        <li>Explain why water moves so much energy (<b>high heat capacity</b>; heat moves from warm water to cooler air) and why warm currents give coasts milder climates.</li>
+        <li>Calculate a <b>rate of change</b> from real sea level data (≈3 mm/yr, 1993–2025) and explain why a straight-line forecast <b>underestimates</b> the future (the rate is accelerating).</li>
+        <li>Use IPCC scenarios to state that <b>more emissions → more warming → bigger and faster changes</b> in sea level, heat and precipitation.</li>
+        <li>Construct an evidence-based claim about how climate hazards will likely affect people (floods, displacement, food and water supply), and say whether the evidence shows <b>cause</b> or only <b>correlation</b>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Prep checklist <small>check off as you go · saved on this device</small></h3>
+    <ul class="prep" id="prep">
+      <li><input type="checkbox" id="p1"><label for="p1"><span class="when">1 week out</span>Copy the student packet. Copy separately: <b>The End of the Clovis Population Cards</b> (one cut set per group; envelope them), the three NRDC texts (enough for a jigsaw), and the <b>Human Displacement and Disaster Data</b> graph for Day 7 in color if you can (the lines are hard to tell apart in grayscale). Students need their Performance Task Organizer (p. 11) on Day 7.</label></li>
+      <li><input type="checkbox" id="p2"><label for="p2"><span class="when">1 week out</span>Test every link on student devices: <b>The Blue Marble</b> (to 1:36), <b>AMOC Model</b>, <b>The Catastrophic Flood that Triggered an Ice Age</b>, the <b>Sea Level Change Data</b> spreadsheet (students need edit access, so share it as "make a copy"), <b>IPCC WGI Interactive Atlas</b>, <b>Sea Level Rise Scenarios</b> (BRGM), <b>NOAA Sea Level Rise Viewer</b>, <b>What the US Would Look Like If All the Earth's Ice Melted</b>, the <b>World Economic Forum</b> crops video and <b>How Climate Extremes are Causing World Hunger</b>.</label></li>
+      <li><input type="checkbox" id="p3"><label for="p3"><span class="when">Before Day 2</span><b>Tank lab:</b> 2 clear tanks or large clear containers per station (or one demo pair), 4 cups per station, red and blue food coloring (a third color for the diluted water helps), salt, ice. Mix the brine the day before: dissolve about <b>300–350 g salt per liter</b> of water (see Corrections: 400 g/L won't dissolve) and chill it overnight.</label></li>
+      <li><input type="checkbox" id="p4"><label for="p4"><span class="when">Morning of Day 2</span>Make the "glacial melt" water: mix chilled brine with cold <b>fresh</b> water <b>1 : 2 or 1 : 3</b> (bigger visible difference than 1 : 1). Fill tanks with room-temperature water. Use <b>hot tap water</b> (not boiling) for the red "equator" water.</label></li>
+      <li><input type="checkbox" id="p5"><label for="p5"><span class="when">Before Day 4</span>Pick 2–3 group models for the Class Consensus. Post chart paper titled <b>"Class Consensus: Ocean Currents and Climate"</b> and have last 5E's <b>Class Consensus Model: Global Energy Budget</b> poster up so you can add "currents redistribute energy" to it.</label></li>
+      <li><input type="checkbox" id="p6"><label for="p6"><span class="when">Before Day 5</span>One device per pair. Decide whether the IPCC Atlas will be <b>student-driven or a projected class demo</b> (the curriculum allows the demo if time or devices are short). Practice the Atlas clicks once yourself; it is not intuitive.</label></li>
+      <li><input type="checkbox" id="p7"><label for="p7"><span class="when">Before Day 6</span>Group students in 3s or 4s for the jigsaw. Chart paper + markers per group. Post the Class Consensus Discussion steps.</label></li>
+      <li><input type="checkbox" id="p8"><label for="p8"><span class="when">Before Day 7</span>Sticky notes and chart paper for the Domino Discover tally. Post the class's scientific-argument characteristics. Have each student's Performance Task Organizer ready.</label></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Content crib: the numbers students will use</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>Idea</th><th>Value</th><th>Source / where it comes up</th></tr></thead>
+      <tbody>
+        <tr><td>Younger Dryas cold interval</td><td class="num">~12,900–11,700 years ago</td><td>GISP2 ice core (Alley 2000); Engage graph</td></tr>
+        <tr><td>Warming at the end of the Younger Dryas (Greenland)</td><td class="num">~10 °C, much of it within decades</td><td>Ice-core gas-isotope estimates (e.g. Severinghaus et al. 1998); estimates vary by method</td></tr>
+        <tr><td>Clovis culture in the record</td><td class="num">13,500 → 12,750 years ago</td><td>Packet reading</td></tr>
+        <tr><td>Sea level at the last glacial maximum (~20,000 yr ago)</td><td class="num">~120 m lower than today</td><td>Post-Glacial Sea Level Rise graph (Explore 1)</td></tr>
+        <tr><td>Meltwater Pulse 1A</td><td class="num">~20 m in ~500 yr, ~14,500 yr ago</td><td>Fastest part of the sea level curve</td></tr>
+        <tr><td>Global sea level, May 1993 → May 2025</td><td class="num">−5.6 → 91.6 mm (+97.2 mm)</td><td>Sea Level Change Data spreadsheet (NASA satellite altimetry)</td></tr>
+        <tr><td>Average Oct − May seasonal variation</td><td class="num">14.27 mm (32 years)</td><td>Spreadsheet column C average</td></tr>
+        <tr><td>Annual rate, 1993–2025</td><td class="num">97.2 ÷ 32 ≈ 3.04 mm/yr</td><td>Packet formula (key says 3.0125; see Corrections)</td></tr>
+        <tr><td>Rate is accelerating</td><td class="num">~2.1 mm/yr (1993) → ~4.5 mm/yr (2024)</td><td>NASA sea level analysis, 2025</td></tr>
+        <tr><td>Warming by 2081–2100 vs. 1850–1900 (best estimate)</td><td class="num">1.8 · 2.7 · 3.6 · 4.4 °C</td><td>IPCC AR6 WGI: SSP1-2.6 · SSP2-4.5 · SSP3-7.0 · SSP5-8.5</td></tr>
+        <tr><td>Global sea level rise by 2100 (median, vs. 1995–2014)</td><td class="num">0.44 · 0.56 · 0.68 · 0.77 m</td><td>IPCC AR6, same four scenarios; likely range up to ~1 m, ~2 m can't be ruled out</td></tr>
+        <tr><td>AMOC this century</td><td class="num">very likely to weaken</td><td>IPCC AR6 (medium confidence no abrupt collapse before 2100)</td></tr>
+        <tr><td>Crop yield loss per 1 °C warming (no adaptation)</td><td class="num">maize −7.4% · wheat −6.0% · rice −3.2% · soy −3.1%</td><td>Zhao et al. 2017, PNAS (Elaborate, in the student chapter)</td></tr>
+        <tr><td>U.S. billion-dollar disasters</td><td class="num">1980–2024 avg ≈ 9/yr; 2023: 28; 2024: 27</td><td>NOAA NCEI (2024: ≥ $182.7 B, 568 deaths; database retired in 2025)</td></tr>
+        <tr><td>NRDC text numbers</td><td class="num">15 million · 21 killed (1994) · ~80 families · ~200 killed (2021) · &gt;3 ft/yr · $227 M</td><td>Cosier, NRDC, Nov 5 2024 (Explain 2)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>Keep the two timescales straight:</b> the Younger Dryas swing was <i>regional</i> (strongest around the North Atlantic) and driven by a change in <i>where</i> heat went. Today's warming is <i>global</i> and driven by added greenhouse gases. A weaker AMOC today would <i>offset some</i> warming around the North Atlantic, not cancel global warming.</div>
+  </section>
+
+  <section class="block">
+    <h3>Packet map</h3>
+    <p>The Past and the Future 5E starts on <b>p. 114</b> of the Unit 4 Student Materials (SY 25-26). The Revisiting the Performance Task page is <b>p. 11</b> of the Performance Task Organizer at the front of the same book. Handouts in packet order:</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Packet handout</th><th>Day</th><th>Student chapter</th></tr></thead>
+      <tbody>
+        <tr><td>Climate and Human Populations (reading, Global Journey map, GISP2 graph; prompts are oral)</td><td class="num">1</td><td><a href="../unit4-climate-change/unit4-past-and-future.html#pf-climate-human-populations">Engage</a></td></tr>
+        <tr><td>Melting Ice Investigation · Part 1 Sea Level (Q1–2)</td><td class="num">1</td><td><a href="../unit4-climate-change/unit4-past-and-future.html#pf-sea-level">Part 1</a></td></tr>
+        <tr><td>Melting Ice Investigation · Part 2 Ocean Circulation (steps 1–5)</td><td class="num">2</td><td><a href="../unit4-climate-change/unit4-past-and-future.html#pf-ocean-circulation">Part 2 + virtual tank</a></td></tr>
+        <tr><td>Making Sense of the Melting Ice Investigation (See-Think-Wonder; Identify and Interpret Q1–3)</td><td class="num">2</td><td><a href="../unit4-climate-change/unit4-past-and-future.html#pf-making-sense-1">Making Sense 1</a></td></tr>
+        <tr><td>Melting Ice and Currents · Parts 1–2 (incl. Ocean Heat Storage and Transfer)</td><td class="num">3–4</td><td><a href="../unit4-climate-change/unit4-past-and-future.html#pf-model-currents">Explain 1</a></td></tr>
+        <tr><td>Melting Ice and Currents · Part 3 Impact on People (steps 1–2, Clovis cards)</td><td class="num">4</td><td><a href="../unit4-climate-change/unit4-past-and-future.html#pf-impact-on-people">Part 3 card sort</a></td></tr>
+        <tr><td>Summary Task (reflection 1–4 + content Q1–2)</td><td class="num">4</td><td><a href="../unit4-climate-change/unit4-past-and-future.html#pf-summary-1">Summary 1</a></td></tr>
+        <tr><td>Forecasting the Future Investigation Part 1 (Predicting Climate Impacts)</td><td class="num">5</td><td><a href="../unit4-climate-change/unit4-past-and-future.html#pf-forecast-1">Explore 2 Part 1</a></td></tr>
+        <tr><td>Forecasting the Future Investigation Part 2 (Observing Climate Impacts data table; Observing Sea Level Rise)</td><td class="num">5</td><td><a href="../unit4-climate-change/unit4-past-and-future.html#pf-forecast-2">Explore 2 Part 2</a></td></tr>
+        <tr><td>Making Sense of the Forecasting the Future Investigation (See-Think-Wonder; Analysis Q1–3)</td><td class="num">5 HW → 6</td><td><a href="../unit4-climate-change/unit4-past-and-future.html#pf-making-sense-2">Making Sense 2</a></td></tr>
+        <tr><td>Impacts of Melting Ice (Read-Generate-Sort-Solve) + Texts 1–3</td><td class="num">6</td><td><a href="../unit4-climate-change/unit4-past-and-future.html#pf-impacts-melting-ice">Explain 2</a></td></tr>
+        <tr><td>Summary Task (reflection 1–4 + content Q1–2)</td><td class="num">6</td><td><a href="../unit4-climate-change/unit4-past-and-future.html#pf-summary-2">Summary 2</a></td></tr>
+        <tr><td>Managing Other Climate Change Disruptions (Think-Talk-Open Exchange steps 1–3)</td><td class="num">7</td><td><a href="../unit4-climate-change/unit4-past-and-future.html#pf-managing-disruptions">Elaborate</a></td></tr>
+        <tr><td>Human Displacement and Disaster Data (NOAA graph) · The Past and the Future Rubric · Relevance to your life Q1–2</td><td class="num">7</td><td><a href="../unit4-climate-change/unit4-past-and-future.html#pf-disaster-data">Evaluate</a></td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>Numbering:</b> keys in this guide use the packet's own labels (Part, step, Q). The two Summary Tasks each restart at "1" for the content questions after the four discussion-reflection items. The Forecasting Part 1 steps run 1–3 (make the chart), then the questions in order: overall trend, seasonal variation, average seasonal change (sub-steps), record it, monthly rate, annual rate, 50/100-year prediction.</div>
+  </section>
+
+  <section class="block">
+    <h3>Corrections to the packet and teacher guide</h3>
+    <div class="mis">
+      <div><b>Explore 1 brine:</b> the teacher guide recommends <s>400 g/L NaCl</s>. Table salt only dissolves to about <b>360 g per liter of water</b> (≈26% by mass), and a bit less when cold, so 400 g/L leaves a pile of undissolved salt. Use <b>300–350 g/L</b> or simply a saturated solution.</div>
+      <div><b>Explore 2 Look &amp; Listen For:</b> "annual change is <s>3.0125 mm/year</s>," "50 years: <s>150.625 mm</s>," "100 years: <s>301.25 mm</s>." Using the packet's own formula, (91.6 − (−5.6)) ÷ (2025 − 1993) = <b>97.2 ÷ 32 = 3.04 mm/yr</b>, so <b>≈152 mm</b> in 50 years and <b>≈304 mm</b> in 100. (3.0125 is 96.4 ÷ 32, the October-to-October difference divided by the wrong number of years.) Still about 6 and 12 inches.</div>
+      <div><b>Explore 2 monthly rate:</b> the packet divides the 14.27 mm seasonal change by <s>7 months</s> to get "2 mm/month." <b>May to October is 5 months</b>, which gives ≈<b>2.9 mm/month</b>. Accept either if students follow the packet formula, but point out the mismatch. The student chapter shows the packet's ÷ 7.</div>
+      <div><b>Explore 2 scenario temperatures:</b> the guide says SSP warming of 1.8, 2.7, 3.6 and 4.4 °C "<s>by 2080</s>." Those are IPCC AR6 best estimates for <b>2081–2100, relative to 1850–1900</b>.</div>
+      <div><b>Explore 2 sea level tool:</b> the guide says to "record the projected <s>temperature</s> rise under each condition." Students record the projected <b>sea level rise (m)</b> and rate (m/yr), as the packet table asks. The guide also calls the first tool the "Sea Level Projection Tool"; the packet links the <b>BRGM Sea Level Rise Scenarios</b> map. Either works (NASA's IPCC AR6 Sea Level Projection Tool gives the same AR6 numbers).</div>
+      <div><b>Explain 1 key point:</b> "the AMOC current <s>clouds</s> have slowed" → "<b>could</b> have slowed."</div>
+      <div><b>Explain 1 key point:</b> "warm air built up in the southern hemisphere and began to move North, temperatures rose very quickly." That is a simplification. Heat did build up in the south while the AMOC was weak (the "bipolar seesaw"), but the abrupt warming at the end of the Younger Dryas is mainly explained by the <b>AMOC restarting</b> and carrying ocean heat north again. Teach both pieces. The Clovis card "<s>Energy circulation of the ocean stopped</s>" also overstates it: the ocean kept circulating, and northward <b>heat transport in the North Atlantic was greatly reduced</b>.</div>
+      <div><b>Explain 1 &amp; Explain 2 Class Consensus:</b> the guide says to pick explanations that build understanding of "<s>how Earth's varying position with respect to the Sun impacts … glacial-interglacial cycles</s>" (copied from the Earth–Sun Dynamics 5E). Here, pick models about <b>currents redistributing energy</b> (Explain 1) and <b>impacts of melting ice on people</b> (Explain 2). The Explain 1 "Integrating Three Dimensions" note about "<s>conservation of carbon</s>" and "sudden <s>warming</s> at the end" should read <b>energy redistribution</b> and the <b>sudden cooling at the start</b> of the Younger Dryas.</div>
+      <div><b>Explain 2 chart paper title:</b> the guide reuses "<s>How Changes in Ocean Currents Impacts Climate</s>." Title it <b>"Class Consensus: How Will Melting Ice Impact Populations?"</b></div>
+      <div><b>Evaluate materials / Performance Task Organizer p. 11:</b> the PTO page for this 5E is headed "<s>Revisiting the Performance Task: Greenhouse Gases 5E</s>" (there is no Greenhouse Gases 5E in Unit 4), and the teacher guide lists it under that name plus an "unknown material" handout. It is the right page: its prompt ("projected temperature changes, other projected climate changes … how human populations will likely be impacted by climate related hazards") is this 5E's. Tell students to write <b>"The Past and the Future"</b> over the heading.</div>
+      <div><b>Blue Marble timestamp:</b> the teacher guide says stop at <s>1:32</s>; the student packet says <b>1:36</b>. Either is fine; the packet's 1:36 finishes the sentence.</div>
+      <div><b>Rubric, "Developing" column:</b> it says "<s>The model is incomplete in showing the current levels of carbon dioxide …</s>" (copied from the Greenhouse Gases rubric). Read it as: <b>the explanation is missing one or more</b> of the five components.</div>
+      <div><b>Text 3 (NRDC):</b> "Thwaites Glacier … may very well shatter in as little as five years." The 2021 warning was about Thwaites' <b>eastern ice shelf</b>, the floating front. Losing the shelf speeds up the glacier; the glacier itself (≈65 cm of potential sea level rise) would take <b>much longer</b> to collapse.</div>
+      <div><b>Engage reading:</b> "Modern humans evolved in Africa about <s>200,000</s> years ago." Fossils from Jebel Irhoud, Morocco (Hublin et al. 2017) push this to about <b>300,000 years</b>. Minor; mention only if a student asks.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Misconceptions to listen for</h3>
+    <div class="mis">
+      <div><s>"Melting ice only matters because of sea level."</s> It also <b>freshens</b> the ocean, which changes density and currents, and it causes glacial-lake floods, landslides and water shortages.</div>
+      <div><s>"Melting sea ice raises sea level the same way ice sheets do."</s> Floating sea ice is already displacing its weight in water. <b>Land ice</b> (Greenland, Antarctica, glaciers) raises sea level. Sea ice loss matters for <b>albedo</b> and <b>wave protection</b> (Text 3).</div>
+      <div><s>"Cold water sinks, so the AMOC is just about temperature."</s> <b>Salt concentration</b> matters too. That is the whole point of the tank: same cold temperature, less salt → sinks more slowly.</div>
+      <div><s>"If the AMOC slows, the whole Earth goes into an ice age (like the movie)."</s> A weaker AMOC <b>moves</b> heat around; it doesn't remove it. The North Atlantic region cools; the Southern Hemisphere warms.</div>
+      <div><s>"The Younger Dryas proves climate change is natural, so today's is too."</s> Past change had natural causes; <b>today's</b> has a measured human cause (last 5E). Past events show how <b>sensitive</b> the system is and how fast it can change.</div>
+      <div><s>"Sea level will rise 3 mm a year forever."</s> The rate has roughly <b>doubled since 1993</b>; straight-line forecasts are too low.</div>
+      <div><s>"Sea level rises the same everywhere."</s> Land sinking, currents and gravity changes make it vary. The U.S. East and Gulf Coasts (including NYC) are projected above the global average.</div>
+      <div><s>"Models are just guesses."</s> They're physics-based and tested against past and present data. The <b>range</b> comes mostly from not knowing future emissions.</div>
+      <div><s>"They happened at the same time, so one caused the other."</s> Timing is <b>correlation</b>. A tested <b>mechanism</b> plus matching evidence is what supports <b>cause</b> (CCC 2 focus all week).</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Key vocabulary</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Younger Dryas</div>A sudden return to near-glacial cold in the Northern Hemisphere, about 12,900–11,700 years ago, as Earth was warming out of the last ice age.</div>
+      <div class="card"><div class="lbl">Ice core</div>A cylinder of ice drilled from an ice sheet. Its layers record past temperature and air. GISP2 is from the top of Greenland.</div>
+      <div class="card"><div class="lbl">Cryosphere / hydrosphere</div>The frozen water on Earth (ice sheets, glaciers, sea ice) / all the liquid water (oceans, lakes, rivers).</div>
+      <div class="card"><div class="lbl">Salt concentration (salinity)</div>How much salt is dissolved in water. More salt → denser water.</div>
+      <div class="card"><div class="lbl">Density</div>Mass per volume. Denser water sinks below less dense water.</div>
+      <div class="card"><div class="lbl">AMOC</div>Atlantic Meridional Overturning Circulation: warm, salty surface water flows north, cools, sinks near Greenland and returns south at depth.</div>
+      <div class="card"><div class="lbl">Heat capacity</div>How much energy a material can absorb per degree of warming. Water's is very high, so oceans store huge amounts of energy.</div>
+      <div class="card"><div class="lbl">Rate of change</div>How much a variable changes per unit of time (e.g. mm of sea level per year).</div>
+      <div class="card"><div class="lbl">SSP scenario</div>Shared Socioeconomic Pathway: one possible future for emissions used to run climate models. Higher second number = more warming.</div>
+      <div class="card"><div class="lbl">Glacial lake outburst flood (GLOF)</div>A sudden flood when a natural dam holding back glacial meltwater fails.</div>
+      <div class="card"><div class="lbl">Mitigation / adaptation</div>Cutting the cause (emissions) / adjusting to changes already happening (relocation, new crops, sea walls).</div>
+      <div class="card"><div class="lbl">Correlation vs. causation</div>Two things change together vs. one change produces the other through a mechanism.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Pacing and logistics notes</h3>
+    <ul>
+      <li><b>Period length.</b> Every plan assumes 50 minutes. For 45-minute periods, cut the Do Now to 3 minutes and send the item marked <i>flex</i> home.</li>
+      <li><b>Days 6 and 7 are full.</b> The curriculum fits two Explore/Explain cycles, an Elaborate and an Evaluate into 7 days. If you have an 8th day, split Day 7: Elaborate + Think-Talk-Open Exchange on Day 7, Evaluate + Performance Task Organizer on Day 8.</li>
+      <li><b>No tank?</b> Run the tank as a teacher demo at the front, or have students use the virtual tank in the <a href="../unit4-climate-change/unit4-past-and-future.html#pf-ocean-circulation">student chapter</a>. Absent students can do the whole lab there.</li>
+      <li><b>Devices.</b> Day 5 needs one device per pair. The spreadsheet needs edit rights (make a copy per student). If devices are short, project the IPCC Atlas and the sea level viewers and have pairs record together.</li>
+      <li><b>Summary Tasks</b> (after each Class Consensus) work as exit slips or homework. Each has four discussion-reflection items and two content questions. The content questions are the ones to read closely.</li>
+      <li><b>Unit 6 parking lot.</b> When students ask "how do we fix it?", write it on the DQB. Solutions are the focus of Unit 6.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>How the homework stays AI-proof</h3>
+    <p>Each night's homework is a <b>hand-drawn model</b>: a diagram, map, graph or comic. Four rules make it hard to outsource:</p>
+    <ul>
+      <li><b>Paper and pencil (or colored pencils) only.</b> No printed or digitally made images.</li>
+      <li><b>Every task references something only your class has</b>: their own tank observations, the Clovis card order their group argued about, the region they picked in the IPCC Atlas, a street they flooded in the viewer.</li>
+      <li><b>Every drawing has one personal "I chose…" annotation</b> explaining a decision the student made.</li>
+      <li><b>30-second check the next day.</b> During the Do Now, pick 3–4 students to explain one part of their drawing out loud.</li>
+    </ul>
+  </section>
+
+  <div class="pager"><span></span><a class="next" href="#day-1"><small>Start</small>Day 1 · Engage →</a></div>
+</div>
+
+<!-- ===================== DAY 1 ===================== -->
+<div class="view" id="day-1" data-phase="engage" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 1 · Engage → Explore 1 launch</div>
+    <h2>We Have Been Here Before</h2>
+    <p class="q">How have humans been impacted by climate change in the past?</p>
+    <div class="tags"><span class="tag">Climate and Human Populations</span><span class="tag">Melting Ice Investigation Part 1</span><span class="tag">Individual → groups</span><span class="tag">Domino Discover</span><span class="tag">Video: The Blue Marble (to 1:36)</span><span class="tag">DQB</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Climate shifts have pushed human populations to <b>migrate, grow, shrink and die off</b>; low sea level exposed land bridges that let people spread.</li>
+      <li>The GISP2 ice core shows Greenland <b>warming</b> after ~15,000 years ago, a <b>sudden drop</b> ~12,900 years ago (Younger Dryas), and a <b>rapid rebound</b> ~11,700 years ago. The Clovis culture disappears during that swing.</li>
+      <li>As the North American ice sheet melted (from ~20,000 to ~6,000 years ago), sea level rose about <b>120 m</b>. Ice sheets are <b>fresh water</b>.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">5–9</div><div><h4>Back to the DQB</h4><p>A student reminds the class what they wondered at the end of the last 5E. Surface: <i>"Climate change is happening and humans cause it, but why does that matter?"</i></p><p class="say">"Today's question: how have humans been impacted by rapid climate change in the past? There's a lot of current research on this."</p></div></li>
+      <li><div class="t">9–19</div><div><h4>Read: Climate and Human Populations (individual)</h4><p>Students read the text, the Global Journey migration map and the GISP2 temperature graph. Ask them to box every date and underline every climate cause.</p></div></li>
+      <li><div class="t">19–27</div><div><h4>Group talk</h4><p>Table groups discuss the three prompts: <i>How have humans been impacted by climate change in the past? What changes in temperature do you see on the graph? What causes can you think of?</i> Each group writes one trend, one inference and one question.</p></div></li>
+      <li><div class="t">27–33</div><div><h4>Domino Discover</h4><p>Each group shares one idea; the next builds on it. Chart the look-fors (below). Then ask: <i>"Coming out of an ice age, ice should be melting. Why might temperatures suddenly plummet, then shoot back up?"</i> Take 2–3 predictions; don't resolve them.</p></div></li>
+      <li><div class="t">33–38</div><div><h4>Explore 1 launch: The Blue Marble (to 1:36)</h4><p>Ask: <i>What's similar between the time coming out of the last ice age and the climate change happening now?</i></p></div></li>
+      <li><div class="t">38–45</div><div><h4>Melting Ice Investigation Part 1: Sea Level</h4><p>Pairs study the ice-retreat map and the post-glacial sea level graph and answer Q1–2. Then the key question:</p><p class="say">"Ice sheets are fresh water. Where does that water go when they melt? What impact does that have?"</p><p>Probe for "sea level rises." If nobody raises salt or currents, ask: <i>How will fresh water affect the salt concentration of the ocean? What effect would that have on currents?</i></p></div></li>
+      <li><div class="t">45–50</div><div><h4>Exit slip + preview</h4><p class="say">"Tomorrow we test your ideas about meltwater and ocean currents with a model."</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Last 5E recall</div><p>In one sentence: what is the main cause of the warming happening today, and what's your evidence?</p><div class="ans">Added CO₂ (and other greenhouse gases) from burning fossil fuels; e.g. the Keeling curve rising alongside temperature, isotope fingerprint of fossil carbon.</div></div>
+      <div class="card"><div class="lbl">Option B · So what?</div><p>Name two ways a warmer climate could affect people in New York City.</p><div class="ans">Any reasonable: heat waves, coastal flooding (Sandy), heavier rain, food prices. Collect for Day 7.</div></div>
+      <div class="card"><div class="lbl">Option C · Ice age</div><p>During the last ice age, sea level was much lower. Where do you think that water was?</p><div class="ans">Locked up as ice on land (ice sheets over North America and Europe).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Find the Clovis dates in the text. Where do those dates fall on the temperature graph?</li>
+      <li>What was happening to temperature right before the drop? Right after?<span>Steer toward three stages: warming, sudden cooling, rapid rewarming.</span></li>
+      <li>How fast did it change? Count the years for the rewarming.</li>
+      <li>The first wave out of Africa died off; the second survived. What was different?</li>
+      <li>Does "happened at the same time" prove the climate caused the Clovis disappearance? What else would you need?<span>Plants the CCC 2 thread for the week.</span></li>
+      <li>On the sea level graph, when was the rise fastest? What was happening to the ice then?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Domino Discover · hinge question</div>
+      <h4>On the GISP2 graph, what happened to Greenland's temperature between about 15,000 and 11,000 years ago?</h4>
+      <ul class="opts">
+        <li>A. It rose steadily the whole time<em>Missed the Younger Dryas dip; reading only the endpoints.</em></li>
+        <li class="right">B. It rose, dropped suddenly back toward ice-age cold, then rose again very quickly<em>Correct.</em></li>
+        <li>C. It fell steadily into an ice age<em>Reading the time axis backward (older is to the left or right depending on the graph).</em></li>
+        <li>D. It stayed about the same<em>Not reading the y-axis scale.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Part 1 · quick check</div>
+      <h4>About how much did sea level rise as the ice sheets melted after the last glacial maximum?</h4>
+      <ul class="opts">
+        <li>A. About 12 cm<em>Off by a factor of 1,000; units.</em></li>
+        <li>B. About 1.2 m<em>Confusing with modern projections.</em></li>
+        <li class="right">C. About 120 m<em>Correct.</em></li>
+        <li>D. It fell<em>Thinks melting ice lowers the sea.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Climate and Human Populations: discussion prompts<small>Engage · look-fors</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">How have humans been impacted by climate change in the past?</div><p class="aa">Shifting deserts and grasslands made populations <b>migrate, grow and shrink</b>. The first wave out of Africa (~120,000 yr ago) <b>died off in a drought</b> caused by global glacial conditions. Orbital changes and suspected volcanic activity <b>crashed the population</b> in Africa to as few as ~10,000 mating pairs. The second wave (~60,000 yr ago) <b>survived</b> in milder temperatures. Low sea level exposed <b>land bridges</b> (Beringia) that let people reach new continents. The Clovis culture <b>disappeared</b> 12,750 years ago, at the same time as major climate changes.</p></div>
+      <div class="qa"><div class="qq">What changes in temperature do you see on the graph?</div><p class="aa">Around <b>15,000</b> years ago Greenland warms; around <b>13,000</b> (12,900) years ago temperature <b>drops suddenly</b>; around <b>11,500</b> (11,700) years ago it <b>rises again very quickly</b>, to Holocene levels that have stayed fairly stable since. Earlier in the record are repeated rapid swings (Dansgaard–Oeschger events).</p></div>
+      <div class="qa"><div class="qq">What causes can you think of?</div><p class="aa">Warming: <b>orbital factors</b> plus feedbacks (CO₂, ice-albedo) from the last 5Es. The sudden drop and rebound: accept any reasonable hypothesis (ice melting, ocean changes, volcanoes, a meteor impact has been proposed). Students will test the <b>meltwater → ocean current</b> idea over the next three days.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Melting Ice Investigation Part 1: Sea Level Q1–2<small>Explore 1</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How did glacial levels change over the past 20,000 years?</div><p class="aa">About 20,000 years ago an ice sheet covered most of Canada and the northern U.S. It <b>shrank from the south and west edges inward</b>: the southern edge was ice-free 15,000–18,000 years ago, and the last remnants (Quebec, Baffin Island) melted about <b>5,000–7,000 years ago</b>.</p></div>
+      <div class="qa"><div class="qq">2. How did sea level change over the past 20,000 years?</div><p class="aa">It <b>rose about 120 m</b>, from roughly −120 m to today's level. It rose fastest around <b>14,500 years ago</b> (Meltwater Pulse 1A, ~20 m in ~500 years) and leveled off about 6,000–7,000 years ago.</p></div>
+      <div class="note"><b>Look and listen for (sets up the lab):</b> "Meltwater goes into the ocean and raises sea level." · "Ice sheets are fresh, so the ocean near them gets less salty." · "In middle school we learned salt and temperature drive currents, so maybe the currents change."</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Describe the three stages of temperature change on the GISP2 graph between 15,000 and 11,000 years ago, and when the Clovis culture disappeared.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Predict: if a lot of fresh meltwater entered the North Atlantic, what would happen to the salt concentration and density of the water there?</p><div class="ans">Salt concentration goes down, so the water becomes less dense. Sets up Day 2.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Two Maps of Beringia</h4>
+      <p>Draw two side-by-side maps of the area between Siberia and Alaska: one <b>20,000 years ago</b> (sea level ~120 m lower) and one <b>today</b>. Show the coastline, the land bridge, ice, and an arrow for the Clovis people's route.</p>
+      <ul class="checks">
+        <li>Both maps labeled with year and sea level (−120 m vs. 0 m)</li>
+        <li>The land bridge shown as dry land in one map and underwater in the other</li>
+        <li>A caption: where did the water that drowned the bridge come from?</li>
+        <li>"I chose…" note: <b>one idea your group shared during today's Domino Discover</b> and whether your map supports it</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#overview"><small>Back</small>← Before you teach</a><a class="next" href="#day-2"><small>Next</small>Day 2 · Tank lab →</a></div>
+</div>
+
+<!-- ===================== DAY 2 ===================== -->
+<div class="view" id="day-2" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 2 · Explore 1</div>
+    <h2>Melting Ice in a Tank</h2>
+    <p class="q">What impact does melting or freezing ice have on ocean currents?</p>
+    <div class="tags"><span class="tag">Melting Ice Investigation Part 2</span><span class="tag">Making Sense of the Melting Ice Investigation</span><span class="tag">Table groups</span><span class="tag">Tanks + dyed water</span><span class="tag">Video: AMOC Model (if needed)</span><span class="tag">Domino Discover</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>The <b>AMOC</b> carries warm surface water north; near Greenland the water is cold and salty, so it is <b>dense and sinks</b>, driving the loop.</li>
+      <li>Adding fresh water (glacial melt) <b>lowers the salt concentration</b>, so the cold water is <b>less dense, sinks more slowly</b>, and the current forms more slowly and moves more slowly.</li>
+      <li>Energy in the system comes from the Sun warming water near the equator (in the model, the hot water). A slower current moves <b>less energy north</b>.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Call on 3–4 students to explain their Beringia maps.</p></div></li>
+      <li><div class="t">4–10</div><div><h4>Pre-lab: how do currents circulate?</h4><p>Students draw or list ideas in the pre-lab box. Share 3–4. If "cold sinks, warm rises" and "saltier is denser" don't come up, play the <b>AMOC Model</b> video.</p></div></li>
+      <li><div class="t">10–17</div><div><h4>Plan + brainstorm + predict</h4><p>Build the plan with the class: one end of the tank is the <b>equator</b> (hot, red water); the other is the <b>North Pole</b> (cold, very salty, blue). Then: <i>Glaciers are fresh water. How can we change the model to show glacial melt?</i> Listen for "make the polar water less salty." Students record the brainstorm and draw a <b>prediction</b>.</p></div></li>
+      <li><div class="t">17–30</div><div><h4>Run two models</h4><p>"Before" tank: pour 1 cup hot red water at the equator end and 1 cup cold <b>very salty</b> blue water at the pole end at the same time. "After" tank: hot red water + cold <b>diluted</b> salt water (1 : 2 or 1 : 3). Pour slowly down the side. Students sketch both at 30 s and 2 min. Confer.</p></div></li>
+      <li><div class="t">30–42</div><div><h4>Making Sense (individual)</h4><p>See-Think-Wonder (2 rows) and Identify &amp; Interpret Q1–3. Groups pick one idea or question to share.</p></div></li>
+      <li><div class="t">42–48</div><div><h4>Domino Discover</h4><p>Chart the look-fors. If "less salt → sank slower → current slower" doesn't surface, send groups back to their sketches: <i>Which blue water reached the bottom first?</i></p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Density</div><p>Which is denser: cold salty water or warm fresh water? Which would sink?</p><div class="ans">Cold salty water; it sinks.</div></div>
+      <div class="card"><div class="lbl">Option B · Sketch</div><p>Sketch a cup of water with an ice cube made of <b>dyed fresh water</b> floating in very salty water. Where does the melted dye go?</p><div class="ans">It stays near the top: fresh meltwater is less dense than salty water.</div></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>From yesterday: what did the ice sheets turn into when they melted, and where did it go?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>How will an influx of fresh water affect the salt concentration of the ocean at the North Pole? How would you model that change?</li>
+      <li>What do you notice about the current in your control (very salty) model?</li>
+      <li>How does the current change when you decrease the salt concentration at the pole?</li>
+      <li>What would happen if you <i>increased</i> the salt concentration? (Think of sea ice forming, which leaves salt behind.)</li>
+      <li>What if we kept diluting the polar water? Would the current ever stop?</li>
+      <li>Where is the energy in this model coming from? Where is it in the real ocean?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">Before pouring · prediction check</div>
+      <h4>Both cups of blue water are equally cold. The "after" cup has been mixed with fresh water. Which will sink faster?</h4>
+      <ul class="opts">
+        <li class="right">A. The very salty water, because more salt makes it denser<em>Correct.</em></li>
+        <li>B. The diluted water, because fresh water is heavier<em>Common reversal; ask them to recall the Do Now.</em></li>
+        <li>C. They sink at the same speed because they're the same temperature<em>Thinks only temperature controls density.</em></li>
+        <li>D. Neither will sink<em>Ignoring that both are colder than the tank water.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After the lab · fist to five</div>
+      <h4>"How confident are you that melting glaciers could slow an ocean current?"</h4>
+      <p>Ask the 1s and 2s what extra evidence would convince them. Write their answers on the DQB. Day 3 brings the real-world evidence.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Melting Ice Investigation Part 2: Ocean Circulation, steps 1–5<small>plan · brainstorm · prediction · two models · observations</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Plan for Setting up the Global Ocean Circulation Model (before a glacier melts)</div><p class="aa">A tank of room-temperature water. <b>Equator end:</b> hot water dyed red. <b>North Pole end:</b> cold, very salty water dyed blue. Pour both at the same time and watch the loop: red spreads across the top toward the pole, blue sinks and spreads along the bottom toward the equator.</p></div>
+      <div class="qa"><div class="qq">2. Brainstorm: How is glacial water different from sea water? How can we change our model to show glacial melt entering the water at the north pole?</div><p class="aa">Glacial ice is <b>fresh water</b> (no salt). Model melt by making the polar water <b>less salty</b>: mix the brine with fresh water. Keep it cold so salt is the only thing that changes (a <b>controlled</b> test).</p></div>
+      <div class="qa"><div class="qq">3. Make a prediction (glacial water vs. cold, very salty Arctic water; vs. warm salt water from the equator)</div><p class="aa">Glacial water mixing with the cold, very salty Arctic water <b>lowers its salt concentration and density</b>, so it won't sink as fast. Fresh meltwater is lighter than the warm salty water arriving from the equator too, so it tends to <b>sit on top</b>. The overturning should <b>slow down</b>.</p></div>
+      <div class="qa"><div class="qq">4–5. Conduct the experiment with two models; record observations before / after a glacier melts</div><p class="aa"><b>Before:</b> blue sinks quickly to the bottom and spreads toward the equator end; red spreads across the surface toward the pole; a clear loop forms within a minute. <b>After:</b> blue sinks <b>more slowly</b> and some stays higher in the tank; the loop takes longer to form and moves more slowly.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Making Sense of the Melting Ice Investigation<small>See-Think-Wonder + Identify &amp; Interpret Q1–3</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>See</th><th>Think</th><th>Wonder (samples)</th></tr></thead><tbody>
+        <tr><td>As glaciers shrank, sea level rose ~120 m.</td><td>Rising seas would have flooded coastlines and land bridges where people lived and hunted; people would have had to move.</td><td>What happened to the people on the land bridge?</td></tr>
+        <tr><td>With less salt, the cold water sank more slowly; the current took longer to form and moved more slowly.</td><td>If glaciers kept melting and diluting the water, the current could keep slowing or even stop.</td><td>What did that mean for climate in the past? For our future?</td></tr>
+      </tbody></table></div>
+      <div class="qa"><div class="qq">1. How do changes in the cryosphere induce changes in the hydrosphere?</div><p class="aa">Melting ice (cryosphere) adds fresh water to the ocean (hydrosphere). That <b>raises sea level</b> and <b>lowers the salt concentration</b> near the ice, making the water <b>less dense</b>, which changes how it sinks and circulates.</p></div>
+      <div class="qa"><div class="qq">2. How is energy moving, before and after the melt? Where does it come from?</div><p class="aa">In the model, energy comes from the <b>hot water</b> (heated in a kettle or tap). In the ocean, it comes from <b>sunlight absorbed near the equator</b>. The current carries warm water toward the pole, where it gives off heat, cools and sinks. After the melt, the loop is slower, so <b>less energy is carried</b> to the pole in the same time.</p></div>
+      <div class="qa"><div class="qq">3. How would slowing currents affect energy distributed from the equator to the Northern Hemisphere?</div><p class="aa"><b>Less</b> energy would reach the Northern Hemisphere, so the north (especially around the North Atlantic) should <b>cool</b>.</p></div>
+      <div class="note"><b>Look and listen for (needed for Explain 1):</b> less salt → current formed more slowly and moved more slowly · more salt → formed faster · this could have happened when ice sheets retreated · currents could keep slowing or stop if melt continues · questions about past and future climate.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Finish the chain: glacier melts → ____ → ____ → current slows → ____.</p><div class="ans">fresh water enters ocean → salt concentration and density drop → less sinking → less heat carried north.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>One way our tank model is <b>not</b> like the real ocean.</p><div class="ans">Size and time scale, no Earth rotation or wind, no continents, salt mixed instantly, only one "pole."</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Before and After Tank Comic</h4>
+      <p>Draw a 4-panel comic of <b>your group's two tanks</b>: panels 1–2 are the "before" tank at the start and after 2 minutes; panels 3–4 are the "after" tank at the same times. Use red and blue arrows for water movement.</p>
+      <ul class="checks">
+        <li>Arrows show sinking at the pole end and surface flow toward the pole</li>
+        <li>Arrow sizes (or a speed label) show the "after" loop is slower</li>
+        <li>A caption under each tank: salt concentration → density → sinking speed</li>
+        <li>"I chose…" note: <b>one thing your group's tank did that surprised you</b>, and how you showed it</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-1"><small>Back</small>← Day 1 · Engage</a><a class="next" href="#day-3"><small>Next</small>Day 3 · Currents and climate →</a></div>
+</div>
+
+<!-- ===================== DAY 3 ===================== -->
+<div class="view" id="day-3" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 3 · Explain 1</div>
+    <h2>From Melting Ice to a Sudden Freeze</h2>
+    <p class="q">How do changing ocean currents impact Earth's climate system?</p>
+    <div class="tags"><span class="tag">Melting Ice and Currents Parts 1–2</span><span class="tag">Table groups</span><span class="tag">Ocean Heat Storage and Transfer reading</span><span class="tag">Video: The Catastrophic Flood that Triggered an Ice Age</span><span class="tag">Annotation: ✓ ◯ ?</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>A change in ocean currents can happen when <b>meltwater lowers density</b> where the AMOC sinks, slowing it within <b>years to decades</b>; a full trip around the global "conveyor" takes roughly <b>a thousand years</b>.</li>
+      <li>Water's <b>high heat capacity</b> lets the ocean store and carry huge amounts of energy. Heat moves from warm water to cooler air (mostly by convection and evaporation), giving coasts near warm currents <b>milder climates</b> (western Europe).</li>
+      <li>Warm currents run poleward (mostly along east coasts); cold currents run toward the equator (mostly along west coasts).</li>
+      <li>A slower AMOC → less heat to northern latitudes → <b>air temperatures drop</b>. That is a mechanism for the Younger Dryas.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>3–4 students explain their tank comics.</p></div></li>
+      <li><div class="t">4–8</div><div><h4>Launch</h4><p>Re-display the GISP2 graph and circle the sudden cooling.</p><p class="say">"Can you use science ideas to build a model of the <i>mechanism</i>: how changes in ice change ocean currents, and how that could cause sudden cooling in the Northern Hemisphere?"</p></div></li>
+      <li><div class="t">8–20</div><div><h4>Part 1: model how a change in ocean currents occurs</h4><p>Groups draw a model using density, sinking and rising, showing how currents distribute energy and over what timeframe. Confer.</p></div></li>
+      <li><div class="t">20–26</div><div><h4>Video: The Catastrophic Flood that Triggered an Ice Age</h4><p>Real-world evidence: glacial <b>Lake Agassiz</b>, larger than all the Great Lakes combined, drained fresh water toward the North Atlantic or Arctic. Ask groups to add one thing to their Part 1 model. <i>flex</i></p></div></li>
+      <li><div class="t">26–31</div><div><h4>Part 2: Surface Ocean Currents Model (See-Think)</h4><p>Pairs complete the See-Think rows for warm and cold currents.</p></div></li>
+      <li><div class="t">31–39</div><div><h4>Read: Ocean Heat Storage and Transfer</h4><p>Annotate: ✓ confirms an idea, ◯ answers a question, ? unclear. Partners trade one annotation each, then pick one to share.</p></div></li>
+      <li><div class="t">39–44</div><div><h4>Quick class discussion</h4><p>Take shared annotations. Make sure "water has a high heat capacity," "heat moves from hot to cold" and "warm currents warm the air above them" are said out loud.</p></div></li>
+      <li><div class="t">44–50</div><div><h4>Start the Part 2 climate model + exit slip</h4><p>Groups begin the model of how a change in currents can affect air temperature. Finish tomorrow.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Latitude puzzle</div><p>London and Calgary are at about the same latitude (~51° N). London's January average is well above freezing; Calgary's is well below. Why might that be?</p><div class="ans">London sits next to the warm North Atlantic Current (part of the Gulf Stream system); Calgary is far inland. Also elevation, but the ocean is the big factor.</div></div>
+      <div class="card"><div class="lbl">Option B · Heat capacity</div><p>At the beach on a hot day, which heats up faster, the sand or the water? Why?</p><div class="ans">The sand. Water has a higher heat capacity: it absorbs more energy per degree.</div></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>Write yesterday's chain from "glacier melts" to "current slows" from memory.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What happened to the salt concentration? What caused that? How does your model show it?</li>
+      <li>How does that affect the ocean current? What evidence do you have?<span>Push them to cite the tank and the sea level data.</span></li>
+      <li>Where does the energy enter your model, and where does it leave?</li>
+      <li>How long does it take for the change to happen? How long does it take water to go all the way around?</li>
+      <li>On the currents map, which side of each ocean do warm currents run along? Cold ones?</li>
+      <li>If the warm current stopped reaching western Europe, what would happen to the air there?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the reading · hinge question</div>
+      <h4>Why does the Gulf Stream make western Europe warmer than places at the same latitude?</h4>
+      <ul class="opts">
+        <li>A. The water is closer to the Sun<em>Distance-to-Sun misconception from Unit 1/4.</em></li>
+        <li class="right">B. Warm water stores lots of heat and transfers it to the air above it as it flows north<em>Correct.</em></li>
+        <li>C. Salt in the water traps heat like a greenhouse gas<em>Mixing up the greenhouse mechanism with ocean heat.</em></li>
+        <li>D. The current makes the land absorb more sunlight<em>Albedo idea in the wrong place.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">End of class · whiteboards</div>
+      <h4>"Draw one arrow that shows where the energy goes in the AMOC." </h4>
+      <p>Look for an arrow from the equator toward the North Atlantic at the surface. If arrows point from pole to equator at the surface, re-teach with the currents map.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Melting Ice and Currents Part 1: how a change in ocean currents occurs<small>model look-fors</small></span></summary><div class="keybody">
+      <p>A strong model shows this chain, with arrows and labels:</p>
+      <ol>
+        <li>Sunlight warms surface water near the <b>equator</b>.</li>
+        <li>The AMOC carries warm, salty surface water <b>north</b> (Gulf Stream, North Atlantic Current), giving off heat to the air.</li>
+        <li>Near Greenland the water is cold and very salty → <b>dense</b> → <b>sinks</b>; deep water flows back south, pulling more warm water north.</li>
+        <li><b>Change:</b> melting ice sheets pour fresh water into the North Atlantic → lower salt concentration → less dense → less sinking → the AMOC <b>slows or nearly stops</b>.</li>
+        <li><b>Timeframe:</b> the slowdown can happen within <b>years to decades</b>; a full circuit of the global conveyor takes on the order of <b>1,000 years</b>.</li>
+      </ol>
+    </div></details>
+    <details class="key"><summary><span>Part 2: Surface Ocean Currents See-Think<small>model look-fors</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>See</th><th>Think</th></tr></thead><tbody>
+        <tr><td><b>Warm currents</b> flow from the equator toward the poles, mostly along the <b>east</b> coasts of continents (Gulf Stream, Kuroshio).</td><td>They carry heat poleward and warm the air and coasts they pass, giving milder climates.</td></tr>
+        <tr><td><b>Cold currents</b> flow from the poles toward the equator, mostly along the <b>west</b> coasts (California, Humboldt, Canary, Benguela).</td><td>They cool the air and nearby land; coasts are cooler (and often drier) than you'd expect for the latitude.</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Reading look-fors:</b> water has high density and high heat capacity, so it stores much more energy than air · heat moves only from hotter to colder · between water and air, heat moves mostly by convection and evaporation (energetic molecules evaporate, carry energy, and release it when they condense) · AMOC water cools and sinks in the north.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Explain in 2–3 sentences how a slower AMOC could make the air over Greenland colder.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Why can the ocean move so much more heat than the air can?</p><div class="ans">Water's high heat capacity and density: each liter holds far more energy per degree than air.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Postcards from Two Coasts</h4>
+      <p>Draw a simple map of the North Atlantic. Mark <b>western Europe</b> and <b>eastern Canada</b> at about the same latitude. Draw the warm Gulf Stream / North Atlantic Current and the cold Labrador Current. Add a small thermometer at each coast showing which is warmer.</p>
+      <ul class="checks">
+        <li>Warm current in red heading northeast; cold current in blue heading south</li>
+        <li>Wavy "heat" arrows from the warm current into the air over Europe</li>
+        <li>A second dashed version of the warm current labeled "if the AMOC slowed," with the Europe thermometer changed</li>
+        <li>"I chose…" note: <b>one annotation you marked "?" in today's reading</b> and what you now think it means</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-2"><small>Back</small>← Day 2 · Tank lab</a><a class="next" href="#day-4"><small>Next</small>Day 4 · The Clovis story →</a></div>
+</div>
+
+<!-- ===================== DAY 4 ===================== -->
+<div class="view" id="day-4" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 4 · Explain 1 (Class Consensus)</div>
+    <h2>The End of the Clovis</h2>
+    <p class="q">How did changes in climate influence the Clovis population?</p>
+    <div class="tags"><span class="tag">Melting Ice and Currents Part 2 (finish) + Part 3</span><span class="tag">End of the Clovis Population Cards</span><span class="tag">Class Consensus Discussion</span><span class="tag">Summary Task</span><span class="tag">Global Energy Budget poster</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>The class's agreed mechanism: orbital warming + feedbacks → ice melts → fresh water slows the AMOC → north cools fast → heat builds in the south → AMOC recovers and the north warms fast.</li>
+      <li>The warm–cold–warm swing in quick succession likely brought <b>floods and food-supply disruption</b>, contributing to the Clovis disappearance.</li>
+      <li>Matching timing is <b>correlation</b>; a tested mechanism plus multiple lines of evidence supports a <b>causal</b> claim. Scientists still debate other factors.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>3–4 students explain their two-coasts map.</p></div></li>
+      <li><div class="t">4–12</div><div><h4>Finish Part 2 model</h4><p>Groups finish: how a change in ocean currents can affect air temperature (climate).</p></div></li>
+      <li><div class="t">12–22</div><div><h4>Part 3: Clovis card sort</h4><p>Groups arrange the 14 cards, then each student answers <i>How did changes in climate influence the Clovis population?</i> Groups put their sequence on chart paper. Confer; pick 2–3 groups for consensus (look for one that has the four stages and one with an interesting disagreement).</p></div></li>
+      <li><div class="t">22–42</div><div><h4>Class Consensus Discussion</h4><p>Chart: <b>"Class Consensus: Ocean Currents and Climate."</b> Group shares → a classmate restates → clarifying questions; repeat. Table groups confer: <i>What evidence do you have? What's the mechanism? How confident are you?</i> Whole class agrees, disagrees or revises; mark open questions with "?". Pause for the key points below.</p></div></li>
+      <li><div class="t">42–44</div><div><h4>Update the Global Energy Budget model</h4><p>Add: <b>"Ocean currents change the distribution of energy on Earth."</b></p></div></li>
+      <li><div class="t">44–50</div><div><h4>Summary Task</h4><p>Discussion reflection + content Q1–2. Finish for homework if needed.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Cause or correlation?</div><p>Ice cream sales and shark attacks both go up in summer. Does ice cream cause shark attacks? What's really going on?</p><div class="ans">No; both are caused by a third factor (warm weather, more people at the beach). Correlation ≠ causation.</div></div>
+      <div class="card"><div class="lbl">Option B · Order it</div><p>Put in order: AMOC slows · ice sheets melt · Northern Hemisphere cools · fresh water enters the North Atlantic.</p><div class="ans">Ice sheets melt → fresh water enters → AMOC slows → north cools.</div></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>When did the Clovis culture disappear, and what was the climate doing then?</p><div class="ans">~12,750 years ago, right at the start of the Younger Dryas cold snap.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Where does your sequence switch from warming to cooling? What card causes the switch?</li>
+      <li>Why would temperatures rise again so fast? What had to change in the ocean?<span>See Corrections: the AMOC restarting is the main explanation; southern heat buildup is part of it.</span></li>
+      <li>Which cards are about people? Why do they come last?</li>
+      <li>What evidence from this week supports each link: the tank, the sea level graph, the ice core, the reading?</li>
+      <li>Does your evidence show the climate <i>caused</i> the Clovis disappearance, or that it happened at the same time? What would make you more confident?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">During consensus · hinge question</div>
+      <h4>Which statement best explains the sudden cooling at the start of the Younger Dryas?</h4>
+      <ul class="opts">
+        <li>A. Earth moved farther from the Sun<em>Orbital changes are far too slow (tens of thousands of years).</em></li>
+        <li class="right">B. Fresh meltwater made the North Atlantic less dense, the AMOC slowed, and less heat reached the north<em>Correct.</em></li>
+        <li>C. Melting ice absorbed heat from the air everywhere on Earth<em>Partly true locally, but can't explain a sudden, regional drop.</em></li>
+        <li>D. CO₂ levels suddenly dropped<em>CO₂ didn't drop sharply then; mixes up last 5E's mechanism.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">End of consensus · CCC 2 check</div>
+      <h4>"Is our claim about the Clovis a cause-and-effect claim or a correlation? Thumbs up / sideways / down."</h4>
+      <p>Expect a split. The best answer: <b>the climate mechanism is causal</b> (tested and supported), but the <b>link to the Clovis is a strongly supported hypothesis</b>; other hypotheses exist.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 2: model of how a change in currents affects climate<small>look-fors</small></span></summary><div class="keybody">
+      <ul>
+        <li>Ocean currents transport <b>energy from the Sun</b>, absorbed in the tropical ocean, to other places.</li>
+        <li>Warm currents warm the air above them; cold currents cool it.</li>
+        <li>The AMOC carries warm water north, where it cools, becomes saltier and denser, and sinks.</li>
+        <li>If melting glaciers add fresh water where the AMOC sinks, sinking slows, the AMOC slows, <b>less heat reaches northern latitudes</b>, and <b>air temperatures there drop</b>, within years to decades.</li>
+      </ul>
+    </div></details>
+    <details class="key"><summary><span>Part 3: End of the Clovis Population card order<small>14 cards</small></span></summary><div class="keybody">
+      <ol>
+        <li>Orbital factors shifted</li>
+        <li>Increased solar radiation reaching the northern hemisphere in the summer</li>
+        <li>Temperatures increased</li>
+        <li>Positive feedback loops in the form of greenhouse gases and decreasing albedo amplified temperature increase</li>
+        <li>Ice caps melted</li>
+        <li>The AMOC slowed down or even stopped</li>
+        <li>Energy circulation of the ocean stopped <i>(see Corrections: "northward heat transport was greatly reduced")</i></li>
+        <li>The northern hemisphere received less heat from the equator</li>
+        <li>The northern hemisphere cooled quickly</li>
+        <li>Warm air built up in the southern hemisphere</li>
+        <li>Warm air eventually moved from the southern hemisphere to the northern hemisphere</li>
+        <li>Temperatures increased dramatically</li>
+        <li>Flooding increased on coastal regions as sea level rose from melted glaciers</li>
+        <li>Food supply was impacted by dramatic climatic warming and cooling in quick succession</li>
+      </ol>
+      <p class="note"><b>Accept:</b> cards 13 and 14 in either order; cards 6–8 swapped if the reasoning is sound. The four stages matter more than the exact order: (1) orbital warming + feedbacks, (2) melt slows the AMOC and the north cools, (3) heat returns north, (4) impacts on people.</p>
+      <div class="qa"><div class="qq">How did changes in climate influence the Clovis population? (sample proficient answer)</div><p class="aa">As orbital changes and feedbacks warmed Earth, ice sheets melted and poured fresh water into the North Atlantic. Our tank model showed that less salty water is less dense and sinks more slowly, so the AMOC slowed and carried less heat north. The GISP2 ice core shows Greenland cooled suddenly about 12,900 years ago and then warmed very quickly about 11,700 years ago. These fast swings, plus rising seas flooding coastal land, likely disrupted the plants and animals the Clovis people hunted and gathered. The Clovis disappear from the record 12,750 years ago, right at the start of this change. The timing and the tested mechanism support a causal link, although scientists still debate other factors.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Class Consensus: take time for these key points<small>teacher checklist</small></span></summary><div class="keybody">
+      <ul>
+        <li>Ocean currents transport solar energy absorbed by the ocean around the globe.</li>
+        <li>The AMOC carries warm water north, where it cools and becomes saltier; colder, saltier water is denser.</li>
+        <li>Melting glaciers released fresh water where the AMOC sinks; because salt concentration affects density and sinking, the AMOC <b>could have</b> slowed, so less heat reached the north and air temperatures dropped.</li>
+        <li>Heat built up in the south while the AMOC was weak; when the AMOC recovered, the north warmed very quickly.</li>
+        <li>The warm → cold → warm swing caused floods and affected wildlife and food, contributing to the loss of the Clovis population.</li>
+      </ul>
+    </div></details>
+    <details class="key"><summary><span>Summary Task content Q1–2<small>after Class Consensus</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How did models help you determine the mechanism of rapid warming and cooling 16,000–12,000 years ago?</div><p class="aa">The <b>tank model</b> let us change only one variable (salt concentration) and watch the result: less salt → less dense → slower sinking → slower current. The <b>currents/heat model</b> showed that a slower AMOC sends less heat north. Together they give a step-by-step mechanism for the sudden cooling and, when the current recovers, the rapid warming.</p></div>
+      <div class="qa"><div class="qq">2. How did empirical evidence help you understand cause and effect?</div><p class="aa">The ice-core temperatures, sea level curve, ice-sheet map and archaeological dates are <b>measured data</b> that show <i>when</i> things happened. The model shows <i>how</i> one change can cause another. Matching timing <b>plus</b> a tested mechanism moves us from "these happened together" (correlation) toward a <b>causal</b> explanation.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Summary Task content Q1 (above). Collect and sort into "has a mechanism" / "only timing."</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>What one piece of evidence would make you <b>more</b> confident that climate caused the Clovis disappearance?</p><div class="ans">E.g. dated evidence of the animals they hunted declining at the same time, flooded camp sites, or the same pattern in other populations.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>The Younger Dryas Timeline Strip</h4>
+      <p>On a long strip of paper (tape two sheets together), draw a timeline from <b>16,000 to 11,000 years ago</b> with a temperature line sketched above it (warm → sudden cold → fast warm). Below it, place small drawings for: ice melting, fresh water entering the Atlantic, the AMOC slowing, the AMOC restarting, and the Clovis disappearing.</p>
+      <ul class="checks">
+        <li>Accurate dates: ~12,900 cooling, ~12,750 Clovis gone, ~11,700 rapid warming</li>
+        <li>An arrow chain linking each drawing to the next</li>
+        <li>One link circled and labeled "evidence:" with the class evidence that supports it</li>
+        <li>"I chose…" note: <b>the card your group argued about most</b> and where you finally put it</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-3"><small>Back</small>← Day 3 · Currents and climate</a><a class="next" href="#day-5"><small>Next</small>Day 5 · Forecasting →</a></div>
+</div>
+
+<!-- ===================== DAY 5 ===================== -->
+<div class="view" id="day-5" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 5 · Explore 2</div>
+    <h2>Forecasting the Future</h2>
+    <p class="q">How will temperature increases affect other climate variables?</p>
+    <div class="tags"><span class="tag">Forecasting the Future Investigation Parts 1–2</span><span class="tag">Pairs · 1 device each</span><span class="tag">Sea Level Change Data spreadsheet</span><span class="tag">IPCC WGI Interactive Atlas</span><span class="tag">Sea Level Rise Scenarios (BRGM) · NOAA Sea Level Rise Viewer</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Satellite data show global sea level rose about <b>97 mm from 1993 to 2025</b> (≈3 mm/yr), with a regular seasonal wiggle on top of the trend.</li>
+      <li>A straight-line forecast (≈15 cm in 50 years, ≈30 cm in 100) is a <b>low estimate</b>, because the rate is accelerating.</li>
+      <li>Climate models run several emission <b>scenarios</b>. Higher-emission scenarios give more warming and <b>bigger, faster</b> changes in sea level, heat and precipitation, and the changes vary by region.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>3–4 students explain one link on their Younger Dryas timeline.</p></div></li>
+      <li><div class="t">4–8</div><div><h4>Launch</h4><p class="say">"We know how rapid climate change may have affected people in the past. What have you heard about how it could affect people now?"</p><p>Build on "ice melting → flooding." Then: <i>"Let's use real data to predict how much and how fast."</i></p></div></li>
+      <li><div class="t">8–24</div><div><h4>Part 1: Sea Level Change Data spreadsheet</h4><p>Pairs make the chart, describe the trend and the seasonal pattern, then calculate: average seasonal variation (column C, <b>highlight C3 and C4</b> before dragging), monthly rate, annual rate, and 50/100-year predictions. Pause at 22 min and collect numbers on the board.</p></div></li>
+      <li><div class="t">24–27</div><div><h4>"Is the rate staying the same?"</h4><p>Show NASA's acceleration (≈2.1 mm/yr in 1993 → ≈4.5 mm/yr in 2024). Ask what that does to their straight-line prediction.</p></div></li>
+      <li><div class="t">27–40</div><div><h4>Part 2: IPCC Interactive Atlas</h4><p>Choose a region (suggest <b>North America / eastern U.S.</b> for NYC). Variable: <b>sea level rise</b>; long term; SSP1-2.6, then 2-4.5, 3-7.0, 5-8.5. Then three more variables from different categories. Trends and rates only, no exact numbers. <b>Demo option:</b> project it and drive it together.</p></div></li>
+      <li><div class="t">40–47</div><div><h4>Observing Sea Level Rise</h4><p>BRGM <b>Sea Level Rise Scenarios</b>: year 2080, a U.S. coast (most will pick NYC), record SLR (m) for each scenario. Then the <b>NOAA Sea Level Rise Viewer</b>: same place, units in meters, raise the water, click a blue flag. <i>flex</i>: finish the viewer at home.</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Assign + exit slip</h4><p>Making Sense of the Forecasting the Future Investigation is homework. Day 6 opens with a Domino Discover on it.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Rate</div><p>A plant grew from 20 cm to 32 cm in 4 weeks. What was its rate of growth?</p><div class="ans">(32 − 20) ÷ 4 = 3 cm per week. Same formula as today's annual rate.</div></div>
+      <div class="card"><div class="lbl">Option B · Units</div><p>About how many millimeters are in 1 foot? In 1 meter?</p><div class="ans">~305 mm; 1,000 mm.</div></div>
+      <div class="card"><div class="lbl">Option C · Prediction</div><p>Guess: how much has global sea level risen since 1993? (a) 1 cm (b) 10 cm (c) 1 m</p><div class="ans">(b) about 10 cm (97 mm).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Why is October always higher than May? What could cause a seasonal wiggle?<span>Seasonal water storage on land (more water on land in the Northern Hemisphere spring) and ocean warming; accept "seasons change how much water is in the ocean."</span></li>
+      <li>Do you see any negative numbers in column C? What went wrong?</li>
+      <li>Does your 100-year prediction assume the rate stays the same? Is that true in the data?</li>
+      <li>How are you choosing which variables to explore in the Atlas?</li>
+      <li>How do the variables change under different warming scenarios? Does the rate of change speed up over time?</li>
+      <li>How might the variables be related (e.g. temperature and sea level, temperature and heavy rain)?</li>
+      <li>In the viewer, which blocks of your chosen area flood first? Who lives or works there?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Part 1 · hinge question</div>
+      <h4>Sea level was −5.6 mm in May 1993 and 91.6 mm in May 2025. What was the average annual rate of change?</h4>
+      <ul class="opts">
+        <li>A. 2.86 mm/yr<em>Divided 91.6 by 32 (ignored the negative start).</em></li>
+        <li class="right">B. 3.04 mm/yr<em>Correct: 97.2 ÷ 32.</em></li>
+        <li>C. 97.2 mm/yr<em>Found the change but didn't divide by time.</em></li>
+        <li>D. 0.33 mm/yr<em>Divided time by change.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After the Atlas · hinge question</div>
+      <h4>Under SSP1-2.6 the IPCC best estimate for 2081–2100 is about 1.8 °C of warming; under SSP5-8.5 it is about 4.4 °C. What mainly causes the difference?</h4>
+      <ul class="opts">
+        <li>A. Different orbital factors<em>Orbital changes are the same in all scenarios (and far too slow).</em></li>
+        <li class="right">B. How much greenhouse gas people emit<em>Correct; same physics, different emissions.</em></li>
+        <li>C. Different climate models<em>Models differ a little, but each scenario is run by many models.</em></li>
+        <li>D. Changes in the Sun's output<em>Last 5E ruled this out as a driver of current warming.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Forecasting the Future Investigation Part 1: Predicting Climate Impacts<small>uses the packet's Sea Level Change Data spreadsheet</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Steps 1–3. Chart</div><p class="aa">A zigzag line climbing from about −6 mm (May 1993) to about 92 mm (May 2025), with October points above each May.</p></div>
+      <div class="qa"><div class="qq">Describe the overall trend over the 32 years</div><p class="aa">Sea level <b>rose steadily</b>, about <b>97 mm</b> (≈10 cm, ≈4 in) from 1993 to 2025. The line gets a little steeper in recent years.</p></div>
+      <div class="qa"><div class="qq">Describe the seasonal variation</div><p class="aa">Every year sea level is <b>higher in October than in May</b>, then drops back the next spring. The yearly swing ranges from ~4.6 mm (2004) to ~18 mm (1997) and averages ~14 mm.</p></div>
+      <div class="qa"><div class="qq">Average seasonal sea level change (column C average; record it)</div><p class="aa"><b>14.27 mm</b> (456.5 mm ÷ 32 Oct − May differences). The starting value in the cell is 13.2 (1993 only); if students see 13.2 they didn't drag the formula. Negative numbers mean they highlighted only C4.</p></div>
+      <div class="qa"><div class="qq">Average monthly rate of change of seasonal variation</div><p class="aa">Packet formula: 14.27 ÷ 7 ≈ <b>2.0 mm/month</b>. Note: May → October is 5 months, which gives ≈2.9 mm/month (see Corrections).</p></div>
+      <div class="qa"><div class="qq">Annual rate of change over the 32 years</div><p class="aa">(91.6 − (−5.6)) ÷ (2025 − 1993) = 97.2 ÷ 32 = <b>3.04 mm/yr</b>.</p></div>
+      <div class="qa"><div class="qq">Predict sea level change over the next 50 and 100 years</div><p class="aa">50 years: 3.04 × 50 ≈ <b>152 mm (~6 in)</b>. 100 years: ≈ <b>304 mm (~12 in)</b>. Strong answers add that this is <b>probably too low</b> because the rate is accelerating; IPCC medians for 2100 are 0.44–0.77 m depending on the scenario.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Part 2: Observing Climate Impacts data table (IPCC Atlas)<small>direction and rate, no exact numbers</small></span></summary><div class="keybody">
+      <p>Answers depend on region. Typical patterns for North America / the eastern U.S. (and most regions):</p>
+      <div class="scroll"><table><thead><tr><th>Variable</th><th>SSP1-2.6</th><th>SSP2-4.5</th><th>SSP3-7.0</th><th>SSP5-8.5</th></tr></thead><tbody>
+        <tr><td>Sea level rise</td><td>Increases; rate fairly steady, levels off late century</td><td>Increases; rate grows</td><td>Increases more; rate grows faster</td><td>Largest increase; steepest, still accelerating</td></tr>
+        <tr><td>Mean temperature</td><td>Small increase, flattens</td><td>Moderate increase</td><td>Large increase</td><td>Largest increase, still rising</td></tr>
+        <tr><td>Days above 35 °C / hot extremes</td><td>Small increase</td><td>More</td><td>Many more</td><td>Most, fastest rise</td></tr>
+        <tr><td>Precipitation / heavy rain</td><td>Small change</td><td>Increase in heavy-rain days</td><td>Larger increase</td><td>Largest increase (some regions drier in summer)</td></tr>
+      </tbody></table></div>
+      <p class="note"><b>Look for:</b> correct <b>direction</b> for each variable, the idea that changes get <b>bigger and faster</b> as the scenario number rises, and that some variables (temperature extremes) respond faster than others (sea level, which lags and keeps rising).</p>
+    </div></details>
+    <details class="key"><summary><span>Observing Sea Level Rise, steps 1–6<small>BRGM Sea Level Rise Scenarios + NOAA viewer</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">3. Projected sea level rise by 2080 and rate (U.S. coastal site)</div><p class="aa">Values depend on location; most U.S. East Coast sites read a bit above the global numbers. For a check, the <b>global</b> AR6 medians are roughly 0.3–0.55 m by 2080 across SSP1-2.6 to SSP5-8.5, so a NYC reading of a few tenths of a meter up to ~0.6 m is reasonable; the High End scenario is higher. Rate = SLR ÷ years from the tool's baseline (e.g. 0.4 m ÷ 60 yr ≈ 0.007 m/yr ≈ 7 mm/yr, more than double today's ~3 mm/yr average). Accept any rates computed consistently.</p></div>
+      <div class="qa"><div class="qq">5. Describe what you see as the water rises</div><p class="aa">Low-lying shoreline, wetlands, beaches, parks and streets near the water flood first; at higher levels whole neighborhoods, roads, rail lines and airports (for NYC: parts of the Rockaways, Coney Island, Red Hook, lower Manhattan, JFK/LaGuardia edges) are underwater at high tide.</p></div>
+      <div class="qa"><div class="qq">6. Blue flag street picture</div><p class="aa">The photo shows water covering sidewalks, then car wheels, then building entrances as the level rises; students should name specific levels (e.g. "at 1 m the water reaches the door").</p></div>
+    </div></details>
+    <details class="key"><summary><span>Making Sense of the Forecasting the Future Investigation<small>See-Think-Wonder + Analysis Q1–3 (homework → Day 6)</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>See</th><th>Think</th></tr></thead><tbody>
+        <tr><td>Temperature increase vs. climate factors: as warming increases, sea level, heat extremes, precipitation and sea ice all change, more under higher scenarios.</td><td>People face more flooding, heat waves, heavy rain or drought, depending on the region.</td></tr>
+        <tr><td>Rates of change: not the same. Heat extremes change quickly; sea level changes more slowly but keeps accelerating.</td><td>—</td></tr>
+        <tr><td>Projected sea level: rises in every scenario; more in higher ones.</td><td>Coastal neighborhoods flood more often; people may have to move or build protection.</td></tr>
+        <tr><td>Rate of sea level rise: faster in higher scenarios and speeds up over time.</td><td>—</td></tr>
+      </tbody></table></div>
+      <div class="qa"><div class="qq">1. Could the changes be prevented or reversed?</div><p class="aa">Much harm <b>can be reduced</b>: SSP1-2.6 gives far less warming and sea level rise than SSP5-8.5, so cutting emissions makes a measurable difference. But some changes <b>can't be quickly reversed</b>: sea level keeps rising for centuries from ice already melting and ocean warming already stored. Reversibility depends on how big and how fast the change is.</p></div>
+      <div class="qa"><div class="qq">2. Limitations of using past and present data to predict the future?</div><p class="aa">Future emissions are unknown (hence scenarios); past trends may not continue at the same rate (sea level is accelerating); models can't capture everything (e.g. how fast ice sheets might collapse), so projections have <b>ranges</b>; local factors (land sinking) differ from global averages.</p></div>
+      <div class="qa"><div class="qq">3. If glacial melt and sea level rise continue, what impacts on the AMOC?</div><p class="aa">More fresh water from Greenland makes the North Atlantic less salty and less dense, so the AMOC could <b>slow down or even stop</b>, as it may have before the Younger Dryas. IPCC AR6: the AMOC is <b>very likely to weaken</b> this century (medium confidence it won't collapse abruptly before 2100).</p></div>
+      <div class="note"><b>Look and listen for (Day 6 Domino Discover):</b> precipitation, sea ice and sea level all change as temperatures rise · predictions depend on input variables like emissions · reversibility depends on the size and speed of change · continued melt could slow or stop the AMOC.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Your straight-line prediction for 100 years was about 30 cm. Give one reason the real number will likely be bigger.</p><div class="ans">The rate is accelerating (≈4.5 mm/yr now); ice sheets are melting faster; IPCC medians are 44–77 cm by 2100.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Name one variable you explored in the Atlas and how it changed from SSP1-2.6 to SSP5-8.5.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>One Street, Three Futures</h4>
+      <p>Pick the street or blue-flag spot <b>you looked at in the NOAA viewer</b>. Draw it three times as a side view (sidewalk, cars, a building door): today, 2080 under <b>SSP1-2.6</b>, and 2080 under <b>SSP5-8.5</b>, using the sea level numbers you recorded. Also complete the Making Sense handout (it's due for tomorrow's discussion).</p>
+      <ul class="checks">
+        <li>Water drawn at the right height in each panel, labeled in meters</li>
+        <li>A scale bar (e.g. a 1.7 m person) so the heights make sense</li>
+        <li>One sentence under each future: who is affected and how</li>
+        <li>"I chose…" note: <b>why you picked this place</b> and the exact numbers you used from the tool</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-4"><small>Back</small>← Day 4 · The Clovis story</a><a class="next" href="#day-6"><small>Next</small>Day 6 · Impacts of melting ice →</a></div>
+</div>
+
+<!-- ===================== DAY 6 ===================== -->
+<div class="view" id="day-6" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 6 · Explore 2 wrap → Explain 2</div>
+    <h2>Beyond Rising Seas</h2>
+    <p class="q">How will melting ice impact populations around the world?</p>
+    <div class="tags"><span class="tag">Making Sense of Forecasting (debrief)</span><span class="tag">Impacts of Melting Ice + Texts 1–3</span><span class="tag">Groups of 3–4 · jigsaw</span><span class="tag">Read-Generate-Sort-Solve</span><span class="tag">Class Consensus</span><span class="tag">Video: What the US Would Look Like If All the Earth's Ice Melted</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Melting ice already drives <b>floods and relocation</b> far from coasts (glacial lake outburst floods in Bhutan; ice-and-rock avalanche flood in India, 2021).</li>
+      <li>Mountain glacier loss affects <b>water, farming and energy</b>, and creates conflict over water (Peru).</li>
+      <li>Losing sea ice exposes Arctic coasts to <b>waves and erosion</b> (Alaska villages relocating), harms <b>food sources</b> (ice cellars, reindeer, snow crab), and speeds warming through albedo feedback.</li>
+      <li>Each text gives a <b>mechanism</b>, not just a coincidence: that's what makes these causal claims.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–3</div><div><h4>Do Now</h4><p>Quick: hold up the One Street drawing; 2 students explain.</p></div></li>
+      <li><div class="t">3–12</div><div><h4>Domino Discover: Making Sense of Forecasting</h4><p>Groups share one idea or question from the homework. Chart look-fors. Push on Analysis Q3 (AMOC) to connect back to Days 2–4.</p></div></li>
+      <li><div class="t">12–15</div><div><h4>Video: What the US Would Look Like If All the Earth's Ice Melted</h4><p>Reactions. Then: <i>"All the ice melting would take thousands of years (~70 m). But melting ice is already affecting people in other ways. Besides sea level, how?"</i> Take 3 guesses.</p></div></li>
+      <li><div class="t">15–25</div><div><h4>Read (jigsaw)</h4><p>Each group member reads one text (Glacial Lakes, Mountains, The Poles) and annotates ✓ ◯ ?. Pair stronger readers with Text 2 (longest).</p></div></li>
+      <li><div class="t">25–33</div><div><h4>Generate · Sort · Solve</h4><p>On chart paper, groups generate ideas for <i>How will climate change impact populations?</i>, each member stars the most relevant one, then the group agrees on a response.</p></div></li>
+      <li><div class="t">33–46</div><div><h4>Class Consensus Discussion</h4><p>Chart: <b>"Class Consensus: How Will Melting Ice Impact Populations?"</b> 2–3 groups share; restate; clarify; table-group confer (<i>evidence? mechanism? confidence?</i>); agree / revise. Hit the key points below. Park "how do we fix it?" questions for Unit 6.</p></div></li>
+      <li><div class="t">46–50</div><div><h4>Individual response + Summary Task</h4><p>Students start their individual "How will climate change impact populations?" response; Summary Task content Q1–2 for homework.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Feedback</div><p>Why does losing white sea ice make the Arctic warm faster? (Last 5E.)</p><div class="ans">Dark water absorbs more sunlight (lower albedo) → more warming → more melting: a positive feedback.</div></div>
+      <div class="card"><div class="lbl">Option B · Water source</div><p>Where does a mountain town's water come from in late summer, after the snow is gone?</p><div class="ans">Glacier meltwater. As glaciers shrink, that summer supply eventually drops.</div></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>One thing from your street drawing that surprised you.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What is the chain of events in your text? Start with "the ice melts…"</li>
+      <li>Is this impact happening now or predicted? How do you know?</li>
+      <li>Who is most affected, and why them?<span>Communities that depend directly on the ecosystem (farmers, Inuit hunters, fishers) feel it first.</span></li>
+      <li>Is your claim cause-and-effect or correlation? What's the mechanism?</li>
+      <li>Which starred idea did your group choose and why?</li>
+      <li>How does your text connect to the sea level and AMOC evidence from earlier this week?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">During consensus · hinge question</div>
+      <h4>Why are some Alaska coastal villages relocating?</h4>
+      <ul class="opts">
+        <li>A. Melting sea ice is raising sea level there<em>Floating sea ice doesn't raise sea level much; it's the wave protection that matters.</em></li>
+        <li class="right">B. With less coastal sea ice, waves hit the shore directly and erode the land (more than 3 ft/yr in places)<em>Correct (Text 3).</em></li>
+        <li>C. The AMOC stopped and the region froze<em>Mixing up the Younger Dryas with today.</em></li>
+        <li>D. Glacial lakes burst above the villages<em>That's Bhutan (Text 1).</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">End of class · cause or correlation</div>
+      <h4>"Bhutan relocated ~80 families because the glacier above Thorthormi Lake is melting." Cause or correlation, and what's the mechanism?</h4>
+      <p>Cause: melting glacier → lake rises inch by inch → pressure on the rock dam → risk of failure → outburst flood (it happened nearby in 1994, killing 21).</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Impacts of Melting Ice: Read-Generate-Sort-Solve<small>"How will climate change impact populations?"</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Text</th><th>Key evidence</th><th>Mechanism</th></tr></thead><tbody>
+        <tr><td>1 · Glacial Lakes</td><td>Thorthormi Lake (Bhutan) rises yearly; 1994 dam failure nearby killed 21; ~15 million people vulnerable to GLOFs; ~80 families to be relocated; also threats to drinking water, farming, coasts, permafrost infrastructure.</td><td>Glacier melts → lake grows behind a natural rock dam → dam fails → flood downstream.</td></tr>
+        <tr><td>2 · Mountains</td><td>Tropical glaciers shrinking fastest; India 2021 ice-and-rock avalanche flood killed ~200, destroyed two hydroelectric dams; Peru farmers switching crops and relying on glacial lakes; conflict over water rights with irrigation and power companies.</td><td>Warming → glaciers retreat and destabilize slopes → avalanches/floods; less reliable meltwater → crop and water stress → competition.</td></tr>
+        <tr><td>3 · The Poles</td><td>Arctic sea ice forms later, melts earlier; Alaska shorelines retreating &gt;3 ft/yr, villages relocating; rain-on-snow harms reindeer; Inuit ice cellars failing; snow crab fishery (~$227 M/yr) crashed 2018–19; Antarctic ice melting from below; Thwaites at risk.</td><td>Less ice → lower albedo → more warming (feedback); less ice → more wave energy → erosion; warmer water → ecosystem and food changes; ocean melts ice shelves → more sea level rise.</td></tr>
+      </tbody></table></div>
+      <div class="qa"><div class="qq">Individual response (sample proficient)</div><p class="aa">Climate change will push more people to move and will threaten food and water. As glaciers melt, glacial lakes grow behind natural dams; when one failed in Bhutan in 1994 it killed 21 people, and about 15 million people live at risk of similar floods, so Bhutan is relocating ~80 families. In Alaska, less sea ice means waves erode shorelines more than 3 feet per year, forcing villages to relocate. Food is affected too: the Bering Sea snow crab fishery crashed in 2018–2019 and Peruvian farmers have had to switch crops. On top of this, our sea level data show the ocean rising ~3 mm per year and speeding up, and IPCC models project 0.44–0.77 m more by 2100 depending on emissions. Each impact has a clear mechanism that starts with warming and melting ice, so these are causal links, not coincidences.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Class Consensus: take time for these key points<small>teacher checklist</small></span></summary><div class="keybody">
+      <ul>
+        <li>Floods are driving communities to relocate, not just in coastal regions.</li>
+        <li>Floods trigger landslides in hilly and mountain regions, causing damage and deaths and making populations move.</li>
+        <li>Changes in mountain conditions affect agriculture and access to food and water.</li>
+        <li>Higher waves cause more coastal damage, shrinking coastlines from erosion and rising water.</li>
+        <li>Changes in water conditions impact seafood stocks.</li>
+        <li>Globally, people are seeing many impacts in different parts of life.</li>
+      </ul>
+    </div></details>
+    <details class="key"><summary><span>Summary Task content Q1–2<small>after Class Consensus · homework</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Some climate events are temporary, like a seasonal shift in precipitation, and damage may be reversible. How are these situations similar or different?</div><p class="aa"><b>Similar:</b> they also cause floods, crop losses and damage. <b>Different:</b> lost glaciers, eroded shorelines, a crashed fishery and rising seas are <b>long-term and largely irreversible</b> on human timescales; they don't bounce back next season, and they keep getting worse as warming continues.</p></div>
+      <div class="qa"><div class="qq">2. How do the rate of change plus our ability to use data to predict help communities adapt and respond?</div><p class="aa">Because we can <b>measure rates</b> (≈3 mm/yr of sea level rise, accelerating) and <b>model scenarios</b>, communities can plan ahead: relocate families before a dam fails (Bhutan), build protections, change crops, or cut emissions. <b>Faster change leaves less time to adapt</b>, so good forecasts matter more.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Pick one text. Write its cause-and-effect chain in 4 arrows.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Which impact from today could affect New York City, directly or indirectly? Explain.</p><div class="ans">Sea level rise and coastal flooding directly; food prices and seafood supply indirectly; climate migration.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Three-Panel Impact Map</h4>
+      <p>Draw a simple world outline and place three labeled panels on it: <b>Bhutan</b> (glacial lake + dam), <b>Peru or India</b> (mountain glacier + village), <b>Alaska</b> (coast with and without sea ice). In each panel draw the before/after and an arrow chain from "ice melts" to the human impact.</p>
+      <ul class="checks">
+        <li>Each panel has a real number from the texts (21 killed, ~200 killed, &gt;3 ft/yr, $227 M…)</li>
+        <li>Each arrow chain shows a mechanism, not just "climate change → bad"</li>
+        <li>One panel connects to the AMOC or sea level work from Days 2–5</li>
+        <li>"I chose…" note: <b>the idea your group starred</b> in Sort, and whether you'd still star it</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-5"><small>Back</small>← Day 5 · Forecasting</a><a class="next" href="#day-7"><small>Next</small>Day 7 · Food + disaster data →</a></div>
+</div>
+
+<!-- ===================== DAY 7 ===================== -->
+<div class="view" id="day-7" data-phase="evaluate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 7 · Elaborate → Evaluate</div>
+    <h2>Climate on Our Plates and in the Data</h2>
+    <p class="q">How else will climate change impact humans, and how can we try to mitigate it? How will climate change likely impact human populations?</p>
+    <div class="tags"><span class="tag">Managing Other Climate Change Disruptions</span><span class="tag">Triads · Think-Talk-Open Exchange</span><span class="tag">Videos: WEF crops · How Climate Extremes are Causing World Hunger</span><span class="tag">Human Displacement and Disaster Data</span><span class="tag">PTO p. 11 · Rubric</span><span class="tag">Domino Discover</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Heat, drought, floods and shifting seasons already cut crop yields and drive <b>hunger and migration</b>; each 1 °C of warming lowers global yields of the four main crops by roughly <b>3–7%</b> without adaptation (Zhao et al. 2017).</li>
+      <li><b>Mitigation</b> (cutting emissions) attacks the cause; <b>adaptation</b> (new crops, irrigation, early warning, relocation) copes with effects.</li>
+      <li>U.S. billion-dollar weather and climate disasters averaged ~<b>9 per year</b> (1980–2024, inflation-adjusted) but reached <b>28 in 2023</b> and <b>27 in 2024</b> (NOAA NCEI).</li>
+      <li>How to build an evidence-based claim for the Performance Task from everything in this 5E.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–3</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">3–9</div><div><h4>Elaborate launch + two videos</h4><p>Revisit student questions about "other impacts." Play the WEF crops video and How Climate Extremes are Causing World Hunger.</p></div></li>
+      <li><div class="t">9–22</div><div><h4>Think-Talk-Open Exchange (triads)</h4><p><b>Think</b> (3 min): write a response to <i>How is climate change affecting populations, and what actions could be taken to prevent increasing harm?</i> <b>Talk</b> (6 min): each person shares uninterrupted, others respond. <b>Open exchange</b> (2 min). Then the <b>Reflection</b>: how would you change your answer?</p></div></li>
+      <li><div class="t">22–32</div><div><h4>Evaluate: Human Displacement and Disaster Data</h4><p>Pairs read the NOAA cumulative-disaster graph. Prompts (oral; the handout has no questions): <i>What's the average per year? Which years are the top 6? What do you notice about when they happened? How fast did 2024 pass the yearly average?</i></p></div></li>
+      <li><div class="t">32–44</div><div><h4>Performance Task Organizer (p. 11)</h4><p>Students write their claim with evidence from this whole 5E. Confer using the questions below. Students self-score with The Past and the Future Rubric.</p></div></li>
+      <li><div class="t">44–50</div><div><h4>Domino Discover + tally</h4><p>Each group names one way humans are being impacted by climate-related disasters; tally on chart paper. No need to discuss every position. Relevance to your life Q1–2 as exit slip.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Your plate</div><p>List three foods you ate this week. Which one do you think is most at risk from heat or drought?</p><div class="ans">Any reasonable: corn/maize products, wheat (bread, pasta), rice, coffee, chocolate.</div></div>
+      <div class="card"><div class="lbl">Option B · Vocabulary</div><p>Sort: sea wall · solar panels · drought-tolerant seeds · fewer car trips · moving away from a flood zone. Mitigation or adaptation?</p><div class="ans">Mitigation: solar panels, fewer car trips. Adaptation: sea wall, drought-tolerant seeds, relocating.</div></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>From yesterday's texts: one impact of melting ice on food.</p><div class="ans">Snow crab crash; Peru crop changes; failing Inuit ice cellars; reindeer harmed by rain-on-snow.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What evidence did you generate in this 5E? Where did it come from?</li>
+      <li>How well does that evidence support your claim? Which piece is strongest?</li>
+      <li>What ideas or contradictory evidence weaken your claim?<span>E.g. some disaster increase is from more people and property in harm's way, not only climate.</span></li>
+      <li>Is your link from human activities → climate change → impacts causal or correlational? Where's the mechanism?</li>
+      <li>Which rubric component are you missing: past impacts, AMOC, melting ice, food, or displacement?</li>
+      <li>How does this apply to people in New York City?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">During the data · hinge question</div>
+      <h4>NOAA's 1980–2024 average is about 9 billion-dollar disasters per year; 2023 had 28 and 2024 had 27. Which claim is best supported?</h4>
+      <ul class="opts">
+        <li>A. Disasters have tripled, so climate change caused every one of them<em>Overclaims; also ignores more property in harm's way.</em></li>
+        <li class="right">B. Costly weather and climate disasters have become much more frequent recently, consistent with the hazards climate models project, though growth in exposure also contributes<em>Correct; a calibrated claim.</em></li>
+        <li>C. Disaster numbers go up and down randomly, so there's no pattern<em>All six top years are 2017–2024.</em></li>
+        <li>D. Disasters only cost money; they don't affect people<em>2024 alone had 568 deaths.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Think-Talk-Open · quick check</div>
+      <h4>About how much would maize yields drop with 2 °C more warming and no adaptation?</h4>
+      <ul class="opts">
+        <li>A. ~1.5%<em>Used rice/soy value and didn't double.</em></li>
+        <li>B. ~7%<em>Used the per-°C value without multiplying.</em></li>
+        <li class="right">C. ~15%<em>Correct: 2 × 7.4%.</em></li>
+        <li>D. ~50%<em>Overestimate.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Managing Other Climate Change Disruptions, steps 1–3<small>Think-Talk-Open Exchange · ideas to listen for</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How is climate change affecting populations, and what actions could be taken to prevent increasing harm?</div><p class="aa"><b>Effects:</b> heat and drought lower yields of staple crops and kill livestock; floods and storms destroy fields and roads; temperature-sensitive crops (coffee, cocoa, grapes) are shifting where they can grow; when harvests fail, food prices rise and families who already spend most of their income on food go hungry, and some are forced to move. <b>Actions:</b> <i>mitigation</i> (cut greenhouse gas emissions, clean energy, less waste) to stay on a lower scenario; <i>adaptation</i> (drought- and heat-tolerant crops, better irrigation and water storage, early warning systems, crop insurance, food aid).</p></div>
+      <div class="qa"><div class="qq">3. Reflection: how would you change your original answer?</div><p class="aa">Look for a specific change attributed to a group-mate's idea (e.g. "I added adaptation, because I only had mitigation").</p></div>
+    </div></details>
+    <details class="key"><summary><span>Human Displacement and Disaster Data<small>NOAA NCEI billion-dollar disasters graph · oral prompts</small></span></summary><div class="keybody">
+      <ul>
+        <li>The dark gray average line ends at about <b>9 events/year</b> (1980–2024, inflation-adjusted).</li>
+        <li>The six colored top years are all recent: <b>2023 (28), 2024 (27), 2020 (22), 2021 (20), 2017 (19), 2022 (18)</b>.</li>
+        <li>2024 passed the full-year average by about <b>May</b> (≈15 events by end of May).</li>
+        <li>2024's 27 events cost at least <b>$182.7 billion</b> and caused <b>568 deaths</b>; 17 were severe storms and 5 were hurricanes (Beryl, Debby, Francine, Helene, Milton).</li>
+        <li>Caveat to raise: part of the rise reflects more people and property in hazard zones. Combined with the IPCC finding that heat extremes and heavy rain increase with each degree of warming, the data support "climate-related hazards are increasing and affecting more people."</li>
+      </ul>
+      <p class="note"><b>Data note:</b> NOAA retired this database in 2025, so 2024 is its last year.</p>
+    </div></details>
+    <details class="key"><summary><span>Revisiting the Performance Task (PTO p. 11) + Rubric<small>sample proficient claim</small></span></summary><div class="keybody">
+      <p class="aa"><b>Claim:</b> In the near future, climate-related hazards will likely force more people to move and will threaten their homes, food and water, especially along coasts and in places that depend on ice. <b>Evidence:</b> When climate changed rapidly in the past (the Younger Dryas), human populations like the Clovis were disrupted. Our tank model showed fresh meltwater slows the AMOC, and the IPCC says the AMOC will very likely weaken this century. Satellite data show sea level rose 97 mm from 1993 to 2025 and the rate has doubled; IPCC models project 0.44–0.77 m more by 2100 depending on emissions, enough to flood parts of NYC in the NOAA viewer. Melting ice already causes deadly floods (Bhutan, India), coastal erosion that forces villages to relocate (Alaska), and food losses (snow crab, Peru). Each 1 °C of warming cuts major crop yields 3–7%. U.S. billion-dollar disasters rose from ~9/yr to 27–28 in 2023–2024. <b>Reasoning:</b> human greenhouse gas emissions cause warming (last 5E); warming melts ice and intensifies heat, heavy rain and drought; each impact has a mechanism, so the link from human activities → climate change → impacts on people is causal, not just correlation.</p>
+      <p class="note"><b>Rubric check (Proficient needs all five):</b> past rapid change and people · AMOC impacts · melting-ice impacts · food supply · displacement/migration, with evidence linked by reasoning, plus a clear cause-and-effect statement.</p>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Relevance to your life Q1–2</div><p>One idea or skill from this unit you'd teach someone in your family or community, who, and why.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Which rubric component is your claim weakest on, and what evidence will you add?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>The Past-to-Future Cause Map</h4>
+      <p>On one page, draw a cause-and-effect map for your Performance Task. Start with <b>"human emissions"</b> in the center and branch to at least <b>four impacts on people</b> from this 5E (sea level, AMOC, melting ice, food, disasters). Add a small "then" box linking one branch to the Younger Dryas/Clovis story.</p>
+      <ul class="checks">
+        <li>Every arrow labeled with the mechanism ("less dense," "lower yields," "more wave energy")</li>
+        <li>At least four real numbers from class data, each with its source (NOAA, NASA, IPCC, NRDC)</li>
+        <li>One branch ends at New York City</li>
+        <li>"I chose…" note: <b>the tally item from today's Domino Discover</b> you think matters most for your community, and why</li>
+      </ul>
+      <p class="why">This map becomes the outline for the Final Performance Task in the Unit 4 Closing.</p>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-6"><small>Back</small>← Day 6 · Impacts of melting ice</a><a class="next" href="#overview"><small>Done</small>Back to overview ↺</a></div>
+</div>
+
+<footer><a href="index.html">← Back to Teacher Hub</a><br>Built from the New Visions Earth &amp; Space Science Unit 4 materials for The Past and the Future 5E (SY 25-26): the teacher materials (L4 Bundle, Unit 4 Teacher Materials pp. 111–136) and the student materials (Unit 4 Student Materials, The Past and the Future 5E from p. 114, and the Performance Task Organizer p. 11), plus the packet's Sea Level Change Data spreadsheet. Data: NASA satellite sea level and rate analysis; IPCC AR6 WGI (2021) scenarios, sea level and AMOC assessments; GISP2 ice core (Alley 2000); NOAA NCEI Billion-Dollar Weather and Climate Disasters (1980–2024); Zhao et al. 2017 (PNAS); NRDC, "How Melting Ice Affects People and the Planet" (Cosier, 2024). Student chapter: <a href="../unit4-climate-change/unit4-past-and-future.html">The Past and the Future</a>. Schedules assume 50-minute periods.</footer>
+</main>
+
+<script>
+(function(){
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('#chips .chip'));
+  var ids = views.map(function(v){return v.id});
+  function show(){
+    var id = (location.hash || '').slice(1);
+    if (ids.indexOf(id) === -1) id = 'overview';
+    views.forEach(function(v){ v.hidden = v.id !== id; });
+    chips.forEach(function(c){
+      if (c.getAttribute('href') === '#' + id) { c.setAttribute('aria-current','page'); var r=c.parentNode; r.scrollLeft = c.offsetLeft - (r.clientWidth - c.offsetWidth)/2; }
+      else c.removeAttribute('aria-current');
+    });
+    window.scrollTo({top:0,left:0,behavior:'instant'});
+  }
+  window.addEventListener('hashchange', show);
+  show();
+
+  // prep checklist memory (per device)
+  var boxes = document.querySelectorAll('#prep input[type=checkbox]');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem('u4-pastfuture-prep') || '{}'); } catch(e) {}
+  Array.prototype.forEach.call(boxes, function(b){
+    if (saved[b.id]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[b.id] = b.checked;
+      try { localStorage.setItem('u4-pastfuture-prep', JSON.stringify(saved)); } catch(e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>
