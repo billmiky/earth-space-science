@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Item Bank &amp; Quiz Maker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app" class="no-print">
+  <header class="top">
+    <div>
+      <h1>Item Bank &amp; Quiz Maker</h1>
+      <p class="muted">Past NYS Regents questions in Earth &amp; Space Sciences, tagged by standard, skill, and 5E topic.
+        Pick questions, preview, and print a quiz. <span id="updated"></span></p>
+    </div>
+    <a class="btn secondary" href="../index.html">← Teacher Hub</a>
+  </header>
+
+  <details class="help">
+    <summary>How to use this</summary>
+    <ol>
+      <li><b>Filter</b> by unit, 5E topic, standard, skill, or type. <b>View</b> shows the question full-size with its key.</li>
+      <li>Tick <b>Add</b> on the questions you want. They collect in the bar at the bottom, in the order you pick them; use ↑ ↓ to reorder.</li>
+      <li><b>Preview</b> shows the quiz in order. <b>Print</b> makes a numbered test (add the answer key at the end if you like); choose “Save as PDF” to get a PDF.</li>
+      <li><b>Copy IDs</b> copies the question list. Paste it into the ESS Tracker under <i>Assessments → New assessment</i> to grade it there, with the keys and ZipGrade numbers filled in.</li>
+    </ol>
+    <p class="muted">🔒 = also on a New Visions interim assessment. New Visions asks that those questions not be used for class practice, so interim results show what students really know.</p>
+  </details>
+
+  <form id="filters" class="filters" onsubmit="return false">
+    <label>Unit<select id="f-unit"><option value="">All</option></select></label>
+    <label>5E topic<select id="f-topic"><option value="">All</option></select></label>
+    <label>Standard<select id="f-pe"><option value="">All</option></select></label>
+    <label>Skill<select id="f-sep"><option value="">All</option></select></label>
+    <label>Type<select id="f-fmt"><option value="">All</option><option value="MC">Multiple choice</option><option value="CR">Written</option></select></label>
+    <label>Exam<select id="f-exam"><option value="">All</option></select></label>
+    <label class="grow">Search<input id="f-q" type="search" placeholder="words in the description or set"></label>
+    <label class="check"><input id="f-nointerim" type="checkbox"> Hide 🔒 interim questions</label>
+    <button type="button" id="f-reset" class="secondary">Reset</button>
+  </form>
+  <p class="muted" id="count"></p>
+  <div id="results" class="results"></div>
+</div>
+
+<div id="basket" class="basket no-print" hidden>
+  <div class="basket-head">
+    <b id="basket-count"></b>
+    <button type="button" id="b-preview">👁 Preview</button>
+    <button type="button" id="b-print">🖨 Print</button>
+    <button type="button" id="b-copy" class="secondary">📋 Copy IDs</button>
+    <button type="button" id="b-toggle" class="secondary" aria-expanded="false">Show list</button>
+    <button type="button" id="b-clear" class="secondary">Clear</button>
+    <span id="b-status" class="muted" role="status" aria-live="polite"></span>
+  </div>
+  <ol id="basket-list" hidden></ol>
+</div>
+
+<dialog id="dlg" class="dlg no-print" aria-labelledby="dlg-title">
+  <div class="dlg-head">
+    <b id="dlg-title"></b>
+    <label class="check"><input type="checkbox" id="dlg-keys" checked> Show answer keys</label>
+    <button type="button" class="secondary" id="dlg-close">Close ✕</button>
+  </div>
+  <div id="dlg-body"></div>
+</dialog>
+
+<div id="printview" hidden>
+  <div class="card no-print printbar">
+    <label class="grow">Title<input id="p-title" type="text" value="Quiz"></label>
+    <label class="check"><input type="checkbox" id="p-key"> Answer key at the end</label>
+    <button type="button" id="p-go">🖨 Print / Save as PDF</button>
+    <button type="button" class="secondary" id="p-close">Back</button>
+    <p class="muted">Material marked “from earlier in this set” is included so each question makes sense. Use <b>Hide for this printout</b> on anything a question doesn't need.</p>
+  </div>
+  <article id="printdoc" class="printdoc"></article>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
