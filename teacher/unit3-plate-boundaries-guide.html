@@ -1,0 +1,1466 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="teacher-gate.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}.strata-9{grid-template-columns:repeat(9,1fr)}
+</style>
+<title>Plate Boundaries Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky day bar on top, one day visible at a time, single reading column (~760px). Days are "rock layers" colored by 5E phase. */
+:root{
+  --bg:#F2F5F4; --surface:#FFFFFF; --ink:#15212A; --muted:#55646B; --line:#D5DDDB; --tint:#E7EDEB;
+  --iron:#AE4229; --ocean:#1C6784; --ochre:#A8731A; --moss:#4C7634; --dusk:#5A4A8C;
+  --ok:#2E7D4F; --warn:#9A5B00;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--ocean)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* phase colors */
+[data-phase="engage"]{--ph:var(--ochre)} [data-phase="explore"]{--ph:var(--iron)} [data-phase="explain"]{--ph:var(--ocean)}
+[data-phase="elaborate"]{--ph:var(--moss)} [data-phase="evaluate"]{--ph:var(--dusk)} [data-phase="overview"]{--ph:var(--ink)}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:thin}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--ph)}
+.chip[aria-current="page"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--ocean);outline-offset:2px}
+
+/* hero */
+.hero{padding-block:28px 8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.hero h1{font-size:clamp(32px,7vw,52px);font-weight:800;letter-spacing:-.02em;margin:8px 0 10px}
+.dq{font-size:clamp(18px,3.4vw,22px);color:var(--ink);max-width:40ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0 0;color:var(--muted);font-size:15px}
+.meta b{color:var(--ink)}
+
+/* strata bar */
+.strata{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin:22px 0 6px;border-radius:10px;overflow:hidden}
+.strata a{display:flex;flex-direction:column;justify-content:flex-end;min-height:76px;padding:8px 7px;background:var(--ph);color:#fff;text-decoration:none;font-size:12px;line-height:1.2;position:relative}
+.strata a::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(0,0,0,.10) 9px 11px);pointer-events:none}
+.strata b{font-family:var(--f-display);font-size:20px;display:block}
+.strata span{opacity:.92}
+.strata-cap{font-size:13px;color:var(--muted)}
+@media (max-width:520px){.strata span{display:none}.strata a{min-height:56px}}
+
+/* views */
+.view{padding-block:8px 48px;scroll-margin-top:calc(64px + env(safe-area-inset-top,0px))}
+.view[hidden]{display:none!important}
+.dayhead{padding-block:26px 6px;border-bottom:4px solid var(--ph);margin-bottom:8px}
+.dayhead .eyebrow{color:var(--ph)}
+.dayhead h2{font-size:clamp(28px,5.6vw,40px);font-weight:800;margin:6px 0 8px;letter-spacing:-.01em}
+.dayhead .q{font-style:italic;color:var(--muted);margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
+.tag{font-size:13px;padding:3px 9px;border-radius:6px;background:var(--tint);color:var(--ink)}
+
+section.block{padding-block:18px 4px}
+section.block>h3{font-size:22px;font-weight:800;margin-bottom:12px;display:flex;align-items:baseline;gap:10px}
+section.block>h3 small{font-family:var(--f-body);font-weight:600;font-size:14px;color:var(--muted)}
+p{margin:0 0 10px} ul,ol{margin:0 0 10px;padding-left:22px} li{margin-bottom:5px}
+
+/* goals */
+.goals{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--ph);border-radius:8px;padding:14px 16px}
+.goals h3{font-size:17px;margin-bottom:8px}
+.goals ul{margin:0}
+
+/* schedule */
+.sched{list-style:none;padding:0;margin:0;border-left:2px solid var(--line)}
+.sched li{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:10px 0 12px 22px;margin:0;position:relative}
+.sched li::before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:3px solid var(--ph)}
+.t{font-family:var(--f-mono);font-size:14px;color:var(--ph);font-weight:500;padding-top:2px;font-variant-numeric:tabular-nums}
+.t small{display:block;color:var(--muted);font-size:12px}
+.sched h4{font-size:17px;font-weight:600;margin-bottom:3px}
+.sched p,.sched ul{font-size:16px;color:var(--ink);margin-bottom:4px}
+.sched .say{border-left:3px solid var(--tint);padding-left:10px;color:var(--muted);font-style:italic}
+@media (max-width:480px){.sched li{grid-template-columns:1fr;gap:2px}}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.card .lbl{font-size:12px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;color:var(--ph);margin-bottom:6px}
+.card p:last-child{margin-bottom:0}
+.ans{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:15px;color:var(--muted)}
+.ans b{color:var(--ok)}
+
+/* conferring */
+.confer{list-style:none;padding:0;display:grid;gap:8px}
+.confer li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0}
+.confer li span{display:block;font-size:14px;color:var(--muted);margin-top:3px}
+
+/* CFU */
+.cfu{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.cfu h4{font-size:16px;margin-bottom:6px;font-family:var(--f-body);font-weight:700}
+.opts{list-style:none;padding:0;margin:6px 0}
+.opts li{padding:5px 10px;border-radius:6px;margin-bottom:4px;background:var(--tint)}
+.opts li.right{outline:2px solid var(--ok)}
+.opts li em{display:block;font-size:14px;color:var(--muted);font-style:normal}
+.when{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* answer key */
+.key{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.key>summary{cursor:pointer;padding:13px 16px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.key>summary::-webkit-details-marker{display:none}
+.key>summary::after{content:"+";font-family:var(--f-mono);font-size:20px;color:var(--ph)}
+.key[open]>summary::after{content:"−"}
+.key>summary small{display:block;font-weight:400;color:var(--muted);font-size:14px}
+.keybody{padding:2px 16px 14px;border-top:1px solid var(--line)}
+.qa{padding:10px 0;border-bottom:1px solid var(--tint)}
+.qa:last-child{border-bottom:0}
+.qa .qq{font-weight:700;margin-bottom:4px}
+.qa .aa{margin:0}
+.note{font-size:15px;background:var(--tint);border-radius:8px;padding:10px 12px;margin:8px 0}
+.note b{color:var(--warn)}
+.scroll{overflow-x:auto;margin:8px 0 12px;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--surface)}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--tint);font-weight:700}
+td.num,th.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* homework */
+.hw{background:var(--surface);border:2px solid var(--ph);border-radius:12px;padding:16px}
+.hw h4{font-size:20px;font-weight:800;margin-bottom:6px}
+.hw .why{font-size:15px;color:var(--muted)}
+.checks{list-style:none;padding:0;margin:8px 0 0}
+.checks li{padding-left:24px;position:relative}
+.checks li::before{content:"✓";position:absolute;left:2px;color:var(--ok);font-weight:700}
+
+/* overview bits */
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:6px}
+.glance .card b{font-family:var(--f-display);font-size:18px;display:block;margin-bottom:2px}
+.prep{list-style:none;padding:0}
+.prep li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--tint);margin:0}
+.prep input{width:20px;height:20px;margin-top:3px;accent-color:var(--ocean);flex:0 0 auto}
+.prep label{flex:1;min-width:0}
+.prep .when{display:block}
+.mis{display:grid;gap:8px}
+.mis div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.mis s{color:var(--iron);text-decoration-thickness:2px}
+
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:30px;flex-wrap:wrap}
+.pager a{flex:1 1 200px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.pager a small{display:block;color:var(--muted);font-size:13px}
+.pager a.next{text-align:right}
+footer{color:var(--muted);font-size:13px;padding-block:20px 40px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+.strata-9{grid-template-columns:repeat(9,1fr)}
+</style>
+</head>
+<body>
+<nav class="bar" aria-label="Days">
+  <div class="wrap" id="chips">
+    <a class="chip" data-phase="overview" href="#overview"><i></i>Before you teach</a>
+    <a class="chip" data-phase="engage" href="#day-1"><i></i>Day 1</a>
+    <a class="chip" data-phase="explore" href="#day-2"><i></i>Day 2</a>
+    <a class="chip" data-phase="explore" href="#day-3"><i></i>Day 3</a>
+    <a class="chip" data-phase="explain" href="#day-4"><i></i>Day 4</a>
+    <a class="chip" data-phase="explore" href="#day-5"><i></i>Day 5</a>
+    <a class="chip" data-phase="explore" href="#day-6"><i></i>Day 6</a>
+    <a class="chip" data-phase="explain" href="#day-7"><i></i>Day 7</a>
+    <a class="chip" data-phase="elaborate" href="#day-8"><i></i>Day 8</a>
+    <a class="chip" data-phase="evaluate" href="#day-9"><i></i>Day 9</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ===================== OVERVIEW ===================== -->
+<div class="view" id="overview" data-phase="overview">
+  <header class="hero">
+    <div class="eyebrow">Teacher guide · Earth &amp; Space Science · Unit 3 · Earthquakes, Tsunamis, and Volcanoes: Who's at Risk? · L2</div>
+    <h1>Surface Features &amp; Plate Boundaries</h1>
+    <p class="dq">Why does seismic activity happen in some areas more than others?</p>
+    <div class="meta">
+      <span><b>PEs</b> HS-ESS1-5 · HS-ESS2-1 · HS-ESS3-1</span>
+      <span><b>Length</b> 9 days × 50 min (curriculum says 7–9)</span>
+      <span><b>Anchor routines</b> Domino Discover · Think-Talk-Open Exchange · Consensus-Building Share · Class Consensus Discussion</span>
+      <span><b>Materials</b> SY 26-27 teacher guide · SY 25-26 student packet (53 pp.)</span>
+    </div>
+    <div class="strata strata-9" aria-label="Nine days, colored by 5E phase">
+      <a href="#day-1" data-phase="engage"><b>1</b><span>Engage</span></a>
+      <a href="#day-2" data-phase="explore"><b>2</b><span>Explore 1</span></a>
+      <a href="#day-3" data-phase="explore"><b>3</b><span>Explore 1</span></a>
+      <a href="#day-4" data-phase="explain"><b>4</b><span>Explain 1</span></a>
+      <a href="#day-5" data-phase="explore"><b>5</b><span>Explore 2</span></a>
+      <a href="#day-6" data-phase="explore"><b>6</b><span>Explore 2</span></a>
+      <a href="#day-7" data-phase="explain"><b>7</b><span>Explain 2</span></a>
+      <a href="#day-8" data-phase="elaborate"><b>8</b><span>Elaborate</span></a>
+      <a href="#day-9" data-phase="evaluate"><b>9</b><span>Evaluate</span></a>
+    </div>
+    <p class="strata-cap">Tap a day to open it. Each day has a minute-by-minute plan, Do Nows, conferring questions, checks for understanding, the answer key, exit slips and drawn homework. Student review page: <a href="../unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html">Surface Features &amp; Plate Boundaries chapter</a>.</p>
+  </header>
+
+  <section class="block">
+    <h3>The phenomenon in one paragraph</h3>
+    <p>Earthquakes, volcanoes and tsunamis are not scattered at random. On a world map they trace narrow bands. Students first see the pattern (Engage), then look for an explanation in the ocean. The sea floor has long <b>mid-ocean ridges</b>. Its rock, dated by radiometric dating, is <b>youngest at the ridges</b> and older in matching bands on both sides. A map measurement gives a spreading rate of only <b>~2 cm per year</b>. Earthquakes under Iceland, which sits on the Mid-Atlantic Ridge, are <b>shallow</b>. Together these point to plates <b>moving apart</b>, with magma filling the gap (Explain 1). But many hazards are far from ridges. There, students find <b>mountains, volcanoes and trenches</b>, earthquakes in <b>slanted zones</b> that reach hundreds of kilometers down, and <b>continents with far older rock</b> than the ocean floor. That evidence supports <b>plate tectonics</b>: crust forms at ridges and sinks back into the mantle where plates converge, which is where the biggest earthquakes, the most explosive eruptions and most tsunamis happen (Explain 2). New York sits far from a plate boundary, yet it has mountains. Old rock, uplift and erosion explain the Adirondacks (Elaborate). Students then use plate settings and death-toll data to judge <b>which of the Key 5 regions is most at risk</b> (Evaluate).</p>
+  </section>
+
+  <section class="block">
+    <h3>The 5E storyline</h3>
+    <div class="glance">
+      <div class="card" data-phase="engage"><div class="lbl">Engage · Day 1</div><b>Where is seismic activity happening most?</b>Maps and an animation of earthquakes, tsunamis and eruptions → See-Think-Wonder.</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore 1 · Days 2–3</div><b>Why Iceland?</b>Ocean-floor topography and age, a spreading-rate calculation, and Iceland's earthquakes in 3D.</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain 1 · Day 4</div><b>Why is crust youngest at ridges?</b>Seafloor-spreading demo, a revised model, and a class evidence list (Consensus-Building Share).</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore 2 · Days 5–6</div><b>Why far from ridges?</b>Mountains, volcanoes, earthquake wedges under coasts and continents, and continental rock ages.</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain 2 · Day 7</div><b>How do plates cause hazards and features?</b>Evaluate the evidence for plate tectonics and explain the global pattern.</div>
+      <div class="card" data-phase="elaborate"><div class="lbl">Elaborate · Day 8</div><b>How did the Adirondacks form?</b>NY bedrock ages, the rock cycle, and the Adirondack timeline.</div>
+      <div class="card" data-phase="evaluate"><div class="lbl">Evaluate · Day 9</div><b>Who's at risk?</b>Key 5 regions: plate setting, quake data, death tolls → revise the model and the argument.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="goals" data-phase="explain">
+      <h3>By the end of the 5E, every student should be able to…</h3>
+      <ul>
+        <li>Describe the global <b>pattern</b> of earthquakes, eruptions and tsunamis (narrow bands along ridges, the Pacific "Ring of Fire" and the Mediterranean–Himalaya belt), citing map evidence.</li>
+        <li>Use <b>ocean-floor age</b> (youngest at ridges, symmetric bands) and a <b>rate calculation</b> (R = d ÷ t, a few cm/yr) as evidence that new crust forms where plates move apart.</li>
+        <li>Contrast earthquake <b>depth patterns</b>: shallow under ridges and rifts; a slanted zone reaching hundreds of km under subduction zones.</li>
+        <li>Explain <b>subduction</b>: denser oceanic crust sinks under less dense crust because of gravity, so crust is recycled. That is why the ocean floor is young (under ~200 million years old) while continents keep rock up to ~4 billion years old.</li>
+        <li>Connect boundary types to hazards and features: <b>divergent</b> → ridges, rifts, shallow quakes, gentle eruptions; <b>convergent</b> → trenches, mountains, volcanic arcs, the largest quakes and tsunamis.</li>
+        <li>Compare <b>timescales</b>: an earthquake takes seconds and an eruption hours to years; erosion and mountain building take millions of years. Some changes can't be reversed.</li>
+        <li>Explain how <b>uplift and erosion</b> exposed billion-year-old metamorphic rock at the top of the Adirondacks.</li>
+        <li>Argue which <b>Key 5 region</b> is most at risk, using plate setting, earthquake frequency and magnitude, and human-impact data.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Prep checklist <small>check off as you go · saved on this device</small></h3>
+    <ul class="prep" id="prep">
+      <li><input type="checkbox" id="p1"><label for="p1"><span class="when">1 week out</span>Copy the student packet (53 pp.). Copy the SY 26-27 <b>Seismic Activity in the Ocean</b> and <b>Coastal and Continental Seismic Activity Investigation Rubrics</b> (Days 3 and 6). They are new in SY 26-27 and not in the packet. Copy the <b>Revisit the Performance Task: Surface Features and Plate Boundaries 5E</b> handout separately (Day 9). It is not in the packet. The model and argument rubrics are.</label></li>
+      <li><input type="checkbox" id="p2"><label for="p2"><span class="when">1 week out</span>Print the <b>Map of Sea Floor Spread</b> in <b>full size and color</b>, one per pair. The packet's scale (1 cm = 2,100 km) only works on a full-page print on normal copy paper. Shrunk or cropped copies give wrong rates.</label></li>
+      <li><input type="checkbox" id="p3"><label for="p3"><span class="when">1 week out</span>Test every link on student devices: <b>120 Years of Earthquakes and Their Tsunamis</b>, NOAA <b>Significant Volcanic Eruptions</b> PDF, <b>Aerial Footage… Iceland</b>, <b>IRIS Interactive Earthquake Viewer</b> (set max quakes, 3D view), <b>SEPUP Plate Boundaries</b> simulation, the three Explain 2 videos (mountain ranges, <b>Birth of a Tsunami</b>, <b>The Next Pompeii</b>), and <b>How Earth Recycled a Mountain Range</b>. The IRIS 3D view needs WebGL, so try it on a Chromebook.</label></li>
+      <li><input type="checkbox" id="p4"><label for="p4"><span class="when">Before Day 2</span>Rulers and calculators (1 per pair). Write the conversion on the board: <b>1 km = 100,000 cm</b>.</label></li>
+      <li><input type="checkbox" id="p5"><label for="p5"><span class="when">Before Day 4</span>Pick your seafloor-spreading demo: <b>Option 1</b> textbook + folded copy paper + markers in the age-map colors, <b>Option 2</b> SEPUP simulation (divergent, 20 million years), or <b>Option 3</b> modeling clay in several colors. Do a dry run of Option 1. The marker must touch both sides of the fold.</label></li>
+      <li><input type="checkbox" id="p6"><label for="p6"><span class="when">Before Day 7</span>Post the <b>Class Consensus Discussion steps</b>. Have a document camera or phone ready to project 2–3 chosen explanations (Day 7). Day 4 needs chart paper for the class evidence list.</label></li>
+      <li><input type="checkbox" id="p7"><label for="p7"><span class="when">Before Day 8</span>Colored pencils and highlighters (2 colors). Have <b>ESSRT pp. 6, 8, 10 and 14</b> or the packet's maps ready: the rock cycle, the NY bedrock map, landscape regions and the geologic history chart. Cut out the <b>Adirondack Mountain Cards</b> (1 set per group) and copy the <b>Timeline</b>.</label></li>
+      <li><input type="checkbox" id="p8"><label for="p8"><span class="when">Before Day 9</span>Chart paper for the Domino Discover tally ("Which region is most at risk?"). Bring the Driving Question Board.</label></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Content crib: the numbers students will use</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>Idea</th><th>Value</th><th>Where it comes up</th></tr></thead>
+      <tbody>
+        <tr><td>Map scale (Sea Floor Spread map)</td><td class="num">1 cm = 2,100 km</td><td>Explore 1 Part 3 (full-size print only)</td></tr>
+        <tr><td>Conversion</td><td class="num">1 km = 100,000 cm (10⁵)</td><td>Explore 1 Part 3</td></tr>
+        <tr><td>Time used in calculation</td><td class="num">65 million years (65 Ma)</td><td>Red center → dark-yellow/light-green border</td></tr>
+        <tr><td>Expected student spreading rate</td><td class="num">≈1.8 cm/yr (accept 1.5–2)</td><td>Teacher guide target; depends on where students measure</td></tr>
+        <tr><td>Real spreading rates (plates apart, total)</td><td class="num">Mid-Atlantic ~2–2.5 cm/yr · East Pacific Rise up to ~15 cm/yr</td><td>Extension; fingernails grow ~3–4 cm/yr</td></tr>
+        <tr><td>Oldest ocean floor</td><td class="num">~180–200 million years</td><td>Western Pacific; edges of the Atlantic</td></tr>
+        <tr><td>Oldest continental rock</td><td class="num">~4.0 billion years</td><td>Acasta Gneiss, Canadian Shield (Explore 2 Part 4)</td></tr>
+        <tr><td>Ridge and rift earthquakes</td><td class="num">Shallow, mostly &lt; ~30 km</td><td>Iceland, Great Rift Valley</td></tr>
+        <tr><td>Deepest earthquakes</td><td class="num">~700 km</td><td>Subduction zones (under Japan's Sea, the Andes, Tonga)</td></tr>
+        <tr><td>Largest recorded earthquake</td><td class="num">M9.5, Chile, 1960</td><td>Andes Region text ("strongest ever recorded")</td></tr>
+        <tr><td>Other M9-class quakes</td><td class="num">Alaska 1964 (9.2) · Sumatra 2004 (9.1) · Tōhoku, Japan 2011 (9.0–9.1)</td><td>All at subduction zones</td></tr>
+        <tr><td>Krakatoa</td><td class="num">1883 · VEI 6 · ~36,000 deaths, mostly from tsunamis</td><td>Unit anchor; Anak Krakatau emerged in 1927</td></tr>
+        <tr><td>Adirondack bedrock</td><td class="num">~1.1–1.3 billion years</td><td>Grenville mountain building; Mt. Marcy 1,629 m</td></tr>
+        <tr><td>NY sedimentary bedrock</td><td class="num">~540–360 million years (plus ~200 Ma Newark Basin)</td><td>Cambrian–Devonian seas</td></tr>
+        <tr><td>Palisades sill (NJ/NY, Hudson)</td><td class="num">~200 million years</td><td>Magma that cooled underground as Pangaea rifted</td></tr>
+      </tbody>
+    </table></div>
+    <div class="scroll"><table>
+      <caption class="strata-cap" style="caption-side:top;text-align:left;padding:8px 10px">Packet table: deaths from earthquakes in the Key 5 regions</caption>
+      <thead><tr><th>Region</th><th class="num">Since 1900</th><th class="num">Since 1990</th><th>Plate setting</th></tr></thead>
+      <tbody>
+        <tr><td>Mediterranean Basin</td><td class="num">186,234</td><td class="num">87,403</td><td>Many small plates, converging and diverging</td></tr>
+        <tr><td>Great Rift Valley</td><td class="num">302</td><td class="num">75</td><td>Divergent (continental rift)</td></tr>
+        <tr><td>Mainland Southeast Asia</td><td class="num">12,251</td><td class="num">6,091</td><td>Continental convergent (plus a major transform fault)</td></tr>
+        <tr><td>Japanese Archipelago</td><td class="num">185,929</td><td class="num">27,460</td><td>Convergent, subduction</td></tr>
+        <tr><td>Andes Region</td><td class="num">130,151</td><td class="num">6,336</td><td>Ocean–continent subduction</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>Reading the table:</b> since 1900 the Mediterranean and Japan are almost tied. Japan's total is dominated by the 1923 Great Kantō earthquake (~105,000 deaths). Since 1990 the Mediterranean leads by far. Push students to ask what changed: building codes and warning systems (Japan) vs. population and construction (Mediterranean).</div>
+  </section>
+
+  <section class="block">
+    <h3>What changed in the SY 26-27 teacher materials</h3>
+    <p>This guide follows the <b>SY 26-27 teacher guide</b>. The student packet is still the SY 25-26 version, so a few pages don't match the new plan:</p>
+    <ul>
+      <li><b>Explain 1 (Day 4)</b> no longer uses a Class Consensus Discussion. Students brainstorm evidence alone, revise it in a <b>Think-Talk-Open Exchange</b>, then build a <b>class list of evidence on chart paper</b> with a <b>Consensus-Building Share</b>. The Summary Task is gone from Explain 1, but it is still in the packet (pp. 16–17). Use it as optional homework or skip it.</li>
+      <li><b>New investigation rubrics</b> for self- and peer-assessment after each Making Sense handout: <i>Seismic Activity in the Ocean Investigation Rubric</i> (Day 3) and <i>Coastal and Continental Seismic Activity Investigation Rubric</i> (Day 6). Neither is in the packet.</li>
+      <li>The SEPUP link is now called the <b>Plate Motion Simulation</b> (same URL).</li>
+      <li>Not fixed in SY 26-27: the friction, "pressure cooker" and "tens of thousands of years" statements, and the "Modeling Plate Tectonics" handout name (see below).</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Corrections to the packet and teacher guide</h3>
+    <div class="mis">
+      <div><b>p. 38, Step 4 text:</b> "New York State, which sits in the middle of the <s>North Atlantic Plate</s>…" There is no North Atlantic Plate. The packet itself says <b>North American Plate</b> on p. 35. Tell students before they read.</div>
+      <div><b>p. 38, Step 4 text:</b> NY "<s>has not been subject to volcanic activity for at least 1 billion years</s>, and the rock types… are <s>not due to</s> divergent or convergent plate boundaries." NY's <b>present-day landforms</b> come from uplift and erosion, not active boundaries. But its <b>rocks</b> record old plate collisions (Grenville ~1.1 billion years ago; Taconic ~450 million years ago, with a volcanic island arc). Magma also intruded ~200 million years ago as Pangaea rifted (the Palisades). Say: "No volcano has shaped NY's surface recently, but its rocks were made by ancient plate collisions."</div>
+      <div><b>Teacher guide, Explain 2 key points</b> (SY 25-26 and SY 26-27, and the unit plan): volcanoes at subduction zones form "<s>when the energy due to friction heats magma</s>." Friction is a minor factor. The sinking plate carries <b>water</b> down, and the water <b>lowers the melting point</b> of the hot mantle rock above it (flux melting). The packet's "heat and friction" is fine as a first model. Accept it, then press: "What else is the ocean plate carrying down with it?"</div>
+      <div><b>Teacher guide, Explain 2 key points:</b> at divergent boundaries, magma is "<s>like a pressure cooker</s>." Better: as plates pull apart, hot mantle rock <b>rises, and the drop in pressure lets it partly melt</b> (decompression melting). The mantle is mostly solid, not a sea of magma.</div>
+      <div><b>Teacher guide, Elaborate Look &amp; Listen:</b> tectonic plate motion happens "<s>over tens of thousands of years</s>." At a few cm per year, building an ocean or a mountain range takes <b>millions to hundreds of millions of years</b>. Students just calculated this on Day 2.</div>
+      <div><b>p. 52, Argument Rubric, Stability &amp; Change row:</b> the Proficient and Developing descriptors are <b>identical</b>. Use: Developing = "Argument does <b>not</b> include, or includes inaccurate, rates at which volcanic eruptions and tsunamis occur."</div>
+      <div><b>p. 50, Model Rubric, Stability &amp; Change row</b> refers to "reflection prompt 2." That prompt is on the separate Revisit the Performance Task handout, not in the packet. Make sure students have it.</div>
+      <div><b>Teacher guide (both years), Explain 2 launch</b> calls the handout "Modeling Plate Tectonics." In the packet (p. 27) it is <b>Modeling Natural Hazards and Surface Features</b>. Its Summary Task (pp. 32–33) has only one content question, but the guide says to discuss "prompts 4–6." In Explore 1, "After students have completed part 1" should say <b>Part 3</b> (the calculation).</div>
+      <div><b>p. 47, Evaluate region text:</b> Japan is described as having "frequent <b>deep</b> earthquakes." It does, but its most damaging quakes (Kantō 1923, Kobe 1995, Tōhoku 2011) were <b>shallow</b>. Shallow quakes shake the surface hardest. Don't let students conclude that "deep = dangerous."</div>
+      <div><b>Missing boundary type:</b> the packet only names divergent and convergent boundaries. Many deadly quakes are on <b>transform</b> faults, where plates slide past each other: the North Anatolian Fault in the Mediterranean region, the Sagaing Fault in Myanmar (M7.7, March 2025), and the San Andreas. Add the term in Explain 2. If your Key 5 death table was compiled before March 2025, it doesn't include the Myanmar quake.</div>
+      <div><b>Spreading-rate clarification</b> (not an error): measuring from the ridge to the 65 Ma line on one side gives how fast <b>one plate</b> moves away from the ridge. The two plates separate about twice as fast. Accept 1.5–2 cm/yr as the guide says. The point is the <b>order of magnitude</b>: centimeters per year means tens of millions of years for an ocean basin.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Misconceptions to listen for</h3>
+    <div class="mis">
+      <div><s>"Earthquakes can happen anywhere equally."</s> The maps show narrow bands. Most earthquakes are at plate boundaries; plate interiors like NY are quiet (not zero).</div>
+      <div><s>"The mantle is liquid magma and the plates float on it."</s> The mantle is <b>solid rock that flows very slowly</b>. Magma forms only in certain places (ridges, subduction zones, hot spots).</div>
+      <div><s>"Plates move fast: an earthquake is the plate jumping miles."</s> Plates creep a few cm/yr. Stress builds up, then a fault slips meters in seconds (Tōhoku up to ~50 m).</div>
+      <div><s>"New crust means Earth is getting bigger."</s> This was a real 1960s hypothesis, and the packet uses it on Day 7. Subduction destroys crust as fast as ridges make it.</div>
+      <div><s>"The ocean floor is the oldest rock because oceans are ancient."</s> Ocean floor is young (under ~200 million years) because it is recycled. Continents keep rock for billions of years.</div>
+      <div><s>"Deeper earthquakes are more dangerous."</s> Shallow quakes usually shake the surface hardest. Magnitude, depth, distance and buildings all matter.</div>
+      <div><s>"Tsunamis are giant surf waves caused by wind or tides."</s> They are caused by sudden displacement of water, from sea-floor slip, eruptions or collapses, and landslides. They move the whole water column.</div>
+      <div><s>"NY's mountains must be volcanoes" / "NY is on a plate boundary."</s> The Adirondacks are a dome of ancient rock pushed up and exposed by erosion, in the middle of a plate.</div>
+      <div><s>"Radiometric dating measures how deep the rock is."</s> It measures the decay of radioactive atoms since the rock formed (PS1.C).</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Key vocabulary</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Tectonic plate</div>A large, rigid slab of Earth's crust and upper mantle that moves slowly.</div>
+      <div class="card"><div class="lbl">Plate tectonics</div>The theory that Earth's surface is broken into moving plates whose interactions cause earthquakes, volcanoes and most landforms.</div>
+      <div class="card"><div class="lbl">Mid-ocean ridge</div>An underwater mountain chain where plates spread apart and new ocean crust forms.</div>
+      <div class="card"><div class="lbl">Divergent boundary</div>Plates move apart (ridges, rift valleys). Shallow quakes, gentle eruptions.</div>
+      <div class="card"><div class="lbl">Convergent boundary</div>Plates move together (trenches, mountains, volcanic arcs). The biggest quakes and eruptions.</div>
+      <div class="card"><div class="lbl">Subduction</div>A denser plate sinking beneath another into the mantle.</div>
+      <div class="card"><div class="lbl">Transform boundary</div>Plates slide past each other. Shallow, sometimes very damaging quakes (not in the packet; add it).</div>
+      <div class="card"><div class="lbl">Radiometric dating</div>Finding a rock's age from the steady decay of radioactive atoms in it.</div>
+      <div class="card"><div class="lbl">Spreading rate</div>R = d ÷ t: how fast the sea floor moves away from a ridge (cm/yr).</div>
+      <div class="card"><div class="lbl">Magnitude / depth</div>Energy released by an earthquake / how far below the surface it started.</div>
+      <div class="card"><div class="lbl">Uplift</div>Land pushed upward by tectonic forces.</div>
+      <div class="card"><div class="lbl">Constructive / destructive processes</div>Processes that build land (volcanism, uplift, deposition) / wear it down (weathering, erosion, subduction).</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Pacing and logistics notes</h3>
+    <ul>
+      <li><b>Period length.</b> Every plan assumes 50 minutes. For 45-minute periods, cut the Do Now to 3 minutes and move the item marked <i>flex</i> to homework.</li>
+      <li><b>Seven-day version.</b> Fold Day 3 into Days 2 and 4: do Part 1 as the Day 1 exit task and Part 4 (IRIS) with a projected demo, then skip the second Domino Discover. Fold Day 6 into Day 7 by assigning Part 4 (continental ages) as homework.</li>
+      <li><b>Devices.</b> Days 3 and 5 need one device per pair for IRIS. If devices are short, project IRIS, rotate the 3D view live, and have pairs sketch.</li>
+      <li><b>Summary Task</b> after Explain 2 (pp. 32–33) is important formative data. Read them, sort them into "ready / needs another pass," and pull a small group before moving on.</li>
+      <li><b>Student chapter.</b> Absent students can use the <a href="../unit3-earthquakes-volcanoes-tsunamis/unit3-plate-boundaries.html">online chapter</a>. It mirrors each packet section with live USGS data and has a built-in calculator for Part 3.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>How the homework stays AI-proof</h3>
+    <p>Each night's homework is a <b>hand-drawn model</b>: a cross-section, map, timeline or comic. Four rules make it hard to outsource:</p>
+    <ul>
+      <li><b>Paper and pencil (or colored pencils) only.</b> No printed or digitally made images.</li>
+      <li><b>Every task uses something only your class has.</b> Examples: the student's own measured spreading rate, the region they chose in IRIS, their group's Domino Discover idea, or the class tally chart.</li>
+      <li><b>Every drawing has one personal "I chose…" annotation</b> explaining a decision the student made.</li>
+      <li><b>30-second check the next day.</b> During the Do Now, pick 3–4 students to explain one part of their drawing out loud.</li>
+    </ul>
+  </section>
+
+  <div class="pager"><span></span><a class="next" href="#day-1"><small>Start</small>Day 1 · Engage →</a></div>
+</div>
+
+<!-- ===================== DAY 1 ===================== -->
+<div class="view" id="day-1" data-phase="engage" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 1 · Engage → Explore 1 launch</div>
+    <h2>Global Patterns of Seismic Activity</h2>
+    <p class="q">Where is seismic activity happening most?</p>
+    <div class="tags"><span class="tag">Packet pp. 2–4</span><span class="tag">Table groups</span><span class="tag">Domino Discover</span><span class="tag">Video: 120 Years of Earthquakes and Their Tsunamis</span><span class="tag">NOAA Significant Volcanic Eruptions map</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Earthquakes, volcanic eruptions and tsunamis happen in <b>the same narrow bands</b>, not everywhere.</li>
+      <li>The largest earthquakes and most explosive eruptions cluster around the <b>edges of the Pacific</b> (the Ring of Fire). Many tsunamis follow large coastal or undersea earthquakes.</li>
+      <li>We need <b>empirical evidence</b> (data, maps) to claim a pattern exists (CCC Patterns).</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">5–9</div><div><h4>Connect to the DQB</h4><p>Point to the Driving Question Board questions about <i>where</i> earthquakes, eruptions and tsunamis happen.</p><p class="say">"At the end of Earth's Interior we figured out how Earth's structure can create hazards, but not who is most at risk. Today: where do these hazards actually happen?"</p></div></li>
+      <li><div class="t">9–17</div><div><h4>Text 1: 120 Years of Earthquakes and Their Tsunamis</h4><p>Play it once without talking. Play it again, pausing twice, and ask students to point at the screen where activity keeps repeating.</p></div></li>
+      <li><div class="t">17–30</div><div><h4>Texts 2–3 + See-Think-Wonder (individual → table)</h4><p>Students study the earthquake map (1900–2017) and the NOAA eruptions map. They fill in the See column using the three guiding prompts: patterns, largest quakes, most explosive volcanoes. Each prompt needs "my evidence is…".</p></div></li>
+      <li><div class="t">30–34</div><div><h4>Table talk</h4><p>Each group agrees on <b>one important idea and one question</b> to share.</p></div></li>
+      <li><div class="t">34–44</div><div><h4>Domino Discover</h4><p>Each group shares in turn, building on the previous group. Chart the ideas in two columns: <i>Patterns we see</i> and <i>Questions we have</i>. Listen for the look-fors in the key.</p></div></li>
+      <li><div class="t">44–48</div><div><h4>Explore 1 hook: Iceland <span class="t">flex</span></h4><p>Point out Iceland on the maps. It has lots of quakes and eruptions, but it's in the middle of the Atlantic. Play the first minute of <b>Aerial Footage Captures Volcano Spewing Lava in Iceland</b>.</p><p class="say">"Tomorrow we look above and below the places this is happening, starting in the ocean."</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Prediction</div><p>List 3 places in the world where you think earthquakes or volcanoes happen often. Why those?</p><div class="ans">Revisit after the video. Many will name Japan, California, Indonesia or Hawaii.</div></div>
+      <div class="card"><div class="lbl">Option B · Earth's Interior recall</div><p>Sketch Earth's layers. Label the one we live on and the one that can slowly flow.</p><div class="ans">Crust (thin, rigid); mantle (solid but flows slowly over long times).</div></div>
+      <div class="card"><div class="lbl">Option C · Krakatoa link</div><p>Krakatoa's 1883 eruption caused deadly tsunamis. Name one way an eruption or earthquake can cause a tsunami.</p><div class="ans">Sudden movement of the sea floor, or collapse of a volcano, pushes up or drops a huge volume of water.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Where does activity keep happening, year after year in the animation?<span>Pushes students from single events to a pattern.</span></li>
+      <li>Do the earthquake dots and the volcano dots line up? Where don't they?</li>
+      <li>Where do the biggest circles (largest quakes) show up? What's your evidence?</li>
+      <li>Which oceans have tsunamis? Which coasts don't seem to?</li>
+      <li>Are there places with lots of earthquakes in the middle of an ocean? What's there?<span>Sets up the mid-ocean ridge for Day 2.</span></li>
+      <li>What would you need to see to convince someone this is a real pattern, not a coincidence?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After See-Think-Wonder · hinge question</div>
+      <h4>Based on the maps, which statement is best supported by the evidence?</h4>
+      <ul class="opts">
+        <li>A. Earthquakes happen randomly across Earth's surface<em>Ignores the clustering in the maps.</em></li>
+        <li class="right">B. Earthquakes, eruptions and tsunamis cluster in the same long, narrow bands<em>Correct.</em></li>
+        <li>C. Earthquakes only happen on land<em>Many dots lie under oceans (ridges, trenches).</em></li>
+        <li>D. Volcanoes happen everywhere earthquakes do<em>There are more quake zones than volcanoes (e.g., parts of the Himalaya).</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During Domino Discover · thumbs</div>
+      <h4>"Thumbs up if your group found that the largest earthquakes were around the edges of the Pacific Ocean."</h4>
+      <p>If fewer than half agree, re-project Text 2 and ask groups to find the five largest circles.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>See-Think-Wonder: Global Patterns<small>p. 4 · expect variety; look for evidence</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">What patterns do you notice in earthquakes, eruptions and tsunamis? Evidence?</div><p class="aa">All three form <b>long, narrow bands</b> that overlap: around the rim of the Pacific (Japan, Indonesia, Philippines, Alaska, west coast of the Americas, New Zealand), across the Mediterranean–Middle East–Himalaya belt, and down the middle of the Atlantic. Tsunamis occur mostly where big quakes occur near coasts or under the ocean, especially around the Pacific.</p></div>
+      <div class="qa"><div class="qq">Where do the largest earthquakes occur?</div><p class="aa">Around the <b>Pacific rim</b>, along coasts with deep ocean trenches: Chile (M9.5, 1960), Alaska (M9.2, 1964), Sumatra (M9.1, 2004), Japan (M9.0–9.1, 2011).</p></div>
+      <div class="qa"><div class="qq">Where do the most explosive volcanoes erupt?</div><p class="aa">Also around the <b>Pacific rim</b> and Indonesia: Tambora (1815), Krakatoa (1883), Pinatubo (1991). Iceland and Hawaii erupt often but mostly <b>effusively</b> (lava flows), not as the largest explosions.</p></div>
+      <div class="note"><b>Look and listen for:</b> the patterns overlap · tsunamis seem to happen when quakes hit coasts · "maybe it's plate tectonics" · "activity near plate boundaries" · "why are there fewer volcanoes than earthquakes?" · "why here and not other places?" Keep the last two on the chart. They drive the 5E.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Describe the pattern of seismic activity in one sentence, and give one piece of map evidence.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Iceland has many earthquakes and eruptions, but it's in the middle of the ocean. What might be happening under Iceland?</p><div class="ans">Any testable idea: "a crack in the crust," "magma coming up," "plates pulling apart." Sets up Day 2.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Hazard Map from Memory</h4>
+      <p>On a blank sheet, sketch a <b>rough world map</b> (blob continents are fine) from memory. Use three colors to shade where you remember the most <b>earthquakes</b>, <b>volcanoes</b> and <b>tsunamis</b> from today's maps. Star the place where you think the <b>biggest</b> earthquakes happen.</p>
+      <ul class="checks">
+        <li>At least 5 continents roughly placed, plus the Pacific and Atlantic labeled</li>
+        <li>Three hazards in a color key; at least 3 bands shaded</li>
+        <li>Iceland and New York City marked</li>
+        <li>"I chose…" note: the <b>question your group shared in Domino Discover</b>, and where on your map it comes from</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#overview"><small>Back</small>← Before you teach</a><a class="next" href="#day-2"><small>Next</small>Day 2 · The ocean floor →</a></div>
+</div>
+
+<!-- ===================== DAY 2 ===================== -->
+<div class="view" id="day-2" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 2 · Explore 1</div>
+    <h2>Reading the Ocean Floor</h2>
+    <p class="q">Why did earthquakes and volcanic eruptions occur in Iceland?</p>
+    <div class="tags"><span class="tag">Packet pp. 5–9 (Parts 1–3)</span><span class="tag">Pairs → table groups</span><span class="tag">Consensus-Building Share</span><span class="tag">Map of Sea Floor Spread (color)</span><span class="tag">Rulers · calculators</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>The ocean floor has long <b>mid-ocean ridges</b>, and seismic activity in the oceans follows them.</li>
+      <li>Ocean-floor rock (dated by radiometric dating) is <b>youngest at the ridges</b> and gets older in <b>matching bands on both sides</b>, oldest near the continents.</li>
+      <li>The sea floor near the Mid-Atlantic Ridge moves only <b>~2 cm per year</b>, so an ocean basin takes <b>tens of millions of years</b> to form.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Call on 3–4 students to explain their Hazard Map.</p></div></li>
+      <li><div class="t">4–7</div><div><h4>Launch</h4><p class="say">"Yesterday we wondered why there's so much activity in places like Iceland. Today we'll look at several pieces of evidence about what's happening above and below the sea floor."</p></div></li>
+      <li><div class="t">7–14</div><div><h4>Part 1: Topography of the Ocean Floor (pairs)</h4><p>Students mark high-activity areas on the topography map, then answer Q2. Steer them to the yellow-green ridges.</p></div></li>
+      <li><div class="t">14–22</div><div><h4>Part 2: Age of Bedrock (pairs)</h4><p>Q1 pattern, Q2 cause. Remind them the colors come from <b>radiometric dating</b>.</p></div></li>
+      <li><div class="t">22–28</div><div><h4>Table talk + Consensus-Building Share</h4><p>Prompt: <i>What do you think is causing the pattern you observe?</i> Take one idea, ask "Did any group find something similar?" and "Can anyone add to that?" Don't move on until the class agrees the sea floor seems to be spreading apart at the ridges, with new crust forming there.</p></div></li>
+      <li><div class="t">28–46</div><div><h4>Part 3: Calculating Seafloor Change (pairs)</h4><p>Hand out color maps, rulers and calculators. Model the setup on the board without numbers: <i>measure (cm) → × 2,100 = km → × 100,000 = cm → ÷ 65,000,000 yr</i>. Circulate. Then take 3–4 rates and write them on the board. Ask: <i>Why aren't they identical? Do they support our claim?</i></p></div></li>
+      <li><div class="t">46–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Units</div><p>How many centimeters are in 1 kilometer? Show how you know.</p><div class="ans"><b>100,000 cm</b> (1 km = 1,000 m; 1 m = 100 cm).</div></div>
+      <div class="card"><div class="lbl">Option B · Rate warm-up</div><p>A snail crawls 30 cm in 10 minutes. What is its rate? Write the equation you used.</p><div class="ans">R = d ÷ t = 30 ÷ 10 = <b>3 cm/min</b>.</div></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>From Earth's Interior: how do scientists find the age of a rock?</p><div class="ans">Radiometric dating: radioactive atoms decay at a steady rate, so measuring how much has decayed gives the age.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Which type of ocean floor (shelf, ridge, abyssal plain) lines up with the earthquakes you marked?</li>
+      <li>Follow one color away from the ridge on the left side. Where does the same color show up on the right?<span>Symmetry is the key observation.</span></li>
+      <li>Where are you going to take your measurements?</li>
+      <li>How will you set up your calculations to determine how far the plates have moved?</li>
+      <li>What does the metric conversion factor chart tell you?</li>
+      <li>How will you use the equation to calculate the spreading rate?</li>
+      <li>How does the scale help you?</li>
+      <li>Is 2 cm/yr fast or slow? Compare it with something on your body.<span>Fingernails grow ~3–4 cm/yr.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Part 2 · hinge question</div>
+      <h4>On the age map, the youngest ocean-floor rock is found…</h4>
+      <ul class="opts">
+        <li>A. next to the continents<em>Reversed. That's the oldest.</em></li>
+        <li class="right">B. along the mid-ocean ridges, with older rock in matching bands on both sides<em>Correct.</em></li>
+        <li>C. scattered randomly<em>Not reading the color key.</em></li>
+        <li>D. in the deepest parts of the ocean<em>Confuses depth with age. Ridges are actually shallower.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During Part 3 · whiteboards</div>
+      <h4>"A pair measures 0.6 cm. How far is that in real life?"</h4>
+      <p>0.6 × 2,100 = <b>1,260 km</b>. Common errors: dividing by 2,100, or forgetting to convert km to cm before dividing by time.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 1: Topography of the Ocean Floor<small>p. 5 · Q1–2</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Mark areas of high earthquake and volcanic activity.</div><p class="aa">Marks along the center of the Atlantic (through Iceland), the eastern Pacific (East Pacific Rise), the Indian Ocean ridges, and around the Pacific's edges.</p></div>
+      <div class="qa"><div class="qq">2. What patterns do you notice? Which type of ocean floor is connected to the hazards?</div><p class="aa">Activity in the open ocean follows the <b>mid-ocean ridges</b> (yellow-green). It forms a continuous chain winding through every ocean. Abyssal plains are mostly quiet. Activity near the continents follows the ocean <b>edges</b>, especially around the Pacific.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Part 2: The Age of Bedrock on the Ocean Floor<small>p. 6 · Q1–2</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. What patterns do you notice in rock age as you move toward or away from the continents?</div><p class="aa">The rock is <b>youngest (red) at the mid-ocean ridges</b> and gets <b>steadily older</b> toward the continents. The bands are roughly <b>symmetric</b> (mirror images) on both sides of a ridge. The oldest ocean floor is only ~180–200 million years old.</p></div>
+      <div class="qa"><div class="qq">2. What might be causing that pattern?</div><p class="aa">New rock is forming at the ridges (from magma), and older rock is being pushed or carried away on both sides, so the sea floor is spreading apart. Accept any reasoned idea at this point.</p></div>
+      <div class="note"><b>Look and listen for:</b> "the sea floor is moving apart in the red regions, which is creating ocean ridges and new crust." Get this to consensus before Part 3.</div>
+    </div></details>
+    <details class="key"><summary><span>Part 3: Calculating Seafloor Change<small>p. 8 · Q1–4 · worked example</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Measure from the center of the new crust (red) to the dark-yellow/light-green border (65 Ma).</div><p class="aa">On a full-size print, most pairs get about <b>0.5–0.6 cm</b>. The worked example uses 0.55 cm.</p></div>
+      <div class="qa"><div class="qq">2. Real distance (1 cm = 2,100 km)</div><p class="aa">0.55 cm × 2,100 km/cm = <b>1,155 km</b> → × 100,000 = <b>115,500,000 cm</b> (1.155 × 10⁸ cm).</p></div>
+      <div class="qa"><div class="qq">3. Length of time</div><p class="aa"><b>65 million years</b> (6.5 × 10⁷ yr).</p></div>
+      <div class="qa"><div class="qq">4. Spreading rate R = d ÷ t</div><p class="aa">115,500,000 cm ÷ 65,000,000 yr ≈ <b>1.8 cm/yr</b>. Accept <b>1.5–2 cm/yr</b>.</p></div>
+      <div class="note"><b>Why answers vary:</b> where students measure along the ridge, whether they measure to the near or far edge of the band, and how the map printed. All of these support the same conclusion: a few cm per year, so new ocean crust forms <b>very slowly</b>, over tens of millions of years. Ask: "At 1.8 cm/yr, how long would 1 km take?" (100,000 ÷ 1.8 ≈ 55,000 years).</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Write your spreading rate. Then explain in one sentence what it tells you about how the Atlantic Ocean formed.</p><div class="ans">"The sea floor moves ~2 cm/yr, so the Atlantic took tens of millions of years (actually ~180 million) to open."</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Sketch the color pattern across a ridge (left → ridge → right) and label young and old.</p><div class="ans">Old · older · young (ridge) · older · old, as mirror images.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Ocean Floor Cross-Section</h4>
+      <p>Draw a <b>side view</b> across the Atlantic from North America to Africa. Show the ridge in the middle and color the sea floor in <b>age bands</b> like the map. Use <b>your own measured spreading rate</b> to label how far the floor has moved from the ridge in 10, 30 and 65 million years.</p>
+      <ul class="checks">
+        <li>Ridge, abyssal plains and continental edges labeled</li>
+        <li>Age bands drawn as mirror images, with a color key</li>
+        <li>Three distances calculated with your rate (show the work in the margin)</li>
+        <li>"I chose…" note: <b>exactly where you placed your ruler</b> on the map, and how that may have changed your rate</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-1"><small>Back</small>← Day 1 · Global patterns</a><a class="next" href="#day-3"><small>Next</small>Day 3 · Under Iceland →</a></div>
+</div>
+
+<!-- ===================== DAY 3 ===================== -->
+<div class="view" id="day-3" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 3 · Explore 1</div>
+    <h2>Iceland from Below</h2>
+    <p class="q">What is happening underneath Iceland's earthquakes?</p>
+    <div class="tags"><span class="tag">Packet pp. 10–13 (Part 4 + Making Sense)</span><span class="tag">Investigation Rubric (SY 26-27)</span><span class="tag">Pairs → groups</span><span class="tag">IRIS Earthquake Viewer</span><span class="tag">Domino Discover</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Earthquakes under Iceland are <b>shallow</b> (mostly within the top ~20–30 km) and spread along the ridge in a shallow trough.</li>
+      <li>Shallow quakes plus frequent eruptions are evidence of a <b>shallow gap between two spreading plates</b> where magma can rise.</li>
+      <li>Combining several lines of evidence (topography, age, rate, earthquake depth) makes a stronger model than any one alone.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Call on 2–3 students to explain their cross-section.</p></div></li>
+      <li><div class="t">4–10</div><div><h4>IRIS tour (projected)</h4><p>Model it: set max earthquakes to 1000 → Apply. Read the legend together (color = depth, size = magnitude). Find Iceland. Show where the <b>3D view</b> button is, but don't open it yet.</p></div></li>
+      <li><div class="t">10–26</div><div><h4>Part 4: Iceland Earthquakes from Below (pairs)</h4><p>Students draw the map view, record min/max depth and magnitude, then rotate the 3D view and draw it. Confer.</p></div></li>
+      <li><div class="t">26–34</div><div><h4>Making Sense: See-Think-Wonder (individual)</h4><p>Students complete the rows on ocean-floor age and Iceland's seismic activity.</p></div></li>
+      <li><div class="t">34–42</div><div><h4>Group talk + Domino Discover</h4><p>Prompt: <i>What do you think is happening in these areas that is creating the patterns you observed?</i> Chart the ideas. If a look-for is missing, send groups back to the age map or the 3D view before moving on.</p></div></li>
+      <li><div class="t">42–48</div><div><h4>Analysis 1: initial model (individual, p. 12)</h4><p>Students draw an initial model with an <b>annotation for each piece of evidence</b>. Photograph a few to use on Day 4.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Investigation Rubric (SY 26-27)</h4><p>Students self- and peer-assess on the <i>Seismic Activity in the Ocean Investigation Rubric</i>. If time runs short, do it as the first 2 minutes of Day 4.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Rate check</div><p>At 2 cm/yr, how far does the sea floor move in your lifetime so far?</p><div class="ans">~15 yr × 2 cm = <b>~30 cm</b> (about a ruler).</div></div>
+      <div class="card"><div class="lbl">Option B · Predict</div><p>If Iceland sits where two plates spread apart, would you expect its earthquakes to be shallow or deep? Why?</p></div>
+      <div class="card"><div class="lbl">Option C · Read a key</div><p>On a map where dot color = depth and dot size = magnitude, what does a big red dot tell you? (Use today's IRIS legend.)</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What shape do the earthquakes make in the 3D view under Iceland?</li>
+      <li>How deep are the earthquakes under Iceland?</li>
+      <li>What does this tell you about the structure of the plates under Iceland?</li>
+      <li>Do you see any relationship between the distribution and depth of the earthquakes in Iceland and what you saw happening with crustal boundaries?</li>
+      <li>Which piece of evidence in your model is the strongest? Which annotation shows it?<span>CCC Patterns: push for evidence without prompting.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Part 4 · hinge question</div>
+      <h4>The earthquakes under Iceland are best described as…</h4>
+      <ul class="opts">
+        <li class="right">A. shallow, spread along the ridge in a thin band<em>Correct.</em></li>
+        <li>B. very deep (hundreds of km) in a slanted sheet<em>That's a subduction zone, coming on Day 5.</em></li>
+        <li>C. all in one point under the volcano<em>Hasn't zoomed out along the ridge.</em></li>
+        <li>D. evenly spread through all depths<em>Not reading the depth colors.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">Before the model · quick write</div>
+      <h4>"Name two pieces of evidence you will annotate on your model."</h4>
+      <p>Look for any two of: ridge topography, age bands, spreading rate, shallow quakes, eruptions.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 4: Iceland Earthquakes from Below<small>pp. 10–11 · values depend on viewer settings and date range; accept ranges</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">What do the color and size of the dots indicate?</div><p class="aa">Color = <b>depth</b> of the earthquake (see the legend). Size = <b>magnitude</b> (bigger dot, stronger quake).</p></div>
+      <div class="qa"><div class="qq">Draw the map view.</div><p class="aa">A <b>band of dots</b> crossing Iceland roughly SW → NE, continuing offshore along the ridge (Reykjanes Ridge to the SW).</p></div>
+      <div class="qa"><div class="qq">Minimum and maximum depths</div><p class="aa">From near <b>0 km</b> to roughly <b>20–30 km</b>. All are in the shallowest color band.</p></div>
+      <div class="qa"><div class="qq">Minimum and maximum magnitudes</div><p class="aa">Mostly small to moderate, about <b>M3–M5</b>, with occasional ~M6. The exact range depends on the catalog cut-off.</p></div>
+      <div class="qa"><div class="qq">3D view drawing</div><p class="aa">A <b>thin, flat, shallow layer</b> or trough of dots. No slanted sheet going deep.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Making Sense of the Seismic Activity in the Ocean<small>pp. 12–13 · See-Think-Wonder + Analysis 1</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">See: patterns in ocean-floor age? Evidence?</div><p class="aa">Youngest at ridges, older with distance, symmetric, oldest near continents (age map).</p></div>
+      <div class="qa"><div class="qq">Think: what is happening to the sea floor?</div><p class="aa">It is <b>spreading apart</b> at the ridges and new crust forms in the middle, slowly (~2 cm/yr).</p></div>
+      <div class="qa"><div class="qq">See: seismic activity under Iceland?</div><p class="aa">Shallow quakes along the ridge; a shallow trough in 3D; frequent eruptions.</p></div>
+      <div class="qa"><div class="qq">Think: how does it relate to the sea floor?</div><p class="aa">The plates pulling apart crack the crust (earthquakes) and open a shallow space where magma rises (eruptions), forming new crust.</p></div>
+      <div class="qa"><div class="qq">Analysis: initial model</div><p class="aa">A cross-section with a ridge in the center, arrows pointing <b>away</b> on both sides, magma rising into the gap, age bands young → old outward, and shallow quake symbols at the ridge. Each part has an evidence annotation: "age map," "my rate = 1.8 cm/yr," "IRIS: quakes 0–20 km," "video: Iceland lava."</p></div>
+      <div class="note"><b>Look and listen for:</b> crust youngest near ridges, where magma comes out · magma rises to form new crust · the shallow trough of quakes looks like a space between two spreading plates · "new magma pushes older rock away" · good wonders: <i>Why is the oldest ocean rock near continents? How old is continental rock? Does it fit the same pattern?</i> (These set up Day 6.)</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Which piece of evidence most convinced you the sea floor is spreading? Why that one?</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Iceland's earthquakes are shallow. How does that fit with your model of what is under the ridge?</p><div class="ans">The plates are thin and pulling apart near the surface, so rock breaks only near the top; hot rock and magma lie just below.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Iceland: Map and Slice</h4>
+      <p>Draw two linked boxes. <b>Box 1</b> is a map of Iceland with the ridge line through it and the earthquake dots you saw. <b>Box 2</b> is a side-view "slice" along a line you draw across Box 1. It shows the two plates, the gap, rising magma and the depth of the quakes, with a km scale.</p>
+      <ul class="checks">
+        <li>A slice line drawn on the map and matched to the cross-section (A → A′)</li>
+        <li>Depth scale with <b>your recorded min/max depths</b></li>
+        <li>Arrows for plate motion; magma labeled</li>
+        <li>"I chose…" note: why you put your slice line <b>where you did</b></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-2"><small>Back</small>← Day 2 · Ocean floor</a><a class="next" href="#day-4"><small>Next</small>Day 4 · Explain 1 →</a></div>
+</div>
+
+<!-- ===================== DAY 4 ===================== -->
+<div class="view" id="day-4" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 4 · Explain 1</div>
+    <h2>Why Is the Crust Youngest at Ridges?</h2>
+    <p class="q">How does the evidence support our explanation of why Earth's crust is youngest at ocean ridges?</p>
+    <div class="tags"><span class="tag">Packet pp. 14–15</span><span class="tag">Table groups</span><span class="tag">Think-Talk-Open Exchange</span><span class="tag">Consensus-Building Share</span><span class="tag">Demo: book + paper, Plate Motion Simulation, or clay</span><span class="tag">Chart paper</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>The accepted explanation: Earth's surface is broken into <b>tectonic plates</b>. At ocean ridges they move <b>apart</b>, and rising magma cools into new oceanic crust (<b>basalt and gabbro</b>).</li>
+      <li>Several independent lines of evidence (age bands, slow rate, shallow quakes, eruptions) all support this. <b>More, consistent evidence makes a claim stronger</b> (SEP 7).</li>
+      <li>Plates pulling apart cause <b>shallow earthquakes</b>, and the gap lets <b>magma erupt</b>.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Or finish the Day 3 Investigation Rubric.</p></div></li>
+      <li><div class="t">4–8</div><div><h4>Launch + read (p. 14)</h4><p>Recall the Day 3 prediction that new crust forms as magma rises between spreading plates. Students read the first paragraph.</p><p class="say">"Scientists used this same kind of evidence to build a theory called plate tectonics. Your job is to check how well your evidence fits it."</p></div></li>
+      <li><div class="t">8–16</div><div><h4>Seafloor-spreading demo</h4><p><b>Option 1:</b> textbook spine down = "mantle." Fold paper into the middle so 2–3 cm sticks out. A student colors the emerging edge (marker touching <b>both sides</b> of the fold) while you slowly pull the paper up. Pause and ask why the ink shows up on both sides. Reset with the age-map colors in order (red first) to rebuild the rainbow bands. <b>Option 2:</b> Plate Motion Simulation (SEPUP), divergent boundary, 20 million years. <b>Option 3:</b> clay layers pulled apart with the lower layer pushed up.</p></div></li>
+      <li><div class="t">16–24</div><div><h4>Brainstorm evidence → Think-Talk-Open Exchange</h4><p>2 minutes alone: list every piece of evidence for plate tectonics so far. Then <b>Think-Talk-Open Exchange</b> at tables: share, find similarities and differences, and revise the lists.</p></div></li>
+      <li><div class="t">24–38</div><div><h4>Revised model + Q1–3 (individual, then pairs)</h4><p>Each student draws a revised model with evidence annotations, then answers Q1–2 (p. 14) and draws plate-direction arrows on the map (Q3, p. 15). Confer.</p></div></li>
+      <li><div class="t">38–48</div><div><h4>Consensus-Building Share: class evidence list</h4><p>Each group shares one piece of evidence <b>not already said</b>. Keep a class list on chart paper. Pause for the key points in the key below. Keep the chart up for Day 7.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip + bridge</h4><p class="say">"We've explained the ridges. But most of the deadliest activity is far from ridges. Next we find out why."</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Evidence list</div><p>List every piece of evidence from Days 2–3 that the sea floor is spreading.</p><div class="ans">Ridge topography; age bands; spreading rate; shallow quakes; Iceland eruptions.</div></div>
+      <div class="card"><div class="lbl">Option B · Model critique</div><p>Look at your Day 3 model. What is one thing it does not explain yet?</p></div>
+      <div class="card"><div class="lbl">Option C · Rock</div><p>Magma that cools quickly at the surface forms what kind of rock?</p><div class="ans">Igneous (fine-grained). At ridges it is basalt.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Which piece of evidence does each part of your model come from?</li>
+      <li>Is there more than one piece of evidence supporting this claim?<span>SEP 7: strength of evidence.</span></li>
+      <li>Is there a process (a mechanism) that connects the evidence to the claim? Does it make scientific sense?</li>
+      <li>In the demo, why did the ink show up on <i>both</i> sides? What does that match on the age map?</li>
+      <li>What would the age map look like if the sea floor were <i>not</i> spreading?</li>
+      <li>Where would the oldest crust end up if this keeps going? What happens to it?<span>Plants the seed for subduction.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the demo · hinge question</div>
+      <h4>In the paper model, the colored bands appear in the same order on both sides because…</h4>
+      <ul class="opts">
+        <li>A. the marker leaked through the paper<em>Missing the model-to-Earth link.</em></li>
+        <li class="right">B. new material forms at the center and moves out to both sides at once<em>Correct. It matches the symmetric age bands.</em></li>
+        <li>C. the plates are colliding<em>Opposite direction.</em></li>
+        <li>D. older crust forms in the middle<em>Reversed ages.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During the Consensus-Building Share · stand up / sit down</div>
+      <h4>"Stand if the evidence you shared is something we <i>measured</i> ourselves."</h4>
+      <p>Everyone who used the spreading rate or IRIS depths should stand. Use this to name empirical evidence.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Revised model + Q1–3<small>pp. 14–15 · What explains the patterns in the age of the ocean floor?</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Revised model</div><p class="aa">Cross-section of a mid-ocean ridge: two plates with arrows pointing <b>apart</b>; magma rising into the gap and cooling into <b>basalt/gabbro</b>; mirror-image age bands (youngest at center); shallow earthquake symbols along the ridge; a volcano or fissure (Iceland). Annotations name the evidence for each part.</p></div>
+      <div class="qa"><div class="qq">1. Which evidence most strongly supports the explanation? Why?</div><p class="aa">Best answer: the <b>age-of-ocean-floor map</b>. It is measured (radiometric dating), covers every ocean, and its symmetric bands are hard to explain any other way. Strong secondary answers: the <b>spreading rate</b> (measured, consistent across pairs) and <b>shallow quakes plus eruptions in Iceland</b> (they show a gap where magma rises). Credit any choice with a reason about how reliable, widespread or directly measured the evidence is.</p></div>
+      <div class="qa"><div class="qq">2. How could that plate motion cause earthquakes and eruptions?</div><p class="aa">As plates pull apart, stress builds in the brittle crust until rock <b>suddenly breaks and slips</b>, releasing energy as seismic waves (shallow earthquakes). The opening gap lowers the pressure on hot mantle rock below, so some of it melts. The <b>magma is less dense</b>, so it rises and erupts through cracks (Iceland's fissure eruptions).</p></div>
+      <div class="qa"><div class="qq">3. Annotate the map with plate directions (p. 15).</div><p class="aa">Arrows pointing <b>away from every ridge</b>. Mid-Atlantic: North and South America move west, Eurasia and Africa move east. East Pacific Rise: Pacific Plate moves west/northwest, Nazca and Cocos move east. Check that arrows on opposite sides of a ridge always point apart.</p></div>
+      <div class="note"><b>Take time for these key points (class evidence list):</b> radiometric dating shows crust is youngest at ridges, older farther away · the measured rate shows new crust forms very slowly · together: plates move apart there and new crust forms between them · earthquakes happen along ridges · Iceland's quakes are shallow and spread along the ridge, so there is a shallow space between the plates · lots of volcanic activity there means magma rises in that space and forms new crust.</div>
+    </div></details>
+    <details class="key"><summary><span>Summary Task (optional in SY 26-27)<small>pp. 16–17 · reflection prompts 1–4 have no key; content questions 1–2 below</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How did combining multiple lines of evidence help you identify patterns and support explanations?</div><p class="aa">No single dataset proves spreading. The age map shows the pattern, the rate shows it is slow and steady, and the shallow quakes and eruptions show what happens at the ridge. When independent evidence all points to the same explanation, the explanation is much more convincing.</p></div>
+      <div class="qa"><div class="qq">2. How did constructing models help you understand how the ocean crust changes over time?</div><p class="aa">The model let us see a process too slow and too big to watch: crust forming at the ridge and moving outward over millions of years. It connected the separate pieces of evidence into one cause-and-effect story we could test against the data.</p></div>
+      <div class="note"><b>Note:</b> SY 26-27 replaced this day's Class Consensus Discussion, so the reflection prompts about "the discussion" can refer to the Consensus-Building Share instead.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Name the <b>two</b> pieces of evidence from our class list that you find most convincing, and say why.</p></div>
+      <div class="card"><div class="lbl">Option B · Puzzle</div><p>If new crust is made at ridges all the time, why isn't Earth getting bigger? Make a guess.</p><div class="ans">Any idea about crust being destroyed or recycled somewhere. Hold it for Days 5–7.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Comic: The Life of a Piece of Sea Floor</h4>
+      <p>Draw a <b>4-panel comic</b> following one piece of basalt: (1) magma rising at the ridge, (2) cooling into new rock, (3) being carried away as more rock forms behind it, (4) 65 million years later. Put a time stamp and a distance in each panel.</p>
+      <ul class="checks">
+        <li>Four panels in order, each with a time stamp</li>
+        <li>Distances use <b>your Day 2 spreading rate</b></li>
+        <li>At least two items from <b>our class evidence chart</b> named in speech bubbles or captions</li>
+        <li>"I chose…" note: in panel 4, draw a "?" for what you think happens <b>next</b> to your rock, and explain your guess</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-3"><small>Back</small>← Day 3 · Iceland</a><a class="next" href="#day-5"><small>Next</small>Day 5 · Far from ridges →</a></div>
+</div>
+
+<!-- ===================== DAY 5 ===================== -->
+<div class="view" id="day-5" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 5 · Explore 2</div>
+    <h2>Seismic Activity Far from Ridges</h2>
+    <p class="q">Why does seismic activity happen in areas far from mid-ocean ridges?</p>
+    <div class="tags"><span class="tag">Packet pp. 18–23 (Parts 1–3)</span><span class="tag">Pairs</span><span class="tag">IRIS Earthquake Viewer</span><span class="tag">1 device per pair</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>High seismic activity away from ridges lines up with <b>mountains, volcanoes, island arcs and trenches</b>.</li>
+      <li>Ridge earthquakes are all <b>shallow</b>. Under coasts and island arcs (Japan, Indonesia, Andes), earthquakes form a <b>slanted zone</b> that gets deeper inland, down to hundreds of km: <b>one plate going under another</b>.</li>
+      <li>Inland collision zones (Myanmar, Himalaya) have mostly <b>shallower</b> quakes and tall mountains. Continental rifts (Great Rift Valley) look like Iceland: shallow and spread out.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Call on 2–3 students to explain their comic.</p></div></li>
+      <li><div class="t">4–12</div><div><h4>Launch + Part 1 (p. 18)</h4><p class="say">"We explained the ridges, but only part of the seismic activity on Earth. Now let's explain the rest."</p><p>Students circle high-activity areas that are not on ridges (Q1) and predict a cause (Q2). Take predictions. Listen for "plates colliding."</p></div></li>
+      <li><div class="t">12–20</div><div><h4>Part 2: The surface of the crust (p. 19)</h4><p>Pairs compare their circles with the surface-features map. Listen for "mountains" and "volcanoes."</p></div></li>
+      <li><div class="t">20–24</div><div><h4>IRIS global view (projected)</h4><p>Set max earthquakes to 25,000 and zoom out. Ask: what depth colors line the ridges?</p></div></li>
+      <li><div class="t">24–46</div><div><h4>Part 3: Underneath the earthquakes (pairs, pp. 21–22)</h4><p>Steps 4–5 (ridges vs. other areas), then one <b>coastal/island</b> area (steps 6–8) and one <b>inland</b> area (steps 9–11), each with a 3D drawing. If pairs are stuck, suggest <b>Japan or Indonesia</b> (clear wedges) and <b>Myanmar or the Great Rift Valley</b> (wedge vs. shallow and spread out).</p></div></li>
+      <li><div class="t">46–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Recall</div><p>Sketch what the earthquakes under Iceland looked like in 3D. Label the depth.</p><div class="ans">Thin, flat, shallow layer (0–~30 km).</div></div>
+      <div class="card"><div class="lbl">Option B · Predict</div><p>Where two plates push into each other, what might happen to the crust?</p><div class="ans">Crumple up into mountains, or one slides under the other.</div></div>
+      <div class="card"><div class="lbl">Option C · Map</div><p>Name 3 places from the Day 1 maps with lots of earthquakes that are <i>not</i> in the middle of an ocean.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What shapes are you seeing in the earthquakes under these regions?</li>
+      <li>How are those shapes similar to or different from the one you saw underneath Iceland?</li>
+      <li>What do you think is happening in these regions?<span>CCC Stability &amp; Change: some changes are slow, some sudden.</span></li>
+      <li>Which way do the earthquakes get deeper? Toward the ocean or toward the land?</li>
+      <li>What surface feature sits right above the deepest earthquakes? What sits above the shallow ones near the coast?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the 3D views · hinge question</div>
+      <h4>Under Japan, earthquakes form a band that starts shallow near the ocean trench and gets deeper toward the west. This is best explained by…</h4>
+      <ul class="opts">
+        <li>A. two plates moving apart<em>That gives shallow quakes, like Iceland.</em></li>
+        <li class="right">B. one plate sinking beneath another<em>Correct (subduction).</em></li>
+        <li>C. magma rising straight up from the core<em>Doesn't explain the slant.</em></li>
+        <li>D. earthquakes spreading out randomly with depth<em>Ignores the clear pattern.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">Mid-investigation · finger vote</div>
+      <h4>"Show 1 finger if your inland area looks like Iceland (shallow, spread out), 2 if it looks like Japan (slanted, deep)."</h4>
+      <p>Great Rift Valley → 1. Myanmar/Himalaya → mostly 2, but shallower than Japan. Use the split to set up the idea that <b>different boundaries</b> look different underneath.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Parts 1–2<small>pp. 18–19</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Part 1, Q1. Circle areas of high activity not on ridges.</div><p class="aa">Rim of the Pacific (Japan, Philippines, Indonesia, Aleutians/Alaska, Kamchatka, the west coasts of North, Central and South America, Tonga/New Zealand); the Mediterranean–Turkey–Iran–Himalaya–Myanmar belt; the East African Rift.</p></div>
+      <div class="qa"><div class="qq">Part 1, Q2. Prediction?</div><p class="aa">Accept any reasoned idea. Target: <b>plates colliding</b> or pushing into each other there, since they are moving apart at the ridges.</p></div>
+      <div class="qa"><div class="qq">Part 2, Q1. Relationship between surface features and seismic activity?</div><p class="aa">High activity lines up with <b>high mountain ranges</b> (Andes, Himalaya, Alps, Rockies), <b>chains of volcanoes</b> and <b>island arcs</b> (Japan, Indonesia), and deep <b>ocean trenches</b> just offshore.</p></div>
+      <div class="qa"><div class="qq">Part 2, Q2. What might be happening there?</div><p class="aa">Plates are pushing together. The crust is squeezed and lifted into mountains, and where one plate goes under, melting feeds volcanoes.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Part 3: Underneath the earthquakes<small>pp. 21–22 · steps 4–11 · accept ranges; depends on settings</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Step 4. Colors and depths along the ocean ridges</div><p class="aa">All the <b>shallowest</b> color on the legend. Depths from ~0 to ~30 km.</p></div>
+      <div class="qa"><div class="qq">5. How do colors and configurations differ away from ridges? What does it mean?</div><p class="aa">Many depth colors, not just shallow. Dots form <b>bands that get deeper in one direction</b>, reaching ~600–700 km. Shallow dots sit near the trench and deeper ones lie farther inland. It means rock is breaking deep inside the Earth along a slanted surface: <b>one plate descending under another</b>.</p></div>
+      <div class="qa"><div class="qq">6–8. Coastal/island area (example: Japan)</div><p class="aa">Depths: ~0 to ~600 km. Magnitudes: small up to ~M9 (Tōhoku 2011, M9.0–9.1). 3D: a <b>slanted sheet/wedge</b> dipping west under Japan from the trench on the Pacific side. <i>Indonesia/Sumatra:</i> similar, up to ~M9.1 (2004). <i>Andes:</i> deepening east under South America, to ~600+ km.</p></div>
+      <div class="qa"><div class="qq">9–11. Inland area (examples)</div><p class="aa"><b>Myanmar:</b> mostly shallow to intermediate (0 to ~150–200 km), up to M7.7 (2025, Sagaing Fault); a wedge that is shallower than Japan's. <b>Great Rift Valley:</b> shallow (0 to ~40 km), mostly below ~M7; <b>shallow and spread out</b>, like Iceland. <b>Himalaya:</b> mostly shallow (0 to ~100 km), large quakes such as Nepal 2015 (M7.8).</p></div>
+      <div class="note"><b>Look and listen for:</b> "maybe these are where plates collide" · "one plate goes under another and earthquakes form there" · "on the surface there are mountains and volcanoes." Students don't need to memorize <i>convergent</i>/<i>divergent</i> yet, but they should notice that some plates move apart and others collide, and that these areas look different underneath.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Draw two quick side views: earthquakes under Iceland vs. under your coastal area. Write one sentence on what the difference means.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Why might the deepest earthquakes on Earth happen far from mid-ocean ridges?</p><div class="ans">Because a plate is sinking there, carrying brittle rock deep into the mantle where it can still break.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Two Slices, Two Stories</h4>
+      <p>Draw side-by-side cross-sections of the <b>two areas you chose in IRIS</b> (coastal and inland). Plot dots at the depths you recorded, draw the plates you think are there, and add arrows for their motion. Add the surface features above each one (mountains, volcanoes, trench).</p>
+      <ul class="checks">
+        <li>Depth scale in km on both, using <b>your recorded min/max</b></li>
+        <li>Plates labeled ocean or continent, with motion arrows</li>
+        <li>Surface features drawn above the quakes</li>
+        <li>"I chose…" note: why you think each area has the plate arrangement you drew</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-4"><small>Back</small>← Day 4 · Explain 1</a><a class="next" href="#day-6"><small>Next</small>Day 6 · Continents →</a></div>
+</div>
+
+<!-- ===================== DAY 6 ===================== -->
+<div class="view" id="day-6" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 6 · Explore 2 → Explain 2 launch</div>
+    <h2>Old Continents, Young Oceans</h2>
+    <p class="q">How do the ages of continental crust fit with what we know about the ocean floor?</p>
+    <div class="tags"><span class="tag">Packet pp. 24–27</span><span class="tag">Domino Discover</span><span class="tag">Investigation Rubric (SY 26-27)</span><span class="tag">Videos: mountain ranges · Birth of a Tsunami · The Next Pompeii</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Continents have rock of many ages, with the <b>oldest (up to ~4 billion years) in their centers</b> and younger rock toward the edges. All ocean floor is under ~200 million years old.</li>
+      <li>Ocean crust is <b>denser</b> and gets recycled into the mantle; continental crust is <b>less dense</b> and stays at the surface, so it can get very old.</li>
+      <li>Earthquakes at <b>convergent coastal boundaries</b> are the largest and most impactful; ridge quakes are small.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4></div></li>
+      <li><div class="t">4–12</div><div><h4>Part 4: The Continental Crust (pairs, p. 24)</h4><p>Q1–2. Connect the patterns to the ocean ages from Day 2 and the plate motions they predicted.</p></div></li>
+      <li><div class="t">12–22</div><div><h4>Making Sense: See-Think-Wonder + Analysis 1–2 (individual, pp. 25–26)</h4><p>Analysis 1 is a sketch model that explains ridges, plate edges and continental ages together.</p></div></li>
+      <li><div class="t">22–30</div><div><h4>Domino Discover</h4><p>Each group shares one important idea. If a look-for is missing, send groups back to IRIS or the age maps.</p></div></li>
+      <li><div class="t">30–32</div><div><h4>Investigation Rubric (SY 26-27)</h4><p>Self- and peer-assess on the <i>Coastal and Continental Seismic Activity Investigation Rubric</i>.</p></div></li>
+      <li><div class="t">32–40</div><div><h4>Explain 2 launch: read Part 1 (p. 27)</h4><p class="say">"We're trying to figure out which of the Key 5 regions is most at risk. To do that we need to know why hazards happen in some places and not others."</p><p>Students read the 1960s text individually. Say which claim is "Earth is getting bigger" and which is plate tectonics. NYS: the cross-section diagram is ESSRT p. 11.</p></div></li>
+      <li><div class="t">40–48</div><div><h4>Videos <span class="t">flex</span></h4><p><i>How mountain ranges are formed at convergent plate boundaries</i>, <i>Birth of a Tsunami</i>, and <i>Plate Tectonics and Volcanoes (The Next Pompeii)</i>. If time is short, show one today and the rest on Day 7.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Compare</div><p>Oldest ocean floor ≈ 180 million years; oldest continental rock ≈ 4,000 million years. About how many times older is the continental rock?</p><div class="ans">4,000 ÷ 180 ≈ <b>22 times</b>.</div></div>
+      <div class="card"><div class="lbl">Option B · Density</div><p>Wood floats on water and a rock sinks. Which is denser? What happens when a denser plate meets a less dense one?</p><div class="ans">Rock is denser. The denser plate sinks under (gravity).</div></div>
+      <div class="card"><div class="lbl">Option C · Homework check</div><p>Trade your Two Slices drawing with a partner. Does their arrow direction match their depth pattern?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Where is the oldest rock on each continent? Where is the youngest?</li>
+      <li>Why might the ocean floor never get older than ~200 million years?<span>Leads to subduction.</span></li>
+      <li>If plates move apart at ridges, where must they be moving together?</li>
+      <li>Which type of area had the biggest magnitudes? Which was closest to lots of people?</li>
+      <li>Does your sketch model explain all three: ridges, plate edges, and continental ages?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Part 4 · hinge question</div>
+      <h4>Why is continental rock often much older than ocean-floor rock?</h4>
+      <ul class="opts">
+        <li>A. Continents formed first, and oceans are new<em>Partly true historically, but it doesn't explain why the ocean floor stays young.</em></li>
+        <li class="right">B. Dense ocean crust sinks back into the mantle where plates converge; lighter continental crust stays at the surface<em>Correct.</em></li>
+        <li>C. Radiometric dating doesn't work underwater<em>The ages are measured on rock samples.</em></li>
+        <li>D. Ocean rock erodes away within a few years<em>Wrong timescale and mechanism.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 4: The Continental Crust<small>p. 24 · Q1–2</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Patterns in the age of continental rocks</div><p class="aa">Continents contain rock of many ages, much of it far older than any ocean floor. The <b>oldest rock is in the interior/core</b> of each continent (for example the Canadian Shield, billions of years old). Rocks get <b>younger toward the edges</b>, especially near mountain belts.</p></div>
+      <div class="qa"><div class="qq">2. How might the ocean and continental patterns fit together?</div><p class="aa">Ocean crust is made at ridges and moves away until it reaches a continent's edge, where it <b>sinks back into the mantle</b>, so it never gets old. Continental crust is lighter and doesn't sink. It survives and grows over time as new pieces are added to its edges in collisions.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Making Sense of the Coastal and Continental Investigation<small>pp. 25–26 · See-Think-Wonder + Analysis 1–2</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">See/Think: surface features and seismic activity</div><p class="aa">Mountains, volcanoes and trenches sit where quakes are frequent (evidence: Part 1 and 2 maps). This suggests plates are colliding there.</p></div>
+      <div class="qa"><div class="qq">See/Think: beneath the surface</div><p class="aa">Slanted, deep earthquake zones under coasts and island arcs; shallower ones under continental collisions; shallow ones under rifts (evidence: IRIS depths and 3D views). This suggests one plate goes under another at coasts.</p></div>
+      <div class="qa"><div class="qq">Analysis 1. Sketch model</div><p class="aa">One cross-section showing: a ridge with plates moving apart and magma rising; the ocean plate moving toward a continent and <b>sinking beneath it</b> at a trench; a slanted band of quakes along the sinking plate; volcanoes and mountains on the continent above; old rock in the continent's interior.</p></div>
+      <div class="qa"><div class="qq">Analysis 2. Where do earthquakes seem most impactful?</div><p class="aa">At <b>coastal convergent boundaries</b> (subduction zones): they have the largest magnitudes (M8–9+), many quakes, and they can cause tsunamis and explosive eruptions near large populations. <b>Continental collisions</b> are also very damaging because the quakes are shallow and close to cities. <b>Mid-ocean ridges</b> are the least impactful: smaller magnitudes and few people nearby.</p></div>
+      <div class="note"><b>Look and listen for:</b> "earthquakes and volcanoes happen when plates collide" · "one plate goes underneath another, and earthquakes form there" · "mountains and volcanoes on the surface" · "continental crust is oldest, maybe because it's far from ridges and hasn't been destroyed."</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>In the 1960s, which idea, "Earth is getting bigger" or plate tectonics, fits our evidence better? Name one piece of evidence.</p><div class="ans">Plate tectonics: deep slanted quake zones show crust going back down; no ocean floor is older than ~200 million years.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Which video hazard (mountain, tsunami or volcano) do you think is most dangerous to people? Why?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>The Conveyor Belt Diagram</h4>
+      <p>Draw one long cross-section from a <b>mid-ocean ridge</b> to a <b>continent</b>. Show crust being made, moving, and sinking. Color the ocean crust by age, and give the continent's interior a much older label.</p>
+      <ul class="checks">
+        <li>Ridge, trench, sinking plate, volcano and mountains labeled</li>
+        <li>Ages written on the ocean crust (young → old) and the continent (billions of years)</li>
+        <li>A short caption answering: "Why isn't Earth getting bigger?"</li>
+        <li>"I chose…" note: which <b>Domino Discover idea from another group</b> changed your drawing</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-5"><small>Back</small>← Day 5 · Far from ridges</a><a class="next" href="#day-7"><small>Next</small>Day 7 · Explain 2 →</a></div>
+</div>
+
+<!-- ===================== DAY 7 ===================== -->
+<div class="view" id="day-7" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 7 · Explain 2</div>
+    <h2>Modeling Natural Hazards and Surface Features</h2>
+    <p class="q">How do plate movements cause natural hazards and surface features?</p>
+    <div class="tags"><span class="tag">Packet pp. 27–33</span><span class="tag">Pairs</span><span class="tag">Domino Discover</span><span class="tag">Class Consensus Discussion</span><span class="tag">ESSRT pp. 11–12</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Earthquakes occur at <b>all</b> plate boundaries. Volcanoes form at divergent boundaries and at ocean–continent (and ocean–ocean) convergent boundaries. <b>Mountains</b> form where plates converge.</li>
+      <li>At a subduction zone the <b>denser oceanic plate sinks</b> because of gravity. Melting above it feeds volcanoes.</li>
+      <li><b>Tsunamis</b> come from sudden sea-floor slip, undersea eruptions or volcano collapse (Japan 2011, Krakatoa 1883).</li>
+      <li>Plates move <b>slowly</b> (cm/yr) but release energy <b>suddenly</b>. Features take millions of years; hazards take seconds to days, and some changes can't be reversed.</li>
+      <li>Still unknown: <b>where the energy comes from</b> to move plates and melt rock. That leads to the next 5E.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4></div></li>
+      <li><div class="t">4–8</div><div><h4>What makes evidence strong?</h4><p>Ask what to consider when evaluating evidence for the model. Chart the answers: <i>Is there evidence? Is there more than one piece? Does the claim make sense? Is there a mechanism connecting evidence to claim?</i> Add <b>transform boundary</b> to the diagram (not in the packet).</p></div></li>
+      <li><div class="t">8–22</div><div><h4>Part 1: arrows on the diagram + evidence table (pairs, pp. 27–28)</h4><p>Pairs annotate plate motion and fill 4–5 table rows. Use the Day 4 class evidence chart. Confer.</p></div></li>
+      <li><div class="t">22–27</div><div><h4>Domino Discover</h4><p>Each pair shares one claim and its strongest evidence.</p></div></li>
+      <li><div class="t">27–35</div><div><h4>Part 2: explain the pattern (individual, pp. 28–29)</h4><p>Students use evidence from all the investigations plus the map (ESSRT p. 12, Global Tectonic Activity of the Last One Million Years).</p></div></li>
+      <li><div class="t">35–48</div><div><h4>Class Consensus Discussion</h4><p>Project 2–3 <b>chosen</b> explanations. Follow the steps: share → someone restates → clarifying questions → table conferral → whole class. Pause for the key points in the key. Name the corrected mechanisms (see Corrections on the overview).</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Summary Task assigned</h4><p>Packet pp. 32–33, for homework or tomorrow's Do Now.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Match</div><p>Match: plates moving apart / plates colliding (ocean under continent) / two continents colliding → mountains + volcanoes / ridge or rift / tall mountains, no volcanoes.</p><div class="ans">Apart → ridge/rift; ocean under continent → mountains + volcanoes; continent–continent → tall mountains.</div></div>
+      <div class="card"><div class="lbl">Option B · Tsunami</div><p>From the video: what has to happen to the sea floor to make a tsunami?</p><div class="ans">It has to move suddenly (lift or drop), pushing the whole column of water.</div></div>
+      <div class="card"><div class="lbl">Option C · Krakatoa</div><p>Krakatoa is in Indonesia. Using what you know now, what kind of plate boundary is it on?</p><div class="ans">Convergent (subduction): the Indo-Australian Plate sinks under the Eurasian (Sunda) Plate.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What are all the ideas represented in the model?</li>
+      <li>Have we come across any evidence that supports that idea? What is the evidence?</li>
+      <li>Does more than one piece of evidence support the model?</li>
+      <li>What might provide the evidence needed?</li>
+      <li>Does the model include a mechanism that makes sense? Are there science concepts that make this mechanism reasonable?</li>
+      <li>Why does the ocean plate go under, and not the continent?<span>Density + gravity.</span></li>
+      <li>The sinking plate carries ocean water down with it. How might that help rock melt?<span>Gets at the corrected melting mechanism.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Part 1 · hinge question</div>
+      <h4>Which observation is the best evidence that crust is destroyed where plates collide?</h4>
+      <ul class="opts">
+        <li>A. Mid-ocean ridges have shallow earthquakes<em>That's evidence for crust being made.</em></li>
+        <li class="right">B. Earthquakes under Japan and the Andes form slanted zones reaching ~600–700 km deep<em>Correct. It traces a plate sinking.</em></li>
+        <li>C. Iceland has many volcanoes<em>Divergent evidence.</em></li>
+        <li>D. Continents have old rock in their centers<em>Supports it indirectly, but it isn't direct evidence of destruction.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During Consensus · four corners</div>
+      <h4>"Which boundary produces the biggest earthquakes and most tsunamis? Divergent / ocean–continent convergent / continent–continent convergent / transform."</h4>
+      <p>Answer: <b>ocean–continent (subduction) convergent</b>. Ask a student in each wrong corner to argue, then use the M9 list to settle it.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 1: Evaluating the Evidence of Plate Tectonics Theory<small>pp. 27–28 · diagram + table · sample rows</small></span></summary><div class="keybody">
+      <p><b>Diagram arrows:</b> at the ridge, arrows point apart. At the ocean–continent boundary, the ocean plate moves toward the continent and dips under it. At continent–continent collisions, arrows point toward each other.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Claim / idea in the model</th><th>Evidence?</th><th>Mechanism</th></tr></thead>
+        <tbody>
+          <tr><td>New crust forms at mid-ocean ridges where plates spread apart</td><td>Yes: youngest rock at ridges in symmetric bands; ~2 cm/yr rate; shallow quakes and eruptions in Iceland</td><td>Plates pull apart; hot mantle rises, partly melts as pressure drops; magma cools into basalt</td></tr>
+          <tr><td>Earth isn't growing; crust sinks back into the mantle where plates collide (subduction)</td><td>Yes: slanted quake zones to ~700 km under Japan/Andes; trenches; no ocean floor older than ~200 million years</td><td>Denser ocean plate sinks under less dense plate because of gravity</td></tr>
+          <tr><td>Subduction causes volcanism</td><td>Yes: volcano chains parallel to trenches (Andes, Japan, Indonesia); Krakatoa and Pinatubo were explosive</td><td>The sinking plate releases water, which lowers the melting point of the mantle above it; the less dense magma rises (packet says "heat and friction"; see Corrections)</td></tr>
+          <tr><td>Continent–continent collision stacks crust into mountains</td><td>Yes: Himalaya and Myanmar; mostly shallower quakes; tall mountains</td><td>Neither plate is dense enough to sink, so the crust crumples, thickens and is uplifted</td></tr>
+          <tr><td>Continents are older and grow at their edges</td><td>Yes: oldest rock in continental interiors (up to ~4 billion years), younger at the edges</td><td>Low-density crust isn't recycled; collisions add pieces to its edges</td></tr>
+          <tr><td>Plate motion causes earthquakes and tsunamis</td><td>Yes: quakes concentrated at all boundaries; the largest at subduction zones; tsunamis follow them (2004, 2011)</td><td>Plates lock, stress builds, then rock slips suddenly; sea-floor slip displaces water</td></tr>
+        </tbody>
+      </table></div>
+      <div class="note"><b>Evidence still needed:</b> what supplies the <b>energy</b> to move plates and melt rock? Name it as the open question that leads into the Energy and Matter 5E.</div>
+    </div></details>
+    <details class="key"><summary><span>Part 2: Explaining the Pattern of Seismic Activity<small>pp. 28–29 · exemplar</small></span></summary><div class="keybody">
+      <p>Seismic activity is concentrated in narrow bands because those bands are <b>plate boundaries</b>. At <b>mid-ocean ridges</b> plates move apart: the age map shows the youngest rock at the ridge, we calculated ~2 cm/yr of spreading, and IRIS showed only shallow quakes under Iceland. So pulling apart cracks thin crust and lets magma rise, which explains the shallow quakes and gentle eruptions. Far from ridges, quakes line up with <b>mountains, volcanoes and trenches</b> (Part 2 map and ESSRT p. 12). Under Japan and the Andes, quakes form a slanted zone reaching ~600–700 km, showing a dense ocean plate <b>sinking</b> under another. Locked plates store stress and then slip suddenly, causing the <b>largest earthquakes</b> (Chile M9.5, Japan M9.0–9.1) and <b>tsunamis</b> when the sea floor moves. Melting above the sinking plate feeds <b>explosive volcanoes</b> like Krakatoa. Where continents collide, crust crumples into mountains with shallower quakes. Plate interiors like New York are far from these boundaries, so they have few earthquakes.</p>
+      <div class="note"><b>Take time for these key points:</b> earthquakes occur at all boundary types · volcanoes at ocean–continent convergent boundaries (confirms Krakatoa) · mountains at convergent boundaries · ridges like the Mid-Atlantic (Iceland) at divergent oceanic boundaries · tsunamis from volcano collapse, undersea eruption, or plate slip (Japan, Krakatoa) · timescales: features slow, hazards sudden; some changes irreversible · the denser plate goes under because of gravity · <b>still unknown:</b> where the heat and energy come from.</div>
+    </div></details>
+    <details class="key"><summary><span>Summary Task<small>pp. 32–33 · reflection 1–4 have no key; one content question</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Describe how empirical evidence helped you identify patterns, and how those patterns supported your analysis of the evidence for plate tectonics.</div><p class="aa">Measured data (rock ages from radiometric dating, our spreading-rate calculation, earthquake locations and depths from IRIS) revealed patterns: symmetric age bands, shallow quakes at ridges, deep slanted quake zones at trenches, and old continents. Each pattern matched a prediction of plate tectonics (crust made at ridges, destroyed at subduction zones), so the theory is supported by several independent lines of evidence rather than one.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Summary Task (pp. 32–33).</p></div>
+      <div class="card"><div class="lbl">Option B · Key 5 preview</div><p>Pick one Key 5 region. What type of plate boundary is it on, and what hazard does that make most likely?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Step 1 Coloring: New York's Bedrock (packet p. 36)</h4>
+      <p>Color the <b>Generalized Surface Bedrock Geology of New York State</b> map. Give each age a color in rainbow order (oldest = violet → youngest = red, or your own scale). Then <b>star the borough or county where you live</b> and write its bedrock age and type next to it.</p>
+      <ul class="checks">
+        <li>Every pattern in the key has a color, in a clear order</li>
+        <li>Key copied with colors and ages</li>
+        <li>Your home location starred, with age + rock type</li>
+        <li>"I chose…" note: why you chose your color order, and one region that surprised you</li>
+      </ul>
+      <p class="why">This saves ~10 minutes on Day 8 and is hand-made by design.</p>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-6"><small>Back</small>← Day 6 · Continents</a><a class="next" href="#day-8"><small>Next</small>Day 8 · Elaborate →</a></div>
+</div>
+
+<!-- ===================== DAY 8 ===================== -->
+<div class="view" id="day-8" data-phase="elaborate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 8 · Elaborate</div>
+    <h2>Constructing New York State</h2>
+    <p class="q">How did the Adirondack Mountains form?</p>
+    <div class="tags"><span class="tag">Packet pp. 34–42</span><span class="tag">Table groups</span><span class="tag">Domino Discover</span><span class="tag">Sequence cards</span><span class="tag">Video: How Earth Recycled a Mountain Range</span><span class="tag">ESSRT pp. 6, 8, 10, 14</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Surface features come from <b>constructive</b> processes (volcanism, uplift, deposition) and <b>destructive</b> ones (weathering, erosion, subduction), working on very different <b>timescales</b>.</li>
+      <li>New York's <b>metamorphic rock is the oldest</b> (over 1 billion years) and its <b>sedimentary rock is younger</b> (~540–360 million years, some ~200).</li>
+      <li>Rock that formed <b>deep underground</b> sits at the <b>top</b> of the Adirondacks because of <b>uplift plus erosion</b> of the younger rock above it, in the middle of a plate.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now + launch</h4><p>Ask: <i>Did all of Earth's surface features form at plate boundaries? How could mountains form in NY, far from any boundary?</i> Correct the p. 38 "North Atlantic Plate" error now.</p></div></li>
+      <li><div class="t">4–12</div><div><h4>Factor table (groups, pp. 34–35)</h4><p>Volcanic eruption, tectonic plate motion, erosion: mechanism, changes, timescale.</p></div></li>
+      <li><div class="t">12–16</div><div><h4>Domino Discover: mechanisms + timescales</h4><p>Push back on "tens of thousands of years" for plate motion (see Corrections). Use the Day 2 rate.</p></div></li>
+      <li><div class="t">16–30</div><div><h4>Steps 2–3 (groups, pp. 36–37)</h4><p>Use the colored map from homework. Highlight rocks and then processes on the Rock Cycle Infographic. Answer Step 2 Q1–5, then annotate the landscape-regions map (Step 3).</p></div></li>
+      <li><div class="t">30–38</div><div><h4>Step 4 video (p. 38)</h4><p><i>How Earth Recycled a Mountain Range.</i></p></div></li>
+      <li><div class="t">38–46</div><div><h4>Card sort on the timeline</h4><p>Groups arrange the Adirondack Mountain Cards on the timeline (over 1 billion → 1 billion → 500 million → 5 million → today) and sketch the model.</p></div></li>
+      <li><div class="t">46–50</div><div><h4>Step 4 Q1–2 (p. 39)</h4><p>Start in class and finish as homework.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · NYC rock</div><p>Central Park has big exposed rocks with scratches. Guess: are they sedimentary, igneous, or metamorphic? How did they get to the surface?</p><div class="ans">Metamorphic (Manhattan Schist). Overlying rock was eroded away; glaciers scratched and polished them.</div></div>
+      <div class="card"><div class="lbl">Option B · Timescale</div><p>Rank from fastest to slowest: an eruption builds an island · the Atlantic opens · a river carves a valley.</p><div class="ans">Eruption (days–years) → valley (thousands–millions of years) → Atlantic (~180 million years).</div></div>
+      <div class="card"><div class="lbl">Option C · Homework check</div><p>Share your colored bedrock map with a partner. Which color covers the Adirondacks?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Where on the rock cycle does each NY rock form: at the surface or deep underground?</li>
+      <li>Which processes did you box? Are any of them volcanic?</li>
+      <li>If metamorphic rock forms deep down, how did it get to the top of a mountain?</li>
+      <li>What had to happen to the sedimentary rock that once covered the Adirondacks?</li>
+      <li>Which happened faster: Krakatoa's island disappearing or the Adirondacks being uncovered? By how much?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Step 3 · hinge question</div>
+      <h4>The Adirondacks are high mountains made of billion-year-old metamorphic rock. The best explanation is…</h4>
+      <ul class="opts">
+        <li>A. a volcano erupted recently and built them<em>No recent volcanism in NY. The rock is metamorphic, not volcanic.</em></li>
+        <li class="right">B. deep rock was uplifted and the rock above it was eroded away<em>Correct.</em></li>
+        <li>C. NY is on an active convergent boundary<em>NY is mid-plate today.</em></li>
+        <li>D. sedimentary rock turned into mountains when it dried<em>Wrong rock type and process.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During the card sort · walk-by check</div>
+      <h4>Is "Uplift forced the mountains back up" placed <i>after</i> "Sedimentary rock formed in the ocean above"?</h4>
+      <p>If not, ask: <i>How could sedimentary rock end up on top if the uplift came first?</i></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Factor table<small>pp. 34–35</small></span></summary><div class="keybody">
+      <div class="scroll"><table>
+        <thead><tr><th>Factor</th><th>Mechanism</th><th>Changes</th><th>Timescale</th></tr></thead>
+        <tbody>
+          <tr><td>Volcanic eruption</td><td>Magma rises and breaks through; lava and ash pile up or explode</td><td>Builds islands and mountains; destroys islands (Krakatoa 1883)</td><td>Short: hours to years (Anak Krakatau rose within ~44 years)</td></tr>
+          <tr><td>Tectonic plate motion</td><td>Plates move a few cm/yr: spreading, subduction, collision</td><td>Oceans, continents, ridges, trenches, mountain ranges, volcanoes; sudden earthquakes</td><td>Long: <b>millions to hundreds of millions</b> of years (the quake itself takes seconds)</td></tr>
+          <tr><td>Erosion</td><td>Water, ice and wind break rock and carry it away</td><td>Wears down mountains, carves valleys and cliffs; supplies sediment</td><td>Hundreds to millions of years</td></tr>
+        </tbody>
+      </table></div>
+    </div></details>
+    <details class="key"><summary><span>Step 2: Analyzing Rock Types<small>pp. 36–37 · Q1–5</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Trend between rock type and age</div><p class="aa"><b>Metamorphic rocks are the oldest</b> (Middle Proterozoic, over ~1 billion years: Adirondacks, Hudson Highlands). <b>Sedimentary rocks are younger</b> (Cambrian–Devonian ~540–360 million years; Triassic–Jurassic ~200 million years in the Newark Lowlands). The youngest deposits (Cretaceous, Long Island) are loose sediments.</p></div>
+      <div class="qa"><div class="qq">2–3. Highlight rocks and processes on the infographic</div><p class="aa">Rocks: limestone, shale, sandstone, dolostone, conglomerate, gneiss, quartzite, marble, schist. Processes near them: weathering, erosion, deposition, compaction, cementation, burial, heat and pressure (metamorphism/recrystallization), uplift.</p></div>
+      <div class="qa"><div class="qq">Which processes formed NY rock? Which are not involved?</div><p class="aa"><b>Involved:</b> deposition, compaction and cementation (sedimentary); heat and pressure (metamorphic); uplift; weathering and erosion. <b>Not involved in NY's surface rock:</b> volcanic eruption (extrusion), and melting followed by solidification at the surface. <i>Nuance:</i> the Palisades formed from magma that cooled underground ~200 million years ago.</p></div>
+      <div class="qa"><div class="qq">4. How did NY's bedrock form?</div><p class="aa">More than 1 billion years ago, rock deep in the crust was heated and squeezed during an ancient mountain-building collision, making metamorphic rock. Later, shallow seas covered NY and laid down sediment that became sandstone, shale and limestone on top. Uplift and erosion then exposed the old metamorphic rock in places like the Adirondacks, while younger sedimentary layers remain around it.</p></div>
+      <div class="qa"><div class="qq">5. Which rocks near the surface/higher, which deeper/lower?</div><p class="aa">Based on the infographic: <b>sedimentary</b> rocks form at the surface from deposited sediment, so expect them <b>near the surface and in low places</b> (basins, seas). <b>Metamorphic</b> rocks form under heat and pressure <b>deep underground</b>, so expect them <b>far beneath the surface</b>.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Step 3: Determining the Ages of Surface Features<small>p. 37 · annotate regions + Q3</small></span></summary><div class="keybody">
+      <div class="scroll"><table>
+        <thead><tr><th>Region</th><th>Rock type</th><th>Age</th></tr></thead>
+        <tbody>
+          <tr><td>Adirondack Mountains</td><td>Metamorphic</td><td>&gt; 1 billion years (Proterozoic)</td></tr>
+          <tr><td>Hudson Highlands; Manhattan Prong (NYC)</td><td>Metamorphic</td><td>~1 billion years; NYC schist/marble metamorphosed ~450 million years ago</td></tr>
+          <tr><td>St. Lawrence, Erie-Ontario, Hudson-Mohawk Lowlands; Tug Hill</td><td>Sedimentary</td><td>Cambrian–Silurian (~540–420 million years)</td></tr>
+          <tr><td>Appalachian (Allegheny) Plateau, incl. Catskills</td><td>Sedimentary</td><td>Devonian (~420–360 million years)</td></tr>
+          <tr><td>Newark Lowlands</td><td>Sedimentary (+ intruded diabase)</td><td>Triassic–Jurassic (~200 million years)</td></tr>
+          <tr><td>Atlantic Coastal Plain (Long Island)</td><td>Loose sediments</td><td>Cretaceous and Pleistocene</td></tr>
+        </tbody>
+      </table></div>
+      <div class="qa"><div class="qq">3. Do the rock types, ages and landforms match your predictions?</div><p class="aa"><b>Partly.</b> The lowlands match: they are sedimentary rock at low elevation. The <b>Adirondacks don't match</b>: the highest region is made of the <b>oldest, deep-formed metamorphic</b> rock, which should be deep underground. Something must have pushed it up and removed the rock above it. The Catskills are high but sedimentary; they are a raised plateau carved by rivers.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Step 4: Adirondack card order + Q1–2<small>pp. 38–39 · oldest → today</small></span></summary><div class="keybody">
+      <ol>
+        <li>Magma deep underground formed anorthositic rocks (over 1 billion years ago)</li>
+        <li>Tectonic activity lifted the rock into a massive mountain range (~1 billion years ago, Grenville)</li>
+        <li>Erosion wore the Grenville mountains down (1 billion → 500 million years ago)</li>
+        <li>A shallow ocean formed on top (~500 million years ago)</li>
+        <li>Sedimentary rock formed in the ocean above the old mountain roots (~500 million years ago)</li>
+        <li>Uplift pushed the area, covered in sedimentary rock, back up (starting ~5 million years ago)</li>
+        <li>Erosion (rivers, glaciers) stripped the sedimentary cover off the top</li>
+        <li>Today: ancient rock at the top of the Adirondacks, surrounded by younger rock</li>
+      </ol>
+      <div class="qa"><div class="qq">1. How does this model explain NY's rock ages and types?</div><p class="aa">The old metamorphic/igneous core formed deep down over a billion years ago. It was buried under ~500-million-year-old sedimentary rock, then domed up. Erosion removed the sedimentary cover from the top of the dome, so the <b>oldest rock is exposed in the high center</b> and <b>younger sedimentary rock rings it</b> at lower elevations.</p></div>
+      <div class="qa"><div class="qq">2. Constructive vs. destructive processes; compare timescales</div><p class="aa"><b>Adirondacks:</b> constructive = magma crystallizing, tectonic uplift, deposition; destructive = weathering and erosion. They took <b>over a billion years</b> in total, with uplift and erosion over millions of years. <b>Krakatoa:</b> destructive = the 1883 explosive eruption and collapse destroyed most of the island in <b>hours to days</b>; constructive = new eruptions built Anak Krakatau above sea level by <b>1927</b> (decades). Both involve building and wearing down, but on timescales that differ by a factor of millions.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Step 4 Q1 in 2 sentences.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Is New York at high risk from earthquakes and volcanoes today? Use plate position and rock evidence.</p><div class="ans">Low: mid-plate, no active volcanism; landforms come from old uplift and erosion. Small quakes still happen (low ≠ zero).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Adirondacks Flip-Book Strip</h4>
+      <p>Fold a sheet into <b>4 panels</b> and draw a side view of the Adirondacks at 1 billion years ago, 500 million years ago, 5 million years ago and today. Shade metamorphic and sedimentary rock differently in every panel, and label the process acting between panels.</p>
+      <ul class="checks">
+        <li>4 dated panels, same side-view frame each time</li>
+        <li>Rock types shaded consistently, with a key</li>
+        <li>An arrow between each panel naming a process (uplift, erosion, deposition)</li>
+        <li>"I chose…" note: compare one panel to <b>Krakatoa</b>. Which change would you have been able to watch in a lifetime?</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-7"><small>Back</small>← Day 7 · Explain 2</a><a class="next" href="#day-9"><small>Next</small>Day 9 · Evaluate →</a></div>
+</div>
+
+<!-- ===================== DAY 9 ===================== -->
+<div class="view" id="day-9" data-phase="evaluate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 9 · Evaluate</div>
+    <h2>Who Is Most at Risk?</h2>
+    <p class="q">Which Key 5 region is most at risk from earthquakes, volcanic eruptions and tsunamis, and why?</p>
+    <div class="tags"><span class="tag">Packet pp. 43–53</span><span class="tag">Revisit the Performance Task handout (separate)</span><span class="tag">Pairs</span><span class="tag">Domino Discover</span><span class="tag">Driving Question Board</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Each Key 5 region's <b>plate setting</b> predicts its hazards: subduction zones (Japan, Andes) have the largest quakes, tsunamis and explosive volcanoes; a rift (Great Rift Valley) has frequent shallow quakes; collision zones (Mainland SE Asia) have shallow, damaging quakes in mountains.</li>
+      <li><b>Risk</b> depends on the hazard (frequency, magnitude) <i>and</i> on people: population, building quality and warning systems.</li>
+      <li>A model of risk must show the <b>boundary type, plate motion, and surface features/hazards</b> for each location (Model Rubric).</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4></div></li>
+      <li><div class="t">4–10</div><div><h4>Who is Most at Risk? Q1–2 (pairs, p. 43)</h4><p>Brainstorm characteristics, then look at the deaths table.</p></div></li>
+      <li><div class="t">10–20</div><div><h4>Region data (pairs, pp. 44–49)</h4><p>Pairs study the distribution, depth, magnitude and frequency graphs for each region. Confer.</p></div></li>
+      <li><div class="t">20–38</div><div><h4>Revisit the Performance Task (individual)</h4><p>Students revise their risk model and write the explanation on the separate handout. Hand out the Model (p. 50) and Argument (p. 52) rubrics first, with the corrected Argument Stability &amp; Change row.</p></div></li>
+      <li><div class="t">38–44</div><div><h4>Document Class Thinking: Domino Discover + tally</h4><p>Groups name the region they think is most at risk. Tally on chart paper. No consensus needed yet.</p></div></li>
+      <li><div class="t">44–50</div><div><h4>Revisit the Driving Question Board</h4><p>Mark answered questions. Add new ones. Highlight the open question: <i>what inside Earth produces enough energy to move plates?</i> That leads into Energy and Matter. Relevance to your life (p. 53) can go as homework.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Sort</div><p>Label each Key 5 region with its boundary type: Mediterranean, Great Rift Valley, Mainland SE Asia, Japan, Andes.</p><div class="ans">Mixed (converging + diverging); divergent; continental convergent (+ transform); convergent subduction; ocean–continent subduction.</div></div>
+      <div class="card"><div class="lbl">Option B · Hazard vs. risk</div><p>Two places get the same M7 earthquake. Why might one have far more deaths?</p><div class="ans">Population density, building quality, depth/distance, time of day, warnings, landslides or tsunami.</div></div>
+      <div class="card"><div class="lbl">Option C · Homework check</div><p>Show your flip-book. Which panel took the longest time?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What do the different substructures under these regions tell you about the plates they are on?</li>
+      <li>What do those plate types tell you about the risk of those areas?</li>
+      <li>How does the historical data contribute to your understanding of risk?</li>
+      <li>Japan and the Mediterranean had almost the same deaths since 1900. Why is the Mediterranean so much higher since 1990?</li>
+      <li>Does your model show boundary type, plate motion <i>and</i> hazards for every location? (Model Rubric)</li>
+      <li>Where's the rate in your argument: how often do quakes, eruptions or tsunamis happen there? (Stability &amp; Change)</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the region data · hinge question</div>
+      <h4>The Great Rift Valley has frequent earthquakes but only 302 deaths since 1900. The best explanation is…</h4>
+      <ul class="opts">
+        <li class="right">A. it's a divergent boundary with mostly shallow, moderate quakes, no subduction tsunamis, and fewer large quakes near dense cities<em>Correct. It combines hazard and exposure.</em></li>
+        <li>B. it has no earthquakes<em>Contradicts the frequency graph.</em></li>
+        <li>C. its earthquakes are the deepest<em>Rift quakes are shallow.</em></li>
+        <li>D. Africa has no plate boundaries<em>The rift is a boundary.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">Before writing · rubric check</div>
+      <h4>"Point to where your model shows: (1) boundary type, (2) direction of motion, (3) hazards, for each location."</h4>
+      <p>Any missing piece puts the model at Developing. Fix it before writing.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Who is Most at Risk? Q1–2<small>p. 43 · brainstorm</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. What distinguishes high-activity from low-activity areas?</div><p class="aa">High: located on or near <b>plate boundaries</b>; mountains, volcanoes, trenches, ridges or rifts; frequent quakes; at subduction zones, deep slanted quake zones. Low: <b>plate interiors</b> with old, stable continental crust and worn-down mountains (like NY); few quakes, no active volcanoes.</p></div>
+      <div class="qa"><div class="qq">2. What affects how earthquakes affect people?</div><p class="aa">Magnitude and <b>depth</b> (shallow shakes harder); distance to cities; <b>population density</b>; building construction and codes; coastal location (tsunami); mountains (landslides); warning systems, preparedness and emergency response; wealth and infrastructure.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Revisit the Performance Task: exemplar<small>Separate handout · scored with the rubrics on pp. 50 and 52</small></span></summary><div class="keybody">
+      <p><b>Model:</b> each Key 5 location drawn as a cross-section or map callout with boundary type, arrows for plate motion, and the hazards and features: Japan and Andes (subduction: trench, slanted quake zone, volcanic arc, tsunami), Great Rift Valley (divergent: rift, shallow quakes, volcanoes), Mainland SE Asia (continental collision plus transform: mountains, shallow quakes), Mediterranean (mixed: small plates colliding and separating, quakes at many depths, volcanoes such as Etna and Vesuvius).</p>
+      <p><b>Sample claim:</b> The <b>Japanese Archipelago</b> is most at risk overall. It sits on a subduction zone, the boundary type that produces the largest earthquakes (M9.0–9.1 in 2011), tsunamis and explosive volcanoes. Its data show frequent quakes every year. It has lost ~186,000 people to earthquakes since 1900. Strong building codes and warnings have helped reduce deaths since 1990 (27,460, much of it from the 2011 tsunami). <i>Equally defensible:</i> the <b>Mediterranean Basin</b>, which has had the most deaths since 1900 and by far the most since 1990 (87,403), with frequent quakes at many depths in densely populated areas. Or the <b>Andes</b>, with the strongest earthquake ever recorded (M9.5, 1960). Score the <b>reasoning</b>, not the choice.</p>
+      <div class="note"><b>Rubric quick check:</b> boundary type + motion + hazards at each location ✓ · evidence of frequency and magnitude ✓ · links plate interaction → hazard → risk ✓ · rates of change (spreading rate; how often eruptions and tsunamis occur) ✓ → <b>Proficient</b>.</div>
+    </div></details>
+    <details class="key"><summary><span>Relevance to your life<small>p. 53 · personal; no key</small></span></summary><div class="keybody">
+      <p>Look for a specific idea or skill (e.g., "what to do in an earthquake or tsunami warning," "why some places are riskier") and a named audience with a reason. A good fit for students with family in the Key 5 regions or the Caribbean.</p>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Which region did you choose, and what is the single strongest piece of evidence for it?</p></div>
+      <div class="card"><div class="lbl">Option B · Bridge</div><p>Plates move, rock melts, and mountains rise. Where do you think the energy for all of that comes from?</p><div class="ans">Heat from Earth's interior (sets up the Energy and Matter 5E).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Risk Poster for One Region</h4>
+      <p>Make a <b>hand-drawn half-page poster</b> for the region you argued is most at risk. Include a mini cross-section of its plate boundary, three icons for its hazards, and one statistic from the packet's deaths table or graphs, and finish with one safety action people there should know.</p>
+      <ul class="checks">
+        <li>Cross-section with boundary type and motion arrows</li>
+        <li>3 hazard icons with one-line captions</li>
+        <li>One packet statistic, cited (table or graph name)</li>
+        <li>"I chose…" note: where your region landed on <b>our class tally chart</b>, and whether that changed your mind</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-8"><small>Back</small>← Day 8 · Elaborate</a><a class="next" href="#overview"><small>Done</small>Back to overview ↺</a></div>
+</div>
+
+<footer><a href="index.html">← Back to Teacher Hub</a><br>Built from the New Visions Earth &amp; Space Science Unit 3 teacher materials for Surface Features &amp; Plate Boundaries 5E (SY 26-27, with the SY 25-26 bundle for comparison) and the Unit 3 L2 student materials (SY 25-26). Packet page numbers refer to the SY 25-26 student packet. Schedules assume 50-minute periods.</footer>
+</main>
+
+<script>
+(function(){
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('#chips .chip'));
+  var ids = views.map(function(v){return v.id});
+  function show(){
+    var id = (location.hash || '').slice(1);
+    if (ids.indexOf(id) === -1) id = 'overview';
+    views.forEach(function(v){ v.hidden = v.id !== id; });
+    chips.forEach(function(c){
+      if (c.getAttribute('href') === '#' + id) { c.setAttribute('aria-current','page'); var r=c.parentNode; r.scrollLeft = c.offsetLeft - (r.clientWidth - c.offsetWidth)/2; }
+      else c.removeAttribute('aria-current');
+    });
+    window.scrollTo({top:0,left:0,behavior:'instant'});
+  }
+  window.addEventListener('hashchange', show);
+  show();
+
+  // prep checklist memory (per device)
+  var boxes = document.querySelectorAll('#prep input[type=checkbox]');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem('u3-plates-prep') || '{}'); } catch(e) {}
+  Array.prototype.forEach.call(boxes, function(b){
+    if (saved[b.id]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[b.id] = b.checked;
+      try { localStorage.setItem('u3-plates-prep', JSON.stringify(saved)); } catch(e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

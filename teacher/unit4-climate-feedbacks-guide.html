@@ -1,0 +1,1539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="teacher-gate.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}.strata-10{grid-template-columns:repeat(10,1fr)}
+</style>
+<title>Climate Feedbacks Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky day bar on top, one day visible at a time, single reading column (~760px). Days are "rock layers" colored by 5E phase. */
+:root{
+  --bg:#F2F5F4; --surface:#FFFFFF; --ink:#15212A; --muted:#55646B; --line:#D5DDDB; --tint:#E7EDEB;
+  --iron:#AE4229; --ocean:#1C6784; --ochre:#A8731A; --moss:#4C7634; --dusk:#5A4A8C;
+  --ok:#2E7D4F; --warn:#9A5B00;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--ocean)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* phase colors */
+[data-phase="engage"]{--ph:var(--ochre)} [data-phase="explore"]{--ph:var(--iron)} [data-phase="explain"]{--ph:var(--ocean)}
+[data-phase="elaborate"]{--ph:var(--moss)} [data-phase="evaluate"]{--ph:var(--dusk)} [data-phase="overview"]{--ph:var(--ink)}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:thin}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--ph)}
+.chip[aria-current="page"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--ocean);outline-offset:2px}
+
+/* hero */
+.hero{padding-block:28px 8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.hero h1{font-size:clamp(32px,7vw,52px);font-weight:800;letter-spacing:-.02em;margin:8px 0 10px}
+.dq{font-size:clamp(18px,3.4vw,22px);color:var(--ink);max-width:40ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0 0;color:var(--muted);font-size:15px}
+.meta b{color:var(--ink)}
+
+/* strata bar */
+.strata{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin:22px 0 6px;border-radius:10px;overflow:hidden}
+.strata a{display:flex;flex-direction:column;justify-content:flex-end;min-height:76px;padding:8px 7px;background:var(--ph);color:#fff;text-decoration:none;font-size:12px;line-height:1.2;position:relative}
+.strata a::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(0,0,0,.10) 9px 11px);pointer-events:none}
+.strata b{font-family:var(--f-display);font-size:20px;display:block}
+.strata span{opacity:.92}
+.strata-cap{font-size:13px;color:var(--muted)}
+@media (max-width:520px){.strata span{display:none}.strata a{min-height:56px}}
+
+/* views */
+.view{padding-block:8px 48px;scroll-margin-top:calc(64px + env(safe-area-inset-top,0px))}
+.view[hidden]{display:none!important}
+.dayhead{padding-block:26px 6px;border-bottom:4px solid var(--ph);margin-bottom:8px}
+.dayhead .eyebrow{color:var(--ph)}
+.dayhead h2{font-size:clamp(28px,5.6vw,40px);font-weight:800;margin:6px 0 8px;letter-spacing:-.01em}
+.dayhead .q{font-style:italic;color:var(--muted);margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
+.tag{font-size:13px;padding:3px 9px;border-radius:6px;background:var(--tint);color:var(--ink)}
+
+section.block{padding-block:18px 4px}
+section.block>h3{font-size:22px;font-weight:800;margin-bottom:12px;display:flex;align-items:baseline;gap:10px}
+section.block>h3 small{font-family:var(--f-body);font-weight:600;font-size:14px;color:var(--muted)}
+p{margin:0 0 10px} ul,ol{margin:0 0 10px;padding-left:22px} li{margin-bottom:5px}
+
+/* goals */
+.goals{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--ph);border-radius:8px;padding:14px 16px}
+.goals h3{font-size:17px;margin-bottom:8px}
+.goals ul{margin:0}
+
+/* schedule */
+.sched{list-style:none;padding:0;margin:0;border-left:2px solid var(--line)}
+.sched li{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:10px 0 12px 22px;margin:0;position:relative}
+.sched li::before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:3px solid var(--ph)}
+.t{font-family:var(--f-mono);font-size:14px;color:var(--ph);font-weight:500;padding-top:2px;font-variant-numeric:tabular-nums}
+.t small{display:block;color:var(--muted);font-size:12px}
+.sched h4{font-size:17px;font-weight:600;margin-bottom:3px}
+.sched p,.sched ul{font-size:16px;color:var(--ink);margin-bottom:4px}
+.sched .say{border-left:3px solid var(--tint);padding-left:10px;color:var(--muted);font-style:italic}
+@media (max-width:480px){.sched li{grid-template-columns:1fr;gap:2px}}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.card .lbl{font-size:12px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;color:var(--ph);margin-bottom:6px}
+.card p:last-child{margin-bottom:0}
+.ans{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:15px;color:var(--muted)}
+.ans b{color:var(--ok)}
+
+/* conferring */
+.confer{list-style:none;padding:0;display:grid;gap:8px}
+.confer li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0}
+.confer li span{display:block;font-size:14px;color:var(--muted);margin-top:3px}
+
+/* CFU */
+.cfu{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.cfu h4{font-size:16px;margin-bottom:6px;font-family:var(--f-body);font-weight:700}
+.opts{list-style:none;padding:0;margin:6px 0}
+.opts li{padding:5px 10px;border-radius:6px;margin-bottom:4px;background:var(--tint)}
+.opts li.right{outline:2px solid var(--ok)}
+.opts li em{display:block;font-size:14px;color:var(--muted);font-style:normal}
+.when{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* answer key */
+.key{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.key>summary{cursor:pointer;padding:13px 16px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.key>summary::-webkit-details-marker{display:none}
+.key>summary::after{content:"+";font-family:var(--f-mono);font-size:20px;color:var(--ph)}
+.key[open]>summary::after{content:"−"}
+.key>summary small{display:block;font-weight:400;color:var(--muted);font-size:14px}
+.keybody{padding:2px 16px 14px;border-top:1px solid var(--line)}
+.qa{padding:10px 0;border-bottom:1px solid var(--tint)}
+.qa:last-child{border-bottom:0}
+.qa .qq{font-weight:700;margin-bottom:4px}
+.qa .aa{margin:0}
+.note{font-size:15px;background:var(--tint);border-radius:8px;padding:10px 12px;margin:8px 0}
+.note b{color:var(--warn)}
+.scroll{overflow-x:auto;margin:8px 0 12px;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--surface)}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--tint);font-weight:700}
+td.num,th.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* homework */
+.hw{background:var(--surface);border:2px solid var(--ph);border-radius:12px;padding:16px}
+.hw h4{font-size:20px;font-weight:800;margin-bottom:6px}
+.hw .why{font-size:15px;color:var(--muted)}
+.checks{list-style:none;padding:0;margin:8px 0 0}
+.checks li{padding-left:24px;position:relative}
+.checks li::before{content:"✓";position:absolute;left:2px;color:var(--ok);font-weight:700}
+
+/* overview bits */
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:6px}
+.glance .card b{font-family:var(--f-display);font-size:18px;display:block;margin-bottom:2px}
+.prep{list-style:none;padding:0}
+.prep li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--tint);margin:0}
+.prep input{width:20px;height:20px;margin-top:3px;accent-color:var(--ocean);flex:0 0 auto}
+.prep label{flex:1;min-width:0}
+.prep .when{display:block}
+.mis{display:grid;gap:8px}
+.mis div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.mis s{color:var(--iron);text-decoration-thickness:2px}
+
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:30px;flex-wrap:wrap}
+.pager a{flex:1 1 200px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.pager a small{display:block;color:var(--muted);font-size:13px}
+.pager a.next{text-align:right}
+footer{color:var(--muted);font-size:13px;padding-block:20px 40px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+.strata-10{grid-template-columns:repeat(10,1fr)}
+@media (max-width:520px){.strata-10 a{padding:8px 3px;align-items:center}.strata-10 b{font-size:16px}}
+</style>
+</head>
+<body>
+<nav class="bar" aria-label="Days">
+  <div class="wrap" id="chips">
+    <a class="chip" data-phase="overview" href="#overview"><i></i>Before you teach</a>
+    <a class="chip" data-phase="engage" href="#day-1"><i></i>Day 1</a>
+    <a class="chip" data-phase="explore" href="#day-2"><i></i>Day 2</a>
+    <a class="chip" data-phase="explore" href="#day-3"><i></i>Day 3</a>
+    <a class="chip" data-phase="explain" href="#day-4"><i></i>Day 4</a>
+    <a class="chip" data-phase="explain" href="#day-5"><i></i>Day 5</a>
+    <a class="chip" data-phase="explore" href="#day-6"><i></i>Day 6</a>
+    <a class="chip" data-phase="explore" href="#day-7"><i></i>Day 7</a>
+    <a class="chip" data-phase="explain" href="#day-8"><i></i>Day 8</a>
+    <a class="chip" data-phase="elaborate" href="#day-9"><i></i>Day 9</a>
+    <a class="chip" data-phase="evaluate" href="#day-10"><i></i>Day 10</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ===================== OVERVIEW ===================== -->
+<div class="view" id="overview" data-phase="overview">
+  <header class="hero">
+    <div class="eyebrow">Teacher guide · Earth &amp; Space Science · Unit 4 · Climate Change · Lesson 3</div>
+    <h1>Climate Feedbacks</h1>
+    <p class="dq">What is causing global temperatures to rise, and why is the Arctic warming at almost 4 times the rate as the rest of the globe?</p>
+    <div class="meta">
+      <span><b>PEs</b> HS-ESS2-2 · HS-ESS2-4 · HS-ESS2-6</span>
+      <span><b>Length</b> 10 days × 50 min (curriculum says 7–9; see pacing)</span>
+      <span><b>Anchor routines</b> Domino Discover · Think-Talk-Open Exchange · Class Consensus</span>
+    </div>
+    <div class="strata strata-10" aria-label="Ten days, colored by 5E phase">
+      <a href="#day-1" data-phase="engage"><b>1</b><span>Engage</span></a>
+      <a href="#day-2" data-phase="explore"><b>2</b><span>Explore 1</span></a>
+      <a href="#day-3" data-phase="explore"><b>3</b><span>Explore 1</span></a>
+      <a href="#day-4" data-phase="explain"><b>4</b><span>Explain 1</span></a>
+      <a href="#day-5" data-phase="explain"><b>5</b><span>Explain 1</span></a>
+      <a href="#day-6" data-phase="explore"><b>6</b><span>Explore 2</span></a>
+      <a href="#day-7" data-phase="explore"><b>7</b><span>Explore 2</span></a>
+      <a href="#day-8" data-phase="explain"><b>8</b><span>Explain 2</span></a>
+      <a href="#day-9" data-phase="elaborate"><b>9</b><span>Elaborate</span></a>
+      <a href="#day-10" data-phase="evaluate"><b>10</b><span>Evaluate</span></a>
+    </div>
+    <p class="strata-cap">Tap a day to open it. Each day has a minute-by-minute plan, Do Nows, conferring questions, checks for understanding, the answer key, exit slips and drawn homework. Student chapter: <a href="../unit4-climate-change/unit4-climate-feedbacks.html">Unit 4: Climate Feedbacks</a> (send absent students to the matching section).</p>
+  </header>
+
+  <section class="block">
+    <h3>The phenomenon in one paragraph</h3>
+    <p>In Earth-Sun Dynamics, students found that orbital cycles say Earth should be slowly <b>cooling</b>, yet the planet is warming, and the <b>Arctic is warming almost 4 times faster</b> than the global average. This 5E has two investigations. In <b>Explore/Explain 1</b>, ice cores show CO₂ and temperature rising and falling together for 800,000 years (a correlation). A carbon-cycle model shows burning fossil fuels unbalanced the cycle after the Industrial Revolution, and the Greenhouse Effect sim supplies the <b>mechanism</b>. Together they show human CO₂ is a <b>cause</b>. In <b>Explore/Explain 2</b>, students feel hot asphalt, run a jar-color experiment, and graph real sea ice, Greenland ice, temperature and ocean heat data. They build the <b>ice-albedo positive feedback loop</b>: warming melts bright ice, exposing dark ocean and land that absorb more sunlight, which causes more warming. The <b>Elaborate</b> adds two greenhouse-gas feedbacks (warm oceans and thawing permafrost release CO₂). In the <b>Evaluate</b>, students use all of it to answer climate skeptics who say "CO₂ follows temperature."</p>
+  </section>
+
+  <section class="block">
+    <h3>The 5E storyline</h3>
+    <div class="glance">
+      <div class="card" data-phase="engage"><div class="lbl">Engage · Day 1</div><b>We are Warming</b>What is happening to temperatures and Arctic ice today?</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore 1 · Days 2–3</div><b>CO₂ and Air Temperature</b>Ice cores, a carbon-cycle model, and the PhET Greenhouse Effect sim.</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain 1 · Days 4–5</div><b>The Enhanced Greenhouse Effect</b>CER plus Class Consensus: human activity → CO₂ → warming.</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore 2 · Days 6–7</div><b>Ice and Radiation</b>Sunny surfaces, the jar-color lab, and four real datasets since 1979.</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain 2 · Day 8</div><b>Ice Caps and Global Temperatures</b>Card sort turns into the ice-albedo positive feedback loop.</div>
+      <div class="card" data-phase="elaborate"><div class="lbl">Elaborate · Day 9</div><b>Greenhouse Gas Feedbacks</b>Warming releases CO₂ from the ocean and permafrost.</div>
+      <div class="card" data-phase="evaluate"><div class="lbl">Evaluate · Day 10</div><b>Disprove the Skeptics</b>Make a valid claim about CO₂, human activity and warming today.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="goals" data-phase="explain">
+      <h3>By the end of the 5E, every student should be able to…</h3>
+      <ul>
+        <li>Read a temperature <b>anomaly</b> graph and state that the Arctic has warmed about 3–4× faster than the globe since 1979.</li>
+        <li>Use ice-core data to describe the <b>correlation</b> between CO₂ and temperature, and the natural CO₂ range of about <b>170–300 ppm</b> over 800,000 years. Compare that with today's <b>420+ ppm</b>.</li>
+        <li>Calculate a <b>rate of change</b> and show that today's CO₂ rise is roughly <b>100× faster</b> than the rise at the end of the last ice age.</li>
+        <li>Use a quantitative <b>carbon-cycle model</b> to show that burning fossil fuels moves carbon from the geosphere into the other reservoirs. Matter is <b>conserved</b>, but the system is <b>no longer balanced</b>.</li>
+        <li>Explain the <b>greenhouse effect</b> as a mechanism. Sunlight is absorbed, re-emitted as infrared, and greenhouse gases send some of it back. Use that mechanism to tell causation from correlation.</li>
+        <li>Explain <b>albedo</b> and the <b>ice-albedo positive feedback loop</b>, and use it to explain Arctic amplification.</li>
+        <li>Explain how warming releases CO₂ from the ocean and permafrost, so CO₂ is <b>both a cause and an effect</b> of warming. That answers the "CO₂ lags temperature" argument.</li>
+        <li>Describe positive feedbacks as <b>destabilizing</b> and negative feedbacks as <b>stabilizing</b> (CCC 7).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Prep checklist <small>check off as you go · saved on this device</small></h3>
+    <ul class="prep" id="prep">
+      <li><input type="checkbox" id="p1"><label for="p1"><span class="when">1 week out</span>Copy the Climate Feedbacks 5E student packet (it starts on p. 73 of the Unit 4 student materials). Check that each student still has their <b>Performance Task Organizer</b>. Day 10 uses the "Revisiting the Performance Task: Climate Feedbacks 5E" page (PTO p. 10).</label></li>
+      <li><input type="checkbox" id="p2"><label for="p2"><span class="when">1 week out</span>Print and cut the <b>Ice Caps Cause and Effect Cards</b> (one set per table, Day 8) and the two <b>Greenhouse Gas Feedback Mechanisms</b> cards (Day 9). Put each set in an envelope. Groups must <b>keep their Day 8 sort</b> for Day 9, so have them tape it to paper or photograph it.</label></li>
+      <li><input type="checkbox" id="p3"><label for="p3"><span class="when">1 week out</span>Test every link on student devices: <b>As Arctic warms, Indigenous communities…</b> (YouTube), the PhET <b>Greenhouse Effect</b> sim (Waves screen), PBS <b>Evidence Links Human Activity to Global Warming</b>, PBS <b>Documenting Glacial Change</b>, PBS <b>Earth's Albedo and Global Warming</b>, <b>How hot is asphalt or cement in summertime?</b>, <b>The Rise and Fall of Ice Age Glaciers</b>, and the <b>Sea Ice Extent Since 1980</b> Google Sheet. Make a copy of the Sheet for students; don't share the original.</label></li>
+      <li><input type="checkbox" id="p4"><label for="p4"><span class="when">Before Day 6</span><b>Jar lab, per group:</b> 4 cups or jars; white, blue, green and black construction paper; 4 thermometers; tape; scissors; a timer; one <b>heat lamp</b>. Pre-cut the paper sleeves and lids if your periods are short. Check that the thermometers agree with each other at room temperature first.</label></li>
+      <li><input type="checkbox" id="p5"><label for="p5"><span class="when">Before Day 6</span>Check the forecast. The outdoor surface walk only works on a <b>sunny</b> day near black asphalt, light concrete and grass. If it's cloudy or cold, plan to use the asphalt video instead. Get any permission you need to take the class outside.</label></li>
+      <li><input type="checkbox" id="p6"><label for="p6"><span class="when">Before Day 3</span>One device per pair for the PhET sim (Days 3, 7) and for graphing the Google Sheet (Day 7). If devices are short, the student chapter has a <b>built-in greenhouse model</b> and the four graphs already drawn.</label></li>
+      <li><input type="checkbox" id="p7"><label for="p7"><span class="when">Before Day 5</span>Bring back the <b>Class Consensus Model: Global Energy Budget</b> from Earth-Sun Dynamics. You'll add to it on Day 5 (greenhouse effect) and Day 8 (albedo). Post the <b>Class Consensus Discussion Steps</b>, and have chart paper and a document camera or phone ready.</label></li>
+      <li><input type="checkbox" id="p8"><label for="p8"><span class="when">Before Day 1</span>Have the <b>Driving Question Board</b> and an <b>Ideas for Investigations</b> chart up. Sticky notes and chart paper are needed for Days 1, 5, 8 and 10.</label></li>
+      <li><input type="checkbox" id="p9"><label for="p9"><span class="when">Before Day 1</span>Read the <b>Corrections</b> below. Two of them (the "water has a higher albedo than land" step and the short-wave/long-wave mix-up in the reading) change what you say out loud.</label></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Content crib: the numbers students will use</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>Idea</th><th>Value</th><th>Source / where it comes up</th></tr></thead>
+      <tbody>
+        <tr><td>Arctic vs global warming since 1979</td><td class="num">~3–4× (≈0.6–0.7 vs ≈0.2 °C/decade)</td><td>Rantanen et al. 2022 (nearly 4×, Arctic Circle); NASA GISTEMP 64–90° N gives ~3–4×. Day 1</td></tr>
+        <tr><td>Global warming so far</td><td class="num">~1.2–1.3 °C since 1850–1900</td><td>NASA/NOAA. 2024 was the warmest year on record. Day 1, Day 5</td></tr>
+        <tr><td>CO₂ range, 800,000 years (ice cores)</td><td class="num">~170–300 ppm</td><td>EPICA/Bereiter et al. 2015 composite (NOAA NCEI). Day 2</td></tr>
+        <tr><td>Pre-industrial CO₂</td><td class="num">~280 ppm</td><td>Law Dome ice core. Day 2</td></tr>
+        <tr><td>Mauna Loa CO₂</td><td class="num">421 ppm (2023 annual) · 425 ppm (2024)</td><td>NOAA GML. The packet uses 421</td></tr>
+        <tr><td>End-of-ice-age CO₂ rise</td><td class="num">~190 → 280 ppm over ~10,000 yr</td><td>≈0.005–0.009 ppm/yr. Day 2 rate calculation</td></tr>
+        <tr><td>Industrial-era CO₂ rise</td><td class="num">~280 → 421 ppm in ~170–220 yr</td><td>≈0.7 ppm/yr on average; ~2.5 ppm/yr in the last decade (NOAA)</td></tr>
+        <tr><td>Fossil-fuel CO₂ emissions</td><td class="num">~37 billion t CO₂/yr ≈ 10 Gt C/yr</td><td>Global Carbon Project. Matches the packet model's 10 Gt C/yr (1 Gt C = 3.67 Gt CO₂)</td></tr>
+        <tr><td>Share of emitted CO₂ that stays in the air</td><td class="num">~45%</td><td>GCP. The packet model uses 5 of 10 (50%)</td></tr>
+        <tr><td>Earth with no greenhouse gases</td><td class="num">≈ −18 °C (vs ≈ 15 °C actual)</td><td>Greenhouse Effect text. Day 3</td></tr>
+        <tr><td>Albedo</td><td class="num">fresh snow 0.8–0.9 · sea ice 0.5–0.7 · grass ~0.25 · asphalt 0.05–0.1 · open ocean ~0.06 · Earth ~0.30</td><td>Days 6–8</td></tr>
+        <tr><td>September Arctic sea ice</td><td class="num">down ~12–13% per decade; roughly 40% less than 1979–80</td><td>NSIDC Sea Ice Index. Day 7</td></tr>
+        <tr><td>Greenland ice loss</td><td class="num">~270 billion t/yr (2002–2023)</td><td>NASA GRACE / GRACE-FO. Day 7</td></tr>
+        <tr><td>Where the extra heat goes</td><td class="num">~90% into the ocean</td><td>NOAA/IPCC ocean heat content. Day 7</td></tr>
+        <tr><td>Natural vs human CO₂ today (packet table)</td><td class="num">421.6 total · 134.91 human · 286.68 natural</td><td>Enhanced Greenhouse Effect Part 1. Day 4</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>Why the "how many times faster" number varies:</b> it depends on where the Arctic starts (64°, 66.5° or 70° N), the start year, and the dataset. The packet's graph (Zack Labe, from GISTEMP) and Rantanen et al. 2022 both use 1979 onward and get "almost 4×." Accept 3–4×. The point is <b>much faster</b>, and the next 8 days explain why.</div>
+  </section>
+
+  <section class="block">
+    <h3>Corrections to the packet and teacher guide</h3>
+    <div class="mis">
+      <div><b>Explain 2, Northern Hemisphere step.</b> The teacher guide says students "should discuss that <s>water has a higher albedo than land, because it is 'brighter'</s>." That's backwards. Open ocean is the <b>darkest</b> large surface on Earth (albedo ≈ 0.06). Snow-free land is about 0.1–0.4. Glare off water only happens at low sun angles. The correct reasoning: the Northern Hemisphere has about <b>two-thirds of Earth's land</b>, so it has room for big <b>continental ice sheets and seasonal snow</b> that can grow or melt. When they melt, they expose darker ground. The Southern Hemisphere is mostly ocean, and Antarctica stays frozen year-round. So changes in northern ice change Earth's overall albedo the most.</div>
+      <div><b>Explain 2 summary line</b> says the Arctic warms at "<s>twice the rate</s>" of the rest of the planet. Everywhere else, the 5E says "almost 4 times." Use <b>~4×</b> (Rantanen et al. 2022, 1979–2021). Older sources said "twice," which is why the number is mixed up.</div>
+      <div><b>The Greenhouse Effect Text</b> labels sunlight "long-wave" and infrared "short-wave." It's the reverse: incoming sunlight is <b>short-wave</b> (visible/UV) and Earth's outgoing heat is <b>long-wave</b> (infrared). Tell students before they annotate.</div>
+      <div><b>Burning Fossil Fuels Text</b> says emissions reached "<s>204 metric tons</s>" a year by 1850. The real figure is about <b>200 million metric tons of CO₂</b> per year (Global Carbon Project).</div>
+      <div><b>Explain 1 key point</b> says the Industrial Revolution "<s>occurred in around 1850</s>." It ran from about <b>1760 to 1840</b>, starting in Britain. 1850 is when reliable global thermometer records begin, and 1850–1900 is the standard "pre-industrial" baseline. Say "since the Industrial Revolution" and use 1850 only as the baseline year.</div>
+      <div><b>Class Consensus "select groups" paragraphs</b> (Explain 1 and Explain 2) were copied from Earth-Sun Dynamics. They tell you to elevate ideas about "<s>how Earth's varying position with respect to the Sun impacts … glacial-interglacial cycles</s>." Instead, pick groups whose work surfaces <b>this</b> 5E's key points (listed on Days 5 and 8).</div>
+      <div><b>Carbon-cycle stock tables (Explore 1, Part 2)</b> don't conserve matter between the two eras. Fossil fuels drop by 1,000 Gt, but the other reservoirs grow by about 3,600 Gt. Real cumulative fossil emissions since 1750 are about 500 Gt C. Use the <b>flow</b> tables for conservation (−10 + 5 + 2.5 + 2.5 = 0), treat the stocks as illustrative, and don't ask students to check conservation with them.</div>
+      <div><b>Engage prep box</b> lists the routine as Rumors, but the procedure uses <b>Domino Discover</b>. Use Domino Discover.</div>
+      <div><b>Climate Feedbacks Rubric, Cause &amp; Effect row</b> mentions "ocean currents," which this 5E never investigates. Accept a causal link through <b>ice-albedo and greenhouse-gas feedbacks</b>.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Handle the Engage with care</h3>
+    <p>The Engage video is about Indigenous Arctic communities whose food, travel and homes depend on sea ice and permafrost. Frame them as <b>experts and observers</b> of the change, not only as victims. Some students also bring climate skepticism or anxiety from home. Name both early: <i>"In this class we look at the evidence and decide what it supports. You'll get to test skeptics' arguments yourselves on the last day."</i> Remind students that "positive" feedback means <b>amplifying</b>, not good. Close Day 10 with what people and communities are doing about it. The next 5E covers impacts on people.</p>
+  </section>
+
+  <section class="block">
+    <h3>Misconceptions to listen for</h3>
+    <div class="mis">
+      <div><s>"CO₂ traps sunlight" / "CO₂ blocks sunlight."</s> Sunlight passes through. CO₂ absorbs <b>outgoing infrared</b> from the surface and sends some back down. In the PhET sim, the yellow lines don't change.</div>
+      <div><s>"The greenhouse effect is the hole in the ozone layer."</s> They're different problems. Ozone absorbs incoming UV, and the ozone hole is not the main cause of warming.</div>
+      <div><s>"The greenhouse effect is bad."</s> Without it Earth would average about −18 °C. The problem is the <b>enhanced</b> greenhouse effect.</div>
+      <div><s>"Positive feedback is good for the planet."</s> In science, positive means <b>amplifying</b> (more of the same change). It destabilizes the system.</div>
+      <div><s>"Water is shiny, so the ocean reflects sunlight."</s> The open ocean absorbs about 94% of sunlight. It's one of the darkest surfaces on Earth.</div>
+      <div><s>"Burning fuel destroys carbon" / "makes new carbon."</s> The carbon moves from the geosphere into the atmosphere. Matter is conserved.</div>
+      <div><s>"CO₂ followed temperature in the past, so it can't be causing warming now."</s> CO₂ can be <b>both</b> an effect and a cause, which is what a feedback is. Today, CO₂ is rising first.</div>
+      <div><s>"The Arctic warms faster because it gets more sunlight"</s> or <s>"because of the ozone hole."</s> It gets less sunlight. It warms faster because it has <b>ice to lose</b> (albedo feedback).</div>
+      <div><s>"Melting sea ice raises sea level."</s> Floating ice doesn't. Melting <b>land</b> ice (Greenland, Antarctica) does. This comes up in the next 5E.</div>
+      <div><s>"It was cold last week, so warming isn't real."</s> One year (or one day) is weather noise. Climate is the long-term trend.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Key vocabulary</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Temperature anomaly</div>How much warmer or colder than a baseline average (e.g., 1951–1980). It is not the actual temperature.</div>
+      <div class="card"><div class="lbl">Correlation vs causation</div>Two things change together vs one actually makes the other change. Causation needs a <b>mechanism</b> and empirical evidence.</div>
+      <div class="card"><div class="lbl">ppm</div>Parts per million. 421 ppm CO₂ means 421 CO₂ molecules per million molecules of air.</div>
+      <div class="card"><div class="lbl">Carbon reservoir / flow</div>A place carbon is stored (atmosphere, ocean, biomass, fossil fuels) / how much moves between two reservoirs each year.</div>
+      <div class="card"><div class="lbl">Rate of change</div>(final − initial) ÷ time. Here, ppm per year.</div>
+      <div class="card"><div class="lbl">Greenhouse effect</div>Greenhouse gases absorb infrared from Earth's surface and re-emit some back down, keeping the surface warmer.</div>
+      <div class="card"><div class="lbl">Anthropogenic</div>Caused by humans.</div>
+      <div class="card"><div class="lbl">Albedo</div>The fraction of sunlight a surface reflects. 0 = reflects none, 1 = reflects all.</div>
+      <div class="card"><div class="lbl">Feedback loop</div>A change causes effects that come back and change the original change. <b>Positive</b> = amplifies (destabilizes). <b>Negative</b> = dampens (stabilizes).</div>
+      <div class="card"><div class="lbl">Arctic amplification</div>The Arctic warming faster than the global average, mainly through the ice-albedo feedback.</div>
+      <div class="card"><div class="lbl">Permafrost / cryosphere</div>Ground frozen for 2+ years / all of Earth's frozen water and ground.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Pacing and logistics notes</h3>
+    <ul>
+      <li><b>Why 10 days?</b> The curriculum says 7–9 days, but it has two full labs (carbon cycle + PhET, and the heat-lamp jars + graphing) and two Class Consensus Discussions. At 50 minutes, 10 days runs each one in full. <b>8–9-day version:</b> skip the outdoor walk and use the video (Day 6). Assign both Summary Tasks as homework. Have students make the Day 7 graphs in the student chapter (already drawn) instead of in Google Sheets. Merge Days 7 and 8.</li>
+      <li><b>45-minute periods:</b> cut the Do Now to 3 minutes and move the item marked <i>flex</i> to homework.</li>
+      <li><b>Do Now / Exit Slip boxes</b> are in the Performance Task Organizer (Classes 1–6). After Class 6, students use the back of the day's handout.</li>
+      <li><b>Absent students:</b> every packet section maps to an anchor in the <a href="../unit4-climate-change/unit4-climate-feedbacks.html">student chapter</a>, which has real NOAA/NASA/NSIDC data, the carbon model, a greenhouse model and the card sorts.</li>
+      <li><b>Lab safety (Day 6):</b> heat lamps get very hot. Keep them clamped, away from paper edges, and unplug them before moving. Use oven mitts.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>How the homework stays AI-proof</h3>
+    <p>Each night's homework is a <b>hand-drawn model</b>: a diagram, map, graph or comic. Four rules make it hard to outsource:</p>
+    <ul>
+      <li><b>Paper and pencil (or colored pencils) only.</b> No printed or digitally made images.</li>
+      <li><b>Every task references something only your class has.</b> Examples: their own jar data, the surface they stood on, their group's card sort, an idea from Domino Discover.</li>
+      <li><b>Every drawing has one personal "I chose…" annotation</b> explaining a decision the student made.</li>
+      <li><b>30-second check the next day.</b> During the Do Now, pick 3–4 students to explain one part of their drawing out loud.</li>
+    </ul>
+  </section>
+
+  <div class="pager"><span></span><a class="next" href="#day-1"><small>Start</small>Day 1 · Engage →</a></div>
+</div>
+
+<!-- ===================== DAY 1 ===================== -->
+<div class="view" id="day-1" data-phase="engage" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 1 · Engage → Explore 1 launch</div>
+    <h2>We Are Warming</h2>
+    <p class="q">What is happening to temperatures and Arctic ice today?</p>
+    <div class="tags"><span class="tag">Packet p. 74 (We are Warming) · p. 75 graphs</span><span class="tag">Individual → whole class</span><span class="tag">Domino Discover</span><span class="tag">Video: As Arctic warms, Indigenous communities…</span><span class="tag">DQB + Ideas for Investigations chart</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>The graph shows temperature <b>change</b> (anomaly) from a baseline, not actual temperature.</li>
+      <li>Both the Arctic and the globe are warming, but the <b>Arctic is warming about 3–4× faster</b>.</li>
+      <li>Orbital factors can't explain today's warming (from Earth-Sun Dynamics), so something else must.</li>
+      <li>CO₂ and temperature rise and fall together in the ice cores. That is a <b>correlation</b>, and we still need evidence of a <b>cause</b>.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Class 1 box. Pick an option below.</p></div></li>
+      <li><div class="t">5–9</div><div><h4>Driving Question Board</h4><p>Ask a volunteer to remind the class which questions were left open at the end of Earth-Sun Dynamics.</p><p class="say">"We know global temperatures are rising, even though the Milankovitch cycles say we should be cooling. Let's zoom in on the last several decades and see if that helps us figure out what's causing climate change today."</p></div></li>
+      <li><div class="t">9–17</div><div><h4>Video</h4><p>Hand out <i>We are Warming</i>. Show <i>As Arctic warms, Indigenous communities there face dramatic changes to their way of life</i>. Take 2–3 reactions: <i>What's changing for these communities?</i></p></div></li>
+      <li><div class="t">17–23</div><div><h4>Read the graph together</h4><p>Point to the note: "the graph shows <b>change</b> in temperatures, not actual temperatures." Ask: <i>Which line is climbing faster? Why is the Arctic line so much bumpier?</i> (A small region has more year-to-year weather noise.)</p></div></li>
+      <li><div class="t">23–30</div><div><h4>Brainstorm (individual)</h4><p>p. 74 prompt: <i>Since we know this isn't due to orbital factors, what do you think is causing warming, and why is the rate of warming not consistent across the planet?</i> Students should use prior knowledge, including greenhouse gases from Unit 1 and the Global Energy Budget model.</p></div></li>
+      <li><div class="t">30–40</div><div><h4>Domino Discover</h4><p>Each student shares one idea; the next builds on it. Chart ideas on the <b>Ideas for Investigations</b> chart. Look for: greenhouse gases, CO₂, human activities, ice melting. If no one brings up ice, ask: <i>What's different about the surface of the Arctic compared to most of the planet?</i></p></div></li>
+      <li><div class="t">40–47</div><div><h4>Launch Explore 1</h4><p>Hand out the <i>Carbon Dioxide and Air Temperature Investigation</i>. Before any questions, project the 800,000-year CO₂ and temperature graphs (p. 75). Ask: <i>What do you notice?</i></p><p class="say">"You just described a correlation. What would we need to know to say one of them <b>causes</b> the other?"</p><p>Record answers like "how CO₂ could heat the air" and "which changed first." Those questions drive the next four days.</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Recall</div><p>According to the orbital factors we studied, should Earth be warming or cooling right now? What has actually been happening?</p><div class="ans"><b>Answer:</b> orbital factors point to slow cooling, but global temperatures are rising fast.</div></div>
+      <div class="card"><div class="lbl">Option B · Anomaly</div><p>A graph says the Arctic was "+2.9 °C" in one year. Does that mean it was 2.9 °C there? What does it mean?</p><div class="ans">No. It was 2.9 °C <b>warmer than its baseline average</b>. The Arctic is still very cold.</div></div>
+      <div class="card"><div class="lbl">Option C · Prior knowledge</div><p>Name one thing you've heard that causes global warming. Where did you hear it?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What does the y-axis actually measure? What is "0" on this graph?<span>Gets at anomaly vs actual temperature.</span></li>
+      <li>Which line has the steeper slope? How could you tell how many times faster?</li>
+      <li>Why might one region warm faster than the whole planet?</li>
+      <li>What makes the Arctic different from where you live?</li>
+      <li>On the ice-core graphs, which one changes first? Can you tell from this graph?</li>
+      <li>If two things go up together, does that prove one causes the other? Give an example where it wouldn't.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">During graph reading · hinge question</div>
+      <h4>The Arctic trend is about +0.7 °C per decade and the global trend is about +0.2 °C per decade. Which statement is best supported?</h4>
+      <ul class="opts">
+        <li>A. Only the Arctic is warming<em>Misses that the global line is rising too.</em></li>
+        <li class="right">B. Both are warming, and the Arctic is warming about 3–4× faster<em>Correct (0.7 ÷ 0.2 ≈ 3.5).</em></li>
+        <li>C. The Arctic is now warmer than the global average temperature<em>Treats the anomaly as an actual temperature.</em></li>
+        <li>D. The Arctic is warming faster because it gets more sunlight<em>The Arctic gets less sunlight. This sets up the albedo investigation.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During launch · thumbs</div>
+      <h4>"Thumbs up if the ice-core graph proves CO₂ causes warming. Thumbs down if it doesn't prove it yet."</h4>
+      <p>You want thumbs down with a reason: "they move together, but we don't know which causes which, or how." Keep the thumbs-up students' reasoning for Day 5.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>We are Warming: Brainstorm<small>p. 74 · no single right answer; look for idea + reason</small></span></summary><div class="keybody">
+      <p>Ideas to listen for (teacher guide Look &amp; Listen For): <b>greenhouse gases</b> are related to warming; <b>carbon dioxide</b> is related to warming; <b>human activities</b> are related to warming; <b>ice melting makes the Arctic warm faster</b>. Push for the <i>why</i>: "cars and factories release CO₂, which traps heat" is better than "pollution." For the uneven rate, any idea involving ice, snow, color or reflection is worth highlighting.</p>
+      <div class="note"><b>Graph reading:</b> both lines rise. The Arctic line is steeper and noisier. Recent Arctic anomalies reach about +2 to +3 °C versus about +1 to +1.3 °C globally (NASA GISTEMP, 1951–1980 baseline).</div>
+    </div></details>
+    <details class="key"><summary><span>Launch notice-and-wonder (800,000-year graphs)<small>p. 75 · oral</small></span></summary><div class="keybody">
+      <p>Students should notice that CO₂ and temperature <b>rise and fall together</b>, roughly every 100,000 years, and that today's CO₂ point is far above every earlier peak. To claim causation they need: (1) a <b>mechanism</b> for how CO₂ could change temperature; (2) evidence about <b>what changed first</b>; (3) evidence about <b>where today's CO₂ came from</b>.</p>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>In one sentence each: what does the We are Warming graph show, and what is one thing it doesn't tell us?</p><div class="ans">Shows the Arctic warming ~3–4× faster than the globe. Doesn't tell us the cause, or actual temperatures.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>What is one piece of evidence we'd need to show CO₂ <i>causes</i> warming, not just correlates with it?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>View From the North Pole</h4>
+      <p>Draw the Northern Hemisphere as seen from directly above the North Pole: a circle with the Arctic Ocean in the middle and the edges of North America, Greenland, Europe and Asia around it. Shade where the graph says warming is fastest, and add a legend. Around the outside, write your best guess for why the Arctic is warming faster.</p>
+      <ul class="checks">
+        <li>Arctic Ocean, Greenland and at least two continents labeled</li>
+        <li>Shading plus a legend: "warming fastest" vs "warming slower"</li>
+        <li>New York City marked, with how much faster the Arctic is warming than the globe (from the graph)</li>
+        <li>"I chose…" note: one idea you heard in <b>today's Domino Discover</b> that you hadn't thought of, and whether you agree with it</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#overview"><small>Back</small>← Before you teach</a><a class="next" href="#day-2"><small>Next</small>Day 2 · CO₂ over time →</a></div>
+</div>
+
+<!-- ===================== DAY 2 ===================== -->
+<div class="view" id="day-2" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 2 · Explore 1</div>
+    <h2>CO₂ Over Time and the Carbon Cycle</h2>
+    <p class="q">How do carbon dioxide levels in the air both impact and change as a result of Earth's systems?</p>
+    <div class="tags"><span class="tag">Packet pp. 75–79+ (Parts 1–2)</span><span class="tag">Table groups</span><span class="tag">Calculators</span><span class="tag">Domino Discover</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Over 800,000 years, CO₂ stayed between about <b>170 and 300 ppm</b>. Today it's over <b>420 ppm</b>.</li>
+      <li>Today's rate of rise (~0.7 ppm/yr on average since the 1800s) is about <b>100× faster</b> than the end of the last ice age (~0.005–0.009 ppm/yr).</li>
+      <li>The sharp rise starts with the <b>Industrial Revolution</b>.</li>
+      <li>Before then, the carbon cycle was <b>balanced</b>. Now fossil fuels add about 10 Gt C/yr, and every other reservoir gains carbon. Carbon is moved, <b>not created or destroyed</b>.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 2 box. Call on 3–4 students to explain their North Pole drawing.</p></div></li>
+      <li><div class="t">4–16</div><div><h4>Part 1: Analyzing Changing Carbon Levels</h4><p>Table groups answer Q1–3 on the 800,000-year graph, then Q1–4 on the 20,000-year graph. Model the first estimate on the board: the CO₂ rise starts around 18,000 years ago and reaches 280 ppm in the early Holocene, about 10,000 years ago.</p></div></li>
+      <li><div class="t">16–20</div><div><h4>Pause: name the event</h4><p>Ask: <i>When does the line shoot straight up? What were people starting to do then?</i> Name the <b>Industrial Revolution</b>: steam engines burning coal, starting in Britain around 1760.</p><p class="say">"You'll see exactly what happened to the carbon during the Industrial Revolution, and why CO₂ rose so fast."</p></div></li>
+      <li><div class="t">20–40</div><div><h4>Part 2: Pre- and Post-Industrial carbon cycles</h4><p>Groups draw the four reservoirs (atmosphere, ocean, land biomass, fossil fuels) for each era, label the stocks and the flow arrows, and fill in the In / Out / Net tables. Confer. The most common mistake is adding the stocks instead of the flows.</p></div></li>
+      <li><div class="t">40–47</div><div><h4>Domino Discover</h4><p>Prompt: <i>How did the carbon cycle change after the Industrial Revolution compared to before?</i> Listen for: more carbon moving from fossil fuels to the atmosphere; more carbon moving from the atmosphere to all other systems; more carbon in every system except the geosphere; the system is no longer balanced.</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Rate warm-up</div><p>A plant grew from 10 cm to 40 cm in 6 weeks. What was its rate of growth?</p><div class="ans">(40 − 10) ÷ 6 = <b>5 cm per week</b>. Same equation as today's CO₂ rate.</div></div>
+      <div class="card"><div class="lbl">Option B · Unit 2 recall</div><p>Name two ways carbon moves into or out of the atmosphere.</p><div class="ans">Photosynthesis (out), respiration and decay (in), ocean absorbing or releasing CO₂, burning fuels, volcanoes.</div></div>
+      <div class="card"><div class="lbl">Option C · Bank account</div><p>You get $109 and spend $107 each week. What happens to your balance? What if someone adds $10 a week?</p><div class="ans">+$2 per week; +$12 per week. The carbon model works the same way.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What do you notice about the stability of the carbon cycle before and after the Industrial Revolution?</li>
+      <li>How does the movement of carbon change after the Industrial Revolution?</li>
+      <li>Which reservoirs have more carbon after the Industrial Revolution?</li>
+      <li>How does your model of the carbon cycle change after the Industrial Revolution?</li>
+      <li>Where did the carbon in the atmosphere come from? Was any of it made new?<span>Conservation of matter.</span></li>
+      <li>If fossil fuels add 10 a year, why does the atmosphere only gain 5?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Part 1 · hinge question</div>
+      <h4>CO₂ rose 90 ppm in about 10,000 years after the last ice age, and about 140 ppm in about 200 years since the Industrial Revolution. Compared to the earlier rise, today's rate is…</h4>
+      <ul class="opts">
+        <li>A. about the same<em>Compared amounts instead of rates.</em></li>
+        <li>B. about 2× faster<em>Compared 140 to 90 without dividing by time.</em></li>
+        <li class="right">C. about 50–150× faster<em>Correct: 0.7 vs 0.009 ppm/yr ≈ 78×. Depending on their time estimates, students get roughly 50–150×.</em></li>
+        <li>D. slower, because it's a shorter time period<em>Thinks a shorter time means a slower rate.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Part 2 · whiteboards</div>
+      <h4>"Post-industrial atmosphere: what's the net change per year?" (In 77.5 + 120 + 10 = 207.5; Out 80 + 122.5 = 202.5; <b>+5 Gt C/yr</b>)</h4>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 1: Analyzing Changing Carbon Levels over Time<small>pp. 75–76</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">800k Q1. Relationship between temperature and atmospheric CO₂?</div><p class="aa">They <b>rise and fall together</b>: warm interglacials have high CO₂ and ice ages have low CO₂. That's a strong positive correlation.</p></div>
+      <div class="qa"><div class="qq">800k Q2. Range of CO₂ before the Industrial Revolution?</div><p class="aa">About <b>170–300 ppm</b> (lows ~170–190 in ice ages, highs ~280–300 in warm periods).</p></div>
+      <div class="qa"><div class="qq">800k Q3. How is the rate of change different now?</div><p class="aa">Much faster. Past changes took thousands of years; today's rise to 420+ ppm took under 200 years, so it looks like a <b>vertical line</b> on the graph.</p></div>
+      <div class="qa"><div class="qq">20k Q1–2. Time for 190 → 280 ppm, and the rate</div><p class="aa">About <b>10,000 years</b> (accept 8,000–18,000 depending on reading). 90 ÷ 10,000 ≈ <b>0.009 ppm/yr</b> (18,000 yr gives 0.005).</p></div>
+      <div class="qa"><div class="qq">20k Q3–4. Time for 280 → ~421 ppm, and the rate</div><p class="aa">From about 1800–1850 to 2023, so about <b>170–220 years</b>. 141 ÷ 200 ≈ <b>0.7 ppm/yr</b> (0.64–0.83 accepted). That's roughly <b>100× faster</b>. In the last decade CO₂ has risen about 2.5 ppm per year (NOAA Mauna Loa).</p></div>
+    </div></details>
+    <details class="key"><summary><span>Part 2: In / Out / Net tables<small>Gt C per year · flows only</small></span></summary><div class="keybody">
+      <div class="scroll"><table>
+        <thead><tr><th>Reservoir</th><th class="num">Pre in</th><th class="num">Pre out</th><th class="num">Pre net</th><th class="num">Post in</th><th class="num">Post out</th><th class="num">Post net</th></tr></thead>
+        <tbody>
+          <tr><td>Atmosphere</td><td class="num">169</td><td class="num">169</td><td class="num"><b>0</b></td><td class="num">207.5</td><td class="num">202.5</td><td class="num"><b>+5</b></td></tr>
+          <tr><td>Land biomass</td><td class="num">109</td><td class="num">107</td><td class="num"><b>+2</b></td><td class="num">122.5</td><td class="num">120</td><td class="num"><b>+2.5</b></td></tr>
+          <tr><td>Ocean</td><td class="num">60</td><td class="num">62</td><td class="num"><b>−2</b></td><td class="num">80</td><td class="num">77.5</td><td class="num"><b>+2.5</b></td></tr>
+          <tr><td>Fossil fuels</td><td class="num">0</td><td class="num">0</td><td class="num"><b>0</b></td><td class="num">0</td><td class="num">10</td><td class="num"><b>−10</b></td></tr>
+        </tbody>
+      </table></div>
+      <p><b>Conservation check:</b> pre 0 + 2 − 2 + 0 = 0; post 5 + 2.5 + 2.5 − 10 = 0. Carbon is moved, not created.</p>
+      <div class="note"><b>Don't use the stock tables for conservation.</b> Their before/after totals don't balance (see Corrections). The 10 Gt C/yr fossil flow is realistic: about 37 billion tonnes of CO₂ per year (Global Carbon Project).</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Which reservoir lost carbon after the Industrial Revolution, and where did that carbon go?</p><div class="ans">Fossil fuels (geosphere), −10 Gt C/yr. It went to the atmosphere (+5), ocean (+2.5) and land biomass (+2.5).</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Was the carbon cycle stable before the Industrial Revolution? After? Use one number for each.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Carbon Bank Statements</h4>
+      <p>Draw the four carbon reservoirs as four <b>jars, piggy banks or bank vaults</b>. For the post-industrial model, draw every deposit and withdrawal as a labeled arrow, and write each reservoir's "balance change per year" on a receipt taped to it.</p>
+      <ul class="checks">
+        <li>Four reservoirs labeled with their Earth system (atmosphere, hydrosphere, biosphere, geosphere)</li>
+        <li>All five post-industrial flows, with numbers</li>
+        <li>Receipts showing +5, +2.5, +2.5, −10, and a line proving they add to 0</li>
+        <li>"I chose…" note: the <b>rate of change your group calculated</b> today for 280 → 421 ppm, and how many years you estimated</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-1"><small>Back</small>← Day 1 · We are warming</a><a class="next" href="#day-3"><small>Next</small>Day 3 · Greenhouse sim →</a></div>
+</div>
+
+<!-- ===================== DAY 3 ===================== -->
+<div class="view" id="day-3" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 3 · Explore 1</div>
+    <h2>Modeling the Greenhouse Effect</h2>
+    <p class="q">What impact does atmospheric carbon dioxide, a greenhouse gas, have on air temperature?</p>
+    <div class="tags"><span class="tag">Part 3 + Making sense of the CO₂ and Air Temperature Investigation</span><span class="tag">Table groups</span><span class="tag">PhET Greenhouse Effect (Waves)</span><span class="tag">Domino Discover</span><span class="tag">1 device per pair</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Sunlight (yellow) passes through the atmosphere. Clouds and bright surfaces reflect some of it back to space.</li>
+      <li>The ground absorbs sunlight and gives off <b>infrared</b> (red), which is heat.</li>
+      <li>Greenhouse gases absorb infrared and send some back toward Earth. <b>More greenhouse gas means more energy stays and the temperature rises</b>, while incoming sunlight stays the same.</li>
+      <li>Energy changes form (light → heat) but is not created or destroyed.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 3 box. Two students explain their bank statements.</p></div></li>
+      <li><div class="t">4–7</div><div><h4>Launch Part 3</h4><p class="say">"Yesterday: more carbon in the air. Today: what does that carbon actually <b>do</b> in the atmosphere?"</p><p>Demo the setup once on the projector: <b>Waves</b> screen, Greenhouse Gas Concentration to <b>None</b>, then <b>Start Sunlight</b>.</p></div></li>
+      <li><div class="t">7–27</div><div><h4>Part 3: Greenhouse Effect sim</h4><p>Pairs answer Q3–5 (yellow lines, clouds, red lines), then slowly raise the greenhouse gases and fill in the Q6 table. Confer. Make sure they wait for the thermometer to settle before recording.</p></div></li>
+      <li><div class="t">27–39</div><div><h4>Making sense (individual)</h4><p>See-Think-Wonder rows plus analysis Q1–3. Then groups agree on <b>one</b> important idea or question to share.</p></div></li>
+      <li><div class="t">39–46</div><div><h4>Domino Discover</h4><p>Listen for: sunlight comes to Earth; some sunlight hitting ice or clouds bounces back to space; heat leaves Earth; greenhouse gases send heat back; more greenhouse gas means more heat sent back. If "bounces off ice or clouds" doesn't come up, send pairs back to the cloud in the sim. Day 6 depends on it.</p></div></li>
+      <li><div class="t">46–50</div><div><h4>Transfer questions <i>(flex)</i> + exit slip</h4><p><i>What could your results mean for different surfaces on Earth? How might ice, land and water interact with radiation differently? What factors make the sim less like the real world?</i></p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Everyday heat</div><p>Why is a car with the windows closed so much hotter inside on a sunny day than the air outside?</p><div class="ans">Sunlight gets in through the glass and heats the seats; the heat can't easily get back out.</div></div>
+      <div class="card"><div class="lbl">Option B · Conservation</div><p>Yesterday carbon wasn't created or destroyed. Do you think energy can be created or destroyed? Give an example.</p></div>
+      <div class="card"><div class="lbl">Option C · Predict</div><p>If we add more CO₂ to the air but the Sun stays the same, predict what happens to Earth's temperature, and why.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Where is the energy coming from?</li>
+      <li>How does the energy change as it interacts with the surface of the Earth?</li>
+      <li>How does the energy react as greenhouse gas levels rise?</li>
+      <li>Did the yellow lines change when you added greenhouse gas? So what <i>did</i> change?<span>Sunlight is constant; outgoing infrared changes.</span></li>
+      <li>What happens to a yellow line that hits a cloud? Where else on Earth might that happen?<span>Plants the idea for Explore 2.</span></li>
+      <li>Is any energy destroyed in the sim? Where does it all end up?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">During the sim · hinge question</div>
+      <h4>When you raise the greenhouse gas concentration, the temperature rises because…</h4>
+      <ul class="opts">
+        <li>A. more sunlight comes in<em>The yellow lines don't change; the Sun is constant.</em></li>
+        <li class="right">B. more infrared from the surface is sent back toward Earth, so more energy stays<em>Correct.</em></li>
+        <li>C. greenhouse gases block sunlight<em>That would cool Earth. Mixes up incoming and outgoing.</em></li>
+        <li>D. greenhouse gases are hot<em>Thinks the gas is a heat source instead of absorbing and re-emitting.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">Before Domino Discover · fist to five</div>
+      <h4>"How confident are you that you can explain HOW CO₂ warms Earth, not just that it does?"</h4>
+      <p>Pair 1s and 2s with a 5 for two minutes before the routine.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 3: Modeling the Effect of the Carbon Cycle on Temperature<small>Q3–6</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Q3. What do the yellow lines represent?</div><p class="aa"><b>Sunlight</b>: incoming light energy from the Sun (visible light, short-wave).</p></div>
+      <div class="qa"><div class="qq">Q4. How does the yellow line change at a cloud, and why?</div><p class="aa">Some of it is <b>reflected back to space</b>. Clouds are bright and reflective, so that energy never reaches the ground.</p></div>
+      <div class="qa"><div class="qq">Q5. What do the red lines represent?</div><p class="aa"><b>Infrared radiation (heat)</b> given off by Earth's surface after it absorbs sunlight.</p></div>
+      <div class="qa"><div class="qq">Q6. Table: greenhouse gases / yellow / red / temperature</div>
+        <div class="scroll"><table><thead><tr><th>Greenhouse gases</th><th>Yellow (sunlight)</th><th>Red (infrared)</th><th>Temperature</th></tr></thead><tbody>
+          <tr><td>None</td><td>Straight in; some bounce off clouds</td><td>Straight out to space</td><td>Very cold (about −18 °C)</td></tr>
+          <tr><td>Some</td><td>No change</td><td>Some absorbed and sent back toward Earth</td><td>Rises</td></tr>
+          <tr><td>Lots</td><td>No change</td><td>Many bounce back and forth before escaping</td><td>Rises the most</td></tr>
+        </tbody></table></div>
+        <p class="aa">Accept the pattern, not exact numbers. The sim's readout depends on the setting and how long students wait.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Making sense of the CO₂ and Air Temperature Investigation<small>See-Think-Wonder + analysis Q1–3</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">See-Think-Wonder (key "See / Think" answers)</div><p class="aa"><b>Rate:</b> CO₂ rose ~100× faster after the Industrial Revolution; burning fossil fuels explains it. <b>Where CO₂ comes from/goes:</b> it moves among the atmosphere, ocean and living things (photosynthesis, respiration, decay, dissolving); it is not created or destroyed. <b>Movement after the IR:</b> fossil carbon now flows into the air at ~10 Gt C/yr, and every reservoir but the geosphere is gaining. <b>Greenhouse gases:</b> more gas, more infrared sent back, higher temperature. <b>Energy:</b> sunlight → absorbed → infrared → partly returned by greenhouse gases; energy changes form but is not created or destroyed.</p></div>
+      <div class="qa"><div class="qq">Q1. Which reservoirs hold more carbon now than 300 years ago?</div><p class="aa">The <b>atmosphere, ocean and land biomass</b>. Fossil fuels hold less.</p></div>
+      <div class="qa"><div class="qq">Q2. How did human activity change relationships among the spheres?</div><p class="aa">Humans moved carbon from the <b>geosphere</b> (fossil fuels) into the <b>atmosphere</b>, and from there into the <b>hydrosphere</b> and <b>biosphere</b>. The balanced cycle became unbalanced.</p></div>
+      <div class="qa"><div class="qq">Q3. "As temperature ___, atmospheric CO₂ ___ because…"</div><p class="aa">"As temperature <b>increases</b>, CO₂ <b>increases</b> because…" they rise together in the ice cores, and the sim shows CO₂ traps heat. Accept either direction of cause today; the Elaborate shows it runs both ways.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Explain in 2–3 sentences how adding CO₂ raises temperature even though the Sun doesn't change.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>In the sim, what reflected sunlight back to space? What on Earth's surface might do the same thing?</p><div class="ans">Clouds. Ice and snow (sets up Explore 2).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Journey of a Sunbeam</h4>
+      <p>Draw a <b>4–6 panel comic</b> following one bit of energy from the Sun. It hits the ground, becomes heat (infrared), heads for space, meets a CO₂ molecule, and gets sent back down. Draw a second, shorter ending where a different sunbeam hits a cloud.</p>
+      <ul class="checks">
+        <li>Sunlight and infrared drawn in two different colors, with a key</li>
+        <li>The energy changes form at least once, and the panel says so</li>
+        <li>One panel explains why more CO₂ means more energy stays</li>
+        <li>"I chose…" note: the <b>greenhouse gas setting you saw on your device today</b> and the temperature you recorded at it</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-2"><small>Back</small>← Day 2 · CO₂ and carbon cycle</a><a class="next" href="#day-4"><small>Next</small>Day 4 · Human fingerprints →</a></div>
+</div>
+
+<!-- ===================== DAY 4 ===================== -->
+<div class="view" id="day-4" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 4 · Explain 1</div>
+    <h2>Human Fingerprints on the Carbon Cycle</h2>
+    <p class="q">How are atmospheric carbon dioxide levels and temperatures related?</p>
+    <div class="tags"><span class="tag">The Enhanced Greenhouse Effect Parts 1–2 · Greenhouse Effect Text · Burning Fossil Fuels Text</span><span class="tag">Triads</span><span class="tag">Text annotation</span><span class="tag">Think-Talk-Open Exchange</span><span class="tag">Video: Evidence Links Human Activity to Global Warming (PBS)</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Of today's ~421.6 ppm of CO₂, about <b>135 ppm comes from human activity</b>. Without it, CO₂ would sit inside the natural range.</li>
+      <li>Scientists know the extra CO₂ is from fossil fuels from its chemical <b>fingerprint</b>: it has no carbon-14 and is low in carbon-13, and oxygen in the air is falling as fuel burns.</li>
+      <li>Burning fossil fuels since the Industrial Revolution moved carbon from the geosphere into the air faster than sinks can take it back.</li>
+      <li>A causal claim needs evidence <b>plus a mechanism</b> (the greenhouse effect). A correlation alone is not enough.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 4 box. Two students explain their sunbeam comic.</p></div></li>
+      <li><div class="t">4–14</div><div><h4>Enhanced Greenhouse Effect, Part 1 (triads)</h4><p>Students analyze the emissions vs atmospheric CO₂ graph (1751–2022) and the natural vs human CO₂ table.</p></div></li>
+      <li><div class="t">14–19</div><div><h4>How do scientists know?</h4><p>Pause and ask: <i>How could scientists possibly tell which CO₂ came from people?</i> Then show the PBS video <b>Evidence Links Human Activity to Global Warming</b>. Afterward, name the three fingerprints on the board: carbon isotopes, falling oxygen, and amounts that match fuel burned.</p></div></li>
+      <li><div class="t">19–32</div><div><h4>Read and annotate (individual in triads)</h4><p>Students read the Greenhouse Effect Text and the Burning Fossil Fuels Text. Annotation key: ✔ connects to or confirms my idea · ◯ answers a question I had · <b>?</b> unclear, want to discuss. <b>First</b> correct two things on the board: (1) sunlight is <b>short-wave</b> and infrared is <b>long-wave</b>; (2) "204 metric tons" should be <b>~200 million</b> metric tons.</p></div></li>
+      <li><div class="t">32–36</div><div><h4>Part 2 Q1 brainstorm (individual)</h4><p>Prompt: <i>What is the relationship between human activities and temperature increase since the Industrial Revolution?</i> Students brainstorm evidence.</p></div></li>
+      <li><div class="t">36–44</div><div><h4>Think-Talk-Open Exchange</h4><p>This is the first time this routine appears in the unit, so model it. Think (1 min), Talk in triads (4 min; each person shares while the others listen for similarities and differences), Open exchange (3 min; whole class, building on each other). Students record new ideas they gained.</p></div></li>
+      <li><div class="t">44–50</div><div><h4>Outline the CER (individual)</h4><p>Claim, evidence, reasoning. Collect the outlines or photograph a sample so you can choose groups for tomorrow's Class Consensus.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Cause vs correlation</div><p>Ice cream sales and sunburns rise together every summer. Does ice cream cause sunburn? What's really going on?</p><div class="ans">No. A third factor (hot, sunny weather) causes both. Correlation isn't causation without a mechanism.</div></div>
+      <div class="card"><div class="lbl">Option B · Recall</div><p>In our carbon model, how many Gt of carbon per year come from fossil fuels, and how much of it stays in the atmosphere?</p><div class="ans">10 Gt C/yr; 5 stays in the air.</div></div>
+      <div class="card"><div class="lbl">Option C · Claim check</div><p>Write the strongest claim you can make right now about humans and CO₂. What evidence is still missing?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What evidence are you using in support of your claim?</li>
+      <li>Where did the evidence come from?</li>
+      <li>Is there any additional evidence that can support your claim?</li>
+      <li>How does the evidence connect to your claim?</li>
+      <li>What logical reasoning connects the evidence to your claim?</li>
+      <li>How do you know this is causation and not just correlation? What's the mechanism?<span>Push toward the greenhouse effect sim and text.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Part 1 · hinge question</div>
+      <h4>Without the CO₂ from human activity, today's level would be about 287 ppm. That value is…</h4>
+      <ul class="opts">
+        <li class="right">A. inside the natural 800,000-year range (~170–300 ppm)<em>Correct. The human share is what pushes us outside it.</em></li>
+        <li>B. far above the natural range<em>Mixed up the total (421.6) with the natural part.</em></li>
+        <li>C. lower than any ice age<em>Misread the range; ice-age lows were ~170–190.</em></li>
+        <li>D. impossible to compare<em>Hasn't connected Part 1 of the investigation to today.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During annotation · cold call</div>
+      <h4>"According to the text, what would Earth's average temperature be with no greenhouse gases?" (≈ −18 °C / 0 °F) "So is the greenhouse effect good or bad?" (Both: some is needed for life; the <i>enhanced</i> effect is the problem.)</h4>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Enhanced Greenhouse Effect, Part 1<small>graph + natural vs human table</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Graph: emissions vs atmospheric CO₂</div><p class="aa">Both are near flat until the mid-1800s, then rise together, steeply after 1950. Emissions grew from almost 0 to ~37 billion t CO₂/yr. CO₂ rose from ~280 to ~420 ppm. <i>Sources: Global Carbon Project / Our World in Data; Law Dome and NOAA Mauna Loa.</i></p></div>
+      <div class="qa"><div class="qq">Table: how much CO₂ is from natural factors?</div><p class="aa">421.6 − 134.91 = <b>286.68 ppm</b> from natural factors. That's a normal warm-period value. The <b>~135 ppm</b> from human activity is what pushes today far outside the 800,000-year range.</p></div>
+      <div class="qa"><div class="qq">Video: how do scientists know?</div><p class="aa">(1) Fossil carbon has no <sup>14</sup>C and is low in <sup>13</sup>C, and the air's carbon has shifted that way. (2) Atmospheric O₂ is falling in step with burning. (3) The CO₂ added matches the fuel burned; about half stays in the air.</p></div>
+    </div></details>
+    <details class="key"><summary><span>The two texts: key ideas to look for in annotations<small>✔ ◯ ?</small></span></summary><div class="keybody">
+      <p><b>Greenhouse Effect Text:</b> some sunlight is reflected by bright surfaces and clouds; the rest is absorbed and re-emitted as infrared. With no greenhouse gases, Earth would be about −18 °C. Greenhouse gases (CO₂, water vapor, methane) absorb heat and re-emit some toward Earth. More gas traps more heat, while the Sun's output hasn't changed.</p>
+      <p><b>Burning Fossil Fuels Text:</b> the Industrial Revolution (about 1760–1840) ran on burned coal. Emissions were ~200 million t CO₂/yr by 1850 and ~37 billion t in 2023. Burning interrupted the carbon cycle: carbon enters the air faster than it returns to the geosphere. The U.S. burns about 369 million gallons of gasoline per day at ~19 lb CO₂ per gallon.</p>
+    </div></details>
+    <details class="key"><summary><span>Part 2: Claim, Evidence, Reasoning (exemplar)<small>What is the relationship between human activities and temperature increase since the Industrial Revolution?</small></span></summary><div class="keybody">
+      <p><b>Claim:</b> Human activities, mainly burning fossil fuels since the Industrial Revolution, have caused the rise in global temperature.</p>
+      <p><b>Evidence:</b> CO₂ was ~170–300 ppm for 800,000 years and is now over 420 ppm. ~135 ppm of it is from human activity. It rose ~0.7 ppm/yr since the 1800s vs ~0.005–0.009 ppm/yr at the end of the ice age. Emissions and atmospheric CO₂ climb together from 1750. In our model, fossil fuels lose 10 Gt C/yr and the atmosphere gains 5. The isotope fingerprint shows the carbon is fossil. Global temperature is up ~1.2 °C.</p>
+      <p><b>Reasoning:</b> The greenhouse effect is a <b>mechanism</b>: CO₂ absorbs outgoing infrared and sends some back. In the sim, adding only greenhouse gas, with sunlight held constant, raised temperature. A mechanism, the right timing, the fossil fingerprint, and a speed no natural process matches together show <b>causation, not just correlation</b>.</p>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Name two pieces of evidence that the extra CO₂ comes from humans, not nature.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Finish: "The ice-core graph alone only shows a correlation. What turns it into a cause is…"</p><div class="ans">…the greenhouse effect mechanism (sim + text), plus the timing and fingerprint evidence.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Detective's Evidence Board</h4>
+      <p>Draw a detective's cork board. Pin the "suspect" (burning fossil fuels) on one side and the "case" (rising global temperature) on the other. Pin at least <b>four pieces of evidence</b> as drawn cards (mini-graph, number, sketch). Connect them with string lines. Label the main string with the <b>mechanism</b> that links suspect to case.</p>
+      <ul class="checks">
+        <li>4+ evidence cards, each with a real number from this 5E</li>
+        <li>One card shows how scientists know the carbon is from fossil fuels</li>
+        <li>The mechanism string is labeled (greenhouse effect, in your words)</li>
+        <li>"I chose…" note: the idea from <b>your triad's Think-Talk-Open Exchange</b> that changed or strengthened your claim</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-3"><small>Back</small>← Day 3 · Greenhouse sim</a><a class="next" href="#day-5"><small>Next</small>Day 5 · Class consensus →</a></div>
+</div>
+
+<!-- ===================== DAY 5 ===================== -->
+<div class="view" id="day-5" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 5 · Explain 1</div>
+    <h2>Class Consensus: How Human Activities Cause Climate Change</h2>
+    <p class="q">How are atmospheric carbon dioxide levels and temperatures related?</p>
+    <div class="tags"><span class="tag">Group CER on chart paper · Summary Task (after Explain 1)</span><span class="tag">Table groups → whole class</span><span class="tag">Class Consensus Discussion</span><span class="tag">Global Energy Budget model</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>The class agrees on these key points: the Industrial Revolution included burning fossil fuels; atmospheric CO₂ has risen since then; scientists have confirmed the rise is <b>anthropogenic</b>; the greenhouse effect explains how CO₂ keeps more energy in the system; so there is a <b>clear cause-and-effect relationship</b> between human activity and climate change.</li>
+      <li>The Global Energy Budget model now shows that orbital factors and solar output change the energy <b>entering</b>, and the greenhouse effect changes the energy <b>leaving</b>.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 5 box. Two students explain their evidence board.</p></div></li>
+      <li><div class="t">4–15</div><div><h4>Joint CER (table groups)</h4><p>On chart paper, groups combine their claims into one table: claim, combined evidence, reasoning. Circulate and choose 2–3 groups whose posters will bring out the key points. Don't pick randomly.</p></div></li>
+      <li><div class="t">15–18</div><div><h4>Orient to Class Consensus</h4><p class="say">"We have a lot of different ideas in the room. We need to agree, so we can be sure whether the Industrial Revolution caused the climate change happening now. A few groups will share, and then we'll decide what we can agree on as a class."</p><p>Title chart paper: <b>Class Consensus: How Human Activities Cause Climate Change</b>.</p></div></li>
+      <li><div class="t">18–36</div><div><h4>Class Consensus Discussion</h4><p>Follow the steps for each selected group: share (projected), one person restates, clarifying questions. Then table groups confer, followed by whole-class discussion, then agree, disagree or revise. Mark uncertain ideas with "?". Stop for the key points below if they get buried.</p></div></li>
+      <li><div class="t">36–41</div><div><h4>Update the Global Energy Budget</h4><p>Add a "greenhouse gases return infrared" arrow on the <b>outgoing</b> side, and note that the arrow grows as CO₂ rises.</p></div></li>
+      <li><div class="t">41–50</div><div><h4>Summary Task (after Explain 1)</h4><p>Individual. Finish as homework if needed. Use it to decide who needs a re-teach before Explore 2. Read every one.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Rank evidence</div><p>Which single piece of evidence best convinces a skeptic that humans cause warming? Why that one?</p></div>
+      <div class="card"><div class="lbl">Option B · Vocabulary</div><p>"Anthropogenic" = anthropo (human) + genic (made by). Use it in a sentence about CO₂.</p></div>
+      <div class="card"><div class="lbl">Option C · Model</div><p>Sketch the Global Energy Budget from Earth-Sun Dynamics from memory. Where would greenhouse gases go?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Which pieces of your group members' evidence are the same? Which are new?</li>
+      <li>Does your reasoning explain <i>how</i>, or only <i>that</i>?</li>
+      <li>What would a skeptic say about your claim? How does your evidence answer them?</li>
+      <li>Where does your claim use a rate of change? Why does the rate matter?</li>
+      <li>Is the claim about correlation or about cause? Which words in it tell us?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">End of consensus · hinge question</div>
+      <h4>Which piece of evidence shows the <i>mechanism</i> linking CO₂ to temperature?</h4>
+      <ul class="opts">
+        <li>A. CO₂ and temperature rise together in ice cores<em>Correlation only.</em></li>
+        <li>B. CO₂ is over 420 ppm today<em>A measurement, not a mechanism.</em></li>
+        <li class="right">C. Greenhouse gases absorb outgoing infrared and re-emit some toward Earth<em>Correct.</em></li>
+        <li>D. Emissions rose after 1850<em>Timing evidence, not a mechanism.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Class Consensus: key points to surface<small>teacher guide "Take Time for These Key Points"</small></span></summary><div class="keybody">
+      <ul>
+        <li>Historical evidence: the Industrial Revolution included burning fossil fuels. It ran about <b>1760–1840</b>, and 1850 is the usual baseline year (see Corrections).</li>
+        <li>Empirical evidence: atmospheric CO₂ has increased since then (~280 → 420+ ppm).</li>
+        <li>Scientists have confirmed the rise is <b>anthropogenic</b> (isotope and oxygen fingerprints).</li>
+        <li>The greenhouse effect explains how CO₂ increases the energy kept in Earth's atmosphere.</li>
+        <li>So there is a clear <b>cause-and-effect relationship</b> between these human activities and climate change.</li>
+      </ul>
+    </div></details>
+    <details class="key"><summary><span>Summary Task (after Explain 1)<small>Q1–5; the discussion-reflection items have no single answer</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Why is matter conserved in the overall Earth system?</div><p class="aa">Carbon only <b>moves</b> between reservoirs. The flows' net changes sum to zero (+5 + 2.5 + 2.5 − 10 = 0): what the geosphere loses, the others gain.</p></div>
+      <div class="qa"><div class="qq">2. Why is energy conserved in the overall Earth-Sun system?</div><p class="aa">Energy only <b>changes form</b> (light → heat) and moves between parts or out to space. Greenhouse gases change how much stays, not how much exists.</p></div>
+      <div class="qa"><div class="qq">3. How did empirical evidence establish a causal link between greenhouse gases and energy retained?</div><p class="aa">The sim changed <b>only</b> greenhouse gas, with sunlight constant, and temperature rose. That's a tested mechanism, and the text and data agree with it.</p></div>
+      <div class="qa"><div class="qq">4. How did rates of change link human activity to rising CO₂?</div><p class="aa">CO₂ is rising ~100× faster than any natural change in the ice cores, and the rise starts exactly when fossil-fuel burning does. No natural process matches that speed or timing.</p></div>
+      <div class="qa"><div class="qq">5. Have human activities and feedbacks stabilized or destabilized Earth's systems?</div><p class="aa"><b>Destabilized.</b> Before the IR, the carbon cycle was balanced. Now carbon is added faster than oceans and plants can absorb it, so CO₂ and temperature keep climbing.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>The Summary Task serves as today's exit slip.</p></div>
+      <div class="card"><div class="lbl">Option B · if the Summary Task goes home</div><p>One thing the class agreed on today, and one thing still marked "?" on the consensus chart.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>My Energy Budget, Version 2</h4>
+      <p>Redraw the class <b>Global Energy Budget</b> model on your own paper: the Sun, the atmosphere, the surface, and space. Use arrow <b>thickness</b> to show how much energy flows: sunlight in, sunlight reflected, infrared out, infrared sent back by greenhouse gases. Draw a 1850 version and a today version side by side.</p>
+      <ul class="checks">
+        <li>Incoming sunlight is the <b>same</b> thickness in both versions</li>
+        <li>The "sent back by greenhouse gases" arrow is thicker today</li>
+        <li>A label for which arrows orbital factors change and which arrows humans change</li>
+        <li>"I chose…" note: one idea marked "<b>?</b>" on today's consensus chart, and what evidence would settle it</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-4"><small>Back</small>← Day 4 · Human fingerprints</a><a class="next" href="#day-6"><small>Next</small>Day 6 · Ice and radiation →</a></div>
+</div>
+
+<!-- ===================== DAY 6 ===================== -->
+<div class="view" id="day-6" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 6 · Explore 2</div>
+    <h2>Ice and Radiation: Surfaces and Color</h2>
+    <p class="q">How is the icy surface of the poles changing?</p>
+    <div class="tags"><span class="tag">Ice and Radiation Parts 1–2</span><span class="tag">Table groups</span><span class="tag">Outdoors (or asphalt video)</span><span class="tag">Heat lamp jar lab</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Surfaces getting the <b>same sunlight</b> heat up differently. Dark surfaces get hotter than light ones.</li>
+      <li>In a controlled test, the black jar warms the most and the white jar the least. Paper color is the independent variable, and temperature over time is the dependent variable.</li>
+      <li>Ice is like the white jar. The ocean or land under it is like the dark jars.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Class 6 box (the last box in the PTO).</p></div></li>
+      <li><div class="t">4–10</div><div><h4>Launch</h4><p>Revisit the Day 1 idea that ice interacts with light differently. Ask what the greenhouse sim showed at clouds. Then: <i>Why do people get sunburned on ski trips? Why is a parking lot so hot in July?</i> Hand out <i>Ice and Radiation</i>. Ask what students notice about the two Frederikshåb Glacier images, and highlight the color change.</p></div></li>
+      <li><div class="t">10–22</div><div><h4>Part 1: Exploring sunny surfaces</h4><p><b>Sunny day:</b> take the class (thermometers held back) to black asphalt next to light concrete or grass. Groups feel and compare for 2 minutes and fill in the table. Discuss: <i>Which feels warmest, and why?</i> <b>Otherwise:</b> show <i>How hot is asphalt or cement in summertime?</i> and use the same table.</p></div></li>
+      <li><div class="t">22–46</div><div><h4>Part 2: Experimenting with surface color</h4><p>Students write a hypothesis, IV and DV. Cover four jars (white, blue, green, black), including the top, and poke the thermometer through so it reads above the paper. Place them the <b>same distance</b> from the heat lamp. Record the start temperature, then every 5 minutes for 20 minutes (more if time allows). Confer while the jars heat up.</p></div></li>
+      <li><div class="t">46–50</div><div><h4>Debrief + exit slip</h4><p>Ask: <i>Which jar warmed most? Least? How might that relate to the ice caps?</i> Listen for: ice heats less and reflects light; if ice melts, dark land and water heat more.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Everyday</div><p>On a sunny summer day, would you rather wear a black or a white T-shirt? Why?</p><div class="ans">White. It reflects more sunlight, so it absorbs less and stays cooler.</div></div>
+      <div class="card"><div class="lbl">Option B · Predict</div><p>Four jars wrapped in white, blue, green and black paper sit under one lamp. Rank them from warmest to coolest after 20 minutes.</p></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>In the greenhouse sim, what happened when sunlight hit a cloud?</p><div class="ans">Some of it was reflected back to space.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What do you observe about the different surfaces?</li>
+      <li>Which surface(s) feel warmer? Why?</li>
+      <li>How do you think the temperature of these surfaces affects the air above them?</li>
+      <li>Which colored surfaces increased the most in temperature? The least?</li>
+      <li>What patterns do you notice about increases in temperature?</li>
+      <li>What are you keeping the same for every jar? Why does that matter?<span>Controlled variables: lamp distance, jar size, start temperature, time.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">Before the lamp goes on · hinge question</div>
+      <h4>In this experiment, the independent variable is…</h4>
+      <ul class="opts">
+        <li>A. the temperature in the jar<em>That's the dependent variable.</em></li>
+        <li class="right">B. the color of the paper<em>Correct.</em></li>
+        <li>C. the heat lamp<em>It's a controlled variable (the same for all jars).</em></li>
+        <li>D. time<em>Time is when you measure, not what you change.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During data collection · quick hands</div>
+      <h4>"Point to the jar that is most like fresh snow." (white) "Like the open ocean?" (black or dark blue) "Which one warms the air inside it more?" (the dark one)</h4>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 1: Exploring sunny surfaces<small>table: surface type · color · temperature · feel</small></span></summary><div class="keybody">
+      <p>Expected pattern (record what your students actually observe): <b>black asphalt</b> is hottest, often too hot to touch for long. <b>Light concrete</b> is hot but cooler. <b>White paint lines</b> are noticeably cooler than the asphalt around them. <b>Grass</b> is near air temperature because plants cool by evaporating water. Look and listen for: "the black asphalt is much hotter than the white lines, even though both get the same sunlight" and "the lightest surfaces were coolest and the darkest were hottest."</p>
+    </div></details>
+    <details class="key"><summary><span>Part 2: Experimenting with surface color<small>hypothesis · IV/DV · data table · graph</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Hypothesis</div><p class="aa">Example: "If the jar's surface is darker, then the air inside will warm more, because dark colors absorb more light and turn it into heat."</p></div>
+      <div class="qa"><div class="qq">Independent / dependent variable</div><p class="aa">IV: <b>color of the paper</b>. DV: <b>air temperature in the jar over time</b>.</p></div>
+      <div class="qa"><div class="qq">Data and graph</div><p class="aa">Use class data. Expect black &gt; blue ≈ green &gt; white. Graph: x = time (min), y = temperature (°C), one line per color, a key and a title. If a group gets white warmest, check the lamp distance and whether the thermometer touched the paper.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Which jar warmed the most, and what does that suggest about what happens when Arctic ice melts?</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Name one source of error in your setup and how you'd fix it.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Heat Map of My Block</h4>
+      <p>Draw a bird's-eye map of the block around the school (or your home). Color each surface you'd find there (roofs, streets, sidewalks, trees, grass, water) using a key from <b>coolest</b> to <b>hottest</b> on a sunny day. Add arrows showing sunlight being reflected from the light surfaces.</p>
+      <ul class="checks">
+        <li>At least 5 surface types, each with a color in the key</li>
+        <li>A hottest-to-coolest ranking that matches your jar results</li>
+        <li>One sentence on what would happen to your block's temperature if all the dark roofs were painted white</li>
+        <li>"I chose…" note: <b>your group's jar data</b>. Which color warmed most, by how many degrees, and does your map ranking agree?</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-5"><small>Back</small>← Day 5 · Class consensus</a><a class="next" href="#day-7"><small>Next</small>Day 7 · Sea ice data →</a></div>
+</div>
+
+<!-- ===================== DAY 7 ===================== -->
+<div class="view" id="day-7" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 7 · Explore 2</div>
+    <h2>Sea Ice Since 1980</h2>
+    <p class="q">How is the icy surface of the poles changing?</p>
+    <div class="tags"><span class="tag">Ice and Radiation Part 3 + Making Sense of the Ice and Radiation Investigation</span><span class="tag">Pairs → groups</span><span class="tag">Google Sheet: Sea Ice Extent Since 1980</span><span class="tag">PBS: Documenting Glacial Change</span><span class="tag">Domino Discover</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Since about 1980, <b>temperature and ocean heat are trending up</b>, while <b>Arctic sea ice extent and Greenland ice mass are trending down</b>.</li>
+      <li>The relationship is inverse: as warming increases, ice decreases.</li>
+      <li>As ice melts, <b>darker surfaces are exposed</b>, and they heat more than the ice did.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Back of handout. Two students explain their block heat map.</p></div></li>
+      <li><div class="t">4–9</div><div><h4>Documenting Glacial Change</h4><p>Project the PBS image pairs. Ask: <i>What do you see happening?</i> Highlight both how much the glaciers shrank and how the regions <b>darkened</b>.</p><p class="say">"Your jars were a model. Let's see whether real data from the Arctic matches it."</p></div></li>
+      <li><div class="t">9–33</div><div><h4>Part 3: four line graphs (pairs)</h4><p>Pairs open their copy of the Sheet and make <b>four separate</b> line graphs: temperature, Arctic sea ice extent, Greenland ice mass, ocean heat. The scales are too different to share one graph. Then they answer Q1–3. Students who need it can watch <i>How to make a line graph in Google Sheets</i>. For extension, have students add a trendline and compare linear and exponential fits.</p></div></li>
+      <li><div class="t">33–42</div><div><h4>Making Sense (individual)</h4><p>See-Think-Wonder plus the two questions. Groups then pick one important idea or question.</p></div></li>
+      <li><div class="t">42–48</div><div><h4>Domino Discover</h4><p>Listen for: darker colors heat up more than lighter colors; when temperatures rise, ice melts; as ice melts, dark surfaces are revealed and heat more than the ice did. If the third idea doesn't come up, ask: <i>What's under the sea ice?</i></p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Graph skills</div><p>Why shouldn't you plot temperature (°C) and ice mass (billions of tons) on the same y-axis?</p><div class="ans">The scales are wildly different, so one line would look flat.</div></div>
+      <div class="card"><div class="lbl">Option B · Predict</div><p>Predict the direction (up, down, flat) of these since 1980: global temperature, Arctic sea ice, Greenland ice, ocean heat.</p><div class="ans">Up, down, down, up.</div></div>
+      <div class="card"><div class="lbl">Option C · Jar recall</div><p>What was yesterday's warmest jar, and by how much did it beat the white jar?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Which way is each line trending? Is it steady or speeding up?</li>
+      <li>Which graphs move in the same direction? Which move in opposite directions?</li>
+      <li>Why does every graph have ups and downs from year to year? Does that change the trend?</li>
+      <li>How does what you see here connect to your jar experiment?</li>
+      <li>Where is all the extra heat going? Which graph tells you?<span>Ocean heat: ~90% of the extra energy.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After graphing · hinge question</div>
+      <h4>Which statement best describes the relationship between ocean heat and Arctic sea ice extent since 1980?</h4>
+      <ul class="opts">
+        <li>A. Both increase<em>Misread the sea ice graph's direction.</em></li>
+        <li class="right">B. As ocean heat rises, sea ice extent falls (an inverse relationship)<em>Correct.</em></li>
+        <li>C. There is no relationship<em>Distracted by year-to-year noise.</em></li>
+        <li>D. Sea ice falling causes ocean heat to fall<em>Reversed the direction.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 3: Sea Ice Extent Since 1980<small>Q1–3 · check against real values</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Q1. Which factors are trending upward?</div><p class="aa"><b>Temperature</b> and <b>ocean heat content</b>.</p></div>
+      <div class="qa"><div class="qq">Q2. Which factors are trending downward?</div><p class="aa"><b>Arctic sea ice extent</b> and <b>Greenland ice mass</b>.</p></div>
+      <div class="qa"><div class="qq">Q3. Describe the relationships between the graphs.</div><p class="aa">As temperature and ocean heat rise, both kinds of ice decrease: an <b>inverse</b> relationship. The ice (the bright, reflective part of the Arctic) is disappearing as the planet warms.</p></div>
+      <div class="note"><b>Reality check (real data):</b> September Arctic sea ice is falling ~12–13% per decade, roughly 40% less than 1979–80 (NSIDC Sea Ice Index). Greenland is losing ~270 billion t of ice per year (NASA GRACE/GRACE-FO, 2002–2023). The ocean has absorbed ~90% of the extra heat (NOAA). If a student's graph disagrees, check the column they plotted.</div>
+    </div></details>
+    <details class="key"><summary><span>Making Sense of the Ice and Radiation Investigation<small>See-Think-Wonder + Q1–2</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">See-Think-Wonder</div><p class="aa">Darker colors heated more than lighter colors under the same light. Temperature and ocean heat rose while sea ice and Greenland ice shrank. The connection is color: ice is white and reflective, and the ocean and land are dark.</p></div>
+      <div class="qa"><div class="qq">1. What impact does ice have on solar radiation reaching Earth?</div><p class="aa">Ice is white and bright, so it <b>reflects</b> a large share of sunlight back to space. Less of the Sun's energy is absorbed where there is ice.</p></div>
+      <div class="qa"><div class="qq">2. What is happening to the Arctic that explains why it's warming four times faster?</div><p class="aa">Warming melts Arctic ice and exposes darker ocean and land. These absorb more sunlight and heat the air, which melts more ice. The cycle speeds itself up. Most other places have no ice to lose.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Draw 4 tiny arrows (↑ or ↓) for temperature, sea ice, Greenland ice and ocean heat, then write one sentence connecting them.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Finish: "When Arctic ice melts, the surface gets ___, so it absorbs ___ sunlight, so…"</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>The Arctic From Space, Then and Now</h4>
+      <p>Draw two circles showing the Arctic Ocean from above: <b>September 1980</b> and <b>September of a recent year</b>. Shade the sea ice in each to scale. Use your class graph: recent September ice is roughly 40% smaller. In each, draw 5 incoming sunlight arrows and show how many bounce off and how many are absorbed.</p>
+      <ul class="checks">
+        <li>Both maps labeled with year, Greenland, and the North Pole</li>
+        <li>Ice area visibly smaller in the recent map, based on your graph</li>
+        <li>More "absorbed" sunlight arrows in the recent map, with a one-line explanation</li>
+        <li>"I chose…" note: the <b>value you read off your own sea-ice graph</b> for each year, and how you read it</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-6"><small>Back</small>← Day 6 · Ice and radiation</a><a class="next" href="#day-8"><small>Next</small>Day 8 · Ice-albedo loop →</a></div>
+</div>
+
+<!-- ===================== DAY 8 ===================== -->
+<div class="view" id="day-8" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 8 · Explain 2</div>
+    <h2>The Ice-Albedo Feedback Loop</h2>
+    <p class="q">Why is the Arctic warming at almost 4 times the rate as the rest of the planet?</p>
+    <div class="tags"><span class="tag">Ice Caps and Global Temperatures + Ice Caps Cause and Effect Cards · Summary Task (after Explain 2)</span><span class="tag">Table groups → whole class</span><span class="tag">Cause-and-effect chart</span><span class="tag">Class Consensus Discussion</span><span class="tag">PBS: Earth's Albedo and Global Warming</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li><b>Albedo</b> is the fraction of sunlight a surface reflects. Ice and snow are high (~0.5–0.9), and open ocean is very low (~0.06).</li>
+      <li>Melting ice exposes dark surfaces, which absorb more sunlight, heat the air, and melt more ice. This is a <b>positive feedback loop</b>. It amplifies change and destabilizes the system, in both directions.</li>
+      <li>That loop is why the Arctic warms faster than places with little ice.</li>
+      <li>Albedo changes the energy <b>leaving</b> Earth's system, so it goes on the Global Energy Budget.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–3</div><div><h4>Do Now</h4><p>Back of handout.</p></div></li>
+      <li><div class="t">3–9</div><div><h4>Introduce albedo</h4><p>Project <b>Earth's Albedo and Global Warming</b> (PBS) and show the "Introduction" and "Ice-albedo feedback" tabs. Students describe the albedo effect in their own words, and 2–3 share.</p></div></li>
+      <li><div class="t">9–24</div><div><h4>Card sort (table groups)</h4><p>Hand out <i>Ice Caps and Global Temperatures</i>, the <b>Ice Caps Cause and Effect Cards</b>, and a sheet of paper. Groups arrange the cards, draw arrows, and write the missing cause or mechanism for each arrow. <b>The result should be a loop, not a line.</b> Each student then summarizes it in the Cause and Effect Model section. Groups <b>keep their sort</b> for Day 9.</p></div></li>
+      <li><div class="t">24–30</div><div><h4>Revisiting the Investigative Phenomenon</h4><p>Tables brainstorm together; students write individually (the five required parts are in the key).</p></div></li>
+      <li><div class="t">30–44</div><div><h4>Class Consensus Discussion</h4><p>Title chart paper: <b>Class Consensus: How Ice Impacts Radiation Reaching Earth</b>. Pick 2–3 card sorts that bring out the key points. Before tables confer, prompt: <i>What do you notice about the first and last boxes? How does albedo affect energy inputs, outputs and distribution? How does this lead to rapid heating in the Arctic?</i> When students describe "less ice → more heat → less ice," name it a <b>positive feedback loop</b>. Then add albedo to the Global Energy Budget.</p></div></li>
+      <li><div class="t">44–50</div><div><h4>Why the Northern Hemisphere? <i>(flex)</i></h4><p><b>Use the corrected version.</b> Ask: <i>Which hemisphere has more land?</i> (The north, with about 2/3 of Earth's land.) <i>Where can giant ice sheets grow and melt?</i> (On land, like over North America in the last ice age.) Show <b>The Rise and Fall of Ice Age Glaciers</b>. Conclude: more land means more snow and ice that can come and go, so northern changes shift Earth's albedo the most. Do <b>not</b> teach "water has a higher albedo than land." Assign Summary Task 2 for homework.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Loop or line?</div><p>"I'm tired, so I drink coffee late, so I can't sleep, so I'm tired." Is that a line or a loop? Why?</p><div class="ans">A loop: the last effect feeds back to the first cause.</div></div>
+      <div class="card"><div class="lbl">Option B · Albedo guess</div><p>Rank from most to least reflective: fresh snow, open ocean, grass, sea ice, asphalt.</p><div class="ans">Fresh snow (0.8–0.9) &gt; sea ice (0.5–0.7) &gt; grass (~0.25) &gt; asphalt (0.05–0.1) ≈ open ocean (~0.06).</div></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>What happens to the surface color of the Arctic when sea ice melts?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Which cards are the causes of other cards?</li>
+      <li>What mechanisms explain the changes shown on the cards?</li>
+      <li>Which cards should be connected with arrows?</li>
+      <li>How do these causes and effects combine to explain why the Arctic is warming faster than the rest of the world?</li>
+      <li>Where does your model end? Does the last card cause anything that's already on the paper?<span>Pushes the line into a loop.</span></li>
+      <li>Run the loop backward: what happens if ice <i>grows</i>?<span>More ice → more reflection → cooling → more ice (ice ages).</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After consensus · hinge question</div>
+      <h4>Why is the ice-albedo feedback called a <i>positive</i> feedback?</h4>
+      <ul class="opts">
+        <li>A. It's good for the Arctic<em>Everyday meaning of "positive."</em></li>
+        <li class="right">B. The change (warming) causes more of the same change (more warming)<em>Correct: it amplifies.</em></li>
+        <li>C. It only makes temperatures go up, never down<em>It also amplifies cooling when ice grows.</em></li>
+        <li>D. It adds energy to the Sun<em>Confuses the system boundary.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">Exit · which is a negative feedback?</div>
+      <h4>A. melting ice exposes dark ocean · B. thawing permafrost releases CO₂ · <b>C. a warmer Earth radiates more infrared to space</b> · D. warm oceans release CO₂</h4>
+      <p>C is the only one that pushes against the change (stabilizing).</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Ice Caps Cause and Effect Cards: the loop<small>cards + mechanisms</small></span></summary><div class="keybody">
+      <ol>
+        <li><b>Emissions of greenhouse gases increase</b> → <b>atmospheric temperature rises</b>. <i>Mechanism:</i> greenhouse gases absorb outgoing infrared and send some back. The emissions started with burning fossil fuels after the Industrial Revolution.</li>
+        <li><b>Atmospheric temperature rises</b> → <b>Arctic ice melts</b>. <i>Mechanism:</i> warmer air and ocean water heat ice above its melting point.</li>
+        <li><b>Arctic ice melts</b> → <b>less solar radiation is reflected; more is absorbed, converted to heat, and re-released into the atmosphere</b>. <i>Mechanism:</i> bright, high-albedo ice is replaced by dark, low-albedo ocean and land.</li>
+        <li><b>Less radiation reflected</b> → <b>atmospheric temperature rises</b> again. <i>That closes the loop.</i></li>
+      </ol>
+      <p>"Emissions increase" is the starting push, <b>outside</b> the loop. The other three cards form the circle.</p>
+    </div></details>
+    <details class="key"><summary><span>Revisiting the Investigative Phenomenon<small>5 required parts</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">What caused a change to begin in the 1800s</div><p class="aa">The Industrial Revolution. Burning fossil fuels moved carbon from the geosphere to the atmosphere, and CO₂ rose from ~280 to 420+ ppm.</p></div>
+      <div class="qa"><div class="qq">How that change affected temperatures</div><p class="aa">More CO₂ strengthened the greenhouse effect, so more infrared returns to Earth. Global temperature is up ~1.2–1.3 °C.</p></div>
+      <div class="qa"><div class="qq">Further impacts on Earth's systems</div><p class="aa">Arctic sea ice is shrinking (~12–13% per decade in September), Greenland is losing ice (~270 billion t/yr), and ocean heat is rising.</p></div>
+      <div class="qa"><div class="qq">The role of feedback loops</div><p class="aa">The ice-albedo positive feedback: melting exposes dark surfaces, they absorb more sunlight, the air warms, and more ice melts. It repeats, so the Arctic heats much faster than places with little ice.</p></div>
+      <div class="qa"><div class="qq">Rates of change since 1850</div><p class="aa">CO₂ is rising ~100× faster than at the end of the last ice age. The Arctic is warming ~0.6–0.7 °C per decade since 1979 vs ~0.2 globally (3–4×).</p></div>
+    </div></details>
+    <details class="key"><summary><span>Class Consensus: key points to surface<small>teacher guide "Take Time for These Key Points"</small></span></summary><div class="keybody">
+      <ul>
+        <li>As Arctic ice melts, more dark surfaces are exposed.</li>
+        <li>Darker surfaces reflect less and absorb more radiation than the ice that was there.</li>
+        <li>They heat up faster and heat the air above them more. Warmer air melts more ice.</li>
+        <li>The cycle repeats, which is why the Arctic heats faster than the rest of the globe, where less ice melts.</li>
+        <li>Albedo <b>increases</b> energy leaving Earth's system by reflecting it. Melting ice <b>decreases</b> energy leaving, keeping it as heat.</li>
+        <li>It's a <b>positive feedback loop</b> in both directions: less ice leads to more warming and less ice; more ice leads to more cooling and more ice.</li>
+      </ul>
+    </div></details>
+    <details class="key"><summary><span>Summary Task (after Explain 2)<small>Q1–2 (homework)</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How does energy from the Sun affect Earth's temperature through absorption, storage and redistribution?</div><p class="aa">Sunlight is <b>reflected</b> by bright surfaces (ice, snow, clouds) or <b>absorbed</b> by darker ones (ocean, land) and turned to heat. The ocean <b>stores</b> most of it (ocean heat keeps rising). Heat is <b>redistributed</b> as the surface warms the air. Infrared radiates upward, and greenhouse gases send part of it back. Less ice means more absorbed; more greenhouse gas means less escapes.</p></div>
+      <div class="qa"><div class="qq">2. How are feedback loops related to the rates of change of temperature, ice extent and CO₂?</div><p class="aa">A positive feedback <b>speeds up</b> change. Rising CO₂ raises temperature, which melts ice, which lowers albedo, which raises temperature more. So the changes accelerate, and they're fastest where the feedback is strongest (the Arctic).</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>The negative-feedback CFU above.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Explain the ice-albedo feedback in exactly three arrows (A → B → C → back to A).</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>The Feedback Roundabout</h4>
+      <p>Draw the ice-albedo feedback as a <b>traffic roundabout</b> (or racetrack) with stations: temperature rises → ice melts → darker surface → more sunlight absorbed → back to temperature. Draw a car entering from an on-ramp labeled with what started it. Then draw a second, dashed loop showing the same roundabout <b>in reverse</b> (cooling → more ice).</p>
+      <ul class="checks">
+        <li>All four stations, each arrow labeled with its mechanism</li>
+        <li>The on-ramp shows the starting push (human greenhouse gas emissions)</li>
+        <li>The reverse (cooling) loop is drawn and labeled "also positive feedback"</li>
+        <li>"I chose…" note: the <b>arrow your group argued about</b> during the card sort, and how you settled it</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-7"><small>Back</small>← Day 7 · Sea ice data</a><a class="next" href="#day-9"><small>Next</small>Day 9 · Greenhouse gas feedbacks →</a></div>
+</div>
+
+<!-- ===================== DAY 9 ===================== -->
+<div class="view" id="day-9" data-phase="elaborate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 9 · Elaborate</div>
+    <h2>Greenhouse Gas Feedback Mechanisms</h2>
+    <p class="q">How do greenhouse gases and albedo interact?</p>
+    <div class="tags"><span class="tag">Greenhouse Gas Feedback Mechanisms Parts 1–2 + 2 new cards</span><span class="tag">Triads / table groups</span><span class="tag">Think-Talk-Open Exchange</span><span class="tag">Day 8 card sorts</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>At the end of the last ice age, <b>Antarctic temperature rose first, then CO₂, then global temperature</b> (Shakun et al. 2012). Skeptics use this to say CO₂ is only an effect.</li>
+      <li>Warming <b>releases</b> CO₂: warm water holds less dissolved CO₂, and thawing permafrost lets bacteria release CO₂ and methane. More CO₂ then causes more warming. CO₂ is <b>both effect and cause</b>, a feedback.</li>
+      <li>Three positive feedbacks now run at once (ice-albedo, ocean CO₂, permafrost), which is why warming is so rapid and could speed up.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Two students explain their feedback roundabout.</p></div></li>
+      <li><div class="t">4–12</div><div><h4>The skeptics' graph</h4><p>Pose: <i>If the cause-and-effect mechanisms of human-caused climate change are so clear, what evidence do climate skeptics use to say otherwise?</i> Hand out <i>Greenhouse Gas Feedback Mechanisms</i>. Students individually note how the graph at the top differs from earlier ones, then 2–3 share. Listen for: "here Antarctic temperature rises first, then CO₂, then global temperature." Tell them skeptics use this to claim CO₂ is an effect of warming, not a cause.</p></div></li>
+      <li><div class="t">12–28</div><div><h4>Part 1: Temperature and the carbon cycle (triads)</h4><p>Students label the four reservoir boxes and draw <b>black</b> arrows (carbon moves between), <b>red</b> arrows (temperature increasing) and <b>blue</b> arrows (temperature decreasing) from the table. Then they answer Q1–3.</p></div></li>
+      <li><div class="t">28–38</div><div><h4>Add the two new cards</h4><p>Groups take out their Day 8 sort, add <b>The ocean releases CO₂</b> and <b>The cryosphere releases CO₂</b>, and write in their mechanisms. Ask: <i>Where do they plug into the loop?</i></p></div></li>
+      <li><div class="t">38–50</div><div><h4>Part 2: Think-Talk-Open Exchange + summary</h4><p>Prompt: <i>How did the results of the card sort show the role of feedback mechanisms in this warming event, and how could that affect climate change in the future?</i> After the routine, students write their individual summary prediction. Finish it for homework if needed.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Soda test</div><p>Which goes flat faster, a warm soda or a cold one? What does that tell you about warm water and dissolved CO₂?</p><div class="ans">The warm one. Warm water holds less dissolved CO₂, so warming oceans release CO₂.</div></div>
+      <div class="card"><div class="lbl">Option B · Freezer</div><p>Why does food last longer in the freezer? What might happen to frozen dead plants in Arctic soil if it thaws?</p><div class="ans">Cold stops bacteria. If the permafrost thaws, bacteria decompose the plants and release CO₂ and methane.</div></div>
+      <div class="card"><div class="lbl">Option C · Skeptic</div><p>A skeptic says, "CO₂ went up <i>after</i> temperature in the past, so CO₂ can't cause warming." What's your first reaction?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>When temperature rises, which reservoirs give up carbon? Why?</li>
+      <li>Which reservoir is a surprise, storing <i>more</i> carbon when it warms? Does that cancel the others?<span>Biosphere: longer growing seasons, but more respiration and decay.</span></li>
+      <li>Where do the new cards connect: to "temperature rises" or "emissions increase"? Can both work?</li>
+      <li>So is CO₂ a cause or an effect of warming? Can it be both?</li>
+      <li>If the loops keep running, what does that mean for the future?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Part 1 · hinge question</div>
+      <h4>At the end of the last ice age, how could CO₂ rise <i>after</i> Antarctic warming and still help cause global warming?</h4>
+      <ul class="opts">
+        <li>A. It couldn't; CO₂ has no effect<em>Accepts the skeptic's claim.</em></li>
+        <li class="right">B. Orbital changes started a small warming, the warming released CO₂ from the ocean, and that CO₂ amplified the warming worldwide<em>Correct: CO₂ is a feedback.</em></li>
+        <li>C. The CO₂ came from humans<em>No industry 18,000 years ago.</em></li>
+        <li>D. The ice cores must be wrong<em>Dismisses the data instead of explaining it.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Opening graph: how is it different?<small>Shakun et al. 2012, 22,000–6,000 years ago</small></span></summary><div class="keybody">
+      <p>Earlier graphs showed CO₂ rising first, with temperature following. Here <b>Antarctic temperature rises first (~18,000 years ago), then CO₂, then global temperature</b>. Approximate values from the packet graph: Antarctic −59 → −50 °C; CO₂ ~187 → 265 ppm; global ~11.3 → 15.2 °C.</p>
+    </div></details>
+    <details class="key"><summary><span>Part 1: Modeling the Effect of Temperature on the Carbon Cycle<small>arrows + Q1–3</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Exchange</th><th>Temperature increasing (red)</th><th>Temperature decreasing (blue)</th></tr></thead><tbody>
+        <tr><td>Hydrosphere ↔ atmosphere</td><td>Warm water holds less CO₂, so the ocean releases more than it absorbs</td><td>Cold water holds more CO₂, so the ocean absorbs more</td></tr>
+        <tr><td>Biosphere ↔ atmosphere</td><td>Longer growing seasons store more, but faster respiration and decay release more</td><td>Shorter growing seasons and slower decay</td></tr>
+        <tr><td>Cryosphere ↔ atmosphere</td><td>Permafrost thaws: bacteria make CO₂ and methane, and trapped gases escape</td><td>Permafrost freezes, so bacteria stop and gases stay trapped</td></tr>
+      </tbody></table></div>
+      <div class="qa"><div class="qq">Q1. When temperatures increase, does atmospheric CO₂ increase or decrease?</div><p class="aa"><b>Increase.</b> The ocean and thawing permafrost release CO₂.</p></div>
+      <div class="qa"><div class="qq">Q2. When temperatures decrease?</div><p class="aa"><b>Decrease.</b> Cold oceans absorb more, and frozen ground traps carbon.</p></div>
+      <div class="qa"><div class="qq">Q3. "As atmospheric CO₂ levels ___, temperature ___ because…"</div><p class="aa">"As CO₂ <b>increases</b>, temperature <b>increases</b> because CO₂ absorbs infrared and sends some back to Earth (the greenhouse effect)." Put it together with Q1 and you get a loop: warming → more CO₂ → more warming.</p></div>
+    </div></details>
+    <details class="key"><summary><span>The two new cards: mechanisms<small>added to the Day 8 sort</small></span></summary><div class="keybody">
+      <p><b>The ocean releases CO₂</b> → atmospheric temperature rises (or → "emissions of greenhouse gases increase"; accept both). <i>Mechanism:</i> as water warms it holds less dissolved CO₂, so the ocean releases more than it absorbs.</p>
+      <p><b>The cryosphere releases CO₂</b> → atmospheric temperature rises (or → emissions increase). <i>Mechanism 1:</i> thawing permafrost lets bacteria turn soil carbon into CO₂ and methane. <i>Mechanism 2:</i> gases trapped in frozen ground escape.</p>
+      <p>"Atmospheric temperature rises" now points to <b>three</b> cards: Arctic ice melts, the ocean releases CO₂, and the cryosphere releases CO₂.</p>
+    </div></details>
+    <details class="key"><summary><span>Part 2: Why is temperature rising so rapidly? (summary)<small>exemplar prediction</small></span></summary><div class="keybody">
+      <p>Human emissions started the warming. Warming melts Arctic ice (lower albedo, more absorbed sunlight), warms the ocean (releasing CO₂) and thaws permafrost (releasing CO₂ and methane). Each effect feeds back into more warming, so these are <b>positive feedback loops that destabilize</b> the climate. <b>Prediction:</b> if emissions continue, the feedbacks will keep amplifying warming: less sea ice, more Greenland melt, more ocean heat, and temperatures rising faster than emissions alone would cause, fastest in the Arctic. Cutting emissions removes the push that keeps the loops going.</p>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>In one sentence: how can CO₂ be both a cause and an effect of warming?</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Name the three positive feedbacks that rising temperature now sets off.</p><div class="ans">Ice-albedo; ocean releases CO₂; permafrost releases CO₂ and methane.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Three Loops, One Engine</h4>
+      <p>Draw three loops (gears, wheels or circles) that all share one hub labeled <b>"Temperature rises."</b> Loop 1: ice-albedo. Loop 2: the ocean releases CO₂. Loop 3: permafrost thaws. Draw one <b>brake</b> labeled with a negative feedback (a warmer Earth radiates more heat to space), and one <b>key in the ignition</b> labeled with what started it.</p>
+      <ul class="checks">
+        <li>Each loop has 3–4 labeled steps that return to the hub</li>
+        <li>The ignition is labeled (human greenhouse gas emissions)</li>
+        <li>The brake is labeled and explained in one sentence</li>
+        <li>"I chose…" note: the <b>future prediction your Think-Talk-Open Exchange group made</b>, and whether you agree</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-8"><small>Back</small>← Day 8 · Ice-albedo loop</a><a class="next" href="#day-10"><small>Next</small>Day 10 · Disprove the skeptics →</a></div>
+</div>
+
+<!-- ===================== DAY 10 ===================== -->
+<div class="view" id="day-10" data-phase="evaluate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 10 · Evaluate</div>
+    <h2>Disprove the Skeptics</h2>
+    <p class="q">How can we use what we learned to explain the impacts human activities are having on Earth's systems?</p>
+    <div class="tags"><span class="tag">Disprove the Skeptics · PTO p. 10: Revisiting the Performance Task · Climate Feedbacks Rubric</span><span class="tag">Small groups → individual</span><span class="tag">Driving Question Board</span><span class="tag">Sticky notes</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should be able to</h3>
+    <ul>
+      <li>Find places in the ice-core record where CO₂ changed first and places where temperature changed first, and explain both as a <b>feedback</b>.</li>
+      <li>Show that <b>today CO₂ is rising first</b>: it climbed from ~285 ppm (1850) to ~310 ppm (1940) while temperatures were still mostly below the 20th-century average.</li>
+      <li>Write a valid claim, with multiple lines of evidence, about the role of CO₂ and human activity in warming today.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Two students explain their three-loops drawing.</p></div></li>
+      <li><div class="t">4–18</div><div><h4>Disprove the Skeptics (individual or small groups)</h4><p>Students label the ice-core graph where CO₂ changes first and where temperature changes first, then label which factor rises first on the modern (1850–today) graph.</p></div></li>
+      <li><div class="t">18–40</div><div><h4>Revisiting the Performance Task (individual)</h4><p>PTO p. 10 prompt: <i>"Using the data about carbon dioxide levels and temperature changes, the roles of carbon dioxide and ice caps in climate change, and the feedback mechanisms between parts of Earth's systems, make and support a valid claim about the role of carbon dioxide and human activities on the warming of the planet today."</i> Students self-score with the <b>Climate Feedbacks Rubric</b>. Confer, pointing students to the class's posted argument characteristics.</p></div></li>
+      <li><div class="t">40–48</div><div><h4>Revisit the Driving Question Board</h4><p>Which questions are answered now? Move sticky notes. Add new ones. Highlight what's left:</p><p class="say">"We now know how climate changed in the past and how it's changing now. We haven't answered a skeptic who says, 'So what? It's not a big deal.' That's the next 5E: what this means for people."</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Skeptic sort</div><p>"It's just natural cycles." Which 5E (Earth-Sun Dynamics or Climate Feedbacks) gives you evidence against this? Name one piece.</p><div class="ans">Earth-Sun Dynamics: orbital factors point to cooling, and solar output hasn't risen. This 5E: the fossil fingerprint and the speed of the CO₂ rise.</div></div>
+      <div class="card"><div class="lbl">Option B · Order of events</div><p>Today, which rose first: CO₂ or global temperature? How could you check?</p></div>
+      <div class="card"><div class="lbl">Option C · Rubric read</div><p>Read the Proficient column of the rubric. Circle the one component you feel least ready to write about.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What evidence did you generate in this 5E sequence?</li>
+      <li>Where did the evidence come from?</li>
+      <li>How well does that evidence support the claim?</li>
+      <li>What ideas or contradictory evidence weaken the claim? How do you answer them?</li>
+      <li>Where in your argument do you explain the <i>mechanism</i>, not just the pattern?</li>
+      <li>Which rubric component is missing from your response?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Disprove the Skeptics · hinge question</div>
+      <h4>What's the best response to "CO₂ followed temperature in the past, so it can't be causing warming now"?</h4>
+      <ul class="opts">
+        <li>A. CO₂ never followed temperature<em>False. The data shows times it did.</em></li>
+        <li class="right">B. CO₂ can be both an effect and a cause. In the past, warming released CO₂, which amplified the warming. Today humans add CO₂ first, and the greenhouse effect explains how it warms Earth<em>Correct.</em></li>
+        <li>C. The ice-core data is unreliable<em>Dismisses evidence instead of explaining it.</em></li>
+        <li>D. Temperature and CO₂ aren't related<em>Contradicts 800,000 years of data.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Disprove the Skeptics: graph labels<small>ice core + 1850–today</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Task 1: ice-core record (EPICA Dome C temperature; Antarctic CO₂ composite)</div><p class="aa">At the starts of deglaciations (e.g., ~18,000 years ago, ~135,000 years ago), Antarctic <b>temperature begins rising slightly before CO₂</b>. During the rest of the warming, CO₂ and temperature rise <b>together</b>, and CO₂ amplifies and spreads the warming. During some cooling periods, CO₂ lags as the ocean slowly takes it back up. Accept any well-labeled examples of each.</p></div>
+      <div class="qa"><div class="qq">Task 2: modern record (NOAA global temperature; Law Dome + Mauna Loa CO₂)</div><p class="aa"><b>CO₂ rises first.</b> It was already climbing in the 1800s (~285 ppm in 1850 → ~310 by 1940) while temperatures stayed mostly below the 20th-century average until about the 1930s. Warming followed and accelerated after ~1970.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Revisiting the Performance Task: Climate Feedbacks 5E<small>PTO p. 10 · Proficient exemplar</small></span></summary><div class="keybody">
+      <p><b>Claim:</b> Human activities, mainly burning fossil fuels, are increasing CO₂, and that CO₂ is the main cause of today's warming. Feedback loops are amplifying it, especially in the Arctic.</p>
+      <p><b>Greenhouse gas levels and sources:</b> CO₂ is over 420 ppm, far above the 800,000-year range (~170–300 ppm). About 135 ppm is from human activity. Fossil fuels add ~10 Gt C/yr (about 37 billion t CO₂), and the isotope fingerprint confirms the source.</p>
+      <p><b>Mechanism:</b> CO₂ absorbs outgoing infrared and sends some back. Sunlight hasn't changed, but more energy stays in the system (sim, text, energy budget).</p>
+      <p><b>Ice caps today and their effect:</b> September Arctic sea ice is down ~40% since 1979, and Greenland is losing ~270 billion t/yr. Exposed dark ocean and land absorb more sunlight, warming the Arctic ~3–4× faster than the globe.</p>
+      <p><b>Albedo and feedbacks:</b> ice-albedo, ocean CO₂ release and permafrost thaw are positive feedbacks that amplify warming.</p>
+      <p><b>Answer to skeptics:</b> in the past CO₂ sometimes followed temperature because it acted as a feedback. Today CO₂ rose first, because humans put it there, and the rate (~100× faster) is beyond any natural change in the record.</p>
+    </div></details>
+    <details class="key"><summary><span>Climate Feedbacks Rubric: Proficient checklist<small>all components required</small></span></summary><div class="keybody">
+      <ul>
+        <li>Current level of greenhouse gases and their sources</li>
+        <li>Mechanistic explanation of the greenhouse effect and its role in climate</li>
+        <li>Current melting rate of northern ice caps</li>
+        <li>The impact that melting rate is having on Earth's temperatures</li>
+        <li>Albedo and positive feedback loops for sea ice and greenhouse gases</li>
+        <li>Evidence linked to the explanation with scientific logic and reasoning</li>
+        <li>Cause &amp; Effect: clearly explains whether there is a causal link to Arctic amplification. Accept ice-albedo and greenhouse-gas feedbacks; "ocean currents" isn't investigated here (see Corrections).</li>
+      </ul>
+      <p>Developing = one or more components missing, or evidence not clearly linked.</p>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Glow / grow</div><p>From your rubric self-score: one glow, one grow.</p></div>
+      <div class="card"><div class="lbl">Option B · DQB</div><p>Write one new question about how climate change will affect people for the Driving Question Board.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Then vs Now: A Two-Panel Infographic</h4>
+      <p>Make a hand-drawn, two-panel infographic for someone in your life who doubts climate change. <b>Panel 1: "The end of the ice age."</b> Orbit change → small warming → oceans release CO₂ → more warming. <b>Panel 2: "Today."</b> Burning fossil fuels → CO₂ first → warming → ice melts and permafrost thaws → more warming. Under each panel, add one real number from this 5E.</p>
+      <ul class="checks">
+        <li>Both panels show the correct order of events, with arrows</li>
+        <li>At least two real numbers with sources (e.g., NOAA Mauna Loa, NSIDC)</li>
+        <li>One sentence in plain language that answers "CO₂ just follows temperature"</li>
+        <li>"I chose…" note: <b>which rubric component you marked as your "grow" today</b>, and how this drawing works on it</li>
+      </ul>
+      <p class="why">Save the best ones. They feed straight into the Final Performance Task (communicating with a skeptic in your community).</p>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-9"><small>Back</small>← Day 9 · Greenhouse gas feedbacks</a><a class="next" href="#overview"><small>Done</small>Back to overview ↺</a></div>
+</div>
+
+<footer><a href="index.html">← Back to Teacher Hub</a><br>Built from the New Visions Earth &amp; Space Science Unit 4 (Climate Change) materials for the Climate Feedbacks 5E (SY 25-26). Teacher materials: the L3 Bundle teacher guide and the Unit 4 teacher materials (storyline and pacing). Student materials: the Unit 4 Student Materials packet (Climate Feedbacks 5E, pp. 73 on) and Performance Task Organizer, as mirrored in the <a href="../unit4-climate-change/unit4-climate-feedbacks.html">student chapter</a>. Real data cited: NASA GISTEMP, NOAA GML (Mauna Loa), NOAA NCEI paleoclimate (EPICA Dome C, Bereiter et al. 2015), Law Dome, Global Carbon Project, NSIDC Sea Ice Index, NASA GRACE/GRACE-FO, NOAA ocean heat content, Shakun et al. 2012, Rantanen et al. 2022. Schedules assume 50-minute periods.</footer>
+</main>
+
+<script>
+(function(){
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('#chips .chip'));
+  var ids = views.map(function(v){return v.id});
+  function show(){
+    var id = (location.hash || '').slice(1);
+    if (ids.indexOf(id) === -1) id = 'overview';
+    views.forEach(function(v){ v.hidden = v.id !== id; });
+    chips.forEach(function(c){
+      if (c.getAttribute('href') === '#' + id) { c.setAttribute('aria-current','page'); var r=c.parentNode; r.scrollLeft = c.offsetLeft - (r.clientWidth - c.offsetWidth)/2; }
+      else c.removeAttribute('aria-current');
+    });
+    window.scrollTo({top:0,left:0,behavior:'instant'});
+  }
+  window.addEventListener('hashchange', show);
+  show();
+
+  // prep checklist memory (per device)
+  var boxes = document.querySelectorAll('#prep input[type=checkbox]');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem('u4-feedbacks-prep') || '{}'); } catch(e) {}
+  Array.prototype.forEach.call(boxes, function(b){
+    if (saved[b.id]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[b.id] = b.checked;
+      try { localStorage.setItem('u4-feedbacks-prep', JSON.stringify(saved)); } catch(e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>
