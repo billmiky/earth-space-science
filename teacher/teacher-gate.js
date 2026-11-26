@@ -15,9 +15,9 @@
  */
 (function () {
   "use strict";
-  var HASH = "6214506457d83faac80c371535b06754e7726f8010d6e10ea70cac57955762b9";
+  var HASH = "2615ff81363abc6c7b61f88067c4eae311ae05cf5156bb1b4a0f47fb6276ad56";
   var SALT = "ess-teacher-hub:";
-  var VERSION = "1";
+  var VERSION = "2";
   var KEY = "essTeacherGate";
   var token = VERSION + ":" + HASH;
 
