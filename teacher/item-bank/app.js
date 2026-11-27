@@ -44,10 +44,15 @@
     F.topic.value = [...F.topic.options].some((o) => o.value === keep) ? keep : "";
   }
   fillTopics();
-  const saved = store.get("ess-bank-filters", {});
-  for (const [k, v] of Object.entries(saved)) if (F[k]) { if (F[k].type === "checkbox") F[k].checked = v; else F[k].value = v; }
+  const params = new URLSearchParams(location.search);
+  const filterKeys = ["unit", "topic", "pe", "sep", "fmt", "exam", "q", "nointerim"];
+  const hasUrlFilters = filterKeys.some((k) => params.has(k));
+  const initial = hasUrlFilters
+    ? Object.fromEntries(filterKeys.filter((k) => params.has(k)).map((k) => [k, k === "nointerim" ? /^(1|true|yes)$/i.test(params.get(k)) : params.get(k)]))
+    : store.get("ess-bank-filters", {});
+  for (const [k, v] of Object.entries(initial)) if (F[k]) { if (F[k].type === "checkbox") F[k].checked = Boolean(v); else F[k].value = v; }
   fillTopics();
-  if (saved.topic) F.topic.value = saved.topic;
+  if (initial.topic) F.topic.value = initial.topic;
 
   function matches(i) {
     if (F.unit.value && unitOf(i) !== F.unit.value) return false;
