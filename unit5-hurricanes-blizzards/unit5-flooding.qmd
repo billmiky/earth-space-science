@@ -1,0 +1,2050 @@
+---
+title: "Unit 5: Flooding"
+subtitle: "How do moon phases contribute to storm flooding severity?"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: false
+    code-fold: true
+execute:
+  echo: false
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { background: linear-gradient(135deg, #0b4f6c 0%, #0a2f4a 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(10, 47, 74, 0.3); }
+.explore-box { background: linear-gradient(135deg, #0e7490 0%, #164e63 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(14, 116, 144, 0.3); }
+.explain-box { background: linear-gradient(135deg, #4338ca 0%, #312e81 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(67, 56, 202, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #b54708 0%, #9a3412 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(181, 71, 8, 0.3); }
+.evaluate-box { background: linear-gradient(135deg, #b71c1c 0%, #ad1457 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(183, 28, 28, 0.3); }
+.engage-box h2, .explore-box h2, .explain-box h2, .elaborate-box h2, .evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.8em; margin-top: 0; color: white !important; }
+.engage-box h3, .explore-box h3, .explain-box h3, .elaborate-box h3, .evaluate-box h3 { color: white !important; }
+.engage-box a, .explore-box a, .explain-box a, .elaborate-box a, .evaluate-box a { color: #fde68a; }
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #4338ca 0%, #0e7490 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; margin: 4px; letter-spacing: .5px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.1em; font-weight: 800; background: linear-gradient(135deg, #4338ca 0%, #0e7490 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 26px 0 18px 0; text-align: center; line-height: 1.2; }
+.key-idea { background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: #1a1a1a; padding: 18px 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #4338ca; font-size: 1.03em; }
+.key-idea h3 { color: #1e1b4b !important; margin-top: 0; }
+.key-idea a { color: #3730a3; }
+.student-task { background: #fff3e0; color: #1a1a1a; border-left: 5px solid #ff9800; padding: 18px 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.student-task h3 { color: #7c2d12 !important; margin-top: 0; }
+.student-task a { color: #9a3412; }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.3em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #3730a3 !important; }
+.quarto-dark h2, [data-bs-theme="dark"] h2 { color: #a5b4fc !important; }
+.student-task, .callout-body-container { overflow-x: auto; }
+.student-task table, .callout-body-container table { font-size: .9em; }
+.fl-table-wrap { overflow-x: auto; max-width: 100%; }
+.fl-note { font-size: .82em; opacity: .8; margin: 4px 0 14px; }
+.fl-card { background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px 14px; margin: 8px 0 14px; overflow-x: auto; }
+.fl-card b, .fl-card strong { color: #0f172a; }
+.fl-card a { color: #075985; }
+.fl-card button, .fl-card select { min-height: 44px; }
+.fl-cards { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
+.fl-stat { flex: 1 1 150px; min-width: 0; background: #f8fafc; color: #1e293b; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 10px 12px; font-size: .9em; line-height: 1.45; }
+.fl-stat b.fl-big { display: block; font-size: 1.35em; color: #0f172a; }
+.fl-stat .fl-lab { font-size: .78em; text-transform: uppercase; letter-spacing: .5px; color: #475569; font-weight: 700; }
+.fl-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 12px 0; }
+.fl-fact { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); border-radius: 12px; padding: 12px 14px; }
+.fl-fact .fl-big { font-family: 'Space Grotesk', sans-serif; font-size: 1.6em; font-weight: 800; display: block; }
+.fl-btn { min-height: 44px; padding: 8px 18px; border-radius: 22px; border: none; background: linear-gradient(135deg, #4338ca, #0e7490); color: #fff; font-weight: 700; cursor: pointer; margin: 6px 6px 6px 0; font-size: .95em; }
+.fl-sortrow { border-bottom: 1px solid #e2e8f0; padding: 10px 0; }
+.fl-sortrow p { margin: 0 0 6px; color: #0f172a; }
+.fl-sortbtn { min-height: 44px; padding: 6px 12px; margin: 4px 6px 4px 0; border-radius: 8px; border: 2px solid #cbd5e1; background: #fff; color: #1e293b; cursor: pointer; font-size: .9em; }
+.fl-form textarea { width: 100%; min-height: 84px; font: inherit; font-size: .93em; padding: 8px; border-radius: 8px; border: 1px solid #94a3b8; background: #fff; color: #0f172a; box-sizing: border-box; }
+.fl-form label.fl-lbl { display: block; font-weight: 700; margin: 12px 0 4px; color: #0f172a; }
+.fl-reading { background: #fffbeb; color: #1c1917; border: 1px solid #fcd34d; border-radius: 12px; padding: 16px 18px; margin: 12px 0; line-height: 1.65; }
+.fl-reading h3 { color: #78350f !important; margin-top: 0; }
+.fl-reading a { color: #92400e; }
+.fl-video { position: relative; width: 100%; max-width: 720px; aspect-ratio: 16 / 9; margin: 10px auto 6px; border-radius: 12px; overflow: hidden; background: #000; }
+.fl-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.fl-svg-wrap svg { max-width: 100%; height: auto; display: block; }
+.fl-moonpick { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0; }
+.fl-moonpick > div { flex: 1 1 120px; min-width: 0; text-align: center; }
+.fl-sim-link { display: inline-block; min-height: 44px; line-height: 28px; padding: 8px 18px; border-radius: 22px; background: #312e81; color: #fff !important; font-weight: 700; text-decoration: none; margin: 4px 6px 4px 0; }
+.cell-output-display { max-width: 100%; }
+.cell-output-display svg { max-width: 100%; height: auto; }
+.cell-output-display figure h2 { font-family: 'Inter', sans-serif !important; font-size: 1.02rem !important; font-weight: 700 !important; color: inherit !important; margin: 0 0 2px !important; padding: 0 !important; border: none !important; line-height: 1.3; }
+.cell-output-display figure h3 { font-family: 'Inter', sans-serif !important; font-size: .85rem !important; font-weight: 400 !important; opacity: .8; margin: 0 0 6px !important; padding: 0 !important; border: none !important; line-height: 1.3; }
+svg [aria-label="tip"] text { fill: #1a1a1a !important; }
+svg [aria-label="tip"] rect { fill: rgba(255, 255, 255, 0.97) !important; stroke: #d4d4d4 !important; }
+form[class*="-checkbox"], form[class*="-radio"] { --input-width: 600px; max-width: 100%; }
+form[class*="-checkbox"] label, form[class*="-radio"] label { min-height: 32px; }
+</style>
+```
+
+<a class="quiz-jump-btn" href="#fl-quiz">🧠 Quiz ↓</a>
+
+<div class="big-question">🌕 Why Do Some Storms Flood the Coast So Much Worse? 🌊</div>
+
+<span class="pe-badge">HS-ESS1-7 (NYS)</span> <span class="pe-badge">HS-ETS1-1</span> <span class="pe-badge">HS-ETS1-2</span> <span class="pe-badge">Patterns</span> <span class="pe-badge">Influence of Science, Engineering &amp; Technology</span>
+
+**Investigative phenomenon:** On top of heavy rain and snow, **Winter Storm Jonas**, **Hurricane Sandy**, and storms in **Marin County, California** pushed huge amounts of ocean water onto the coast. Some floods were much worse than others. Why?
+
+::: {.callout-note collapse="true"}
+## 📒 Using this chapter with your student packet
+
+This chapter follows the same steps as your **Flooding 5E** packet (Unit 5, *Extreme Weather Coming to a Place Near You?*), the classroom resource **Tidal Fluctuation Data**, and the **Revisiting the Performance Task: Flooding** page in your **Performance Task Organizer (PTO)**. Missed a class or need a refresher? Jump to the matching section:
+
+| Packet section | In this chapter |
+|---|---|
+| Engage: Flood Damage (three videos, table, Brainstorm) | [Engage](#fl-engage) |
+| Explore 1: Moon Phases and Eclipses Investigation, procedure 1–4 (model the 8 moon pictures) | [The ball-and-flashlight model](#fl-model) |
+| Explore 1: questions 5–6 (how the Moon moves; how long until the pattern repeats) | [How long is the cycle?](#fl-calendar) |
+| Explore 1: questions 7–8 (the two eclipse set-ups) | [Eclipse set-ups](#fl-eclipse-setups) |
+| Explore 1: Making Sense (See-Think-Wonder + Analysis 1) | [Making Sense](#fl-making-sense1) |
+| Explore 1: Investigation Rubric (self and partner) | [Investigation rubric](#fl-rubric1) |
+| Explain 1: Explaining Lunar Patterns, Part 1. Moon Phases (simulator, questions 4–8) | [Part 1: Moon phases](#fl-phases) |
+| Explain 1: Eclipses (path of the Moon, Eclipse Models, Crash Course video) | [Eclipses](#fl-eclipses) |
+| Explain 1: Think-Talk-Open Exchange (questions 1–2 + Reflection) | [Think-Talk-Open Exchange](#fl-ttoe) |
+| Explore 2: High Tides and Moon Phases (daily, monthly, annual graphs) + *Tidal Fluctuation Data* | [Graph the tides](#fl-graph) |
+| Explore 2: Making Sense (See-Think-Wonder) | [Making Sense](#fl-making-sense2) |
+| Explore 2: Rubric (self and partner) | [Investigation rubric](#fl-rubric2) |
+| Explain 2: Gravitational Pulls on Earth + Daily Tidal Fluctuations (question 1) | [Daily tides](#fl-daily) |
+| Explain 2: Monthly Tidal Fluctuations (questions 2–3) | [Monthly tides](#fl-monthly) |
+| Explain 2: Annual Tidal Fluctuations (distance graph, question 4) | [Annual tides](#fl-annual) |
+| Explain 2: Construct explanations (2 questions) | [Construct explanations](#fl-construct) |
+| Explain 2: Think (Sandy and Marin brainstorm) + Talk-Open Exchange | [Sandy and Marin](#fl-sandy) |
+| Explain 2: Summary Task | [Summary Task](#fl-summary-task) |
+| Elaborate Part 1: Read-Generate-Sort-Solve (*Climate Change: Global Sea Level*) | [Part 1: Sea-level rise](#fl-rgss) |
+| Elaborate Part 2: Designing Solutions (local problem + questions 1–6) | [Part 2: Design a solution](#fl-design) |
+| PTO: Revisiting the Performance Task: Flooding (questions 1–6) | [Connect to the Performance Task](#fl-pt) |
+| Evaluate: Designing Solutions Rubric | [Rubric checklist](#fl-rubric) |
+:::
+
+```{ojs}
+//| echo: false
+flPlot = require("@observablehq/plot@0.6.16")
+flD3 = require("d3@7.9.0")
+```
+
+```{ojs}
+//| echo: false
+// Shared moon helpers. Phase p: 0 = new, 0.25 = first quarter, 0.5 = full, 0.75 = third quarter.
+flSyn = 29.530588853
+flPhaseName = p => {
+  const age = (((p % 1) + 1) % 1) * flSyn;
+  if (age < 1 || age > flSyn - 1) return "New Moon";
+  if (Math.abs(age - flSyn / 4) < 1) return "First Quarter";
+  if (Math.abs(age - flSyn / 2) < 1) return "Full Moon";
+  if (Math.abs(age - 3 * flSyn / 4) < 1) return "Third Quarter";
+  const q = age / flSyn;
+  return q < 0.25 ? "Waxing Crescent" : q < 0.5 ? "Waxing Gibbous" : q < 0.75 ? "Waning Gibbous" : "Waning Crescent";
+}
+// Lit part of the Moon as seen from the Northern Hemisphere (waxing = lit on the right)
+flMoonPath = (p, r) => {
+  p = ((p % 1) + 1) % 1;
+  const waxing = p < 0.5;
+  const c = Math.cos(2 * Math.PI * p);
+  const rx = Math.abs(c) * r;
+  const litSweep = waxing ? 1 : 0;
+  const termSweep = waxing ? (c < 0 ? 1 : 0) : (c > 0 ? 1 : 0);
+  return `M0,${-r} A${r},${r} 0 0 ${litSweep} 0,${r} A${rx},${r} 0 0 ${termSweep} 0,${-r}Z`;
+}
+flIllum = p => (1 - Math.cos(2 * Math.PI * p)) / 2
+flSvg = s => { const d = document.createElement("div"); d.innerHTML = s; return d.firstElementChild; }
+flMoonIcon = (p, size = 70) => flSvg(`<svg viewBox="-60 -60 120 120" width="${size}" height="${size}" role="img" aria-label="Moon picture: ${flPhaseName(p)}" style="background:#0b1020;border-radius:50%;max-width:100%"><circle r="50" fill="#334155"/><path d="${flMoonPath(p, 50)}" fill="#f5f0d0"/></svg>`)
+```
+
+```{ojs}
+//| echo: false
+flOrder = (q, n) => {
+  let h = 0;
+  for (const ch of q) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return flD3.shuffler(flD3.randomLcg((h % 10000) / 10000))(flD3.range(n));
+}
+```
+
+```{ojs}
+//| echo: false
+flBuildCards = function(body, questions, onAnswer) {
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.1);border:1px solid #e2e8f0;";
+    const qp = document.createElement("p");
+    qp.style.cssText = "font-weight:700;margin:0 0 10px;color:#1e1b4b;";
+    qp.innerHTML = `${qi + 1}. ${qq.q}`;
+    card.appendChild(qp);
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.92em;";
+    const order = flOrder(qq.q, qq.options.length);
+    const shownCorrect = order.indexOf(qq.correct);
+    const btns = [];
+    order.map(i => qq.options[i]).forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;";
+      btn.onclick = () => {
+        if (card.dataset.answered) return;
+        card.dataset.answered = "true";
+        btns.forEach(b => { b.style.cursor = "default"; });
+        const right = btns[shownCorrect];
+        right.style.borderColor = "#48bb78"; right.style.background = "#f0fff4"; right.style.color = "#22543d"; right.style.fontWeight = "700";
+        const ok = oi === shownCorrect;
+        if (ok) {
+          fb.innerHTML = "✅ Correct! " + qq.explanation; fb.style.color = "#276749"; fb.style.background = "#f0fff4";
+        } else {
+          btn.style.borderColor = "#fc8181"; btn.style.background = "#fff5f5"; btn.style.color = "#9b2c2c";
+          fb.innerHTML = "❌ Not quite. " + qq.explanation; fb.style.color = "#9b2c2c"; fb.style.background = "#fff5f5";
+        }
+        fb.style.padding = "10px 14px"; fb.style.marginTop = "8px";
+        if (onAnswer) onAnswer(ok);
+      };
+      btns.push(btn);
+      card.appendChild(btn);
+    });
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+}
+```
+
+```{ojs}
+//| echo: false
+// Collapsible inline check: a button that opens a few multiple-choice questions with instant feedback.
+flCheck = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="margin:14px 0 24px 0;text-align:center;">
+    <button type="button" style="display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#4338ca 0%,#0e7490 100%);color:#fff;border:none;padding:10px 22px;min-height:44px;border-radius:50px;font-size:.95em;font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(67,56,202,.4);">
+      <span>📝</span> ${title} <span class="fl-chev" style="transition:transform .3s;">▼</span>
+    </button>
+    <div style="max-height:0;opacity:0;overflow:hidden;transition:max-height .5s ease,opacity .4s ease;margin-top:0;text-align:left;"></div>
+  </div>`;
+  const toggle = outer.querySelector("button");
+  const chev = outer.querySelector(".fl-chev");
+  const body = outer.querySelector("div");
+  let open = false;
+  toggle.onclick = () => {
+    open = !open;
+    body.style.maxHeight = open ? "5000px" : "0";
+    body.style.opacity = open ? "1" : "0";
+    body.style.marginTop = open ? "14px" : "0";
+    chev.style.transform = open ? "rotate(180deg)" : "rotate(0)";
+  };
+  flBuildCards(body, questions);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+// Sorting activity: each statement gets category buttons and instant feedback.
+flSorter = function(cats, items, doneMsg) {
+  const wrap = html`<div class="fl-card"></div>`;
+  const score = html`<div style="font-weight:700;margin-top:8px;"></div>`;
+  let right = 0, done = 0;
+  items.forEach(it => {
+    const row = html`<div class="fl-sortrow"><p>${it.text}</p></div>`;
+    const fb = html`<div style="font-size:.9em;"></div>`;
+    const btns = cats.map(c => {
+      const b = html`<button type="button" class="fl-sortbtn">${c}</button>`;
+      b.onclick = () => {
+        if (row.dataset.done) return;
+        row.dataset.done = "1"; done++;
+        const ok = c === it.cat;
+        if (ok) right++;
+        b.style.borderColor = ok ? "#16a34a" : "#dc2626";
+        b.style.background = ok ? "#f0fdf4" : "#fef2f2";
+        btns.forEach(x => { if (x.textContent === it.cat) { x.style.borderColor = "#16a34a"; x.style.fontWeight = "700"; } x.style.cursor = "default"; });
+        fb.innerHTML = (ok ? "✅ " : `❌ It's <b>${it.cat}</b>. `) + it.why;
+        fb.style.color = ok ? "#14532d" : "#7f1d1d";
+        score.textContent = `${right} of ${done} correct` + (done === items.length ? ` · ${doneMsg}` : "");
+      };
+      return b;
+    });
+    btns.forEach(b => row.appendChild(b));
+    row.appendChild(fb);
+    wrap.appendChild(row);
+  });
+  wrap.appendChild(score);
+  return wrap;
+}
+```
+
+```{ojs}
+//| echo: false
+// Draft form saved in this browser only (localStorage), with copy and clear buttons.
+flForm = function(key, heading, fields) {
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || "{}"); } catch (e) { saved = {}; }
+  const wrap = html`<div class="fl-card fl-form">${fields.map(([k, lab]) => html`<label class="fl-lbl" for="${key}-${k}">${lab}</label><textarea id="${key}-${k}" data-k="${k}"></textarea>`)}
+    <button class="fl-btn" type="button" data-act="copy">📋 Copy my answers</button><button class="fl-btn" type="button" data-act="clear" style="background:#64748b;">Clear</button>
+    <span class="fl-status" style="font-size:.85em;" aria-live="polite"></span></div>`;
+  const tas = wrap.querySelectorAll("textarea"), status = wrap.querySelector(".fl-status");
+  tas.forEach(t => {
+    t.value = saved[t.dataset.k] || "";
+    t.oninput = () => {
+      const o = {}; tas.forEach(x => o[x.dataset.k] = x.value);
+      try { localStorage.setItem(key, JSON.stringify(o)); status.textContent = "Saved in this browser."; } catch (e) { status.textContent = "Couldn't save here; copy your work."; }
+    };
+  });
+  wrap.querySelector("[data-act=copy]").onclick = async () => {
+    const text = heading + "\n\n" + fields.map(([k, lab]) => `${lab}\n${wrap.querySelector(`[data-k=${k}]`).value}`).join("\n\n");
+    try { await navigator.clipboard.writeText(text); status.textContent = "Copied!"; } catch (e) { status.textContent = "Copy failed; select the text and copy it."; }
+  };
+  wrap.querySelector("[data-act=clear]").onclick = () => {
+    tas.forEach(t => t.value = "");
+    try { localStorage.removeItem(key); } catch (e) {}
+    status.textContent = "Cleared.";
+  };
+  return wrap;
+}
+```
+
+# Engage: Flood Damage {#fl-engage}
+
+::: {.engage-box}
+## 🌊 How extreme can flooding be?
+
+In the **Wind 5E** you explained storm winds. In the **Water 5E** you explained rain and snow, and you saw Hurricane Helene flood towns far **inland**. Now we take on the last big piece of storm damage: **flooding at the coast**, when the **ocean** moves onto land.
+
+```{=html}
+<div class="fl-facts">
+  <div class="fl-fact"><span class="fl-big">14.06 ft</span>Water level at <b>The Battery</b> (the tip of Manhattan) during <b>Hurricane Sandy</b>, 9:24 pm, Oct. 29, 2012. A record. A normal high tide there is about <b>5 ft</b>.</div>
+  <div class="fl-fact"><span class="fl-big">7.43 ft</span>Water level at The Battery during <b>Winter Storm Jonas</b>, 8:00 am, Jan. 23, 2016. Jonas was a <i>snowstorm</i>, and it still flooded the coast.</div>
+  <div class="fl-fact"><span class="fl-big">🌕 + 🌕</span>Both storms hit New York on the day of a <b>full Moon</b>. Coincidence?</div>
+</div>
+```
+
+<p style="font-size:.85em;opacity:.9;margin:0;">Water levels are feet above <b>MLLW</b> (mean lower low water), the "0" on tide charts. Source: NOAA Tides &amp; Currents, station 8518750 (The Battery, NY).</p>
+:::
+
+## Three coastal floods {#fl-videos}
+
+In class you watch three floods. Fill in the **Flood Damage** table as you watch.
+
+**1. Winter Storm Jonas (January 2016).** Watch from 3:00 to 4:20. (In class your teacher also shows a short clip called *High and Low Pressure Zone Winds*. Watch it for clues about the flooding.)
+
+```{=html}
+<div class="fl-video"><iframe src="https://www.youtube-nocookie.com/embed/7S3pPQKpbKU?start=180&amp;end=260" title="Snowstorm Jonas rocks East Coast (video, 3:00 to 4:20)" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+```
+
+**2. King tides in Marin County, California.**
+
+```{=html}
+<div class="fl-video"><iframe src="https://www.youtube-nocookie.com/embed/hEXIzK1vjM0" title="Intense King Tides bring 3rd day of flooding, stress to Marin County residents (video)" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+```
+
+**3. Hurricane Sandy (October 2012).**
+
+```{=html}
+<div class="fl-video"><iframe src="https://www.youtube-nocookie.com/embed/wtb-OK4bEs4" title="Superstorm Hurricane Sandy 2012: Inside NYC's Flooded Subways (video)" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+```
+
+::: {.student-task}
+### ✏️ In your packet: Flood Damage
+
+For each storm (**Winter Storm Jonas**, **Flooding in Marin County**, **Hurricane Sandy**), write:
+
+1. What **initial ideas** do you have about **why this flooding happened**?
+2. What initial ideas do you have about **solutions** that could prevent damage like this in the future?
+
+**Brainstorm:** What **factors** do you think contribute to extreme coastal flooding events?
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+These are first ideas, so there's no single right answer. Strong answers sound like this:
+
+::: {.fl-table-wrap}
+| Storm | Why it flooded (first ideas) | Solutions |
+|---|---|---|
+| **Jonas** | Strong winds around the storm's low pressure pushed ocean water onto the coast. It hit near **high tide**. | Dunes, sea walls, raising homes and roads, warnings and evacuation |
+| **Marin County** | Unusually high **"king tides"** (plus some storm water) pushed the bay onto low roads and homes, several days in a row. | Levees, raising roads, pumps, wetlands that soak up water |
+| **Sandy** | Hurricane winds pushed a huge **surge** of water into New York Harbor at **high tide** on a **full Moon**. Water poured into subways and tunnels. | Flood gates, covers for subway entrances, sea walls, raising equipment |
+:::
+
+**Brainstorm factors:** strong onshore wind, low air pressure, **high tide**, **full or new Moon**, rain and runoff, **sea-level rise**, low-lying land, the shape of the coast or harbor, the storm's timing.
+:::
+
+### Your "rumors" {#fl-rumors}
+
+In class you share ideas with the **Rumors** routine: trade one idea with each classmate you meet. Which factors do **you** think matter most? Pick any. You'll test them in this chapter.
+
+```{ojs}
+//| echo: false
+viewof flRumors = Inputs.checkbox([
+  "Strong winds push ocean water onto land",
+  "High tide makes the water start higher",
+  "The full Moon (or the Moon in general) makes tides bigger",
+  "Sea level is rising",
+  "Heavy rain adds water",
+  "The shape of the coast funnels water"
+], {label: "My rumors:"})
+```
+
+```{ojs}
+//| echo: false
+flRumors.length
+  ? html`<div class="student-task" style="margin-top:6px;"><b>📌 Saved for this visit:</b> ${flRumors.join(" · ")}<br><span style="font-size:.9em;">One rumor in almost every class is that <b>the Moon has something to do with high tides</b>. The next two sections figure out what the Moon is actually doing.</span></div>`
+  : html`<p class="fl-note">👆 Pick at least one idea.</p>`
+```
+
+```{ojs}
+//| echo: false
+flCheck("fl-engage-check", "Check: Flood Damage", [
+  {q: "Which statement fits all three flood videos?",
+   options: ["The flooding came only from heavy rain falling on the city", "Ocean water rose higher than normal and moved onto land", "Rivers overflowed far from the ocean", "Snowmelt caused all of the flooding"],
+   correct: 1,
+   explanation: "This is coastal flooding: sea water pushed onto land. Rain mattered for Jonas and Sandy, but the big floods came from the ocean. (Inland river flooding was Helene, in the Water 5E.)"},
+  {q: "Two equally strong storms hit the same coast. One floods much worse. Which first idea is most worth testing?",
+   options: ["One storm had more lightning", "The water was already higher (for example, at high tide) when one storm arrived", "One storm happened at night", "One storm was colder"],
+   correct: 1,
+   explanation: "Water level when the storm arrives is a big deal, and it's exactly what this 5E tests."}
+])
+```
+
+# Explore 1: Moon Phases and Eclipses Investigation {#fl-explore1}
+
+::: {.explore-box}
+## 🔦 How do moon phases and eclipses occur?
+
+In class you build a model of the **Sun-Earth-Moon system** in a dark room:
+
+- one student holds a **flashlight** (the **Sun**),
+- one student holds a **ball on a stick** (the **Moon**); that student's **head is Earth**,
+- everyone else moves around to watch from **outside** the system.
+
+Your job: arrange the model to match **8 pictures of the Moon**, and look for **patterns**. The explanation comes later.
+:::
+
+## The ball-and-flashlight model {#fl-model}
+
+No dark room at home? Use this virtual version. The big panel is the view **from above** (not to scale), with the flashlight Sun on the **right**, like the diagram in your packet. Below it are **three observers**: the person who is Earth, the person holding the flashlight, and an outside observer.
+
+**Tip from the investigation scaffold:** hold the ball **a little above eye level** for phases, so your head doesn't block the light. For eclipses (questions 7–8), move it to **exactly eye level**.
+
+```{ojs}
+//| echo: false
+viewof flDay = Inputs.range([0, 29.5], {step: 0.1, value: 0, label: "Days since new Moon:"})
+```
+
+```{ojs}
+//| echo: false
+flPlayBtn = {
+  const b = html`<button type="button" class="fl-btn">▶ Play one lunar month</button>`;
+  b.onclick = () => {
+    const input = viewof flDay;
+    let t = 0;
+    const timer = setInterval(() => {
+      t = Math.round((t + 0.25) * 100) / 100;
+      input.value = Math.min(t, 29.5);
+      input.dispatchEvent(new Event("input", {bubbles: true}));
+      if (t >= 29.5) clearInterval(timer);
+    }, 70);
+  };
+  return b;
+}
+```
+
+```{ojs}
+//| echo: false
+viewof flEyeLevel = Inputs.toggle({label: "Hold the ball at exactly eye level (eclipse mode)", value: false})
+```
+
+```{ojs}
+//| echo: false
+{
+  const p = flDay / flSyn;
+  const W = 420, H = 300, cx = 175, cy = 150, R = 110, rm = 14, re = 26;
+  const phi = 2 * Math.PI * p;                       // 0 = toward the Sun (right), counterclockwise
+  const mx = cx + R * Math.cos(phi), my = cy - R * Math.sin(phi);
+  const ang = ((phi * 180 / Math.PI) % 360 + 360) % 360;
+  const nearNew = ang < 6 || ang > 354, nearFull = Math.abs(ang - 180) < 6;
+  const solar = flEyeLevel && nearNew, lunar = flEyeLevel && nearFull;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Top view of the model: flashlight Sun on the right, Earth in the middle, Moon at ${Math.round(ang)} degrees around its orbit" style="width:100%;background:#0b1020;border-radius:12px;font:12px sans-serif">`;
+  s += `<defs><marker id="flArr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0L10,5L0,10z" fill="#fde68a"/></marker></defs>`;
+  for (let k = 0; k < 6; k++) { const y = 30 + k * 48; s += `<line x1="${W - 8}" y1="${y}" x2="${W - 70}" y2="${y}" stroke="#fde68a" stroke-width="2" marker-end="url(#flArr)" opacity=".8"/>`; }
+  s += `<text x="${W - 8}" y="16" fill="#fde68a" font-weight="700" text-anchor="end">Sunlight (flashlight) ☀️</text>`;
+  if (flEyeLevel) s += `<polygon points="${cx},${cy - re} 0,${cy - re + 8} 0,${cy + re - 8} ${cx},${cy + re}" fill="#000" opacity=".55"/><text x="6" y="${cy + re + 4}" fill="#94a3b8">Earth's shadow</text>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#475569" stroke-dasharray="4 4"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="${re}" fill="#1e3a8a"/><path d="M${cx},${cy - re} A${re},${re} 0 0 1 ${cx},${cy + re}Z" fill="#60a5fa"/>`;
+  s += `<text x="${cx}" y="${cy + re + 15}" fill="#cbd5e1" text-anchor="middle">Earth (your head)</text>`;
+  s += `<circle cx="${mx}" cy="${my}" r="${rm}" fill="${lunar ? "#7c2d12" : "#334155"}"/>`;
+  if (!lunar) s += `<path d="M${mx},${my - rm} A${rm},${rm} 0 0 1 ${mx},${my + rm}Z" fill="#f5f0d0"/>`;
+  s += `<line x1="${cx}" y1="${cy}" x2="${mx}" y2="${my}" stroke="#a5b4fc" stroke-dasharray="2 3" opacity=".7"/>`;
+  s += `<text x="8" y="${H - 8}" fill="#94a3b8">Moon orbits counterclockwise (seen from above the North Pole)</text>`;
+  s += `</svg>`;
+  const view = (inner, label) => html`<div style="flex:1 1 110px;min-width:0;text-align:center;font-size:.85em;">${flSvg(`<svg viewBox="-60 -60 120 120" role="img" aria-label="${label}" style="width:110px;height:110px;max-width:100%;background:#0b1020;border-radius:50%">${inner}</svg>`)}<div><b>${label}</b></div></div>`;
+  const earthInner = solar ? `<circle r="56" fill="#fde68a" opacity=".35"/><circle r="50" fill="#020617"/>`
+                   : lunar ? `<circle r="50" fill="#9a3412"/>`
+                   : `<circle r="50" fill="#334155"/><path d="${flMoonPath(p, 50)}" fill="#f5f0d0"/>`;
+  const sunInner = nearFull && flEyeLevel ? `<circle r="50" fill="#1e3a8a"/><text y="5" fill="#cbd5e1" font-size="13" text-anchor="middle">Earth blocks it</text>`
+                 : `<circle r="50" fill="#f5f0d0"/>`;
+  const outInner = `<circle r="50" fill="#334155"/><path d="M0,-50 A50,50 0 0 1 0,50Z" fill="#f5f0d0"/>`;
+  const msg = solar ? "🌑 <b>Solar eclipse set-up:</b> the ball (Moon) blocks the flashlight (Sun) from Earth's eyes. Its shadow falls on your face. (Question 7)"
+            : lunar ? "🌕 <b>Lunar eclipse set-up:</b> your head (Earth) blocks the light from reaching the ball (Moon). (Question 8)"
+            : flEyeLevel ? "At eye level, an eclipse only happens when the three line up exactly. Slide to day 0 or about day 14.8."
+            : `Phase seen from Earth: <b>${flPhaseName(p)}</b> · ${Math.round(flIllum(p) * 100)}% of the face we see is lit.`;
+  return html`<div class="fl-svg-wrap">${flSvg(s)}
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;">
+      ${view(earthInner, "Earth's view (your head)")}
+      ${view(sunInner, "Sun's view (flashlight)")}
+      ${view(outInner, "Outside observer (from above)")}
+    </div>
+    <div class="fl-card" style="margin-top:10px;">${flSvg(`<span>${msg}</span>`)}</div></div>`;
+}
+```
+
+<p class="fl-note">Model, not to scale. In the real sky the Moon is about 30 Earth-widths away.</p>
+
+::: {.student-task}
+### ✏️ In your packet: Moon Phases and Eclipses Investigation, procedure 1–4
+
+1. Choose one student to hold the flashlight "Sun."
+2. Choose one student to hold the ball on the stick. This student's **head is "Earth"** and the ball is the **"Moon."**
+3. Everyone else moves around to observe from different **perspectives**.
+4. Arrange yourselves to **recreate the 8 moon pictures**. **Draw a labeled diagram** under each picture showing how you modeled it.
+:::
+
+These are the 8 kinds of moon pictures you'll be matching (drawn here, as seen from New York):
+
+```{ojs}
+//| echo: false
+html`<div class="fl-moonpick">${[0, 1, 2, 3, 4, 5, 6, 7].map(i => html`<div>${flMoonIcon(i / 8, 64)}<div style="font-size:.8em;">${flPhaseName(i / 8)}</div></div>`)}</div>`
+```
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your diagrams (try it first!)
+The packet's pictures may be in a different order. Match each picture by its **shape**. Each diagram should show the flashlight, the head (Earth), the ball (Moon), the **lit half of the ball facing the flashlight**, and a sight line from the head to the ball.
+
+::: {.fl-table-wrap}
+| Moon picture | Where the ball is (seen from above) |
+|---|---|
+| **New** (dark) | Between the flashlight and your head. You see the unlit side. |
+| **Waxing crescent** (thin sliver lit on the right) | Turn left (counterclockwise) about 45° from the flashlight. |
+| **First quarter** (right half lit) | 90° from the flashlight. |
+| **Waxing gibbous** | About 135° around. |
+| **Full** | Opposite the flashlight, behind your head, held a little **above** your head's shadow. |
+| **Waning gibbous** | About 225° around. |
+| **Third quarter** (left half lit) | About 270°: 90° from the flashlight on the other side. |
+| **Waning crescent** (sliver lit on the left) | About 315°, almost back to the flashlight. |
+:::
+
+Turning **counterclockwise** (to your left) gives the order people in New York see: lit on the **right** while waxing.
+:::
+
+## How long is the cycle? {#fl-calendar}
+
+::: {.callout-warning collapse="true"}
+## 📌 A note about your packet: "Look at the moon calendar again"
+Question 6 says to look at the moon calendar "again," but the SY 26-27 packet doesn't have a moon calendar anymore. (It was part of an older version of this lesson.) Use the calendar below instead.
+:::
+
+Each circle is the Moon's shape on one day (**calculated** from the average lunar month, not photos, so a phase can be off by up to about a day). **Tap any Moon** to see its date and phase. Red rings mark Hurricane Sandy (Oct. 29, 2012) and Winter Storm Jonas (Jan. 23, 2016).
+
+```{ojs}
+//| echo: false
+viewof flYear = Inputs.number([1900, 2100], {label: "Year", value: 2025, step: 1})
+```
+
+```{ojs}
+//| echo: false
+{
+  const refNew = Date.UTC(2000, 0, 6, 18, 14);
+  const phaseOf = t => { const days = (t - refNew) / 86400000; return (((days / flSyn) % 1) + 1) % 1; };
+  const cell = 22, r = 8.5, left = 40, top = 24;
+  const W = left + 31 * cell + 6, H = top + 12 * cell + 6;
+  const monthFmt = new Intl.DateTimeFormat("en-US", {month: "short", timeZone: "UTC"});
+  const events = {"2012-9-29": "Hurricane Sandy hit NYC", "2016-0-23": "Winter Storm Jonas hit NYC"};
+  const readout = html`<div style="min-height:2.6em;font-size:.95em;margin:6px 0;padding:8px 12px;border-radius:10px;background:#1e1b4b;color:#e0e7ff;">👆 Tap a Moon to see its date and phase.</div>`;
+  const svg = flD3.create("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("role", "img")
+    .attr("aria-label", `Moon phase calendar for ${flYear}: one row per month, one calculated moon shape per day`)
+    .style("width", "100%").style("height", "auto").style("background", "#0b1020")
+    .style("border-radius", "12px").style("font", "10px sans-serif");
+  for (let d = 1; d <= 31; d++)
+    svg.append("text").attr("x", left + (d - 0.5) * cell).attr("y", top - 9).attr("text-anchor", "middle")
+      .attr("fill", "#94a3b8").text(d % 5 === 0 || d === 1 ? d : "");
+  for (let m = 0; m < 12; m++) {
+    const y = top + (m + 0.5) * cell;
+    svg.append("text").attr("x", 6).attr("y", y + 3.5).attr("fill", "#cbd5e1").text(monthFmt.format(new Date(Date.UTC(flYear, m, 1))));
+    const nDays = new Date(Date.UTC(flYear, m + 1, 0)).getUTCDate();
+    for (let d = 1; d <= nDays; d++) {
+      const t = Date.UTC(flYear, m, d, 12);
+      const p = phaseOf(t);
+      const ev = events[`${flYear}-${m}-${d}`];
+      const g = svg.append("g").attr("transform", `translate(${left + (d - 0.5) * cell},${y})`).style("cursor", "pointer");
+      g.append("circle").attr("r", r + 2).attr("fill", "transparent");
+      g.append("circle").attr("r", r).attr("fill", "#334155");
+      g.append("path").attr("d", flMoonPath(p, r)).attr("fill", "#f5f0d0");
+      const label = `${new Date(t).toLocaleDateString("en-US", {timeZone: "UTC", dateStyle: "medium"})}: ${flPhaseName(p)} (about ${Math.round(flIllum(p) * 100)}% lit)`;
+      g.append("title").text(label);
+      g.on("click", () => { readout.textContent = "🌙 " + label + (ev ? ` · ${ev}!` : ""); });
+      if (ev) g.append("circle").attr("r", r + 2.5).attr("fill", "none").attr("stroke", "#f87171").attr("stroke-width", 2.2);
+    }
+  }
+  return html`<div>${svg.node()}${readout}</div>`;
+}
+```
+
+::: {.student-task}
+### ✏️ In your packet: questions 5–6
+
+5. How must the Moon **move** in order for the pattern to repeat itself?
+6. Look at the moon calendar. How **long** does it take for the pattern to start repeating itself?
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+5. The Moon must **orbit (revolve) all the way around Earth**, counterclockwise as seen from above the North Pole, until it's back in the **same position compared to the Sun and Earth**.
+6. About **29.5 days** (29.53), from one full Moon to the next. That's about a month.
+
+**Why not 28 days?** You might hear "28 days" (even some teacher materials say it). The Moon goes once around Earth **compared to the stars** in about **27.3 days**. But Earth is moving around the Sun at the same time, so the Moon needs about **2 more days** to line up with the Sun again. Phases depend on the Sun, so the phase cycle is **29.5 days**. (Source: NASA Moon Fact Sheet.)
+:::
+
+## Eclipse set-ups {#fl-eclipse-setups}
+
+Turn on **eclipse mode** in the model above, then slide to day **0** and to about day **14.8**.
+
+::: {.student-task}
+### ✏️ In your packet: questions 7–8
+
+7. Find a set of positions where the **"Moon" fully blocks the light of the "Sun"** from the perspective of "Earth." **Draw** it.
+8. Find a set of positions where **"Earth" fully blocks the light of the "Sun"** from reaching the "Moon." **Draw** it.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+7. Flashlight, ball, and head in **one straight line at eye level**, with the **ball between** the flashlight and your head. The ball's shadow falls on your face. That's a **solar eclipse**, and it can only happen at **new Moon**.
+8. Flashlight, head, and ball in **one straight line at eye level**, with the ball **behind your head**. Your head's shadow covers the ball. That's a **lunar eclipse**, and it can only happen at **full Moon**.
+
+**Key insight:** when the ball is held **above** eye level, the same positions just give a new Moon and a full Moon, with **no** eclipse. Height (up or down) matters!
+:::
+
+## Making Sense of the Investigation {#fl-making-sense1}
+
+::: {.student-task}
+### ✏️ In your packet: Making Sense of the Moon Phases and Eclipses Investigation
+
+**See-Think-Wonder**
+
+- **See:** What did the person who was **Earth** observe? The person who was the **Sun**? The **observers outside** the system?
+- **Think:** Why do you think these observers saw different things?
+- **Wonder:** What questions do you have?
+
+**Analysis 1.** Based on the model, explain **what causes the appearance of moon phases** on Earth.
+
+In class this is shared with **Domino Discover**.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+::: {.fl-table-wrap}
+| Observer | See | Think |
+|---|---|---|
+| **Earth** (the head) | Different amounts of the lit ball as it moved: dark, sliver, half, mostly, full, and back. | What we see depends on **where the Moon is** compared to us and the Sun. |
+| **Sun** (flashlight) | Always the **fully lit** side of the ball (except when the head blocked it). | The Sun always lights half the Moon. The Sun never "sees" phases. |
+| **Outside observers** | The ball was always **half lit, half dark**, and the lit half always faced the flashlight. | Phases are about **viewpoint**. Someone outside the system wouldn't see phases. |
+:::
+
+**Wonder (examples):** Why don't we get an eclipse every month? Why do we always see the same side of the Moon? Does everyone on Earth see the same phase?
+
+**Analysis 1:** The **Sun always lights half the Moon**. As the Moon **orbits** Earth, its **position** compared to the Sun and Earth changes, so we see **different amounts of the lit half**. New Moon: the Moon is between Earth and the Sun, so we see its dark side. Full Moon: Earth is between, so we see the whole lit side. Phases are **not** caused by Earth's shadow.
+:::
+
+```{ojs}
+//| echo: false
+flCheck("fl-explore1-check", "Check: The Model", [
+  {q: "When the head (Earth) sees a full \"moon,\" where is the ball?",
+   options: ["Between the flashlight and the head", "On the far side of the head from the flashlight, a little above the head's shadow", "At a right angle to the flashlight", "Anywhere, as long as the flashlight is bright"],
+   correct: 1,
+   explanation: "Opposite the Sun, so you face the whole lit half. Held a bit high, so it's not an eclipse."},
+  {q: "Was the ball ever less than half lit by the flashlight?",
+   options: ["Yes, during the crescent", "No. Half was always lit; from the head we saw only part of that lit half", "Yes, during the new Moon it was totally dark", "Only when it was far away"],
+   correct: 1,
+   explanation: "Ask the flashlight holder: they always saw a fully lit ball. The crescent is about your viewing angle."},
+  {q: "In the model, why isn't every \"full moon\" a lunar eclipse?",
+   options: ["The flashlight is too weak", "The ball is usually above or below the head's shadow; it has to be exactly in line", "Lunar eclipses happen at new Moon", "The ball must spin first"],
+   correct: 1,
+   explanation: "That's the model's version of the real Moon's tilted orbit, which you'll see in Explain 1."}
+])
+```
+
+## Investigation rubric {#fl-rubric1}
+
+::: {.student-task}
+### ✏️ In your packet: Moon Phases and Eclipses Investigation Rubric
+
+**Self-score** (No / Almost / Yes): I know how this investigation connects to our unit · I contributed to the See-Think-Wonder or the analysis question · I used my time well · I plan to come in for extra help (Yes / No).
+**Partner rubric:** rate each partner (Unsatisfactory / Pretty Good / Excellent) on **Contributions**, **Working with Others**, and **Time Management**.
+
+**How it connects:** our class thought the **Moon** might affect **high tides** and flooding. To test that, we first need to know where the Moon is during each phase.
+:::
+
+# Explain 1: Explaining Lunar Patterns {#fl-explain1}
+
+::: {.explain-box}
+## 🧠 How do positions cause phases and eclipses?
+
+Now you'll turn the patterns from your model into an explanation, using the **Moon Phases Simulator** and an eclipse model. Your explanation should use the **relative positions** of the Moon, Earth, and Sun, and the **perspective of the observer**.
+:::
+
+## Part 1: Moon phases {#fl-phases}
+
+::: {.student-task}
+### ✏️ In your packet: Part 1. Moon Phases, steps 1–3
+
+1. Open the **Moon Phases Simulator**.
+2. Switch to the **"Horizon Diagram"** tab. It shows how the Moon's movement around Earth causes different phases, and where the Moon is in the sky during the day.
+3. **Click and drag** the Moon around Earth. Watch how the phase and the Moon's position on the horizon change.
+:::
+
+<a class="fl-sim-link" href="https://astro.unl.edu/smartphone/MoonPhases/" target="_blank" rel="noopener">🌙 Open the Moon Phases Simulator (University of Nebraska–Lincoln)</a>
+
+::: {.student-task}
+### ✏️ In your packet: questions 4–5
+
+4. If you could view the Moon from the **Sun's** point of view, how much of the Moon would be **illuminated** at each position?
+5. Why does the amount of the Moon that's illuminated look **different from Earth**?
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+4. **All** of the side facing the Sun. From the Sun, the Moon would look **fully lit at every position**. (Half of the whole Moon is always lit.)
+5. From Earth we look at the Moon from a **different angle** at each position in its orbit, so a different part of the lit half **faces us**.
+:::
+
+### Predict the phase from the position (questions 6–7)
+
+Here is a top view like the one in your packet, with **sunlight coming from the right**. The Moon is shown at **8 numbered positions**. Use it for **question 6** (what does the Moon look like from Earth at positions 1, 2, 3, and 6?) and **question 7** (which position matches each picture?).
+
+**Tip:** imagine standing on Earth and facing the Moon. How much of its **lit (right) half** faces you?
+
+```{ojs}
+//| echo: false
+{
+  const W = 360, H = 320, cx = 170, cy = 160, R = 110, rm = 13;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Top view: sunlight from the right, Earth in the center, Moon at 8 numbered positions. Position 1 is between Earth and the Sun, and the numbers go counterclockwise." style="width:100%;max-width:520px;background:#0b1020;border-radius:12px;font:12px sans-serif">`;
+  s += `<text x="${W - 8}" y="18" fill="#fde68a" font-weight="700" text-anchor="end">Sunlight ☀️</text>`;
+  for (let k = 0; k < 6; k++) { const y = 40 + k * 48; s += `<line x1="${W - 6}" y1="${y}" x2="${W - 46}" y2="${y}" stroke="#fde68a" stroke-width="2" opacity=".7"/>`; }
+  s += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#475569" stroke-dasharray="4 4"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="22" fill="#1e3a8a"/><path d="M${cx},${cy - 22} A22,22 0 0 1 ${cx},${cy + 22}Z" fill="#60a5fa"/><text x="${cx}" y="${cy + 4}" text-anchor="middle" fill="#fff" font-weight="700">Earth</text>`;
+  for (let i = 0; i < 8; i++) {
+    const phi = i * Math.PI / 4;
+    const x = cx + R * Math.cos(phi), y = cy - R * Math.sin(phi);
+    s += `<circle cx="${x}" cy="${y}" r="${rm}" fill="#334155"/><path d="M${x},${y - rm} A${rm},${rm} 0 0 1 ${x},${y + rm}Z" fill="#f5f0d0"/>`;
+    const lx = cx + (R + 27) * Math.cos(phi), ly = cy - (R + 27) * Math.sin(phi);
+    s += `<circle cx="${lx}" cy="${ly}" r="10" fill="#6366f1"/><text x="${lx}" y="${ly + 4}" text-anchor="middle" fill="#fff" font-weight="800">${i + 1}</text>`;
+  }
+  s += `</svg>`;
+  return html`<div class="fl-svg-wrap">${flSvg(s)}</div>`;
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const names = ["New Moon", "Waxing Crescent", "First Quarter", "Waxing Gibbous", "Full Moon", "Waning Gibbous", "Third Quarter", "Waning Crescent"];
+  const sorted = names.slice().sort();
+  const q6 = [1, 2, 3, 6].map(pos => {
+    const sel = html`<select aria-label="Phase seen from Earth at position ${pos}" style="min-height:44px;font-size:.95em;max-width:100%;"><option value="">Choose...</option>${sorted.map(o => html`<option>${o}</option>`)}</select>`;
+    const mark = html`<span style="margin-left:6px;font-weight:700;"></span>`;
+    return {pos, sel, mark, ok: () => sel.value === names[pos - 1],
+      row: html`<div style="display:flex;align-items:center;gap:8px;margin:4px 0;flex-wrap:wrap;"><b style="background:#6366f1;color:#fff;border-radius:50%;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;">${pos}</b>${sel}${mark}</div>`};
+  });
+  const pics = [{p: 0.5, ans: 5}, {p: 0.875, ans: 8}, {p: 0.375, ans: 4}, {p: 0.75, ans: 7}];
+  const q7 = pics.map((pc, i) => {
+    const sel = html`<select aria-label="Position number for picture ${i + 1}" style="min-height:44px;font-size:.95em;"><option value="">Position?</option>${[1, 2, 3, 4, 5, 6, 7, 8].map(n => html`<option>${n}</option>`)}</select>`;
+    const mark = html`<div style="font-weight:700;min-height:1.4em;"></div>`;
+    return {sel, mark, ok: () => +sel.value === pc.ans, cell: html`<div>${flMoonIcon(pc.p, 70)}<div>${sel}</div>${mark}</div>`};
+  });
+  const msg = html`<div style="margin-top:8px;font-size:.95em;"></div>`;
+  const btn = html`<button type="button" class="fl-btn">Check my answers</button>`;
+  btn.onclick = () => {
+    let n = 0;
+    q6.forEach(r => { const ok = r.ok(); if (ok) n++; r.mark.textContent = r.sel.value ? (ok ? "✅" : "❌") : ""; });
+    q7.forEach(r => { const ok = r.ok(); if (ok) n++; r.mark.textContent = r.sel.value ? (ok ? "✅" : "❌") : ""; });
+    msg.innerHTML = n === 8 ? "🎉 <b>8 / 8!</b> Position 1 is between Earth and the Sun (new). Position 5 is opposite the Sun (full). The Sun lights the right half of the Moon at every position."
+      : `<b>${n} / 8 correct.</b> Hint: positions go counterclockwise from the Sun's side. The lit part grows on the right first (waxing), then shrinks from the right (waning).`;
+  };
+  return html`<div class="fl-card">
+    <p style="margin:0 0 6px;"><b>Question 6.</b> What does the Moon look like from Earth at each position?</p>
+    ${q6.map(r => r.row)}
+    <p style="margin:14px 0 6px;"><b>Question 7.</b> Write the position number under each picture.</p>
+    <div class="fl-moonpick">${q7.map(r => r.cell)}</div>
+    ${btn}${msg}</div>`;
+}
+```
+
+::: {.callout-warning collapse="true"}
+## 📌 A note about your packet's numbering
+In some copies of the packet, the questions in Part 1 are numbered 1–6 and then **restart at 4 and 5**. This chapter calls those last two **question 7** (write the position numbers) and **question 8** (explain to your friends).
+:::
+
+::: {.student-task}
+### ✏️ In your packet: question 8
+
+You're out at night with friends. One points out that the Moon is **full**, and everyone starts wondering why the Moon looks different on different nights. **Explain the pattern** to your friends. Use all of these words: **Moon, Sun, Earth, sunlight, orbit, position, visible, illuminated**.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+"The **Moon** doesn't make its own light. **Sunlight** from the **Sun** always **illuminates** half of it. The Moon **orbits** **Earth** about every 29.5 days, so its **position** keeps changing. Tonight it's on the far side of Earth from the Sun, so the whole lit half is **visible** to us: a full Moon. In about a week it will be off to the side, and we'll see only half of the lit part. In about two weeks it will be between us and the Sun, and the lit side will face away from us (new Moon)."
+:::
+
+## Eclipses {#fl-eclipses}
+
+Usually, when the Moon orbits Earth, it is **not** in a perfect line with the Sun. The Moon may be on the same side of Earth as the Sun, or on the opposite side, but usually not in a straight line. In class your teacher demonstrates this with the ball and flashlight, and shows the **Eclipse Explorer** ("Earth-Moon Side View").
+
+<a class="fl-sim-link" href="https://astro.unl.edu/smartphone/EclipseExplorer/" target="_blank" rel="noopener">🌒 Open the Eclipse Explorer (University of Nebraska–Lincoln)</a>
+
+Here's a side view to try. The Moon's orbit is **tilted about 5°** compared to Earth's path around the Sun (drawn much bigger here so you can see it). Change how long it's been since an **eclipse season**.
+
+```{ojs}
+//| echo: false
+viewof flEclPhase = Inputs.radio(["New Moon", "Full Moon"], {value: "New Moon", label: "Phase:"})
+```
+
+```{ojs}
+//| echo: false
+viewof flEclMonths = Inputs.range([0, 12], {step: 0.5, value: 0, label: "Months since an eclipse season:"})
+```
+
+```{ojs}
+//| echo: false
+{
+  // Model: the Sun's angle from the line where the two orbits cross advances 360° per eclipse year (346.62 days)
+  const lam = 2 * Math.PI * (flEclMonths * flSyn) / 346.62;
+  const beta = 5.14 * Math.sin(lam);
+  const solar = flEclPhase === "New Moon";
+  const limit = solar ? 1.5 : 1.0;
+  const ecl = Math.abs(beta) < limit;
+  const W = 420, H = 220, cy = 110, mx = solar ? 210 : 330;
+  const earthX = solar ? 330 : 210;
+  const dy = -beta * 14;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Side view: Sun on the left, Earth and Moon on the right. The Moon sits ${beta.toFixed(1)} degrees ${beta >= 0 ? "above" : "below"} the plane of Earth's orbit. ${ecl ? "Eclipse." : "No eclipse."}" style="width:100%;background:#0b1020;border-radius:12px;font:12px sans-serif">`;
+  s += `<circle cx="20" cy="${cy}" r="40" fill="#fbbf24"/><text x="20" y="${cy + 58}" fill="#fde68a" text-anchor="middle">Sun</text>`;
+  s += `<line x1="0" y1="${cy}" x2="${W}" y2="${cy}" stroke="#475569" stroke-dasharray="4 4"/>`;
+  s += `<text x="66" y="${cy + 16}" fill="#94a3b8">plane of Earth's orbit</text>`;
+  if (solar) {
+    s += `<polygon points="${mx},${cy + dy - 9} ${W},${cy + dy - 3} ${W},${cy + dy + 3} ${mx},${cy + dy + 9}" fill="#000" opacity=".6"/>`;
+    s += `<circle cx="${earthX}" cy="${cy}" r="24" fill="#2563eb"/><text x="${earthX}" y="${cy + 42}" fill="#cbd5e1" text-anchor="middle">Earth</text>`;
+    s += `<circle cx="${mx}" cy="${cy + dy}" r="9" fill="#e2e8f0"/><text x="${mx}" y="${cy + dy - 14}" fill="#e2e8f0" text-anchor="middle">Moon</text>`;
+  } else {
+    s += `<polygon points="${earthX},${cy - 24} ${W},${cy - 14} ${W},${cy + 14} ${earthX},${cy + 24}" fill="#000" opacity=".6"/>`;
+    s += `<circle cx="${earthX}" cy="${cy}" r="24" fill="#2563eb"/><text x="${earthX}" y="${cy + 42}" fill="#cbd5e1" text-anchor="middle">Earth</text>`;
+    s += `<circle cx="${mx}" cy="${cy + dy}" r="9" fill="${ecl ? "#b45309" : "#e2e8f0"}"/><text x="${mx}" y="${cy + dy - 14}" fill="#e2e8f0" text-anchor="middle">Moon</text>`;
+  }
+  s += `</svg>`;
+  const result = ecl ? (solar ? "🌑 Solar eclipse! The Moon's shadow reaches Earth." : "🌕 Lunar eclipse! The Moon passes through Earth's shadow.")
+                     : (solar ? "No eclipse: the Moon's shadow passes above or below Earth." : "No eclipse: the full Moon passes above or below Earth's shadow.");
+  return html`<div class="fl-svg-wrap">${flSvg(s)}
+  <div class="fl-cards">
+    <div class="fl-stat"><span class="fl-lab">Moon above (+) or below (−) Earth's orbital plane</span><b class="fl-big">${beta >= 0 ? "+" : ""}${beta.toFixed(1)}°</b>(max about ±5°)</div>
+    <div class="fl-stat" style="flex:2 1 220px;"><span class="fl-lab">Result</span><b class="fl-big" style="font-size:1.1em;color:${ecl ? "#b91c1c" : "#0f172a"}">${result}</b></div>
+  </div>
+  <p class="fl-note">Simplified model. Eclipse if the Moon is within about 1.5° (solar) or 1.0° (lunar) of the plane. Tilt drawn about 14 times too big.</p></div>`;
+}
+```
+
+::: {.student-task}
+### ✏️ In your packet: How does the path of the Moon around Earth change?
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+The Moon's orbit is **tilted about 5°** compared to Earth's path around the Sun, so at most new and full Moons the Moon is **above or below** the Sun-Earth line. The tilted orbit doesn't go flat. Instead, the two places where it **crosses** Earth's orbital plane slowly line up with the Sun about **twice a year** (two **eclipse seasons**, about 6 months apart). Only then can a new or full Moon make an eclipse.
+:::
+
+::: {.callout-warning collapse="true"}
+## 📌 A note about your packet's wording
+The packet says that sometimes the Moon's "path becomes aligned with the path of the Earth around the sun." The tilt actually stays about **5°** all the time. What changes is **where the Moon is** when it crosses Earth's orbital plane. An eclipse happens only when a new or full Moon falls **near one of those two crossing points**.
+:::
+
+In class you watch this video and **annotate the two Eclipse Models** in your packet. Your teacher plays **0:00–3:16, 4:14–5:09, and 6:45–8:25**.
+
+```{=html}
+<div class="fl-video"><iframe src="https://www.youtube-nocookie.com/embed/PRgua7xceDA" title="Eclipses: Crash Course Astronomy #5 (video)" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+```
+
+::: {.student-task}
+### ✏️ In your packet: annotate the Eclipse Models
+
+Label each model with:
+
+- **which eclipse** is which,
+- the **sizes** of the Moon and the Sun compared,
+- the **distances** from Earth to the Moon and from Earth to the Sun compared,
+- how the **viewer's location** on Earth changes what they see.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your annotations (try it first!)
+
+::: {.fl-table-wrap}
+| | Solar eclipse | Lunar eclipse |
+|---|---|---|
+| **Line-up** | Sun → **Moon** → Earth (**new Moon**) | Sun → **Earth** → Moon (**full Moon**) |
+| **Whose shadow?** | The **Moon's** shadow falls on Earth | **Earth's** shadow falls on the Moon |
+| **Sizes and distances** | The Sun is about **400 times wider** than the Moon but about **400 times farther** away, so they look about the same size from Earth and the Moon can just cover the Sun | Earth's shadow is much bigger than the Moon, so it can cover the whole Moon, which often turns **red-orange** |
+| **Who sees it** | Only people in the Moon's dark shadow see a **total** eclipse (a narrow path); people nearby see a partial one | **Anyone on Earth's night side** (where the Moon is up) sees it at the same moment |
+:::
+:::
+
+## Think-Talk-Open Exchange {#fl-ttoe}
+
+::: {.student-task}
+### ✏️ In your packet: Think-Talk-Open Exchange
+
+Use a **model and words** for each:
+
+1. How are the conditions that create **new Moons** similar to and different from **solar eclipses**? Include the role of the **monthly** and **longer (annual)** time scales, and the **perspective of the observer**.
+2. How are the conditions that create **full Moons** similar to and different from **lunar eclipses**? Include the same two ideas.
+
+**Reflection:** What are some new ideas you heard in your group discussion?
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+1. **Similar:** both happen when the Moon is **between Earth and the Sun**. **Different:** a new Moon happens **every 29.5 days** because the Moon only has to be *roughly* between. A solar eclipse needs an **exact line**, which only happens during eclipse seasons, a few times a year at most. **Observer:** everyone has the new Moon on the same date, but only people in the Moon's shadow path see the eclipse (total in a narrow strip).
+2. **Similar:** both happen when **Earth is between** the Sun and the Moon. **Different:** full Moon every 29.5 days; a lunar eclipse only when they line up exactly, so it's rarer. **Observer:** anyone on Earth's **night side** sees the full Moon and the eclipse at the same moment (at different clock times in different time zones).
+:::
+
+::: {.callout-warning collapse="true"}
+## 📌 Two things people often get wrong
+- **"Everyone on Earth can see a lunar eclipse."** Only people on Earth's **night side**, where the Moon is above the horizon, can see it.
+- **"Everyone sees the new Moon at night."** A new Moon is on the **Sun's side** of Earth, so it's up in the **daytime** and rises and sets with the Sun. You can't see it at all. The **full** Moon is the one that's up all night.
+:::
+
+::: {.key-idea}
+### 🔑 Class consensus: phases and eclipses
+- The Sun always lights **half** the Moon. The Moon's **position in its orbit** decides how much of that lit half we see. That's the **phase**. It is **not** Earth's shadow.
+- Phases repeat every **29.5 days**. Everyone on Earth sees the same phase on the same day.
+- **Solar eclipse** = new Moon in an **exact** line; seen only from the Moon's shadow path. **Lunar eclipse** = full Moon in an exact line; seen from Earth's whole night side.
+- Eclipses are rarer because the Moon's orbit is **tilted about 5°**; they cluster in eclipse seasons about 6 months apart.
+- Open question: **How do moon phases relate to tides and flooding?**
+:::
+
+```{ojs}
+//| echo: false
+flCheck("fl-explain1-check", "Check: Phases and Eclipses", [
+  {q: "What causes the Moon to show phases?",
+   options: ["Earth's shadow covers different amounts of the Moon", "Clouds block parts of the Moon", "As the Moon orbits, we see different amounts of its sunlit half", "The Moon's distance from the Sun changes a lot"],
+   correct: 2,
+   explanation: "Viewing angle, not shadow. Earth's shadow on the Moon is a lunar eclipse, and that only happens at full Moon."},
+  {q: "With sunlight from the right, the Moon is at position 7 (straight below Earth on the diagram). From New York we see…",
+   options: ["a first quarter (right half lit)", "a third quarter (left half lit)", "a full Moon", "a new Moon"],
+   correct: 1,
+   explanation: "Position 7 is three-quarters of the way around: the third quarter Moon, lit on the left."},
+  {q: "Why don't eclipses happen every month?",
+   options: ["The Moon's orbit sometimes goes flat", "The Moon's orbit is tilted, so at most new and full Moons it passes above or below the Sun-Earth line", "The Sun is too bright most months", "The Moon only orbits Earth a few times a year"],
+   correct: 1,
+   explanation: "The ~5° tilt stays. Eclipses need a new or full Moon near a crossing point."}
+])
+```
+
+# Explore 2: High Tides and Moon Phases {#fl-explore2}
+
+::: {.explore-box}
+## 🌊 How are the Moon and tides related?
+
+Our class pivoted to the Moon because many of us thought **moon phases affect tides**, and **tides affect flooding**. Now you'll test that with real data. You'll graph tides at **The Battery** in New York City at **three time scales**: one **day**, one **month**, and one **year**. Look for patterns. The explanation comes in Explain 2.
+:::
+
+**High tide** is when the sea reaches its highest level on the shore; **low tide** is its lowest. In class you look at pictures of the same shore at high and low tide. The difference in height between them is the **tidal range**.
+
+## The data: Tidal Fluctuation Data {#fl-tide-data}
+
+Your teacher gives you a handout called **Tidal Fluctuation Data** (its file may be titled *Highest and Lowest Tides by Month*). It has three tables, all for **The Battery, NY** (NOAA station 8518750), in **feet above MLLW**, local time. These are **predicted** tides: they come from the positions of the Moon and Sun only, with **no weather** in them. That's what makes them useful for testing the Moon idea.
+
+::: {.callout-note collapse="true"}
+## 📋 Table 1: Hourly tides, January 1, 2025
+
+::: {.fl-table-wrap}
+| Time | Height (ft) | Time | Height (ft) |
+|---|---|---|---|
+| 12:00 AM | 1.52 | 12:00 PM | 2.56 |
+| 1:00 AM | 0.63 | 1:00 PM | 1.27 |
+| 2:00 AM | 0.07 | 2:00 PM | 0.24 |
+| 3:00 AM | −0.07 | 3:00 PM | −0.42 |
+| 4:00 AM | 0.50 | 4:00 PM | −0.44 |
+| 5:00 AM | 1.80 | 5:00 PM | 0.37 |
+| 6:00 AM | 3.32 | 6:00 PM | 1.71 |
+| 7:00 AM | 4.48 | 7:00 PM | 2.95 |
+| 8:00 AM | 5.07 | 8:00 PM | 3.71 |
+| 9:00 AM | 5.14 | 9:00 PM | 4.00 |
+| 10:00 AM | 4.74 | 10:00 PM | 3.88 |
+| 11:00 AM | 3.83 | 11:00 PM | 3.32 |
+:::
+
+**Negative heights are normal.** They just mean the water dropped below the *average* lowest tide (MLLW).
+:::
+
+::: {.callout-note collapse="true"}
+## 📋 Table 2: Daily high and low tides, January 2025
+
+::: {.fl-table-wrap}
+| Date | AM high | AM low | AM range | PM high | PM low | PM range | Moon phase |
+|---|---|---|---|---|---|---|---|
+| 1 | 5.2 | −0.1 | 5.3 | 4.0 | −0.5 | 4.5 | |
+| 2 | 5.1 | −0.1 | 5.2 | 4.1 | −0.6 | 4.7 | |
+| 3 | 5.0 | −0.1 | 5.1 | 4.2 | −0.5 | 4.7 | |
+| 4 | 4.8 | 0.0 | 4.8 | 4.3 | −0.4 | 4.7 | |
+| 5 | — | 0.1 | — | 4.6 | −0.3 | 4.9 | |
+| 6 | 4.5 | 0.3 | 4.2 | 4.3 | −0.2 | 4.5 | 🌓 First quarter |
+| 7 | 4.6 | 0.3 | 4.3 | 4.1 | −0.2 | 4.3 | |
+| 8 | 4.7 | 0.2 | 4.5 | 3.9 | −0.2 | 4.1 | |
+| 9 | 4.8 | 0.0 | 4.8 | 3.8 | −0.2 | 4.0 | |
+| 10 | 4.9 | −0.2 | 5.1 | 3.9 | −0.3 | 4.2 | |
+| 11 | 5.0 | — | — | 4.1 | −0.4 | 4.5 | |
+| 12 | 5.2 | −0.3 | 5.5 | 4.2 | −0.6 | 4.8 | |
+| 13 | 5.2 | −0.4 | 5.6 | 4.3 | −0.7 | 5.0 | 🌕 Full |
+| 14 | 5.2 | −0.4 | 5.6 | 4.3 | −0.7 | 5.0 | |
+| 15 | 5.0 | −0.3 | 5.3 | 4.3 | −0.7 | 5.0 | |
+| 16 | 4.8 | −0.3 | 5.1 | 4.2 | −0.5 | 4.7 | |
+| 17 | 4.5 | 0.0 | 4.5 | 4.1 | −0.3 | 4.4 | |
+| 18 | 4.2 | 0.2 | 4.0 | 4.1 | 0.0 | 4.1 | |
+| 19 | 3.9 | 0.5 | 3.4 | — | 0.2 | — | |
+| 20 | 4.0 | 0.7 | 3.3 | 3.7 | 0.5 | 3.2 | |
+| 21 | 4.0 | 0.9 | 3.1 | 3.4 | 0.7 | 2.7 | 🌗 Third quarter |
+| 22 | 3.9 | 0.9 | 3.0 | 3.2 | 0.8 | 2.4 | |
+| 23 | 3.9 | 0.8 | 3.1 | 3.1 | 0.7 | 2.4 | |
+| 24 | 4.0 | 0.7 | 3.3 | 3.1 | 0.6 | 2.5 | |
+| 25 | 4.1 | 0.4 | 3.7 | 3.2 | 0.5 | 2.7 | |
+| 26 | 4.4 | — | — | 3.5 | 0.1 | 3.4 | |
+| 27 | 4.7 | 0.2 | 4.5 | 3.7 | −0.2 | 3.9 | |
+| 28 | 5.0 | 0.0 | 5.0 | 4.0 | −0.5 | 4.5 | |
+| 29 | 5.2 | −0.3 | 5.5 | 4.2 | −0.7 | 4.9 | 🌑 New |
+| 30 | 5.3 | −0.5 | 5.8 | 4.5 | −0.9 | 5.4 | |
+| 31 | 5.2 | −0.6 | 5.8 | 4.6 | −1.0 | 5.6 | |
+:::
+
+The previous new Moon was **December 30, 2024**, the day before this table starts.
+:::
+
+::: {.callout-note collapse="true"}
+## 📋 Table 3: New-moon and full-moon tides, each month of 2025
+
+::: {.fl-table-wrap}
+| Month | New Moon date | High (ft) | Low (ft) | Range (ft) | Moon–Earth distance (km) | Full Moon date | High (ft) | Low (ft) | Range (ft) | Moon–Earth distance (km) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Jan | 1/29 | 5.18 | −0.54 | 5.72 | 374,263 | 1/13 | 5.24 | −0.69 | 5.93 | 381,416 |
+| Feb | 2/27 | 5.35 | −0.64 | 5.99 | 364,692 | 2/12 | 5.01 | −0.53 | 5.54 | 392,627 |
+| Mar | 3/29 | 5.83 | −0.77 | 6.60 | 358,691 | 3/14 | 4.91 | −0.24 | 5.15 | 401,500 |
+| Apr | 4/27 | 6.21 | −0.63 | 6.84 | 357,136 | 4/12 | 5.19 | 0.13 | 5.06 | 406,006 |
+| May | 5/26 | 6.21 | −0.51 | 6.72 | 360,042 | 5/12 | 5.23 | 0.27 | 4.96 | 405,279 |
+| Jun | 6/25 | 5.93 | −0.47 | 6.40 | 366,787 | 6/11 | 5.19 | 0.28 | 4.91 | 399,741 |
+| Jul | 7/24 | 5.72 | −0.28 | 6.00 | 376,294 | 7/10 | 5.29 | 0.31 | 4.98 | 390,732 |
+| Aug | 8/23 | 5.46 | −0.20 | 5.66 | 387,054 | 8/9 | 5.56 | 0.07 | 5.49 | 380,057 |
+| Sep | 9/21 | 5.33 | −0.06 | 5.39 | 397,117 | 9/7 | 5.66 | −0.08 | 5.74 | 369,671 |
+| Oct | 10/21 | 5.42 | 0.12 | 5.30 | 404,286 | 10/6 | 5.61 | −0.24 | 5.85 | 361,456 |
+| Nov | 11/20 | 5.15 | 0.11 | 5.04 | 406,682 | 11/5 | 6.10 | −0.64 | 6.74 | 356,978 |
+| Dec | 12/19 | 4.88 | −0.03 | 4.91 | 403,492 | 12/4 | 5.91 | −0.80 | 6.71 | 357,218 |
+:::
+:::
+
+::: {.callout-warning collapse="true"}
+## 📌 Notes about the data handout
+- **The Moon Phase column in the January table is blank** in the handout, but you need it to match tides to phases. We filled it in above: **new Dec. 30 · first quarter Jan. 6 · full Jan. 13 · third quarter Jan. 21 · new Jan. 29** (dates calculated for Eastern time).
+- **Blank cells (Jan. 5, 11, 19, 26) are real, not missing data.** Each tide comes about **50 minutes later** than the day before, so sometimes a high or low slides past noon or midnight and that half of the day has only one. **Skip** those cells. Don't plot them as zero.
+- **The yearly table lists tides on the phase date.** The biggest tides often come a **day or two after** the phase. For example, the highest predicted tide of 2025 was **6.34 ft on Nov. 6**, the day after the Nov. 5 full Moon. The handout's values are within about 0.2 ft of NOAA's own predictions.
+- **Source:** the teacher materials name US Harbors, which republishes NOAA predictions. You can check any number at [NOAA Tides & Currents, station 8518750](https://tidesandcurrents.noaa.gov/stationhome.html?id=8518750).
+:::
+
+## Graph the tides {#fl-graph}
+
+Make your graphs **on paper first** (the packet's grids). Then use this tool to check them. Slide **"Plot up to"** back to the start and add points one at a time, just like you did on paper.
+
+**Graphing checklist** (from the class graphing scaffold): ✅ label both axes with titles (time on x, tide height on y) · ✅ number both axes with even scales · ✅ use **different colors** for different lines · ✅ connect the dots with **smooth** lines.
+
+```{ojs}
+//| echo: false
+flHourly = [1.52, 0.63, 0.07, -0.07, 0.50, 1.80, 3.32, 4.48, 5.07, 5.14, 4.74, 3.83, 2.56, 1.27, 0.24, -0.42, -0.44, 0.37, 1.71, 2.95, 3.71, 4.00, 3.88, 3.32]
+// [day, AM high, AM low, AM range, PM high, PM low, PM range]; null = blank in the handout (a real gap, not missing data)
+flJan = [
+  [1, 5.2, -0.1, 5.3, 4.0, -0.5, 4.5], [2, 5.1, -0.1, 5.2, 4.1, -0.6, 4.7], [3, 5.0, -0.1, 5.1, 4.2, -0.5, 4.7],
+  [4, 4.8, 0.0, 4.8, 4.3, -0.4, 4.7], [5, null, 0.1, null, 4.6, -0.3, 4.9], [6, 4.5, 0.3, 4.2, 4.3, -0.2, 4.5],
+  [7, 4.6, 0.3, 4.3, 4.1, -0.2, 4.3], [8, 4.7, 0.2, 4.5, 3.9, -0.2, 4.1], [9, 4.8, 0.0, 4.8, 3.8, -0.2, 4.0],
+  [10, 4.9, -0.2, 5.1, 3.9, -0.3, 4.2], [11, 5.0, null, null, 4.1, -0.4, 4.5], [12, 5.2, -0.3, 5.5, 4.2, -0.6, 4.8],
+  [13, 5.2, -0.4, 5.6, 4.3, -0.7, 5.0], [14, 5.2, -0.4, 5.6, 4.3, -0.7, 5.0], [15, 5.0, -0.3, 5.3, 4.3, -0.7, 5.0],
+  [16, 4.8, -0.3, 5.1, 4.2, -0.5, 4.7], [17, 4.5, 0.0, 4.5, 4.1, -0.3, 4.4], [18, 4.2, 0.2, 4.0, 4.1, 0.0, 4.1],
+  [19, 3.9, 0.5, 3.4, null, 0.2, null], [20, 4.0, 0.7, 3.3, 3.7, 0.5, 3.2], [21, 4.0, 0.9, 3.1, 3.4, 0.7, 2.7],
+  [22, 3.9, 0.9, 3.0, 3.2, 0.8, 2.4], [23, 3.9, 0.8, 3.1, 3.1, 0.7, 2.4], [24, 4.0, 0.7, 3.3, 3.1, 0.6, 2.5],
+  [25, 4.1, 0.4, 3.7, 3.2, 0.5, 2.7], [26, 4.4, null, null, 3.5, 0.1, 3.4], [27, 4.7, 0.2, 4.5, 3.7, -0.2, 3.9],
+  [28, 5.0, 0.0, 5.0, 4.0, -0.5, 4.5], [29, 5.2, -0.3, 5.5, 4.2, -0.7, 4.9], [30, 5.3, -0.5, 5.8, 4.5, -0.9, 5.4],
+  [31, 5.2, -0.6, 5.8, 4.6, -1.0, 5.6]
+]
+flJanPhases = [
+  {d: 6, name: "First quarter", icon: "🌓"}, {d: 13, name: "Full Moon", icon: "🌕"},
+  {d: 21, name: "Third quarter", icon: "🌗"}, {d: 29, name: "New Moon", icon: "🌑"}
+]
+// [month, new-moon date, high, low, range, distance km, full-moon date, high, low, range, distance km]
+flYearRows = [
+  [1, "1/29", 5.18, -0.54, 5.72, 374263, "1/13", 5.24, -0.69, 5.93, 381416],
+  [2, "2/27", 5.35, -0.64, 5.99, 364692, "2/12", 5.01, -0.53, 5.54, 392627],
+  [3, "3/29", 5.83, -0.77, 6.60, 358691, "3/14", 4.91, -0.24, 5.15, 401500],
+  [4, "4/27", 6.21, -0.63, 6.84, 357136, "4/12", 5.19, 0.13, 5.06, 406006],
+  [5, "5/26", 6.21, -0.51, 6.72, 360042, "5/12", 5.23, 0.27, 4.96, 405279],
+  [6, "6/25", 5.93, -0.47, 6.40, 366787, "6/11", 5.19, 0.28, 4.91, 399741],
+  [7, "7/24", 5.72, -0.28, 6.00, 376294, "7/10", 5.29, 0.31, 4.98, 390732],
+  [8, "8/23", 5.46, -0.20, 5.66, 387054, "8/9", 5.56, 0.07, 5.49, 380057],
+  [9, "9/21", 5.33, -0.06, 5.39, 397117, "9/7", 5.66, -0.08, 5.74, 369671],
+  [10, "10/21", 5.42, 0.12, 5.30, 404286, "10/6", 5.61, -0.24, 5.85, 361456],
+  [11, "11/20", 5.15, 0.11, 5.04, 406682, "11/5", 6.10, -0.64, 6.74, 356978],
+  [12, "12/19", 4.88, -0.03, 4.91, 403492, "12/4", 5.91, -0.80, 6.71, 357218]
+]
+flYearLong = flYearRows.flatMap(r => [
+  {m: r[0], date: r[1], high: r[2], low: r[3], range: r[4], dist: r[5], series: "New-moon high tide"},
+  {m: r[0], date: r[6], high: r[7], low: r[8], range: r[9], dist: r[10], series: "Full-moon high tide"}
+])
+flMonthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+flHourFmt = h => h === 0 ? "12 AM" : h < 12 ? `${h} AM` : h === 12 ? "12 PM" : `${h - 12} PM`
+```
+
+```{ojs}
+//| echo: false
+viewof flScale = Inputs.radio(["Daily: Jan 1, 2025 (every hour)", "Monthly: January 2025 (high tides)", "Annual: 2025 (new- and full-moon high tides)"], {value: "Daily: Jan 1, 2025 (every hour)", label: "Time scale:"})
+```
+
+```{ojs}
+//| echo: false
+flScaleN = flScale.startsWith("Daily") ? 24 : flScale.startsWith("Monthly") ? 31 : 12
+```
+
+```{ojs}
+//| echo: false
+viewof flShown = Inputs.range([1, flScaleN], {step: 1, value: flScaleN, label: flScale.startsWith("Daily") ? "Plot up to hour #:" : flScale.startsWith("Monthly") ? "Plot up to day:" : "Plot up to month #:"})
+```
+
+```{ojs}
+//| echo: false
+viewof flOpts = Inputs.checkbox(["Connect the dots with a smooth line", "Show moon phases (monthly)", "Show Moon–Earth distance (annual)"], {value: ["Connect the dots with a smooth line"], label: "Options:"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const smooth = flOpts.includes("Connect the dots with a smooth line");
+  if (flScale.startsWith("Daily")) {
+    const data = flHourly.map((v, h) => ({h, v})).filter(d => d.h < flShown);
+    return flPlot.plot({
+      title: "Tide height at The Battery, NY, on January 1, 2025",
+      subtitle: "Predicted tide every hour (feet above MLLW)",
+      width, height: 320, marginLeft: 50, marginBottom: 40,
+      x: {label: "Time of day (hour)", domain: [0, 23], ticks: [0, 3, 6, 9, 12, 15, 18, 21], tickFormat: flHourFmt},
+      y: {label: "Tide height (ft)", domain: [-1, 6], grid: true},
+      marks: [
+        flPlot.ruleY([0], {stroke: "#94a3b8"}),
+        smooth ? flPlot.lineY(data, {x: "h", y: "v", stroke: "#0284c7", strokeWidth: 2.5, curve: "natural"}) : null,
+        flPlot.dot(data, {x: "h", y: "v", r: 4.5, fill: "#0284c7", stroke: "white"}),
+        flPlot.tip(data, flPlot.pointerX({x: "h", y: "v", title: d => `${flHourFmt(d.h)}: ${d.v.toFixed(2)} ft`}))
+      ].filter(Boolean)
+    });
+  }
+  if (flScale.startsWith("Monthly")) {
+    const rows = flJan.filter(r => r[0] <= flShown).flatMap(r => [
+      {d: r[0], v: r[1], series: "AM high tide"}, {d: r[0], v: r[4], series: "PM high tide"}
+    ]).filter(d => d.v !== null);
+    const phases = flOpts.includes("Show moon phases (monthly)") ? flJanPhases : [];
+    return flPlot.plot({
+      title: "High tides at The Battery, NY, January 2025",
+      subtitle: "Morning (AM) and evening (PM) high tides each day, feet above MLLW",
+      width, height: 340, marginLeft: 50, marginTop: 40, marginBottom: 40,
+      color: {legend: true, domain: ["AM high tide", "PM high tide"], range: ["#dc2626", "#2563eb"]},
+      x: {label: "Date in January", domain: [1, 31], ticks: [1, 5, 10, 15, 20, 25, 31]},
+      y: {label: "High tide (ft)", domain: [3, 6], grid: true},
+      marks: [
+        flPlot.ruleX(phases, {x: "d", stroke: "#a855f7", strokeDasharray: "5 3", strokeWidth: 1.5}),
+        flPlot.text(phases, {x: "d", y: 6, text: "icon", fontSize: 18, dy: -10}),
+        smooth ? flPlot.line(rows, {x: "d", y: "v", stroke: "series", z: "series", strokeWidth: 2.2, curve: "monotone-x"}) : null,
+        flPlot.dot(rows, {x: "d", y: "v", fill: "series", r: 4, stroke: "white", tip: true, title: d => `Jan ${d.d}, ${d.series}: ${d.v.toFixed(1)} ft`})
+      ].filter(Boolean)
+    });
+  }
+  const rows = flYearLong.filter(d => d.m <= flShown);
+  const showDist = flOpts.includes("Show Moon–Earth distance (annual)");
+  return flPlot.plot({
+    title: "High tides at new and full Moon, The Battery, NY, 2025",
+    subtitle: "One new-moon and one full-moon high tide per month, feet above MLLW",
+    width, height: 360, marginLeft: 50, marginTop: 40, marginBottom: 40,
+    color: {legend: true, domain: ["New-moon high tide", "Full-moon high tide"], range: ["#7c3aed", "#d97706"]},
+    x: {label: "Month (2025)", domain: [1, 12], ticks: flD3.range(1, 13), tickFormat: m => flMonthNames[m - 1]},
+    y: {label: "High tide (ft)", domain: [4.5, 6.5], grid: true},
+    marks: [
+      smooth ? flPlot.line(rows, {x: "m", y: "high", stroke: "series", z: "series", strokeWidth: 2.2, curve: "monotone-x"}) : null,
+      flPlot.dot(rows, {x: "m", y: "high", fill: "series", r: 4.5, stroke: "white", tip: true, title: d => `${d.series}, ${d.date}: ${d.high.toFixed(2)} ft\nMoon–Earth distance: ${d.dist.toLocaleString()} km`}),
+      showDist ? flPlot.text(rows.filter(d => d.series.startsWith("New")), {x: "m", y: "high", text: d => `${Math.round(d.dist / 1000)}k`, dy: -11, fontSize: 9, fill: "currentColor"}) : null,
+      showDist ? flPlot.text(rows.filter(d => d.series.startsWith("Full")), {x: "m", y: "high", text: d => `${Math.round(d.dist / 1000)}k`, dy: 13, fontSize: 9, fill: "currentColor"}) : null
+    ].filter(Boolean)
+  });
+}
+```
+
+<p class="fl-note">Data: the class handout <i>Tidal Fluctuation Data</i>, NOAA predicted tides for The Battery, NY (station 8518750), feet above MLLW. Distance labels are in thousands of km (357k = about 357,000 km). January 2025 phase dates calculated for Eastern time.</p>
+
+::: {.student-task}
+### ✏️ In your packet: High Tides and Moon Phases
+
+**Daily Tidal Fluctuations**
+
+1. Look at the **Hourly Tide Data**.
+2. Graph the tide levels through the day on **1/1/2025**.
+
+**Monthly Tidal Fluctuations**
+
+3. Look at the **Daily Tide Data**.
+4. Graph the heights of the **morning and evening high tides** over the month. (Use two colors. Write the moon phase under its date.)
+
+**Annual Tidal Fluctuations**
+
+5. Look at the **Monthly Tide Data**.
+6. Graph the heights of the high tides during **full and new Moons** over the year. (Two colors. Write the Moon–Earth distance next to each point.)
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your graphs (try them first!)
+**Daily (1/1/2025):** a smooth wave with **two highs** (5.14 ft at 9 AM; 4.00 ft at 9 PM) and **two lows** (−0.07 ft at 3 AM; −0.44 ft at 4 PM). The two highs are **not** the same height. High to high is about **12 hours**.
+
+**Monthly (January 2025):** both lines rise and fall in waves about **two weeks apart**. AM highs peak around **5.2 ft on Jan. 1 and Jan. 12–14** (full Moon Jan. 13) and **5.3 ft on Jan. 30** (new Moon Jan. 29). They bottom out at **3.9 ft around Jan. 19–23** (third quarter Jan. 21), with a smaller dip around **Jan. 5–7** (first quarter Jan. 6). The PM line runs about 1 ft lower most of the month. The daily **range** is biggest near new and full Moon (5.8 ft on Jan. 30–31) and smallest near the quarters (3.0 ft on Jan. 22).
+
+**Annual (2025):** two curves that move in **opposite directions**. New-moon highs peak in **April–May (6.21 ft)** and drop to **4.88 ft in December**. Full-moon highs are lowest in **March (4.91 ft)** and peak in **November (6.10 ft)** and December (5.91 ft). The peaks line up with the **shortest Moon–Earth distances** (357,136 km on Apr. 27; 356,978 km on Nov. 5). The curves cross near January and August, when new- and full-moon tides are about equal.
+:::
+
+```{ojs}
+//| echo: false
+flCheck("fl-explore2-check", "Check: Reading the Tide Graphs", [
+  {q: "Using the Jan. 1, 2025 hourly data, about how many hours are there from one high tide to the next?",
+   options: ["About 6", "About 12", "About 24", "About 29.5"],
+   correct: 1,
+   explanation: "9 AM to 9 PM: about 12 hours (really about 12 h 25 min). Six hours is high to low."},
+  {q: "In January 2025, the tallest high tides fell near…",
+   options: ["first and third quarter only", "the new Moons and the full Moon", "only the full Moon", "no pattern"],
+   correct: 1,
+   explanation: "Jan. 1 (just after the Dec. 30 new Moon), Jan. 12–14 (full Moon) and Jan. 29–31 (new Moon). New Moons make big tides too."},
+  {q: "In 2025, the biggest full-moon tide was in November and the biggest new-moon tide was in April. What does the table show about those dates?",
+   options: ["Earth was closest to the Sun", "The Moon was near its closest to Earth (about 357,000 km)", "There were big storms", "The Moon was brighter"],
+   correct: 1,
+   explanation: "These are predicted tides with no weather. The difference is the Moon's distance. (Earth is closest to the Sun in early January, so that's not it.)"}
+])
+```
+
+## Making Sense of the High Tides and Moon Phases {#fl-making-sense2}
+
+::: {.student-task}
+### ✏️ In your packet: See-Think-Wonder
+
+- **See:** What patterns do you observe in the **daily**, **monthly**, and **annual** tide levels?
+- **Think:** Why do you think these patterns exist? Why are they similar or different?
+- **Wonder:** What questions do you have?
+
+Add one question of your own: **Which moon phases line up with the biggest tides?**
+
+In class this is shared with **Domino Discover**.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+- **See:** **Daily:** two highs and two lows, a wave shape. **Monthly:** bigger and smaller highs that repeat about every **two weeks**; biggest near **new and full Moon**. **Annual:** new- and full-moon tides rise and fall over the year; biggest when the **Moon is closest**.
+- **Think:** The Moon's **position** (phase) and **distance** control how high tides get. All three scales **repeat** (they're **cycles**) because the motions of the Moon and Earth repeat. The scales look alike (waves) but have different lengths.
+- **Wonder:** Why two highs a day? Does the Sun matter? What happens if a storm hits on the biggest tide?
+:::
+
+## Investigation rubric {#fl-rubric2}
+
+::: {.student-task}
+### ✏️ In your packet: High Tides and Moon Phases Rubric
+
+Same format as Explore 1: **self-score** (connects to the unit · contributed to See-Think-Wonder · used time well · plan to come in for help) and a **partner rubric** (Contributions, Working with Others, Time Management).
+:::
+
+# Explain 2: Explaining Flooding in Marin County and Hurricane Sandy {#fl-explain2}
+
+::: {.explain-box}
+## 🧠 Why are some flooding events worse than others?
+
+Your graphs showed tide patterns at three scales. Now you'll explain **why** they happen, using **gravity** and the positions of the Sun, Earth, and Moon. Then you'll use that to explain why **Hurricane Sandy** and the **Marin County** floods were so severe.
+:::
+
+## Gravitational pulls on Earth {#fl-gravity}
+
+::: {.fl-reading}
+Objects in space are pulled by the **gravity** of the objects around them. The Sun's gravity keeps Earth in its orbit, and Earth's gravity keeps the Moon in orbit. The **Moon's gravity pulls on Earth too**, and it pulls the **oceans** toward it. Two **tidal bulges** form on opposite sides of Earth: **one toward the Moon**, and **one exactly opposite**.
+
+*Why a bulge on the far side?* The Moon pulls hardest on the ocean closest to it, a bit less on Earth's center, and least on the far ocean. So the near ocean is pulled ahead of Earth, and Earth is pulled ahead of the far ocean. Both sides stretch out.
+:::
+
+Here's a model of the tidal bulges. The **Sun is on the left**, like the Monthly Tide Cycle Model in your packet. The bulges are **hugely exaggerated**. Use the three sliders for the **daily**, **monthly**, and **annual** scales.
+
+```{ojs}
+//| echo: false
+viewof flTideHour = Inputs.range([0, 24.8], {step: 0.1, value: 0, label: "Daily: hours since \"You\" faced the Moon:"})
+```
+
+```{ojs}
+//| echo: false
+viewof flTideDay = Inputs.range([0, 29.5], {step: 0.1, value: 0, label: "Monthly: days since new Moon:"})
+```
+
+```{ojs}
+//| echo: false
+viewof flTideDist = Inputs.range([356978, 406682], {step: 1000, value: 381000, label: "Annual: Moon–Earth distance (km):"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const p = flTideDay / flSyn;
+  const phiS = Math.PI, phiM = Math.PI + 2 * Math.PI * p;     // Sun to the left; new Moon toward the Sun
+  const aM = Math.pow(381830 / flTideDist, 3), aS = 0.46;
+  const W = 420, H = 300, cx = 230, cy = 150, re = 48, k = 15, R = 125;
+  const ocean = psi => aM * Math.cos(2 * (psi - phiM)) + aS * Math.cos(2 * (psi - phiS));
+  const pts = flD3.range(0, 361, 3).map(deg => {
+    const psi = deg * Math.PI / 180;
+    const r = re + 14 + k * ocean(psi);
+    return [cx + r * Math.cos(psi), cy - r * Math.sin(psi)];
+  });
+  const amp = Math.hypot(aM * Math.cos(2 * phiM) + aS * Math.cos(2 * phiS), aM * Math.sin(2 * phiM) + aS * Math.sin(2 * phiS));
+  const align = Math.cos(2 * (phiM - phiS));
+  const kind = align > 0.7 ? "Spring tide" : align < -0.7 ? "Neap tide" : "In between";
+  const near = flTideDist < 365000 ? "near perigee (close)" : flTideDist > 398000 ? "near apogee (far)" : "middle distance";
+  const special = kind === "Spring tide" && flTideDist < 365000 ? "⚠️ Perigean spring tide (king tide): the most extreme tides"
+                : kind === "Neap tide" && flTideDist > 398000 ? "Apogean neap tide: the least extreme tides" : "";
+  const psiP = phiM + 2 * Math.PI * flTideHour / 24.84;   // "You" rotate with Earth; ~24 h 50 min to face the Moon again
+  const hP = ocean(psiP);
+  const youTide = hP > 0.7 * amp ? "High tide" : hP < -0.7 * amp ? "Low tide" : hP > 0 ? "Water rising or falling (above middle)" : "Water rising or falling (below middle)";
+  const rP = re + 14 + k * hP;
+  const px = cx + rP * Math.cos(psiP), py = cy - rP * Math.sin(psiP);
+  const mx = cx + R * Math.cos(phiM), my = cy - R * Math.sin(phiM);
+  const rm = 9 + 6 * (aM - 0.85);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Tidal bulge model: Sun to the left, Earth in the middle with an exaggerated ocean bulge, Moon ${Math.round(flTideDay * 10) / 10} days after new Moon. ${kind}." style="width:100%;background:#0b1020;border-radius:12px;font:12px sans-serif">`;
+  s += `<text x="8" y="18" fill="#fde68a" font-weight="700">☀️ Sun's pull</text>`;
+  for (let j = 0; j < 6; j++) { const y = 40 + j * 46; s += `<line x1="6" y1="${y}" x2="50" y2="${y}" stroke="#fde68a" stroke-width="2" opacity=".6"/>`; }
+  s += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#475569" stroke-dasharray="4 4"/>`;
+  s += `<path d="M${pts.map(q => q.join(",")).join("L")}Z" fill="#38bdf8" fill-opacity=".55" stroke="#7dd3fc"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="${re}" fill="#166534"/><text x="${cx}" y="${cy + 4}" text-anchor="middle" fill="#fff" font-weight="700">Earth</text>`;
+  s += `<circle cx="${mx}" cy="${my}" r="${rm}" fill="#334155"/><path d="M${mx},${my - rm} A${rm},${rm} 0 0 0 ${mx},${my + rm}Z" fill="#f5f0d0"/>`;
+  s += `<line x1="${cx}" y1="${cy}" x2="${mx}" y2="${my}" stroke="#c4b5fd" stroke-dasharray="3 3"/>`;
+  s += `<circle cx="${px}" cy="${py}" r="6" fill="#f43f5e" stroke="#fff" stroke-width="1.5"/><text x="${px}" y="${py - 10}" fill="#fecdd3" text-anchor="middle" font-weight="700">You</text>`;
+  s += `</svg>`;
+  const color = kind === "Spring tide" ? "#b91c1c" : kind === "Neap tide" ? "#1d4ed8" : "#475569";
+  return html`<div class="fl-svg-wrap">${flSvg(s)}
+  <div class="fl-cards">
+    <div class="fl-stat"><span class="fl-lab">Moon phase</span><b class="fl-big">${flPhaseName(p)}</b></div>
+    <div class="fl-stat"><span class="fl-lab">Tide type this week</span><b class="fl-big" style="color:${color}">${kind}</b>Moon ${near}</div>
+    <div class="fl-stat"><span class="fl-lab">At your spot ("You")</span><b class="fl-big">${youTide}</b></div>
+    <div class="fl-stat"><span class="fl-lab">Bulge size (model)</span><b class="fl-big">${Math.round(amp * 100)}%</b>of the Moon's bulge alone at middle distance</div>
+  </div>
+  ${special ? html`<div class="fl-card" style="font-weight:700;">${special}</div>` : ""}
+  <p class="fl-note">Model, not real data. The Sun's tidal pull is set to about 0.46 of the Moon's (a little under half), and the Moon's pull grows as the Moon gets closer (in proportion to 1 ÷ distance³). Real coastlines change the exact tide sizes.</p></div>`;
+}
+```
+
+## Daily tidal fluctuations {#fl-daily}
+
+As Earth spins once a day, each place on Earth is carried **through both bulges**. So places like New York get **two high tides and two low tides** a day. Because the Moon also moves along its orbit, it takes about **24 hours 50 minutes** to face the Moon again, so high tides come about **50 minutes later** each day (that's why some cells in your data table were blank!).
+
+In class you use the **Tidal Forces Simulation** (Daily Tides tab). Try the **Daily** slider in the model above, too.
+
+<a class="fl-sim-link" href="https://simulations.newvisions.org/tidalforces.html" target="_blank" rel="noopener">🌊 Open the Tidal Forces Simulation (New Visions)</a>
+
+::: {.student-task}
+### ✏️ In your packet: Daily Tidal Fluctuations, question 1
+
+1. On the Daily Tide Cycle Model, draw **where a person would be** for each tide (high, low). Include **arrows** showing the gravitational pulls on Earth.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+A person **directly under the Moon** and a person on the **exact opposite side** both have **high tide** (they're on the bulges). People **90° away** (on the "sides" of Earth compared to the Moon) have **low tide**. Draw the gravity arrow from Earth's oceans **toward the Moon**. Because the Moon moves along its orbit while Earth spins, high tides come about every **12 h 25 min**, not exactly every 12 h.
+:::
+
+## Monthly tidal fluctuations {#fl-monthly}
+
+::: {.fl-reading}
+The **Sun's gravity** also pulls on Earth and its oceans. The Moon is **much closer** than the Sun, so the Moon's pull on the oceans is stronger and drives the tides. But the Sun can **strengthen or weaken** the Moon's effect, depending on whether it pulls along the **same line** or at a **right angle**. Over about **29.5 days**, the Moon orbits Earth, so the positions of the Earth, Sun, and Moon keep changing.
+
+- When the Sun and Moon are **in a line** with Earth (new Moon and full Moon), they **add together**: the most extreme tides of the month, called **spring tides** (highest highs, lowest lows).
+- When the Moon's pull and the Sun's pull are **perpendicular** (at right angles: first and third quarter), they **partly cancel**: the least extreme tides, called **neap tides**.
+:::
+
+::: {.callout-warning collapse="true"}
+## 📌 A note about your packet's wording
+The packet says "over the course of a month (**four weeks**), the moon orbits the Earth." The phase cycle that controls spring and neap tides is **29.5 days**, a bit more than four weeks. (The Moon circles Earth in about 27.3 days compared to the stars, but it takes about 2 more days to line up with the Sun again because Earth has moved along its own orbit.)
+
+Also: **"spring" tides have nothing to do with the season.** "Spring" means the water **springs up**. They happen at **every** new and full Moon, all year.
+:::
+
+Slide the **Monthly** slider in the model above to new Moon (0), first quarter (about 7.4), full Moon (about 14.8), and third quarter (about 22.1). In class you use the **Monthly Tides** tab of the Tidal Forces Simulation.
+
+::: {.student-task}
+### ✏️ In your packet: questions 2–3
+
+2. On the Monthly Tide Cycle Model (Sun on the left), **draw where the Moon is** for each moon phase. Include **arrows** for the gravitational forces on Earth, and label which phases give **stronger** tides and which give **weaker** tides.
+3. Label which pictures show **spring tides** and which show **neap tides**.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+Seen from above the North Pole, with the Moon orbiting counterclockwise:
+
+- **New Moon:** Moon between Earth and the Sun (to the **left** of Earth). Sun and Moon arrows point the **same way** → **stronger** → **spring tide**.
+- **First quarter:** Moon 90° around (**below** Earth on the page). Arrows at **right angles** → **weaker** → **neap tide**.
+- **Full Moon:** Moon on the far side (to the **right** of Earth). Arrows point in **opposite directions along the same line**, and both stretch Earth along that line → **stronger** → **spring tide**.
+- **Third quarter:** Moon **above** Earth on the page. Right angles → **weaker** → **neap tide**.
+
+(If your drawing has the two quarters swapped, that's OK as long as your orbit direction is consistent. The key is the **90°**.)
+:::
+
+## Annual tidal fluctuations {#fl-annual}
+
+::: {.fl-reading}
+The Moon's orbit around Earth is an **ellipse** (an oval), like Earth's orbit around the Sun. So sometimes the Moon is **closer** to Earth and sometimes **farther**.
+
+- When the Moon is closest, it's at **perigee**. Its pull on the oceans is **stronger**, so tides are more extreme.
+- When the Moon is farthest, it's at **apogee**. Its pull is **weaker**, so tides are less extreme.
+
+If the Moon is at **perigee** at the same time as a **spring tide** (new or full Moon), it's called a **perigean spring tide** (also called a **king tide**). These are the **most extreme** tides. If the Moon is at **apogee** during a **neap tide**, it's an **apogean neap tide**, the **least extreme** tides.
+:::
+
+Your packet has a graph of **Moon distance vs. tidal range in 2025**. Here it is, made from the same 24 new- and full-moon tides in your data table:
+
+```{ojs}
+//| echo: false
+flPlot.plot({
+  title: "Moon–Earth distance vs. tidal range at The Battery, 2025",
+  subtitle: "Each dot is one new-moon or full-moon day from the data table",
+  width, height: 340, marginLeft: 50, marginBottom: 44, marginTop: 40,
+  color: {legend: true, domain: ["New-moon high tide", "Full-moon high tide"], range: ["#7c3aed", "#d97706"]},
+  x: {label: "Moon–Earth distance (km) →", tickFormat: d => `${Math.round(d / 1000)}k`, grid: true},
+  y: {label: "↑ Daily tidal range (ft)", domain: [4.5, 7], grid: true},
+  marks: [
+    flPlot.linearRegressionY(flYearLong, {x: "dist", y: "range", stroke: "#64748b", ci: 0}),
+    flPlot.dot(flYearLong, {x: "dist", y: "range", fill: "series", r: 5, stroke: "white", tip: true,
+      title: d => `${d.series.replace(" high tide", "")}, ${d.date}/2025\nDistance: ${d.dist.toLocaleString()} km\nRange: ${d.range.toFixed(2)} ft`})
+  ]
+})
+```
+
+<p class="fl-note">Data: class handout <i>Tidal Fluctuation Data</i> (NOAA predictions, The Battery, NY). Gray line = straight-line trend through all 24 points.</p>
+
+**Read it:** as the distance **goes up**, the tidal range **goes down**, for both new and full Moons. Pick one dot, tap it, and find that same row in Table 3.
+
+::: {.callout-warning collapse="true"}
+## 📌 A note about "annual" tides
+The packet (and the unit plan) can make it sound like the Moon is closest **once a year**, like Earth's orbit. It isn't. The Moon reaches **perigee about every 27.5 days**, about once a month. What changes slowly through the year is **which phase** perigee lines up with. Perigee comes back to the **same phase** about every **14 months** (about 412 days). In 2025, that's why **new-moon** tides peaked in **March–May** and **full-moon** tides peaked in **October–December**. "Annual" is fine as a name for the time scale; just don't say "the Moon is closest once a year."
+:::
+
+### The Annual Tide Cycle Model (question 4)
+
+This model shows Earth at four places around the Sun, each with the Moon's **oval orbit** (stretched a lot so you can see it). The **long axis of the Moon's orbit turns only slowly**, so the **perigee end (P)** points the same way in all four pictures. **A** = apogee. In class you also use the **Annual Tides** tab of the Tidal Forces Simulation.
+
+```{ojs}
+//| echo: false
+viewof flAnnualShow = Inputs.toggle({label: "Show the answers on the model", value: false})
+```
+
+```{ojs}
+//| echo: false
+{
+  const W = 440, H = 380, sx = 220, sy = 190;
+  const spots = [
+    {n: 1, x: 70, y: 190}, {n: 2, x: 220, y: 55}, {n: 3, x: 370, y: 190}, {n: 4, x: 220, y: 325}
+  ];
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Annual Tide Cycle Model: Sun in the center and Earth at four numbered spots around it. Each Earth has an oval Moon orbit with the perigee end, P, pointing right and the apogee end, A, pointing left." style="width:100%;max-width:560px;background:#0b1020;border-radius:12px;font:12px sans-serif">`;
+  s += `<ellipse cx="${sx}" cy="${sy}" rx="150" ry="135" fill="none" stroke="#475569" stroke-dasharray="4 4"/>`;
+  s += `<circle cx="${sx}" cy="${sy}" r="26" fill="#fbbf24"/><text x="${sx}" y="${sy + 4}" text-anchor="middle" fill="#78350f" font-weight="800">Sun</text>`;
+  spots.forEach(o => {
+    s += `<ellipse cx="${o.x}" cy="${o.y}" rx="44" ry="24" fill="none" stroke="#a5b4fc" stroke-width="1.5"/>`;
+    s += `<circle cx="${o.x}" cy="${o.y}" r="11" fill="#2563eb"/>`;
+    s += `<circle cx="${o.x + 44}" cy="${o.y}" r="7" fill="#f5f0d0"/><text x="${o.x + 44}" y="${o.y - 11}" text-anchor="middle" fill="#fde68a" font-weight="800">P</text>`;
+    s += `<text x="${o.x - 44}" y="${o.y - 8}" text-anchor="middle" fill="#cbd5e1" font-weight="800">A</text>`;
+    s += `<circle cx="${o.x}" cy="${o.y + 36}" r="10" fill="#6366f1"/><text x="${o.x}" y="${o.y + 40}" text-anchor="middle" fill="#fff" font-weight="800">${o.n}</text>`;
+  });
+  s += `</svg>`;
+  const notes = [
+    "<b>1.</b> P points <b>toward</b> the Sun, so the Moon is at perigee at <b>new Moon</b>. → <b>Perigean spring tide at new Moon</b>; new-moon tides are <b>stronger</b> than full-moon tides. (Like April–May 2025.)",
+    "<b>2.</b> The orbit's long axis is at a right angle to the Sun line, so perigee and apogee fall near the <b>quarter Moons</b>. → New- and full-moon tides are about the <b>same</b> strength. The quarter Moon at apogee gives an <b>apogean neap tide</b> (least extreme).",
+    "<b>3.</b> P points <b>away</b> from the Sun, so the Moon is at perigee at <b>full Moon</b>. → <b>Perigean spring tide at full Moon</b>; full-moon tides are <b>stronger</b> than new-moon tides. (Like November–December 2025.)",
+    "<b>4.</b> Same as 2: new- and full-moon tides about equal; <b>apogean neap tide</b> at the quarter Moon near A. (Like the crossover months, January and August 2025.)"
+  ];
+  return html`<div class="fl-svg-wrap">${flSvg(s)}
+    ${flAnnualShow ? html`<div class="fl-card">${notes.map(n => flSvg(`<p style="margin:6px 0;">${n}</p>`))}<p class="fl-note" style="margin:6px 0 0;">Real timing: the full pattern takes about 14 months, not exactly one year.</p></div>` : html`<p class="fl-note">Try question 4 first, then turn on the answers.</p>`}</div>`;
+}
+```
+
+::: {.student-task}
+### ✏️ In your packet: question 4
+
+4. On the Annual Tide Cycle Model, **annotate** where tides would be most and least extreme. Mark where:
+   - a **perigean spring tide** would occur
+   - an **apogean neap tide** would occur
+   - **full-moon** tides would be stronger than new-moon tides
+   - **new-moon** tides would be stronger than full-moon tides
+   - full-moon and new-moon tides would be **similar** strength
+
+**Tip:** first mark the **perigee end** of each orbit (the same end on all four).
+:::
+
+## Construct explanations {#fl-construct}
+
+::: {.student-task}
+### ✏️ In your packet: Construct explanations
+
+1. How do **moon phases** affect high and low tides on a **monthly** basis? Include what a **spring tide** is and what causes it, and what a **neap tide** is and what causes it.
+2. How does the **distance** of the Moon from Earth affect high and low tides on an **annual** basis? Include what **apogee** and **perigee** are, and how they affect the strength of tides.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+1. A **spring tide** is the time of the month with the **highest high tides and lowest low tides** (the biggest range). It happens at **new and full Moon**, when the Sun, Earth, and Moon are **in a line**, so the Sun's and Moon's gravity stretch the oceans along the same line and the bulges **add**. A **neap tide** has the **smallest range** (lower highs, higher lows). It happens at **first and third quarter**, when the Sun's pull is at a **right angle** to the Moon's and partly cancels it. Spring tides come about every **14–15 days**. Evidence: in January 2025 at The Battery, AM high tides were about **5.2–5.3 ft** at the spring tides vs. about **3.9 ft** at the neap tide.
+2. The Moon's orbit is an **oval**. **Perigee** is its closest point and **apogee** its farthest. Closer means a **stronger pull**, so tides at perigee are **more extreme**; at apogee, **weaker**. The Moon reaches perigee about every 27.5 days, but whether that lines up with a new or full Moon changes through the year. When perigee lines up with a spring tide, tides are the most extreme of the year. Evidence: in 2025 the new-moon high tide was **6.21 ft in April** (Moon about 357,000 km away) but only **4.88 ft in December** (about 403,000 km).
+:::
+
+## Sandy and Marin County {#fl-sandy}
+
+Now put it all together. A **storm surge** is extra water pushed toward the coast by a storm's winds (plus a small rise from low air pressure). The total water level that floods the city is the **storm tide**:
+
+<div style="text-align:center;font-size:1.15em;font-weight:700;margin:10px 0;">storm tide = normal (predicted) tide + storm surge</div>
+
+Below is the **real record** from The Battery during Hurricane Sandy. The **blue line** is the tide NOAA predicted from the Moon and Sun alone. The **red line** is what the water actually did. The **orange** area is the surge (red minus blue). Then try the **what-if** controls.
+
+```{ojs}
+//| echo: false
+// NOAA CO-OPS station 8518750 The Battery, NY. Hourly values, ft above MLLW, local time (EDT), starting Oct 27, 2012 00:00.
+flPred = [0.51, 0.14, 0.62, 1.72, 2.95, 4.05, 4.91, 5.33, 5.09, 4.29, 3.25, 2.18, 1.13, 0.37, 0.38, 1.15, 2.27, 3.37, 4.31, 4.89, 4.87, 4.18, 3.13, 2.06, 1.07, 0.32, 0.2, 0.93, 2.16, 3.42, 4.49, 5.24, 5.44, 4.97, 3.99, 2.86, 1.78, 0.79, 0.21, 0.44, 1.37, 2.56, 3.66, 4.52, 4.92, 4.68, 3.82, 2.69, 1.65, 0.78, 0.23, 0.39, 1.35, 2.69, 3.94, 4.9, 5.44, 5.39, 4.69, 3.58, 2.42, 1.39, 0.52, 0.16, 0.62, 1.71, 2.93, 3.96, 4.65, 4.83, 4.37, 3.38, 2.25, 1.3, 0.58, 0.27, 0.72, 1.89, 3.28, 4.43, 5.17, 5.45, 5.16, 4.28, 3.11, 2.0, 1.06, 0.35, 0.23, 0.94, 2.15, 3.31, 4.17, 4.64, 4.62, 3.99, 2.94, 1.87, 1.04, 0.49, 0.44, 1.17, 2.5, 3.83, 4.76, 5.25, 5.29, 4.8, 3.82, 2.66, 1.64, 0.81, 0.3, 0.47, 1.39, 2.6, 3.61, 4.24, 4.51, 4.32]
+flObs = [0.98, 0.62, 1.06, 2.35, 3.77, 4.83, 5.48, 5.82, 5.71, 4.95, 3.91, 2.81, 2.0, 1.31, 1.01, 1.78, 3.0, 4.39, 5.26, 5.82, 5.8, 5.18, 4.21, 3.09, 2.33, 1.81, 1.74, 2.49, 3.89, 5.11, 6.07, 6.53, 6.81, 6.61, 5.85, 4.7, 3.72, 2.89, 2.26, 2.53, 3.54, 4.71, 5.92, 6.78, 7.39, 7.4, 6.68, 5.68, 4.65, 3.85, 3.35, 3.23, 3.85, 4.98, 6.38, 7.73, 8.62, 8.9, 8.62, 7.91, 6.83, 5.96, 5.34, 5.64, 6.92, 8.36, 9.73, 11.38, 13.31, 13.99, 13.47, 11.45, 8.44, 6.46, 5.08, 3.87, 3.79, 4.81, 6.21, 6.93, 7.15, 7.31, 7.41, 6.88, 5.83, 4.29, 2.96, 1.89, 1.51, 2.02, 3.54, 5.13, 5.98, 6.08, 5.93, 5.24, 4.19, 3.36, 2.73, 2.04, 1.64, 2.23, 3.61, 5.04, 5.85, 6.16, 6.24, 5.82, 4.89, 3.55, 2.29, 1.57, 1.14, 1.42, 2.49, 3.71, 4.62, 5.0, 5.26, 5.04]
+flSurge = flObs.map((v, i) => v - flPred[i])
+flHourTick = h => { const day = 27 + Math.floor(h / 24), hr = h % 24; return hr === 0 ? `Oct ${day}` : hr === 12 ? "noon" : ""; }
+flHourLabel = h => { const day = 27 + Math.floor(h / 24), hr = ((h % 24) + 24) % 24; return `Oct ${day}, ${flHourFmt(hr).toLowerCase()}`; }
+```
+
+```{ojs}
+//| echo: false
+viewof flShift = Inputs.range([-6, 6], {step: 1, value: 0, label: "What if the surge came earlier (−) or later (+), hours:"})
+```
+
+```{ojs}
+//| echo: false
+viewof flTideKind = Inputs.radio(["Actual tide (full Moon, Oct 29)", "Neap-size tide (model)", "Extra-large spring tide (model)"], {value: "Actual tide (full Moon, Oct 29)", label: "Tide:"})
+```
+
+```{ojs}
+//| echo: false
+viewof flSLR = Inputs.range([0, 2], {step: 0.5, value: 0, label: "What if sea level were higher by (ft):"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const MTL = 2.47;   // mean tide level, ft above MLLW (used only to scale the what-if tides)
+  const scale = flTideKind.startsWith("Neap") ? 0.67 : flTideKind.startsWith("Extra") ? 1.27 : 1;
+  const tide = flPred.map(v => MTL + (v - MTL) * scale + flSLR);
+  const changed = flShift !== 0 || scale !== 1 || flSLR !== 0;
+  const rows = flPred.map((v, h) => {
+    const j = h - flShift;
+    const s = j >= 0 && j < flSurge.length ? flSurge[j] : NaN;
+    return {h, tide: tide[h], surge: s, storm: tide[h] + s, obs: flObs[h]};
+  }).filter(d => d.h >= 36 && d.h <= 96);
+  const valid = rows.filter(d => !isNaN(d.storm));
+  const peak = valid.reduce((a, b) => b.storm > a.storm ? b : a);
+  const marks = [
+    changed ? flPlot.lineY(rows, {x: "h", y: "obs", stroke: "#94a3b8", strokeWidth: 1.5, curve: "monotone-x"}) : null,
+    flPlot.ruleY([5.05], {stroke: "#64748b", strokeDasharray: "6 4"}),
+    flPlot.text([{h: 37, y: 5.05}], {x: "h", y: "y", text: () => "normal high tide (5.05 ft)", textAnchor: "start", dy: -7, fill: "currentColor", fontSize: 11}),
+    flPlot.areaY(valid, {x: "h", y1: 0, y2: "surge", fill: "#f97316", fillOpacity: 0.25, curve: "monotone-x"}),
+    flPlot.lineY(valid, {x: "h", y: "surge", stroke: "#ea580c", strokeWidth: 1.5, strokeDasharray: "3 2", curve: "monotone-x"}),
+    flPlot.lineY(rows, {x: "h", y: "tide", stroke: "#0284c7", strokeWidth: 2.2, curve: "monotone-x"}),
+    flPlot.lineY(valid, {x: "h", y: "storm", stroke: "#dc2626", strokeWidth: 3, curve: "monotone-x"}),
+    flPlot.dot([peak], {x: "h", y: "storm", r: 6, fill: "#dc2626", stroke: "white"}),
+    flPlot.text([peak], {x: "h", y: "storm", text: d => `${d.storm.toFixed(1)} ft`, dy: -14, fontWeight: 800, fill: "#dc2626"}),
+    flPlot.tip(rows, flPlot.pointerX({x: "h", y: "storm", title: d => `${flHourLabel(d.h)}\nTide: ${d.tide.toFixed(1)} ft\nSurge: ${isNaN(d.surge) ? "n/a" : d.surge.toFixed(1)} ft\nStorm tide: ${isNaN(d.storm) ? "n/a" : d.storm.toFixed(1)} ft`}))
+  ].filter(Boolean);
+  const chart = flPlot.plot({
+    title: changed ? "WHAT IF? Storm tide with your changes (gray = what really happened)" : "Hurricane Sandy at The Battery, Oct 28–30, 2012",
+    subtitle: "Blue = tide · orange = storm surge · red = storm tide (water level), ft above MLLW",
+    width, height: 380, marginLeft: 50,
+    x: {label: null, ticks: flD3.range(36, 97, 12), tickFormat: h => flHourTick(h)},
+    y: {label: "Water level (ft above MLLW)", domain: [-1, 17.5], grid: true},
+    marks
+  });
+  return html`<div>${chart}
+  <div class="fl-cards">
+    <div class="fl-stat"><span class="fl-lab">Highest storm tide (this view)</span><b class="fl-big">${peak.storm.toFixed(1)} ft</b>${flHourLabel(peak.h)} (hourly data)</div>
+    <div class="fl-stat"><span class="fl-lab">Real peak (6-minute data)</span><b class="fl-big">14.06 ft</b>Oct 29, 9:24 pm EDT</div>
+    <div class="fl-stat"><span class="fl-lab">Change from what really happened</span><b class="fl-big">${changed ? (peak.storm - 13.99 >= 0 ? "+" : "") + (peak.storm - 13.99).toFixed(1) + " ft" : "0 ft"}</b>vs. hourly peak 13.99 ft</div>
+  </div></div>`;
+}
+```
+
+<p class="fl-note">Data: NOAA CO-OPS station 8518750 (The Battery, NY), hourly verified water level and tide predictions, ft above MLLW, EDT. Surge = observed − predicted. The "what if" options are a <b>simple model</b>, not real events: the surge curve is shifted in time, the tide is stretched or shrunk around mean tide level (neap-size ≈ an Oct. 2012 neap tide; extra-large ≈ the Oct. 16, 2012 spring tide), and sea-level rise is added to every hour.</p>
+
+::: {.callout-tip}
+## 🔎 Try these
+- With no changes, read the peak: about **9.3 ft of surge** on top of about **4.7 ft of tide**. The predicted high tide was at about 8:48 pm, so the surge peaked **right at high tide**.
+- Move the surge **6 hours** later (to low tide). How much lower is the peak?
+- Switch to a **neap-size tide**, then an **extra-large spring tide**. How much does the peak change?
+- Add **1 ft** of sea-level rise. Every tide, and every surge, starts higher.
+:::
+
+### Jonas and Marin County
+
+```{=html}
+<div class="fl-cards">
+  <div class="fl-stat"><span class="fl-lab">Winter Storm Jonas · The Battery</span><b class="fl-big">7.43 ft</b>at 8:00 am, Jan. 23, 2016. The predicted tide was 5.09 ft, so the surge added about <b>2.3 ft</b>. A <b>full Moon</b> came that evening, so it was a spring tide.</div>
+  <div class="fl-stat"><span class="fl-lab">Marin County, California</span><b class="fl-big">King tides</b>The floods came during a <b>perigean spring tide</b>: a new or full Moon with the Moon near perigee. The water started so high that even a small storm push (or none) put it over roads, several days in a row.</div>
+</div>
+```
+
+<p class="fl-note">Jonas data: NOAA CO-OPS station 8518750, verified water level and prediction. Full-Moon times calculated.</p>
+
+::: {.student-task}
+### ✏️ In your packet: Think
+
+Using the text and the model, **brainstorm on your own**:
+
+- How could the **combined effects** of the Sun-Moon **alignment** and the Moon's **distance** affect tide strength?
+- How could that have affected flooding from **Hurricane Sandy**, which happened on a **spring tide**?
+- How could that have caused the flooding in **Marin County**, which happened on a **perigean spring tide**?
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+**Alignment + a close Moon = the biggest tides.** Sandy hit on a **full-Moon spring tide**, so the water was already higher than normal when the surge arrived. Marin flooded during a **perigean spring tide**, the most extreme kind, so even a modest storm push put water over roads. The storm surge **adds on top** of whatever the tide already is.
+:::
+
+::: {.student-task}
+### ✏️ In your packet: Talk-Open Exchange
+
+4. After discussion, write a response that clearly explains **why the flooding during Hurricane Sandy and in Marin County was so severe**.
+
+In class, groups then make a **poster** about one event (Jonas, Marin, or Sandy) for a **Class Consensus Discussion**: share, restate, ask clarifying questions, and agree as a class on how looking at **different time scales** helped explain extreme flooding.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+Coastal flood height = the **tide** + the **storm surge**. Tides are set by the positions of the Sun, Earth, and Moon. Sandy reached New York on **Oct. 29, 2012, a full Moon**, so it was a **spring tide**: the Sun and Moon pulled along one line and high tide was higher than normal. Sandy's winds pushed a surge of about **9.3 ft** into the harbor near the **evening high tide**, so the water at The Battery reached a record **14.06 ft above MLLW**, about **9 ft above a normal high tide**, flooding subways and tunnels. In Marin County, the flooding came during a **perigean spring tide** (king tide): alignment **plus** a close Moon made the most extreme tides, so water topped the shoreline even with little storm push. **Same kind of storm, different tide timing = very different damage.**
+:::
+
+::: {.key-idea}
+### 🔑 Class consensus: tides and extreme flooding
+- **Daily:** high tide happens where the ocean faces **toward or away from** the Moon.
+- **Monthly:** **spring tides** (most extreme) at new and full Moon, when the Sun and Moon pull **along the same line**; **neap tides** (least extreme) when they pull at **right angles**.
+- **Annual:** tides are more extreme when the Moon is at **perigee** than at **apogee**. The biggest ranges are **perigean spring tides**.
+- **Sandy** struck on a **spring tide**, so when storm winds blew water onto land, there was more water ready to flood. **Marin** flooded on a **perigean spring tide**.
+- **Lingering question:** the Moon's cycles haven't changed in thousands of years. **So why is coastal flooding getting worse?**
+:::
+
+```{ojs}
+//| echo: false
+flCheck("fl-explain2-check", "Check: Tides and Flooding", [
+  {q: "Why does New York get two high tides a day, not one?",
+   options: ["The Moon goes around Earth twice a day", "There are two bulges, toward and away from the Moon, and Earth rotates through both", "The Sun causes one and the Moon causes the other", "The wind changes direction twice a day"],
+   correct: 1,
+   explanation: "Both bulges come mainly from the Moon. Earth spins through them about every 24 h 50 min."},
+  {q: "Which combination gives the most extreme tides?",
+   options: ["Quarter Moon + apogee", "Quarter Moon + perigee", "Full Moon + apogee", "New or full Moon + perigee"],
+   correct: 3,
+   explanation: "Alignment (spring tide) plus a close Moon (perigee) = perigean spring tide, or king tide."},
+  {q: "How did the full Moon contribute to Sandy's flooding?",
+   options: ["The full Moon created the hurricane", "It made a spring tide, so the surge started from higher water", "Moonlight heated the ocean", "It pulled the storm toward New York"],
+   correct: 1,
+   explanation: "The Moon set the starting water level. The storm made the surge."}
+])
+```
+
+## Summary Task {#fl-summary-task}
+
+::: {.student-task}
+### ✏️ In your packet: Explain 2 Summary Task
+
+**How did the class consensus discussion go?**
+
+1. One thing that went well in the discussion
+2. One thing we can improve next time
+3. One person who helped me learn today, and what I learned from them
+4. One idea I contributed to my group or class
+
+**Explain what you know:**
+
+- How did the difference in **scale** between **monthly** tides and **annual** tides help you explain **spring tides** and **perigean spring tides**?
+- Explain how the **position of the observer** matters when observing the Moon, Earth, and Sun, and how that relates to **tides**.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your Summary Task (try it first!)
+- **Scale:** The **monthly** scale showed big tides about every 2 weeks, at new and full Moon (**spring tides**), from Sun-Moon **alignment**. The **annual** scale showed that some spring tides are much bigger than others, matching when the Moon was **closest**. Together: alignment (monthly) **plus** a close Moon (changing over the year) = **perigean spring tides**, the most extreme tides.
+- **Observer:** From Earth we see **phases** because of our viewing angle; an observer at the Sun or far outside the system would not. Tides depend on **where you are** too: a place facing toward or away from the Moon has high tide while a place 90° away has low tide, so different coasts get high tide at different times. Everyone sees the **same phase** on the same day, but the **local tide** depends on where you stand (and on the shape of the coast).
+:::
+
+# Elaborate: Designing Solutions for Worsening Floods {#fl-elaborate}
+
+::: {.elaborate-box}
+## 🛠️ How do engineers design local solutions to global problems?
+
+The Moon explains why **some** floods are worse than others. But the Moon's cycles repeat the same way year after year. So why is coastal flooding happening **more often**? In this phase you'll find out, and then you'll **design your own solution** with your group.
+:::
+
+## Part 1: Read-Generate-Sort-Solve {#fl-rgss}
+
+::: {.student-task}
+### ✏️ In your packet: Read-Generate-Sort-Solve
+
+**Prompt:** How has the **frequency of high-tide flooding** changed over the past **50 years**? **Why** has that change happened, and how is it predicted to affect flooding in the **future**?
+
+1. **Read** the article *Climate Change: Global Sea Level* (NOAA Climate.gov).
+2. **Generate** ideas with your group on chart paper.
+3. **Sort:** discuss each idea and ☆ **star** the most useful ones.
+4. **Solve:** on your own, write your response to the prompt using the starred ideas.
+:::
+
+<a class="fl-sim-link" href="https://www.climate.gov/news-features/understanding-climate/climate-change-global-sea-level" target="_blank" rel="noopener">📰 Read: Climate Change: Global Sea Level (NOAA Climate.gov)</a>
+
+Key numbers to look for as you read:
+
+```{=html}
+<div class="fl-cards">
+  <div class="fl-stat"><span class="fl-lab">Global sea level since 1880</span><b class="fl-big">+8 to 9 in</b>(21–24 cm)</div>
+  <div class="fl-stat"><span class="fl-lab">Speed of the rise</span><b class="fl-big">0.06 → 0.14 in/yr</b>20th century → 2006–2015: more than doubled</div>
+  <div class="fl-stat"><span class="fl-lab">U.S. high-tide flooding</span><b class="fl-big">300% to 900%+</b>more frequent than 50 years ago</div>
+  <div class="fl-stat"><span class="fl-lab">The Battery, NYC (NOAA tide gauge)</span><b class="fl-big">1.16 in per decade</b>sea-level trend, 1856–2025 (about 1 ft per century)</div>
+</div>
+```
+
+<p class="fl-note">Sources: NOAA Climate.gov, <i>Climate Change: Global Sea Level</i>; NOAA Tides &amp; Currents Sea Level Trends, station 8518750.</p>
+
+**Why this matters for tides:** every high tide now starts from a **higher sea**. A spring tide or king tide that used to stay below the street can now reach it, even on a **sunny day** with no storm. And every storm surge starts from higher water too. (Try the sea-level slider in the [Sandy model](#fl-sandy).)
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your Solve (try it first!)
+High-tide flooding in the U.S. is now **300% to more than 900% more frequent** than 50 years ago. The cause is **sea-level rise**: global sea level is up **8–9 inches since 1880**, and the rate **more than doubled** (from 0.06 in/yr in the 1900s to 0.14 in/yr in 2006–2015) as warming **melts glaciers and ice sheets** and **warms (expands) ocean water**. Higher seas mean ordinary spring tides and king tides now reach streets. Sea level is likely to rise **at least 1 more foot** above 2000 levels by 2100 even if emissions are low, so flooding will become **more frequent**, and storm surges will start from **higher water**. (Numbers: NOAA Climate.gov.)
+:::
+
+## Part 2: Designing Solutions {#fl-design}
+
+Climate change is a **global** problem with far-reaching impacts. Like any big problem, it can be **broken down into smaller problems** that engineering can solve. First, practice telling **criteria** from **constraints**:
+
+- **Criteria** = what a solution **must do** to succeed (its requirements).
+- **Constraints** = the **limits** it has to work within (money, space, time, materials, rules).
+
+```{ojs}
+//| echo: false
+flSorter(["Criterion", "Constraint"], [
+  {text: "It must keep out a storm tide as high as Sandy's.", cat: "Criterion", why: "That's what the design has to do."},
+  {text: "It must fit in the narrow space between the river and existing buildings and subways.", cat: "Constraint", why: "Space is a limit the design must work within."},
+  {text: "The city's budget for the project is limited.", cat: "Constraint", why: "Money is a limit."},
+  {text: "It should protect subway entrances.", cat: "Criterion", why: "Protecting subways is a goal the design must meet."},
+  {text: "It can't block ships, storm drains, or sewers.", cat: "Constraint", why: "A rule or limit the design has to respect."},
+  {text: "It should keep working for at least 50 years as sea level rises.", cat: "Criterion", why: "A performance goal: something it must do."}
+], "Now write criteria and constraints for your own problem.")
+```
+
+::: {.student-task}
+### ✏️ In your packet: Part 2. Designing Solutions
+
+Describe **one way climate change is showing up in a local community**. Then:
+
+1. List at least **3 criteria** for a successful solution.
+2. **Prioritize** your top three criteria in order of importance.
+3. Name at least **3 constraints** the solution has to work within.
+4. With your group, **brainstorm** solutions.
+5. As a group, choose one solution and **design** it: include a **drawing** and a description of how it works.
+6. Describe the **costs and benefits** of your design.
+
+In class, groups post their designs for an **Idea Carousel**: you rotate and leave sticky notes on other groups' posters (a strength, a constraint they missed, a question), then revise your own.
+:::
+
+Draft your group's design here (saved in this browser only):
+
+```{ojs}
+//| echo: false
+flForm("flDesign-flooding", "Designing Solutions for Worsening Floods", [
+  ["local", "A local problem: how is climate change showing up in a community near you?"],
+  ["q1", "1. At least 3 criteria for a successful solution"],
+  ["q2", "2. My top three criteria, most important first"],
+  ["q3", "3. At least 3 constraints"],
+  ["q4", "4. Brainstorm: possible solutions"],
+  ["q5", "5. Our design: how it works (sketch it on paper too)"],
+  ["q6c", "6. Costs"],
+  ["q6b", "6. Benefits"]
+])
+```
+
+::: {.callout-note collapse="true"}
+## 🔑 Sample design (many answers can be right)
+- **Local problem:** high tides plus storm surge flood streets, basements, and subway entrances in low parts of NYC (lower Manhattan, Red Hook, the Rockaways) more and more often as sea level rises.
+- **Criteria (prioritized):** 1. Keep water out of homes and subways during a storm tide at least as high as Sandy's (14 ft above MLLW at The Battery) **plus** future sea-level rise. 2. Protect the people least able to recover. 3. Keep the waterfront usable every day. (Others: lasts for decades; low upkeep.)
+- **Constraints:** budget; limited space between the water and buildings; can't block shipping, drains, or sewers; construction time; community approval; can't push the flooding onto neighbors.
+- **Brainstorm:** raised parks and berms, deployable flood gates, raising streets and bulkheads, wetlands and oyster reefs that slow waves, raising buildings and equipment, pumps, buyouts of the most-flooded homes.
+- **Design idea:** a raised waterfront park with a **berm**, plus **flood gates** at subway entrances that are closed using **tide predictions** (for example, before perigean spring tides and forecast surges).
+- **Benefits:** fewer flooded homes and stations, lower repair costs, safer evacuation, a park for daily use. **Costs:** construction money, lost views or access, upkeep, water redirected toward unprotected neighbors, habitat loss (walls) or slower protection (wetlands).
+:::
+
+```{ojs}
+//| echo: false
+flCheck("fl-elaborate-check", "Check: Sea-Level Rise and Design", [
+  {q: "Why is high-tide flooding happening far more often than 50 years ago?",
+   options: ["Spring tides happen more often now", "Sea level is higher, so normal high tides reach flood level more often", "The Moon is closer to Earth", "There are more hurricanes every day"],
+   correct: 1,
+   explanation: "Spring tides still come twice a month, as always. A higher sea lets ordinary high tides reach streets, even with no storm (\"sunny-day\" flooding)."},
+  {q: "How can knowing when perigean spring tides happen help a flood solution?",
+   options: ["It can't; tides are random", "Tides can be predicted years ahead, so gates can be closed and warnings sent before the highest tides", "It tells you when hurricanes will form", "It makes sea level stop rising"],
+   correct: 1,
+   explanation: "Tides come from Sun-Moon positions, so they're predictable. That's a big advantage for planning."}
+])
+```
+
+# Evaluate: Revisiting the Performance Task: Flooding {#fl-evaluate}
+
+::: {.evaluate-box}
+## 🔗 How can we design solutions aimed at the problem of storm damage?
+
+**Engineering component: design elements.** A solution can be broken into **design elements**: parts you would **change, add, or take away** from the system to address the problem. A design element's ability to address the problem is its **benefit**. It may also have unintended consequences, or **costs**. When evaluating a solution, you weigh benefits against costs to decide if the **tradeoff** is worth it.
+
+This page is in your **Performance Task Organizer (PTO)**, not your Flooding packet. It's evidence for your **Final Performance Task**.
+:::
+
+## 🔗 Connect to the Performance Task {#fl-pt}
+
+::: {.student-task}
+### ✏️ In your PTO: Revisiting the Performance Task: Flooding
+
+Draft here, then copy into your PTO. Your work is saved in this browser only.
+:::
+
+```{ojs}
+//| echo: false
+flForm("flPT-flooding", "Revisiting the Performance Task: Flooding", [
+  ["q1", "1. Explain what caused the flooding in either Hurricane Sandy or Marin County."],
+  ["q2", "2. Why is this a problem that we need to address?"],
+  ["q3", "3. Design a solution to address the problem. Describe it (and sketch it on paper)."],
+  ["q4c", "4. Costs of your solution design"],
+  ["q4b", "4. Benefits of your solution design"],
+  ["q5", "5. Describe the constraints or limitations of the solution."],
+  ["q6", "6. Design element(s) in the system, and how each addresses the problem and connects to the science"]
+])
+```
+
+::: {.callout-note collapse="true"}
+## 🔑 Sample proficient answers (try yours first!)
+1. **Sandy:** On Oct. 29, 2012 the Moon was **full**, so the Sun, Earth, and Moon were nearly **in line** and their pulls added: a **spring tide**. Sandy's winds and low pressure pushed a **storm surge** of about **9.3 ft** into New York Harbor, arriving near the **evening high tide**. Storm tide = tide + surge, so the water at The Battery hit a record **14.06 ft above MLLW**, about 9 ft above a normal high tide. (**Marin:** a **perigean spring tide**, a new or full Moon with the Moon near perigee, made extreme high tides, and storm water on top pushed the bay over roads and into homes.) **Sea-level rise** means every tide now starts higher than in the past.
+2. Coastal floods damage homes, subways, and power, and harm people, especially those who can't evacuate or afford repairs. The flooding is **predictable** (tides) and getting **more frequent** with sea-level rise, so the damage will grow unless we plan.
+3. A **raised waterfront park with a berm**, plus **deployable gates** at subway entrances closed using NOAA tide and surge forecasts, **raised electrical equipment**, and a **wetland edge**.
+4. **Costs:** high construction cost, years to build, gates must be staffed and maintained, may send water toward unprotected neighbors, temporary loss of park access. **Benefits:** blocks storm tides like Sandy's, protects transit and homes, a park for daily use, wetlands absorb wave energy.
+5. Limited space and budget; must allow drainage and shipping; needs community approval; sea level keeps rising, so the height must allow for the future; a surge bigger than the design height will still flood.
+6. **Berm built higher than Sandy's storm tide + 1 ft:** storm tide = tide + surge, so the height is set by the worst case (spring tide + surge) plus sea-level rise. **Gates closed on tide forecasts:** tides are predictable from Sun-Moon positions, so close them before perigean spring tides and forecast surges. **Wetland edge:** slows waves and absorbs some surge before it reaches the berm.
+
+**Most common gap:** "Sandy flooded because of the full Moon." For Proficient, explain **how** the Sun-Moon alignment raised the tide, and that the storm surge **added on top**.
+:::
+
+## ✅ Designing Solutions Rubric {#fl-rubric}
+
+To reach **Proficient**, your work must include **all** of these. (*Developing* = some of them.)
+
+```{ojs}
+//| echo: false
+viewof flRubric = Inputs.checkbox([
+  "Explanation: how the relative motion of the Earth, Moon, and Sun causes dramatically higher or lower tides than average",
+  "Design cycle: I identify the problem and describe its mechanism",
+  "Design cycle: I design a solution targeted at the mechanism of the problem",
+  "Design cycle: I analyze the limitations and constraints of the solution",
+  "Design cycle: I analyze the costs and benefits of the solution"
+], {label: "My work includes:"})
+```
+
+```{ojs}
+//| echo: false
+html`<div style="padding:12px 16px;border-radius:10px;margin:6px 0 14px;background:${flRubric.length === 5 ? '#dcfce7' : '#fef3c7'};color:${flRubric.length === 5 ? '#14532d' : '#78350f'};">
+  <b>${flRubric.length} / 5</b> ${flRubric.length === 5 ? "🌟 Proficient: all components included. Now write a Glow and a Grow for yourself on the rubric, and get a peer to do the same." : "Developing so far. Check the sample answers above for anything you're missing."}
+</div>`
+```
+
+::: {.key-idea}
+### 💡 Looking ahead
+You've now worked on all three pieces of storm damage: **wind**, **water** (rain and snow), and **flooding**. In the [Unit Closing](unit5-closing.qmd) you'll pick one piece and design a solution with **at least five design elements** for the **Final Design Task**.
+:::
+
+# Chapter Summary {#fl-chapter-summary}
+
+::: {.fl-table-wrap}
+| Key concept | What to remember |
+|---|---|
+| **Moon phases** | The Sun always lights **half** the Moon. The phase is how much of that lit half we see from Earth, set by the Moon's **position in its orbit**. Not Earth's shadow. |
+| **Lunar cycle** | New → waxing crescent → first quarter → waxing gibbous → full → waning gibbous → third quarter → waning crescent → new, every **29.5 days**. |
+| **Eclipses** | **Solar** = new Moon in an exact line (Moon's shadow on Earth; seen in a narrow path). **Lunar** = full Moon in an exact line (Earth's shadow on the Moon; seen from the whole night side). Rare because the Moon's orbit is **tilted about 5°**. |
+| **Daily tides** | The Moon's gravity makes **two bulges**; Earth spins through both → **two highs and two lows** a day, about 50 min later each day. |
+| **Spring tides** | New and full Moon; Sun and Moon pull **along the same line** → biggest range. About every 14–15 days. |
+| **Neap tides** | Quarter Moons; pulls at **right angles** → smallest range. |
+| **Perigee / apogee** | The Moon's **closest / farthest** point. Closer = stronger tides. **Perigean spring tide (king tide)** = the most extreme tides. |
+| **The Battery data** | Jan. 2025: spring high tides about 5.2–5.3 ft vs. neap about 3.9 ft. 2025: new-moon high 6.21 ft (April, ~357,000 km) vs. 4.88 ft (December, ~403,000 km). |
+| **Storm tide** | Storm tide = tide + storm surge. Sandy: ~9.3 ft surge near high tide on a full-Moon spring tide → record **14.06 ft above MLLW**. |
+| **Sea-level rise** | +8–9 in globally since 1880, rising faster now; high-tide flooding 300–900%+ more frequent than 50 years ago. Every tide and surge starts higher. |
+| **Design** | Criteria (what it must do), constraints (limits), design elements (parts you add, change, or remove), costs vs. benefits (tradeoffs). |
+:::
+
+::: {.callout-note collapse="true"}
+## 📚 Data and sources in this chapter
+- **Tides at The Battery, NY:** class handout *Tidal Fluctuation Data* (NOAA predictions via US Harbors); NOAA CO-OPS Tides & Currents, station 8518750 (predictions, verified water levels, datums: MHHW 5.05 ft above MLLW).
+- **Hurricane Sandy:** NOAA CO-OPS hourly verified water level and predictions, Oct. 27–31, 2012; record 14.06 ft above MLLW at 9:24 pm EDT, Oct. 29, 2012 (6-minute data).
+- **Winter Storm Jonas:** NOAA CO-OPS, 7.43 ft above MLLW at 8:00 am, Jan. 23, 2016 (predicted 5.09 ft).
+- **Moon facts:** NASA Moon Fact Sheet (29.53-day phase cycle, 27.32-day orbit compared to the stars, ~5.1° tilt). Moon phase dates and the moon calendar are **calculated**.
+- **Sea level:** NOAA Climate.gov, *Climate Change: Global Sea Level*; NOAA Tides & Currents Sea Level Trends (The Battery, 1.16 in per decade, 1856–2025).
+- **Models in this chapter** (labeled where they appear): the virtual ball-and-flashlight model, the eclipse side view, the tidal bulge model, the Annual Tide Cycle Model, and the Sandy "what-if" options.
+- **Simulators:** UNL Moon Phases Simulator and Eclipse Explorer; New Visions Tidal Forces Simulation.
+- **Packet corrections noted in this chapter:** the phase cycle is 29.5 days (not 28 or "four weeks"); the Moon's tilt stays ~5° (it doesn't "become aligned"); the missing moon calendar; the blank Moon Phase column in the January data; perigee happens about monthly, not once a year; who can see a lunar eclipse and when the new Moon is up.
+:::
+
+---
+
+# Myth or Fact? {#fl-myths}
+
+```{=html}
+<div id="fl-mf-box" style="background:linear-gradient(135deg,#0b1020 0%,#1e1b4b 55%,#164e63 100%); color:white; padding:26px; border-radius:16px; margin:30px 0; font-family:'Inter',sans-serif; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.6em; margin:0 0 8px 0; color:#fde68a !important;">🌙 Moon, Tides &amp; Floods: Myths vs. Facts</h2>
+  <p style="color:#cbd5e1; margin:0 0 18px 0; font-size:0.95em;">Decide whether each statement is a MYTH or a FACT!</p>
+  <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.06); padding:12px 16px; border-radius:12px; margin-bottom:18px; gap:8px; flex-wrap:wrap;">
+    <div id="fl-mf-progress" style="color:#cbd5e1; font-size:0.9em;">Card 1 of 8</div>
+    <div style="color:#cbd5e1; font-size:0.9em;">Score: <span id="fl-mf-score" style="color:#fde68a; font-weight:700;">0</span> / <span id="fl-mf-total">0</span></div>
+  </div>
+  <div id="fl-mf-card" style="background:rgba(255,255,255,0.08); border-radius:14px; padding:24px; min-height:100px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:1.08em; font-weight:600; line-height:1.6; border:1.5px solid rgba(255,255,255,0.12);"></div>
+  <div style="display:flex; gap:12px; margin-top:16px;">
+    <button type="button" id="fl-mf-myth" onclick="flmfAnswer('Myth')" style="flex:1; min-height:44px; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#e17055,#d63031); color:white; font-size:1em; font-weight:700; cursor:pointer;">❌ MYTH</button>
+    <button type="button" id="fl-mf-fact" onclick="flmfAnswer('Fact')" style="flex:1; min-height:44px; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#00b894,#00866e); color:white; font-size:1em; font-weight:700; cursor:pointer;">✅ FACT</button>
+  </div>
+  <div id="fl-mf-feedback" style="margin-top:16px; padding:16px; border-radius:10px; display:none; font-size:0.95em; line-height:1.6;"></div>
+  <button type="button" id="fl-mf-next" onclick="flmfNext()" style="display:none; margin-top:12px; width:100%; min-height:44px; padding:12px; border:2px solid rgba(255,255,255,0.25); border-radius:10px; background:transparent; color:white; font-size:0.95em; font-weight:600; cursor:pointer;">Next Card →</button>
+  <div id="fl-mf-done" style="display:none; text-align:center; padding:20px;">
+    <div style="font-size:2.5em; margin-bottom:10px;">🎉</div>
+    <div style="font-size:1.3em; font-weight:700;">All cards complete!</div>
+    <div style="color:#cbd5e1; margin:8px 0;">Final score: <span id="fl-mf-final" style="color:#fde68a; font-weight:700;"></span> / <span id="fl-mf-count"></span></div>
+    <button type="button" onclick="flmfRestart()" style="margin-top:12px; min-height:44px; padding:10px 24px; border:2px solid #fde68a; border-radius:20px; background:transparent; color:#fde68a; font-size:0.9em; cursor:pointer; font-weight:600;">Play Again</button>
+  </div>
+</div>
+<script>
+(function() {
+  var cards = [
+    {text: "Moon phases happen because Earth's shadow covers part of the Moon.", type: "Myth",
+     explanation: "Earth's shadow can only reach the Moon at full Moon, and when it does, that's a lunar eclipse. Phases come from how much of the Moon's sunlit half we can see."},
+    {text: "The Sun always lights half of the Moon, even at new Moon.", type: "Fact",
+     explanation: "At new Moon the lit half faces away from us, toward the Sun. Ask the 'flashlight' in the model: it always sees a fully lit ball."},
+    {text: "We get a solar eclipse at every new Moon.", type: "Myth",
+     explanation: "The Moon's orbit is tilted about 5°, so its shadow usually passes above or below Earth. Eclipses need an exact line-up."},
+    {text: "Spring tides only happen in the spring.", type: "Myth",
+     explanation: "'Spring' means the water springs up. Spring tides happen at every new and full Moon, all year. Sandy hit on one in October."},
+    {text: "New Moons make big tides, just like full Moons.", type: "Fact",
+     explanation: "At both new and full Moon, the Sun and Moon pull along the same line, so both make spring tides. In January 2025 the biggest high tide at The Battery came right after a new Moon."},
+    {text: "The Moon is closest to Earth only once a year.", type: "Myth",
+     explanation: "The Moon reaches perigee about every 27.5 days. What changes over the year is which phase perigee lines up with."},
+    {text: "The full Moon caused Hurricane Sandy.", type: "Myth",
+     explanation: "Hurricanes form from warm ocean water and the atmosphere. The full Moon made a spring tide, so Sandy's surge started from higher water."},
+    {text: "Sea-level rise is too slow to matter for flooding.", type: "Myth",
+     explanation: "A few inches turns many ordinary high tides into flooding tides. U.S. high-tide flooding is 300% to more than 900% more frequent than 50 years ago."}
+  ];
+  var idx = 0, score = 0, answered = 0, cardAnswered = false;
+  function el(id) { return document.getElementById(id); }
+  function updateCard() {
+    if (idx >= cards.length) {
+      ['fl-mf-card','fl-mf-myth','fl-mf-fact','fl-mf-feedback','fl-mf-next'].forEach(function(i){ el(i).style.display = 'none'; });
+      el('fl-mf-done').style.display = 'block';
+      el('fl-mf-final').textContent = score;
+      el('fl-mf-count').textContent = cards.length;
+      return;
+    }
+    el('fl-mf-card').textContent = cards[idx].text;
+    el('fl-mf-progress').textContent = 'Card ' + (idx + 1) + ' of ' + cards.length;
+    el('fl-mf-feedback').style.display = 'none';
+    el('fl-mf-next').style.display = 'none';
+    el('fl-mf-myth').disabled = false; el('fl-mf-fact').disabled = false;
+    el('fl-mf-myth').style.opacity = '1'; el('fl-mf-fact').style.opacity = '1';
+    cardAnswered = false;
+  }
+  window.flmfAnswer = function(choice) {
+    if (cardAnswered) return;
+    cardAnswered = true; answered++;
+    var card = cards[idx], correct = (choice === card.type);
+    if (correct) score++;
+    el('fl-mf-score').textContent = score; el('fl-mf-total').textContent = answered;
+    var fb = el('fl-mf-feedback');
+    fb.style.display = 'block';
+    fb.style.background = correct ? 'rgba(0,184,148,0.2)' : 'rgba(214,48,49,0.2)';
+    fb.style.border = '1px solid ' + (correct ? '#00b894' : '#e17055');
+    fb.innerHTML = '<strong>' + (correct ? '✅ Correct! ' : '❌ That\'s a ' + card.type + '! ') + '</strong>' + card.explanation;
+    el('fl-mf-myth').disabled = true; el('fl-mf-fact').disabled = true;
+    el('fl-mf-myth').style.opacity = (choice === 'Myth') ? '1' : '0.5';
+    el('fl-mf-fact').style.opacity = (choice === 'Fact') ? '1' : '0.5';
+    el('fl-mf-next').style.display = 'block';
+  };
+  window.flmfNext = function() { idx++; updateCard(); };
+  window.flmfRestart = function() {
+    idx = 0; score = 0; answered = 0;
+    el('fl-mf-card').style.display = 'flex';
+    el('fl-mf-myth').style.display = 'block'; el('fl-mf-fact').style.display = 'block';
+    el('fl-mf-done').style.display = 'none';
+    el('fl-mf-score').textContent = '0'; el('fl-mf-total').textContent = '0';
+    updateCard();
+  };
+  updateCard();
+})();
+</script>
+```
+
+---
+
+# End-of-Chapter Quiz {#fl-quiz}
+
+```{ojs}
+//| echo: false
+flEndQuiz = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const header = html`<div style="background:linear-gradient(135deg,#4338ca 0%,#0e7490 100%);color:#fff;border-radius:14px 14px 0 0;padding:18px 22px;">
+    <div style="font-size:1.1em;font-weight:700;">📝 ${title}</div>
+    <div style="font-size:0.85em;opacity:0.9;margin-top:4px;">Select an answer for each question. <span class="fl-score"></span></div>
+  </div>`;
+  const body = html`<div style="border:1.5px solid #a5b4fc;border-top:none;border-radius:0 0 14px 14px;background:#eef2ff;padding:14px;"></div>`;
+  let nRight = 0, nDone = 0;
+  const scoreEl = header.querySelector(".fl-score");
+  flBuildCards(body, questions, ok => { nDone++; if (ok) nRight++; scoreEl.textContent = `Score: ${nRight} / ${nDone}`; });
+  outer.appendChild(header);
+  outer.appendChild(body);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+flEndQuiz("fl-summative-quiz", "Summative Quiz: Flooding", [
+  {q: "In the ball-and-flashlight model, the ball is between your head and the flashlight, held a little above eye level. What do you see, and what does it model?",
+   options: ["The whole lit side: full Moon", "The dark side: new Moon", "Half lit: first quarter", "A shadow on your face: solar eclipse"],
+   correct: 1,
+   explanation: "The lit half faces the flashlight, away from you. Held above eye level, the ball doesn't block the light, so it's a new Moon, not an eclipse."},
+  {q: "About how long does it take for the Moon's phases to repeat?",
+   options: ["7 days", "14–15 days", "29.5 days", "365 days"],
+   correct: 2,
+   explanation: "One full cycle, new to new or full to full, takes about 29.5 days. (14–15 days is new to full, the time between spring tides.)"},
+  {q: "A student says, \"We see a crescent because Earth's shadow covers most of the Moon.\" Which evidence best shows this is wrong?",
+   options: ["The Moon is smaller than Earth", "A crescent Moon is near the Sun's direction, but Earth's shadow always points away from the Sun", "The Moon is made of rock", "Crescents only happen in winter"],
+   correct: 1,
+   explanation: "The shadow can't be on a Moon that's on the Sun's side of Earth. Phases come from viewing angle."},
+  {q: "Why can more people see a total lunar eclipse than a total solar eclipse?",
+   options: ["Lunar eclipses last for days", "Earth's shadow covers the whole Moon, so anyone on the night side sees it, while the Moon's dark shadow covers only a narrow path on Earth", "Solar eclipses only happen at night", "Lunar eclipses are brighter"],
+   correct: 1,
+   explanation: "Perspective of the observer: a solar eclipse is total only inside the Moon's small shadow."},
+  {q: "On Jan. 1, 2025, The Battery had high tides at about 9 AM and 9 PM. Why two?",
+   options: ["The Sun and Moon each make one", "Earth spins through two tidal bulges, one facing the Moon and one on the opposite side", "Wind reverses twice a day", "The Moon orbits Earth twice a day"],
+   correct: 1,
+   explanation: "Two bulges, one rotation: two highs and two lows a day."},
+  {q: "In January 2025, AM high tides were about 5.2–5.3 ft near Jan. 13 and Jan. 29, but about 3.9 ft near Jan. 21. What explains the low tides near Jan. 21?",
+   options: ["A storm lowered the water", "It was a third quarter Moon, so the Sun's and Moon's pulls were at right angles (neap tide)", "The Moon was at perigee", "It was a full Moon"],
+   correct: 1,
+   explanation: "Quarter Moon = neap tide = smallest range. Jan. 13 (full) and Jan. 29 (new) were spring tides."},
+  {q: "The new-moon high tide was 6.21 ft in April 2025 but 4.88 ft in December 2025. What best explains the difference?",
+   options: ["Earth is closer to the Sun in April", "The Moon was near perigee (about 357,000 km) in April and near apogee (about 403,000 km) in December", "There are more storms in April", "New Moons are brighter in April"],
+   correct: 1,
+   explanation: "Closer Moon = stronger pull = bigger tides. These are predicted tides, so no weather is involved."},
+  {q: "At Sandy's peak, the predicted tide at The Battery was about 4.7 ft and the water reached 14.06 ft above MLLW. If the same surge had arrived at low tide (about 0.2 ft), about how high would the water have reached?",
+   options: ["About 4.7 ft", "About 9.5 ft", "About 14 ft", "About 18.8 ft"],
+   correct: 1,
+   explanation: "Surge ≈ 14.06 − 4.7 ≈ 9.3 ft. At low tide: 0.2 + 9.3 ≈ 9.5 ft. Still a flood, but about 4.5 ft lower. (A simple add-up model; real surges and tides interact a little.)"},
+  {q: "Moon cycles haven't changed for thousands of years. Why is high-tide flooding much more common now than 50 years ago?",
+   options: ["Spring tides happen more often now", "Sea level has risen, so ordinary high tides reach flood level more often", "The Moon is getting much closer", "Tides no longer follow the Moon"],
+   correct: 1,
+   explanation: "Global sea level is up 8–9 inches since 1880 and rising faster. Every tide starts higher."},
+  {q: "A classmate's PTO answer says only: \"Sandy flooded because of the full Moon.\" What does it need to reach Proficient?",
+   options: ["Nothing; it's complete", "How the Sun-Moon alignment made a spring tide that raised the water, and that the storm surge added on top (storm tide = tide + surge)", "The date of the next eclipse", "The color of the Moon that night"],
+   correct: 1,
+   explanation: "The rubric asks for how the relative motion of the Earth, Moon, and Sun causes higher tides, plus the mechanism of the flood."}
+])
+```
