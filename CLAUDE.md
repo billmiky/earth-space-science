@@ -33,13 +33,18 @@ catch up, review, and work through their **student packets** (New Visions ESS cu
 ```bash
 quarto preview --port 4040 --host 0.0.0.0   # live preview
 quarto render                                # full build to _book/
-quarto render unit5-hurricanes-blizzards/unit5-hurricanes.qmd   # one chapter
+quarto render unit5-hurricanes-blizzards/unit5-wind.qmd   # one chapter
 
 cd src-interactives/<app> && npm install && npm run build   # rebuild a React interactive
 ```
 
 - Quarto is **not** installed in the cloud container by default; `build.sh` shows how to
-  fetch it (it also raises Deno's memory limit — big OJS chapters need it).
+  fetch it (it also raises Deno's memory limit — big OJS chapters need it). `build.sh` pins
+  1.4.550, but the live site is built with **1.8.27**; test with 1.8.27, since 1.4 output
+  mixed with the newer `site_libs` throws an OJS "import statement" error.
+- A few `_book/` files are tracked (e.g. `_book/styles.css`, which is stale). Restore them
+  with `git checkout -- _book` after a local render; copy the current `styles.css` into
+  `_book/` only while testing.
 - Python deps (`requirements.txt`) are only for the few Python cells; most content is OJS.
 - **Do not run `setup-textbook.sh` or `add-content.sh`** — they are original scaffolding
   scripts and will overwrite `_quarto.yml`/`styles.css` or chapter files.
@@ -49,10 +54,18 @@ cd src-interactives/<app> && npm install && npm run build   # rebuild a React in
 Units 2–5 are rebuilt around their curriculum **packets** (Unit 1 and Unit 6 still use the
 older layout). The pattern got stricter over time: **Units 4–5 are the reference**; Units 2–3
 follow the same 5E skeleton but lack section anchors, use fewer answer callouts, and use
-unpinned `d3@7`. Follow `unit5-hurricanes-blizzards/unit5-hurricanes.qmd` or
+unpinned `d3@7`. Follow `unit5-hurricanes-blizzards/unit5-wind.qmd` or
 `unit4-climate-change/unit4-earth-sun-dynamics.qmd` rather than inventing structure.
 
-### Topic chapters (5E; optional chapters like Seasons and Moon Phases use 3E)
+### Unit 5 follows the SY 26-27 packets
+
+New Visions restructured Unit 5 for SY 26-27 ("Extreme Weather Coming to a Place Near You?"):
+Opening → Wind → Water → Flooding → Closing, with a design-based performance task. The old
+`unit5-blizzards.qmd`, `unit5-storm-paths.qmd`, `unit5-hurricanes.qmd` and
+`unit5-moon-phases.qmd` are **not in the book** (kept on disk so old links resolve); don't edit
+them unless asked.
+
+### Topic chapters (5E; optional chapters like Seasons use 3E)
 
 1. YAML front matter: `title`, `subtitle` (the packet's guiding question), `toc: true`,
    `execute: echo: false`.

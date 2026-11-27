@@ -1,6 +1,6 @@
 ---
-title: "Unit 5: Closing — Will Storms Get Worse?"
-subtitle: "Will there be more frequent and more intense severe storms in the future?"
+title: "Unit 5: Closing — Designing Solutions to Storm Damage"
+subtitle: "How can we design solutions to address storm damage?"
 format:
   html:
     toc: true
@@ -16,706 +16,850 @@ execute:
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
 
-.engage-box { background: linear-gradient(135deg, #1a237e 0%, #0277bd 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(2, 119, 189, 0.3); }
-.engage-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2em; margin-top: 0; }
-.evaluate-box { background: linear-gradient(135deg, #4a148c 0%, #ad1457 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(173, 20, 87, 0.3); }
-.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.4em; font-weight: 800; background: linear-gradient(135deg, #1a237e 0%, #0288d1 60%, #00897b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 30px 0 20px 0; text-align: center; animation: slideIn 0.8s ease-out; }
-.key-idea { background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 100%); color: #1a1a1a; padding: 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #0277bd; font-size: 1.05em; }
-.key-idea a { color: #01579b; }
-.student-task { background: #fff3e0; color: #1a1a1a; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
-.student-task a { color: #b45309; }
-.claim-box { background: linear-gradient(135deg, #283593 0%, #5e35b1 100%); color: white; padding: 22px; margin: 15px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(40, 53, 147, 0.3); }
-.evidence-box { background: linear-gradient(135deg, #00695c 0%, #0277bd 100%); color: white; padding: 22px; margin: 15px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(2, 119, 189, 0.3); }
-.reasoning-box { background: linear-gradient(135deg, #4527a0 0%, #6a1b9a 100%); color: white; padding: 22px; margin: 15px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(69, 39, 160, 0.3); }
-.claim-box *, .evidence-box *, .reasoning-box *, .engage-box *, .evaluate-box * { color: white !important; }
-.evidence-box a, .claim-box a, .reasoning-box a, .engage-box a, .evaluate-box a { text-decoration: underline; }
-.evidence-box table, .engage-box table { background: rgba(255,255,255,.08); }
-.pto-prompt { background: rgba(255,255,255,0.14); border-left: 5px solid #fff; border-radius: 0 10px 10px 0; padding: 12px 16px; margin: 10px 0 14px; font-style: italic; }
-@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.6em !important; margin-top: 40px !important; }
-h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #0277bd !important; }
-.engage-box h2, .evaluate-box h2 { color: white !important; }
-.u5c-card, .u5c-card * { box-sizing: border-box; }
-figure h2, figure h3 { font-family: 'Inter', sans-serif !important; color: inherit !important; border: none !important; margin: 4px 0 !important; }
-figure h2 { font-size: 1.05em !important; font-weight: 800 !important; }
-figure h3 { font-size: .85em !important; font-weight: 400 !important; opacity: .85; }
-.u5c-planner textarea, .u5c-planner select, .u5c-planner input[type=text] { width: 100%; max-width: 100%; }
-.u5c-bands input { width: 64px; min-height: 40px; font-size: 1em; text-align: center; border: 2px solid #b3e5fc; border-radius: 8px; background: #fff; color: #1a1a1a; }
-@media (max-width: 600px) { .big-question { font-size: 1.6em; } h1 { font-size: 1.9em !important; } }
+.u5c-engage-box { background: linear-gradient(135deg, #0c4a6e 0%, #1e3a8a 100%); color: white; padding: 22px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(30, 58, 138, 0.3); }
+.u5c-explore-box { background: linear-gradient(135deg, #00695c 0%, #0a5ea8 100%); color: white; padding: 22px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 105, 92, 0.3); }
+.u5c-explain-box { background: linear-gradient(135deg, #4834a8 0%, #5e35b1 100%); color: white; padding: 22px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+.u5c-elaborate-box { background: linear-gradient(135deg, #b54708 0%, #9a3412 100%); color: white; padding: 22px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(181, 71, 8, 0.3); }
+.u5c-evaluate-box { background: linear-gradient(135deg, #b71c1c 0%, #ad1457 100%); color: white; padding: 22px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(183, 28, 28, 0.3); }
+.u5c-engage-box *, .u5c-explore-box *, .u5c-explain-box *, .u5c-elaborate-box *, .u5c-evaluate-box * { color: white; }
+.u5c-engage-box h2, .u5c-explore-box h2, .u5c-explain-box h2, .u5c-elaborate-box h2, .u5c-evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.7em; margin-top: 0; color: white !important; border: none; }
+.u5c-engage-box h3, .u5c-explore-box h3, .u5c-explain-box h3, .u5c-elaborate-box h3, .u5c-evaluate-box h3 { color: white !important; margin-top: 0; }
+.u5c-engage-box a, .u5c-explore-box a, .u5c-explain-box a, .u5c-elaborate-box a, .u5c-evaluate-box a { color: #ffe0b2 !important; text-decoration: underline; }
+.u5c-pe-badge { display: inline-block; background: linear-gradient(135deg, #0284c7 0%, #0f766e 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; margin: 4px; letter-spacing: .5px; }
+.u5c-pe-badge.u5c-ccc { background: linear-gradient(135deg, #6d28d9 0%, #9d174d 100%); }
+.u5c-big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2em; font-weight: 800; background: linear-gradient(135deg, #0284c7 0%, #4834a8 55%, #b71c1c 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 26px 0 18px 0; text-align: center; line-height: 1.2; }
+.u5c-key-idea { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); color: #0c1a2a; padding: 16px 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #0284c7; font-size: 1.02em; }
+.u5c-key-idea * { color: #0c1a2a; }
+.u5c-key-idea h3 { color: #0c1a2a !important; margin-top: 0; }
+.u5c-key-idea a { color: #075985 !important; }
+.u5c-student-task { background: #fff3e0; color: #1a1a1a; border-left: 5px solid #ff9800; padding: 16px 20px; margin: 15px 0; border-radius: 0 10px 10px 0; overflow-x: auto; }
+.u5c-student-task * { color: #1a1a1a; }
+.u5c-student-task h3 { color: #7c2d12 !important; margin-top: 0; }
+.u5c-student-task a { color: #9a3412 !important; }
+.u5c-fix { background: #fef9c3; color: #422006; border-left: 5px solid #ca8a04; padding: 12px 16px; margin: 14px 0; border-radius: 0 10px 10px 0; font-size: .95em; }
+.u5c-fix * { color: #422006; }
+.u5c-model-note { background: #ede9fe; color: #2e1065; border-left: 5px solid #7c3aed; padding: 10px 14px; margin: 10px 0 16px; border-radius: 0 10px 10px 0; font-size: .92em; }
+.u5c-model-note * { color: #2e1065; }
+.u5c-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 8px 0 16px; max-width: 100%; }
+.u5c-scroll table { min-width: 520px; }
+.u5c-review { background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; border-left: 8px solid #0284c7; border-radius: 12px; padding: 14px 18px; margin: 12px 0 16px; }
+.u5c-review * { color: #0f172a; }
+.u5c-review a { color: #075985 !important; }
+.u5c-review h3 { margin-top: 0; }
+.u5c-card { background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px 14px; margin: 8px 0 14px; box-sizing: border-box; max-width: 100%; }
+.u5c-card * { box-sizing: border-box; }
+.u5c-btn { min-height: 44px; padding: 8px 18px; border-radius: 22px; border: none; background: linear-gradient(135deg, #0284c7, #4834a8); color: #fff; font-weight: 700; cursor: pointer; margin: 6px 6px 6px 0; font-size: .95em; }
+.u5c-btn-grey { background: #64748b; }
+.u5c-lbl { display: block; font-weight: 700; margin: 12px 0 4px; color: #0f172a; }
+.u5c-textarea, .u5c-input, .u5c-select { width: 100%; max-width: 100%; font: inherit; font-size: .93em; padding: 8px; border-radius: 8px; border: 1px solid #94a3b8; background: #fff; color: #0f172a; box-sizing: border-box; }
+.u5c-textarea { min-height: 76px; }
+.u5c-input, .u5c-select { min-height: 44px; }
+.u5c-figure { margin: 10px 0 6px; background: #fff; color: #1a1a1a; border-radius: 12px; padding: 10px 12px; border: 1px solid #cbd5e1; }
+.u5c-figure svg { max-width: 100%; height: auto; }
+.u5c-note { font-size: .84em; opacity: .85; margin: 4px 0 14px; }
+.cell-output-display svg { max-width: 100%; height: auto; }
+.cell-output-display figure h2 { font-family: 'Inter', sans-serif !important; font-size: 1.02rem !important; font-weight: 700 !important; color: inherit !important; margin: 0 0 2px !important; padding: 0 !important; border: none !important; line-height: 1.3; }
+.cell-output-display figure h3 { font-family: 'Inter', sans-serif !important; font-size: .85rem !important; font-weight: 400 !important; opacity: .8; margin: 0 0 6px !important; padding: 0 !important; border: none !important; line-height: 1.3; }
+svg [aria-label="tip"] text { fill: #1a1a1a !important; }
+svg [aria-label="tip"] rect { fill: rgba(255, 255, 255, 0.97) !important; stroke: #d4d4d4 !important; }
+.cell-output-display form select { min-height: 44px; }
+.cell-output-display form input[type="range"] { min-height: 32px; }
+.cell-output-display form { max-width: 100%; }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.2em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #0369a1 !important; }
+.quarto-dark h2, [data-bs-theme="dark"] h2 { color: #7dd3fc !important; }
+.quarto-dark .u5c-engage-box h2, .quarto-dark .u5c-explore-box h2, .quarto-dark .u5c-explain-box h2, .quarto-dark .u5c-elaborate-box h2, .quarto-dark .u5c-evaluate-box h2 { color: white !important; }
+.quarto-dark .u5c-review h3, .quarto-dark .u5c-key-idea h3 { color: #0c1a2a !important; }
+@media (max-width: 600px) { .u5c-big-question { font-size: 1.5em; } h1 { font-size: 1.8em !important; } .u5c-engage-box, .u5c-explore-box, .u5c-explain-box, .u5c-elaborate-box, .u5c-evaluate-box { padding: 16px; } }
 </style>
 ```
 
-<a class="quiz-jump-btn" href="#end-of-unit-quiz">🧠 Quiz ↓</a>
+<a class="quiz-jump-btn" href="#u5c-quiz">🧠 Quiz ↓</a>
 
-<div class="big-question">🌀 More Hurricanes and Blizzards in NYC? ❄️</div>
+<div class="u5c-big-question">🛠️ How Can We Design Solutions to Storm Damage? 🌀</div>
+
+<span class="u5c-pe-badge">HS-ETS1-1</span> <span class="u5c-pe-badge">HS-ETS1-2</span> <span class="u5c-pe-badge u5c-ccc">Patterns</span> <span class="u5c-pe-badge u5c-ccc">Influence of Science, Engineering &amp; Technology on Society</span>
 
 ::: {.callout-note collapse="true"}
-## 📒 Using this page with your Performance Task Organizer
+## 📒 Using this page with your PTO and Final Design Rubric
 
-This page follows the last pages of your **Unit 5 Performance Task Organizer (PTO): More Hurricanes and Blizzards in NYC?** The opening pages (Tell the Story: Blizzards and Tropical Storms, Introduction to the Performance Task and Initial Ideas) are on the [Unit Opening](unit5-opening.qmd) page.
+This page follows the **last pages of your Unit 5 Performance Task Organizer (PTO)** and the **Final Design Rubric** handout (Unit Closing). Missed a class or need a refresher? Jump to the matching section:
 
-| PTO section (page) | On this page |
+::: {.u5c-scroll}
+| Packet / PTO section | On this page |
 |---|---|
-| Connect to the Performance Task: Blizzards 5E (pp. 9–14) | [Blizzards](#connect-blizzards) |
-| Connect to the Performance Task: Paths of Severe Storms 5E (pp. 15–16) | [Paths of Severe Storms](#connect-storm-paths) |
-| Connect to the Performance Task: Hurricanes 5E (pp. 17–22) | [Hurricanes](#connect-hurricanes) |
-| (Optional Moon Phases 3E: no PTO page) | [Moon Phases and Sandy](#moon-phases-and-hurricane-sandy) |
-| Unit Closing: return to the anchor phenomenon (class discussion) | [Return to the Anchor Phenomenon](#return-to-the-anchor-phenomenon) |
-| Final Performance Task: oral argument (group presentation or Socratic seminar) | [Final Performance Task](#final-performance-task), [Argument Planner](#argument-planner), [Checklist](#final-argument-checklist) |
+| PTO: Evaluate: Revisiting the Performance Task: **Wind** (identifying tradeoffs) | [Evidence Review: Wind](#u5c-wind) |
+| PTO: Evaluate: Revisiting the Performance Task: **Water** (identifying constraints and limitations) | [Evidence Review: Water](#u5c-water) |
+| PTO: Evaluate: Revisiting the Performance Task: **Flooding** (design elements) | [Evidence Review: Flooding](#u5c-flooding) |
+| Anchor Phenomenon: generating more ideas about designing solutions (table discussion) | [Return to the Anchor Phenomenon](#u5c-anchor) |
+| Driving Question Board: Are there any questions we haven't answered? | [Driving Question Board](#u5c-dqb) |
+| PTO: Performance Task: **Final Design Task**, Creating the Final Design | [Creating the Final Design](#u5c-design) |
+| PTO: Final Design (your drawing or 3D model) | [Final Design Planner](#u5c-planner) |
+| PTO: **Design Rationale** (parts 1–5) | [Design Rationale](#u5c-rationale) |
+| Unit Closing handout: **Final Design Rubric** | [Final Design Rubric](#u5c-rubric) |
+:::
+
+The opening pages of your PTO (Tell the Story and Brainstorming Initial Ideas) are on the [Unit Opening](unit5-opening.qmd) page.
 :::
 
 ```{ojs}
 //| echo: false
-Plot = require("@observablehq/plot@0.6.16")
-d3 = require("d3@7.9.0")
+u5cPlot = require("@observablehq/plot@0.6.16")
+u5cD3 = require("d3@7.9.0")
 ```
 
 ```{ojs}
 //| echo: false
-buildQuiz = function(id, title, questions) {
-  const outer = html`<div id="${id}" style="margin:18px 0 24px 0;text-align:center;">
-    <button style="
-      display:inline-flex;align-items:center;gap:7px;
-      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-      color:#fff;border:none;padding:9px 22px;border-radius:50px;min-height:44px;
-      font-size:.95em;font-weight:700;cursor:pointer;
-      box-shadow:0 3px 12px rgba(102,126,234,.45);">
-      <span style="font-size:1.1em;">📝</span> ${title}
-      <span class="chevron" style="transition:transform .3s;">▼</span>
-    </button>
-    <div class="quiz-body" style="
-      max-height:0;opacity:0;overflow:hidden;
-      transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin-top .3s ease;
-      margin-top:0;text-align:left;">
-      <button class="close-btn" style="
-        display:block;margin:0 auto 10px auto;
-        background:rgba(102,126,234,.12);color:#667eea;border:none;
-        padding:5px 18px;border-radius:50px;font-size:.85em;min-height:36px;
-        font-weight:600;cursor:pointer;">Hide Quiz</button>
-      <p style="text-align:center;color:#718096;font-style:italic;font-size:.9em;margin-bottom:12px;">
-        Select an answer for each question.</p>
-    </div>
-  </div>`;
-  const toggle = outer.querySelector("button");
-  const chevron = toggle.querySelector(".chevron");
-  const body   = outer.querySelector(".quiz-body");
-  const closeBtn = body.querySelector(".close-btn");
-  function expand(){  body.style.maxHeight="3000px";body.style.opacity="1";body.style.marginTop="14px";chevron.style.transform="rotate(180deg)"; }
-  function collapse(){ body.style.maxHeight="0";body.style.opacity="0";body.style.marginTop="0";chevron.style.transform="rotate(0)"; }
-  toggle.onclick = () => body.style.maxHeight === "0px" || body.style.maxHeight === "" ? expand() : collapse();
-  closeBtn.onclick = collapse;
+// Builds answer cards for any quiz on this page. Each card gives immediate feedback.
+u5cCards = function(body, questions, onAnswer) {
   questions.forEach((qq, qi) => {
     const card = document.createElement("div");
-    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
-    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:14px 16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
+    const qp = document.createElement("p");
+    qp.style.cssText = "font-weight:700;margin:0 0 8px;color:#1e1b4b;";
+    qp.textContent = `${qi + 1}. ${qq.q}`;
+    card.appendChild(qp);
     const fb = document.createElement("div");
-    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
-    qq.options.forEach((opt, oi) => {
+    fb.setAttribute("aria-live", "polite");
+    fb.style.cssText = "border-radius:8px;font-size:.92em;";
+    const btns = qq.options.map((opt, oi) => {
       const btn = document.createElement("button");
+      btn.type = "button";
       btn.textContent = opt;
-      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
+      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;";
       btn.onclick = () => {
-        if(card.dataset.answered) return;
+        if (card.dataset.answered) return;
         card.dataset.answered = "true";
-        card.querySelectorAll("button").forEach(b => { b.style.cursor="default"; });
-        if(oi === qq.correct){
-          btn.style.borderColor="#48bb78";btn.style.background="#f0fff4";
-          fb.innerHTML = "✅ Correct! " + qq.explanation;
-          fb.style.color="#276749";fb.style.background="#f0fff4";
-        } else {
-          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";
-          card.querySelectorAll("button")[qq.correct].style.borderColor="#48bb78";
-          card.querySelectorAll("button")[qq.correct].style.background="#f0fff4";
-          fb.innerHTML = "❌ " + qq.explanation;
-          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
-        }
-        fb.style.padding="10px 14px";fb.style.marginTop="8px";
+        btns.forEach(b => { b.style.cursor = "default"; b.style.color = "#475569"; });
+        const right = btns[qq.correct];
+        right.style.borderColor = "#16a34a"; right.style.background = "#f0fdf4"; right.style.color = "#14532d"; right.style.fontWeight = "700";
+        const ok = oi === qq.correct;
+        if (!ok) { btn.style.borderColor = "#dc2626"; btn.style.background = "#fef2f2"; btn.style.color = "#7f1d1d"; btn.style.fontWeight = "700"; }
+        fb.textContent = (ok ? "✅ Correct! " : "❌ Not quite. ") + qq.explanation;
+        fb.style.cssText = `border-radius:8px;font-size:.92em;padding:10px 14px;margin-top:8px;color:${ok ? "#14532d" : "#7f1d1d"};background:${ok ? "#f0fdf4" : "#fef2f2"};`;
+        if (onAnswer) onAnswer(ok);
       };
       card.appendChild(btn);
+      return btn;
     });
     card.appendChild(fb);
     body.appendChild(card);
   });
+}
+```
+
+```{ojs}
+//| echo: false
+u5cCheck = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="margin:16px 0 22px;border:1.5px solid #bae6fd;border-radius:14px;background:#f0f9ff;padding:12px;max-width:100%;box-sizing:border-box;">
+    <div style="font-weight:800;color:#0c4a6e;margin:2px 4px 10px;">🔎 ${title}</div></div>`;
+  u5cCards(outer, questions);
   return outer;
 }
 ```
 
-# Evidence Review: Connect to the Performance Task
+# Evidence Review: Revisiting the Performance Task {#u5c-evidence}
 
-::: {.engage-box}
-## 🌡️ The task all unit
+::: {.u5c-engage-box}
+## 🧩 You broke "storm damage" into three subproblems
 
-**Write (and now argue out loud) how storms will change in frequency and intensity as global temperatures continue to rise.** At the end of each lesson, your PTO asked you to apply what you figured out. Every PTO task has the same **3 parts**:
+At the start of the unit you learned that storms cost the United States **billions of dollars** every year. Storm damage is too big to solve all at once, so you **broke it into smaller problems** and studied one in each lesson. At the end of each lesson, your PTO asked you to evaluate a solution and practice one **engineering component**. Review all three before you design.
+:::
 
-| Part | What you do |
+::: {.u5c-scroll}
+| Lesson | Subproblem | Engineering component you practiced | Solution you evaluated |
+|---|---|---|---|
+| [Wind](unit5-wind.qmd) | Strong storm **winds** | **Identifying tradeoffs**: prioritize **criteria**, then decide if the benefits are worth the costs | Burying power lines; **wind farms** |
+| [Water](unit5-water.qmd) | Heavy **precipitation** (rain and snow) | **Identifying constraints and limitations**: the limits a design must work within | **Solar geoengineering** (cooling the planet) |
+| [Flooding](unit5-flooding.qmd) | **Coastal flooding** | **Design elements**: the parts you change, add or take away, each with **benefits** and **costs** | **Your own** flood design |
+:::
+
+::: {.u5c-key-idea}
+### 🔑 Engineering words you'll use in your final design
+
+- **Criteria**: what the design **needs to do** to succeed. The best criteria can be **measured** ("keeps water out of subway entrances during a storm tide as high as Sandy's").
+- **Constraints**: **limits** on the design, like money, materials, space or time.
+- **Limitations**: things the design **can't do**, even if it works perfectly.
+- **Tradeoff**: giving up one thing to get another. Engineers decide if the **benefits are worth the costs**.
+- **Design element**: one part of the solution, something you **change, add or take away** in the system.
+- **Mechanism**: **how** the weather causes the damage. A strong solution acts on the mechanism, not just the damage.
+:::
+
+## Wind: Identifying Tradeoffs {#u5c-wind}
+
+::: {.u5c-review}
+### 💨 What you figured out about strong winds
+
+- **Uneven heating** of Earth's surface makes some air warm and **less dense** (it rises, making **low pressure**) and some air cool and **more dense** (it sinks, making **high pressure**). **Wind** is air moving **from high to low pressure**.
+- The same pattern works at every scale: the bottle model, molecules, and the global **convection cells**. With the **Coriolis effect** (a bend to the right in the Northern Hemisphere), the cells make the **wind belts**. NYC is in the **westerlies**, which carry storms **west to east**.
+- **Winter Storm Jonas (January 22–24, 2016)** formed where cold, dense air from Canada met warm, moist air from the Gulf and Atlantic. A **big pressure difference over a short distance** made strong winds that spiraled **counterclockwise** into the low. Jonas dropped **27.5 in** of snow in Central Park, with gusts of **48 mph** at LaGuardia and JFK and **58–59 mph** on Long Island (National Weather Service).
+- Storms follow **predictable paths**, so forecasters warned people days ahead. That's a **pattern** you can design with.
+
+**Solutions you evaluated:**
+
+- **Burying power lines** cuts outages from wind and falling trees, but costs much more (your packet estimates **5–10 times** the cost of overhead lines), and buried lines can flood and are harder to repair.
+- **Wind farms**: turbines **lock and feather their blades** above **55 mph** to protect themselves (U.S. Department of Energy). **No real wind farm has been observed to weaken a storm.** That idea comes only from **computer models** of huge offshore arrays. Their proven benefit is **clean electricity**.
+
+📖 Review: [Explaining the global movement of storms](unit5-wind.qmd#wd-explain-1) · [Explaining storm winds](unit5-wind.qmd#wd-explain-2) · [Mitigating hurricane winds](unit5-wind.qmd#wd-elaborate) · [Wind farms](unit5-wind.qmd#wd-evaluate) · [Your PTO page: Wind](unit5-wind.qmd#wd-pt)
+:::
+
+::: {.u5c-fix}
+**📌 Packet note:** one Wind 5E question says Jonas "gusted up to 55 mph in New York City." The National Weather Service measured **48 mph** at LaGuardia and JFK; the 58–59 mph gusts were on **Long Island**. Also, the Evaluate question asks if wind farms reduce storm wind damage. Treat that as a **claim to test**: the storm-weakening idea is from models, not measurements.
+:::
+
+::: {.callout-tip collapse="true"}
+## 🔑 Check your thinking (try it first!): Wind PTO, question 1 and 7
+
+**Q1. How did Jonas's strong winds form, and how was the storm carried across the country?** Uneven heating made a cold, dense, high-pressure air mass (from Canada) and a warm, moist, low-pressure air mass (from the Gulf and Atlantic). Global winds brought them together, and where they met a low formed and deepened. Air rushed from high to low pressure, bent by the Coriolis effect into a counterclockwise spiral. The big pressure difference over a short distance made strong winds. The westerlies carried the storm east, then it turned north up the coast.
+
+**Q7. Are the costs reasonable tradeoffs?** A strong answer **decides**, with reasons. Example: wind farms are worth it for **clean energy**, but not (yet) as a **storm-wind shield**, because turbines shut down in storm winds and the storm-weakening benefit has never been measured.
+:::
+
+## Water: Identifying Constraints and Limitations {#u5c-water}
+
+::: {.u5c-review}
+### 🌧️ What you figured out about heavy precipitation
+
+- When a **warm, moist** air mass meets a **cold, dense** air mass at a **front**, the cold air pushes the warm air **up**. Rising air **cools**, and its water vapor **condenses** into clouds and precipitation. If the air it falls through is **at or below 32 °F (0 °C)**, it falls as **snow**.
+- **Warm air can hold more water vapor**, about **7% more for every 1 °C** of warming (IPCC). That's why the warm, moist air from the Gulf and the warm Atlantic fed so much snow into Jonas.
+- Precipitation follows **global patterns**: "wet" latitudes near **0° and 60°** (rising air) and "dry" latitudes near **30° and the poles** (sinking air).
+- **Jonas:** **2.31 in** of liquid water fell in Central Park on January 23, 2016, as **27.3 in** of snow that day (NOAA). That's close to NYC's **29.8 in** average for a whole winter. **Hurricane Helene (2024)** dropped up to **30.78 in** of rain in the North Carolina mountains (National Hurricane Center).
+
+**Solution you evaluated: solar geoengineering.** Reflect some sunlight back to space (with sulfur dioxide high in the atmosphere, or sea-salt spray that brightens clouds) so oceans stay cooler, less water evaporates, and storms carry less moisture.
+
+- **Constraints** (limits on making it happen): the aircraft and spray equipment **don't exist yet**; it would take about **50 million metric tons** of sulfur dioxide a year by 2100 in NOAA's simulations; there are **no international rules** about who controls it.
+- **Limitations** (what it can't do): it only **masks** warming and removes **no carbon dioxide**; one study found that cooling the ocean would weaken a hurricane by only about **15%** even in ideal conditions, and its title calls the idea **"futile."** Models also show side effects, such as **5–7% less rain** each year in parts of the tropics.
+
+📖 Review: [Explaining precipitation formation](unit5-water.qmd#wt-explain) · [Precipitation in a changing climate](unit5-water.qmd#wt-elaborate) · [A potential solution to reduce precipitation](unit5-water.qmd#wt-evaluate) · [Your PTO page: Water](unit5-water.qmd#wt-pt)
+:::
+
+::: {.u5c-fix}
+**📌 Packet note:** the Unit Plan says "cooling the oceans is the biggest thing that would reduce precipitation." The packet's own geoengineering text shows big limits (it only masks warming, the hardware doesn't exist, and the hurricane effect is small at best), so treat that as a **claim to evaluate**, not a fact. The Unit Plan also mentions **rain gardens**, but they aren't in the Water lesson. You may still use ideas like them in your design if you explain the mechanism.
+:::
+
+::: {.callout-tip collapse="true"}
+## 🔑 Check your thinking (try it first!): Water PTO, questions 1 and 6
+
+**Q1. How did Jonas's heavy precipitation form?** Warm, moist air from the Gulf of Mexico and the warm Atlantic was drawn north and forced **up over** cold, dense, dry air from Canada. The rising air cooled, water vapor **condensed** into thick clouds, and because the air was below 32 °F, it fell as heavy **snow**. Warm ocean water supplied extra moisture.
+
+**Q6. Constraints and limitations.** *Constraints:* the hardware doesn't exist; it needs enormous yearly amounts of sulfur dioxide; it must run for decades without stopping; it needs global agreement with no rules in place; it costs money to fund. *Limitations:* it doesn't remove carbon dioxide or fix ocean acidification; its effect on hurricanes is small at best; nobody can control where the side effects land.
+:::
+
+## Flooding: Design Elements {#u5c-flooding}
+
+::: {.u5c-review}
+### 🌊 What you figured out about coastal flooding
+
+- The Moon's gravity (and the Sun's) pulls the ocean into two **tidal bulges**, so NYC gets about **two high tides a day**.
+- At **new and full moon**, the Sun and Moon pull along the **same line**: **spring tides**, with the highest highs. At the quarter moons they pull at **right angles**: **neap tides**. When a spring tide happens with the Moon near **perigee** (closest to Earth), you get the most extreme tides: **perigean spring tides**, or **king tides**.
+- **Storm tide = tide + storm surge.** Storm winds and low pressure push extra water (the **surge**) onto the coast on top of the tide.
+- **Hurricane Sandy:** on October 29, 2012, a **full moon**, Sandy's surge of about **9.3 ft** arrived near high tide. The water at The Battery reached a record **14.06 ft** above MLLW (the "zero" on tide charts), about **9 ft above an average high tide** (NOAA).
+- **Sea-level rise** raises the starting point for every tide. Global sea level is up **8–9 in since 1880**, and U.S. **high-tide flooding** is **300% to more than 900%** more frequent than 50 years ago (NOAA Climate.gov).
+- Tides are **predictable years ahead**. That's a **pattern** you can design with, like closing flood gates before a king tide plus a forecast surge.
+
+📖 Review the [Flooding 5E](unit5-flooding.qmd): [Why Sandy and Marin flooded](unit5-flooding.qmd#fl-sandy) · [Sea-level rise](unit5-flooding.qmd#fl-rgss) · [Designing solutions for worsening floods](unit5-flooding.qmd#fl-design) · [Your PTO page: Flooding](unit5-flooding.qmd#fl-pt)
+:::
+
+::: {.u5c-fix}
+**📌 Packet note:** a few lesson materials say "spring tides" happen in spring, or that the Moon is closest "once a year." **Spring tides happen twice every month** (at new and full moon), and the Moon passes perigee about **every 27.5 days**. Also, a full moon didn't *cause* Sandy. The Moon set the **starting water level**; the storm made the **surge**.
+:::
+
+::: {.callout-tip collapse="true"}
+## 🔑 Check your thinking (try it first!): Flooding PTO, questions 1 and 6
+
+**Q1. What caused the flooding in Hurricane Sandy?** On October 29, 2012, the Moon was full, so the Sun, Earth and Moon were nearly in line and their pulls added up: a **spring tide**. Sandy's winds and low pressure pushed a **storm surge** of about 9.3 ft toward New York Harbor, arriving near the evening high tide. Storm tide = tide + surge, so the water at The Battery hit a record 14.06 ft above MLLW. Sea-level rise means every tide now starts higher than in the past.
+
+**Q6. Design element → how it addresses the mechanism (sample):**
+
+::: {.u5c-scroll}
+| Design element | How it addresses the problem and connects to the science |
 |---|---|
-| **1. Variables** | Name the **independent variable** (what changes: global temperature) and the **dependent variable** (storm frequency or intensity) |
-| **2. Evidence + model** | Fill the evidence table (evidence + which resource), then model how **energy and matter flow** in the storm and the **small-scale mechanisms** (molecules, density, condensation) |
-| **3. Argument** | Claim **and** counterclaim, using historical data, the conditions storms need, climate model projections, and the **limits** (precision, reliability, assumptions) of those models |
-
-Lessons: [Blizzards](unit5-blizzards.qmd) → [Paths of Severe Storms](unit5-storm-paths.qmd) → [Hurricanes](unit5-hurricanes.qmd) (plus the optional [Moon Phases](unit5-moon-phases.qmd)).
+| Berm built higher than Sandy's storm tide, plus room for sea-level rise | Storm tide = tide + surge. The height comes from the worst case (spring tide + surge) plus future sea-level rise. |
+| Flood gates closed using tide and surge forecasts | Tides are predictable from Sun-Moon positions. Close the gates before king tides and forecast surges. |
+| Wetland edge | Slows waves and absorbs some of the surge before it reaches the berm. |
+:::
 :::
 
-Quick check before you start: in every PTO prompt, which is which?
+### 📏 Try it: will your barrier hold? (a model)
 
-```{ojs}
-//| echo: false
-buildQuiz("u5c-ivdv-quiz", "🔬 Check Your Understanding — Variables", [
-  {
-    q: "Prompt: \"Will the intensity of winter storms where you live increase, decrease, or stay the same as global temperatures increase?\" What is the INDEPENDENT variable?",
-    options: ["The intensity of winter storms", "Global (and regional) temperature", "Where you live", "The number of years"],
-    correct: 1,
-    explanation: "The independent variable is the one that changes on its own and causes an effect: rising global temperature. Storm intensity is the dependent variable, because it may change in response."
-  },
-  {
-    q: "Prompt: \"Will the frequency of hurricanes per year where you live increase, decrease, or stay the same...?\" What is the DEPENDENT variable?",
-    options: ["Global temperature", "Sea surface temperature", "The number of hurricanes per year where you live", "The climate model"],
-    correct: 2,
-    explanation: "Frequency means how often: the number of hurricanes per year. It depends on the conditions that global temperature changes, like sea surface temperature."
-  }
-])
-```
+Coastal engineers start with the question: **how high could the water get?** Pick a tide and a storm surge, add some future **sea-level rise**, then set the height of your barrier. All heights are in **feet above MLLW** at The Battery, the same scale NOAA uses.
 
-## Connect to the Performance Task: Blizzards {#connect-blizzards}
-
-::: {.evidence-box}
-### ❄️ Lesson 5.1: Blizzards
-
-**PTO prompts (pp. 9–14), choose one:**
-
-<div class="pto-prompt"><b>Task 1:</b> Will the frequency of winter storms per year where you live increase, decrease, or stay the same as global temperatures increase in the future?<br><b>Task 2:</b> Will the intensity of winter storms where you live increase, decrease, or stay the same as global temperatures increase in the future?</div>
-
-**What we figured out:**
-
-- **Wind:** the Sun heats Earth unevenly. Warm air particles move faster and spread out, so warm air is **less dense** and rises (low pressure). Cold, dense air sinks (high pressure). **Air moves from high to low pressure**, and a bigger difference means **stronger wind**.
-- **Precipitation:** rising air expands and cools. Water vapor **condenses** on tiny particles into cloud droplets and **releases heat**, which keeps the air rising. Snow forms when the air is **below freezing**.
-- **Blizzards form at fronts**, where a cold, dry air mass meets a warm, moist air mass. The warm air is pushed up over the cold air, forming a **mid-latitude cyclone** (low pressure). The two key elements of a winter storm are **cold air** and **moisture**, plus **lift** at the front.
-- **Winter Storm Jonas (January 2016)** brought record snow to NYC: **27.5 inches in Central Park**.
-- **Historical data (1950–2010, Nov–Mar):** winter storm **intensity increased** at both mid- and high latitudes. **Frequency increased at high latitudes** but went **up and down at mid-latitudes** (where NYC is) before a big jump in the 2000s.
-- **Climate models (IPCC WGI Interactive Atlas):** winter temperatures where mid-latitude cyclones form are projected to **rise**, and precipitation to increase. The Atlas combines **many models built on different data sets**, which makes its projections **more precise**.
-
-📖 Review the lesson: [Blizzards](unit5-blizzards.qmd)
-:::
-
-Explore the *What is the Future of Winter Storms?* graphs from your packet.
-
-```{ojs}
-//| echo: false
-u5cWinter = {
-  const dec = ["1950s", "1960s", "1970s", "1980s", "1990s", "2000s"];
-  const raw = {
-    "Frequency|High latitudes": [-1.05, -0.25, -0.15, 0.55, 0.45, 0.55],
-    "Frequency|Mid-latitudes":  [-1.15, 0.25, -0.03, 0.15, -0.38, 1.12],
-    "Intensity|High latitudes": [-0.5, -0.65, -0.05, 0.2, 0.8, 0.3],
-    "Intensity|Mid-latitudes":  [-1.25, -0.1, 0.02, 0.32, 0.17, 0.87]
-  };
-  return Object.entries(raw).flatMap(([k, v]) => {
-    const [measure, region] = k.split("|");
-    return v.map((val, i) => ({measure, region, decade: dec[i], val}));
-  });
-}
-viewof u5cWinterMeasure = Inputs.radio(["Frequency", "Intensity"], {label: "Show:", value: "Intensity"})
-viewof u5cWinterRegion = Inputs.radio(["Mid-latitudes", "High latitudes"], {label: "Region:", value: "Mid-latitudes"})
-```
-
-```{ojs}
-//| echo: false
-{
-  const d = u5cWinter.filter(r => r.measure === u5cWinterMeasure && r.region === u5cWinterRegion);
-  const wrap = d3.create("div");
-  wrap.append(() => Plot.plot({
-    title: `Winter storm ${u5cWinterMeasure.toLowerCase()}, ${u5cWinterRegion} (Nov–Mar)`,
-    subtitle: "Difference from the long-term average, by decade. Values read from the graph in your packet (Northern Hemisphere, 1950–2010).",
-    width: width, height: 260, marginLeft: 48, marginBottom: 36,
-    x: {label: null, domain: d.map(r => r.decade)},
-    y: {label: "Difference from average", domain: [-1.5, 1.5], grid: true},
-    marks: [
-      Plot.barY(d, {x: "decade", y: "val", fill: r => r.val >= 0 ? "#0277bd" : "#90a4ae", tip: true, title: r => `${r.decade}: ${r.val > 0 ? "+" : ""}${r.val}`}),
-      Plot.ruleY([0])
-    ]
-  }));
-  const notes = {
-    "Frequency|Mid-latitudes": "<b>Mixed:</b> up, down, up, down, then a big jump in the 2000s. No steady trend, so frequency evidence is uncertain where NYC is.",
-    "Frequency|High latitudes": "<b>Increase:</b> below average before 1980, above average after. More winter storms at high latitudes.",
-    "Intensity|Mid-latitudes": "<b>Increase:</b> intensity rose almost every decade, from far below average in the 1950s to well above average in the 2000s.",
-    "Intensity|High latitudes": "<b>Increase:</b> below average before 1980, above average since, highest in the 1990s."
-  };
-  wrap.append("div").style("background", "#fff").style("color", "#1a1a1a").style("border-left", "6px solid #0277bd").style("border-radius", "10px").style("padding", "12px 16px").style("margin", "8px 0")
-    .html(notes[`${u5cWinterMeasure}|${u5cWinterRegion}`]);
-  return wrap.node();
-}
-```
-
-```{ojs}
-//| echo: false
-buildQuiz("u5c-bz-quiz", "❄️ Check Your Understanding — Blizzards", [
-  {
-    q: "Which pair of graphs gives the CLEAREST trend?",
-    options: ["Intensity: it increased at both mid- and high latitudes", "Mid-latitude frequency: it rose every decade", "Neither graph shows any change", "High-latitude intensity fell every decade"],
-    correct: 0,
-    explanation: "Intensity rose in both regions. Mid-latitude frequency went up and down, which is why your teacher guide says the intensity prompt is easier to argue and the frequency prompt needs you to weigh competing evidence."
-  },
-  {
-    q: "Warmer air can hold more water vapor. How could that make a winter storm MORE intense, as long as the air is still below freezing?",
-    options: ["More moisture means more condensation, more released heat, more rising air, and heavier snow", "Warm air stops all snow", "Water vapor has no effect on storms", "More moisture makes the air sink"],
-    correct: 0,
-    explanation: "Moisture is a key ingredient. More water vapor means more snow can fall, and the heat released by condensation strengthens the low pressure and the wind."
-  },
-  {
-    q: "Why does the IPCC WGI Interactive Atlas being built from many models make its projections more PRECISE?",
-    options: ["When many models with different data sets agree, the results are consistent, like several scales giving the same weight", "Because one model is always right", "More models always predict more warming", "Precision doesn't apply to models"],
-    correct: 0,
-    explanation: "Precision means consistency. Agreement across many independent models gives us more confidence in the projection, even though it doesn't make it perfect."
-  }
-])
-```
-
-::: {.callout-tip collapse="true"}
-## 🔑 Check your thinking (try it first!): sample arguments
-
-**Task 2 (intensity), the clearer case.** *Claim:* Winter storms in NYC will likely become **more intense** as temperatures rise. *Evidence:* mid-latitude winter storm intensity rose from about −1.25 (1950s) to about +0.87 (2000s) above average; the IPCC Atlas projects warmer, wetter winters. *Reasoning:* warmer air holds more water vapor, so storms carry more moisture; more condensation releases more heat, strengthening the low and producing heavier snow when it's still below freezing. *Counterclaim:* if winter air in NYC is often **above freezing**, that moisture falls as **rain**, not snow, so some storms will be less "snowy" even if they are stronger.
-
-**Task 1 (frequency), the uncertain case.** The mid-latitude frequency data go up and down, warmer winters mean fewer days cold enough for snow, but more moisture helps storms form. A strong answer **weighs both** and may conclude we **can't be sure** frequency will change, then says what more data you'd need.
-:::
-
-::: {.student-task}
-### ✏️ In your PTO: Blizzards 5E (pp. 9–14)
-
-- Choose **Task 1 (frequency)** or **Task 2 (intensity)** of winter storms where you live.
-- **Part 1:** write the independent and dependent variables.
-- **Part 2:** fill the evidence table (evidence + resource, e.g. *What is the Future of Winter Storms?*, IPCC Atlas). Then draw a model of winter storm formation in the future: **energy and matter flow** (warm moist air, cold dry air, rising, condensing) and the **small-scale mechanisms** (particle motion, density, condensation releasing heat).
-- **Part 3:** argue with a **claim and counterclaim**, using historical storm data, the conditions a winter storm needs, climate model projections, and the **limited precision and reliability** of the models.
-- Self or peer assess with the *Blizzards 5E Arguing from Evidence Rubric*.
-:::
-
-## Connect to the Performance Task: Paths of Severe Storms {#connect-storm-paths}
-
-::: {.evidence-box}
-### 🧭 Lesson 5.2: The Paths of Severe Storms
-
-**PTO prompt (pp. 15–16):**
-
-<div class="pto-prompt">Will the frequency of winter storms per year where you live increase, decrease, or stay the same as global temperatures increase in the future?</div>
-
-**What we figured out:**
-
-- **The Sun's energy is most direct at the equator** and spreads out toward the poles, so surface air is warmest near the equator and coldest near the poles.
-- **Air masses take on the properties of where they form:** cold and dry over northern land (from Canada), warm and moist over the ocean near 30° N (Gulf of Mexico, Atlantic).
-- **Global winds:** air rises at the equator, sinks at 30° N/S, and moves from high to low pressure. The **Coriolis effect** bends winds to the **right** in the Northern Hemisphere.
-- **Why so many blizzards in the US:** global winds carry polar air south and tropical air north, so they **collide over North America**. The **westerlies** (30°–60° N) then steer winter storms from **southwest to northeast**, like Winter Storm Jonas. Hurricanes form in the tropics, move west with the trade winds, then **curve northeast** in the westerlies.
-- **Evaluate (*How will global wind patterns be affected by rising global temperatures?*):** a research article claims that as Earth warms, the **westerlies (and the storms they carry) will shift toward the poles**, based on how they moved in the past. Your packet then asks you to imagine the westerlies moving about **5° north** and re-rank the storm bands on four winter storm track maps (2014–15, 2016–17, 2018–19, 2019–20).
-
-📖 Review the lesson: [Paths of Severe Storms](unit5-storm-paths.qmd)
-:::
-
-**Shift the storm bands.** Count the storm tracks in each latitude band on one of your packet's maps and type your counts below (the starting numbers are only a placeholder pattern, not real counts). Then move the westerlies north.
-
-```{ojs}
-//| echo: false
-viewof u5cCounts = {
-  const bands = ["45–50° N", "40–45° N", "35–40° N", "30–35° N", "25–30° N"];
-  const start = [3, 8, 9, 5, 1];
-  const box = html`<div class="u5c-bands u5c-card" style="background:#fff;color:#1a1a1a;border-radius:12px;padding:12px 14px;box-shadow:0 2px 10px rgba(0,0,0,.1);">
-    <div style="font-weight:700;margin-bottom:6px;">Storms per band (your counts):</div></div>`;
-  const inputs = bands.map((b, i) => {
-    const row = html`<label style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:4px 0;border-bottom:1px solid #eceff1;">
-      <span>${b}${b === "40–45° N" ? " 🗽 NYC" : ""}</span><input type="number" min="0" max="40" step="1" value="${start[i]}"></label>`;
-    box.appendChild(row);
-    return row.querySelector("input");
-  });
-  box.value = bands.map((b, i) => ({band: b, n: +inputs[i].value || 0}));
-  inputs.forEach(inp => inp.oninput = () => {
-    box.value = bands.map((b, i) => ({band: b, n: Math.max(0, +inputs[i].value || 0)}));
-    box.dispatchEvent(new Event("input", {bubbles: true}));
-  });
-  return box;
-}
-viewof u5cShift = Inputs.range([0, 5], {label: "Westerlies shift north (°):", step: 5, value: 0})
-```
-
-```{ojs}
-//| echo: false
-{
-  const names = u5cCounts.map(d => d.band); // north → south
-  const shifted = u5cShift === 0 ? u5cCounts.map(d => ({...d}))
-    : u5cCounts.map((d, i) => ({band: d.band, n: i < names.length - 1 ? u5cCounts[i + 1].n : 0}));
-  const data = shifted.map((d, i) => ({...d, before: u5cCounts[i].n}));
-  const nyc = data.find(d => d.band === "40–45° N");
-  const wrap = d3.create("div");
-  wrap.append(() => Plot.plot({
-    title: u5cShift === 0 ? "Winter storms per latitude band (today)" : "After the westerlies shift 5° north (each band gets the storms from the band below it)",
-    width: width, height: 230, marginLeft: 80, marginRight: 40,
-    x: {label: "Number of storm tracks →", grid: true, domain: [0, Math.max(10, d3.max(u5cCounts, d => d.n) + 1)]},
-    y: {label: null, domain: names},
-    marks: [
-      Plot.barX(data, {y: "band", x: "n", fill: d => d.band === "40–45° N" ? "#c62828" : "#0277bd"}),
-      u5cShift > 0 ? Plot.tickX(data, {y: "band", x: "before", stroke: "#37474f", strokeWidth: 2, strokeDasharray: "3,2"}) : null,
-      Plot.text(data, {y: "band", x: "n", text: "n", dx: 6, textAnchor: "start", fill: "currentColor", fontWeight: "bold"}),
-      Plot.ruleX([0])
-    ]
-  }));
-  const diff = nyc.n - nyc.before;
-  const ranked = [...data].sort((a, b) => b.n - a.n).map(d => d.band).join(" > ");
-  wrap.append("div").style("background", "#fff").style("color", "#1a1a1a").style("border-left", "6px solid #c62828").style("border-radius", "10px").style("padding", "12px 16px").style("margin", "8px 0")
-    .html(`<b>Ranking (most → fewest):</b> ${ranked}<br>` + (u5cShift === 0
-      ? "Move the slider to shift the westerlies 5° north."
-      : `<b>NYC band (40–45° N):</b> ${nyc.before} → ${nyc.n} storms (${diff > 0 ? "+" + diff + ", more" : diff < 0 ? diff + ", fewer" : "no change"}). ${u5cShift > 0 ? "Dashed marks show the counts before the shift. Bands farther north gain storms; the southernmost band loses them." : ""}`));
-  return wrap.node();
-}
-```
-
-<p style="font-size:.85em;">NYC sits at about 40.7° N, right on the edge between the 35–40° and 40–45° bands, so try your counts both ways. As your teacher guide notes, counts from four maps are a <b>small sample</b>, so different years can give different answers. That uncertainty is part of your argument.</p>
-
-```{ojs}
-//| echo: false
-buildQuiz("u5c-sp-quiz", "🧭 Check Your Understanding — Paths of Severe Storms", [
-  {
-    q: "Why do so many winter storms form over the United States?",
-    options: ["Global winds bring cold, dry polar air south and warm, moist tropical air north, so they collide over North America", "The US is closest to the Sun", "Storms only form over land", "The Coriolis effect is strongest over the US"],
-    correct: 0,
-    explanation: "Air masses from Canada and from the Gulf/Atlantic meet over North America. Where they collide, warm air is lifted at the front and a mid-latitude cyclone forms."
-  },
-  {
-    q: "If the westerlies shift about 5° toward the pole, which places are most likely to get MORE winter storms?",
-    options: ["Places just north of today's busiest storm band", "Places in the tropics", "Places just south of today's busiest band", "Nowhere: storms would disappear"],
-    correct: 0,
-    explanation: "The storm tracks move with the westerlies, so the busiest band moves north. Places north of it gain storms, and places to the south lose them. Whether NYC gains or loses depends on where the busiest band is now."
-  }
-])
-```
-
-::: {.callout-tip collapse="true"}
-## 🔑 Check your thinking (try it first!): a sample argument
-
-**Claim:** The frequency of winter storms in NYC may **stay about the same or decrease slightly**, but the evidence is uncertain.
-
-**Evidence:** On the storm track maps, the busiest bands are usually the middle latitudes (about 35–45° N). Shifting the westerlies 5° north moves storms from the 35–40° band up into NYC's 40–45° band, but also moves NYC's storms into the 45–50° band. Mid-latitude winter storm frequency from 1950–2010 went up and down.
-
-**Reasoning:** Winter storms form where cold and warm air masses collide, and the westerlies steer them. Warming shrinks the temperature difference between the equator and the poles and pushes the westerlies toward the poles, carrying the storm tracks with them.
-
-**Counterclaim and limits:** The maps are only four years, counting tracks is imprecise, and the article's prediction **assumes the westerlies will follow the historic pattern**. A different count or more years of data could change the answer.
-:::
-
-::: {.student-task}
-### ✏️ In your PTO: Paths of Severe Storms 5E (pp. 15–16)
-
-- **Part 1:** independent variable (global temperature) and dependent variable (winter storms per year where you live).
-- **Part 2:** evidence table: the research article's claim about the westerlies, your **band rankings before and after a 5° shift**, and earlier storm frequency data.
-- **Part 3:** argue with a **claim and counterclaim**. You may add pictures (e.g., a map with the shifted bands). Consider historical frequency data, the conditions a winter storm needs, climate model projections, and **the reliability of the models** (what the article assumes).
-- Self or peer assess with *The Paths of Severe Storms 5E Arguing from Evidence Rubric*.
-:::
-
-## Connect to the Performance Task: Hurricanes {#connect-hurricanes}
-
-::: {.evidence-box}
-### 🌀 Lesson 5.3: Hurricanes
-
-**PTO prompts (pp. 17–22), choose one (use the Hurricanes and the Paths of Severe Storms lessons):**
-
-<div class="pto-prompt"><b>Task 1:</b> Will the frequency of hurricanes per year where you live increase, decrease, or stay the same as global temperatures increase in the future?<br><b>Task 2:</b> Will the intensity of hurricanes where you live increase, decrease, or stay the same as global temperatures increase in the future?</div>
-
-**What we figured out:**
-
-- **Hurricanes need warm ocean water (more than about 80 °F, 27 °C)**, which evaporates and carries heat energy into the air. Rising humid air **condenses, releasing heat**, which powers more rising air and forms a low-pressure eye. Winds coming together force air up; light winds outside let it grow.
-- **Seasons and places:** in the North Atlantic, hurricanes happen **June to November**, when sea surface temperatures are highest. They form in the tropics and curve northeast in the westerlies (from the Paths lesson).
-- **Warmer air holds more water**, so storms drop **more rain** during each event (Elaborate). This doesn't mean more total rain every year.
-- **Historical data:** the **total number** of hurricanes worldwide **slightly decreased** from 1990 to 2020 (trend line from about 51 to about 44 per year), but the trend is **not the same everywhere**: the NOAA map shows **more** tropical cyclones per year in the **North Atlantic** (1980–2018) and fewer in parts of the Pacific and Indian Oceans.
-- **Strong hurricanes (Category 4 and 5) increased** in all six regions from 1975–1989 to 1990–2004, and the **percentage** of hurricanes reaching Category 4–5 rose (trend line from about 34% to about 42%).
-- **Climate models:** sea surface temperatures where hurricanes form are projected to **rise**. The IPCC Atlas shows **1.5, 2, 3, and 4 °C** warming scenarios because its **assumptions** (emissions, population, technology, policy, land use, feedbacks) can vary a lot.
-
-📖 Review the lesson: [Hurricanes](unit5-hurricanes.qmd)
+::: {.u5c-model-note}
+**This is a simple add-up model, not a real engineering calculation.** The tide and surge values are **real NOAA measurements and predictions**, but real surges and tides interact, waves add more height, and the ground behind a real barrier sits at different heights. The sea-level rise slider is a **what-if**.
 :::
 
 ```{ojs}
 //| echo: false
-u5cStrong = [
-  {region: "East Pacific", a: 36, b: 49},
-  {region: "West Pacific", a: 85, b: 116},
-  {region: "North Atlantic", a: 16, b: 25},
-  {region: "Southwest Pacific", a: 10, b: 22},
-  {region: "North Indian", a: 1, b: 7},
-  {region: "South Indian", a: 23, b: 50}
+u5cTideOpts = [
+  {label: "Low tide: 0 ft (MLLW, the average lowest low tide)", ft: 0},
+  {label: "Sandy's predicted tide at its peak: 4.73 ft (Oct 29, 2012)", ft: 4.73},
+  {label: "An average daily high tide: 5.05 ft (MHHW)", ft: 5.05},
+  {label: "Highest predicted high tide of 2025: 6.34 ft (Nov 6, near a full moon at perigee)", ft: 6.34}
 ]
-viewof u5cStrongPick = Inputs.select(["All regions", ...u5cStrong.map(d => d.region)], {label: "Region:", value: "North Atlantic"})
+u5cSurgeOpts = [
+  {label: "No storm: 0 ft", ft: 0},
+  {label: "Winter Storm Jonas (Jan 23, 2016): about 2.3 ft", ft: 2.34},
+  {label: "Hurricane Sandy (Oct 29, 2012): about 9.3 ft", ft: 9.33}
+]
+viewof u5cTide = Inputs.select(u5cTideOpts, {label: "🌕 Tide", format: d => d.label, value: u5cTideOpts[1]})
+viewof u5cSurge = Inputs.select(u5cSurgeOpts, {label: "🌀 Storm surge", format: d => d.label, value: u5cSurgeOpts[2]})
+viewof u5cSlr = Inputs.range([0, 2], {label: "📈 What-if sea-level rise (ft)", step: 0.5, value: 0})
+viewof u5cWall = Inputs.range([6, 20], {label: "🧱 Your barrier top (ft above MLLW)", step: 0.5, value: 12})
 ```
 
 ```{ojs}
 //| echo: false
 {
-  const rows = u5cStrongPick === "All regions" ? u5cStrong : u5cStrong.filter(d => d.region === u5cStrongPick);
-  const long = rows.flatMap(d => [{region: d.region, period: "1975–1989", n: d.a}, {region: d.region, period: "1990–2004", n: d.b}]);
-  const wrap = d3.create("div");
-  wrap.append(() => Plot.plot({
-    title: "Number of strong hurricanes (Category 4 and 5)",
-    subtitle: "From the table in your packet (UCAR Windows to the Universe, Hurricanes and Climate)",
-    width: width, height: u5cStrongPick === "All regions" ? 340 : 140, marginLeft: Math.min(130, width * 0.33), marginRight: 72,
-    x: {label: "Strong hurricanes →", grid: true, domain: [0, 125]},
-    y: {label: null, domain: rows.map(d => d.region)},
-    color: {domain: ["1975–1989", "1990–2004"], range: ["#90a4ae", "#c62828"], legend: true},
+  const parts = [
+    {part: "Tide", ft: u5cTide.ft},
+    {part: "Sea-level rise (what-if)", ft: u5cSlr},
+    {part: "Storm surge", ft: u5cSurge.ft}
+  ];
+  const total = u5cD3.sum(parts, d => d.ft);
+  const margin = u5cWall - total;
+  const chart = u5cPlot.plot({
+    width: Math.min(width, 560), height: 340, marginLeft: 52, marginRight: 20,
+    style: {background: "#fff", color: "#1a1a1a"},
+    x: {label: null},
+    y: {domain: [0, 21], label: "↑ Water level (ft above MLLW)", grid: true},
+    color: {domain: ["Tide", "Sea-level rise (what-if)", "Storm surge"], range: ["#0284c7", "#7c3aed", "#dc2626"], legend: true},
     marks: [
-      Plot.barX(long.filter(d => d.period === "1990–2004"), {y: "region", x: "n", fill: "period", insetTop: 3, insetBottom: 3}),
-      Plot.barX(long.filter(d => d.period === "1975–1989"), {y: "region", x: "n", fill: "period", insetTop: 10, insetBottom: 10}),
-      Plot.text(rows, {y: "region", x: "b", text: d => `${d.a} → ${d.b}`, dx: 6, textAnchor: "start", fill: "currentColor", fontWeight: "bold", fontSize: 11}),
-      Plot.ruleX([0])
+      u5cPlot.barY(parts, {x: () => "Storm tide (model)", y: "ft", fill: "part", tip: true, title: d => `${d.part}: ${d.ft.toFixed(2)} ft`}),
+      u5cPlot.ruleY([14.06], {stroke: "#111827", strokeDasharray: "5,4", strokeWidth: 1.5}),
+      u5cPlot.ruleY([u5cWall], {stroke: "#16a34a", strokeWidth: 4}),
+      u5cPlot.ruleY([0])
     ]
-  }));
-  const tot = rows.reduce((s, d) => [s[0] + d.a, s[1] + d.b], [0, 0]);
-  wrap.append("div").style("background", "#fff").style("color", "#1a1a1a").style("border-left", "6px solid #c62828").style("border-radius", "10px").style("padding", "12px 16px").style("margin", "8px 0")
-    .html(`<b>${u5cStrongPick}:</b> ${tot[0]} → ${tot[1]} strong hurricanes (${tot[0] ? "about " + Math.round(100 * (tot[1] - tot[0]) / tot[0]) + "% more" : ""}). ${u5cStrongPick === "North Atlantic" ? "This is NYC's hurricane region." : ""} Every region went up.`);
-  return wrap.node();
+  });
+  const u5cSvgs = chart.querySelectorAll("svg");
+  const svg = chart.tagName.toLowerCase() === "svg" ? chart : (u5cSvgs[u5cSvgs.length - 1] || chart);
+  svg.setAttribute("role", "img");
+  svg.setAttribute("aria-label", `Stacked bar: tide ${u5cTide.ft} ft plus sea-level rise ${u5cSlr} ft plus storm surge ${u5cSurge.ft} ft gives a total of ${total.toFixed(1)} feet. Green line shows your barrier at ${u5cWall} feet. Dashed line shows Sandy's record 14.06 feet.`);
+  const fig = html`<div class="u5c-figure"></div>`;
+  fig.appendChild(chart);
+  const msg = document.createElement("div");
+  msg.setAttribute("aria-live", "polite");
+  msg.style.cssText = `margin-top:8px;padding:10px 14px;border-radius:10px;border-left:6px solid ${margin >= 0 ? "#16a34a" : "#dc2626"};background:${margin >= 0 ? "#f0fdf4" : "#fef2f2"};color:#1a1a1a;`;
+  msg.innerHTML = `<b>Storm tide in this model: ${total.toFixed(1)} ft.</b> ` +
+    (margin >= 0
+      ? `✅ Your ${u5cWall} ft barrier stays above the water by ${margin.toFixed(1)} ft.`
+      : `❌ The water tops your ${u5cWall} ft barrier by ${(-margin).toFixed(1)} ft.`) +
+    `<div style="font-size:.88em;margin-top:6px;">Green line = your barrier. Dashed line = Sandy's real record, 14.06 ft at The Battery. A taller barrier protects more, but costs more, blocks more of the waterfront and may push water toward neighbors: that's a <b>tradeoff</b>.</div>`;
+  fig.appendChild(msg);
+  return fig;
 }
 ```
 
+<p class="u5c-note">Data: NOAA CO-OPS Tides &amp; Currents, The Battery, NY (station 8518750): Sandy's verified peak (14.06 ft, Oct 29, 2012, 9:24 pm EDT) and predicted tide (4.73 ft); Jonas's peak (7.43 ft) and predicted tide (5.09 ft) on Jan 23, 2016; MHHW datum (5.05 ft); 2025 high-tide predictions. Surge = observed water level − predicted tide.</p>
+
 ```{ojs}
 //| echo: false
-buildQuiz("u5c-hu-quiz", "🌀 Check Your Understanding — Hurricanes", [
-  {
-    q: "The global number of hurricanes slightly decreased from 1990 to 2020, but strong (Category 4–5) hurricanes increased. Which claim does this evidence best support?",
-    options: ["Hurricanes are getting more intense, even if not more frequent overall", "Hurricanes are disappearing", "Hurricanes are getting weaker", "Nothing has changed"],
-    correct: 0,
-    explanation: "Frequency and intensity are different dependent variables. The total went down a little, but a larger share of storms reached Category 4 or 5."
-  },
-  {
-    q: "How does warmer sea surface temperature give a hurricane MORE energy?",
-    options: ["More water evaporates and carries heat into the air; when it condenses, it releases that heat and strengthens the rising air", "Warm water pushes the hurricane faster", "Warm water lowers the amount of water vapor", "It doesn't; only wind matters"],
-    correct: 0,
-    explanation: "Evaporation moves energy and matter (water vapor) from the ocean to the air. Condensation releases latent heat, which drives the storm."
-  },
-  {
-    q: "Why does the IPCC Atlas show 1.5, 2, 3, and 4 °C scenarios instead of one prediction?",
-    options: ["Its assumptions (emissions, population, technology, policy) can vary a lot, so it shows a range of possible futures", "The scientists couldn't decide", "Each scenario is for a different planet", "Only the 4 °C scenario is real"],
-    correct: 0,
-    explanation: "A model is only as reliable as its assumptions. Because future human choices are uncertain, the Atlas shows several scenarios. Your argument should say which one you used."
-  }
+u5cCheck("u5c-review-check", "Check: what did each lesson teach you?", [
+  {q: "Which engineering component did the WATER lesson focus on?",
+   options: ["Identifying tradeoffs", "Identifying constraints and limitations", "Design elements", "Measuring wind speed"],
+   correct: 1,
+   explanation: "Wind practiced tradeoffs, Water practiced constraints and limitations, and Flooding practiced design elements. Your final design uses all three."},
+  {q: "A 3 ft storm surge arrives at a neap high tide of 4 ft. The same surge arrives at a king tide of 6.3 ft. Using the simple add-up model, what are the two water levels?",
+   options: ["3 ft and 3 ft", "7 ft and 9.3 ft", "4 ft and 6.3 ft", "12 ft and 18.9 ft"],
+   correct: 1,
+   explanation: "Storm tide = tide + surge: 4 + 3 = 7 ft, and 6.3 + 3 = 9.3 ft. Same storm, different tide timing, very different flooding."},
+  {q: "Why is the claim \"wind farms reduce storm wind damage\" weak right now?",
+   options: ["Wind turbines cause hurricanes", "No real wind farm has been observed weakening a storm; the idea comes only from computer models", "Wind farms don't make electricity", "Storm winds never reach the coast"],
+   correct: 1,
+   explanation: "Turbines go into survival mode above 55 mph, and the storm-weakening idea is a what-if from models. Their proven benefit is clean energy."}
 ])
 ```
+
+# Return to the Anchor Phenomenon {#u5c-anchor}
+
+::: {.u5c-explore-box}
+## 🔁 Storms cost the United States billions of dollars every year
+
+At the start of the unit you explored NOAA's records of **billion-dollar disasters**. Now you know **how** storms cause that damage: through **wind**, **precipitation** and **flooding**. Look at the costs again, then think: **will there be more frequent and more intense severe storms in the future?** And what does that mean for the solutions we design?
+:::
+
+```{ojs}
+//| echo: false
+u5cCosts = [
+  {type: "Hurricanes (tropical cyclones)", events: 67, cost: 1543},
+  {type: "Flooding", events: 45, cost: 203},
+  {type: "Winter storms", events: 24, cost: 104}
+]
+```
+
+```{ojs}
+//| echo: false
+{
+  const chart = u5cPlot.plot({
+    width: Math.min(width, 680), height: 190, marginLeft: Math.min(200, width * 0.38), marginRight: 70,
+    style: {background: "#fff", color: "#1a1a1a"},
+    x: {label: "Total cost, billions of 2024 dollars →", grid: true},
+    y: {label: null, domain: u5cCosts.map(d => d.type)},
+    marks: [
+      u5cPlot.barX(u5cCosts, {y: "type", x: "cost", fill: "#0284c7", tip: true, title: d => `${d.type}: ${d.events} billion-dollar events, about $${d.cost.toLocaleString()} billion`}),
+      u5cPlot.text(u5cCosts, {y: "type", x: "cost", text: d => `$${d.cost.toLocaleString()}B`, dx: 6, textAnchor: "start", fill: "#1a1a1a", fontWeight: "bold"}),
+      u5cPlot.ruleX([0])
+    ]
+  });
+  const u5cSvgs = chart.querySelectorAll("svg");
+  const svg = chart.tagName.toLowerCase() === "svg" ? chart : (u5cSvgs[u5cSvgs.length - 1] || chart);
+  svg.setAttribute("role", "img");
+  svg.setAttribute("aria-label", "Bar chart of billion-dollar disaster costs in the US from 1980 to 2024: hurricanes about 1,543 billion dollars, flooding about 203 billion, winter storms about 104 billion, all in 2024 dollars.");
+  const fig = html`<div class="u5c-figure"><div style="font-weight:700;margin-bottom:4px;">US billion-dollar disasters, 1980–2024: total cost by type</div></div>`;
+  fig.appendChild(chart);
+  return fig;
+}
+```
+
+<p class="u5c-note">Source: NOAA National Centers for Environmental Information (NCEI), <a href="https://www.ncei.noaa.gov/access/billions/">U.S. Billion-Dollar Weather and Climate Disasters</a>, 1980–2024, adjusted to 2024 dollars. Together: 136 events, about &#36;1.85 trillion and 9,439 deaths. New York's share: about &#36;68.7 billion from hurricanes, &#36;8.0 billion from winter storms and &#36;2.4 billion from floods. (The same data are on the <a href="unit5-opening.html#u5o-text-2">Unit Opening</a> page.)</p>
+
+### Will storms be more frequent and more intense?
+
+Here is what the evidence from this unit says. Notice that some parts are **strong** and some are **uncertain**.
+
+::: {.u5c-scroll}
+| Evidence from the unit | What it suggests for the future | How sure? |
+|---|---|---|
+| Billion-dollar winter storms, hurricanes and floods: **16** in the 1980s, **37** in the 2010s (NOAA) | Costly storms have become more common. Costs also depend on how many people and buildings are in harm's way. | Strong for the past |
+| Warm air holds about **7% more water vapor per 1 °C** of warming (IPCC); ocean heat content is rising ([Water](unit5-water.qmd#wt-ohc)) | Storms can carry and drop **more water**. | Strong for precipitation |
+| Global sea level up **8–9 in since 1880**; high-tide flooding **300% to more than 900%** more frequent than 50 years ago (NOAA Climate.gov) | Every tide and every surge **starts higher**, so floods reach farther. | Strong for coastal flooding |
+| Wind belts and storm paths ([Wind](unit5-wind.qmd#wd-wind-belts)) | Storms will keep following **predictable paths**. This unit didn't study how storm winds will change. | Uncertain for wind |
+:::
+
+::: {.u5c-student-task}
+### ✏️ In class: Anchor Phenomenon table discussion
+
+With your table, generate **more ideas about designing solutions** to the problem of storm damage in the United States:
+
+- Which **subproblem** (wind, precipitation or flooding) causes the most damage where **you** live?
+- What **criteria** must a solution meet? Try to make at least one **measurable**.
+- What **constraints** will it have to work within (money, space, time, materials, community approval)?
+- If storms get wetter and seas keep rising, how should a solution built **today** plan for the **future**?
+:::
 
 ::: {.callout-tip collapse="true"}
-## 🔑 Check your thinking (try it first!): a sample argument
+## 🔑 Check your thinking (try it first!)
 
-**Claim (Task 2):** Hurricanes reaching NYC will likely become **more intense** as global temperatures rise.
-
-**Evidence:** North Atlantic Category 4–5 hurricanes rose from **16 (1975–1989) to 25 (1990–2004)**; the share of hurricanes reaching Category 4–5 rose from about 34% to 42%; the IPCC Atlas projects warmer sea surface temperatures in hurricane regions.
-
-**Reasoning:** Warm ocean water is the hurricane's energy source. Warmer water means more evaporation, so more water vapor carries energy into the storm. When it condenses, it releases more heat, which lowers pressure and strengthens winds. Warmer air also holds more water, so each storm can drop more rain.
-
-**Counterclaim and limits:** The total number of hurricanes worldwide slightly **decreased**, so frequency may not rise. Strong hurricanes rarely reach NYC (about 40.7° N), because cooler northern water weakens them. The Atlas projections depend on **assumptions** about future emissions.
+- **Where you live matters.** NYC's billion-dollar costs come mostly from **hurricanes**, and Sandy showed that **coastal flooding** does the biggest damage here. New York also has the **2nd-highest winter storm costs** of any state (NOAA).
+- **Strong criteria are measurable and prioritized**, for example: "keeps the subway dry during a storm tide as high as Sandy's, plus 1 ft for sea-level rise," or "costs less than the damage it prevents."
+- **Constraints** include budget, limited space between the water and buildings, construction time, keeping shipping and drainage open, and **community approval**.
+- **Plan for the future.** Since warmer air carries more water and sea level keeps rising, a solution built today should be designed for **bigger water levels than the past**, not just the last storm.
 :::
 
-::: {.student-task}
-### ✏️ In your PTO: Hurricanes 5E (pp. 17–22)
+## Driving Question Board {#u5c-dqb}
 
-- Choose **Task 1 (frequency)** or **Task 2 (intensity)** of hurricanes where you live.
-- **Part 1:** independent and dependent variables.
-- **Part 2:** evidence table (graphs from *What is the Future of Tropical Cyclones?*, the strong hurricane table, the IPCC Atlas). Model hurricane formation in the future: **energy and matter flow** (warm water → evaporation → rising, condensing air → released heat) and the **small-scale mechanisms**.
-- **Part 3:** argue with a **claim and counterclaim**, using historical hurricane data, the conditions a hurricane needs (or needs to gain energy), climate model projections, and **the reliability of the model** (its assumptions).
-- Use the *Final Argument Rubric* (in the [checklist below](#final-argument-checklist)).
+**Are there any questions we haven't answered?** Look back at the questions your class asked at the start of the unit. Some are answered now; some may still be open, and you may have **new** ones.
+
+::: {.u5c-scroll}
+| Question from the unit | Where you answered it | Answered? |
+|---|---|---|
+| How do storms form and move? What causes high-speed winds? | [Wind](unit5-wind.qmd#wd-explain-2) | ✅ Uneven heating → pressure differences → wind; wind belts steer storms |
+| How does precipitation form? Why do some storms drop so much? | [Water](unit5-water.qmd#wt-explain) | ✅ Warm, moist air lifted at fronts cools and condenses |
+| How can winter storms that drop snow also cause flooding? Why are some floods worse? | [Flooding](unit5-flooding.qmd#fl-sandy) | ✅ Storm tide = tide + surge; spring and king tides make it worse |
+| Why are some disasters more costly than others? | Every lesson | 🟡 Partly: size of the storm, timing with tides, and how many people and buildings are in the way |
+| How can costs and damage be minimized? | Every Evaluate, and your final design | 🟡 You're about to add your own answer |
+| Are solutions the same for different kinds of storm disasters? | This page | 🟡 No: each subproblem has a different mechanism, but some design elements help with more than one |
 :::
 
-## Moon Phases and Hurricane Sandy {#moon-phases-and-hurricane-sandy}
+::: {.u5c-student-task}
+### ✏️ In class: Revisit the Driving Question Board
 
-::: {.key-idea}
-### 🌕 Optional Moon Phases 3E: How does the moon contribute to storm severity?
-
-- **Hurricane Sandy (October 29–30, 2012)** caused historic flooding in NYC partly because it hit during a **spring tide**: the full moon was on October 29.
-- **Spring tides** happen at **new and full moon**, when the Sun, Moon, and Earth line up, so their pull adds up and high tides are **higher**. **Neap tides** (first and last quarter) have smaller tidal ranges.
-- **For your argument:** storm damage depends on more than climate. **Timing with the tides** (and rising sea level from [Unit 4](../unit4-climate-change/unit4-past-and-future.qmd)) can make the same storm surge reach much farther. This 3E has no PTO page, but it's great evidence for a counterclaim or for the "limits" part of your argument.
-
-📖 Review the lesson: [Moon Phases](unit5-moon-phases.qmd)
+Which questions are answered? Which ones still need investigating? Write **one new question** you have now. If you have time, research one unanswered question on your own.
 :::
 
-# Return to the Anchor Phenomenon {#return-to-the-anchor-phenomenon}
+# Final Performance Task {#u5c-final}
 
-::: {.engage-box}
-## 🔁 It has felt like storms are getting worse. Does the data support that feeling, and will it continue?
+::: {.u5c-evaluate-box}
+## 🛠️ How can we design solutions that address the mechanisms and impacts of storm damage in the United States?
 
-At the start of the unit you watched *A Deadly Winter Storm Heads to the East Coast* and *Island of Puerto Rico destroyed by Hurricane Maria*, and studied maps of the 2018–19 and 2019–20 winter storm seasons and the 2018 and 2020 Atlantic hurricane seasons ([Unit Opening](unit5-opening.qmd)).
+**The future of storms is uncertain**, but we have good reason to believe that extremely damaging storms will keep happening, and that **better solutions are needed**.
 
-**Now review your ideas:** What causes hurricanes and blizzards? What patterns does the past and present data show? What does the data suggest about storms in the future?
+**Your task (on your own):** break the big problem of "storm damage" into **subproblems**, choose one, and **design a solution** to it that also helps with the problem overall. Your design must connect to the **mechanism** of how storms form, meet your **criteria and constraints**, and weigh **costs and benefits**.
 :::
 
-| Question | What the unit's evidence says |
-|---|---|
-| **What causes blizzards?** | Cold, dry and warm, moist air masses colliding at a front; rising air cools and condenses; big pressure differences make strong wind |
-| **What causes hurricanes?** | Warm ocean water (> ~80 °F) evaporating; condensation releases heat that powers the storm |
-| **Why here?** | Global winds bring air masses together over North America; the westerlies steer storms toward the Northeast |
-| **More intense?** | Strong evidence: winter storm intensity and Category 4–5 hurricanes both increased; warmer air and water add more energy and moisture |
-| **More frequent?** | Uncertain: mid-latitude winter storm frequency is mixed, global hurricane totals fell slightly while North Atlantic storms rose, and storm tracks may shift north |
+## Creating the Final Design {#u5c-design}
+
+From your PTO, your design should:
+
+- **Achieve your goal** (solve the problem).
+- Take into consideration **all of the constraints and criteria** that have been identified.
+- Be **high-leverage**: address many parts of the problem at once.
+- **Align the science concepts** you have learned with any research you may have done.
+- Demonstrate how **different components in the system interact**.
+- Include **at least five key design elements**. A design element is something you would **change, add or take away** from the system to address the problem.
+
+::: {.u5c-fix}
+**📌 Rubric note:** the PTO says to design for **one** subproblem, but the Final Design Rubric's top level asks for elements that address **at least two subproblems**. Both work together: choose **one main subproblem**, then pick **high-leverage** design elements that also help with a second subproblem (for example, a raised, planted waterfront park that blocks storm surge **and** soaks up heavy rain). Your choice can also have its own smaller parts, like **tide timing**, **surge** and **sea-level rise** inside flooding.
+:::
+
+### Step 1: Break down "storm damage" and pick your subproblem
+
+Tap a subproblem to see its **mechanism**, the **pattern** you can design with, and **where a solution can step in**.
 
 ```{ojs}
 //| echo: false
-buildQuiz("u5c-anchor-quiz", "🔁 Check Your Understanding — The Anchor Phenomenon", [
-  {
-    q: "A friend says, \"Storms feel worse, so there must be more of them.\" What is the best response using the unit's data?",
-    options: ["The data more clearly show storms getting MORE INTENSE; whether they're more FREQUENT is mixed and depends on the region", "There are definitely twice as many storms", "Storms are getting weaker everywhere", "Feelings are the same as data"],
-    correct: 0,
-    explanation: "Intensity and frequency are different. The intensity data line up; the frequency data point in different directions. A good argument separates the two."
-  }
-])
+u5cSubs = [
+  {key: "wind", icon: "💨", name: "Strong winds", color: "#0369a1",
+   chain: ["Uneven heating", "Cold, dense air (high pressure) next to warm, less dense air (low pressure)", "Air rushes from high to low pressure", "Coriolis bends it into a spiral around the low", "Big pressure difference over a short distance = strong wind", "Westerlies carry the storm east, then up the coast"],
+   pattern: "Storms follow predictable paths in the wind belts, so forecasts can warn people days ahead (Jonas was forecast before it arrived).",
+   steps: ["Before the storm: forecasts and warnings so people, transit and utilities prepare", "Protect what wind damages: bury or strengthen power lines, clear trees near lines", "Place solutions where storms actually travel (along the storm paths and coasts)"],
+   evidence: "Jonas: 48 mph gusts at LaGuardia and JFK, 58–59 mph on Long Island (NWS). Turbines go into survival mode above 55 mph (DOE).",
+   link: "unit5-wind.html#wd-pt", lesson: "Wind"},
+  {key: "water", icon: "🌧️", name: "Heavy precipitation (rain and snow)", color: "#6d28d9",
+   chain: ["Sun warms the ocean", "Water evaporates into a warm, moist air mass", "It meets a cold, dense air mass at a front", "Warm air is forced up and cools", "Water vapor condenses into clouds", "Rain, or snow if the air is at or below 32 °F"],
+   pattern: "Wet and dry latitudes, and fronts where air masses meet, make precipitation predictable. Warmer air holds about 7% more water vapor per 1 °C.",
+   steps: ["At the source: less ocean heat means less moisture (geoengineering tried this, with big limits)", "Where the water lands: give rain and melting snow somewhere to go", "Before the storm: forecasts, snow removal plans, protecting roofs and roads"],
+   evidence: "Jonas: 2.31 in of liquid water fell as 27.3 in of snow in Central Park on Jan 23, 2016 (NOAA). Helene: up to 30.78 in of rain in North Carolina (NHC).",
+   link: "unit5-water.html#wt-pt", lesson: "Water"},
+  {key: "flood", icon: "🌊", name: "Coastal flooding", color: "#b91c1c",
+   chain: ["Moon's and Sun's gravity make tidal bulges", "New or full moon: spring tide (pulls line up)", "Moon near perigee: the most extreme (king) tides", "Storm winds and low pressure push a surge", "Storm tide = tide + surge", "Sea-level rise raises the starting level"],
+   pattern: "Tides are predictable years ahead from Sun-Moon positions, so you know when a surge would be most dangerous.",
+   steps: ["Block the water: berms, walls, flood gates", "Absorb wave energy: wetlands and natural shorelines", "Raise what matters: equipment, buildings, streets", "Time it: close gates using tide and surge forecasts", "Move out of harm's way: buy out the most-flooded homes"],
+   evidence: "Sandy: about 9.3 ft surge on a full-moon spring tide, record 14.06 ft at The Battery (NOAA). High-tide flooding is 300% to more than 900% more frequent than 50 years ago.",
+   link: "unit5-flooding.html#fl-pt", lesson: "Flooding"}
+]
 ```
 
-# Final Performance Task {#final-performance-task}
+```{ojs}
+//| echo: false
+{
+  const wrap = html`<div class="u5c-card"></div>`;
+  const row = html`<div role="group" aria-label="Choose a subproblem" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;"></div>`;
+  const panel = html`<div aria-live="polite"></div>`;
+  const show = s => {
+    row.querySelectorAll("button").forEach(b => {
+      const on = b.dataset.k === s.key;
+      b.setAttribute("aria-pressed", on);
+      b.style.background = on ? b.dataset.c : "#fff";
+      b.style.color = on ? "#fff" : b.dataset.c;
+    });
+    panel.replaceChildren();
+    const h = document.createElement("div");
+    h.style.cssText = `font-weight:800;font-size:1.1em;color:${s.color};margin:4px 0 8px;`;
+    h.textContent = `${s.icon} ${s.name}`;
+    panel.appendChild(h);
+    const lab = t => { const d = document.createElement("div"); d.style.cssText = "font-weight:800;margin:10px 0 4px;color:#0f172a;"; d.textContent = t; return d; };
+    panel.appendChild(lab("⚙️ Mechanism: how this storm damage happens"));
+    const ch = document.createElement("div");
+    ch.style.cssText = "display:flex;flex-wrap:wrap;gap:6px;align-items:center;";
+    s.chain.forEach((c, i) => {
+      const chip = document.createElement("span");
+      chip.style.cssText = `display:inline-block;padding:6px 10px;border-radius:10px;background:#fff;border:2px solid ${s.color};color:#0f172a;font-size:.9em;`;
+      chip.textContent = c;
+      ch.appendChild(chip);
+      if (i < s.chain.length - 1) { const a = document.createElement("span"); a.textContent = "→"; a.style.cssText = `color:${s.color};font-weight:800;`; ch.appendChild(a); }
+    });
+    panel.appendChild(ch);
+    panel.appendChild(lab("🔁 Pattern you can design with"));
+    const p = document.createElement("div"); p.style.cssText = "color:#0f172a;"; p.textContent = s.pattern; panel.appendChild(p);
+    panel.appendChild(lab("🛠️ Where a solution can step in"));
+    const ul = document.createElement("ul"); ul.style.cssText = "margin:0;padding-left:1.3em;color:#0f172a;";
+    s.steps.forEach(t => { const li = document.createElement("li"); li.textContent = t; li.style.margin = "3px 0"; ul.appendChild(li); });
+    panel.appendChild(ul);
+    panel.appendChild(lab("📊 Evidence from the unit"));
+    const e = document.createElement("div"); e.style.cssText = "color:#0f172a;"; e.textContent = s.evidence; panel.appendChild(e);
+    const a = document.createElement("a"); a.href = s.link; a.textContent = `📖 Review your ${s.lesson} PTO page`;
+    a.style.cssText = "display:inline-block;margin-top:10px;color:#075985;font-weight:700;min-height:44px;line-height:44px;";
+    panel.appendChild(a);
+  };
+  u5cSubs.forEach(s => {
+    const b = document.createElement("button");
+    b.type = "button"; b.dataset.k = s.key; b.dataset.c = s.color;
+    b.textContent = `${s.icon} ${s.name}`;
+    b.style.cssText = `flex:1 1 160px;min-height:44px;padding:8px 12px;border-radius:10px;border:2px solid ${s.color};font-weight:700;cursor:pointer;font-size:.95em;`;
+    b.onclick = () => show(s);
+    row.appendChild(b);
+  });
+  wrap.append(row, panel);
+  show(u5cSubs[2]);
+  return wrap;
+}
+```
 
-::: {.engage-box}
-## 🎤 How will storms change in our region as climate change continues?
+### Step 2: Draw your final design (the system model)
 
-**The future of storms is uncertain.** Our data show trends in winter storms and hurricanes over time, but other factors may change those paths. Not every region will be impacted in the same ways, and not all types of storms will change in the same ways.
+Your **Final Design** is a **drawn or 3D model**. Make it on paper (or build it), then photograph it if your teacher asks. To reach **Proficient** on the rubric, your model should include:
 
-**Your task:** prepare an **oral argument** about the **future frequency and intensity of hurricanes and winter storms in your region**. In class you will either **present it in groups** or debate it in a **Socratic seminar**. Working on your own? Write your argument with the planner below, then practice saying it out loud (record yourself if you can).
-:::
+- The **components of the system that cause the weather phenomenon** (for flooding: Sun, Moon, tides, storm surge, sea level; for wind: air masses, high and low pressure, wind belts; for precipitation: warm ocean, moist air, front, cold air).
+- The **points where your solution steps in**, with each design element **labeled**.
+- **Clear annotations**, with arrows showing how **at least two components affect each other**.
 
-## What Your Argument Must Include
+## Final Design Planner {#u5c-planner}
 
-| Be sure to include... | Evidence from |
-|---|---|
-| A **claim** for each: winter storm frequency, winter storm intensity, hurricane frequency, hurricane intensity, **in your region** | Your three PTO tasks |
-| **At least 2 pieces of evidence for each claim** (data, simulations, models, or reputable data sets) | [Blizzards](#connect-blizzards), [Paths](#connect-storm-paths), [Hurricanes](#connect-hurricanes) |
-| **Reasoning**: the conditions each storm needs and how warming changes them (energy and matter, molecules) | All three lessons |
-| A **counterclaim**: evidence or ideas that point the other way | Mixed frequency data, rain vs. snow, westerlies shift, tides |
-| **Limits of models**: precision, reliability, assumptions | IPCC Atlas (many models; scenarios), article's assumption about the westerlies |
-
-::: {.claim-box}
-### 📌 CLAIM
-Make one clear prediction for each storm type and each variable. Example starter: "As global temperatures rise, winter storms in NYC will become ___ intense, because ___."
-:::
-
-::: {.evidence-box}
-### 📊 EVIDENCE
-Pick **specific numbers**: mid-latitude winter storm intensity −1.25 → +0.87 (1950s → 2000s); North Atlantic Category 4–5 hurricanes 16 → 25; Cat 4–5 share ~34% → ~42%; global hurricane totals ~51 → ~44 per year; the band rankings from your 5° westerlies shift; projected warming of 1.5–4 °C by 2100.
-:::
-
-::: {.reasoning-box}
-### 🧠 REASONING
-Connect each number to the mechanism: *Warmer air holds more water vapor, so storms have more moisture. When water vapor condenses, it releases heat, which makes air rise faster, lowers the pressure, and strengthens the wind. Therefore warmer oceans and air give storms more energy.* Use "because" and "therefore."
-:::
-
-## Argument Planner {#argument-planner}
-
-Plan your argument here. Your plan is saved only in this browser, so copy it before you leave.
+Plan your design here, then copy it into your PTO. Your typing is saved **in this browser only**, so copy it before you leave.
 
 ```{ojs}
 //| echo: false
-u5cPlanner = {
-  const KEY = "u5c-planner-v1";
+{
+  const KEY = "u5c-final-design-v1";
   let saved = {};
   try { saved = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { saved = {}; }
-  const fields = [
-    {id: "region", label: "📍 Your region (city or area, and its latitude)", rows: 1},
-    {id: "ivdv", label: "🔬 Independent variable / dependent variable(s)", rows: 2},
-    {id: "claim", label: "📌 CLAIMS: winter storm frequency, winter storm intensity, hurricane frequency, hurricane intensity (increase, decrease, stay the same, or uncertain?)", rows: 4},
-    {id: "evidence", label: "📊 EVIDENCE: at least 2 pieces for each claim, with the resource each came from", rows: 5},
-    {id: "reasoning", label: "🧠 REASONING: the conditions each storm needs, how warming changes them, energy and matter flow, small-scale mechanisms (use because / therefore)", rows: 5},
-    {id: "counter", label: "↔️ COUNTERCLAIM: evidence or ideas that point the other way, and why your claim is still stronger (or why you're unsure)", rows: 4},
-    {id: "limits", label: "⚖️ LIMITS OF MODELS: precision (how many models agree), reliability (assumptions like emissions or westerlies following past patterns), small samples", rows: 4},
-    {id: "seminar", label: "🗣️ For the seminar: a question you'd ask a classmate who disagrees, and what more data you'd want", rows: 3}
+  const subsList = ["Wind", "Precipitation", "Flooding", "Effects on people"];
+  const actions = ["Add", "Change", "Take away"];
+  let elements = Array.isArray(saved.elements) && saved.elements.length ? saved.elements : Array.from({length: 5}, () => ({}));
+  const box = html`<div class="u5c-card" style="border-top:6px solid #0284c7;"></div>`;
+  const mk = (tag, css, text) => { const el = document.createElement(tag); if (css) el.style.cssText = css; if (text != null) el.textContent = text; return el; };
+  const top = [
+    {id: "sub", label: "🎯 My main subproblem", type: "select", opts: ["Choose one…", "Strong winds", "Heavy precipitation (rain and snow)", "Coastal flooding", "Other (explain below)"]},
+    {id: "place", label: "📍 Where is my design for? (a real place, like your neighborhood)", type: "input"},
+    {id: "breakdown", label: "🧩 How I broke \"storm damage\" into subparts", type: "textarea"},
+    {id: "criteria", label: "✅ My criteria, most important first (make at least one measurable)", type: "textarea"},
+    {id: "constraints", label: "🚧 Constraints and limitations my design must work within", type: "textarea"}
   ];
-  const focusOpts = ["All four (winter storms + hurricanes, frequency + intensity)", "Winter storms only", "Hurricanes only"];
-  const box = html`<div class="u5c-planner u5c-card" style="background:#fff;color:#1a1a1a;border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.12);border-top:6px solid #0277bd;"></div>`;
-  const focusWrap = html`<label style="display:block;font-weight:700;margin-bottom:10px;">🎯 Focus
-    <select style="display:block;min-height:44px;margin-top:4px;border:2px solid #b3e5fc;border-radius:8px;padding:6px;background:#fff;color:#1a1a1a;">${focusOpts.map(f => html`<option>${f}</option>`)}</select></label>`;
-  const focus = focusWrap.querySelector("select");
-  if (saved.focus) focus.value = saved.focus;
-  box.appendChild(focusWrap);
-  const areas = {};
-  fields.forEach(f => {
-    const lab = html`<label style="display:block;font-weight:700;margin:10px 0 4px;">${f.label}
-      <textarea rows="${f.rows}" style="display:block;margin-top:4px;border:2px solid #b3e5fc;border-radius:8px;padding:8px;font:inherit;font-weight:400;background:#fff;color:#1a1a1a;"></textarea></label>`;
-    const ta = lab.querySelector("textarea");
-    ta.value = saved[f.id] || "";
-    areas[f.id] = ta;
-    box.appendChild(lab);
+  const fields = {};
+  top.forEach(f => {
+    const id = `u5c-pl-${f.id}`;
+    const lab = mk("label", null, f.label); lab.className = "u5c-lbl"; lab.htmlFor = id;
+    let el;
+    if (f.type === "select") { el = document.createElement("select"); el.className = "u5c-select"; f.opts.forEach(o => { const op = document.createElement("option"); op.textContent = o; el.appendChild(op); }); }
+    else if (f.type === "input") { el = document.createElement("input"); el.type = "text"; el.className = "u5c-input"; }
+    else { el = document.createElement("textarea"); el.className = "u5c-textarea"; }
+    el.id = id;
+    el.value = saved[f.id] || (f.type === "select" ? f.opts[0] : "");
+    fields[f.id] = el;
+    box.append(lab, el);
   });
-  const status = html`<div style="font-size:.85em;color:#00695c;min-height:1.2em;margin-top:6px;"></div>`;
-  const preview = html`<div style="white-space:pre-wrap;background:#e1f5fe;color:#1a1a1a;border-radius:8px;padding:12px;margin-top:10px;font-size:.92em;display:none;"></div>`;
-  const btnStyle = "min-height:44px;padding:8px 16px;border:none;border-radius:50px;font-weight:700;cursor:pointer;margin:8px 8px 0 0;";
-  const bPrev = html`<button style="${btnStyle}background:#0277bd;color:#fff;">👀 Preview outline</button>`;
-  const bCopy = html`<button style="${btnStyle}background:#1a237e;color:#fff;">📋 Copy outline</button>`;
-  const bClear = html`<button style="${btnStyle}background:#eceff1;color:#37474f;">🗑️ Clear</button>`;
-  const outline = () => [`FOCUS: ${focus.value}`, ...fields.map(f => `\n${f.label.replace(/^\S+\s/, "").split(":")[0].toUpperCase()}:\n${areas[f.id].value}`)].join("\n");
-  const save = () => {
-    const data = {focus: focus.value};
-    fields.forEach(f => data[f.id] = areas[f.id].value);
-    try { localStorage.setItem(KEY, JSON.stringify(data)); status.textContent = "Saved in this browser."; } catch (e) { status.textContent = "Couldn't save in this browser. Copy your outline before leaving."; }
+  box.appendChild(mk("div", "font-weight:800;font-size:1.05em;margin:18px 0 4px;color:#0f172a;", "🔧 My design elements (at least 5)"));
+  box.appendChild(mk("div", "font-size:.88em;color:#334155;margin-bottom:6px;", "For each element: what you add, change or take away; which subproblems it helps; the mechanism it acts on; and its benefit and cost."));
+  const list = mk("div");
+  const status = mk("div", "padding:10px 12px;border-radius:10px;margin:10px 0;background:#e0f2fe;color:#0c1a2a;font-size:.93em;");
+  status.setAttribute("aria-live", "polite");
+  const rFields = [
+    {id: "r1", label: "1. The overall problem, including relevant science concepts"},
+    {id: "r2", label: "2. At least one subproblem, including relevant science concepts (the mechanism)"},
+    {id: "r3", label: "3. How the design elements address the subproblems, including the mechanism each acts on (at least 3 elements)"},
+    {id: "r4", label: "4. How at least one design element addresses your criteria and constraints"},
+    {id: "r5", label: "5. How the design overall balances benefits with costs (include patterns, and how this technology could affect society, even in ways you didn't plan)"}
+  ];
+  const rEls = {};
+  const read = () => {
+    const data = {elements};
+    top.forEach(f => data[f.id] = fields[f.id].value);
+    rFields.forEach(f => data[f.id] = rEls[f.id].value);
+    return data;
   };
-  box.addEventListener("input", save);
-  focus.addEventListener("change", save);
-  bPrev.onclick = () => { preview.textContent = outline(); preview.style.display = "block"; };
-  bCopy.onclick = async () => {
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(read())); } catch (e) {} updateStatus(); };
+  const updateStatus = () => {
+    const named = elements.filter(e => (e.name || "").trim()).length;
+    const lever = elements.filter(e => (e.name || "").trim() && Array.isArray(e.subs) && e.subs.length >= 2).length;
+    const withMech = elements.filter(e => (e.name || "").trim() && (e.mech || "").trim()).length;
+    const rDone = rFields.filter(f => rEls[f.id] && rEls[f.id].value.trim().length > 20).length;
+    status.innerHTML = `<b>Design elements named:</b> ${named} ${named >= 5 ? "✅" : "(need at least 5)"}<br>` +
+      `<b>High-leverage elements</b> (help 2 or more subproblems): ${lever}<br>` +
+      `<b>Elements linked to a mechanism:</b> ${withMech}<br>` +
+      `<b>Rationale parts started:</b> ${rDone} / 5`;
+  };
+  const drawList = () => {
+    list.replaceChildren();
+    elements.forEach((e, i) => {
+      const card = mk("div", "background:#fff;border:1px solid #cbd5e1;border-left:6px solid #0284c7;border-radius:10px;padding:10px 12px;margin:10px 0;color:#0f172a;");
+      card.appendChild(mk("div", "font-weight:800;color:#0f172a;", `Design element ${i + 1}`));
+      const nameId = `u5c-el-${i}-name`;
+      const nl = mk("label", null, "What is it?"); nl.className = "u5c-lbl"; nl.htmlFor = nameId;
+      const name = document.createElement("input"); name.type = "text"; name.className = "u5c-input"; name.id = nameId; name.value = e.name || "";
+      name.placeholder = "e.g., deployable flood gates at subway entrances";
+      name.oninput = () => { e.name = name.value; save(); };
+      const actId = `u5c-el-${i}-act`;
+      const al = mk("label", null, "Do you add, change or take away something?"); al.className = "u5c-lbl"; al.htmlFor = actId;
+      const act = document.createElement("select"); act.className = "u5c-select"; act.id = actId;
+      actions.forEach(o => { const op = document.createElement("option"); op.textContent = o; act.appendChild(op); });
+      act.value = e.act || "Add";
+      act.onchange = () => { e.act = act.value; save(); };
+      const sg = mk("fieldset", "border:none;padding:0;margin:8px 0 0;");
+      sg.appendChild(mk("legend", "font-weight:700;color:#0f172a;", "Which subproblems does it help?"));
+      const sRow = mk("div", "display:flex;flex-wrap:wrap;gap:6px;");
+      subsList.forEach(s => {
+        const l = mk("label", "display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:4px 10px;border:1px solid #cbd5e1;border-radius:20px;cursor:pointer;color:#0f172a;");
+        const cb = document.createElement("input"); cb.type = "checkbox"; cb.style.cssText = "width:20px;height:20px;";
+        cb.checked = Array.isArray(e.subs) && e.subs.includes(s);
+        cb.onchange = () => { const cur = new Set(e.subs || []); cb.checked ? cur.add(s) : cur.delete(s); e.subs = [...cur]; save(); };
+        l.append(cb, document.createTextNode(s));
+        sRow.appendChild(l);
+      });
+      sg.appendChild(sRow);
+      const ta = (key, label, ph) => {
+        const id = `u5c-el-${i}-${key}`;
+        const l = mk("label", null, label); l.className = "u5c-lbl"; l.htmlFor = id;
+        const t = document.createElement("textarea"); t.className = "u5c-textarea"; t.style.minHeight = "56px"; t.id = id; t.value = e[key] || ""; t.placeholder = ph;
+        t.oninput = () => { e[key] = t.value; save(); };
+        return [l, t];
+      };
+      card.append(nl, name, al, act, sg,
+        ...ta("mech", "Mechanism it acts on (the science)", "e.g., storm tide = tide + surge; gates close before king tides"),
+        ...ta("ben", "Benefit", ""),
+        ...ta("cost", "Cost or unintended consequence", ""));
+      if (elements.length > 5) {
+        const rm = mk("button", null, "Remove this element"); rm.type = "button"; rm.className = "u5c-btn u5c-btn-grey";
+        rm.onclick = () => { elements.splice(i, 1); save(); drawList(); };
+        card.appendChild(rm);
+      }
+      list.appendChild(card);
+    });
+  };
+  box.appendChild(list);
+  const add = mk("button", null, "➕ Add another design element"); add.type = "button"; add.className = "u5c-btn";
+  add.onclick = () => { if (elements.length < 10) { elements.push({}); save(); drawList(); } };
+  box.appendChild(add);
+  const rHead = mk("div", "font-weight:800;font-size:1.05em;margin:18px 0 4px;color:#0f172a;", "✍️ Design Rationale");
+  rHead.id = "u5c-rationale-planner";
+  box.appendChild(rHead);
+  rFields.forEach(f => {
+    const id = `u5c-pl-${f.id}`;
+    const lab = mk("label", null, f.label); lab.className = "u5c-lbl"; lab.htmlFor = id;
+    const t = document.createElement("textarea"); t.className = "u5c-textarea"; t.id = id; t.value = saved[f.id] || "";
+    rEls[f.id] = t;
+    box.append(lab, t);
+  });
+  box.appendChild(status);
+  const msg = mk("span", "font-size:.88em;color:#0f172a;");
+  msg.setAttribute("aria-live", "polite");
+  const outline = () => {
+    const d = read();
+    const els = elements.map((e, i) => `Design element ${i + 1}: ${e.name || "(blank)"} [${e.act || "Add"}]\n  Helps: ${(e.subs || []).join(", ") || "(none checked)"}\n  Mechanism: ${e.mech || ""}\n  Benefit: ${e.ben || ""}\n  Cost: ${e.cost || ""}`).join("\n\n");
+    return `FINAL DESIGN TASK\n\nMain subproblem: ${d.sub}\nPlace: ${d.place}\n\nBreaking down storm damage:\n${d.breakdown}\n\nCriteria (most important first):\n${d.criteria}\n\nConstraints and limitations:\n${d.constraints}\n\n${els}\n\nDESIGN RATIONALE\n` + rFields.map(f => `\n${f.label}\n${d[f.id] || ""}`).join("\n");
+  };
+  const copy = mk("button", null, "📋 Copy my whole design"); copy.type = "button"; copy.className = "u5c-btn";
+  copy.onclick = async () => {
     const text = outline();
-    try { await navigator.clipboard.writeText(text); status.textContent = "Copied! Paste it into your notes or PTO."; }
-    catch (e) { preview.textContent = text; preview.style.display = "block"; status.textContent = "Copy isn't available here. Select the outline below and copy it."; }
+    try { await navigator.clipboard.writeText(text); msg.textContent = "Copied! Paste it into your notes or PTO."; }
+    catch (e) { pre.textContent = text; pre.style.display = "block"; msg.textContent = "Copy isn't available here. Select the text below and copy it."; }
   };
-  bClear.onclick = () => {
-    fields.forEach(f => areas[f.id].value = ""); preview.style.display = "none";
+  const prev = mk("button", null, "👀 Preview"); prev.type = "button"; prev.className = "u5c-btn";
+  const pre = mk("div", "display:none;white-space:pre-wrap;background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;margin-top:8px;font-size:.88em;color:#0f172a;");
+  prev.onclick = () => { pre.textContent = outline(); pre.style.display = "block"; };
+  const clear = mk("button", null, "🗑️ Clear"); clear.type = "button"; clear.className = "u5c-btn u5c-btn-grey";
+  clear.onclick = () => {
+    if (!confirm("Clear your whole design plan?")) return;
+    elements = Array.from({length: 5}, () => ({}));
+    top.forEach(f => fields[f.id].value = f.type === "select" ? f.opts[0] : "");
+    rFields.forEach(f => rEls[f.id].value = "");
     try { localStorage.removeItem(KEY); } catch (e) {}
-    status.textContent = "Cleared.";
+    pre.style.display = "none"; drawList(); updateStatus(); msg.textContent = "Cleared.";
   };
-  const row = html`<div></div>`;
-  row.append(bPrev, bCopy, bClear);
-  box.append(row, status, preview);
+  const btnRow = mk("div");
+  btnRow.append(prev, copy, clear, msg);
+  box.append(btnRow, pre);
+  box.addEventListener("input", ev => { if (ev.target.closest && !ev.target.id.startsWith("u5c-el-")) save(); });
+  box.addEventListener("change", ev => { if (ev.target.tagName === "SELECT" && ev.target.id.startsWith("u5c-pl-")) save(); });
+  drawList();
+  updateStatus();
   return box;
 }
 ```
 
-::: {.student-task}
-### ✏️ In class: Final Oral Argument
+## Design Rationale {#u5c-rationale}
 
-- Use your three **Connect to the Performance Task** responses (PTO pp. 9–22) to prepare.
-- Be ready to **say your claims out loud** and back each one with evidence and reasoning.
-- In a **Socratic seminar**, listen for classmates' counterclaims, respond with evidence, and be willing to say "the data are uncertain" when they are.
+Write a **rationale** that explains how **at least three** of your design elements address the problem and the subproblems you identified this unit. Your PTO asks for five parts (the planner above has a box for each):
+
+1. A description of the **overall problem**, including relevant **science concepts**.
+2. A description of **at least one subproblem**, including relevant science concepts.
+3. How the **design elements address the subproblems**, including the **mechanism** each one acts on.
+4. How **at least one design element** addresses your **criteria and constraints**.
+5. How the design **overall balances benefits with costs**.
+
+::: {.u5c-key-idea}
+### 🧠 Two big ideas the rubric looks for
+
+- **Patterns:** storms follow **predictable paths**, precipitation follows **wet and dry latitudes and fronts**, and tides follow the **Moon's phases and distance**. Say how a pattern shaped **where** or **when** your solution works.
+- **Influence of technology on society:** every new technology can affect people and the environment, **including in ways nobody planned**. Name at least one **unintended consequence** of your design (for example, a sea wall that protects one block can send water to the next).
 :::
 
-::: {.evaluate-box}
-## ✅ Final Argument Checklist {#final-argument-checklist}
+**Sentence starters:**
 
-Built from the **Final Argument Rubric** (Hurricanes 5E) and the **Arguing from Evidence Rubrics** (Blizzards and Paths of Severe Storms 5Es). The unit closing guide has no separate rubric. Tap each item when your argument includes it.
+- "Storm damage is a problem because ___. One subproblem is ___, which happens because ___."
+- "Design element ___ acts on the mechanism by ___, **because** ___."
+- "My most important criterion is ___. Element ___ meets it **because** ___. One constraint is ___, so I ___."
+- "A pattern I used is ___, which means my solution ___."
+- "The benefits (___) are worth the costs (___) **because** ___. One unintended consequence could be ___."
+
+::: {.callout-tip collapse="true"}
+## 🔑 Check your thinking (try it first!): a sample design for a NYC waterfront neighborhood
+
+**Main subproblem:** coastal flooding. **High-leverage idea:** most elements also help with heavy rain or wind.
+
+::: {.u5c-scroll}
+| # | Design element | Subproblems it helps | Mechanism it acts on | Benefit | Cost |
+|---|---|---|---|---|---|
+| 1 | **Add** a raised waterfront park with a berm, built higher than Sandy's storm tide plus room for sea-level rise | Flooding, people | Storm tide = tide + surge, starting from a rising sea | Blocks surge; park for everyday use | Expensive, takes years, can push water to neighbors |
+| 2 | **Add** flood gates at subway entrances, closed using tide and surge forecasts | Flooding, people | Tides are predictable from Sun-Moon positions | Protects transit during king tides and surges | Must be staffed and maintained |
+| 3 | **Change** the shoreline edge to a planted wetland | Flooding, precipitation | Absorbs wave energy and some surge; soaks up rain | Natural, habitat for wildlife | Needs space; protects more slowly |
+| 4 | **Change** power lines near the shore to buried, flood-proofed lines | Wind, flooding | Wind and falling trees knock down overhead lines | Fewer outages in high winds | Costs more; harder to repair |
+| 5 | **Add** a storm warning plan that uses forecasts of storm paths and king tides | Wind, precipitation, flooding, people | Storms follow the westerlies; tides are predictable | People prepare and evacuate early | Only works if people get the warning and can act |
+:::
+
+**Rationale (part 5, sample):** The berm and wetland together protect against a Sandy-sized storm tide, which meets my top criterion (keep homes and the subway dry). They cost a lot and take years, but the damage from one Sandy-sized storm is far greater. One **unintended consequence** is that water blocked here could flood the next neighborhood, so the plan needs to be coordinated along the whole shoreline.
+:::
+
+## Final Design Rubric {#u5c-rubric}
+
+This is the **Final Design Rubric** from your Unit Closing handout. Your teacher will use it to score your design.
+
+::: {.u5c-scroll}
+| Component | Level 1: Beginning | Level 2: Developing | Level 3: Advancing | Level 4: Proficient |
+|---|---|---|---|---|
+| **Representing the System** | 3D or drawn model with no annotations, labels or system components | Annotations, labels and/or system components are inaccurate or missing | Annotations and labels are mostly clear; most system components are shown | Annotations and labels are clear; **all major components** are shown, and it's clear how **at least 2 components are interrelated** |
+| **Design Elements** | Fewer than 5 elements, but at least 1 addresses a subproblem and/or some criteria or constraints | Fewer than 5 elements; at least 2 address 1 or more subproblems and some criteria or constraints | **5** elements; most address at least 2 subproblems and most criteria and constraints | **At least 5** elements; **all** address at least 2 subproblems and take into account **all** criteria and constraints |
+| **Design Rationale** | Restates evidence; no science concepts or crosscutting concepts | Science concepts are inappropriate or don't link evidence to the claim; crosscutting concepts not addressed | Some science concepts link evidence to the claim but some are missing; crosscutting concepts addressed but not enough | Clear rationale for **at least 3** design elements, with **all** the science concepts, how **all** criteria and constraints shaped the elements, and how **patterns** and **the influence of technology on society** informed the design |
+:::
+
+<p class="u5c-note">"Not Evident" means the component is missing. The rubric notes that the system's components depend on your subproblem, but should include what <b>generates the weather phenomenon</b> and the points where <b>your solution steps in</b>.</p>
+
+::: {.u5c-evaluate-box}
+### ✅ Proficient checklist
+
+Tap each item when your design includes it.
 :::
 
 ```{ojs}
 //| echo: false
-u5cChecklist = {
+{
   const groups = [
-    {title: "📌 Claim / Counterclaim", items: [
-      "My claim addresses the problem: how storm frequency and/or intensity will change in MY region as temperatures rise",
-      "I give a counterclaim, and both are accurate, appropriate, and complete"
+    {title: "🖼️ Representing the System", items: [
+      "My design is a drawn or 3D model",
+      "It shows the components that cause the weather phenomenon (for example, Sun, Moon, tides and surge; or air masses and pressure)",
+      "It shows the points where my solution steps in",
+      "Annotations and labels are clear, and arrows show how at least 2 components are interrelated"
     ]},
-    {title: "📊 Evidence", items: [
-      "At least 2 pieces of appropriate evidence for each claim (data, simulations, models, or reputable data sets, not just science ideas)",
-      "Includes historical storm data (winter storm graphs, hurricane totals, strong hurricane table, storm track maps)",
-      "Includes data from global climate models (e.g., IPCC Atlas projections of future temperatures)",
-      "Evidence that refutes my claim is included and clearly labeled"
+    {title: "🔧 Design Elements", items: [
+      "At least 5 design elements (things I add, change or take away)",
+      "Every element addresses at least 2 subproblems (high-leverage)",
+      "Every element takes my criteria and constraints into account"
     ]},
-    {title: "🧠 Reasoning: science concepts", items: [
-      "Explains the conditions needed for a winter storm (colliding air masses, moisture, below-freezing air) and/or a hurricane (warm water > ~80 °F)",
-      "Explains how warming changes those conditions (energy and matter flow, evaporation, condensation releasing heat)",
-      "Concepts are accurate, appropriate, and no key concept is left out"
-    ]},
-    {title: "🔗 Reasoning: logic", items: [
-      "Includes logic statements that link evidence to claim using words like \"because\" and \"therefore\""
-    ]},
-    {title: "⚖️ Evaluation", items: [
-      "Critiques my own argument: its strengths and weaknesses",
-      "Suggests additional evidence or reasoning that would make it stronger",
-      "Explains how cause and effect or systems and system models were used to build the argument",
-      "Discusses the precision, reliability, and assumptions of the models I used"
+    {title: "✍️ Design Rationale", items: [
+      "A clear rationale for at least 3 design elements",
+      "All the science concepts needed (the mechanism of my subproblem)",
+      "How my criteria and constraints shaped the elements",
+      "How patterns (storm paths, precipitation patterns or tides) informed my design",
+      "How my technology could affect society, including an unintended consequence",
+      "How the design balances benefits with costs"
     ]}
   ];
-  const total = d3.sum(groups, g => g.items.length);
-  const box = html`<div class="u5c-card" style="background:#fff;color:#1a1a1a;border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.12);"></div>`;
-  const bar = html`<div style="background:#eceff1;border-radius:20px;height:14px;overflow:hidden;margin:4px 0 4px;"><div style="background:linear-gradient(90deg,#0277bd,#ad1457);height:100%;width:0%;transition:width .3s;"></div></div>`;
-  const label = html`<div style="font-weight:700;font-size:.95em;"></div>`;
+  const total = u5cD3.sum(groups, g => g.items.length);
+  const box = html`<div class="u5c-card"></div>`;
+  const label = document.createElement("div");
+  label.style.cssText = "font-weight:800;color:#0f172a;";
+  label.setAttribute("aria-live", "polite");
+  const bar = html`<div style="background:#e2e8f0;border-radius:20px;height:14px;overflow:hidden;margin:6px 0 4px;"><div style="background:linear-gradient(90deg,#0284c7,#ad1457);height:100%;width:0%;transition:width .3s;"></div></div>`;
   box.append(label, bar);
   const update = () => {
     const n = box.querySelectorAll("input:checked").length;
     bar.firstChild.style.width = `${100 * n / total}%`;
-    label.textContent = n === total ? `🎉 ${n} of ${total}: ready to argue!` : `${n} of ${total} included`;
+    label.textContent = n === total ? `🎉 ${n} of ${total}: your design meets every Proficient item!` : `${n} of ${total} Proficient items included`;
   };
   groups.forEach(g => {
-    box.appendChild(html`<div style="font-weight:800;margin:14px 0 4px;color:#01579b;">${g.title}</div>`);
+    const h = document.createElement("div");
+    h.style.cssText = "font-weight:800;margin:14px 0 4px;color:#075985;";
+    h.textContent = g.title;
+    box.appendChild(h);
     g.items.forEach(it => {
-      const lab = html`<label style="display:flex;gap:10px;align-items:flex-start;padding:8px 6px;min-height:44px;border-bottom:1px solid #eceff1;cursor:pointer;">
-        <input type="checkbox" style="width:22px;height:22px;flex:0 0 22px;margin-top:2px;accent-color:#0277bd;"><span>${it}</span></label>`;
-      lab.querySelector("input").onchange = update;
+      const lab = document.createElement("label");
+      lab.style.cssText = "display:flex;gap:10px;align-items:flex-start;padding:8px 6px;min-height:44px;border-bottom:1px solid #e2e8f0;cursor:pointer;color:#0f172a;";
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.style.cssText = "width:22px;height:22px;flex:0 0 22px;margin-top:2px;";
+      cb.onchange = update;
+      const sp = document.createElement("span");
+      sp.textContent = it;
+      lab.append(cb, sp);
       box.appendChild(lab);
     });
   });
@@ -724,131 +868,106 @@ u5cChecklist = {
 }
 ```
 
-# Unit Summary
+::: {.u5c-student-task}
+### ✏️ In your PTO: Final Design Task
 
-| Big idea | What the evidence shows |
+- Work **on your own**. Break "storm damage" into subparts and **choose one** to design for.
+- Draw your **Final Design** (a labeled model of the system and your solution) in the PTO box, or build a 3D model.
+- Write your **Design Rationale** (parts 1–5).
+- Check your work against the **Final Design Rubric** before you turn it in.
+:::
+
+# Unit Summary {#u5c-summary}
+
+::: {.u5c-scroll}
+| Big idea | What you figured out |
 |---|---|
-| **The phenomenon** | It has felt like storms are getting worse (Winter Storm Jonas, Hurricane Maria, Hurricane Sandy). Does the data agree, and will it continue? |
-| **Blizzards** | Uneven heating makes pressure differences and wind; rising air cools and condenses into snow at fronts where cold and warm air masses meet. Winter storm intensity rose from 1950 to 2010; mid-latitude frequency was mixed |
-| **Paths of Severe Storms** | Global winds and the Coriolis effect bring air masses together over North America and steer storms southwest → northeast. A warming world may shift the westerlies and storm tracks toward the poles |
-| **Hurricanes** | Warm ocean water powers hurricanes through evaporation and condensation. Global totals fell slightly, but North Atlantic storms and Category 4–5 hurricanes increased |
-| **Moon Phases (optional)** | Spring tides at new and full moon raise high tides; Sandy's surge on a spring tide made NYC flooding worse |
-| **The future** | Intensity: likely to increase. Frequency: uncertain and regional. Models are more precise when many agree, but their reliability depends on assumptions about the future |
+| **The problem** | Storms cost the US billions of dollars every year and harm people's lives. From 1980 to 2024, billion-dollar hurricanes, floods and winter storms cost about **$1.85 trillion** (NOAA). |
+| **Breaking it down** | Engineers split a big problem into **subproblems**: strong **winds**, heavy **precipitation** and coastal **flooding**. Each has a different **mechanism**. |
+| **Wind** | **Uneven heating** → density and **pressure** differences → air flows **from high to low**. Wind belts and the **Coriolis effect** steer storms; a big pressure difference over a short distance makes strong wind. |
+| **Water** | Warm, moist air is **lifted at fronts**, cools and **condenses** into rain or snow. Warmer air holds more water vapor, so storms can drop more. |
+| **Flooding** | **Storm tide = tide + surge.** Spring tides (new and full moon) and king tides (plus perigee) raise the starting level; sea-level rise raises it further. |
+| **Engineering** | Good solutions meet **criteria**, work within **constraints**, accept reasonable **tradeoffs**, and are built from **design elements** that act on the **mechanism**. |
+| **Patterns and society** | Predictable patterns (storm paths, tides) tell us **where and when** to act. Every technology can have **unintended consequences**, so we weigh **costs and benefits**. |
+:::
+
+::: {.callout-note collapse="true"}
+## 📚 Data and sources on this page
+
+- **Billion-dollar disasters:** NOAA National Centers for Environmental Information, [U.S. Billion-Dollar Weather and Climate Disasters](https://www.ncei.noaa.gov/access/billions/), 1980–2024 (2024 dollars).
+- **Tides and storm tides at The Battery, NY (station 8518750):** NOAA CO-OPS [Tides & Currents](https://tidesandcurrents.noaa.gov/stationhome.html?id=8518750): verified water levels, tide predictions and datums.
+- **Sea-level rise and high-tide flooding:** NOAA Climate.gov, [Climate Change: Global Sea Level](https://www.climate.gov/news-features/understanding-climate/climate-change-global-sea-level).
+- **Winter Storm Jonas:** National Weather Service New York (OKX) storm summary; NOAA Central Park daily records and 1991–2020 normals.
+- **Hurricane Helene:** National Hurricane Center, Tropical Cyclone Report AL092024.
+- **Water vapor and temperature:** IPCC AR6 Working Group I.
+- **Wind turbines:** U.S. Department of Energy, [Wind Turbines in Extreme Weather: Solutions for Hurricane Resiliency](https://www.energy.gov/cmei/systems/articles/wind-turbines-extreme-weather-solutions-hurricane-resiliency) (2018).
+- **Geoengineering figures:** as cited in the Water lesson's text (Columbia Climate School 2024; NOAA Research 2021; Hlywiak & Nolan 2022).
+- **Curriculum:** New Visions for Public Schools, Earth and Space Science Unit 5, *Extreme Weather Coming to a Place Near You?* (SY 26-27), Performance Task Organizer and Unit Closing materials, CC BY-NC-SA 4.0.
+:::
 
 ---
 
-# End-of-Unit Quiz
+# End-of-Unit Quiz {#u5c-quiz}
 
 ```{ojs}
 //| echo: false
-function buildUnit5Quiz(id, title, questions) {
-  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
-  const header = html`<div style="background:linear-gradient(135deg,#1a237e 0%,#0277bd 100%);color:#fff;border-radius:14px 14px 0 0;padding:18px 24px;">
-    <div style="font-size:1.1em;font-weight:700;display:flex;align-items:center;gap:8px;color:#fff;"><span style="font-size:1.2em;">📝</span> ${title}</div>
-    <div style="font-size:0.85em;opacity:0.9;margin-top:4px;color:#fff;">Select an answer for each question.</div>
+u5cEndQuiz = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif;max-width:720px;margin:18px auto;"></div>`;
+  const header = html`<div style="background:linear-gradient(135deg,#0c4a6e 0%,#1e3a8a 100%);color:#fff;border-radius:14px 14px 0 0;padding:18px 22px;">
+    <div style="font-size:1.1em;font-weight:700;color:#fff;">📝 ${title}</div>
+    <div style="font-size:.85em;opacity:.9;margin-top:4px;color:#fff;">Select an answer for each question. <span class="u5c-score" aria-live="polite"></span></div>
   </div>`;
-  const body = html`<div style="border:1.5px solid #b3e5fc;border-top:none;border-radius:0 0 14px 14px;overflow:hidden;background:#f3faff;padding:16px;"></div>`;
-  questions.forEach((qq, qi) => {
-    const card = document.createElement("div");
-    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);";
-    card.innerHTML = `<p style="font-weight:700;margin:0 0 10px;color:#1e1b4b;">${qi+1}. ${qq.q}</p>`;
-    const fb = document.createElement("div");
-    fb.style.cssText = "border-radius:8px;font-size:.9em;transition:all .3s;";
-    qq.options.forEach((opt, oi) => {
-      const btn = document.createElement("button");
-      btn.textContent = opt;
-      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;transition:border-color .2s,background .2s;";
-      btn.onclick = () => {
-        if(card.dataset.answered) return;
-        card.dataset.answered = "true";
-        card.querySelectorAll("button").forEach(b => {
-          b.style.cursor="default"; b.style.borderColor="#e2e8f0"; b.style.background="#f8fafc"; b.style.color="#475569";
-        });
-        const correctBtn = card.querySelectorAll("button")[qq.correct];
-        correctBtn.style.borderColor="#48bb78";correctBtn.style.background="#f0fff4";correctBtn.style.color="#276749";correctBtn.style.fontWeight="700";
-        if(oi === qq.correct){
-          fb.innerHTML = "✅ Correct! " + qq.explanation;
-          fb.style.color="#276749";fb.style.background="#f0fff4";
-        } else {
-          btn.style.borderColor="#fc8181";btn.style.background="#fff5f5";btn.style.color="#9b2c2c";btn.style.fontWeight="700";
-          fb.innerHTML = "❌ " + qq.explanation;
-          fb.style.color="#9b2c2c";fb.style.background="#fff5f5";
-        }
-        fb.style.padding="10px 14px";fb.style.marginTop="8px";
-      };
-      card.appendChild(btn);
-    });
-    card.appendChild(fb);
-    body.appendChild(card);
-  });
-  outer.appendChild(header);
-  outer.appendChild(body);
+  const body = html`<div style="border:1.5px solid #bae6fd;border-top:none;border-radius:0 0 14px 14px;background:#f0f9ff;padding:14px;"></div>`;
+  let nRight = 0, nDone = 0;
+  const scoreEl = header.querySelector(".u5c-score");
+  u5cCards(body, questions, ok => { nDone++; if (ok) nRight++; scoreEl.textContent = `Score: ${nRight} / ${nDone}`; });
+  outer.append(header, body);
   return outer;
 }
 ```
 
 ```{ojs}
 //| echo: false
-buildUnit5Quiz("u5c-summative-quiz", "🌀 End-of-Unit Quiz — More Hurricanes and Blizzards in NYC?", [
-  {
-    q: "Why does warm air rise and create low pressure near the ground?",
-    options: ["Its particles move faster and spread apart, so it is less dense than the cooler air around it", "Warm air is heavier", "Warm air has no particles", "The Coriolis effect lifts it"],
-    correct: 0,
-    explanation: "Heating speeds up particles, which spread out. Less dense air is pushed up by denser surrounding air, leaving lower pressure at the surface. Air then flows from high to low pressure as wind."
-  },
-  {
-    q: "On a weather map, a cold, dry air mass from Canada meets a warm, moist air mass from the Gulf of Mexico over the Northeast in January. What is most likely?",
-    options: ["Warm air is lifted at the front, cools, and condenses, forming a mid-latitude cyclone that can bring heavy snow", "Clear skies, because the air masses cancel out", "A hurricane, because hurricanes need cold air", "Nothing, because fronts don't affect weather"],
-    correct: 0,
-    explanation: "This is how Winter Storm Jonas formed: colliding air masses, lifting at the front, condensation releasing heat, and below-freezing air for snow."
-  },
-  {
-    q: "The mid-latitude winter storm FREQUENCY graph shows −1.15, +0.25, −0.03, +0.15, −0.38, +1.12 for the 1950s–2000s. What's the best interpretation?",
-    options: ["No steady trend: frequency went up and down, so predictions about frequency are uncertain", "A steady increase every decade", "A steady decrease every decade", "Winter storms stopped in the 1990s"],
-    correct: 0,
-    explanation: "The values change direction several times. Your teacher guide notes frequency data are inconsistent, so a strong argument weighs the competing evidence."
-  },
-  {
-    q: "Why do winter storms over the US usually travel from southwest to northeast?",
-    options: ["The westerlies (bent by the Coriolis effect) steer them toward the northeast", "The trade winds blow toward the northeast at 40° N", "Storms follow rivers", "Mountains push them east"],
-    correct: 0,
-    explanation: "Between about 30° and 60° N, surface winds blow from the southwest toward the northeast. Storms are carried along those prevailing westerlies."
-  },
-  {
-    q: "If warming shifts the westerlies about 5° toward the North Pole, what happens to the storm tracks?",
-    options: ["They move north with the westerlies, so bands farther north get more storms and southern bands get fewer", "They move south", "They stay in exactly the same place", "All winter storms stop"],
-    correct: 0,
-    explanation: "Storms ride the westerlies. Whether a specific place like NYC gains or loses storms depends on which band was busiest before the shift."
-  },
-  {
-    q: "North Atlantic Category 4–5 hurricanes went from 16 (1975–1989) to 25 (1990–2004). Which variable does this evidence address?",
-    options: ["Hurricane intensity", "Hurricane frequency (total number)", "Winter storm frequency", "Global temperature"],
-    correct: 0,
-    explanation: "It counts the strongest storms, so it is evidence about intensity. Total hurricane counts are evidence about frequency."
-  },
-  {
-    q: "Which chain best explains why warmer oceans could make hurricanes stronger?",
-    options: ["Warmer water → more evaporation → more water vapor rising → more condensation releasing heat → stronger rising air and lower pressure", "Warmer water → less evaporation → weaker storm", "Warmer water → colder air → more snow", "Warmer water → higher tides only"],
-    correct: 0,
-    explanation: "Evaporation carries energy and matter from the ocean into the storm; condensation releases that energy as heat, powering the hurricane."
-  },
-  {
-    q: "Warmer air holds more water. What does this predict for storms?",
-    options: ["More rain (or snow, if below freezing) during individual storm events", "Every year will get more total rain everywhere", "Storms will have less moisture", "Only droughts will change"],
-    correct: 0,
-    explanation: "More moisture per storm means heavier precipitation during events. The Hurricanes Elaborate text points out this doesn't necessarily mean more total rain every year."
-  },
-  {
-    q: "Why was flooding from Hurricane Sandy (October 2012) so severe in NYC?",
-    options: ["Its storm surge arrived near a full moon, during a spring tide, when high tides are higher than usual", "It hit during a neap tide", "The Moon pushed the hurricane toward NYC", "It was a blizzard"],
-    correct: 0,
-    explanation: "At new and full moon the Sun's and Moon's tidal pulls line up, making spring tides. A surge on top of a higher high tide reaches farther inland."
-  },
-  {
-    q: "A classmate says, \"The IPCC Atlas says the future will be exactly +2 °C, so storms will definitely get worse by a set amount.\" What's the best critique?",
-    options: ["The Atlas shows several scenarios (1.5, 2, 3, 4 °C) because its assumptions about emissions, population, technology, and policy vary; predictions have limited reliability", "The Atlas only uses one model", "Climate models can't say anything about temperature", "The Atlas predicts cooling"],
-    correct: 0,
-    explanation: "Many models agreeing makes the Atlas more precise, but its reliability depends on assumptions about the future. A strong argument names the scenario and admits these limits."
-  }
+u5cEndQuiz("u5c-end-quiz", "Unit 5 Closing: End-of-Unit Quiz", [
+  {q: "Why do engineers break \"storm damage\" into smaller subproblems?",
+   options: ["Because big problems can't be studied at all", "Because wind, precipitation and flooding each happen by a different mechanism, so each needs solutions aimed at its own cause", "Because only one kind of storm causes damage", "Because smaller problems are always cheaper"],
+   correct: 1,
+   explanation: "Each subproblem has its own cause. A solution works best when it targets the mechanism of a specific subproblem, and high-leverage elements can help with more than one."},
+  {q: "Which is a CONSTRAINT (not a criterion) for a flood wall along lower Manhattan?",
+   options: ["It must keep out a storm tide like Sandy's", "It must fit in the space between the river and existing buildings and subways", "It should protect subway entrances", "It should last 50 years"],
+   correct: 1,
+   explanation: "A constraint is a limit the design must work within, like space or money. The others say what the design must do, so they're criteria."},
+  {q: "Strong winds blow during a winter storm mainly because…",
+   options: ["Earth's spin creates the wind", "there is a big difference in air pressure over a short distance, so air rushes from high to low pressure", "warm air sinks and cold air rises", "the Moon pulls the air"],
+   correct: 1,
+   explanation: "Uneven heating makes pressure differences. Air flows from high to low, and tight isobars mean strong wind. The Coriolis effect only bends it."},
+  {q: "How did Winter Storm Jonas produce so much snow?",
+   options: ["Cold, dry air rose over warm air and evaporated", "Warm, moist air from the Gulf and Atlantic was forced up over cold, dense air, cooled, and condensed; the air was below freezing", "The ocean froze and released snow", "The westerlies carried snow from Canada"],
+   correct: 1,
+   explanation: "Lifting at a front cools the warm, moist air so its water vapor condenses. Below 32 °F, the precipitation falls as snow."},
+  {q: "Hurricane Sandy's water level at The Battery reached a record 14.06 ft. Which statement best explains why?",
+   options: ["The full moon caused the hurricane", "A storm surge of about 9.3 ft arrived near high tide during a full-moon spring tide, so tide + surge added up", "Sandy hit at low tide during a neap tide", "Heavy snow melted into the harbor"],
+   correct: 1,
+   explanation: "Storm tide = tide + surge. The Moon set a higher starting level (spring tide); the storm added the surge."},
+  {q: "Which design element uses a PATTERN to address the timing part of coastal flooding?",
+   options: ["Planting trees in an inland park", "Closing flood gates ahead of forecast surges that line up with spring or king tides", "Painting subway entrances", "Building more parking near the shore"],
+   correct: 1,
+   explanation: "Tides are predictable years ahead from the Moon's phase and distance, so gates can be closed before the most dangerous high tides."},
+  {q: "Why is high-tide flooding happening far more often than 50 years ago?",
+   options: ["Spring tides now happen every day", "Sea level is higher, so ordinary high tides reach flood level more often", "The Moon is much closer to Earth now", "There are hurricanes every day"],
+   correct: 1,
+   explanation: "Global sea level is up 8–9 inches since 1880. Spring tides still happen twice a month, but now they start from higher water."},
+  {q: "Solar geoengineering \"doesn't remove any carbon dioxide from the air.\" Is that a constraint or a limitation?",
+   options: ["A constraint: a limit on building it", "A limitation: something the solution can't do even if it works", "A criterion", "A design element"],
+   correct: 1,
+   explanation: "Limitations are what a design can't do. Constraints are limits on making it happen, like the spray equipment not existing yet."},
+  {q: "A sea wall protects one neighborhood but sends floodwater into the next one. This is an example of…",
+   options: ["A criterion being met", "An unintended consequence of a technology, which must be weighed as a cost", "A spring tide", "A design element that has no cost"],
+   correct: 1,
+   explanation: "New technologies can affect society in ways nobody planned. Strong designs name these costs and plan for them, like coordinating protection along the whole shoreline."},
+  {q: "On the Final Design Rubric, what makes a design element \"high-leverage\"?",
+   options: ["It is the most expensive element", "It addresses at least two subproblems at once", "It is the tallest part of the design", "It only addresses one criterion"],
+   correct: 1,
+   explanation: "A high-leverage element does more than one job, like a planted waterfront park that blocks surge and soaks up heavy rain."}
 ])
 ```

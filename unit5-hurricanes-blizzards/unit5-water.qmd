@@ -1,0 +1,1554 @@
+---
+title: "Unit 5: Water"
+subtitle: "How does precipitation form? How can we design solutions that protect communities from water damage?"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: false
+    code-fold: true
+execute:
+  echo: false
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.engage-box { background: linear-gradient(135deg, #0b5c8a 0%, #0a3d62 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(10, 61, 98, 0.3); }
+.explore-box { background: linear-gradient(135deg, #00695c 0%, #0a5ea8 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 105, 92, 0.3); }
+.explain-box { background: linear-gradient(135deg, #4834a8 0%, #5e35b1 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+.elaborate-box { background: linear-gradient(135deg, #b54708 0%, #9a3412 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(181, 71, 8, 0.3); }
+.evaluate-box { background: linear-gradient(135deg, #b71c1c 0%, #ad1457 100%); color: white; padding: 25px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(183, 28, 28, 0.3); }
+.engage-box h2, .explore-box h2, .explain-box h2, .elaborate-box h2, .evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.8em; margin-top: 0; color: white !important; }
+.engage-box h3, .explore-box h3, .explain-box h3, .elaborate-box h3, .evaluate-box h3 { color: white !important; }
+.engage-box a, .explore-box a, .explain-box a, .elaborate-box a, .evaluate-box a { color: #ffe0b2; }
+.pe-badge { display: inline-block; background: linear-gradient(135deg, #0284c7 0%, #0f766e 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; margin: 4px; letter-spacing: .5px; }
+.big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2.1em; font-weight: 800; background: linear-gradient(135deg, #0284c7 0%, #0f766e 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 26px 0 18px 0; text-align: center; line-height: 1.2; }
+.key-idea { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); color: #0c1a2a; padding: 18px 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #0284c7; font-size: 1.03em; }
+.key-idea h3 { color: #0c1a2a !important; margin-top: 0; }
+.key-idea a { color: #075985; }
+.student-task { background: #fff3e0; color: #1a1a1a; border-left: 5px solid #ff9800; padding: 18px 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+.student-task h3 { color: #7c2d12 !important; margin-top: 0; }
+.student-task a { color: #9a3412; }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.3em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #0369a1 !important; }
+.quarto-dark h2, [data-bs-theme="dark"] h2 { color: #7dd3fc !important; }
+.student-task, .callout-body-container { overflow-x: auto; }
+.student-task table, .callout-body-container table { font-size: .9em; }
+.wt-table-wrap { overflow-x: auto; max-width: 100%; }
+.wt-note { font-size: .82em; opacity: .8; margin: 4px 0 14px; }
+.wt-card { background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px 14px; margin: 8px 0 14px; overflow-x: auto; }
+.wt-card b, .wt-card strong { color: #0f172a; }
+.wt-card a { color: #075985; }
+.wt-card button, .wt-card select { min-height: 44px; }
+.wt-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 12px 0; }
+.wt-fact { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); border-radius: 12px; padding: 12px 14px; }
+.wt-fact .wt-big { font-family: 'Space Grotesk', sans-serif; font-size: 1.6em; font-weight: 800; display: block; }
+.wt-btn { min-height: 44px; padding: 8px 18px; border-radius: 22px; border: none; background: linear-gradient(135deg, #0284c7, #4834a8); color: #fff; font-weight: 700; cursor: pointer; margin: 6px 6px 6px 0; font-size: .95em; }
+.wt-btn.wt-alt { background: #e2e8f0; color: #1e293b; }
+.wt-opt { display: block; width: 100%; min-height: 44px; text-align: left; padding: 10px 12px; margin: 5px 0; border: 2px solid #cbd5e1; border-radius: 8px; background: #fff; color: #1e293b; cursor: pointer; font-size: .95em; }
+.wt-sortrow { border-bottom: 1px solid #e2e8f0; padding: 10px 0; }
+.wt-sortrow p { margin: 0 0 6px; color: #0f172a; }
+.wt-sortbtn { min-height: 44px; padding: 6px 12px; margin: 4px 6px 4px 0; border-radius: 8px; border: 2px solid #cbd5e1; background: #fff; color: #1e293b; cursor: pointer; font-size: .9em; }
+.wt-pt textarea { width: 100%; min-height: 84px; font: inherit; font-size: .93em; padding: 8px; border-radius: 8px; border: 1px solid #94a3b8; background: #fff; color: #0f172a; box-sizing: border-box; }
+.wt-pt label.wt-lbl { display: block; font-weight: 700; margin: 12px 0 4px; color: #0f172a; }
+.wt-reading { background: #fffbeb; color: #1c1917; border: 1px solid #fcd34d; border-radius: 12px; padding: 16px 18px; margin: 12px 0; line-height: 1.65; }
+.wt-reading h3 { color: #78350f !important; margin-top: 0; }
+.wt-reading a { color: #92400e; }
+.wt-reading .wt-src { font-size: .85em; color: #44403c; }
+.wt-video { position: relative; width: 100%; max-width: 720px; aspect-ratio: 16 / 9; margin: 10px auto 6px; border-radius: 12px; overflow: hidden; background: #000; }
+.wt-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.wt-frame { width: 100%; border: none; border-radius: 12px; background: #fff; display: block; }
+.wt-svg { max-width: 100%; height: auto; display: block; margin: auto; }
+.cell-output-display { max-width: 100%; }
+.cell-output-display svg { max-width: 100%; height: auto; }
+.cell-output-display figure h2 { font-family: 'Inter', sans-serif !important; font-size: 1.02rem !important; font-weight: 700 !important; color: inherit !important; margin: 0 0 2px !important; padding: 0 !important; border: none !important; line-height: 1.3; }
+.cell-output-display figure h3 { font-family: 'Inter', sans-serif !important; font-size: .85rem !important; font-weight: 400 !important; opacity: .8; margin: 0 0 6px !important; padding: 0 !important; border: none !important; line-height: 1.3; }
+svg [aria-label="tip"] text { fill: #1a1a1a !important; }
+svg [aria-label="tip"] rect { fill: rgba(255, 255, 255, 0.97) !important; stroke: #d4d4d4 !important; }
+form[class*="-checkbox"], form[class*="-radio"] { --input-width: 600px; max-width: 100%; }
+form[class*="-checkbox"] label, form[class*="-radio"] label { min-height: 32px; }
+</style>
+```
+
+<a class="quiz-jump-btn" href="#wt-quiz">🧠 Quiz ↓</a>
+
+<div class="big-question">🌧️ Where Does All That Water Come From? ❄️</div>
+
+<span class="pe-badge">HS-ESS2-8 (NYS)</span> <span class="pe-badge">HS-ETS1-1</span> <span class="pe-badge">HS-ETS1-2</span> <span class="pe-badge">Patterns</span> <span class="pe-badge">Influence of Science, Engineering &amp; Technology</span>
+
+::: {.callout-note collapse="true"}
+## 📒 Using this chapter with your student packet
+
+This chapter follows the same steps as your **Water 5E** packet (Unit 5, *Extreme Weather Coming to a Place Near You?*) and the **Revisiting the Performance Task: Water** page in your **Performance Task Organizer (PTO)**. Missed a class or need a refresher? Jump to the matching section:
+
+| Packet section | In this chapter |
+|---|---|
+| Engage: Precipitation Damage (Helene and Jonas photos) | [Engage](#wt-engage) |
+| Explore: Precipitation Formation Investigation, Model 1: Air Masses and Their Interactions (Weather Fronts Simulator table) | [Model 1: Fronts](#wt-fronts) |
+| Model 2: How Water Behaves in the Air/Atmosphere (three cup experiments) | [Model 2: Cup lab](#wt-cups) |
+| Making Sense of the Precipitation Formation Investigation (See-Think-Wonder + questions 1–3) | [Making Sense](#wt-making-sense) |
+| Precipitation Formation Investigation Rubric (self and partner) | [Investigation rubric](#wt-explore-rubric) |
+| Explain Part 1: Defining Air Masses + Discovering Patterns in Air Mass Formation (matching table) | [Air masses](#wt-air-masses) |
+| Patterns on Local Scales: Storyboard of Storm Formation | [Storyboard](#wt-storyboard) |
+| Patterns on Global Scales: "Wet" and "Dry" latitudes | [Wet and dry latitudes](#wt-global) |
+| Part 2: Explaining the precipitation of Jonas and Helene (two videos) | [Jonas and Helene](#wt-jonas-helene) |
+| Explain: Summary Task | [Summary Task](#wt-summary) |
+| Elaborate: Precipitation in a Changing Climate (video notes, hurricane needs, ocean heat graph, Think-Talk-Open Exchange) | [Elaborate](#wt-elaborate) |
+| Evaluate: A Potential Solution to Reduce Precipitation (geoengineering text) | [Evaluate](#wt-evaluate) |
+| PTO: Revisiting the Performance Task: Water (questions 1–7) | [Connect to the Performance Task](#wt-pt) |
+| Evaluating Solutions for Water Damage (rubric) | [Rubric checklist](#wt-rubric) |
+:::
+
+```{ojs}
+//| echo: false
+wtPlot = require("@observablehq/plot@0.6.16")
+wtD3 = require("d3@7.9.0")
+```
+
+```{ojs}
+//| echo: false
+wtOrder = (q, n) => {
+  let h = 0;
+  for (const ch of q) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return wtD3.shuffler(wtD3.randomLcg((h % 10000) / 10000))(wtD3.range(n));
+}
+```
+
+```{ojs}
+//| echo: false
+wtBuildCards = function(body, questions, onAnswer) {
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:16px 18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.1);border:1px solid #e2e8f0;";
+    const qp = document.createElement("p");
+    qp.style.cssText = "font-weight:700;margin:0 0 10px;color:#1e1b4b;";
+    qp.innerHTML = `${qi + 1}. ${qq.q}`;
+    card.appendChild(qp);
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.92em;";
+    const order = wtOrder(qq.q, qq.options.length);
+    const shownCorrect = order.indexOf(qq.correct);
+    const btns = [];
+    order.map(i => qq.options[i]).forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;";
+      btn.onclick = () => {
+        if (card.dataset.answered) return;
+        card.dataset.answered = "true";
+        btns.forEach(b => { b.style.cursor = "default"; });
+        const right = btns[shownCorrect];
+        right.style.borderColor = "#48bb78"; right.style.background = "#f0fff4"; right.style.color = "#22543d"; right.style.fontWeight = "700";
+        const ok = oi === shownCorrect;
+        if (ok) {
+          fb.innerHTML = "✅ Correct! " + qq.explanation; fb.style.color = "#276749"; fb.style.background = "#f0fff4";
+        } else {
+          btn.style.borderColor = "#fc8181"; btn.style.background = "#fff5f5"; btn.style.color = "#9b2c2c";
+          fb.innerHTML = "❌ Not quite. " + qq.explanation; fb.style.color = "#9b2c2c"; fb.style.background = "#fff5f5";
+        }
+        fb.style.padding = "10px 14px"; fb.style.marginTop = "8px";
+        if (onAnswer) onAnswer(ok);
+      };
+      btns.push(btn);
+      card.appendChild(btn);
+    });
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+}
+```
+
+```{ojs}
+//| echo: false
+// Collapsible inline check: a button that opens a few multiple-choice questions with instant feedback.
+wtCheck = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="margin:14px 0 24px 0;text-align:center;">
+    <button type="button" style="display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#0284c7 0%,#4834a8 100%);color:#fff;border:none;padding:10px 22px;min-height:44px;border-radius:50px;font-size:.95em;font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(2,132,199,.4);">
+      <span>📝</span> ${title} <span class="wt-chev" style="transition:transform .3s;">▼</span>
+    </button>
+    <div style="max-height:0;opacity:0;overflow:hidden;transition:max-height .5s ease,opacity .4s ease;margin-top:0;text-align:left;"></div>
+  </div>`;
+  const toggle = outer.querySelector("button");
+  const chev = outer.querySelector(".wt-chev");
+  const body = outer.querySelector("div");
+  let open = false;
+  toggle.onclick = () => {
+    open = !open;
+    body.style.maxHeight = open ? "5000px" : "0";
+    body.style.opacity = open ? "1" : "0";
+    body.style.marginTop = open ? "14px" : "0";
+    chev.style.transform = open ? "rotate(180deg)" : "rotate(0)";
+  };
+  wtBuildCards(body, questions);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+// Sorting activity: each statement gets category buttons and instant feedback.
+wtSorter = function(cats, items, doneMsg) {
+  const wrap = html`<div class="wt-card"></div>`;
+  const score = html`<div style="font-weight:700;margin-top:8px;"></div>`;
+  let right = 0, done = 0;
+  items.forEach(it => {
+    const row = html`<div class="wt-sortrow"><p>${it.text}</p></div>`;
+    const fb = html`<div style="font-size:.9em;"></div>`;
+    const btns = cats.map(c => {
+      const b = html`<button type="button" class="wt-sortbtn">${c}</button>`;
+      b.onclick = () => {
+        if (row.dataset.done) return;
+        row.dataset.done = "1"; done++;
+        const ok = c === it.cat;
+        if (ok) right++;
+        b.style.borderColor = ok ? "#16a34a" : "#dc2626";
+        b.style.background = ok ? "#f0fdf4" : "#fef2f2";
+        btns.forEach(x => { if (x.textContent === it.cat) { x.style.borderColor = "#16a34a"; x.style.fontWeight = "700"; } x.style.cursor = "default"; });
+        fb.innerHTML = (ok ? "✅ " : `❌ It's <b>${it.cat}</b>. `) + it.why;
+        fb.style.color = ok ? "#14532d" : "#7f1d1d";
+        score.textContent = `${right} of ${done} correct` + (done === items.length ? ` · ${doneMsg}` : "");
+      };
+      return b;
+    });
+    btns.forEach(b => row.appendChild(b));
+    row.appendChild(fb);
+    wrap.appendChild(row);
+  });
+  wrap.appendChild(score);
+  return wrap;
+}
+```
+
+# Engage: Precipitation Damage {#wt-engage}
+
+::: {.engage-box}
+## 🌊 Two storms, a LOT of water
+
+In the **Wind 5E** you explained how storms make strong winds. But every storm video you've watched also had something else in it: **water**. This lesson takes on the second piece of the storm-damage problem: **precipitation** (rain and snow).
+
+```{=html}
+<div class="wt-facts">
+  <div class="wt-fact"><span class="wt-big">30.78 in</span>of <b>rain</b> at Busick, N.C., in the mountains northeast of Asheville, during <b>Hurricane Helene</b> (Sept. 2024). That was Helene's highest rain total.</div>
+  <div class="wt-fact"><span class="wt-big">27.5 in</span>of <b>snow</b> in Central Park, NYC, during <b>Winter Storm Jonas</b> (Jan. 22–24, 2016), the city's biggest snowstorm since records began in 1869. JFK Airport got 30.5 in.</div>
+  <div class="wt-fact"><span class="wt-big">$78.7 billion</span>in damage from Helene in the U.S., and <b>219 deaths</b> (NOAA, in 2024 dollars).</div>
+</div>
+```
+
+These amounts of water caused **floods, landslides, power outages, and damaged property**.
+:::
+
+::: {.callout-warning collapse="true"}
+## 📌 A note about your packet's numbers
+Your packet says *"Hurricane Helene dropped 30 inches of water on **Asheville**"* and *"Winter storm Jonas dropped 30 inches of snow in **New England**."*
+
+- Helene's ~30 inches fell on the **mountains around Asheville**. The top total, **30.78 in**, was at **Busick, N.C.**, northeast of the city. Asheville itself got less.
+- Jonas's 2-to-3-foot snow fell in the **Mid-Atlantic and New York City** (the packet's photo is from **Washington, D.C.**), not mainly New England.
+
+The big idea is the same: each storm dropped about **30 inches** of water or snow in some places.
+:::
+
+In class you watch a video about how Helene's rain set off landslides in North Carolina. It's from your teacher materials.
+
+```{=html}
+<div class="wt-video"><iframe src="https://www.youtube-nocookie.com/embed/OpReYTP4Nx0" title="How Hurricane Helene Spawned Record Landslides in NC (video)" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+```
+
+### ❄️ How much water is in a foot of snow?
+
+Snow is fluffy. To compare snow with rain, meteorologists melt it and measure the **liquid water**. Here is NOAA's record for Central Park on the biggest day of Jonas:
+
+```{ojs}
+//| echo: false
+wtSnowDay = [
+  {what: "Snow that fell (Jan. 23, 2016)", inches: 27.3, kind: "Snow"},
+  {what: "Same snow, melted into water", inches: 2.31, kind: "Liquid water"}
+]
+```
+
+```{ojs}
+//| echo: false
+wtPlot.plot({
+  title: "Central Park, NYC, January 23, 2016",
+  subtitle: "Inches. Data: NOAA, Central Park daily record",
+  width, height: 170, marginLeft: Math.min(230, width * 0.45), marginRight: 50,
+  x: {label: "Inches", grid: true, domain: [0, 30]},
+  y: {label: null},
+  color: {domain: ["Snow", "Liquid water"], range: ["#60a5fa", "#1d4ed8"]},
+  marks: [
+    wtPlot.barX(wtSnowDay, {y: "what", x: "inches", fill: "kind", sort: null}),
+    wtPlot.text(wtSnowDay, {y: "what", x: "inches", text: d => d.inches + "″", dx: 18, fontWeight: "bold"}),
+    wtPlot.ruleX([0])
+  ]
+})
+```
+
+<p class="wt-note">27.3 ÷ 2.31 ≈ 12. Each inch of water became about 12 inches of snow. NYC averages 29.8 inches of snow in a <b>whole winter</b> (NOAA 1991–2020 normals), so Jonas brought almost a whole winter's snow in one storm.</p>
+
+::: {.student-task}
+### ✏️ In your packet: Precipitation Damage
+
+Look at the two photos (Helene flooding; Jonas snow). Answer: **What information do we need in order to begin considering solutions that protect people and property from water damage?** In class you share your best idea on a post-it (**Rumors**).
+:::
+
+Pick the questions you think matter most. Then compare with the list below.
+
+```{ojs}
+//| echo: false
+viewof wtNeed = Inputs.checkbox([
+  "Why does precipitation form at all?",
+  "Why do some storms drop much more rain or snow than others?",
+  "Why do floods and landslides happen when it rains a lot?",
+  "What kinds of damage does storm water cause?",
+  "Are storms getting wetter over time?",
+  "What color are storm clouds?",
+  "What solutions already exist, and what do they cost?"
+], {label: "Information we need:"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const s = new Set(wtNeed);
+  let msg = "Pick a few.";
+  if (s.size) {
+    const weak = s.has("What color are storm clouds?");
+    const core = ["Why does precipitation form at all?", "Why do some storms drop much more rain or snow than others?"].filter(x => s.has(x)).length;
+    msg = (core === 2 ? "✅ You picked the two questions this lesson answers first: how precipitation forms, and why some storms make so much more. " : "💡 Strong lists include: <b>why precipitation forms</b> and <b>why some storms make much more</b>. Those let us aim a solution at the cause. ")
+      + (weak ? "Cloud color is easy to see, but it won't tell us how to stop damage." : "");
+  }
+  return html`<div class="wt-card" style="font-size:.94em;">${msg}</div>`;
+}
+```
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+Any reasonable list works. Strong ideas include:
+
+- We need to know **why precipitation forms**.
+- We need to know **what makes some storms have more precipitation** than others.
+- We need to know **why flooding and landslides happen** when it rains a lot.
+- We need to know **what types of damage** result (floods, landslides, power outages, roofs collapsing under snow, roads washed out, travel shut down).
+- Also useful: where and when these storms happen, how much water the ground can soak up, whether storms are getting wetter, and what solutions already exist.
+
+**Next:** to judge any solution, we first need to understand what **causes** extreme precipitation.
+:::
+
+# Explore: Precipitation Formation Investigation {#wt-explore}
+
+::: {.explore-box}
+## 🔬 How does precipitation form?
+
+Think of a really **muggy, humid** day. How could you tell the air was full of water? (Sticky skin, sweat that won't dry, foggy glasses.) Water is in the air even when you can't see it. In this investigation you use two models, **fronts** and **cups**, to figure out how water moves through the atmosphere and when it falls out as rain or snow.
+:::
+
+## Model 1: Air Masses and Their Interactions {#wt-fronts}
+
+Air in our atmosphere varies in **temperature** and **moisture**. A huge body of air with about the same temperature and moisture throughout is called an **air mass**. When air masses with different temperature and moisture meet, the boundary between them is a **front**. There are patterns in how they interact and in the weather that results.
+
+Your packet uses the [WeatherSTEM Weather Fronts Simulator](https://learn.weatherstem.com/courses/wxstem_meteorology_01/module-01/03/09.html). Below is this book's version of the same idea. Play it for all **four types of fronts**: cold, warm, occluded, and stationary.
+
+```{=html}
+<iframe class="wt-frame" src="weatherfronts.html" title="Weather Fronts Simulation: cold, warm, occluded and stationary fronts" loading="lazy" style="height: 980px;"></iframe>
+```
+
+<p class="wt-note">Can't load it? Open the <a href="https://learn.weatherstem.com/courses/wxstem_meteorology_01/module-01/03/09.html">WeatherSTEM simulator</a> in a new tab, or use the answer check below.</p>
+
+::: {.student-task}
+### ✏️ In your packet: Model 1 table
+
+For each front (cold, warm, occluded, stationary), record what you observe about the **warm air mass**, the **cool air mass**, and the **resulting weather**.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+| Front | Warm air mass | Cool air mass | Resulting weather |
+|---|---|---|---|
+| **Cold** | Pushed up steeply and quickly | Moves in fast, wedges underneath, stays near the ground | Tall clouds, heavy showers or thunderstorms along the front, then cooler and clearing |
+| **Warm** | Slides gently up and over the cool air | Retreats, stays near the ground | Wide, layered clouds; steadier, lighter precipitation ahead of the front |
+| **Occluded** | Lifted completely off the ground | Cold air catches up and lifts the warm air | Clouds and widespread precipitation |
+| **Stationary** | Rises slowly, if at all, along the boundary | Neither mass pushes the other out; stays low | Clouds and precipitation that can last for days |
+
+**The pattern:** the **cool, dry air stays near the surface** at every front. The **warm, moist air rises** (clearly at three of the four fronts), and **that's where clouds and precipitation form**. Why does warm air rise? Warmer air is **less dense**, so the denser cold air stays under it and pushes it up.
+:::
+
+```{ojs}
+//| echo: false
+wtCheck("wt-check-fronts", "Check: Fronts", [
+  {q: "What pattern did all four fronts share?",
+   options: ["Warm air sinks under cold air", "Cool, dry air stays low; warm, moist air rises where they meet, and precipitation forms there", "Precipitation forms only behind the front", "The two air masses mix evenly"],
+   correct: 1,
+   explanation: "Warm air is less dense, so it ends up on top. The two air masses stay mostly separate; the boundary between them is the front."},
+  {q: "Why does the cool, dry air stay near the ground?",
+   options: ["It is moving faster", "It is denser than the warm air", "Wind holds it down", "Cold air has no water in it"],
+   correct: 1,
+   explanation: "Same idea as the Wind 5E: cooler air is denser, so it sinks and slides under warmer air."}
+])
+```
+
+## Model 2: How Water Behaves in the Air {#wt-cups}
+
+In class you put a tall clear cup **upside down** on top of a wide cup of water, so they form a closed container. Then you watch for 1–2 minutes, look with a magnifier, and feel the inside of the top cup. The packet has **three experiments**. Try each one in this virtual cup lab.
+
+```{ojs}
+//| echo: false
+viewof wtCupExp = Inputs.radio([
+  "1. Hot water: How is water vapor different from the rest of the air?",
+  "2. Hot vs. warm vs. cold water: How does water temperature affect the amount of vapor?",
+  "3. Hot water with and without ice on top: How does air temperature affect the state of water?"
+], {value: "1. Hot water: How is water vapor different from the rest of the air?"})
+```
+
+```{ojs}
+//| echo: false
+viewof wtCupTime = Inputs.range([0, 3], {step: 0.25, value: 2, label: "Minutes watched"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const es = T => 6.112 * Math.exp(17.62 * T / (243.12 + T)); // saturation vapor pressure, hPa (Magnus formula)
+  const exp = +wtCupExp[0];
+  const setups = exp === 1 ? [{w: 50, ice: false, name: "Hot water"}] :
+    exp === 2 ? [{w: 50, ice: false, name: "Hot"}, {w: 30, ice: false, name: "Warm"}, {w: 10, ice: false, name: "Cold"}] :
+    [{w: 50, ice: false, name: "Hot, no ice"}, {w: 50, ice: true, name: "Hot, ice on top"}];
+  const room = 22;
+  const res = setups.map(s => {
+    const tIn = (s.w + room) / 2;                        // air trapped inside the cups
+    const tTop = s.ice ? 2 : Math.max(room, tIn - 4);    // temperature of the top cup's surface
+    const rate = Math.max(0, es(tIn) - es(tTop));
+    return {...s, rate, vapor: es(s.w), drops: Math.round(Math.min(60, rate * wtCupTime * 0.55))};
+  });
+  const W = 120, rnd = wtD3.randomLcg(0.3);
+  const cup = (r, i) => {
+    const x0 = i * (W + 14) + 6;
+    const vaporDots = wtD3.range(Math.round(Math.min(26, r.vapor / 5))).map(() => `<circle cx="${(x0 + 22 + rnd() * 76).toFixed(1)}" cy="${(125 + rnd() * 45).toFixed(1)}" r="1.8" fill="#38bdf8" opacity=".7"/>`).join("");
+    const drops = wtD3.range(r.drops).map(() => {
+      const onTop = r.ice ? rnd() < 0.75 : rnd() < 0.45;
+      const x = onTop ? x0 + 34 + rnd() * 52 : (rnd() < .5 ? x0 + 25 + rnd() * 8 : x0 + 87 + rnd() * 8);
+      const y = onTop ? 34 + rnd() * 6 : 42 + rnd() * 120;
+      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1.6 + rnd() * 1.6).toFixed(1)}" fill="#1d4ed8" opacity=".85"/>`;
+    }).join("");
+    return `<g>
+      <path d="M${x0 + 30},30 L${x0 + 90},30 L${x0 + 98},170 L${x0 + 22},170 Z" fill="rgba(226,232,240,.35)" stroke="#64748b" stroke-width="1.5"/>
+      <path d="M${x0 + 14},170 L${x0 + 106},170 L${x0 + 98},250 L${x0 + 22},250 Z" fill="rgba(226,232,240,.35)" stroke="#64748b" stroke-width="1.5"/>
+      <path d="M${x0 + 17},195 L${x0 + 103},195 L${x0 + 98},250 L${x0 + 22},250 Z" fill="${wtD3.interpolateRgb("#bfdbfe", "#fca5a5")(r.w / 50)}"/>
+      ${r.ice ? `<rect x="${x0 + 44}" y="14" width="32" height="16" rx="3" fill="#e0f2fe" stroke="#0284c7"/><text x="${x0 + 60}" y="26" text-anchor="middle" font-size="9" fill="#0c4a6e">ice</text>` : ""}
+      ${vaporDots}${drops}
+      <text x="${x0 + 60}" y="270" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">${r.name}</text>
+      <text x="${x0 + 60}" y="284" text-anchor="middle" font-size="10" fill="#334155">${r.drops} drops</text>
+    </g>`;
+  };
+  const Wt = setups.length * (W + 14) + 6;
+  return html`<div class="wt-card">
+    <svg class="wt-svg" viewBox="0 0 ${Wt} 292" width="100%" style="max-width:${Wt * 1.3}px;" role="img" aria-label="Virtual cup experiment: ${res.map(r => r.name + ", " + r.drops + " drops on the top cup").join("; ")}">
+      ${res.map(cup).join("")}
+    </svg>
+    <p style="margin:6px 0 0;font-size:.9em;">Light blue dots: water vapor (invisible in real life). Dark blue dots: liquid droplets that formed on the top cup.</p>
+  </div>`;
+}
+```
+
+<p class="wt-note"><b>This is a model, not a measurement.</b> Evaporation is faster from warmer water (the model uses the standard formula for how much water vapor air can hold at each temperature). Droplets form where moist air touches a cooler surface, fastest where it's coldest (the ice). Drop counts are illustrative. Your real cups are the evidence.</p>
+
+::: {.student-task}
+### ✏️ In your packet: Model 2 (three observation tables)
+
+- **Experiment 1:** What did you notice at the surface of the warm water? On the inside of the top cup? Other observations?
+- **Experiment 2:** Observations for **hot, warm, and cold** water: the water surface and each top cup.
+- **Experiment 3:** Which top cup has more water on it? **Draw and describe** both setups (with and without ice).
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+- **Experiment 1:** A haze ("steam") rises just above the hot water. The top cup **fogs up** with tiny drops on the sides and top; it feels wet and warm. Drops grow and some run down. The air between looks clear. **Water vapor is an invisible gas.** You only see it after it **condenses** into drops.
+- **Experiment 2:** **Hot** water: most haze, top cup heavily fogged with many drops, fastest. **Warm:** some fog, fewer drops. **Cold:** little or nothing.
+- **Experiment 3:** The top cup **with ice** has more water, mostly right under the ice. Without ice: a light, even mist. With ice: a thick patch of drops under the ice spot.
+
+**Careful:** the drops did **not** leak through the plastic. The water evaporated from the bottom cup and condensed on the cooler top cup.
+:::
+
+```{ojs}
+//| echo: false
+wtCheck("wt-check-cups", "Check: The cup experiments", [
+  {q: "Experiment 2: Which cup had the most drops on its top cup, and why?",
+   options: ["Cold water, because cold makes water", "Hot water, because faster molecules escape as vapor, so more vapor reached the top", "All the same; the cups are the same size", "Warm water, because it's in the middle"],
+   correct: 1,
+   explanation: "Heating makes water molecules move faster. More of them escape the liquid as vapor (evaporation), so more vapor is available to condense."},
+  {q: "Experiment 3: The top cup with ice on it collected more water. This shows that…",
+   options: ["ice melts through plastic", "cold air holds more water vapor", "cooling water vapor makes it condense faster", "the hot water got hotter"],
+   correct: 2,
+   explanation: "The ice was outside the cup, so the extra water came from vapor inside condensing faster on the colder spot. Cold air holds LESS vapor, not more."},
+  {q: "Is the 'steam' you see above hot water actually water vapor?",
+   options: ["Yes, steam is vapor", "No. Vapor is invisible; what you see is tiny drops that already condensed", "No, it's smoke", "Yes, but only if it's boiling"],
+   correct: 1,
+   explanation: "Clouds and fog are tiny liquid drops (or ice crystals), not vapor. That's a common mix-up."}
+])
+```
+
+## Making Sense of the Precipitation Formation Investigation {#wt-making-sense}
+
+::: {.student-task}
+### ✏️ In your packet: See-Think-Wonder + questions 1–3
+
+**See-Think-Wonder rows:** the characteristics of the air masses in the fronts simulation (*Think: where do different air masses come from?*); how the air masses moved; what happened to the warm water; what you saw in the top cup; differences between cold, warm, and hot water. For the "Think" boxes, use what you know about **how heating affects matter at the molecular level**.
+
+1. What does this tell you about the relationship between **water in the air** and the **temperature of the water beneath**? Use evidence from the lab.
+2. Does **cooling** water vapor increase the rate at which it becomes a liquid? Use your observations.
+3. What does this tell you about air's ability to hold water at different temperatures? Does it hold water more effectively at **high or low** temperatures?
+:::
+
+Here's the science behind question 3. This curve is calculated from the standard formula for the most water vapor air can hold at each temperature.
+
+```{ojs}
+//| echo: false
+wtVapor = wtD3.range(-10, 40.5, 0.5).map(t => ({t, es: 6.112 * Math.exp(17.62 * t / (243.12 + t))}))
+```
+
+```{ojs}
+//| echo: false
+wtPlot.plot({
+  title: "Warmer air can hold much more water vapor",
+  subtitle: "Most water vapor air can hold (saturation vapor pressure, hPa). Calculated with the Magnus formula.",
+  width: Math.min(width, 640), height: 280, marginLeft: 50,
+  x: {label: "Air temperature (°C)", grid: true},
+  y: {label: "Max water vapor (hPa)", grid: true},
+  marks: [
+    wtPlot.areaY(wtVapor, {x: "t", y: "es", fill: "#38bdf8", fillOpacity: 0.25}),
+    wtPlot.line(wtVapor, {x: "t", y: "es", stroke: "#0284c7", strokeWidth: 2.5}),
+    wtPlot.dot([{t: 10, es: 12.3}, {t: 30, es: 42.4}], {x: "t", y: "es", r: 5, fill: "#b91c1c"}),
+    wtPlot.text([{t: 10, es: 12.3, l: "10 °C: ~12"}, {t: 30, es: 42.4, l: "30 °C: ~42"}], {x: "t", y: "es", text: "l", dy: -12, fontWeight: "bold"}),
+    wtPlot.ruleY([0])
+  ]
+})
+```
+
+<p class="wt-note">Going from 10 °C to 30 °C, air can hold about <b>3½ times</b> as much water vapor. The rule of thumb used by climate scientists (IPCC AR6) is about <b>7% more per 1 °C</b> of warming. That's why the hot cup made the most vapor, and why cooling (the ice) squeezed vapor out as liquid.</p>
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+| See | Think |
+|---|---|
+| One air mass is warm and moist; the other is cool and dry. | Warm, moist air probably forms over warm oceans; cool, dry air over cold land farther from the equator. |
+| Cool air stays low and pushes under; warm air rises along the boundary. | Cool air is denser, so it sinks and lifts the warm air. |
+| Haze rose off the warm water; some water left as vapor. | Heating makes molecules move faster; the fastest escape as a gas (**evaporation**). |
+| Fog and drops formed inside the top cup. | Vapor hit the cooler plastic; molecules slowed down and stuck together as liquid (**condensation**). |
+| Hot > warm > cold for fog and drops. | More heat energy → more molecules escape → more vapor available to condense. |
+
+**Wonder:** any real question, like *"How does this explain the snow from Jonas?"* or *"How do storms make rain and wind at the same time?"*
+
+1. **The warmer the water below, the more water vapor enters the air above it.** Evidence: the hot cup made the most fog and drops; the cold cup made the least.
+2. **Yes.** With the same hot water below, the top cup with ice collected more drops in the same 2–3 minutes than the cup without ice.
+3. **High temperatures.** Warm air carried vapor up from the hot water. Where the air was cooled (under the ice), the vapor came out as liquid.
+:::
+
+## Investigation Rubric {#wt-explore-rubric}
+
+::: {.student-task}
+### ✏️ In your packet: Precipitation Formation Investigation Rubric
+
+Score yourself (No / Almost / Yes) and your partners (Unsatisfactory / Pretty Good / Excellent for **contributions**, **working with others**, and **time management**). Then circle what else would have helped (more time, resources, information, help from partners or your teacher).
+:::
+
+```{ojs}
+//| echo: false
+viewof wtSelf = Inputs.checkbox([
+  "I know how this investigation connects to our unit (storm water damage)",
+  "I can explain the See-Think-Wonder and answer questions 1–3",
+  "I can say what happened to water molecules in the cups (evaporation, condensation)",
+  "I can describe what warm, moist air does at a front"
+], {label: "Quick self-check:"})
+```
+
+```{ojs}
+//| echo: false
+html`<div class="wt-card" style="font-size:.93em;">${wtSelf.length === 4 ? "🌟 You're ready for the Explain." : `${wtSelf.length} of 4. Go back to <a href="#wt-fronts">Model 1</a> or <a href="#wt-cups">Model 2</a> for anything you didn't check, or plan to come in for extra help.`}</div>`
+```
+
+# Explain: Explaining Precipitation Formation {#wt-explain}
+
+::: {.explain-box}
+## 🧩 From cups to continents
+
+Our goal is to explain **why so much precipitation fell during Helene and Jonas**, so we can judge solutions. First: where do air masses get their traits? Then: does the cup pattern work for a whole storm, and for the whole planet?
+:::
+
+## Part 1: Defining Air Masses {#wt-air-masses}
+
+**Air masses** are very large bodies of air that have about the same **temperature** and **moisture** throughout. They form where the atmosphere is fairly still, and they **take on the temperature and moisture of the region** where they form. Two words do most of the work:
+
+- **Continental** (c) = formed over **land** → **dry**. **Maritime** (m) = formed over **ocean** → **moist**.
+- **Tropical** (T) = formed at **low latitude** → **warm**. **Polar** (P) = formed at **high latitude** → **cold**.
+
+```{ojs}
+//| echo: false
+viewof wtSurface = Inputs.radio(["Land", "Ocean"], {label: "The air sits over…", value: "Land"})
+```
+
+```{ojs}
+//| echo: false
+viewof wtLat = Inputs.radio(["Low latitude (near the tropics)", "High latitude (far from the equator)"], {label: "…at a…", value: "High latitude (far from the equator)"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const land = wtSurface === "Land", low = wtLat.startsWith("Low");
+  const info = land && low ? {code: "cT", name: "Continental Tropical", traits: "dry and warm", where: "deserts of northern Mexico and the U.S. Southwest; also the Sahara, Arabian Peninsula, interior Australia", bg: "#fde68a"}
+    : land && !low ? {code: "cP", name: "Continental Polar", traits: "dry and cold", where: "central and northern Canada; also Siberia and northern Europe in winter", bg: "#bfdbfe"}
+    : !land && low ? {code: "mT", name: "Maritime Tropical", traits: "moist and warm", where: "Gulf of Mexico, Caribbean, subtropical Atlantic and Pacific; also the Indian Ocean and western Pacific", bg: "#fecaca"}
+    : {code: "mP", name: "Maritime Polar", traits: "moist and cold", where: "North Pacific and North Atlantic; also the Southern Ocean", bg: "#c7d2fe"};
+  return html`<div class="wt-card" style="background:${info.bg};color:#0f172a;">
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:1.5em;font-weight:800;">${info.code}: ${info.name}</div>
+    <div><b>Traits:</b> ${info.traits} · <b>Forms over:</b> ${info.where}</div>
+    <div style="font-size:.88em;margin-top:6px;">Why: ${land ? "little water to evaporate over land → dry" : "lots of evaporation from the ocean → moist"}; ${low ? "direct sunlight near the tropics → warm" : "spread-out sunlight far from the equator → cold"}.</div>
+  </div>`;
+}
+```
+
+Want to dig deeper? The **Air Mass Origins Lab** lets you tap each source region around North America and see its data before you decide.
+
+```{=html}
+<iframe id="wt-airmass-frame" class="wt-frame" src="air-mass-lab/index.html" height="650" loading="lazy" title="Air Mass Origins Lab: source regions of North American air masses"></iframe>
+<script>
+window.addEventListener('message', function (e) {
+  if (e.data && e.data.type === 'iframeResize') {
+    var f = document.getElementById('wt-airmass-frame');
+    if (f && e.source === f.contentWindow && e.data.height) { f.style.height = (e.data.height + 10) + 'px'; }
+  }
+});
+</script>
+```
+
+::: {.student-task}
+### ✏️ In your packet: Discovering Patterns in Air Mass Formation
+
+For each air mass (Continental Tropical, Maritime Polar, Continental Polar, Maritime Tropical), write the **matching letter** on the map, your **evidence** (what about that place would make this type of air?), and the **pattern** (where else would you expect this air mass?).
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+The letters depend on your packet's map, so check each letter against these clues: **land or ocean?** and **high or low latitude?**
+
+| Air mass | What the place should look like | Where else |
+|---|---|---|
+| **Continental Tropical** (dry, warm) | Land at low latitude: deserts of northern Mexico and the U.S. Southwest | Sahara, Arabian Peninsula, interior Australia |
+| **Maritime Polar** (moist, cold) | Ocean at high latitude: North Pacific or North Atlantic | Southern Ocean; seas off Japan and Norway |
+| **Continental Polar** (dry, cold) | Land at high latitude: central and northern Canada | Siberia, northern Europe in winter |
+| **Maritime Tropical** (moist, warm) | Ocean at low latitude: Gulf of Mexico, Caribbean, subtropical ocean | Indian Ocean, western Pacific, Bay of Bengal |
+:::
+
+```{ojs}
+//| echo: false
+wtCheck("wt-check-airmass", "Check: Air masses", [
+  {q: "An air mass forms over northern Canada in January. It is most likely…",
+   options: ["maritime tropical", "continental tropical", "continental polar (dry and cold)", "maritime polar"],
+   correct: 2,
+   explanation: "Land → dry. High latitude → cold. That's continental polar (cP)."},
+  {q: "Air sitting over the Gulf of Mexico in summer is most likely…",
+   options: ["moist and warm (maritime tropical)", "dry and cold (continental polar)", "dry and warm (continental tropical)", "moist and cold (maritime polar)"],
+   correct: 0,
+   explanation: "Ocean → moist. Low latitude → warm. The Gulf is a major source of the moisture in U.S. storms."}
+])
+```
+
+## Patterns on Local Scales: Storyboard of Storm Formation {#wt-storyboard}
+
+Your packet asks you to draw a **cause-and-effect storyboard** of how clouds form and why precipitation happens when a **cold, dry air mass** meets a **warm, moist air mass**. Use molecules! First, put the steps in order. Tap them in the order they happen.
+
+```{ojs}
+//| echo: false
+{
+  const steps = [
+    "A warm, moist air mass (lots of fast, spread-out vapor molecules) meets a cold, dry air mass at a front.",
+    "The cold air is denser, so it stays low and wedges under. The less dense warm air is forced up.",
+    "As the warm air rises, it cools. Its vapor molecules lose energy and slow down.",
+    "Slowed molecules stick together as tiny drops or ice crystals: a cloud forms (condensation).",
+    "Drops and crystals grow until they are too heavy to stay up, and fall: precipitation.",
+    "If the air is at or below 32 °F (0 °C) all the way down, it falls as snow."
+  ];
+  const order = wtOrder("wt-storyboard", steps.length);
+  const box = html`<div class="wt-card"></div>`;
+  const list = html`<div></div>`, picked = html`<ol style="padding-left:20px;margin:8px 0;"></ol>`;
+  const fb = html`<div style="font-size:.92em;min-height:1.3em;"></div>`;
+  let next = 0;
+  const reset = html`<button type="button" class="wt-btn wt-alt">↺ Start over</button>`;
+  const build = () => {
+    list.innerHTML = ""; picked.innerHTML = ""; next = 0; fb.textContent = "";
+    order.forEach(i => {
+      const b = html`<button type="button" class="wt-opt">${steps[i]}</button>`;
+      b.onclick = () => {
+        if (i === next) {
+          b.remove(); picked.append(html`<li style="margin:4px 0;color:#14532d;">${steps[i]}</li>`); next++;
+          fb.innerHTML = next === steps.length ? "🎉 That's the whole chain. Draw it in your storyboard boxes, and show the molecules!" : "✅ Yes. What happens next?";
+        } else {
+          b.style.borderColor = "#dc2626";
+          fb.textContent = "❌ Not yet. What has to happen before this step can happen?";
+          setTimeout(() => { b.style.borderColor = "#cbd5e1"; }, 900);
+        }
+      };
+      list.append(b);
+    });
+  };
+  reset.onclick = build;
+  build();
+  box.append(html`<div style="font-weight:700;">Your storyboard so far:</div>`, picked, fb, list, reset);
+  return box;
+}
+```
+
+How high does the rising air have to go before a cloud forms? Try this **model** of a bubble ("parcel") of warm, moist air being pushed up at a front.
+
+```{ojs}
+//| echo: false
+viewof wtParcel = Inputs.form({
+  T: Inputs.range([30, 80], {step: 1, value: 50, label: "Warm, moist air: temperature at the ground (°F)"}),
+  Td: Inputs.range([10, 80], {step: 1, value: 44, label: "Warm, moist air: dew point (°F)"}),
+  cold: Inputs.range([0, 50], {step: 1, value: 26, label: "Cold air near the ground (°F)"})
+})
+```
+
+```{ojs}
+//| echo: false
+{
+  const toC = f => (f - 32) * 5 / 9;
+  const T = toC(wtParcel.T), Td = toC(Math.min(wtParcel.Td, wtParcel.T));
+  const base = 0.125 * (T - Td);   // km: about 125 m per °C between temperature and dew point
+  const prof = wtD3.range(0, 8.01, 0.1).map(z => ({z, t: z <= base ? T - 9.8 * z : T - 9.8 * base - 6.0 * (z - base)}));
+  const tBase = T - 9.8 * base;
+  const freezeZ = tBase <= 0 ? base : base + tBase / 6.0;
+  const coldC = toC(wtParcel.cold);
+  const precipType = coldC <= 0 ? "❄️ Snow can reach the ground: the cold air near the surface is at or below 32 °F."
+    : (coldC < 2 ? "🌨️ Mixed rain and snow is likely: the air near the ground is just above freezing."
+    : "🌧️ Snow melts on the way down and falls as rain: the air near the ground is above freezing.");
+  const fmtF = c => Math.round(c * 9 / 5 + 32);
+  return html`<div class="wt-card">
+    ${wtPlot.plot({
+      width: Math.min(width, 560), height: 300, marginLeft: 48, style: {color: "#0f172a", background: "transparent"},
+      x: {label: "Temperature of the rising air (°F)", domain: [-40, 85]},
+      y: {label: "Height (km)", domain: [0, 8]},
+      marks: [
+        wtPlot.rect([{a: Math.min(base, 8), b: 8}], {x1: () => -40, x2: () => 85, y1: "a", y2: "b", fill: "#94a3b8", fillOpacity: 0.3}),
+        wtPlot.ruleX([32], {stroke: "#0284c7", strokeDasharray: "4,3"}),
+        wtPlot.line(prof, {x: d => d.t * 9 / 5 + 32, y: "z", stroke: "#dc2626", strokeWidth: 3}),
+        wtPlot.ruleY([Math.min(base, 8)], {stroke: "#475569"})
+      ]
+    })}
+    <ul style="margin:6px 0 0;padding-left:18px;font-size:.93em;">
+      <li>The air cools as it rises. At about <b>${base.toFixed(1)} km</b> it has cooled to its dew point (${fmtF(Td)} °F): vapor <b>condenses</b> and a cloud forms (gray band).</li>
+      <li>${freezeZ < 8 ? `Above about <b>${freezeZ.toFixed(1)} km</b> the cloud is below freezing (dashed line = 32 °F), so it makes <b>ice crystals</b>.` : "The cloud stays above freezing in this range."}</li>
+      <li>${precipType}</li>
+    </ul>
+  </div>`;
+}
+```
+
+<p class="wt-note"><b>Model rules:</b> rising air cools about 9.8 °C per km before a cloud forms and about 6 °C per km inside the cloud. The cloud base is about 125 m higher for every 1 °C between the temperature and the dew point. These are standard rule-of-thumb values; real storms are more complicated. Try it: make the air more humid (dew point closer to temperature) and the cloud forms lower.</p>
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your storyboard (try it first!)
+1. A warm, moist air mass (lots of fast, spread-out vapor molecules) meets a cold, dry air mass at a front.
+2. The cold air is **denser**, so it stays low and wedges under; the less dense warm air is **forced up**.
+3. As it rises it **cools**; vapor molecules lose energy and slow down.
+4. Slowed molecules stick together as tiny drops or ice crystals: a **cloud** (**condensation**).
+5. Drops and crystals grow until they're too heavy and fall as **precipitation**: snow if the air is at or below 32 °F.
+
+**Link it to the cups:** the bottom cup = the warm, moist air source; the ice on top = cold air high up.
+:::
+
+## Patterns on Global Scales: "Wet" and "Dry" Latitudes {#wt-global}
+
+Remember the **Global Circulation Model** from the Wind 5E? Air **rises** at some latitudes and **sinks** at others. Tap a latitude to see what happens there.
+
+```{ojs}
+//| echo: false
+viewof wtBand = Inputs.radio(["90° (poles)", "60°", "30°", "0° (equator)"], {label: "Latitude:", value: "0° (equator)"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const bands = [
+    {k: "90° (poles)", y: 40, lat: "90° N", motion: "sink", wet: false},
+    {k: "60°", y: 110, lat: "60° N", motion: "rise", wet: true},
+    {k: "30°", y: 180, lat: "30° N", motion: "sink", wet: false},
+    {k: "0° (equator)", y: 250, lat: "0°", motion: "rise", wet: true}
+  ];
+  const sel = bands.find(b => b.k === wtBand);
+  const why = {
+    "90° (poles)": "Air sinks (high pressure). Sinking air warms, so clouds don't form. The air is also so cold it holds very little vapor to begin with. Poles are cold deserts.",
+    "60°": "Warm air from the south meets cold polar air, and the warm air is forced up (the polar front). Mid-latitude storms like Jonas form along this belt. Rising air cools and its vapor condenses. Wet.",
+    "30°": "Air sinks (high pressure). Sinking air warms, so its vapor doesn't condense. Many of the world's big deserts, like the Sahara, are near 30°. Dry.",
+    "0° (equator)": "The strongest sunlight heats warm, moist ocean air, which rises (low pressure), cools, and condenses into tall clouds and heavy rain. Wet."
+  }[wtBand];
+  const arrow = (b) => {
+    const x = 250, up = b.motion === "rise";
+    const y1 = up ? b.y + 22 : b.y - 22, y2 = up ? b.y - 22 : b.y + 22;
+    return `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${up ? "#0284c7" : "#b45309"}" stroke-width="4" marker-end="url(#wt-ah-${up ? "up" : "dn"})"/>`;
+  };
+  const icon = (b) => b.wet
+    ? `<ellipse cx="330" cy="${b.y - 4}" rx="30" ry="13" fill="#94a3b8"/><line x1="318" y1="${b.y + 12}" x2="314" y2="${b.y + 24}" stroke="#1d4ed8" stroke-width="2.5"/><line x1="332" y1="${b.y + 12}" x2="328" y2="${b.y + 24}" stroke="#1d4ed8" stroke-width="2.5"/><line x1="346" y1="${b.y + 12}" x2="342" y2="${b.y + 24}" stroke="#1d4ed8" stroke-width="2.5"/><text x="380" y="${b.y + 5}" font-size="14" font-weight="bold" fill="#1d4ed8">WET</text>`
+    : `<circle cx="330" cy="${b.y}" r="13" fill="#facc15" stroke="#ca8a04"/><text x="380" y="${b.y + 5}" font-size="14" font-weight="bold" fill="#b45309">DRY</text>`;
+  const rows = bands.map(b => `<g opacity="${b.k === wtBand ? 1 : 0.4}">
+      <rect x="10" y="${b.y - 32}" width="460" height="64" rx="10" fill="${b.k === wtBand ? "#e0f2fe" : "#f1f5f9"}" stroke="${b.k === wtBand ? "#0284c7" : "#cbd5e1"}" stroke-width="${b.k === wtBand ? 2.5 : 1}"/>
+      <text x="26" y="${b.y + 5}" font-size="15" font-weight="bold" fill="#0f172a">${b.lat}</text>
+      <text x="100" y="${b.y + 5}" font-size="13" fill="#334155">air ${b.motion === "rise" ? "rises ↑" : "sinks ↓"}</text>
+      ${arrow(b)}${icon(b)}
+    </g>`).join("");
+  return html`<div class="wt-card">
+    <svg class="wt-svg" viewBox="0 0 480 290" width="100%" style="max-width:560px;" role="img" aria-label="Idealized model of Northern Hemisphere latitudes. Air rises and it is wet at 0 and 60 degrees; air sinks and it is dry at 30 and 90 degrees. Selected: ${sel.lat}.">
+      <defs>
+        <marker id="wt-ah-up" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0284c7"/></marker>
+        <marker id="wt-ah-dn" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+      </defs>
+      ${rows}
+    </svg>
+    <p style="margin:8px 0 0;"><b>${sel.lat}:</b> ${why}</p>
+    <p style="margin:6px 0 0;font-size:.88em;">NYC is near 41° N and Asheville near 36° N, between the dry 30° belt and the stormy 60° belt, so they get storms from both directions.</p>
+  </div>`;
+}
+```
+
+<p class="wt-note">This is an <b>idealized model</b> (the same one as the Global Circulation Model). Real belts shift with the seasons, and oceans, mountains and continents bend them.</p>
+
+Prefer the full model? Here is the **Global Atmospheric Circulation** interactive from the Wind 5E.
+
+```{=html}
+<iframe class="wt-frame" src="global-circulation/index.html?v=20260421b" height="590" loading="lazy" title="Global Atmospheric Circulation model: rising and sinking air by latitude"></iframe>
+```
+
+::: {.student-task}
+### ✏️ In your packet: Patterns on Global Scales
+
+2. Why do the **"Wet"** latitudes tend to get a great deal of precipitation? Annotate the diagram.
+3. Why do the **"Dry"** latitudes tend to get very little precipitation? Annotate the diagram.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+2. **Wet (~0° and ~60°):** air **converges and rises** (low pressure). At the equator, strong heating makes warm, moist ocean air rise. Near 60°, warm air from the south meets cold polar air and is forced up (the polar front, where storms like Jonas form). Rising air **cools**, and its vapor **condenses**: the same thing as in the cups and the fronts simulator.
+3. **Dry (~30° and the poles):** air **sinks** (high pressure). Sinking air **warms**, so its vapor doesn't condense and clouds don't form. Near the poles the air is so cold it holds very little vapor anyway. Deserts line up near 30°.
+
+**The pattern at every scale:** warm, moist air rises (or is lifted) → cools → condenses → precipitation. Cups, fronts, and the whole planet.
+:::
+
+```{ojs}
+//| echo: false
+wtCheck("wt-check-global", "Check: Wet and dry latitudes", [
+  {q: "Why is the Sahara (about 25–30° N) so dry?",
+   options: ["It is too far from the Sun", "Air sinks there, warms, and doesn't condense", "Warm air can't hold water", "There are no fronts on Earth at 30°"],
+   correct: 1,
+   explanation: "Sinking air warms up and can hold even more vapor, so clouds don't form. (The Sahara gets intense sunlight, and warm air holds MORE water, not less.)"},
+  {q: "Name the same rain-making pattern at three sizes.",
+   options: ["Cup with ice → front or mountain → rising air at the equator and 60°", "Cup → river → ocean", "Ice cube → glacier → pole", "Hot cup → desert → 30°"],
+   correct: 0,
+   explanation: "At every scale, warm, moist air rises, cools, and its vapor condenses. That's the Patterns idea in this 5E."}
+])
+```
+
+## Part 2: Explaining the Precipitation of Jonas and Helene {#wt-jonas-helene}
+
+### ❄️ Winter Storm Jonas {#wt-jonas}
+
+Watch **Winter Storm Jonas Ingredients**. As you watch, look for: *Which air mass is which? Where did each one come from?*
+
+```{=html}
+<div class="wt-video"><iframe src="https://www.youtube-nocookie.com/embed/Q2EyodmiCnU" title="Winter Storm Jonas Ingredients (video)" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+```
+
+::: {.student-task}
+### ✏️ In your packet: Jonas
+
+Use **words and a model or drawing** to explain where the **warm, moist** and **cold, dry** air masses that created Winter Storm Jonas came from, and why their interaction made **massive amounts of snow**.
+:::
+
+### 🌀 Hurricane Helene {#wt-helene}
+
+**Hurricanes are different.** They don't form from two air masses meeting. A hurricane is **one low-pressure spiral of warm, moist air rising over warm ocean water**. So hurricanes usually **weaken quickly over land** and don't usually dump huge amounts of rain far inland.
+
+But Helene arrived when the area around Asheville **already had conditions that made lots of rain**. Watch **Why Hurricane Helene's Flash Floods Were So Deadly in Asheville**.
+
+```{=html}
+<div class="wt-video"><iframe src="https://www.youtube-nocookie.com/embed/VgQy8psIquY" title="Why Hurricane Helene's Flash Floods Were So Deadly in Asheville (video)" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+```
+
+::: {.student-task}
+### ✏️ In your packet: Helene
+
+Use **words and a model or drawing** to explain how **air rising around the Blue Ridge Escarpment** and the **low-pressure system** already in the region combined with Hurricane Helene to make **massive amounts of rain**.
+:::
+
+### Two storms, one pattern
+
+Switch between the storms. Both diagrams are **simplified sketches, not to scale**.
+
+```{ojs}
+//| echo: false
+viewof wtStorm = Inputs.radio(["Winter Storm Jonas (Jan. 2016)", "Hurricane Helene (Sept. 2024)"], {value: "Winter Storm Jonas (Jan. 2016)"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const jonas = wtStorm.startsWith("Winter");
+  const flakes = wtD3.range(14).map(i => `<text x="${300 + (i % 7) * 22}" y="${150 + Math.floor(i / 7) * 34 + (i % 2) * 10}" font-size="15" fill="#1e3a8a">❄</text>`).join("");
+  const drops = wtD3.range(16).map(i => { const x = 250 + (i % 8) * 18, y = 140 + Math.floor(i / 8) * 34 + (i % 2) * 10; return `<line x1="${x}" y1="${y}" x2="${x - 4}" y2="${y + 14}" stroke="#1d4ed8" stroke-width="2.5"/>`; }).join("");
+  const svg = jonas ? `
+    <rect x="0" y="0" width="560" height="300" fill="#e0f2fe"/>
+    <polygon points="200,260 560,120 560,260" fill="#93c5fd" opacity=".85"/>
+    <text x="440" y="235" font-size="13" font-weight="bold" fill="#1e3a8a" text-anchor="middle">cold, dry, dense air (cP)</text>
+    <text x="440" y="252" font-size="12" fill="#1e3a8a" text-anchor="middle">from Canada · ≤ 32 °F near the ground</text>
+    <path d="M20,240 C120,235 220,200 320,150 C380,120 430,95 500,80" fill="none" stroke="#dc2626" stroke-width="5" marker-end="url(#wt-ah-red)"/>
+    <text x="20" y="225" font-size="13" font-weight="bold" fill="#991b1b">warm, moist air (mT)</text>
+    <text x="20" y="210" font-size="12" fill="#991b1b">from the Gulf of Mexico + warm Atlantic</text>
+    <ellipse cx="380" cy="70" rx="140" ry="34" fill="#cbd5e1" stroke="#64748b"/>
+    <text x="380" y="66" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">rising air cools → vapor condenses</text>
+    <text x="380" y="82" font-size="12" fill="#0f172a" text-anchor="middle">thick clouds</text>
+    ${flakes}
+    <line x1="0" y1="260" x2="560" y2="260" stroke="#475569" stroke-width="3"/>
+    <text x="280" y="285" font-size="12" fill="#0f172a" text-anchor="middle">Snow: 27.5 in Central Park, 30.5 in at JFK (NWS)</text>`
+  : `
+    <rect x="0" y="0" width="560" height="300" fill="#e0f2fe"/>
+    <polygon points="170,260 330,120 420,105 560,110 560,260" fill="#a16207" opacity=".75"/>
+    <text x="470" y="200" font-size="13" font-weight="bold" fill="#fff" text-anchor="middle">Blue Ridge</text>
+    <text x="470" y="216" font-size="13" font-weight="bold" fill="#fff" text-anchor="middle">Escarpment</text>
+    <path d="M10,250 C100,248 170,240 230,200 C270,170 300,140 330,110" fill="none" stroke="#dc2626" stroke-width="5" marker-end="url(#wt-ah-red)"/>
+    <text x="10" y="232" font-size="13" font-weight="bold" fill="#991b1b">Helene's warm, moist</text>
+    <text x="10" y="216" font-size="13" font-weight="bold" fill="#991b1b">tropical air</text>
+    <ellipse cx="300" cy="70" rx="150" ry="34" fill="#94a3b8" stroke="#475569"/>
+    <text x="300" y="64" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">forced up the slope → cools → condenses</text>
+    <text x="300" y="80" font-size="12" fill="#0f172a" text-anchor="middle">+ a low-pressure system already lifting air</text>
+    ${drops}
+    <text x="380" y="285" font-size="12" fill="#0f172a" text-anchor="middle">Ground already soaked by earlier rain · up to 30.78 in (NHC)</text>`;
+  return html`<div class="wt-card">
+    <svg class="wt-svg" viewBox="0 0 560 300" width="100%" style="max-width:640px;" role="img" aria-label="${jonas ? "Cross-section of Winter Storm Jonas: warm, moist air from the Gulf and Atlantic slides up over a wedge of cold, dry Canadian air, cools, condenses, and falls as snow because the air near the ground is below freezing." : "Cross-section of Hurricane Helene: warm, moist tropical air is forced up the Blue Ridge Escarpment, cools, condenses and falls as heavy rain on ground already soaked by an earlier low-pressure system."}">
+      <defs><marker id="wt-ah-red" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker></defs>
+      ${svg}
+    </svg>
+    <p style="margin:8px 0 0;font-size:.93em;"><b>What lifted the air?</b> ${jonas ? "A wedge of dense, cold air." : "The mountains (orographic lift) plus a low-pressure system. No cold air mass needed."} <b>Same step in both:</b> warm, moist air rises, cools, and its vapor condenses.</p>
+  </div>`;
+}
+```
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+**Jonas:** The **warm, moist** air (maritime tropical) came from the **Gulf of Mexico** and the warm **Atlantic** off the Southeast coast. The storm's low formed in the Gulf and moved up the coast, pulling that moisture north. The **cold, dry** air (continental polar) came from **Canada** and was sitting over the Mid-Atlantic and Northeast. The denser cold air stayed at the surface, so the warm, moist air was **forced up over it** for a long time, cooled, and condensed into heavy clouds. The air below was **at or below 32 °F**, so it fell as **snow**, and the big supply of ocean moisture made it a **lot** of snow (27.5 in at Central Park, 30.5 in at JFK).
+
+**Helene:** Before Helene arrived, a **low-pressure system** over the region was already lifting moist air and making heavy rain, so soils and rivers were **full**. Then Helene pushed a huge supply of warm, moist tropical air into western North Carolina. When it hit the steep **Blue Ridge Escarpment**, it was **forced up the slope** (**orographic lift**), cooled, and condensed, wringing out rain over the same mountains again and again. Low pressure + mountains lifting + very moist air = extreme rain (up to **30.78 in**). Soaked, steep ground → **flash floods and landslides**.
+
+**Key point:** Helene didn't need a cold air mass. The lifting came from low pressure and the mountains. The common thread is still **warm, moist air rising and cooling**.
+:::
+
+```{ojs}
+//| echo: false
+wtCheck("wt-check-storms", "Check: Jonas and Helene", [
+  {q: "Which combination best explains Jonas's huge snowfall?",
+   options: ["Cold Canadian air alone", "Warm Gulf air alone", "Warm, moist ocean air lifted over cold, dry air that kept temperatures below freezing", "A hurricane that turned into snow"],
+   correct: 2,
+   explanation: "Cold air alone is dry (no moisture source). Warm air alone has nothing to lift it or keep it frozen. Jonas was a winter (mid-latitude) storm, not a hurricane."},
+  {q: "How is hurricane precipitation different from a winter storm's?",
+   options: ["It comes from one spiral of rising warm, moist air, not from two air masses meeting", "Hurricanes only rain over the ocean", "Hurricanes need cold air to make rain", "There's no difference"],
+   correct: 0,
+   explanation: "Hurricanes form over warm water. Helene still flooded far inland because mountains and an earlier low-pressure system kept lifting its moist air."},
+  {q: "Why does heavy rain on ground that's already soaked cause more landslides?",
+   options: ["Wet ground can't soak up more water, so water runs off and loosens steep slopes", "Wet ground is lighter", "Rain makes mountains taller", "It doesn't matter"],
+   correct: 0,
+   explanation: "Full soil can't absorb more. Extra water runs off into rivers (flash floods) and makes steep slopes slide."}
+])
+```
+
+::: {.key-idea}
+### 💡 What the class should agree on (Class Consensus)
+- Precipitation can form when **warm, moist air meets cold, dry air**: the warm air is pushed up, cools, and condenses.
+- **Warm, moist** air masses usually form over **tropical oceans**. **Cold, dry** air masses often form over **continents far from the equator**.
+- **Global winds** move air masses around.
+- The same pattern works at **small** (cups), **local** (fronts, mountains), and **global** (wet and dry belts) scales.
+- In **hurricanes**, warm, moist, high-energy air can make extreme precipitation **without** meeting a cold, dry air mass.
+:::
+
+## Summary Task {#wt-summary}
+
+::: {.student-task}
+### ✏️ In your packet: Summary Task
+
+**Reflection (no right answer):** one thing that went well in the class discussion; one thing to improve; one person who helped you learn (and what you learned); one idea you contributed.
+
+**Content:**
+
+1. Using words and a model or drawing, explain **how** the overall patterns of heating on Earth's surface result in predictable patterns of seasonal weather and precipitation.
+2. Using words and a model or drawing, describe how precipitation formation at the **local** and **global** scales follows similar patterns.
+
+*Packet note: question 1 is missing a word in the packet ("explain the overall patterns … result in"). Read it as "explain **how** the overall patterns … result in."*
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your Summary Task (try it first!)
+1. The **equator is heated most** and the **poles least**. Uneven heating makes air **rise where it's warm** (equator: low pressure, wet) and **sink** where it's cooler (~30°: high pressure, dry), and it sets up **global winds** that carry air masses. Warm, moist air masses form over tropical oceans; cold, dry ones over high-latitude land. Where they meet (the mid-latitudes, especially in winter when the north is cold) we get **fronts, storms, and precipitation**; in winter it can be cold enough for **snow**. As the seasons change, the strongest heating and the storm belts **shift**, so the same places get rainy or snowy seasons each year.
+2. At every scale, **warm, moist air rises (or is lifted), cools, and its vapor condenses** into clouds and precipitation. **Small:** hot water → vapor → drops on the cold top cup. **Local:** at a front, cold, dry air lifts warm, moist air (Jonas); mountains lift moist air (Helene). **Global:** rising air at ~0° and ~60° makes wet belts; sinking air at ~30° and the poles makes dry belts.
+:::
+
+# Elaborate: Precipitation in a Changing Climate {#wt-elaborate}
+
+::: {.elaborate-box}
+## 🔥 What happens when the ocean gets warmer?
+
+At the start of this unit you saw that the number of **billion-dollar storms** has been going up since 1980. Now use what you know about precipitation to explain **why**, and to predict what comes next.
+:::
+
+### Ocean heat and snow {#wt-ocean-snow}
+
+::: {.student-task}
+### ✏️ In your packet: video notes
+
+Watch **Winter Storm Jonas Ingredients** again (it's in [Part 2](#wt-jonas)). This time take notes on just one question: **How does ocean heat play a role in snow formation and intensity?**
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+Warm ocean water off the East Coast **evaporated** into the air feeding the storm, giving it **more water vapor** (more fuel). The low-pressure system pulled that moist air in and **up over the cold air**, where it condensed. **More ocean heat → more moisture → heavier snow**, as long as the air is below freezing.
+:::
+
+### What does a hurricane need? {#wt-hurricane-needs}
+
+Hurricanes make precipitation differently from mid-latitude storms like Jonas, but **both** depend on how warm the air is and how much **moisture** is available. Hurricanes gain energy over the ocean, where **warm spots** make **low-pressure columns** of rising air. Because these columns sit over **warm water**, lots of water **evaporates**, filling the air with water vapor.
+
+::: {.callout-tip collapse="true"}
+## 🎬 Need a refresher on how hurricanes form? (optional video from your teacher materials)
+```{=html}
+<div class="wt-video"><iframe src="https://www.youtube-nocookie.com/embed/wPDoIrGUrEc" title="How do Hurricanes Form? (video)" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+```
+:::
+
+::: {.student-task}
+### ✏️ In your packet: question 1
+
+1. Based on that information, how do you think **hurricane precipitation** is affected by **ocean heat**?
+:::
+
+This **what-if model** uses the same formula as the cup lab. Slide the warming to see how much more water vapor the air over the ocean could hold.
+
+```{ojs}
+//| echo: false
+viewof wtSst = Inputs.range([20, 30], {step: 0.5, value: 27, label: "Air over the ocean today (°C)"})
+```
+
+```{ojs}
+//| echo: false
+viewof wtWarm = Inputs.range([0, 3], {step: 0.25, value: 1, label: "Extra warming (°C)"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const es = t => 6.112 * Math.exp(17.62 * t / (243.12 + t));
+  const a = es(wtSst), b = es(wtSst + wtWarm);
+  const pct = (b / a - 1) * 100;
+  return html`<div class="wt-card">
+    <div style="font-size:1.05em;">At <b>${wtSst} °C</b> → <b>${(wtSst + wtWarm).toFixed(2).replace(/\.?0+$/, "")} °C</b>, the air can hold about <b style="font-size:1.25em;color:#b91c1c;">${pct.toFixed(0)}% more</b> water vapor.</div>
+    <div style="background:#e2e8f0;border-radius:8px;height:22px;margin:10px 0;overflow:hidden;">
+      <div style="height:100%;width:${Math.min(100, 50 * b / a)}%;background:linear-gradient(90deg,#38bdf8,#1d4ed8);"></div>
+    </div>
+    <div style="font-size:.88em;">Bar: water vapor the warmer air can hold (half the bar = today). This is a <b>what-if model</b> of air at saturation, not a forecast. Real storms also depend on winds, how long the storm lasts, and how it's lifted. Climate scientists (IPCC AR6) use about <b>7% per °C</b> as the rule of thumb.</div>
+  </div>`;
+}
+```
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+**Warmer ocean water → more evaporation → the rising column of air holds more water vapor → more condensation → more rain.** Warmer water also gives the storm **more energy**, so it can lift that water and drop it faster. Hotter ocean, wetter hurricane (and often stronger winds, too).
+:::
+
+### Is ocean heat changing? {#wt-ohc}
+
+Your packet shows a graph of **ocean heat content**: the total heat energy stored in the ocean, compared with an average. Here is the real NOAA data for the top 700 meters of the world ocean.
+
+```{ojs}
+//| echo: false
+// NOAA NCEI World Ocean Database, global ocean heat content 0-700 m, yearly (h22-w0-700m.dat, column WO).
+// Units: 10^22 joules relative to the 1955-2006 average. Downloaded Nov. 2026.
+wtOhcRaw = [[1955,-3.20],[1956,-2.61],[1957,-4.61],[1958,-1.53],[1959,-2.19],[1960,-1.44],[1961,-2.12],[1962,-1.07],[1963,-2.27],[1964,-3.12],[1965,-3.06],[1966,-3.94],[1967,-4.36],[1968,-5.73],[1969,-4.48],[1970,-5.30],[1971,-3.77],[1972,-5.24],[1973,-3.52],[1974,-2.77],[1975,-1.55],[1976,-2.60],[1977,0.03],[1978,0.05],[1979,-0.96],[1980,1.09],[1981,0.12],[1982,-2.31],[1983,-2.76],[1984,-0.46],[1985,0.11],[1986,-1.04],[1987,-0.89],[1988,1.09],[1989,0.90],[1990,0.18],[1991,2.65],[1992,0.57],[1993,0.68],[1994,1.51],[1995,2.26],[1996,4.54],[1997,3.25],[1998,4.30],[1999,5.94],[2000,5.67],[2001,4.12],[2002,6.79],[2003,9.95],[2004,10.24],[2005,8.41],[2006,10.43],[2007,9.48],[2008,10.05],[2009,10.13],[2010,10.37],[2011,10.87],[2012,10.94],[2013,12.60],[2014,13.26],[2015,15.12],[2016,13.97],[2017,15.88],[2018,16.72],[2019,17.73],[2020,17.52],[2021,18.73],[2022,19.69],[2023,20.73],[2024,21.47],[2025,22.84]]
+```
+
+```{ojs}
+//| echo: false
+viewof wtOhcRange = Inputs.radio(["1993 to today (like your packet)", "1955 to today"], {value: "1993 to today (like your packet)"})
+```
+
+```{ojs}
+//| echo: false
+wtOhc = {
+  // Re-center on the 1993-2019 average so zero matches the packet graph's baseline.
+  const base = wtD3.mean(wtOhcRaw.filter(d => d[0] >= 1993 && d[0] <= 2019), d => d[1]);
+  return wtOhcRaw.map(([year, v]) => ({year, ohc: +(v - base).toFixed(2)}));
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const start = wtOhcRange.startsWith("1993") ? 1993 : 1955;
+  const data = wtOhc.filter(d => d.year >= start);
+  return wtPlot.plot({
+    title: "Ocean heat content, top 700 m of the world ocean",
+    subtitle: "Compared with the 1993–2019 average (zero line). Units: 10²² joules. Data: NOAA NCEI",
+    width: Math.min(width, 720), height: 300, marginLeft: 48,
+    x: {label: "Year", tickFormat: "d"},
+    y: {label: "Heat vs. 1993–2019 average (10²² J)", grid: true},
+    marks: [
+      wtPlot.ruleY([0], {stroke: "#64748b"}),
+      wtPlot.rectY(data, {x: "year", y: "ohc", fill: d => d.ohc >= 0 ? "#dc2626" : "#2563eb", interval: 1, inset: 0.5}),
+      wtPlot.tip(data, wtPlot.pointerX({x: "year", y: "ohc", title: d => `${d.year}: ${d.ohc > 0 ? "+" : ""}${d.ohc} × 10²² J`}))
+    ]
+  });
+}
+```
+
+<p class="wt-note">Data: NOAA National Centers for Environmental Information (NCEI), World Ocean Database, global ocean heat content 0–700 m, yearly values. NOAA reports them compared with the 1955–2006 average; this chapter re-centered them on the 1993–2019 average to match your packet. Your packet's graph may come from a different dataset or ocean depth, so its numbers can differ, but you can compare the trend. Blue = below average, red = above.</p>
+
+::: {.student-task}
+### ✏️ In your packet: question 2
+
+2. **Analyze the graph:** how is ocean heat content changing over time? Name the first and last years and about how far each is from the average.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+Ocean heat content is **increasing**. Early years are **below** the 1993–2019 average (blue), recent years are **well above** it (red), with small ups and downs along a clear **upward trend**. In this NOAA data, 1993 is about **8.4 × 10²² J below** the average and 2025 is about **13.8 × 10²² J above** it. (Read your own packet's graph for its exact values; its dataset may differ.)
+:::
+
+### Think-Talk-Open Exchange {#wt-think-talk}
+
+::: {.student-task}
+### ✏️ In your packet: Think-Talk-Open Exchange
+
+**Think:** How do you think that change in ocean heat will impact **precipitation of coastal storms**, both for **snow** and **rain**? Then talk in your triad, and write a **reflection**: what new ideas did you hear from your group?
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+Coastal storms get their moisture from **warm, moist ocean air masses**. A **warmer ocean evaporates more water**, so those air masses carry **more vapor**. When that air is lifted and condenses, **more falls**: heavier **rain** in hurricanes and other storms, and heavier **snow** in winter storms like Jonas **when the air is still below freezing**. Warmer oceans also give hurricanes **more energy**, making winds worse too.
+
+**Watch out:** "Global warming means no more big snowstorms" is a myth. A warmer ocean adds moisture; if the air is still cold enough, that extra moisture can fall as **more** snow.
+:::
+
+```{ojs}
+//| echo: false
+wtCheck("wt-check-elaborate", "Check: A changing climate", [
+  {q: "Why would a hurricane over warmer water likely produce more rain?",
+   options: ["Warm water makes the hurricane move faster", "More water evaporates, so the air holds more vapor to condense", "Warm water cools the air above it", "Hurricanes don't depend on ocean temperature"],
+   correct: 1,
+   explanation: "That's the hot cup at the scale of an ocean. More vapor in → more rain out."},
+  {q: "A student says, \"Global warming means no more big snowstorms.\" Best response?",
+   options: ["Right; warmer air can't make snow", "Not necessarily; warmer oceans add moisture, so storms that stay below freezing can drop more snow", "Snowstorms are unrelated to oceans", "Warming only affects summer"],
+   correct: 1,
+   explanation: "Snow only needs below-freezing air where it falls. Jonas's moisture came from the warm ocean."},
+  {q: "Fill the chain: warmer ocean → ___ → ___ → heavier precipitation.",
+   options: ["less evaporation → drier air", "more evaporation → more water vapor in storm air", "more ice → colder air", "more wind → fewer clouds"],
+   correct: 1,
+   explanation: "Warmer ocean → more evaporation → more water vapor → more condensation → heavier rain or snow."}
+])
+```
+
+# Evaluate: A Potential Solution to Reduce Precipitation {#wt-evaluate}
+
+::: {.evaluate-box}
+## 🛠️ Could we cool the planet to calm the storms?
+
+Now you know how air masses form, how meeting air masses make rain and snow, and that **warmer oceans mean more precipitation**. Before you judge a solution, you need one more engineering idea: **constraints and limitations**.
+:::
+
+## Criteria, constraints, and limitations {#wt-constraints}
+
+- **Criteria** = what a solution **must do** to succeed (you practiced these in the Wind 5E).
+- **Constraints** = **limits** the design has to work within: money, materials, time, technology, the laws of physics, rules and laws.
+- **Limitations** = what the solution **can't do**, even if it works.
+
+**Example from the Wind 5E: burying power lines.** The budget might only cover some neighborhoods (**constraint**). And buried lines can still fail if the area floods (**limitation**).
+
+Sort these. Each is about a solution to storm-water damage.
+
+```{ojs}
+//| echo: false
+wtSorter(["Criterion", "Constraint", "Limitation"], [
+  {text: "The solution must reduce flood damage in the neighborhood.", cat: "Criterion", why: "It's a goal the design has to meet to count as a success."},
+  {text: "The city only has enough money to do one neighborhood this year.", cat: "Constraint", why: "Money is a limit the design must work within."},
+  {text: "A sea wall protects the coast but can't stop rain from flooding streets inland.", cat: "Limitation", why: "Even if it works perfectly, there's something it can't do."},
+  {text: "The special equipment needed hasn't been invented yet.", cat: "Constraint", why: "Available technology and materials limit what can be built."},
+  {text: "The solution should cost less than the damage it prevents.", cat: "Criterion", why: "This is a requirement for success (and a way to measure it)."}
+], "Nice work. You'll use these ideas on your PTO.")
+```
+
+## Reading: Geoengineering {#wt-geo-text}
+
+::: {.student-task}
+### ✏️ In your packet: annotate the text in three colors
+
+As you read, mark: (1) **how this solution would address a mechanism of precipitation formation**, (2) **its costs and benefits**, and (3) **its limitations**.
+:::
+
+::: {.wt-reading}
+### Geoengineering: Cooling the Planet to Reduce Ocean Temperatures
+
+*From your packet. Numbers in brackets are the packet's sources, listed below.*
+
+**Geoengineering** is a set of solutions meant to change Earth's climate system **on purpose, at a large scale**, to slow global warming [2]. Most research focuses on **solar geoengineering**: reflecting some sunlight back into space before it can heat Earth's surface and oceans. The idea copies nature: when **Mount Pinatubo** erupted in 1991, it launched about 20 million tons of sulfur dioxide into the stratosphere. It formed tiny droplets that reflected sunlight and cooled the planet by about 0.5 °C [2]. Scientists are considering two main methods. **Stratospheric aerosol injection (SAI)** would use aircraft to spray sulfur dioxide high into the atmosphere, copying a volcano [2]. **Marine cloud brightening (MCB)** would spray microscopic sea-salt particles into low clouds over the ocean, making them whiter and more reflective so less heat reaches the water below [1, 5].
+
+The goal is to **lower global and sea surface temperatures while humans cut carbon emissions**. It could weaken dangerous climate events. For example, a 2026 study found that brightening clouds over one region of the Pacific could weaken a **"super El Niño"**, an extreme version of the ocean-warming pattern that brings deadly heat waves, floods, and droughts around the world [1, 5].
+
+NOAA **computer simulations** found that continuous aerosol injections could hold global average temperatures steady through 2100, even as carbon dioxide keeps rising [6]. In simulations of the strong 1997–98 and 2015–16 El Niños, marine cloud brightening weakened both [1]. Scientists also point to a real-world "natural experiment": smoke from Australia's 2019–20 bushfires brightened Pacific clouds, and a multiyear La Niña (a cooling pattern) followed [1, 5]. In 2025, the UK's Royal Society reviewed the evidence and concluded that coordinated, long-term global use of solar geoengineering would very likely lower global temperatures [4].
+
+However, solar geoengineering **only masks warming**. It does not remove carbon dioxide from the air, so problems like **ocean acidification would continue** [2]. The **scale** is enormous: in NOAA's simulations, about **50 million metric tons** of sulfur dioxide would need to be injected **every year** by 2100 [6], and the special **aircraft and spray nozzles needed do not yet exist** [2, 5]. **Timing** matters: in the El Niño simulations, starting cloud brightening too late in the season produced very little cooling [1]. A 2022 study concluded that artificially chilling very large patches of the ocean would weaken a hurricane by only **about 15%**, even under ideal conditions [3].
+
+Models show **serious risks**. SAI could thin the protective **ozone layer** over Antarctica, change rainfall patterns (parts of the tropics could get **5–7% less rain** each year), shift **droughts** into new regions, and alter winter weather across Europe [2, 6]. MCB over the Pacific might trigger a "mega La Niña" or make La Niña events stronger and longer, harming some regions even as it helps others [1, 5]. If used over only part of the planet, solar geoengineering could **strengthen Atlantic hurricanes**, dry out the Amazon rainforest, and cause drought in parts of Africa [4]. If a decades-long program suddenly stopped, temperatures would rebound fast, a danger called **"termination shock"** [2, 5]. Finally, **no international rules** govern geoengineering, so scientists warn that **who controls** the technology may matter as much as whether it works [2, 4].
+
+<p class="wt-src"><b>Sources (as listed in your packet):</b> [1] Gramling, C. (2026, July 8). Can geoengineering blunt El Niño's fury? <i>Science News</i>. [2] Cho, R. (2024, April 24). Solar geoengineering to cool the planet: Is it worth the risks? Columbia Climate School, <i>State of the Planet</i>. [3] Hlywiak, J., &amp; Nolan, D. S. (2022). Targeted artificial ocean cooling to weaken tropical cyclones would be futile. <i>Communications Earth &amp; Environment</i>, 3, 185. [4] <i>The Guardian</i> (2025, Nov. 5), reporting on Royal Society (2025), <i>Solar Radiation Modification: Policy Briefing</i>. [5] Knudson, J. (2026, July 10). Brightening clouds with microscopic sea salt particles could weaken super El Niños in the future. <i>Discover</i>. [6] Stein, T. (2021, May 7). Simulated geoengineering evaluation: Cooler planet, but with side effects. NOAA Research.</p>
+:::
+
+::: {.callout-warning collapse="true"}
+## 📌 Read these numbers carefully
+- **"About 15% weaker"** sounds like a win, but read the **title** of source [3]: ocean cooling to weaken hurricanes "**would be futile**." 15% is a small, **best-case** effect.
+- **Pinatubo's ~20 million tons** of sulfur dioxide is an approximate value; other science agencies give about 15–20 million tons.
+- Many results here come from **computer models** (simulations), not from real-world tests. That's part of what makes this solution uncertain.
+:::
+
+Practice your annotation. Which color does each sentence get?
+
+```{ojs}
+//| echo: false
+wtSorter(["Mechanism", "Cost or benefit", "Limitation"], [
+  {text: "Reflecting sunlight means less heat reaches the ocean, so the sea surface is cooler.", cat: "Mechanism", why: "Cooler ocean → less evaporation → less moisture for storms. That's the science it acts on."},
+  {text: "SAI could thin the ozone layer over Antarctica.", cat: "Cost or benefit", why: "An unintended consequence (a cost)."},
+  {text: "It does not remove carbon dioxide, so ocean acidification would continue.", cat: "Limitation", why: "Even if it works, there's a problem it can't fix."},
+  {text: "Cloud brightening could weaken a super El Niño.", cat: "Cost or benefit", why: "A possible benefit."},
+  {text: "Ocean cooling would weaken a hurricane by only about 15% under ideal conditions.", cat: "Limitation", why: "It can't do much to a hurricane, even at best."},
+  {text: "Parts of the tropics could get 5–7% less rain each year.", cat: "Cost or benefit", why: "A cost: changed rainfall could cause drought."}
+], "You've got the three colors.")
+```
+
+```{ojs}
+//| echo: false
+wtCheck("wt-check-geo", "Check: Geoengineering", [
+  {q: "Which is a constraint on solar geoengineering, from the text?",
+   options: ["It would lower sea surface temperatures", "The special aircraft and spray nozzles needed don't exist yet", "Pinatubo cooled the planet", "It could weaken a super El Niño"],
+   correct: 1,
+   explanation: "Technology that doesn't exist yet limits what can be built. The other choices are the goal, evidence, or a possible benefit."},
+  {q: "Why doesn't solar geoengineering fix ocean acidification?",
+   options: ["It adds CO₂", "It only masks warming; it doesn't remove CO₂ from the air", "It only works at night", "Acidification is caused by rain"],
+   correct: 1,
+   explanation: "Acidification comes from CO₂ dissolving in seawater. Reflecting sunlight doesn't change the CO₂."},
+  {q: "What does 'termination shock' mean?",
+   options: ["The shock wave from launching rockets", "If a long program suddenly stopped, temperatures would rebound fast", "Ending a hurricane with cold water", "A volcano erupting"],
+   correct: 1,
+   explanation: "The warming was only hidden. Stop the shade, and it comes back quickly."}
+])
+```
+
+## 🔗 Connect to the Performance Task: Revisiting the Performance Task: Water {#wt-pt}
+
+::: {.evaluate-box}
+## Engineering component: identifying constraints and limitations
+
+In your **PTO**, this page asks you to evaluate the geoengineering solution. **Constraints** are limits on a design, like the materials available, their cost, or the time to develop the solution. Your answers here are evidence for your **Final Performance Task**, where you'll design your own solution to one piece of storm damage.
+:::
+
+::: {.student-task}
+### ✏️ In your PTO: Revisiting the Performance Task: Water
+
+Draft here, then copy into your PTO. Your work is saved in this browser only.
+:::
+
+```{ojs}
+//| echo: false
+wtPtForm = {
+  const key = "wtPT-water";
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || "{}"); } catch (e) { saved = {}; }
+  const fields = [
+    ["q1", "1. Explain how the strong precipitation found in Winter Storm Jonas formed."],
+    ["q2", "2. Why is this a problem that we need to address?"],
+    ["q3", "3. Describe the solution presented in the text."],
+    ["q4", "4. How is your solution addressing the science of this problem?"],
+    ["q5", "5. What criteria for success would demonstrate that this solution was working?"],
+    ["q6", "6. Based on what you know about constraints and limitations in the engineering process, describe what specific constraints and limitations are associated with this solution."],
+    ["q7b", "7. Benefits of this solution"],
+    ["q7c", "7. Costs of this solution"]
+  ];
+  const wrap = html`<div class="wt-card wt-pt">${fields.map(([k, lab]) => html`<label class="wt-lbl" for="wt-pt-${k}">${lab}</label><textarea id="wt-pt-${k}" data-k="${k}"></textarea>`)}
+    <button class="wt-btn" type="button" data-act="copy">📋 Copy my answers</button><button class="wt-btn" type="button" data-act="clear" style="background:#64748b;">Clear</button>
+    <span class="wt-status" style="font-size:.85em;" aria-live="polite"></span></div>`;
+  const tas = wrap.querySelectorAll("textarea"), status = wrap.querySelector(".wt-status");
+  tas.forEach(t => {
+    t.value = saved[t.dataset.k] || "";
+    t.oninput = () => {
+      const o = {}; tas.forEach(x => o[x.dataset.k] = x.value);
+      try { localStorage.setItem(key, JSON.stringify(o)); status.textContent = "Saved in this browser."; } catch (e) { status.textContent = "Couldn't save here; copy your work."; }
+    };
+  });
+  wrap.querySelector("[data-act=copy]").onclick = async () => {
+    const text = "Revisiting the Performance Task: Water\n\n" + fields.map(([k, lab]) => `${lab}\n${wrap.querySelector(`[data-k=${k}]`).value}`).join("\n\n");
+    try { await navigator.clipboard.writeText(text); status.textContent = "Copied!"; } catch (e) { status.textContent = "Copy failed; select the text and copy it."; }
+  };
+  wrap.querySelector("[data-act=clear]").onclick = () => {
+    tas.forEach(t => t.value = "");
+    try { localStorage.removeItem(key); } catch (e) {}
+    status.textContent = "Cleared.";
+  };
+  return wrap;
+}
+```
+
+::: {.callout-note collapse="true"}
+## 🔑 Sample proficient answers (try yours first!)
+1. Warm, moist (**maritime tropical**) air from the Gulf of Mexico and the warm Atlantic was drawn north by the storm's low and **forced up over cold, dense, dry (continental polar)** air from Canada. Rising air **cooled**, vapor **condensed** into thick clouds, and because the air was **below 32 °F** it fell as heavy snow. Warm ocean water supplied extra moisture.
+2. Extreme precipitation causes **floods, landslides, power outages, roof collapse, and shutdowns**; it costs billions and endangers lives. Billion-dollar storm disasters have increased since 1980, and **warming oceans** mean storms will carry more water.
+3. **Solar geoengineering:** reflect some sunlight back to space before it heats the surface and oceans, by spraying sulfur dioxide into the stratosphere (SAI) or sea salt into low ocean clouds to brighten them (MCB).
+4. It targets the **moisture source**: cooler oceans → **less evaporation** → warm, moist air masses carry less vapor → less condensation and precipitation when they're lifted. (Hurricanes would also get less energy.)
+5. Measurable criteria: sea surface temperatures in storm-source regions drop below their recent average; ocean heat content stops rising; heavy-precipitation events and billion-dollar storm costs go down over time; **no** major new droughts, ozone loss, or rainfall shifts elsewhere.
+6. **Constraints:** the aircraft and nozzles don't exist; huge yearly amounts of sulfur dioxide (~50 million metric tons/yr by 2100 in NOAA's model); it must run for decades without stopping (termination shock); timing must be right; it needs global cooperation and there are no rules; cost and funding. **Limitations:** doesn't remove CO₂ or fix acidification; only a small effect on hurricanes (~15% at best); can't control where side effects land.
+7. **Benefits:** lower global and sea surface temperatures; possibly weaker extreme El Niños; buys time while emissions are cut; could reduce storm moisture. **Costs:** ozone thinning; less tropical rain and shifted droughts; possibly stronger Atlantic hurricanes or Amazon drying if only partly used; termination shock; acidification continues; who controls it.
+
+**Most common gap:** naming the damage without the **mechanism**, or listing costs without any **constraints**.
+:::
+
+## ✅ Evaluating Solutions for Water Damage (rubric) {#wt-rubric}
+
+To reach **Proficient**, your work must include **all** of these. (*Developing* = some of them.)
+
+```{ojs}
+//| echo: false
+viewof wtRubric = Inputs.checkbox([
+  "Problem: the role of air masses in causing precipitation",
+  "Problem: the relationship between air temperature and precipitation",
+  "Problem: how these patterns make precipitation predictable at global and local scales",
+  "Problem: the damage caused by storm rains (and snow)",
+  "Design cycle: I identify the problem and describe its mechanism",
+  "Design cycle: I describe a solution aimed at that mechanism",
+  "Design cycle: I analyze the solution's limitations and constraints"
+], {label: "My PTO answers include:"})
+```
+
+```{ojs}
+//| echo: false
+html`<div style="padding:12px 16px;border-radius:10px;margin:6px 0 14px;background:${wtRubric.length === 7 ? '#dcfce7' : '#fef3c7'};color:${wtRubric.length === 7 ? '#14532d' : '#78350f'};">
+  <b>${wtRubric.length} / 7</b> ${wtRubric.length === 7 ? "🌟 Proficient: all components included. Now add a Glow and a Grow for yourself on the rubric." : "Developing so far. Check the sample answers above for anything you're missing."}
+</div>`
+```
+
+### Your verdict
+
+In class, each table decides: **should we use large-scale geoengineering?** Yes, No, or Maybe, with reasons. What's yours?
+
+```{ojs}
+//| echo: false
+viewof wtVote = Inputs.radio(["Yes", "No", "Maybe"], {label: "Geoengineering makes sense to use:"})
+```
+
+```{ojs}
+//| echo: false
+html`<div class="wt-card" style="font-size:.93em;">${!wtVote ? "Pick one. There's no single right answer; what matters is your evidence." :
+  wtVote === "Yes" ? "To defend <b>Yes</b>, answer the hardest constraints: who controls it, what happens if it stops (termination shock), and who gets the side effects." :
+  wtVote === "No" ? "To defend <b>No</b>, admit what it could do (lower ocean temperatures, maybe weaker El Niños) and explain why the costs and limits outweigh that." :
+  "To defend <b>Maybe</b>, name the conditions: what evidence or rules would have to exist first?"}</div>`
+```
+
+::: {.key-idea}
+### 💡 Looking ahead
+We still haven't solved one big kind of storm damage: **flooding** from the sea. In the [Flooding 5E](unit5-flooding.qmd) you'll find out why some storms push so much water onto the coast, and you'll **design your own solution**.
+:::
+
+# Chapter Summary {#wt-chapter-summary}
+
+::: {.wt-table-wrap}
+| Key concept | What to remember |
+|---|---|
+| **Water vapor** | An invisible gas. Clouds and "steam" are tiny liquid drops or ice that already condensed. |
+| **Evaporation** | Warmer water → faster molecules → more escape as vapor. Hot cup > warm > cold. |
+| **Condensation** | Cooling vapor makes it turn back to liquid faster (the ice-topped cup). |
+| **Air and temperature** | Warmer air can hold much more water vapor: about 7% more per 1 °C. |
+| **Fronts** | Cold, dry, denser air stays low; warm, moist air rises at the boundary, cools, and condenses into clouds and precipitation. |
+| **Air masses** | cT (dry, warm), cP (dry, cold), mT (moist, warm), mP (moist, cold). Continental = land = dry; maritime = ocean = moist; tropical = warm; polar = cold. |
+| **Patterns at every scale** | Cups → fronts and mountains → wet belts (~0°, ~60°) and dry belts (~30°, poles). Rising air = wet; sinking air = dry. |
+| **Jonas (2016)** | Gulf/Atlantic mT air lifted over Canadian cP air; below freezing → 27.5 in of snow in Central Park. |
+| **Helene (2024)** | Tropical air forced up the Blue Ridge Escarpment + an earlier low-pressure system on soaked ground → up to 30.78 in of rain, floods and landslides. |
+| **Changing climate** | Ocean heat content is rising → more evaporation → more moisture → heavier rain, and heavier snow when it's below freezing. |
+| **Criteria / constraints / limitations** | What a design must do / limits it must work within / what it can't do. |
+| **Geoengineering** | Targets ocean heat by reflecting sunlight. Big constraints (scale, missing hardware, no rules) and limitations (doesn't remove CO₂; ~15% hurricane effect at best), plus risky side effects. |
+:::
+
+::: {.callout-note collapse="true"}
+## 📚 Data and sources in this chapter
+- **Winter Storm Jonas:** NOAA National Weather Service New York (OKX) storm summary (Central Park 27.5 in, JFK 30.5 in); NOAA Central Park daily record for Jan. 23, 2016 (27.3 in snow, 2.31 in liquid); NOAA 1991–2020 Central Park normals (29.8 in average winter snowfall).
+- **Hurricane Helene:** NOAA National Hurricane Center Tropical Cyclone Report (Category 4 landfall in Florida's Big Bend, Sept. 26, 2024; peak rainfall 30.78 in at Busick, N.C.); NOAA NCEI U.S. Billion-Dollar Weather and Climate Disasters ($78.7 billion in 2024 dollars; 219 deaths).
+- **Ocean heat content:** NOAA NCEI World Ocean Database, global ocean heat content 0–700 m, yearly (re-centered on 1993–2019 in this chapter).
+- **Water vapor and temperature:** saturation vapor pressure from the standard Magnus formula; ~7% per °C from IPCC AR6 Working Group I.
+- **Geoengineering reading:** your packet's text and its six sources (listed under the reading).
+- **Models in this chapter** (labeled where they appear): the virtual cup lab, the rising-air parcel model, the wet/dry latitude diagram, the storm cross-sections, and the ocean-warming what-if.
+- **Simulators:** WeatherSTEM Weather Fronts Simulator (packet), this book's Weather Fronts Simulation, Air Mass Origins Lab, and Global Atmospheric Circulation model.
+:::
+
+---
+
+# Myth or Fact? {#wt-myths}
+
+```{=html}
+<div id="wt-mf-box" style="background:linear-gradient(135deg,#0b1d3a 0%,#123a5c 50%,#0f4c5c 100%); color:white; padding:26px; border-radius:16px; margin:30px 0; font-family:'Inter',sans-serif; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.6em; margin:0 0 8px 0; color:#7dd3fc !important;">🌧️ Precipitation: Myths vs. Facts</h2>
+  <p style="color:#cbd5e1; margin:0 0 18px 0; font-size:0.95em;">Decide whether each statement is a MYTH or a FACT!</p>
+  <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.06); padding:12px 16px; border-radius:12px; margin-bottom:18px; gap:8px; flex-wrap:wrap;">
+    <div id="wt-mf-progress" style="color:#cbd5e1; font-size:0.9em;">Card 1 of 8</div>
+    <div style="color:#cbd5e1; font-size:0.9em;">Score: <span id="wt-mf-score" style="color:#7dd3fc; font-weight:700;">0</span> / <span id="wt-mf-total">0</span></div>
+  </div>
+  <div id="wt-mf-card" style="background:rgba(255,255,255,0.08); border-radius:14px; padding:24px; min-height:100px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:1.08em; font-weight:600; line-height:1.6; border:1.5px solid rgba(255,255,255,0.12);"></div>
+  <div style="display:flex; gap:12px; margin-top:16px;">
+    <button type="button" id="wt-mf-myth" onclick="wtmfAnswer('Myth')" style="flex:1; min-height:44px; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#e17055,#d63031); color:white; font-size:1em; font-weight:700; cursor:pointer;">❌ MYTH</button>
+    <button type="button" id="wt-mf-fact" onclick="wtmfAnswer('Fact')" style="flex:1; min-height:44px; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#00b894,#00a383); color:white; font-size:1em; font-weight:700; cursor:pointer;">✅ FACT</button>
+  </div>
+  <div id="wt-mf-feedback" style="margin-top:16px; padding:16px; border-radius:10px; display:none; font-size:0.95em; line-height:1.6;"></div>
+  <button type="button" id="wt-mf-next" onclick="wtmfNext()" style="display:none; margin-top:12px; width:100%; min-height:44px; padding:12px; border:2px solid rgba(255,255,255,0.25); border-radius:10px; background:transparent; color:white; font-size:0.95em; font-weight:600; cursor:pointer;">Next Card →</button>
+  <div id="wt-mf-done" style="display:none; text-align:center; padding:20px;">
+    <div style="font-size:2.5em; margin-bottom:10px;">🎉</div>
+    <div style="font-size:1.3em; font-weight:700;">All cards complete!</div>
+    <div style="color:#cbd5e1; margin:8px 0;">Final score: <span id="wt-mf-final" style="color:#7dd3fc; font-weight:700;"></span> / <span id="wt-mf-count"></span></div>
+    <button type="button" onclick="wtmfRestart()" style="margin-top:12px; min-height:44px; padding:10px 24px; border:2px solid #7dd3fc; border-radius:20px; background:transparent; color:#7dd3fc; font-size:0.9em; cursor:pointer; font-weight:600;">Play Again</button>
+  </div>
+</div>
+<script>
+(function() {
+  var cards = [
+    {text: "Clouds are made of water vapor.", type: "Myth",
+     explanation: "Water vapor is an invisible gas. Clouds (and the fog in the cups) are tiny liquid drops or ice crystals that already condensed from the vapor."},
+    {text: "In a snowstorm, the cold air mass supplies most of the moisture.", type: "Myth",
+     explanation: "Cold air holds very little vapor. The moisture comes from the warm, moist air mass; the cold air lifts it and keeps it frozen."},
+    {text: "Warm air rises because it is less dense than the cooler air around it.", type: "Fact",
+     explanation: "It's not just that 'heat rises.' Denser cold air sinks under the warm air and pushes it up."},
+    {text: "The drops inside the top cup leaked through the plastic.", type: "Myth",
+     explanation: "The water evaporated from the bottom cup, rose as vapor, and condensed on the cooler top cup."},
+    {text: "A warmer world can still have giant snowstorms.", type: "Fact",
+     explanation: "Warmer oceans put more water vapor into storms. If the air is still at or below freezing, that extra water can fall as heavier snow."},
+    {text: "Hurricanes lose all their rain as soon as they reach land.", type: "Myth",
+     explanation: "They weaken, but they still carry huge amounts of moisture. Mountains can squeeze it out far inland, as with Helene in North Carolina."},
+    {text: "Rain from storms causes damage only by flooding.", type: "Myth",
+     explanation: "Storm water also causes landslides, power outages and road washouts. Heavy snow can collapse roofs and shut down travel."},
+    {text: "Criteria and constraints mean the same thing in engineering.", type: "Myth",
+     explanation: "Criteria = what a solution must do. Constraints = the limits it must work within (money, time, materials, technology, physics, rules)."}
+  ];
+  var idx = 0, score = 0, answered = 0, cardAnswered = false;
+  function el(id) { return document.getElementById(id); }
+  function updateCard() {
+    if (idx >= cards.length) {
+      ['wt-mf-card','wt-mf-myth','wt-mf-fact','wt-mf-feedback','wt-mf-next'].forEach(function(i){ el(i).style.display = 'none'; });
+      el('wt-mf-done').style.display = 'block';
+      el('wt-mf-final').textContent = score;
+      el('wt-mf-count').textContent = cards.length;
+      return;
+    }
+    el('wt-mf-card').textContent = cards[idx].text;
+    el('wt-mf-progress').textContent = 'Card ' + (idx + 1) + ' of ' + cards.length;
+    el('wt-mf-feedback').style.display = 'none';
+    el('wt-mf-next').style.display = 'none';
+    el('wt-mf-myth').disabled = false; el('wt-mf-fact').disabled = false;
+    el('wt-mf-myth').style.opacity = '1'; el('wt-mf-fact').style.opacity = '1';
+    cardAnswered = false;
+  }
+  window.wtmfAnswer = function(choice) {
+    if (cardAnswered) return;
+    cardAnswered = true; answered++;
+    var card = cards[idx], correct = (choice === card.type);
+    if (correct) score++;
+    el('wt-mf-score').textContent = score; el('wt-mf-total').textContent = answered;
+    var fb = el('wt-mf-feedback');
+    fb.style.display = 'block';
+    fb.style.background = correct ? 'rgba(0,184,148,0.2)' : 'rgba(214,48,49,0.2)';
+    fb.style.border = '1px solid ' + (correct ? '#00b894' : '#e17055');
+    fb.innerHTML = '<strong>' + (correct ? '✅ Correct! ' : '❌ That\'s a ' + card.type + '! ') + '</strong>' + card.explanation;
+    el('wt-mf-myth').disabled = true; el('wt-mf-fact').disabled = true;
+    el('wt-mf-myth').style.opacity = (choice === 'Myth') ? '1' : '0.5';
+    el('wt-mf-fact').style.opacity = (choice === 'Fact') ? '1' : '0.5';
+    el('wt-mf-next').style.display = 'block';
+  };
+  window.wtmfNext = function() { idx++; updateCard(); };
+  window.wtmfRestart = function() {
+    idx = 0; score = 0; answered = 0;
+    el('wt-mf-card').style.display = 'flex';
+    el('wt-mf-myth').style.display = 'block'; el('wt-mf-fact').style.display = 'block';
+    el('wt-mf-done').style.display = 'none';
+    el('wt-mf-score').textContent = '0'; el('wt-mf-total').textContent = '0';
+    updateCard();
+  };
+  updateCard();
+})();
+</script>
+```
+
+---
+
+# End-of-Chapter Quiz {#wt-quiz}
+
+```{ojs}
+//| echo: false
+wtEndQuiz = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const header = html`<div style="background:linear-gradient(135deg,#0b5c8a 0%,#0a3d62 100%);color:#fff;border-radius:14px 14px 0 0;padding:18px 22px;">
+    <div style="font-size:1.1em;font-weight:700;">📝 ${title}</div>
+    <div style="font-size:0.85em;opacity:0.9;margin-top:4px;">Select an answer for each question. <span class="wt-score"></span></div>
+  </div>`;
+  const body = html`<div style="border:1.5px solid #bae6fd;border-top:none;border-radius:0 0 14px 14px;background:#f0f9ff;padding:14px;"></div>`;
+  let nRight = 0, nDone = 0;
+  const scoreEl = header.querySelector(".wt-score");
+  wtBuildCards(body, questions, ok => { nDone++; if (ok) nRight++; scoreEl.textContent = `Score: ${nRight} / ${nDone}`; });
+  outer.appendChild(header);
+  outer.appendChild(body);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+wtEndQuiz("wt-summative-quiz", "Summative Quiz: Water", [
+  {q: "In the cup lab, the hot-water cup had the most drops on its top cup. What explains this?",
+   options: ["Hot water molecules move faster, so more escape as vapor and then condense on the cooler top cup", "Hot water is heavier, so it splashes", "The top cup was warmer, so it made water", "Cold air holds more water"],
+   correct: 0,
+   explanation: "Warmer water → more evaporation → more vapor available to condense. Same reason warmer oceans feed wetter storms."},
+  {q: "You see a white cloud. What is it mostly made of?",
+   options: ["Water vapor gas", "Tiny liquid water drops or ice crystals", "Smoke and dust only", "Air with no water"],
+   correct: 1,
+   explanation: "Vapor is invisible. A cloud forms when rising air cools and its vapor condenses into drops or ice."},
+  {q: "At a cold front, why is the warm, moist air pushed up?",
+   options: ["Heat always rises on its own", "The denser cold air wedges under the less dense warm air and lifts it", "The warm air is heavier", "Wind blows it upward randomly"],
+   correct: 1,
+   explanation: "Density difference is the key. Once the warm air rises, it cools and its vapor condenses."},
+  {q: "Which air mass would form over the Gulf of Mexico?",
+   options: ["Continental polar (cP)", "Continental tropical (cT)", "Maritime tropical (mT)", "Maritime polar (mP)"],
+   correct: 2,
+   explanation: "Ocean → moist (maritime). Low latitude → warm (tropical)."},
+  {q: "Why are many of the world's deserts near 30° latitude?",
+   options: ["They get the least sunlight", "Air sinks there, warms, and its vapor doesn't condense into clouds", "Fronts are always over them", "The ocean is too far away everywhere at 30°"],
+   correct: 1,
+   explanation: "Sinking air = dry. Rising air (near 0° and 60°) = wet."},
+  {q: "Which best explains Winter Storm Jonas's 27.5 inches of snow in Central Park?",
+   options: ["Cold Canadian air alone made the snow", "Warm, moist Gulf and Atlantic air was lifted over cold, dry Canadian air that kept the air below freezing", "A hurricane turned into snow", "Snow came down from the stratosphere"],
+   correct: 1,
+   explanation: "Moisture from the warm ocean air, lifting from the cold wedge, and below-freezing air near the ground."},
+  {q: "Hurricanes usually weaken over land. Why did Helene still drop up to 30.78 inches of rain in North Carolina's mountains?",
+   options: ["The mountains forced its moist air up, and an earlier low-pressure system had already soaked the ground and kept lifting air", "It turned into a blizzard", "The Atlantic flowed inland", "Mountains create water vapor"],
+   correct: 0,
+   explanation: "Orographic lift + low pressure + a very moist air mass = extreme rain. Soaked, steep ground → floods and landslides."},
+  {q: "NOAA data show ocean heat content well above the 1993–2019 average in recent years. What does this suggest for coastal storms?",
+   options: ["Less precipitation, because hot water doesn't evaporate", "More evaporation and more water vapor, so heavier rain, and heavier snow when it's below freezing", "No change", "Only stronger winds, with no change in rain"],
+   correct: 1,
+   explanation: "Warmer ocean → more evaporation → more water vapor → more precipitation. Warmer water can also strengthen hurricane winds."},
+  {q: "A town's flood plan can't stop water from reaching basements during the heaviest storms. This is a…",
+   options: ["criterion", "constraint", "limitation", "benefit"],
+   correct: 2,
+   explanation: "A limitation is something the solution can't do. A constraint is a limit it must work within (like budget); a criterion is what it must do."},
+  {q: "Which is the strongest reason to be cautious about solar geoengineering, based on the reading?",
+   options: ["It definitely has no side effects", "It only masks warming, needs hardware that doesn't exist yet, could shift rainfall and droughts, and has no international rules", "It removes all CO₂ from the air", "It would make every hurricane disappear"],
+   correct: 1,
+   explanation: "Good evaluations weigh constraints, limitations and unintended consequences, not just the goal."}
+])
+```
