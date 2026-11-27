@@ -1,0 +1,1656 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="teacher-gate.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}.strata-10{grid-template-columns:repeat(10,1fr)}
+</style>
+<title>Burning Fossil Fuels Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky day bar on top, one day visible at a time, single reading column (~760px). Days are "rock layers" colored by 5E phase. */
+:root{
+  --bg:#F2F5F4; --surface:#FFFFFF; --ink:#15212A; --muted:#55646B; --line:#D5DDDB; --tint:#E7EDEB;
+  --iron:#AE4229; --ocean:#1C6784; --ochre:#A8731A; --moss:#4C7634; --dusk:#5A4A8C;
+  --ok:#2E7D4F; --warn:#9A5B00;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--ocean)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* phase colors */
+[data-phase="engage"]{--ph:var(--ochre)} [data-phase="explore"]{--ph:var(--iron)} [data-phase="explain"]{--ph:var(--ocean)}
+[data-phase="elaborate"]{--ph:var(--moss)} [data-phase="evaluate"]{--ph:var(--dusk)} [data-phase="overview"]{--ph:var(--ink)}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:thin}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--ph)}
+.chip[aria-current="page"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--ocean);outline-offset:2px}
+
+/* hero */
+.hero{padding-block:28px 8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.hero h1{font-size:clamp(32px,7vw,52px);font-weight:800;letter-spacing:-.02em;margin:8px 0 10px}
+.dq{font-size:clamp(18px,3.4vw,22px);color:var(--ink);max-width:40ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0 0;color:var(--muted);font-size:15px}
+.meta b{color:var(--ink)}
+
+/* strata bar */
+.strata{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin:22px 0 6px;border-radius:10px;overflow:hidden}
+.strata a{display:flex;flex-direction:column;justify-content:flex-end;min-height:76px;padding:8px 7px;background:var(--ph);color:#fff;text-decoration:none;font-size:12px;line-height:1.2;position:relative}
+.strata a::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(0,0,0,.10) 9px 11px);pointer-events:none}
+.strata b{font-family:var(--f-display);font-size:20px;display:block}
+.strata span{opacity:.92}
+.strata-cap{font-size:13px;color:var(--muted)}
+@media (max-width:520px){.strata span{display:none}.strata a{min-height:56px}}
+
+/* views */
+.view{padding-block:8px 48px;scroll-margin-top:calc(64px + env(safe-area-inset-top,0px))}
+.view[hidden]{display:none!important}
+.dayhead{padding-block:26px 6px;border-bottom:4px solid var(--ph);margin-bottom:8px}
+.dayhead .eyebrow{color:var(--ph)}
+.dayhead h2{font-size:clamp(28px,5.6vw,40px);font-weight:800;margin:6px 0 8px;letter-spacing:-.01em}
+.dayhead .q{font-style:italic;color:var(--muted);margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
+.tag{font-size:13px;padding:3px 9px;border-radius:6px;background:var(--tint);color:var(--ink)}
+
+section.block{padding-block:18px 4px}
+section.block>h3{font-size:22px;font-weight:800;margin-bottom:12px;display:flex;align-items:baseline;gap:10px}
+section.block>h3 small{font-family:var(--f-body);font-weight:600;font-size:14px;color:var(--muted)}
+p{margin:0 0 10px} ul,ol{margin:0 0 10px;padding-left:22px} li{margin-bottom:5px}
+
+/* goals */
+.goals{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--ph);border-radius:8px;padding:14px 16px}
+.goals h3{font-size:17px;margin-bottom:8px}
+.goals ul{margin:0}
+
+/* schedule */
+.sched{list-style:none;padding:0;margin:0;border-left:2px solid var(--line)}
+.sched li{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:10px 0 12px 22px;margin:0;position:relative}
+.sched li::before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:3px solid var(--ph)}
+.t{font-family:var(--f-mono);font-size:14px;color:var(--ph);font-weight:500;padding-top:2px;font-variant-numeric:tabular-nums}
+.t small{display:block;color:var(--muted);font-size:12px}
+.sched h4{font-size:17px;font-weight:600;margin-bottom:3px}
+.sched p,.sched ul{font-size:16px;color:var(--ink);margin-bottom:4px}
+.sched .say{border-left:3px solid var(--tint);padding-left:10px;color:var(--muted);font-style:italic}
+@media (max-width:480px){.sched li{grid-template-columns:1fr;gap:2px}}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.card .lbl{font-size:12px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;color:var(--ph);margin-bottom:6px}
+.card p:last-child{margin-bottom:0}
+.ans{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:15px;color:var(--muted)}
+.ans b{color:var(--ok)}
+
+/* conferring */
+.confer{list-style:none;padding:0;display:grid;gap:8px}
+.confer li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0}
+.confer li span{display:block;font-size:14px;color:var(--muted);margin-top:3px}
+
+/* CFU */
+.cfu{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.cfu h4{font-size:16px;margin-bottom:6px;font-family:var(--f-body);font-weight:700}
+.opts{list-style:none;padding:0;margin:6px 0}
+.opts li{padding:5px 10px;border-radius:6px;margin-bottom:4px;background:var(--tint)}
+.opts li.right{outline:2px solid var(--ok)}
+.opts li em{display:block;font-size:14px;color:var(--muted);font-style:normal}
+.when{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* answer key */
+.key{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.key>summary{cursor:pointer;padding:13px 16px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.key>summary::-webkit-details-marker{display:none}
+.key>summary::after{content:"+";font-family:var(--f-mono);font-size:20px;color:var(--ph)}
+.key[open]>summary::after{content:"−"}
+.key>summary small{display:block;font-weight:400;color:var(--muted);font-size:14px}
+.keybody{padding:2px 16px 14px;border-top:1px solid var(--line)}
+.qa{padding:10px 0;border-bottom:1px solid var(--tint)}
+.qa:last-child{border-bottom:0}
+.qa .qq{font-weight:700;margin-bottom:4px}
+.qa .aa{margin:0}
+.note{font-size:15px;background:var(--tint);border-radius:8px;padding:10px 12px;margin:8px 0}
+.note b{color:var(--warn)}
+.scroll{overflow-x:auto;margin:8px 0 12px;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--surface)}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--tint);font-weight:700}
+td.num,th.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* homework */
+.hw{background:var(--surface);border:2px solid var(--ph);border-radius:12px;padding:16px}
+.hw h4{font-size:20px;font-weight:800;margin-bottom:6px}
+.hw .why{font-size:15px;color:var(--muted)}
+.checks{list-style:none;padding:0;margin:8px 0 0}
+.checks li{padding-left:24px;position:relative}
+.checks li::before{content:"✓";position:absolute;left:2px;color:var(--ok);font-weight:700}
+
+/* overview bits */
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:6px}
+.glance .card b{font-family:var(--f-display);font-size:18px;display:block;margin-bottom:2px}
+.prep{list-style:none;padding:0}
+.prep li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--tint);margin:0}
+.prep input{width:20px;height:20px;margin-top:3px;accent-color:var(--ocean);flex:0 0 auto}
+.prep label{flex:1;min-width:0}
+.prep .when{display:block}
+.mis{display:grid;gap:8px}
+.mis div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.mis s{color:var(--iron);text-decoration-thickness:2px}
+
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:30px;flex-wrap:wrap}
+.pager a{flex:1 1 200px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.pager a small{display:block;color:var(--muted);font-size:13px}
+.pager a.next{text-align:right}
+footer{color:var(--muted);font-size:13px;padding-block:20px 40px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+.strata-10{grid-template-columns:repeat(10,1fr)}
+</style>
+</head>
+<body>
+<nav class="bar" aria-label="Days">
+  <div class="wrap" id="chips">
+    <a class="chip" data-phase="overview" href="#overview"><i></i>Before you teach</a>
+    <a class="chip" data-phase="engage" href="#day-1"><i></i>Day 1</a>
+    <a class="chip" data-phase="explore" href="#day-2"><i></i>Day 2</a>
+    <a class="chip" data-phase="explore" href="#day-3"><i></i>Day 3</a>
+    <a class="chip" data-phase="explain" href="#day-4"><i></i>Day 4</a>
+    <a class="chip" data-phase="explain" href="#day-5"><i></i>Day 5</a>
+    <a class="chip" data-phase="explore" href="#day-6"><i></i>Day 6</a>
+    <a class="chip" data-phase="explore" href="#day-7"><i></i>Day 7</a>
+    <a class="chip" data-phase="explain" href="#day-8"><i></i>Day 8</a>
+    <a class="chip" data-phase="elaborate" href="#day-9"><i></i>Day 9</a>
+    <a class="chip" data-phase="evaluate" href="#day-10"><i></i>Day 10</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ===================== OVERVIEW ===================== -->
+<div class="view" id="overview" data-phase="overview">
+  <header class="hero">
+    <div class="eyebrow">Teacher guide · Earth &amp; Space Science · Unit 6 · Solutions for a Sustainable Future · L1 Burning Fossil Fuels 5E</div>
+    <h1>Burning Fossil Fuels</h1>
+    <p class="dq">Why is burning fossil fuels causing those negative outcomes, and how can we evaluate and refine solutions to reduce them?</p>
+    <div class="meta">
+      <span><b>PEs</b> HS-ESS3-4 · HS-ESS3-6 · HS-ETS1-3</span>
+      <span><b>Length</b> 10 days × 50 min (teacher materials say 7–9)</span>
+      <span><b>Packet</b> SY 26-27 Student Materials pp. 24–68</span>
+      <span><b>Routines</b> Domino Discover · Read-Generate-Sort-Solve · Idea Carousel · Think-Talk-Open Exchange · Class Consensus Discussion · DQB</span>
+    </div>
+    <div class="strata strata-10" aria-label="Ten days, colored by 5E phase">
+      <a href="#day-1" data-phase="engage"><b>1</b><span>Engage</span></a>
+      <a href="#day-2" data-phase="explore"><b>2</b><span>Explore 1</span></a>
+      <a href="#day-3" data-phase="explore"><b>3</b><span>Explore 1 → Explain 1</span></a>
+      <a href="#day-4" data-phase="explain"><b>4</b><span>Explain 1</span></a>
+      <a href="#day-5" data-phase="explain"><b>5</b><span>Explain 1 → Explore 2</span></a>
+      <a href="#day-6" data-phase="explore"><b>6</b><span>Explore 2</span></a>
+      <a href="#day-7" data-phase="explore"><b>7</b><span>Explore 2</span></a>
+      <a href="#day-8" data-phase="explain"><b>8</b><span>Explain 2</span></a>
+      <a href="#day-9" data-phase="elaborate"><b>9</b><span>Elaborate</span></a>
+      <a href="#day-10" data-phase="evaluate"><b>10</b><span>Evaluate</span></a>
+    </div>
+    <p class="strata-cap">Tap a day to open it. Each day has a minute-by-minute plan, Do Nows, conferring questions, checks for understanding, the answer key, exit slips and drawn homework. Student-facing chapter: <a href="../unit6-sustainable-future/unit6-burning-fossil-fuels.html">Unit 6: Burning Fossil Fuels</a> (see the alignment note below before you send students there).</p>
+  </header>
+
+  <section class="block">
+    <h3>The phenomenon in one paragraph</h3>
+    <p>Around the world, millions of people die early from air pollution made by burning coal, oil and gas, and the deaths are <b>not evenly spread</b>. Students start with images of deaths and emissions and the particulate matter their own classroom collectors caught. They compare <b>India, France and the United States</b>: how much each burns, what pollutants each emits, and where each gets its energy. France makes most of its electricity with <b>nuclear power</b>, so they refine that solution for the U.S. using criteria, constraints and tradeoffs. Then they follow the <b>carbon dioxide</b>: CO₂ is not the pollutant that damages lungs, but a computational carbon cycle model shows it piling up in the atmosphere and surface ocean, and a breath-into-seawater lab shows it <b>lowering pH</b>. Reading about shellfish, omega-3s and red tides links ocean acidification back to human health, and groups build a concept map of the whole system. They evaluate two more solutions, <b>coastal restoration</b> (Elaborate) and Paris's <b>low emission zones</b> refined for NYC (Evaluate), and finish with the En-ROADS simulator and the Driving Question Board.</p>
+  </section>
+
+  <section class="block">
+    <h3>The 5E storyline</h3>
+    <div class="glance">
+      <div class="card" data-phase="engage"><div class="lbl">Engage · Day 1</div><b>How do fossil fuels cause deaths?</b>Death from Fossil Fuels images, particulate collectors, Domino Discover; Explore 1 maps.</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore 1 · Days 1–3</div><b>Why do deaths differ by country?</b>CO₂ vs. death maps, carbon footprint, India/France/U.S. pollution and energy data, Making Sense.</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain 1 · Days 3–5</div><b>Can France's solution work here?</b>Criteria/constraints practice, Read-Generate-Sort-Solve on nuclear power, Idea Carousel.</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore 2 · Days 5–7</div><b>Where does the CO₂ go?</b>Carbon cycle sketch and computational model; ocean acidification lab.</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain 2 · Day 8</div><b>How does it reach our health?</b>Ocean acidification reading, Think-Talk-Open Exchange, card-sort concept map, Class Consensus.</div>
+      <div class="card" data-phase="elaborate"><div class="lbl">Elaborate · Day 9</div><b>Can coasts capture carbon?</b>Using Oceans to Capture Carbon: analyze, define, refine, evaluate.</div>
+      <div class="card" data-phase="evaluate"><div class="lbl">Evaluate · Day 10</div><b>Can NYC limit car emissions?</b>Paris low emission zones → NYC; En-ROADS; DQB revisit.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="goals" data-phase="explain">
+      <h3>By the end of the 5E, every student should be able to…</h3>
+      <ul>
+        <li>Name what burning fossil fuels releases: <b>CO₂</b> plus <b>particulate matter</b> (incl. black carbon), <b>nitrogen oxides</b>, <b>sulfur dioxide</b> and <b>carbon monoxide</b>.</li>
+        <li>Explain that CO₂ at outdoor levels does not directly harm people, but the <b>other pollutants</b> cause respiratory and cardiovascular disease, and CO₂ harms people <b>indirectly</b> (warming, ocean acidification).</li>
+        <li>Use data to explain why France, India and the U.S. have different pollution: how much they burn and <b>what they burn</b> (France: nuclear electricity; India: coal; U.S.: gas, oil, coal).</li>
+        <li>Refine a solution for a new place using <b>prioritized criteria</b>, <b>constraints</b> (cost, safety, reliability, aesthetics, social/cultural) and <b>tradeoffs</b> (HS-ETS1-3).</li>
+        <li>Use a computational model to show how burning fossil fuels moves carbon from the <b>geosphere</b> to the atmosphere, surface ocean and biosphere (HS-ESS3-6).</li>
+        <li>Explain ocean acidification: more CO₂ → carbonic acid → lower pH → less carbonate for shells → food webs and human food at risk.</li>
+        <li>Say whether a solution <b>stabilizes or destabilizes</b> Earth's systems and evaluate it (nuclear, coastal restoration, low emission zones) (HS-ESS3-4).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Prep checklist <small>check off as you go · saved on this device</small></h3>
+    <ul class="prep" id="prep">
+      <li><input type="checkbox" id="p1"><label for="p1"><span class="when">1 week out</span>Copy the Burning Fossil Fuels 5E packet (SY 26-27 Unit 6 Student Materials <b>pp. 24–68</b>). The packet has <b>no response prompts for the Evaluate</b> (see Corrections); copy the <b>Evaluating and Refining Limited Emissions Zones for a New Context</b> handout (Steps 1–4 + Reflect) or project the prompts from Day 10 below.</label></li>
+      <li><input type="checkbox" id="p2"><label for="p2"><span class="when">2–3 days before Day 1</span><b>Particulate collectors.</b> Smear a thin layer of petroleum jelly in petri dishes or deli lids (or use clear packing tape, sticky side up, on an index card). Place them, lids off, in 2–3 spots: at least one outside or near traffic or a parking lot, one high- and one low-foot-traffic indoor spot. Add an "Experiment in Process, Do Not Move" sign. Collect 24–48 hours later; cover until Day 1. A stereoscope or the low power of a compound microscope shows the tiny particles.</label></li>
+      <li><input type="checkbox" id="p3"><label for="p3"><span class="when">Before Day 1</span>Pull out the <b>Environmental Causes of Death</b> maps and the <b>Labeled World Map</b> from the Unit Launch (teacher materials classroom resources). Queue the video <b>Fossil fuel emission may spur 20% of early deaths</b> (Access for All).</label></li>
+      <li><input type="checkbox" id="p4"><label for="p4"><span class="when">Before Day 2</span>Test the <b>Carbon Calculator</b> link from the packet on student devices (students work individually for this part).</label></li>
+      <li><input type="checkbox" id="p5"><label for="p5"><span class="when">Before Day 3</span>Chart paper titled <b>"Concepts for Designing Solutions"</b> with sections: defining the problem · criteria · constraints · solutions · costs/benefits/tradeoffs. Keep it up all unit. Optional: <b>India Pushes for Nuclear Power</b> video for Day 5.</label></li>
+      <li><input type="checkbox" id="p6"><label for="p6"><span class="when">Before Day 4</span>Groups of 3 for Read-Generate-Sort-Solve; chart paper and markers for each group's refined nuclear solution (Idea Carousel on Day 5).</label></li>
+      <li><input type="checkbox" id="p7"><label for="p7"><span class="when">Before Day 6</span>Test the <a href="https://simulations.newvisions.org/carboncycle.html">Carbon Cycle Computational Model</a>: "Play from 1850" and "Manual Mode." Check the reservoir values against the key on Day 6.</label></li>
+      <li><input type="checkbox" id="p8"><label for="p8"><span class="when">Before Day 7</span><b>Ocean acidification lab, per group:</b> 2 cups or beakers (100 mL seawater each; if you have no seawater, use water at about pH 8), a straw per student, blue and red dots or colored pencils, a timer, pH meters or pH paper, rinse water. Seawater is buffered, so pH paper may barely change; a pH meter works much better. Run it yourself once.</label></li>
+      <li><input type="checkbox" id="p9"><label for="p9"><span class="when">Before Day 8</span>Cut a <b>Fossil Fuels Card Sort</b> set per group (9 cards: Burning Fossil Fuels, Carbon Dioxide Emissions, Particulate Emissions, Plants, Air Quality, Human Health, Animals, Oceans, Temperature) plus chart paper and markers. Keep the concept maps: groups reuse them on Days 9 and 10. Optional: DFO <b>Ocean Acidification</b> video.</label></li>
+      <li><input type="checkbox" id="p10"><label for="p10"><span class="when">Before Day 9</span>Chart paper per group. Optional videos: <b>Citizen Science</b> and <b>Saving turtles in Nicaragua by working with communities</b> for groups stuck on refinements.</label></li>
+      <li><input type="checkbox" id="p11"><label for="p11"><span class="when">Before Day 10</span>Open <a href="https://en-roads.climateinteractive.org/">En-ROADS</a> on the projector; find Graphs → Impacts → "Air Pollution from Energy" and "Ocean Acidification." Bring the Driving Question Board up front and update the suggested questions to match your class's real ones.</label></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Content crib: the numbers students will use</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>Idea</th><th>Value</th><th>Source / where it comes up</th></tr></thead>
+      <tbody>
+        <tr><td>Deaths from fossil-fuel PM2.5</td><td class="num">~8.7 million (2018), ~18% of all deaths</td><td>Vohra et al. 2021, <i>Environmental Research</i>; the "20% of early deaths" video (Day 1)</td></tr>
+        <tr><td>Same question, newer method</td><td class="num">~5.1 million/yr excess deaths</td><td>Lelieveld et al. 2023, <i>BMJ</i>. Estimates differ by method; say "millions"</td></tr>
+        <tr><td>Outdoor air pollution, all sources</td><td class="num">~4.2 million early deaths (2019)</td><td>WHO ambient air quality fact sheet</td></tr>
+        <tr><td>Atmospheric CO₂</td><td class="num">~280 ppm (pre-1850) → ~425 ppm (2024)</td><td>NOAA GML (Mauna Loa annual mean, approx.); model shows 277 → 427 ppm</td></tr>
+        <tr><td>Fossil-fuel combustion in the model</td><td class="num">0.05 GtC/yr (1850) → 9.8 GtC/yr (2024)</td><td>New Visions Carbon Cycle model; packet p. 47 gives both</td></tr>
+        <tr><td>Where each year's emissions go (model)</td><td class="num">46% air · 26% ocean · 28% land</td><td>Model's fixed split, close to Global Carbon Budget averages</td></tr>
+        <tr><td>Ocean pH</td><td class="num">~8.2 → ~8.1 (~26–30% more H⁺)</td><td>NOAA PMEL; packet p. 50 says 30%. 10<sup>0.1</sup> = 1.26</td></tr>
+        <tr><td>Share of human CO₂ the ocean takes up</td><td class="num">about ¼ to ⅓</td><td>Packet p. 56; NOAA</td></tr>
+        <tr><td>France electricity from nuclear</td><td class="num">~65–70% (varies by year)</td><td>RTE annual reports; packet p. 41 says ~70%</td></tr>
+        <tr><td>U.S. electricity from nuclear</td><td class="num">~19–20%</td><td>EIA; packet p. 42</td></tr>
+        <tr><td>Newest U.S. reactors</td><td class="num">Vogtle 3 (July 2023), Vogtle 4 (April 2024)</td><td>EIA / Georgia Power; ~$35 billion total is the widely reported cost</td></tr>
+        <tr><td>NYC vehicle share of local pollution</td><td class="num">~11% of PM2.5 · ~28% of NOx</td><td>NYC DEP (cited in packet p. 68)</td></tr>
+        <tr><td>NYC deaths tied to vehicle pollution</td><td class="num">~1,400 (2016)</td><td>Study cited in packet p. 68 (<i>Environmental Research Letters</i>)</td></tr>
+        <tr><td>NYC congestion pricing start</td><td class="num">January 5, 2025</td><td>MTA; packet p. 68</td></tr>
+        <tr><td>Coastal restoration cost · success</td><td class="num">$80,000–160,000/ha · 38–64.5%</td><td>Packet p. 62, from Bayraktarov et al. 2016</td></tr>
+        <tr><td>People who rely on aquatic food for protein</td><td class="num">~3.3 billion get ~20% of animal protein</td><td>FAO, <i>State of World Fisheries and Aquaculture</i> 2020 (packet p. 56 is wrong; see Corrections)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>Estimates vs. data:</b> death counts from air pollution are model estimates, not counted bodies. Different research groups get 5–9 million fossil-fuel deaths a year. Teach students to say "millions" and name the source, rather than memorize one number.</div>
+  </section>
+
+  <section class="block">
+    <h3>What changed in SY 26-27</h3>
+    <p>This guide follows the <b>SY 26-27</b> teacher and student materials (Unit 6). No SY 25-26 PDF of this lesson was in Drive, so the comparison is with the earlier Google Doc versions (<i>5.1 Fossil Fuels 5E</i>, Unit 5, and the <i>6.1 Burning Fossil Fuels (Condensed)</i> doc).</p>
+    <ul>
+      <li><b>Name and place.</b> Now Unit 6 <i>Solutions for a Sustainable Future</i> (was Unit 5 <i>Equitable Solutions…</i>); the lesson is <b>Burning Fossil Fuels 5E</b>, 7–9 days.</li>
+      <li><b>Engage:</b> the See-Think-Wonder organizer is gone. Students answer two prompts: how the images are related, and what data we'd need to evaluate solutions.</li>
+      <li><b>Explore 1:</b> the four carbon-footprint questions became a <b>Category / Types of Activities</b> table. The energy questions became a table (top two sources; fossil fuels vs. other sources). Making Sense now has a See-Think-Wonder plus <b>two questions</b>. New <b>self and partner rubrics</b>.</li>
+      <li><b>Explain 1:</b> Initial Q1 now asks how fossil fuels relate to health. "Would nuclear solve all the problems?" was dropped, and the evaluate questions are numbered <b>4–7</b>. The <b>Explain 1 Summary Task was removed</b>. An <b>Idea Carousel</b> follows the chart-paper solutions.</li>
+      <li><b>Explore 2 Part 1:</b> rebuilt around the New Visions <b>Carbon Cycle Computational Model</b>: sketch a carbon cycle, then record reservoirs and flows for 1850 vs. 2024 and a 100-year Manual Mode run. The old in/out/net-change prompts are gone. Analyze Q2 (next 100 years) and Q3 (geosphere drives change) are new.</li>
+      <li><b>Explore 2 Part 2:</b> adds Analysis Q3 (geosphere → ocean pH) and rubrics.</li>
+      <li><b>Explain 2:</b> the Summary Task grew to <b>7 questions</b> (Q1–4 reflect on the Class Consensus Discussion; Q7 is new).</li>
+      <li><b>Elaborate:</b> Reflect now asks about <b>communities</b> locally and globally.</li>
+      <li><b>Evaluate:</b> reading, Paris NO₂/PM2.5 maps and NYC text are in the packet, but the <b>response prompts are not</b>. En-ROADS and the DQB revisit are in the teacher materials.</li>
+    </ul>
+    <div class="note"><b>Teacher-made keys in Drive</b> ("Explain 1 Buring Fossil Fuels," "Explore 2 Burning Fossil Fuels") follow the condensed doc's numbering, not the SY 26-27 packet. The keys in this guide are renumbered to the packet.</div>
+  </section>
+
+  <section class="block">
+    <h3>Corrections to the packet and teacher guide</h3>
+    <div class="mis">
+      <div><b>p. 68 (and unit plan Student Ideas):</b> "28% of <s>nitrous oxide</s> emissions." It should be <b>nitrogen oxides (NOx)</b>, the smog-forming pollutants. Nitrous oxide (N₂O) is a different gas, a greenhouse gas. The NYC DEP page the packet cites says nitrogen oxide.</div>
+      <div><b>p. 56:</b> "Over <s>7.8 million</s> people get <s>15%</s> of their animal protein from seafood." FAO reports about <b>3.3 billion</b> people get almost <b>20%</b> of their animal protein from fish (SOFIA 2020). The point gets stronger, not weaker.</div>
+      <div><b>p. 42:</b> "Two new <s>power plants</s>… <s>the other of which is still under construction</s>." These are two new <b>reactors</b> (Units 3 and 4) at Plant Vogtle, Georgia. Unit 3 started in July 2023 and Unit 4 in April 2024; both run now.</div>
+      <div><b>p. 42:</b> "While <s>all three were contained</s>…" Chernobyl (1986) spread radioactive fallout across Europe, and Fukushima (2011) released radioactive material and forced long evacuations; only Three Mile Island's release was small. Also, Fukushima was <b>triggered by an earthquake and tsunami</b>, not only mismanagement (though design and safety-oversight failures mattered). The packet's main point, that deaths from nuclear power are small compared with fossil-fuel pollution, still holds.</div>
+      <div><b>p. 48, Analyze Q1:</b> asks about "<s>300 years ago</s>," but the model starts in <b>1850</b> (~175 years). Read it as "in 1850."</div>
+      <div><b>pp. 46–47, Carbon Movement table:</b> in the model the gray natural arrows (photosynthesis 120, respiration 119, dissolution 80, outgassing 78 GtC/yr) are <b>constant</b>. Only the red human arrows and the green absorption arrows change between 1850 and 2024. Tell students so they don't hunt for changes that aren't there.</div>
+      <div><b>p. 29, Q1</b> is garbled: read it as "How do annual CO₂ emissions compare <b>to</b> air pollution deaths from fossil fuels?" The PDF text of Q2 is also scrambled; it should read "While CO₂ does not directly cause health issues, what connection does CO₂ have to pollution that does cause health problems and death?"</div>
+      <div><b>p. 66:</b> "by 2030, only cars with green badges… will be allowed in Paris." That was the plan when written; French low-emission-zone rules have since been politically contested and revised. Present 2030 as a <b>goal</b>, and check current rules before calling it settled.</div>
+      <div><b>Teacher guide, Explore 1 question</b> "Why does air pollution from fossil fuels cause more deaths in the United States than in France?" The U.S. has about 5× France's population, so totals alone mislead. Push students to compare <b>rates (per 100,000)</b> and <b>per capita</b> emissions, as the packet's note on p. 31 suggests.</div>
+      <div><b>p. 50 (and chapter):</b> "30% increase in acidity" is NOAA's rounded figure; the math for 8.2 → 8.1 gives ~26%. Accept either; don't mark students wrong for 26%.</div>
+      <div><b>Teacher guide, Evaluate:</b> calls for the handout "Evaluating and Refining Limited Emissions Zones for a New Context," which is <b>not in the SY 26-27 student PDF</b> (p. 68 ends with the NYC text; p. 69 starts Land Use). Prompts are reproduced on Day 10.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Alignment with the student chapter</h3>
+    <div class="note"><b>Read before linking students:</b> the <a href="../unit6-sustainable-future/unit6-burning-fossil-fuels.html">Burning Fossil Fuels chapter</a> still uses the older Unit 6 layout and only partly matches this packet. It has the Engage pollutant table, France vs. U.S. energy mix, a carbon-cycle-since-1720 model and an ocean acidification lab simulation that match Days 1–7 well. But its <b>Elaborate is carbon-removal technologies, not coastal restoration</b>, and its Evaluate compares U.S. transportation policies, not Paris low emission zones. Several charts (regional death rates, France vs. U.S. "health &amp; emissions," climate-death projections, "lives saved" per transport policy) list <b>no sources</b>; don't use those numbers as evidence until they are sourced. The ocean lab simulation is a model, not measured data.</div>
+  </section>
+
+  <section class="block">
+    <h3>Misconceptions to listen for</h3>
+    <div class="mis">
+      <div><s>"CO₂ is the poison in car exhaust."</s> At outdoor levels, CO₂ doesn't hurt your lungs. The harmful ones are PM2.5, NOx, SO₂, CO and ozone. CO₂ harms people <b>indirectly</b>.</div>
+      <div><s>"Clouds from nuclear plants are pollution."</s> Cooling towers give off <b>water vapor</b>. Nuclear plants burn nothing; the problem is radioactive <b>waste</b>.</div>
+      <div><s>"My carbon footprint is the main problem."</s> Individual choices help, but most emissions come from how a whole country makes electricity and moves people. The carbon footprint idea was popularized by BP in the early 2000s. Day 2 makes this point.</div>
+      <div><s>"pH 8.1 means the ocean is acidic."</s> It's still <b>basic</b> (above 7). "Acidification" means moving <b>toward</b> acidic.</div>
+      <div><s>"0.1 pH is too small to matter."</s> pH is logarithmic: 0.1 units is ~26–30% more hydrogen ions, enough to make shell-building harder.</div>
+      <div><s>"The ocean absorbing CO₂ solves the problem."</s> It slows warming but makes the ocean more acidic. Moving carbon doesn't make it disappear.</div>
+      <div><s>"Most biosphere carbon is in trees."</s> In the model's tooltip, soils hold ~1,750 GtC vs. ~550 GtC in plants.</div>
+      <div><s>"France has fewer deaths because it's smaller."</s> Compare <b>rates</b> and <b>per capita</b> values, not totals.</div>
+      <div><s>"A solution has to fix everything."</s> Air-pollution deaths depend on fuels, health, healthcare access and heat. Solutions are combined; each has tradeoffs.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Key vocabulary</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Fossil fuels</div>Coal, oil and natural gas: carbon stored in the geosphere from ancient living things.</div>
+      <div class="card"><div class="lbl">Emissions</div>Gases and particles released into the air when something burns.</div>
+      <div class="card"><div class="lbl">Particulate matter (PM2.5)</div>Tiny particles that get deep into lungs and blood. <b>Black carbon</b> (soot) is one kind.</div>
+      <div class="card"><div class="lbl">NOx · SO₂ · CO</div>Nitrogen oxides, sulfur dioxide, carbon monoxide: pollutants almost entirely from burning fossil fuels.</div>
+      <div class="card"><div class="lbl">Annual vs. per capita</div>Whole-country total in a year vs. the average per person.</div>
+      <div class="card"><div class="lbl">Carbon footprint</div>CO₂ released because of one person's (or group's) activities.</div>
+      <div class="card"><div class="lbl">Nuclear fission</div>Splitting atoms to release heat that makes steam and electricity; no burning.</div>
+      <div class="card"><div class="lbl">Criteria · constraints · tradeoffs</div>What success requires · limits the solution must work within · what you give up to get a benefit.</div>
+      <div class="card"><div class="lbl">Stabilize / destabilize</div>Help a system stay in balance / push it out of balance.</div>
+      <div class="card"><div class="lbl">Carbon reservoir · flux</div>A place carbon is stored (GtC) · the rate it moves between places (GtC/yr).</div>
+      <div class="card"><div class="lbl">Ocean acidification</div>Ocean pH dropping as it absorbs CO₂, which forms carbonic acid.</div>
+      <div class="card"><div class="lbl">Calcium carbonate</div>What shells and skeletons are made of; harder to build in more acidic water.</div>
+      <div class="card"><div class="lbl">Coastal restoration</div>Replanting mangroves and seagrass so they store carbon and send basic water to the ocean.</div>
+      <div class="card"><div class="lbl">Low emission zone</div>An area where only cleaner vehicles may drive (Paris uses Crit'Air badges).</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Pacing and logistics notes</h3>
+    <ul>
+      <li><b>Why 10 days?</b> The teacher materials say 7–9. At 50 minutes, Explain 1 (a long text-based Read-Generate-Sort-Solve plus an Idea Carousel) and the two Explore 2 investigations each need real time, and this is the first time students meet RGSS and Idea Carousel this unit.</li>
+      <li><b>Eight-day version.</b> (1) Merge Days 2–3: assign the carbon-footprint table as homework and do Making Sense as a 10-minute pair talk. (2) Jigsaw Explain 1 (half of each triad reads France, half reads the U.S., as the teacher materials suggest) and skip the Idea Carousel: groups present posters in 60 seconds each. (3) Do the ocean acidification lab as a teacher demo with one pH meter, and move it onto Day 6 after the model. Keep Explain 2, Elaborate and Evaluate whole.</li>
+      <li><b>Do Now / Exit Slip boxes.</b> The Google Doc versions of the packet had Class 1–6 (or 1–7) boxes on the cover. The SY 26-27 PDF text shows only "Student Name" on p. 24, so plan on a half-sheet or notebook page.</li>
+      <li><b>Period length.</b> For 45-minute periods, cut the Do Now to 3 minutes and move the item marked <i>flex</i> to homework.</li>
+      <li><b>Device-light option.</b> Run the carbon model (Day 6) and En-ROADS (Day 10) from one projector while groups record. The carbon calculator (Day 2) works on phones.</li>
+      <li><b>Lab safety (Day 7).</b> One straw per student; blow <b>out</b> only, never sip. Seawater is not for drinking.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>How the homework stays AI-proof</h3>
+    <p>Each night's homework is a <b>hand-drawn model</b>: a diagram, flowchart, map or comic. Four rules make it hard to outsource:</p>
+    <ul>
+      <li><b>Paper and pencil (or colored pencils) only.</b> No printed or digitally made images.</li>
+      <li><b>Every task uses something only your class has:</b> what your collectors caught, a student's own carbon-calculator result, their group's poster or concept map, their lab pH readings.</li>
+      <li><b>Every drawing has one personal "I chose…" annotation</b> explaining a decision the student made.</li>
+      <li><b>30-second check the next day.</b> During the Do Now, ask 3–4 students to explain one part of their drawing out loud.</li>
+    </ul>
+  </section>
+
+  <div class="pager"><span></span><a class="next" href="#day-1"><small>Start</small>Day 1 · Engage →</a></div>
+</div>
+
+<!-- ===================== DAY 1 ===================== -->
+<div class="view" id="day-1" data-phase="engage" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 1 · Engage → Explore 1 launch</div>
+    <h2>Death from Fossil Fuels</h2>
+    <p class="q">How does burning fossil fuel contribute to environmental causes of death around the world?</p>
+    <div class="tags"><span class="tag">Packet pp. 25–29: Death from Fossil Fuels · Explore 1 Part 1 maps</span><span class="tag">Table groups</span><span class="tag">Domino Discover</span><span class="tag">Particulate collectors</span><span class="tag"><a href="../unit6-sustainable-future/unit6-burning-fossil-fuels.html#engage-the-investigative-phenomenon">Chapter: Engage</a></span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Cars and power plants burn fossil fuels and release <b>particulate matter, NOx, SO₂, CO</b> and <b>CO₂</b>.</li>
+      <li>These pollutants are linked to the respiratory and cardiovascular diseases on the Unit Launch maps.</li>
+      <li>CO₂ is a greenhouse gas but is <b>not</b> what directly damages lungs.</li>
+      <li>Air-pollution deaths are unevenly spread; to evaluate solutions we need data on why.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–7</div><div><h4>Connect to the DQB</h4><p>Point to the DQB category about fossil fuels and pollution from the Unit Launch.</p><p class="say">"For the next few classes we'll figure out how burning fossil fuels connects to the deaths on our Unit Launch maps, and what we could do about it."</p></div></li>
+      <li><div class="t">7–15</div><div><h4>Examine the images (pp. 25–26)</h4><p>Groups look at the images and answer Q1 (how are they related?). Keep the Environmental Causes of Death maps visible. Confer.</p></div></li>
+      <li><div class="t">15–20</div><div><h4>Share Q1 + recall Unit 4</h4><p>Cold-call 2–3 groups. Ask: <i>What did we learn in Unit 4 about what's released when we burn fossil fuels?</i> Students usually remember only CO₂. Name the other pollutants.</p></div></li>
+      <li><div class="t">20–28</div><div><h4>Particulate collectors</h4><p>Pass the dishes/tape cards (and a stereoscope if you have one). Turn-and-talk: notice and wonder. Which spot collected the most? Connect dark specks near traffic to exhaust from burning gasoline. Point out that CO₂ is invisible and isn't on the dish.</p></div></li>
+      <li><div class="t">28–38</div><div><h4>Q2 + Domino Discover</h4><p>Groups answer Q2 (what data do we need?), then Domino Discover: each group adds one idea, building on the last. Chart the list; it becomes the plan for Explore 1. First Domino Discover of the 5E, so model it.</p></div></li>
+      <li><div class="t">38–47</div><div><h4>Explore 1 launch · Part 1 maps (p. 28–29)</h4><p>Ask: <i>Why might some places have more air-pollution deaths?</i> Listen for: burn more fuel, more cars, less healthcare, heat, less healthy population. Hand out Part 1; pairs compare the two maps and start Q1–2. <i>flex</i></p></div></li>
+      <li><div class="t">47–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Unit recall</div><p>On the Unit Launch maps, name one cause of environmental death and one place it was high.</p><div class="ans">Air pollution, heat, unsafe water; e.g., high in South Asia. Use their answers in the launch.</div></div>
+      <div class="card"><div class="lbl">Option B · Unit 4 recall</div><p>What gas did we say is released when fossil fuels burn, and what does it do to climate?</p><div class="ans">CO₂; it traps heat (greenhouse gas). Today adds the other emissions.</div></div>
+      <div class="card"><div class="lbl">Option C · Local</div><p>Where in your neighborhood do you think the air is dirtiest? Why?</p><div class="ans">Near highways, bus depots, truck routes. Save for the Evaluate (NYC).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>How do these images relate to the environmental causes of death from the Unit Launch?</li>
+      <li>Where have you seen air pollution before? What did it look or smell like?</li>
+      <li>How might air pollution be contributing to cardiovascular disease, respiratory disease or cancer?</li>
+      <li>How does the map of air-pollution deaths from fossil fuels compare to the environmental deaths map from the Unit Launch?</li>
+      <li>Which pollutant in the image do you think is <i>not</i> directly harmful to breathe?<span>Gets to CO₂.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After collectors · hinge question</div>
+      <h4>Which emission from burning fossil fuels does NOT directly harm human lungs at outdoor levels?</h4>
+      <ul class="opts">
+        <li>A. Particulate matter (PM2.5)<em>Directly harmful; reaches deep into lungs.</em></li>
+        <li>B. Sulfur dioxide<em>Directly harmful; triggers breathing problems.</em></li>
+        <li class="right">C. Carbon dioxide<em>Correct. Its harm is indirect (warming, ocean acidification).</em></li>
+        <li>D. Nitrogen oxides<em>Directly harmful; irritates airways and forms smog.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Domino Discover</div>
+      <h4>Which data would best help us evaluate a solution to fossil-fuel pollution deaths?</h4>
+      <ul class="opts">
+        <li>A. The total number of cars in the world<em>Doesn't show where deaths happen or why.</em></li>
+        <li class="right">B. Pollution levels, energy sources and death rates for different countries<em>Correct; that's Explore 1.</em></li>
+        <li>C. The price of gasoline<em>Related to use, but not to health outcomes.</em></li>
+        <li>D. The average temperature of Earth<em>That's climate change, not air-pollution deaths.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Engage: Death from Fossil Fuels<small>packet p. 26, Q1–2 · sample responses</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How do you think these images are related?</div><p class="aa">They are all linked by burning fossil fuels. Cars and power plants burn coal, oil and gas and emit pollution: particulate matter, nitrogen oxides, carbon monoxide, sulfur dioxide and ozone. These pollutants cause health problems like the respiratory and cardiovascular diseases in the Unit Launch, so they cause deaths.</p></div>
+      <div class="qa"><div class="qq">2. What data do we need to evaluate solutions aimed at reducing fossil fuel pollution deaths?</div><p class="aa">Why some countries have fewer pollution deaths than others (are they already using solutions?); why some places still rely on fossil fuels (social, political, cultural reasons); what the alternatives are; the costs, benefits and tradeoffs of existing solutions; pollution and death rates per person.</p></div>
+      <div class="note"><b>Look and listen for (teacher materials):</b> "they're all linked by fossil fuels" · "cars and power plants emit pollution" · "these pollutants cause the same diseases as the Unit Launch" · "we need to know why some countries have fewer deaths" · "we need costs, benefits and tradeoffs." Students will say smog, smoke, gases; name the specific pollutants.</div>
+    </div></details>
+    <details class="key"><summary><span>Explore 1 Part 1: maps<small>packet p. 29, Q1–2 · if reached today</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How do annual CO₂ emissions compare to air pollution deaths from fossil fuels?</div><p class="aa">Countries with large annual CO₂ emissions (for example China, India, the U.S.) also tend to have many deaths, so the maps broadly match. The match isn't perfect: the U.S. emits a lot of CO₂ but has far fewer deaths per person than India. How much harmful pollution comes with each ton of CO₂ depends on the fuel (coal is worst) and on pollution controls.</p></div>
+      <div class="qa"><div class="qq">2. While CO₂ does not directly cause health issues, what connection does CO₂ have to pollution that does?</div><p class="aa">The same burning that releases CO₂ also releases PM2.5, NOx, SO₂ and CO. So CO₂ emissions are a sign of how much fossil fuel is being burned, and therefore of how much harmful pollution is produced.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>List three things released when gasoline burns. Circle the one that is not directly harmful to breathe.</p><div class="ans">Any of PM, NOx, SO₂, CO, CO₂; circle CO₂.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Our collector near ______ caught the most particles. Why do you think so?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Tailpipe to Lungs</h4>
+      <p>Draw a car or bus on a street you know. Draw what comes out of the tailpipe as labeled arrows (at least 4 emissions), and follow two of them into a person's body.</p>
+      <ul class="checks">
+        <li>CO₂ drawn going up into the sky, labeled "not directly harmful, but…"</li>
+        <li>PM2.5 and one other pollutant traced to lungs or heart</li>
+        <li>A sketch of what <b>our class's collector</b> caught</li>
+        <li>"I chose…" note: why you picked <b>this street</b></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#overview"><small>Back</small>← Before you teach</a><a class="next" href="#day-2"><small>Next</small>Day 2 · Health and Fossil Fuels →</a></div>
+</div>
+
+<!-- ===================== DAY 2 ===================== -->
+<div class="view" id="day-2" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 2 · Explore 1</div>
+    <h2>Health and Fossil Fuels Investigation</h2>
+    <p class="q">Why do different parts of the world have different rates of death from fossil fuel air pollution?</p>
+    <div class="tags"><span class="tag">Packet pp. 29–34: Parts 1–2</span><span class="tag">Pairs → table groups</span><span class="tag">Carbon Calculator</span><span class="tag"><a href="../unit6-sustainable-future/unit6-burning-fossil-fuels.html#explore-1-why-does-france-have-fewer-deaths-than-the-us">Chapter: Explore 1</a></span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Carbon footprints come from transportation, home energy/electricity, food and goods: all mostly powered by fossil fuels.</li>
+      <li><b>Annual</b> totals and <b>per capita</b> values tell different stories (India: big total, small per person; U.S.: big per person).</li>
+      <li>Pollution trends differ: the U.S. and France cut SO₂, NOx and CO from their peaks; India's are still rising.</li>
+      <li>France gets much of its energy from <b>nuclear</b>; India from <b>coal</b>; the U.S. mostly from oil and gas.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Call on 3–4 students to explain their "Tailpipe to Lungs" drawings.</p></div></li>
+      <li><div class="t">4–10</div><div><h4>Finish map Q1–2 (pairs)</h4><p>Quick check: CO₂ and harmful pollutants come from the same burning.</p></div></li>
+      <li><div class="t">10–20</div><div><h4>Carbon footprint (individual, pp. 29–30)</h4><p>Each student uses the Carbon Calculator, then fills the Category / Types of Activities table. Students work alone here, pairs elsewhere.</p></div></li>
+      <li><div class="t">20–25</div><div><h4>Pause: cluster the categories</h4><p>Chart categories: transportation, electricity/housing, food, consumer goods. Then give context: the "carbon footprint" idea was popularized by the oil company BP in the early 2000s to frame fossil fuel use as personal responsibility, not something for companies or government to fix.</p><p class="say">"Footprints still show which activities use fossil fuels. But individuals can't solve this alone, so let's look at whole countries."</p></div></li>
+      <li><div class="t">25–33</div><div><h4>India, France, U.S. + Predict (pp. 31–32)</h4><p>Point out the note: annual = whole country; per capita = per person. Pairs answer Predict Q1–2.</p></div></li>
+      <li><div class="t">33–47</div><div><h4>Part 2 tables (pp. 33–34, table groups)</h4><p>Groups fill the pollution-trend table (NOx, SO₂, CO, black carbon, 1750–2022) and the energy-source table. Confer.</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Per capita</div><p>Country A emits 3,000 tons of CO₂ and has 1,000 people. Country B emits 6,000 tons and has 6,000 people. Which emits more per person?</p><div class="ans"><b>A</b>: 3 t/person vs. 1 t/person, even though B's total is bigger.</div></div>
+      <div class="card"><div class="lbl">Option B · Your day</div><p>List three things you did since waking up that used fossil fuels (directly or through electricity).</p><div class="ans">Bus/car ride, lights, phone charging, heated water, food delivery…</div></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>Name two pollutants (not CO₂) released by burning fossil fuels.</p><div class="ans">PM2.5/black carbon, NOx, SO₂, CO.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>How are carbon footprints related to air pollution?</li>
+      <li>If you reduce your carbon footprint, how would that influence air pollution?</li>
+      <li>How do the carbon footprints of France, India and the U.S. differ? Annual or per person?</li>
+      <li>How is energy use in France, India and the U.S. different? Why would that lead to different pollution levels?</li>
+      <li>Which pollutant fell fastest in the U.S. and France? What might have caused that?<span>Pollution laws, scrubbers, catalytic converters, switching from coal, nuclear power in France.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Predict · hinge question</div>
+      <h4>India's annual CO₂ emissions are large, but its per capita emissions are much lower than the U.S. This means…</h4>
+      <ul class="opts">
+        <li>A. Indians drive more than Americans<em>Opposite of what per capita shows.</em></li>
+        <li class="right">B. India's total is large because it has a very large population; each person emits less on average<em>Correct.</em></li>
+        <li>C. India's data must be wrong<em>Both can be true at once.</em></li>
+        <li>D. India has less air pollution than the U.S.<em>Per capita CO₂ doesn't measure pollution; India's air pollution is worse.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Part 2 tables</div>
+      <h4>France gets a large share of its energy from nuclear power. Which prediction fits?</h4>
+      <ul class="opts">
+        <li class="right">A. France burns less fossil fuel for electricity, so it has less SO₂ and particulate pollution from power plants<em>Correct.</em></li>
+        <li>B. France has more CO₂ pollution because nuclear plants release CO₂<em>Nuclear fission burns nothing.</em></li>
+        <li>C. France has no air pollution at all<em>Cars and industry still burn fossil fuels.</em></li>
+        <li>D. Energy source doesn't affect pollution<em>That's the main pattern of the investigation.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Carbon footprint table<small>packet pp. 29–30</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Category</th><th>Types of activities that contribute</th></tr></thead><tbody>
+        <tr><td>Housing / electricity</td><td>Heating and cooling, hot water, lights, appliances, home size, where the electricity comes from.</td></tr>
+        <tr><td>Transportation</td><td>Car trips, type of car, flights, buses and trains, how far you travel.</td></tr>
+        <tr><td>Food</td><td>Meat and dairy (especially beef), food waste, how far food is shipped.</td></tr>
+        <tr><td>Goods / consumerism</td><td>Clothes, electronics, online shopping, packaging, how much you throw away.</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>What they share:</b> almost all are powered by burning fossil fuels, directly (gasoline) or indirectly (electricity, factories, shipping). Accept the calculator's own category names; check which ones your link shows.</div>
+    </div></details>
+    <details class="key"><summary><span>Predict: India, France, U.S.<small>packet p. 32, Q1–2</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Predict how air pollution differs between the United States, India, and France.</div><p class="aa">India: worst air pollution, because it burns a lot of coal, has very large total emissions and a dense population. U.S.: high per-person emissions, so moderate pollution, though controls lower it. France: lowest per-person emissions, so the least pollution.</p></div>
+      <div class="qa"><div class="qq">2. Predict how health outcomes differ.</div><p class="aa">India: the most air-pollution deaths and highest death rate; U.S.: in between; France: the fewest. Credit any prediction that uses emissions data and the CO₂–pollution link from Part 1.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Part 2: pollution trends and energy sources<small>packet pp. 33–34 · check against the packet's graphs</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Pollutant</th><th>United States</th><th>France</th><th>India</th></tr></thead><tbody>
+        <tr><td>NOx</td><td>Rose through the 1900s, peaked late 1900s, now falling</td><td>Rose, peaked around the 1980s, now falling</td><td>Low until mid-1900s, rising steeply, still rising</td></tr>
+        <tr><td>SO₂</td><td>Peaked around the 1970s, then dropped sharply</td><td>Peaked around the 1970s, dropped sharply (as nuclear replaced coal and oil)</td><td>Rising, especially recently (coal)</td></tr>
+        <tr><td>CO</td><td>Rose, peaked, then dropped</td><td>Rose, peaked, then dropped</td><td>Rising</td></tr>
+        <tr><td>Black carbon</td><td>Fell from an early peak, now low</td><td>Fell, now low</td><td>Rising, highest of the three</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Shape, not numbers:</b> these are the expected shapes from the CEDS emissions inventory that such graphs use (as on Our World in Data). Accept what your packet's graph actually shows; the key idea is <b>U.S. and France falling, India rising</b>.</div>
+      <div class="qa"><div class="qq">Energy table: top two sources and use of fossil fuels vs. other sources</div><p class="aa">If the chart is <b>total energy</b>: U.S. 1. oil 2. natural gas; France 1. nuclear 2. oil; India 1. coal 2. oil. If it is <b>electricity only</b>: U.S. 1. natural gas 2. nuclear or coal (close); France 1. nuclear 2. hydro (or wind); India 1. coal 2. renewables/hydro. Fossil fuel use: U.S. mostly fossil fuels; France the least fossil, mostly nuclear; India very heavily fossil, mainly coal. Check which kind of chart is on p. 33.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Which of the three countries would you expect to have the cleanest air, and what's your best piece of evidence?</p><div class="ans">France; least fossil fuel use (nuclear) and falling pollution trends.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Explain the difference between "annual" and "per capita" using one of today's countries.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Three Power Strips</h4>
+      <p>Draw three power strips (or three electrical outlets), one each for the U.S., France and India. Draw what is "plugged in" behind each wall: the top energy sources, sized by how much they're used. Add a smokestack only where something burns.</p>
+      <ul class="checks">
+        <li>All three countries, with their top two sources labeled</li>
+        <li>Smokestacks only on fossil-fuel sources; cooling-tower steam drawn as water vapor for nuclear</li>
+        <li>One sentence: which country's air should be cleanest and why</li>
+        <li>"I chose…" note: <b>your own top carbon-calculator category</b> and which country's mix would shrink it most</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-1"><small>Back</small>← Day 1 · Death from Fossil Fuels</a><a class="next" href="#day-3"><small>Next</small>Day 3 · Making Sense → Designing Solutions →</a></div>
+</div>
+
+<!-- ===================== DAY 3 ===================== -->
+<div class="view" id="day-3" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 3 · Explore 1 → Explain 1</div>
+    <h2>Making Sense, Then Designing Solutions</h2>
+    <p class="q">What specific steps can cut fuel pollution and improve health outcomes?</p>
+    <div class="tags"><span class="tag">Packet pp. 36–40: Making Sense, rubrics, Explain 1 intro</span><span class="tag">Individual → table groups</span><span class="tag">Domino Discover</span><span class="tag">"Concepts for Designing Solutions" chart</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Energy source → amount of fossil fuel burned → pollution → health: the three countries show the chain.</li>
+      <li>Air-pollution deaths have several causes (fuel use, health, healthcare, heat), so no single solution fixes all of them.</li>
+      <li>The language of solutions: <b>define the problem, criteria, constraints, costs, benefits, tradeoffs</b>.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Ask 3 students to explain their "Three Power Strips."</p></div></li>
+      <li><div class="t">4–16</div><div><h4>Making Sense (individual, p. 36)</h4><p>See-Think-Wonder, then Q1–2. Circulate; push for examples from the data.</p></div></li>
+      <li><div class="t">16–24</div><div><h4>Table talk + Domino Discover</h4><p>Groups discuss: <i>What changes could improve health by reducing fuel pollution, and how do you know?</i> Domino Discover. Don't move on until "France uses nuclear, so less fossil fuel, less pollution" is on the board (Explain 1 depends on it).</p></div></li>
+      <li><div class="t">24–27</div><div><h4>Rubrics (pp. 38–39)</h4><p>Self and partner rubric. Collect or skim.</p></div></li>
+      <li><div class="t">27–33</div><div><h4>Explain 1 launch: what drives deaths?</h4><p>Brainstorm everything that raises deaths from fossil-fuel air pollution: electricity use, cars and planes, consumerism, heat, pre-existing conditions, access to healthcare. Domino Discover. Then:</p><p class="say">"We can't solve all of this at once. Let's practice the steps on one piece, then use them for real."</p></div></li>
+      <li><div class="t">33–45</div><div><h4>Practice on one component (whole class)</h4><p>Pick one component that is <b>not electricity</b> (students will use electricity next). The teacher materials model <b>access to healthcare</b>. Fill the "Concepts for Designing Solutions" chart together: define the problem → criteria → constraints → brainstorm solutions → costs/benefits/tradeoffs of one. Example in the key.</p></div></li>
+      <li><div class="t">45–50</div><div><h4>Initial solution thoughts (p. 40, Q1–3)</h4><p>Start individually; finish as exit slip.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Pattern</div><p>Fill in: Countries that burn more ______ tend to have more ______, which leads to more ______.</p><div class="ans">fossil fuels (coal) · air pollution · deaths/disease.</div></div>
+      <div class="card"><div class="lbl">Option B · Criteria</div><p>You're choosing a phone. Name one "must have" (criterion) and one limit you can't change (constraint).</p><div class="ans">Criterion: good camera. Constraint: budget of $200.</div></div>
+      <div class="card"><div class="lbl">Option C · Tradeoff</div><p>Taking the subway instead of a car: name one benefit and one cost.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What pattern did you see across all three countries? Which data shows it best?</li>
+      <li>Why might India's pollution still be rising while France's is falling?</li>
+      <li>Is it fair to compare the U.S. and France using total deaths? What would be fairer?<span>Rates per 100,000 or per capita.</span></li>
+      <li>Is that a criterion (what success looks like) or a constraint (a limit)? How can you tell?</li>
+      <li>What's a tradeoff of that solution: what do you give up to get the benefit?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">During practice · hinge question</div>
+      <h4>"The solution must reduce air-pollution deaths by at least 10%." This is a…</h4>
+      <ul class="opts">
+        <li class="right">A. criterion<em>Correct: it defines success.</em></li>
+        <li>B. constraint<em>A constraint is a limit, like a budget or a law.</em></li>
+        <li>C. tradeoff<em>A tradeoff is giving up one thing for another.</em></li>
+        <li>D. cost<em>Not a cost.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">Before the exit slip</div>
+      <h4>"There aren't enough doctors in some regions." In designing a healthcare solution, this is best described as a…</h4>
+      <ul class="opts">
+        <li>A. criterion<em>It's not a measure of success.</em></li>
+        <li class="right">B. constraint<em>Correct: a limit the solution must work within.</em></li>
+        <li>C. benefit<em>It's a problem.</em></li>
+        <li>D. solution<em>It describes the situation.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Explore 1: Making Sense<small>packet p. 36 · See-Think-Wonder + Q1–2</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">See-Think-Wonder</div><p class="aa"><b>See:</b> India's pollutants are rising while the U.S. and France have dropped from their peaks; France uses mostly nuclear, India mostly coal, the U.S. mostly oil and gas; the U.S. has the highest per-capita CO₂, India the largest total of the three. <b>Think:</b> burning more fossil fuel, especially coal, means more pollution and more deaths; laws and cleaner energy can lower pollution. <b>Wonder:</b> Why doesn't the U.S. use more nuclear? Can India switch from coal? Do cleaner countries have fewer deaths per person?</p></div>
+      <div class="qa"><div class="qq">1. How do you think energy source, carbon footprints, fuel pollution, and health are related?</div><p class="aa">Places that get energy from fossil fuels have bigger carbon footprints and release more harmful pollutants (NOx, SO₂, CO, PM), which cause respiratory and heart disease. Example: India relies on coal and has rising pollution and the worst health outcomes; France gets most electricity from nuclear, emits less CO₂ per person and has falling pollution.</p></div>
+      <div class="qa"><div class="qq">2. What specific steps can be taken to cut fuel pollution and improve health outcomes?</div><p class="aa">Switch electricity from coal and gas to nuclear and renewables; pollution controls on power plants and vehicles; cleaner or electric vehicles and more public transit; use less energy; better healthcare access for people at risk.</p></div>
+      <div class="note"><b>Look and listen for (teacher materials):</b> "we could use more nuclear energy" · "places that use more fossil fuels have higher footprints and more polluting emissions" · "France has a smaller footprint per capita than the U.S." · "India uses almost exclusively coal and has very bad air pollution."</div>
+    </div></details>
+    <details class="key"><summary><span>Designing solutions practice: access to healthcare<small>whole-class example from the teacher materials</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Defining the problem</div><p class="aa">People die from pollution from burning fossil fuels. People with less access to healthcare are more likely to die from pollution-caused illness.</p></div>
+      <div class="qa"><div class="qq">Criteria</div><p class="aa">At least a 10% reduction in deaths from fossil-fuel pollution; a smaller gap in deaths between people with and without good healthcare.</p></div>
+      <div class="qa"><div class="qq">Constraints</div><p class="aa">Not enough doctors in some places; cost of care where there's no central health system; transportation and distance; other diseases that make pollution more dangerous.</p></div>
+      <div class="qa"><div class="qq">Possible solutions</div><p class="aa">Ads telling people with certain conditions to manage them; small clinics focused on pollution-related illness; free or low-cost air filters or masks.</p></div>
+      <div class="qa"><div class="qq">Costs / benefits / tradeoff (air filters)</div><p class="aa">Cost: someone pays for filters; they don't fix healthcare gaps. Benefit: less exposure, so lack of care matters less; no system-wide change needed. Tradeoff: cheap and simple, but leaves the underlying inequality in place.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Explain 1: Initial solution thoughts<small>packet p. 40, Q1–3</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Explain how the use of fossil fuels is related to human health.</div><p class="aa">Burning fossil fuels releases PM2.5, NOx, SO₂ and CO that cause respiratory and cardiovascular disease and early death. More burning means more pollution and more deaths, and the harm is uneven between places.</p></div>
+      <div class="qa"><div class="qq">2. In this context, how are France and the United States different?</div><p class="aa">France makes most of its electricity with nuclear power and burns little fossil fuel for electricity; the U.S. relies much more on natural gas, coal and oil and gets only about a fifth of its electricity from nuclear. The U.S. has higher per-capita emissions.</p></div>
+      <div class="qa"><div class="qq">3. Which systems are affected by this problem?</div><p class="aa"><b>Atmosphere</b> (pollutants and CO₂ released into the air) and <b>biosphere</b> (people and other organisms harmed). Also reasonable: <b>geosphere</b> (fuels are extracted from it), <b>hydrosphere</b> (acid rain; ocean absorbs CO₂).</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Finish Initial Q2: how are France and the U.S. different?</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Write one criterion and one constraint for a solution to reduce air pollution near your school.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>The Cause Web</h4>
+      <p>Draw a web with "deaths from fossil-fuel air pollution" in the center and at least five causes around it (fuel use, cars, healthcare, heat, health conditions…). Draw a lock icon on any cause that's hard to change and a key icon on any cause a solution could change.</p>
+      <ul class="checks">
+        <li>At least five causes, each with a short arrow label</li>
+        <li>Lock/key icons on each</li>
+        <li>Star the cause our class practiced on today</li>
+        <li>"I chose…" note: which cause <b>you</b> would attack first, and one constraint you'd face</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-2"><small>Back</small>← Day 2 · Health and Fossil Fuels</a><a class="next" href="#day-4"><small>Next</small>Day 4 · Read-Generate-Sort-Solve →</a></div>
+</div>
+
+<!-- ===================== DAY 4 ===================== -->
+<div class="view" id="day-4" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 4 · Explain 1</div>
+    <h2>Refining Nuclear Energy for the U.S.</h2>
+    <p class="q">How can we apply solutions used in France to the United States in order to reduce deaths?</p>
+    <div class="tags"><span class="tag">Packet pp. 40–43: Read-Generate-Sort-Solve</span><span class="tag">Groups of 3</span><span class="tag">Read-Generate-Sort-Solve · chunked text</span><span class="tag"><a href="../unit6-sustainable-future/unit6-burning-fossil-fuels.html#explain-1-can-we-apply-frances-approach-to-the-us">Chapter: Explain 1</a></span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Nuclear power makes electricity without burning, so no greenhouse gases or air pollutants at the plant; it produces radioactive waste and is expensive to build.</li>
+      <li>The U.S. has constraints France doesn't: cheap coal and gas, high build costs, public fear after accidents, and existing fossil-fuel infrastructure.</li>
+      <li>A refined solution keeps what works and changes the approach to fit the new place's constraints.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Ask 3 students for the cause they'd attack first (homework).</p></div></li>
+      <li><div class="t">4–8</div><div><h4>Launch RGSS</h4><p>Explain the routine: Read (with questions after each chunk) → Generate → Sort → Solve. First time this unit; post the steps.</p><p class="say">"Today we focus only on air pollution from burning fossil fuels. Next week we'll deal with the CO₂ itself."</p></div></li>
+      <li><div class="t">8–20</div><div><h4>Read: France (p. 41)</h4><p>Individual reading, then France Q1–4. Pause after the first paragraph and ask a pair to summarize. Correct the accident wording later in the U.S. text (see Corrections).</p></div></li>
+      <li><div class="t">20–32</div><div><h4>Read: the United States (p. 42)</h4><p>Individual reading, then U.S. Q1–3. Tell students the Georgia reactors are both running now, and that Chernobyl was <i>not</i> contained.</p></div></li>
+      <li><div class="t">32–42</div><div><h4>Generate (p. 43, triads)</h4><p>Each student writes ideas in their own Name column: how could nuclear power grow in the U.S. while addressing attitudes, cost, safety and aesthetics?</p></div></li>
+      <li><div class="t">42–48</div><div><h4>Sort</h4><p>Discuss each idea; star the most useful.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Prior ideas</div><p>What comes to mind when you hear "nuclear power plant"? One word or image.</p><div class="ans">Surface fears (Chernobyl, Simpsons, bombs) to address in the reading.</div></div>
+      <div class="card"><div class="lbl">Option B · Recall</div><p>About what share of France's electricity comes from nuclear? Of U.S. electricity?</p><div class="ans">~65–70% vs. ~20%.</div></div>
+      <div class="card"><div class="lbl">Option C · Systems</div><p>Which Earth system does a coal plant affect first, and how?</p><div class="ans">Atmosphere: emits CO₂ and pollutants.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What problem does nuclear power solve? What new problem does it create?</li>
+      <li>Which U.S. constraint do you think is hardest to overcome? Why?</li>
+      <li>If you could only meet three criteria, which three? Why that order?</li>
+      <li>Your idea addresses cost. Does it also address safety or public attitudes?</li>
+      <li>Does this refinement stabilize or destabilize the atmosphere? The biosphere?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the France reading</div>
+      <h4>Why does nuclear power produce less air pollution than a coal plant?</h4>
+      <ul class="opts">
+        <li>A. Its smokestacks have better filters<em>Nuclear plants have no smokestacks; the towers release water vapor.</em></li>
+        <li class="right">B. It makes heat by splitting atoms (fission), so nothing is burned<em>Correct.</em></li>
+        <li>C. It uses less electricity<em>It produces electricity.</em></li>
+        <li>D. Its waste is released into the ocean instead<em>Waste is stored, not dumped.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After the U.S. reading · hinge question</div>
+      <h4>Which is a constraint for nuclear power in the U.S. that is much weaker in France?</h4>
+      <ul class="opts">
+        <li>A. Nuclear plants produce radioactive waste<em>True in both countries.</em></li>
+        <li class="right">B. The U.S. has large coal and natural gas reserves that make switching less attractive<em>Correct: France has almost no local fossil fuels.</em></li>
+        <li>C. Nuclear power makes greenhouse gases<em>Not true.</em></li>
+        <li>D. Electricity is needed<em>Needed in both.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Read: France<small>packet pp. 41–42, Q1–4</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Explain how nuclear energy solves the problem you identified above.</div><p class="aa">It replaces burning fossil fuels to make electricity, so it cuts both greenhouse gases and harmful air pollutants, which cuts pollution-related disease and death.</p></div>
+      <div class="qa"><div class="qq">2. How does it stabilize or destabilize the systems you identified above?</div><p class="aa">Stabilizes the atmosphere (less pollution and CO₂) and the biosphere (fewer health effects). It can destabilize the geosphere/biosphere if radioactive waste leaks or an accident happens.</p></div>
+      <div class="qa"><div class="qq">3. Describe the constraints this solution must take into account.</div><p class="aa">High cost to build; safe locations to lower accident risk; safe long-term waste storage; enough electricity for demand; public acceptance.</p></div>
+      <div class="qa"><div class="qq">4. Describe the solution's costs, benefits, and tradeoffs.</div><p class="aa">Benefits: low pollution, relatively cheap electricity once built (France exports it), more than 200,000 jobs. Costs: expensive reactors, radioactive waste to manage. Tradeoff: big cuts in fossil-fuel pollution in exchange for big up-front cost and long-term waste responsibility.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Read: the United States<small>packet pp. 42–43, Q1–3</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Describe the constraints in the United States that don't exist in France.</div><p class="aa">Large coal and natural gas reserves (France has almost none); very high cost of new reactors (~$35 billion for Vogtle 3 and 4); public fear after Three Mile Island, Chernobyl and Fukushima; the number of reactors shrinking; public support not turning into action.</p></div>
+      <div class="qa"><div class="qq">2. What criteria would a solution have to fulfill to be useful in this context?</div><p class="aa">Reduce air-pollution deaths; be safe (low accident risk, safe waste storage); affordable enough to build; reliable electricity; acceptable to the public, including how plants look and where they go.</p></div>
+      <div class="qa"><div class="qq">3. Prioritize your criteria.</div><p class="aa">A strong order: (1) safety, (2) reducing deaths/pollution, (3) cost and feasibility, (4) reliability, (5) public preference and aesthetics. Accept other orders with reasons.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Generate + Sort<small>packet p. 43 · sample ideas</small></span></summary><div class="keybody">
+      <ul>
+        <li>Convert retiring coal plants to nuclear (reuse sites, grid connections and workforce; packet says this lowers cost).</li>
+        <li>Smaller, standardized reactors that are cheaper and faster to build.</li>
+        <li>Public education and plant tours about safety records and waste storage.</li>
+        <li>Taxes or limits on fossil-fuel pollution so nuclear is more competitive; government loans.</li>
+        <li>Build away from dense cities and fault lines; design plants to blend into the landscape.</li>
+        <li>Pair nuclear with wind and solar so no single source carries the grid.</li>
+      </ul>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Your group's starred idea, and which U.S. constraint it addresses.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>One benefit and one cost of nuclear power, in one sentence each.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Before and After the Switch</h4>
+      <p>Draw a U.S. power plant site twice: as a coal plant today, and after your group's starred refinement turns it nuclear. Show what goes in and out of each (fuel, smoke, steam, waste, electricity).</p>
+      <ul class="checks">
+        <li>Coal plant: CO₂ and at least two pollutants leaving the stack</li>
+        <li>Nuclear plant: steam (water vapor) and stored waste shown correctly</li>
+        <li>One label for a constraint your refinement solves</li>
+        <li>"I chose…" note: the <b>idea your group starred</b> and why you agreed with it (or didn't)</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-3"><small>Back</small>← Day 3 · Making Sense</a><a class="next" href="#day-5"><small>Next</small>Day 5 · Solve, Idea Carousel →</a></div>
+</div>
+
+<!-- ===================== DAY 5 ===================== -->
+<div class="view" id="day-5" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 5 · Explain 1 → Explore 2 launch</div>
+    <h2>Solve, Share, Evaluate</h2>
+    <p class="q">How could nuclear energy be refined or modified to fit the needs of the United States?</p>
+    <div class="tags"><span class="tag">Packet pp. 43–44 (Solve, Q4–7) · p. 46 sketch</span><span class="tag">Groups of 3</span><span class="tag">Idea Carousel</span><span class="tag">Chart paper</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Nuclear power is as safe as or safer than fossil fuels, but the U.S. doesn't use as much because of fear, existing infrastructure and cheap oil, gas and coal.</li>
+      <li>Refinements (public education, repurposing coal plants, discouraging fossil fuel use) change the cost-benefit ratio.</li>
+      <li>Nuclear power addresses electricity only; cars, heat, health and healthcare remain.</li>
+      <li>CO₂ itself is the next question: if it doesn't hurt lungs, how might it hurt us?</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–3</div><div><h4>Do Now</h4><p>Ask 2–3 students about their before/after drawings.</p></div></li>
+      <li><div class="t">3–12</div><div><h4>Solve + chart paper</h4><p>Each triad writes its response to the Solve prompt, then puts the refinement on chart paper (words, images, diagrams) with criteria, constraints and tradeoffs.</p></div></li>
+      <li><div class="t">12–24</div><div><h4>Idea Carousel</h4><p>Groups rotate to other posters, leaving sticky-note feedback. Return home; discuss what to revise and add to the Solve response. First Idea Carousel this unit: model it.</p></div></li>
+      <li><div class="t">24–32</div><div><h4>Evaluate refinements Q4–7 (p. 44)</h4><p>Individually or in pairs. Optional: show <b>India Pushes for Nuclear Power</b> before Q7.</p></div></li>
+      <li><div class="t">32–37</div><div><h4>Key points</h4><p>Pause and make the Key Points explicit (see key). Then raise the lingering questions: <i>What about cars and other fossil fuel uses? How does CO₂ itself affect health and biodiversity?</i></p></div></li>
+      <li><div class="t">37–43</div><div><h4>Explore 2 launch</h4><p class="say">"So far we've looked at the pollutants that hurt us directly. Now let's look at CO₂, which affects us indirectly."</p><p>Brainstorm: <i>How could CO₂ indirectly affect health?</i> Listen for heat waves, worse storms, too much CO₂ to breathe (correct this: not at outdoor levels).</p></div></li>
+      <li><div class="t">43–50</div><div><h4>Sketch the carbon cycle (p. 46)</h4><p>From memory of earlier units: sketch how carbon moves between hydrosphere, biosphere, atmosphere and geosphere, with arrows and processes. Then write a summary of how humans changed the flow since the Industrial Revolution. <i>flex</i>: finish at home.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Barrier</div><p>What's the biggest barrier to building nuclear plants in the U.S.? One sentence.</p></div>
+      <div class="card"><div class="lbl">Option B · Tradeoff</div><p>Finish: "Nuclear power cuts ______, but in exchange we have to ______."</p><div class="ans">air pollution/CO₂ · pay a lot up front and store radioactive waste.</div></div>
+      <div class="card"><div class="lbl">Option C · Unit 4 recall</div><p>Where does the carbon in coal come from originally?</p><div class="ans">Ancient plants that took CO₂ from the air and were buried.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Does your refinement address attitudes, cost, safety and aesthetics? Which one is weakest?</li>
+      <li>What feedback did you get on the carousel? What will you change?</li>
+      <li>Would your refinement work in India? What would be different there?</li>
+      <li>Which problems from Day 3's cause web does nuclear power <i>not</i> touch?</li>
+      <li>In your carbon sketch, which arrow do humans add or speed up?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Q4–7</div>
+      <h4>A city switches all of its electricity to nuclear power. Which air-pollution source remains?</h4>
+      <ul class="opts">
+        <li>A. Coal power plants<em>Those were replaced.</em></li>
+        <li class="right">B. Gasoline and diesel vehicles<em>Correct: electricity is only part of fossil fuel use. Sets up the Evaluate.</em></li>
+        <li>C. Nuclear cooling towers<em>They release water vapor.</em></li>
+        <li>D. None<em>Transportation, heating and industry still burn fuel.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Explore 2 launch</div>
+      <h4>Which process moves carbon from the geosphere to the atmosphere fastest today?</h4>
+      <ul class="opts">
+        <li>A. Photosynthesis<em>Moves carbon from atmosphere to biosphere.</em></li>
+        <li>B. Rock weathering<em>Very slow, and removes CO₂.</em></li>
+        <li class="right">C. Burning fossil fuels (combustion)<em>Correct.</em></li>
+        <li>D. Ocean absorption<em>Atmosphere to hydrosphere.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Solve<small>packet p. 43 · sample group response</small></span></summary><div class="keybody">
+      <p>"Increase U.S. nuclear power by converting some retiring coal plants to nuclear, which reuses sites and grid lines and lowers cost. Pair this with public education about safety records and how waste is stored in pools and steel-and-concrete casks, to address fear. Make fossil fuels less attractive with pollution fees, so nuclear can compete on cost. Place plants away from fault lines and dense cities, and design them to fit the landscape."</p>
+    </div></details>
+    <details class="key"><summary><span>Evaluate your refinements<small>packet p. 44, Q4–7</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">4. What barriers might nuclear energy face in the U.S.? Do your refinements help?</div><p class="aa">Cost, public fear, waste concerns, cheap coal and gas, and existing fossil-fuel infrastructure. Partly: education targets fear, converting coal plants targets cost, pollution fees target the market. Waste storage still needs a long-term plan.</p></div>
+      <div class="qa"><div class="qq">5. Would applying nuclear energy here stabilize or destabilize the natural systems?</div><p class="aa">Mostly stabilize: less burning means fewer pollutants in the atmosphere and fewer health effects in the biosphere (evidence: France's lower emissions and falling pollution). Risk of destabilizing only if waste leaks or an accident happens.</p></div>
+      <div class="qa"><div class="qq">6. Weigh the costs and benefits. Does applying this solution to the U.S. make sense?</div><p class="aa">It can make sense for electricity because the pollution and health benefits are large and long-lasting, but it is expensive and slow to build, so it should be phased in alongside renewables.</p></div>
+      <div class="qa"><div class="qq">7. Would your refinements work in India? How would the cost/benefit ratio differ?</div><p class="aa">Some would: India relies heavily on coal and has very high pollution, so the health benefit per plant could be larger. But financing, building capacity and fast-growing demand could make costs and barriers higher. India is already expanding nuclear (optional video).</p></div>
+      <div class="note"><b>Key points to make explicit (teacher materials):</b> nuclear energy is as safe as or safer than fossil fuel energy · the U.S. doesn't use as much as France because of fear, existing infrastructure and a good supply of oil, gas and coal · refinements could include public education about safety, repurposing fossil-fuel plants and discouraging fossil fuel use to change the cost-benefit ratio · engineering solutions should increase benefits and decrease risks.</div>
+    </div></details>
+    <details class="key"><summary><span>Explore 2 Part 1: carbon cycle sketch + human changes<small>packet p. 46 (top)</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Sketch</div><p class="aa">Atmosphere → biosphere: photosynthesis. Biosphere → atmosphere: respiration, decay, burning. Atmosphere ↔ hydrosphere: dissolving / outgassing. Biosphere → geosphere: burial forming fossil fuels and sediments (very slow). Geosphere → atmosphere: volcanoes (slow, natural) and combustion of fossil fuels (fast, human). Hydrosphere → geosphere: shells forming limestone.</p></div>
+      <div class="qa"><div class="qq">How have humans changed the flow since the Industrial Revolution?</div><p class="aa">Burning fossil fuels moves carbon stored in the geosphere for millions of years into the atmosphere in decades; cutting and burning forests (land use change) moves biosphere carbon into the air. Atmospheric CO₂ has risen from ~280 ppm to over 420 ppm, and the ocean and land absorb part of the extra.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Name one problem nuclear power does <b>not</b> fix and one solution that could.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Draw the one arrow on your carbon sketch that humans changed the most.</p><div class="ans">Geosphere → atmosphere (combustion).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Carousel Comeback</h4>
+      <p>Redraw your group's poster as a small sketch, then draw the one change you'd make after the Idea Carousel in a different color.</p>
+      <ul class="checks">
+        <li>Your group's refinement with criteria and constraints labeled</li>
+        <li>The revision in a second color</li>
+        <li>A small "still unsolved" box: one source of pollution nuclear power doesn't fix</li>
+        <li>"I chose…" note: <b>which sticky-note feedback</b> changed your mind, and why</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-4"><small>Back</small>← Day 4 · Read-Generate-Sort-Solve</a><a class="next" href="#day-6"><small>Next</small>Day 6 · Carbon Cycle Model →</a></div>
+</div>
+
+<!-- ===================== DAY 6 ===================== -->
+<div class="view" id="day-6" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 6 · Explore 2</div>
+    <h2>Modeling the Carbon Cycle</h2>
+    <p class="q">How do changes in one carbon reservoir affect others?</p>
+    <div class="tags"><span class="tag">Packet pp. 46–49: Investigation Part 1 + Making Sense</span><span class="tag">Table groups</span><span class="tag">Domino Discover</span><span class="tag"><a href="https://simulations.newvisions.org/carboncycle.html">Carbon Cycle Computational Model</a></span><span class="tag"><a href="../unit6-sustainable-future/unit6-burning-fossil-fuels.html#the-carbon-cycle-then-vs.-now">Chapter: carbon cycle</a></span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Carbon is stored in <b>reservoirs</b> (GtC) and moves in <b>fluxes</b> (GtC/yr). Rocks and the deep ocean hold the most; the atmosphere holds the least.</li>
+      <li>Since 1850, combustion grew from 0.05 to 9.8 GtC/yr. Fossil fuel carbon went down; the atmosphere, surface ocean and (barely) biosphere went up.</li>
+      <li>Of each year's emissions in the model, ~46% stays in the air, ~26% goes into the ocean, ~28% into land plants and soils.</li>
+      <li>A change in the <b>geosphere</b> (burning stored carbon) drives changes in the other systems.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Ask 2–3 students to explain their carousel revision.</p></div></li>
+      <li><div class="t">4–8</div><div><h4>Share sketches</h4><p>Two students show their p. 46 sketch on the doc cam. Note arrows everyone agrees on.</p></div></li>
+      <li><div class="t">8–14</div><div><h4>Explore the model</h4><p>Open the model. Students click buttons, hover over reservoirs and arrows. Point out: gray dashed = natural flows (constant), red = human, green = extra absorption.</p></div></li>
+      <li><div class="t">14–26</div><div><h4>Play from 1850 (pp. 46–47)</h4><p>Record reservoirs and flows in 1850, press play, record 2024.</p></div></li>
+      <li><div class="t">26–36</div><div><h4>Manual Mode 2024–2124 (p. 47)</h4><p>Leave the sliders at today's rates (9.8 and 1.4). Record every 25 years. Fast finishers: try 0 emissions or the worst case (Differentiation point).</p></div></li>
+      <li><div class="t">36–45</div><div><h4>Making Sense (p. 48–49)</h4><p>See-Think-Wonder and Analyze Q1–3. Q1 says "300 years ago"; use 1850.</p></div></li>
+      <li><div class="t">45–50</div><div><h4>Domino Discover on Q3</h4><p>How does change in the geosphere drive changes in other systems? Chart ideas.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Reservoir</div><p>A bathtub has the faucet on and the drain open. What happens to the water level if you open the faucet more but the drain stays the same?</p><div class="ans">The level rises. Same idea for CO₂ in the atmosphere.</div></div>
+      <div class="card"><div class="lbl">Option B · Units</div><p>"GtC" means gigatons of carbon. A gigaton is a billion tons. Why use such a big unit?</p></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>Name two processes that remove CO₂ from the air.</p><div class="ans">Photosynthesis; dissolving into the ocean.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What do you think "carbon reservoir" means? Where is carbon held?</li>
+      <li>In 1850, was carbon moving evenly between reservoirs? What about now?</li>
+      <li>Where does the extra carbon end up? Which reservoir gains the most?</li>
+      <li>Which arrows changed between 1850 and 2024, and which stayed the same?</li>
+      <li>What happens to each reservoir if we keep burning at today's rate for 100 years? What if emissions were zero?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Play from 1850 · hinge question</div>
+      <h4>From 1850 to 2024, which reservoir lost carbon in the model?</h4>
+      <ul class="opts">
+        <li>A. Atmosphere<em>Gained ~320 GtC.</em></li>
+        <li>B. Surface ocean<em>Gained ~180 GtC.</em></li>
+        <li class="right">C. Geosphere: fossil fuels<em>Correct: ~10,000 → ~9,500 GtC.</em></li>
+        <li>D. Deep ocean<em>Unchanged in the model.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Manual Mode</div>
+      <h4>Why does the surface ocean keep gaining carbon in the Manual Mode run?</h4>
+      <ul class="opts">
+        <li class="right">A. Extra CO₂ in the air dissolves into the ocean, so ~a quarter of each year's emissions ends up there<em>Correct.</em></li>
+        <li>B. Ocean animals make carbon<em>They cycle it, they don't create it.</em></li>
+        <li>C. Rivers carry fossil fuels into the ocean<em>Not the main pathway.</em></li>
+        <li>D. The deep ocean sends carbon up<em>Deep ocean is constant in this model.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Carbon Reservoirs, 1850 vs. 2024<small>packet pp. 46–47 · values from the model (may differ ±1 from rounding)</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Reservoir</th><th class="num">1850 (GtC)</th><th class="num">2024 (GtC)</th></tr></thead><tbody>
+        <tr><td>Geosphere: Fossil Fuels</td><td class="num">10,000</td><td class="num">~9,499</td></tr>
+        <tr><td>Geosphere: Rocks</td><td class="num">~75,000,000</td><td class="num">~75,000,000 (not changing)</td></tr>
+        <tr><td>Atmosphere</td><td class="num">590 (≈277 ppm)</td><td class="num">~909 (≈427 ppm)</td></tr>
+        <tr><td>Hydrosphere: Surface</td><td class="num">900</td><td class="num">~1,081</td></tr>
+        <tr><td>Hydrosphere: Deep Ocean</td><td class="num">37,100</td><td class="num">37,100 (not changing)</td></tr>
+        <tr><td>Biosphere</td><td class="num">2,300</td><td class="num">~2,301</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Biosphere barely changes</b> because land use change removed carbon about as fast as plants absorbed extra. Ask: "Does flat mean nothing happened?" (No: big losses and gains cancel.)</div>
+    </div></details>
+    <details class="key"><summary><span>Carbon Movement, 1850 vs. 2024<small>packet p. 47 · GtC/yr</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Arrow</th><th>1850: process and rate</th><th>2024: process and rate</th></tr></thead><tbody>
+        <tr><td>Geosphere → Atmosphere</td><td>Combustion 0.05</td><td>Combustion 9.8</td></tr>
+        <tr><td>Atmosphere → Hydrosphere</td><td>Dissolution 80</td><td>Dissolution 80 + ocean absorption ~2.9</td></tr>
+        <tr><td>Hydrosphere → Atmosphere</td><td>Outgassing 78</td><td>Outgassing 78</td></tr>
+        <tr><td>Atmosphere → Biosphere</td><td>Photosynthesis 120</td><td>Photosynthesis 120 + land absorption ~3.1</td></tr>
+        <tr><td>Biosphere → Atmosphere</td><td>Respiration 119 + land use change 0.5</td><td>Respiration 119 + land use change 1.4</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Model quirk:</b> the natural (gray) arrows are fixed numbers in the model, so they look identical in both years. The <b>red</b> (human) and <b>green</b> (absorption) arrows are what changed.</div>
+    </div></details>
+    <details class="key"><summary><span>Manual Mode, 2024 → 2124<small>packet p. 47 · combustion 9.8, land use 1.4 GtC/yr</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Reservoir</th><th class="num">2024</th><th class="num">2049</th><th class="num">2074</th><th class="num">2099</th><th class="num">2124</th></tr></thead><tbody>
+        <tr><td>Fossil Fuels</td><td class="num">~9,499</td><td class="num">~9,254</td><td class="num">~9,009</td><td class="num">~8,764</td><td class="num">~8,519</td></tr>
+        <tr><td>Rocks</td><td class="num">~75,000,000</td><td class="num">same</td><td class="num">same</td><td class="num">same</td><td class="num">same</td></tr>
+        <tr><td>Atmosphere</td><td class="num">~909</td><td class="num">~1,038</td><td class="num">~1,167</td><td class="num">~1,296</td><td class="num">~1,425</td></tr>
+        <tr><td>Surface ocean</td><td class="num">~1,081</td><td class="num">~1,153</td><td class="num">~1,226</td><td class="num">~1,299</td><td class="num">~1,372</td></tr>
+        <tr><td>Deep ocean</td><td class="num">37,100</td><td class="num">same</td><td class="num">same</td><td class="num">same</td><td class="num">same</td></tr>
+        <tr><td>Biosphere</td><td class="num">~2,301</td><td class="num">~2,344</td><td class="num">~2,388</td><td class="num">~2,431</td><td class="num">~2,474</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Linear by design:</b> each 25 years adds the same amount (atmosphere +~129 GtC), because the model keeps the 46/26/28 split fixed. The model itself warns that real sinks may weaken as CO₂ keeps rising. By 2124 the model atmosphere is ~669 ppm. This is a <b>model scenario</b>, not a forecast.</div>
+    </div></details>
+    <details class="key"><summary><span>Making Sense Part 1<small>packet pp. 48–49 · See-Think-Wonder + Analyze Q1–3</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">See-Think-Wonder</div><p class="aa"><b>See:</b> combustion grew ~200-fold since 1850; atmosphere and surface ocean gained carbon; fossil fuels lost it. <b>Think:</b> humans opened a fast new path from the geosphere to the air, and the other spheres soak up part of it. <b>Wonder:</b> What does extra carbon do to the ocean? Can the ocean and plants keep absorbing?</p></div>
+      <div class="qa"><div class="qq">1. Which reservoirs are holding more carbon now than in 1850 ("300 years ago")?</div><p class="aa">The atmosphere (590 → ~909 GtC), the surface ocean (900 → ~1,081) and, by a tiny amount, the biosphere. Fossil fuels hold less.</p></div>
+      <div class="qa"><div class="qq">2. How would reservoirs change if combustion and land use change continued unchanged for 100 years?</div><p class="aa">The atmosphere would keep rising (to ~1,425 GtC, ~669 ppm in the model), the surface ocean to ~1,372 GtC and the biosphere to ~2,474 GtC, while fossil fuels fall to ~8,519 GtC. Rocks and deep ocean don't change in this model.</p></div>
+      <div class="qa"><div class="qq">3. Describe how change in the geosphere drives changes in other Earth systems.</div><p class="aa">Burning fossil fuels takes carbon that was locked in the geosphere for millions of years and releases it as CO₂ into the atmosphere. Because the atmosphere exchanges carbon with the ocean and living things, part of the extra moves into the surface ocean (dissolving, making it more acidic) and into plants and soils. One change ripples through the whole system and destabilizes it.</p></div>
+      <div class="note"><b>Look and listen for (teacher materials):</b> "burning fossil fuel changes the amount of carbon stored in the geosphere" · "carbon moves into the atmosphere, then into the hydrosphere and biosphere" · "if we keep burning at the current rate, those three reservoirs keep increasing" · "the hydrosphere holds a huge amount, but the surface holds relatively little, so the change matters a lot there."</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Fill in: Since 1850, carbon has moved out of the ______ and into the ______, ______ and ______.</p><div class="ans">geosphere (fossil fuels) · atmosphere · surface ocean · biosphere.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>The surface ocean is gaining carbon. Predict one effect on ocean life.</p><div class="ans">Sets up Day 7.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Then and Now Arrows</h4>
+      <p>Draw the four spheres twice, 1850 and 2024. Draw arrows with thickness that matches the rates you recorded (thin for 0.05, thick for 9.8).</p>
+      <ul class="checks">
+        <li>Combustion arrow drawn thin in 1850 and thick in 2024</li>
+        <li>Your recorded reservoir values written inside each sphere</li>
+        <li>A "?" next to the reservoir you think will cause the most problems</li>
+        <li>"I chose…" note: what you set the sliders to if you tried <b>your own scenario</b>, and what happened</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-5"><small>Back</small>← Day 5 · Solve, Idea Carousel</a><a class="next" href="#day-7"><small>Next</small>Day 7 · Ocean Acidification →</a></div>
+</div>
+
+<!-- ===================== DAY 7 ===================== -->
+<div class="view" id="day-7" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 7 · Explore 2</div>
+    <h2>Ocean Acidification Investigation</h2>
+    <p class="q">How does excess carbon affect oceans?</p>
+    <div class="tags"><span class="tag">Packet pp. 50–55: Part 2, Making Sense, rubrics</span><span class="tag">Pairs in table groups</span><span class="tag">Seawater · straws · pH meters</span><span class="tag"><a href="../unit6-sustainable-future/unit6-burning-fossil-fuels.html#ocean-acidification-simulation-lab">Chapter: lab simulation</a></span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Ocean pH has dropped from ~8.2 to ~8.1 since the Industrial Revolution; still basic, but ~26–30% more acidic.</li>
+      <li>Adding CO₂ to water lowers its pH; more CO₂ (longer blowing) lowers it more.</li>
+      <li>Atmospheric CO₂ and ocean pH are <b>inversely</b> related.</li>
+      <li>Burning fossil fuels (geosphere) → CO₂ in air (atmosphere) → lower ocean pH (hydrosphere).</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Ask 2 students about their arrow drawings.</p></div></li>
+      <li><div class="t">4–10</div><div><h4>Intro + pH scale (p. 50)</h4><p>Read the introduction together. Show the pH scale: 7 neutral, 8.1 is still basic. Explain "acidification" means moving toward acidic.</p><p class="say">"We'll model the ocean absorbing CO₂ by adding CO₂ from your breath."</p></div></li>
+      <li><div class="t">10–25</div><div><h4>Lab (pp. 50–51)</h4><p>Initial pH of both cups; blue dot = 10 s, red dot = 20 s. One student times, one blows gently but steadily. Record final pH. Rinse probes.</p></div></li>
+      <li><div class="t">25–32</div><div><h4>Graphs A and B</h4><p>Place dots on Graph A (pH → atmospheric CO₂) and Graph B (CO₂ → projected year). Complete the data table.</p></div></li>
+      <li><div class="t">32–42</div><div><h4>Making Sense (pp. 52–53)</h4><p>See-Think-Wonder and Analysis Q1–3.</p></div></li>
+      <li><div class="t">42–47</div><div><h4>Domino Discover</h4><p>Each group shares one important idea from See-Think-Wonder or the analysis.</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Rubrics (pp. 54–55)</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Fizz</div><p>What gas makes soda fizzy? What happens to a soda's taste when it goes flat?</p><div class="ans">CO₂; it gets less sour, because dissolved CO₂ forms a weak acid.</div></div>
+      <div class="card"><div class="lbl">Option B · pH</div><p>Rank: lemon juice, pure water, seawater, from most acidic to most basic.</p><div class="ans">Lemon juice → water (7) → seawater (~8.1).</div></div>
+      <div class="card"><div class="lbl">Option C · Predict</div><p>If you blow CO₂ into water, will the pH go up or down?</p><div class="ans">Down.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What did you hold the same in both cups? What did you change?</li>
+      <li>Why did the 20-second cup change more than the 10-second cup?</li>
+      <li>On Graph A, what CO₂ level matches your pH? When does Graph B say we'll reach it?</li>
+      <li>How is blowing into the cup like what's happening to the real ocean? How is it different?<span>Real CO₂ comes from the air over decades, not breath in seconds.</span></li>
+      <li>What could a lower pH do to animals that make shells?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the lab · hinge question</div>
+      <h4>As atmospheric CO₂ increases, ocean pH…</h4>
+      <ul class="opts">
+        <li>A. increases, making the ocean more basic<em>Backwards.</em></li>
+        <li class="right">B. decreases, making the ocean more acidic<em>Correct: inverse relationship.</em></li>
+        <li>C. stays the same because the ocean is so big<em>Measured pH has already dropped ~0.1.</em></li>
+        <li>D. drops below 7, so the ocean is now an acid<em>It is still basic (~8.1).</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Analysis Q3</div>
+      <h4>Which chain is correct?</h4>
+      <ul class="opts">
+        <li class="right">A. Fossil fuels burned (geosphere) → CO₂ in air (atmosphere) → CO₂ dissolves, pH drops (hydrosphere)<em>Correct.</em></li>
+        <li>B. Ocean pH drops → more fossil fuels form<em>Reversed and wrong timescale.</em></li>
+        <li>C. Particulate matter falls in the ocean → pH drops<em>Today's lab is about CO₂.</em></li>
+        <li>D. Warmer air → more salt → lower pH<em>Not the mechanism.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Ocean Acidification Data Table<small>packet p. 51 · patterns, not fixed numbers</small></span></summary><div class="keybody">
+      <p>Results depend on your water and pH tool. The pattern to expect: <b>0 s</b> highest pH (seawater starts near 8); <b>10 s</b> lower; <b>20 s</b> lowest. On Graph A, lower pH matches a <b>higher atmospheric CO₂</b>; on Graph B, higher CO₂ matches a <b>later year</b>. Real seawater is buffered, so its pH falls less than tap or distilled water would. If pH paper shows no change, run a class demo with a meter.</p>
+    </div></details>
+    <details class="key"><summary><span>Making Sense Part 2<small>packet pp. 52–53 · See-Think-Wonder + Analysis Q1–3</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">See-Think-Wonder</div><p class="aa"><b>See:</b> pH went down after blowing, and more after 20 s than 10 s. <b>Think:</b> more CO₂ makes water more acidic; the ocean absorbing our CO₂ is changing its chemistry. <b>Wonder:</b> What happens to shellfish and coral? Will the ocean become an acid? Can it recover?</p></div>
+      <div class="qa"><div class="qq">1. How are atmospheric carbon dioxide and pH levels in the ocean related?</div><p class="aa">Inversely: as atmospheric CO₂ goes up, more dissolves into the ocean, forming carbonic acid, so pH goes down (acidity goes up).</p></div>
+      <div class="qa"><div class="qq">2. Describe the patterns or trends comparing 10 and 20 seconds.</div><p class="aa">The longer we blew in CO₂, the lower the pH. More CO₂ means more acidification, just as decades more fossil-fuel burning means a more acidic ocean.</p></div>
+      <div class="qa"><div class="qq">3. Describe how changes in the geosphere could result in changes in the pH of the hydrosphere.</div><p class="aa">Burning fossil fuels removes carbon from the geosphere and releases it as CO₂ into the atmosphere. About a quarter to a third of that CO₂ dissolves into the ocean, where it forms carbonic acid and lowers the pH.</p></div>
+      <div class="note"><b>Look and listen for (teacher materials):</b> "increasing carbon in the hydrosphere is causing the oceans to become acidic" · "what impacts does that have on the systems that have more carbon dioxide?"</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Our 20-second cup went from pH ___ to ___. Explain why in one sentence using "CO₂" and "acid."</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Ocean pH is 8.1. Is the ocean acidic? Explain what "acidification" means.</p><div class="ans">No, still basic; it means moving toward acidic.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Breath to Beaker to Ocean</h4>
+      <p>Draw a 3-panel comic: (1) your lab cup and straw, (2) a power plant and an ocean with CO₂ arrows going from air into water, (3) a zoomed-in drop of seawater showing CO₂ + water → carbonic acid.</p>
+      <ul class="checks">
+        <li>Your group's real pH readings in panel 1</li>
+        <li>An arrow in panel 2 labeled "about ¼ to ⅓ of our CO₂"</li>
+        <li>A pH scale with 8.2 and 8.1 marked</li>
+        <li>"I chose…" note: one way your cup was a <b>good</b> model and one way it was <b>not</b></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-6"><small>Back</small>← Day 6 · Carbon Cycle Model</a><a class="next" href="#day-8"><small>Next</small>Day 8 · Impacts of CO₂ →</a></div>
+</div>
+
+<!-- ===================== DAY 8 ===================== -->
+<div class="view" id="day-8" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 8 · Explain 2</div>
+    <h2>Impacts of CO₂ on Humans and Biodiversity</h2>
+    <p class="q">How do the ways that burning fossil fuels impacts natural systems combine to impact human health?</p>
+    <div class="tags"><span class="tag">Packet pp. 56–60: reading, Think-Talk-Open Exchange, diagram, Summary Task</span><span class="tag">Table groups</span><span class="tag">Think-Talk-Open Exchange · Class Consensus Discussion</span><span class="tag">Fossil Fuels Card Sort</span><span class="tag"><a href="../unit6-sustainable-future/unit6-burning-fossil-fuels.html#explain-2-from-carbon-disruption-to-health-impacts">Chapter: Explain 2</a></span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Burning fossil fuels emits <b>CO₂</b> and <b>polluting emissions</b>; pollutants harm people directly, CO₂ disrupts natural systems.</li>
+      <li>CO₂ is increasing in the atmosphere (warming), hydrosphere (acidification) and biosphere.</li>
+      <li>Acidification takes carbonate from shell-builders; oysters, corals and plankton suffer; food webs and the people who rely on seafood are affected (less food, fewer omega-3s, more red tides).</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–3</div><div><h4>Do Now</h4><p>Ask 2 students about their comics.</p></div></li>
+      <li><div class="t">3–6</div><div><h4>Launch</h4><p>Ask: <i>What might happen to ocean organisms as the ocean gets more acidic? What do humans get from the ocean?</i> Optional 2-min clip of the DFO <b>Ocean Acidification</b> video if students can't picture it.</p></div></li>
+      <li><div class="t">6–15</div><div><h4>Read (p. 56)</h4><p>Individual reading. Think: answer the prompt alone.</p></div></li>
+      <li><div class="t">15–21</div><div><h4>Talk + Open Exchange (p. 57)</h4><p>Share one at a time, then discuss; write new ideas. First time this routine appears in the unit.</p></div></li>
+      <li><div class="t">21–35</div><div><h4>Card sort concept map</h4><p>Groups place the 9 cards on chart paper and draw labeled arrows for each impact. Differentiation: give a few cards at a time; model the first two arrows with a think-aloud. Students sketch their group's map on p. 58.</p></div></li>
+      <li><div class="t">35–48</div><div><h4>Class Consensus Discussion</h4><p>Pick 2 maps on purpose (one strong on CO₂ pathways, one strong on pollutant pathways). Steps: group shares → someone restates → clarifying questions → table talk → whole-class agreement. Make the Key Points explicit.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Assign Summary Task</h4><p>Q1–4 now if time; Q5–7 tonight (teacher materials allow exit ticket or homework).</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Food web</div><p>Name a sea animal you or your family eats. What does it eat?</p><div class="ans">Leads into food webs that start with plankton and shellfish.</div></div>
+      <div class="card"><div class="lbl">Option B · Shells</div><p>What are seashells made of?</p><div class="ans">Calcium carbonate.</div></div>
+      <div class="card"><div class="lbl">Option C · Two harms</div><p>Name one direct and one indirect way burning fossil fuels harms health.</p><div class="ans">Direct: PM2.5/asthma. Indirect: heat waves, acidification affecting food.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Why does acid "steal" carbonate from shell-building animals?</li>
+      <li>If oysters and plankton decline, who else in the food web is affected?</li>
+      <li>Which arrow on your map shows a <b>direct</b> health harm? Which shows an <b>indirect</b> one?</li>
+      <li>Where does "Temperature" connect? Does it connect to more than one card?</li>
+      <li>Is there a card with arrows going both ways? What does that mean for the system?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the reading · hinge question</div>
+      <h4>How does ocean acidification harm oysters?</h4>
+      <ul class="opts">
+        <li>A. The acid dissolves the water they breathe<em>Not the mechanism.</em></li>
+        <li class="right">B. Hydrogen ions bind to carbonate, leaving less to build calcium carbonate shells, so larvae grow slowly or die<em>Correct.</em></li>
+        <li>C. CO₂ makes the water too warm<em>Warming is a separate effect.</em></li>
+        <li>D. Particulate matter clogs their gills<em>That's air pollution, not acidification.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During consensus</div>
+      <h4>Which is an <b>indirect</b> effect of CO₂ on human health?</h4>
+      <ul class="opts">
+        <li>A. Asthma from breathing soot<em>Direct effect of particulates.</em></li>
+        <li class="right">B. Less omega-3 in seafood, raising heart-disease risk<em>Correct.</em></li>
+        <li>C. Carbon monoxide poisoning<em>Direct effect of CO.</em></li>
+        <li>D. Lung irritation from NOx<em>Direct effect of NOx.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Think-Talk-Open Exchange<small>packet pp. 56–57</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">How does ocean acidification affect biodiversity and human health?</div><p class="aa">More CO₂ → lower pH → hydrogen ions bind carbonate → less calcium carbonate for shells, so corals, oysters, clams, plankton, urchins, crabs and lobsters struggle; oyster populations have collapsed as larvae die. Food webs that rely on them shrink, so fewer fish. People who rely on seafood for protein (especially in West Africa, coastal Asia and island nations, where some get more than half their animal protein from fish) risk malnutrition. Acidification lowers omega-3 fatty acids in seafood, raising heart disease and inflammation risk. Acidified water can boost toxic red tides that kill fish and release airborne toxins that irritate lungs and worsen asthma.</p></div>
+      <div class="note"><b>Fix the number:</b> the reading says "7.8 million people get 15%" of their animal protein from seafood. FAO: about <b>3.3 billion</b> people get almost <b>20%</b>.</div>
+    </div></details>
+    <details class="key"><summary><span>Diagramming the Systemic Effects of CO₂<small>packet p. 58 · one possible concept map</small></span></summary><div class="keybody">
+      <ul>
+        <li><b>Burning Fossil Fuels → Carbon Dioxide Emissions</b> and <b>→ Particulate Emissions</b></li>
+        <li><b>Particulate Emissions → Air Quality</b> (worse) <b>→ Human Health</b> (respiratory, heart disease)</li>
+        <li><b>CO₂ Emissions → Temperature</b> (greenhouse effect) <b>→ Human Health</b> (heat), <b>→ Oceans</b> (warming, die-offs), <b>→ Air Quality</b> (heat speeds ozone formation)</li>
+        <li><b>CO₂ Emissions → Oceans</b> (acidification) <b>→ Animals</b> (shell-builders, fish) <b>→ Human Health</b> (less food, fewer omega-3s, red-tide toxins)</li>
+        <li><b>CO₂ Emissions → Plants</b> (more photosynthesis, extra carbon absorbed) and <b>Plants → CO₂</b> (absorb; a stabilizing loop)</li>
+        <li><b>Temperature → Plants and Animals</b> (habitat stress)</li>
+      </ul>
+      <p>Accept other valid layouts; what matters is labeled arrows that show the impact of each card on the next.</p>
+    </div></details>
+    <details class="key"><summary><span>Summary Task<small>packet pp. 59–60, Q1–7</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1–4. Discussion reflection (went well, improve, person who helped, idea I contributed)</div><p class="aa">Personal. Accept specific, honest answers that name a real idea or person from today's discussion.</p></div>
+      <div class="qa"><div class="qq">5. How did comparing inputs and outputs of the model in the past and present help describe how human greenhouse gases change carbon storage in the ocean and biosphere?</div><p class="aa">In 1850 combustion was 0.05 GtC/yr and nearly nothing extra was absorbed; by 2024 combustion was 9.8 GtC/yr and the ocean and land were absorbing ~2.9 and ~3.1 GtC/yr extra. The comparison shows that human CO₂ is piling up in the surface ocean (900 → ~1,081 GtC) and being taken up by plants, faster than natural processes can balance it.</p></div>
+      <div class="qa"><div class="qq">6. How did the computational model support your claims about human impacts on carbon movement?</div><p class="aa">It put numbers on each reservoir and flow, so we could show which ones changed and by how much (e.g., the atmosphere gained ~320 GtC, fossil fuels lost ~500 GtC), and test what would happen with different emissions. That is stronger evidence than a description alone.</p></div>
+      <div class="qa"><div class="qq">7. What role do human technologies play in stabilizing or destabilizing natural systems, and how does that affect biodiversity and human health?</div><p class="aa">Fossil-fuel technologies destabilize systems by moving geosphere carbon into the air and ocean and releasing pollutants, which harms biodiversity (shell-builders, food webs) and health. Technologies that replace or reduce burning (nuclear, renewables, cleaner vehicles) or restore carbon sinks can help stabilize them, though each has its own costs and risks.</p></div>
+      <div class="note"><b>Key points to make explicit (teacher materials):</b> burning fossil fuels emits both CO₂ and polluting emissions · polluting emissions cause health problems and death · CO₂ doesn't directly harm humans but disrupts natural systems · CO₂ has been increasing in the atmosphere, biosphere and hydrosphere · in the atmosphere it raises temperatures · in the hydrosphere it causes acidification · acidification disrupts ocean ecosystems, which can cause nutrition deficiencies and respiratory problems.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Trace one path from "Burning Fossil Fuels" to "Human Health" that goes through the ocean.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Summary Task Q2: one thing we can improve in our next discussion.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · Summary Task + mini drawing</h3>
+    <div class="hw">
+      <h4>Summary Task Q5–7 + "Where Would You Cut?"</h4>
+      <p>Finish the Summary Task (pp. 59–60). Then copy your group's concept map in miniature and draw scissors on the <b>one arrow</b> you think an engineering solution could cut. (This is the Elaborate warm-up.)</p>
+      <ul class="checks">
+        <li>Q5–7 answered with numbers from your model table</li>
+        <li>Mini map with at least 6 labeled arrows</li>
+        <li>Scissors on one arrow, with the solution named</li>
+        <li>"I chose…" note: why <b>that</b> arrow</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-7"><small>Back</small>← Day 7 · Ocean Acidification</a><a class="next" href="#day-9"><small>Next</small>Day 9 · Using Oceans to Capture Carbon →</a></div>
+</div>
+
+<!-- ===================== DAY 9 ===================== -->
+<div class="view" id="day-9" data-phase="elaborate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 9 · Elaborate</div>
+    <h2>Using Oceans to Capture Carbon</h2>
+    <p class="q">How can we design and refine solutions to reduce the impacts of human activities on natural systems?</p>
+    <div class="tags"><span class="tag">Packet pp. 61–65</span><span class="tag">Table groups</span><span class="tag">Text annotation · Idea Carousel</span><span class="tag">Concept maps from Day 8</span><span class="tag">Chart paper</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Mangroves and seagrass store carbon in sediment where it decays slowly, and they send <b>basic water</b> to the ocean that offsets acidification.</li>
+      <li>Coastal restoration also helps fish habitat and protects coasts from flooding and erosion.</li>
+      <li>It is expensive ($80,000–160,000 per hectare), funding is hard to get, success is uncertain (38–64.5%), and few sites are monitored.</li>
+      <li>Refining a solution means naming criteria, constraints and tradeoffs, then changing the design to fit them.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Ask 3 students which arrow they "cut" on their map.</p></div></li>
+      <li><div class="t">4–7</div><div><h4>Launch (p. 61)</h4><p>Answer the prompt: where in the diagram could humans act? Then introduce today's solution: coastal restoration.</p></div></li>
+      <li><div class="t">7–17</div><div><h4>Read + annotate (pp. 61–62)</h4><p>Underline system impacts; + for ways it helps; − for challenges or costs; ? for confusion.</p></div></li>
+      <li><div class="t">17–33</div><div><h4>Steps 1–4 (pp. 63–64, groups)</h4><p>Use the Day 8 concept map for Step 1. Groups record on chart paper. If stuck on refinements, show <b>Citizen Science</b> or <b>Saving turtles in Nicaragua</b> (community monitoring ideas).</p></div></li>
+      <li><div class="t">33–45</div><div><h4>Idea Carousel</h4><p>Rotate to other posters; leave feedback; return and revise.</p></div></li>
+      <li><div class="t">45–50</div><div><h4>Reflect (p. 65)</h4><p>Locally and globally. Finish at home if needed.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Local</div><p>Jamaica Bay and the Hudson River have salt marshes. What could living plants at the shore do for NYC during a storm?</p><div class="ans">Slow waves, reduce flooding and erosion.</div></div>
+      <div class="card"><div class="lbl">Option B · Recall</div><p>What does adding a base do to an acid?</p><div class="ans">Neutralizes it; raises pH.</div></div>
+      <div class="card"><div class="lbl">Option C · Compare</div><p>Planting trees on land vs. restoring seagrass: which would store carbon longer? Guess.</p><div class="ans">Seagrass/mangroves can bury carbon in sediment for a long time; changes in ocean chemistry can last over 1,000 years (reading).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Which arrow on your concept map does coastal restoration weaken?</li>
+      <li>How does it help both the atmosphere and the hydrosphere?</li>
+      <li>What is the hardest constraint: cost, funding, success rate, or monitoring?</li>
+      <li>How could you raise the success rate? Who could do the monitoring?</li>
+      <li>Does this solution reduce fossil fuel burning? What does that mean for air pollution deaths?<span>No; it treats effects of CO₂, not the pollutants. Combine solutions.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After reading · hinge question</div>
+      <h4>How does coastal restoration reduce ocean acidification?</h4>
+      <ul class="opts">
+        <li>A. Mangroves absorb hydrogen ions directly from the ocean<em>Not described.</em></li>
+        <li class="right">B. Slow decay in coastal sediment sends more basic water to the ocean and buries carbon instead of releasing it<em>Correct.</em></li>
+        <li>C. It stops people from burning fossil fuels<em>It doesn't change emissions.</em></li>
+        <li>D. It cools the ocean so less CO₂ dissolves<em>Not the mechanism in the reading.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Step 4</div>
+      <h4>Which problem does coastal restoration NOT address?</h4>
+      <ul class="opts">
+        <li>A. Ocean acidification<em>It helps.</em></li>
+        <li>B. Coastal flooding<em>It helps.</em></li>
+        <li class="right">C. PM2.5 air pollution from cars and power plants<em>Correct: needs other solutions.</em></li>
+        <li>D. Loss of fish habitat<em>It helps.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Launch prompt<small>packet p. 61</small></span></summary><div class="keybody">
+      <p>Good targets: the <b>CO₂ Emissions → Oceans</b> arrow (capture carbon or offset acidity), <b>Burning Fossil Fuels → CO₂/Particulates</b> (use less fossil fuel), or <b>Particulates → Air Quality</b> (filters, cleaner vehicles). Today's text targets the CO₂ → Oceans arrow.</p>
+    </div></details>
+    <details class="key"><summary><span>Steps 1–4<small>packet pp. 63–64 · strong group responses</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Step 1. Use a model to analyze the solution</div><p class="aa"><b>Atmosphere:</b> less CO₂ (plants take it up; carbon buried in sediment). <b>Hydrosphere:</b> higher coastal pH, so less acidification; carbon stored in ocean chemistry for over 1,000 years. <b>Biosphere:</b> more habitat for fish and shellfish; more biodiversity. <b>Human health:</b> more stable seafood supply and nutrition, fewer red tides, less flooding and erosion.</p></div>
+      <div class="qa"><div class="qq">Step 2. Define the problem and describe the solution</div><p class="aa">Burning fossil fuels moved carbon from the geosphere to the atmosphere; the ocean absorbs part of it and becomes more acidic, harming shell-builders, food webs and people who rely on seafood. Humans also destroyed many coastal ecosystems. Restoration replants mangroves and seagrass, which capture carbon, bury it in sediment and send basic water to the ocean. It <b>stabilizes</b> the atmosphere, hydrosphere and biosphere.</p></div>
+      <div class="qa"><div class="qq">Step 3. Refine the solution</div><p class="aa"><b>Criteria:</b> measurably raise coastal pH and store carbon; survival rates above the current 38–64.5%; benefits for local fisheries and flood protection. <b>Constraints:</b> cost ($80,000–160,000/ha), hard-to-get funding, few monitored sites, real sites more complex than models. <b>Tradeoffs:</b> lower cost than engineered carbon removal, but slower and less certain; land at the coast can't be used for other things. <b>Refinement:</b> train and pay local communities and students to plant and monitor (citizen science); choose sites with the best survival odds; pair with flood-protection budgets so cities help fund it; test model predictions at a few pilot sites before scaling up.</p></div>
+      <div class="qa"><div class="qq">Step 4. Evaluate the refinement</div><p class="aa">Solves the problem by capturing carbon and offsetting acidity while protecting coasts. Impacts systems by stabilizing ocean chemistry and increasing biodiversity. Costs fall if local communities share the work; safety is high (no hazardous materials); environmental impacts are mostly positive, but survival is not guaranteed and it does not reduce air pollution.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Reflect<small>packet p. 65</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">How does this solution impact communities locally?</div><p class="aa">Coastal communities get flood and erosion protection, better fishing, jobs in planting and monitoring, and possibly fewer red tides. In NYC: marsh restoration in places like Jamaica Bay could buffer storm surge.</p></div>
+      <div class="qa"><div class="qq">How does this solution impact communities globally?</div><p class="aa">Less CO₂ in the atmosphere helps everyone by slowing warming and acidification; healthier fisheries protect people worldwide who depend on seafood, especially in coastal and island nations. But one site is small, so it only works at scale and together with cutting emissions.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>One + and one − you marked in the reading, and why they matter.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Our group's refinement in one sentence, and the constraint it addresses.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Coast Cross-Section</h4>
+      <p>Draw a side view of a coastline: air, a mangrove or seagrass bed, sediment and open ocean. Show where carbon goes and where basic water flows.</p>
+      <ul class="checks">
+        <li>CO₂ arrow into plants; carbon arrow into sediment labeled "buried, decays slowly"</li>
+        <li>"Basic water" arrow toward the ocean with pH going up</li>
+        <li>One + and one − label from your annotations</li>
+        <li>"I chose…" note: your group's <b>refinement</b> drawn into the picture (who's doing the work?)</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-8"><small>Back</small>← Day 8 · Impacts of CO₂</a><a class="next" href="#day-10"><small>Next</small>Day 10 · Limited Emissions Zones →</a></div>
+</div>
+
+<!-- ===================== DAY 10 ===================== -->
+<div class="view" id="day-10" data-phase="evaluate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 10 · Evaluate</div>
+    <h2>Limited Emissions Zones</h2>
+    <p class="q">How can we reduce the number of deaths from pollution generated by burning fossil fuels?</p>
+    <div class="tags"><span class="tag">Packet pp. 66–68 + Evaluating and Refining handout</span><span class="tag">Table groups</span><span class="tag">Domino Discover · Driving Question Board</span><span class="tag">En-ROADS</span><span class="tag"><a href="../unit6-sustainable-future/unit6-burning-fossil-fuels.html#evaluate">Chapter: Evaluate</a></span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Paris's low emission zones ban the most-polluting vehicles using Crit'Air badges, tightening over time; NO₂ and PM2.5 have improved since.</li>
+      <li>NYC's vehicles cause ~11% of local PM2.5 and ~28% of NOx; congestion pricing (Jan 2025) charges by location, not by emissions.</li>
+      <li>Combining solutions (nuclear electricity, coastal restoration, low emission zones) reduces air pollution <b>and</b> ocean acidification more than any one alone.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–3</div><div><h4>Do Now</h4></div></li>
+      <li><div class="t">3–6</div><div><h4>DQB check-in</h4><p>Ask where the class stands on the fossil-fuel DQB questions (use your class's real ones).</p></div></li>
+      <li><div class="t">6–14</div><div><h4>Read: Limited Emissions Zones (pp. 66–68)</h4><p>Paris zones, badges, the 2015/2019/2023 NO₂ and PM2.5 maps, then NYC. Correct "nitrous oxide" → nitrogen oxides.</p></div></li>
+      <li><div class="t">14–32</div><div><h4>Evaluating and Refining for NYC (Steps 1–4 + Reflect)</h4><p>Groups use their Day 8 concept maps. Prompts below (not in the SY 26-27 packet: hand out or project). Confer.</p></div></li>
+      <li><div class="t">32–38</div><div><h4>Domino Discover</h4><p>Each group shares its refinement; tally positions on chart paper. Consensus not required.</p></div></li>
+      <li><div class="t">38–46</div><div><h4>En-ROADS (whole class)</h4><p>Graphs → Impacts → "Air Pollution from Energy." Move the sliders that match our solutions (e.g., nuclear, transport electrification, reduce coal). Reset ("reset policies"); view "Ocean Acidification." Ask: <i>Does the model support or challenge our thinking?</i></p></div></li>
+      <li><div class="t">46–50</div><div><h4>Revisit the DQB</h4><p>Which questions did we answer? Which are still open? Add new ones. Tell students the next 5E takes up the unanswered <b>heat</b> questions: how land use changes temperature and health.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Local</div><p>Should cars be banned from part of your neighborhood? One reason for, one against.</p></div>
+      <div class="card"><div class="lbl">Option B · Recall</div><p>We studied two solutions so far (nuclear, coastal restoration). Which one reduces air pollution deaths more directly?</p><div class="ans">Nuclear (replaces burning); coastal restoration targets CO₂'s ocean effects.</div></div>
+      <div class="card"><div class="lbl">Option C · Fairness</div><p>Who might be hurt most by a rule banning old cars?</p><div class="ans">People who can't afford newer or electric cars, delivery workers. A real tradeoff for Step 3.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>How does your concept map help you decide what impact this solution would have?</li>
+      <li>How does it fit within the systems we have described?</li>
+      <li>What barriers might a solution like this face in a new context like NYC?</li>
+      <li>How could you refine it to work better in NYC? How is it different from congestion pricing?</li>
+      <li>Does this help with acidification too? Through which arrow?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After reading · hinge question</div>
+      <h4>How is NYC's congestion pricing different from Paris's low emission zones?</h4>
+      <ul class="opts">
+        <li>A. Congestion pricing bans all cars<em>It charges a toll; it doesn't ban.</em></li>
+        <li class="right">B. Congestion pricing charges vehicles entering part of Manhattan regardless of how much they pollute<em>Correct.</em></li>
+        <li>C. Paris charges a toll; NYC uses badges<em>Reversed.</em></li>
+        <li>D. They are the same<em>Paris sorts vehicles by emissions.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After En-ROADS · unit-level</div>
+      <h4>Why combine nuclear power, coastal restoration and low emission zones?</h4>
+      <ul class="opts">
+        <li>A. One of them alone would solve the whole problem<em>Each targets a different part.</em></li>
+        <li class="right">B. Each targets a different part of the system: power-plant pollution, ocean CO₂ and acidity, and vehicle pollution<em>Correct.</em></li>
+        <li>C. They're cheaper together<em>Not the reason.</em></li>
+        <li>D. They all directly remove particulate matter from the air<em>Only reducing burning lowers PM.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Evaluating and Refining Limited Emissions Zones for a New Context</h3>
+    <div class="note"><b>Prompts (from the earlier packet version; missing from the SY 26-27 PDF):</b> For this task, you will evaluate and refine France's solution of low emissions zones to work for New York City. <b>Step 1.</b> Use your group's concept map from Explain 2 to analyze the impacts of reducing car emissions on the atmosphere, biosphere, hydrosphere and human health. <b>Step 2.</b> Describe the problem low emissions zones are trying to solve: what systems are impacted, how humans altered them, how the zones work and whether they stabilize or destabilize the systems. <b>Step 3.</b> Refine France's zones for NYC: criteria, constraints, tradeoffs, and how you'd alter the solution. <b>Step 4.</b> Evaluate your refinement: how it solves the problem, how it impacts the systems, and its costs, safety and environmental impacts. <b>Reflect:</b> How does this solution affect systems locally? Globally?</div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Steps 1–4 + Reflect<small>Evaluating and Refining handout · strong group responses</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Step 1. Use a model to analyze the solution</div><p class="aa">Fewer polluting cars → less PM2.5, NOx and CO → better <b>air quality</b> and <b>human health</b> (fewer respiratory and heart deaths). Less CO₂ from vehicles → slightly less warming (atmosphere) and less CO₂ entering the ocean (hydrosphere), so less acidification → healthier shellfish and food webs (biosphere).</p></div>
+      <div class="qa"><div class="qq">Step 2. Define the problem and describe the solution</div><p class="aa">Vehicles burning gasoline and diesel release pollutants that cause deaths (~1,400 in NYC in 2016) and CO₂ that destabilizes the atmosphere and ocean. Low emission zones let only cleaner vehicles into an area, sorted by badges, and tighten over time; Paris's NO₂ and PM2.5 have improved. They <b>stabilize</b> air quality and reduce stress on other systems.</p></div>
+      <div class="qa"><div class="qq">Step 3. Refine the solution for NYC</div><p class="aa"><b>Criteria:</b> measurably lower NOx and PM2.5 where people live; fewer pollution deaths; fair to low-income drivers and workers. <b>Constraints:</b> restricting cars is unpopular in the U.S.; many trucks and deliveries; people who can't afford newer cars; the zone would need enforcement. <b>Tradeoffs:</b> cleaner air vs. higher cost or less convenience for some drivers. <b>Refinement:</b> build on congestion pricing by charging more for higher-emission vehicles (or exempting electric ones); start with the dirtiest trucks and buses; put the first zones where asthma rates are highest, not just Midtown; phase in over years; offer trade-in help and more bus service so people have other options.</p></div>
+      <div class="qa"><div class="qq">Step 4. Evaluate the refinement</div><p class="aa">It targets the vehicles that cause the most pollution, so it should lower PM2.5 and NOx where people breathe it, stabilizing air quality and health and slightly reducing CO₂. Costs: cameras, enforcement, subsidies; drivers pay more. Safety: no new hazards; fewer pollution deaths. Environment: positive, but it doesn't touch power plants or heating, so combine it with clean electricity.</p></div>
+      <div class="qa"><div class="qq">Reflect: locally / globally</div><p class="aa">Locally: cleaner air in the zone and on its edges, fewer asthma attacks; possible extra traffic just outside it; costs for some drivers. Globally: less CO₂ and less acidification, though one city's share is small; a working NYC model could spread to other U.S. cities.</p></div>
+    </div></details>
+    <details class="key"><summary><span>En-ROADS discussion<small>teacher materials, Evaluate</small></span></summary><div class="keybody">
+      <p>Expect students to see that cutting coal and oil, electrifying transport and adding nuclear and renewables lower "Air Pollution from Energy" and slow ocean acidification. Acidification responds slowly, because CO₂ already in the air keeps dissolving. Treat En-ROADS outputs as <b>model projections</b>, and don't quote its numbers as measured data.</p>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Which of our three solutions would you fund first for NYC, and why? Use one piece of evidence from this 5E.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>One DQB question we answered, and one we didn't.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>NYC Clean-Air Zone Map</h4>
+      <p>Sketch a map of a part of NYC you know. Draw where your group's refined low-emission zone would go, which vehicles get in (draw the badge colors), and where the air should get cleaner.</p>
+      <ul class="checks">
+        <li>Zone boundary, plus at least one school, hospital or highway labeled</li>
+        <li>A legend showing which badges are allowed</li>
+        <li>One arrow back to the ocean labeled with how this also helps acidification</li>
+        <li>"I chose…" note: why you put the zone <b>there</b>, and who might push back</li>
+      </ul>
+      <p class="why">Keep this for the Performance Task: it is one of the three solutions students evaluate for the unit.</p>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-9"><small>Back</small>← Day 9 · Using Oceans to Capture Carbon</a><a class="next" href="#overview"><small>Done</small>Back to overview ↺</a></div>
+</div>
+
+<footer><a href="index.html">← Back to Teacher Hub</a><br>Built from the New Visions Earth &amp; Space Science Unit 6 (Solutions for a Sustainable Future) materials, SY 26-27: Teacher Materials, Burning Fossil Fuels 5E (pp. 27–66), and Student Materials, Burning Fossil Fuels 5E (pp. 24–68), with the Unit 6 Unit Plan and earlier Google Doc versions of the student packet for comparison. Model values from the New Visions Carbon Cycle Computational Model. Data: Vohra et al. 2021 and Lelieveld et al. 2023 (fossil-fuel air-pollution deaths), WHO, NOAA GML and NOAA PMEL (CO₂, ocean pH), EIA and RTE (electricity), FAO SOFIA 2020 (fish protein), NYC DEP and MTA (NYC vehicles), Bayraktarov et al. 2016 (restoration costs, as cited in the packet). Student chapter: <a href="../unit6-sustainable-future/unit6-burning-fossil-fuels.html">Unit 6: Burning Fossil Fuels</a>. Schedules assume 50-minute periods.</footer>
+</main>
+
+<script>
+(function(){
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('#chips .chip'));
+  var ids = views.map(function(v){return v.id});
+  function show(){
+    var id = (location.hash || '').slice(1);
+    if (ids.indexOf(id) === -1) id = 'overview';
+    views.forEach(function(v){ v.hidden = v.id !== id; });
+    chips.forEach(function(c){
+      if (c.getAttribute('href') === '#' + id) { c.setAttribute('aria-current','page'); var r=c.parentNode; r.scrollLeft = c.offsetLeft - (r.clientWidth - c.offsetWidth)/2; }
+      else c.removeAttribute('aria-current');
+    });
+    window.scrollTo({top:0,left:0,behavior:'instant'});
+  }
+  window.addEventListener('hashchange', show);
+  show();
+
+  // prep checklist memory (per device)
+  var boxes = document.querySelectorAll('#prep input[type=checkbox]');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem('u6-fossil-prep') || '{}'); } catch(e) {}
+  Array.prototype.forEach.call(boxes, function(b){
+    if (saved[b.id]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[b.id] = b.checked;
+      try { localStorage.setItem('u6-fossil-prep', JSON.stringify(saved)); } catch(e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>
