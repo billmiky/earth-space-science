@@ -1,0 +1,2309 @@
+---
+title: "Unit 5: Wind"
+subtitle: "How do meteorologists predict where storms will land? How do strong winds form? How can we protect ourselves from storm damage?"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: false
+    code-fold: true
+execute:
+  echo: false
+  warning: false
+---
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600;800&display=swap');
+
+.wd-engage-box { background: linear-gradient(135deg, #0b5c8a 0%, #0a3d62 100%); color: white; padding: 22px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(10, 61, 98, 0.3); }
+.wd-explore-box { background: linear-gradient(135deg, #00695c 0%, #0a5ea8 100%); color: white; padding: 22px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 105, 92, 0.3); }
+.wd-explain-box { background: linear-gradient(135deg, #4834a8 0%, #5e35b1 100%); color: white; padding: 22px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
+.wd-elaborate-box { background: linear-gradient(135deg, #b54708 0%, #9a3412 100%); color: white; padding: 22px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(181, 71, 8, 0.3); }
+.wd-evaluate-box { background: linear-gradient(135deg, #b71c1c 0%, #ad1457 100%); color: white; padding: 22px; margin: 20px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(183, 28, 28, 0.3); }
+.wd-engage-box h2, .wd-explore-box h2, .wd-explain-box h2, .wd-elaborate-box h2, .wd-evaluate-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.7em; margin-top: 0; color: white !important; border: none; }
+.wd-engage-box h3, .wd-explore-box h3, .wd-explain-box h3, .wd-elaborate-box h3, .wd-evaluate-box h3 { color: white !important; }
+.wd-engage-box a, .wd-explore-box a, .wd-explain-box a, .wd-elaborate-box a, .wd-evaluate-box a { color: #ffe0b2; }
+.wd-pe-badge { display: inline-block; background: linear-gradient(135deg, #0284c7 0%, #0f766e 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; margin: 4px; letter-spacing: .5px; }
+.wd-big-question { font-family: 'Space Grotesk', sans-serif; font-size: 2em; font-weight: 800; background: linear-gradient(135deg, #0284c7 0%, #4834a8 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 26px 0 18px 0; text-align: center; line-height: 1.2; }
+.wd-key-idea { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); color: #0c1a2a; padding: 16px 20px; margin: 20px 0; border-radius: 12px; border-left: 8px solid #0284c7; font-size: 1.02em; }
+.wd-key-idea h3 { color: #0c1a2a !important; margin-top: 0; }
+.wd-key-idea a { color: #075985; }
+.wd-student-task { background: #fff3e0; color: #1a1a1a; border-left: 5px solid #ff9800; padding: 16px 20px; margin: 15px 0; border-radius: 0 10px 10px 0; overflow-x: auto; }
+.wd-student-task h3 { color: #7c2d12 !important; margin-top: 0; }
+.wd-student-task a { color: #9a3412; }
+.wd-student-task table { color: #1a1a1a; font-size: .9em; }
+.wd-fix { background: #fef9c3; color: #422006; border-left: 5px solid #ca8a04; padding: 12px 16px; margin: 14px 0; border-radius: 0 10px 10px 0; font-size: .95em; }
+.wd-fix a { color: #713f12; }
+.wd-model-note { background: #ede9fe; color: #2e1065; border-left: 5px solid #7c3aed; padding: 10px 14px; margin: 10px 0 16px; border-radius: 0 10px 10px 0; font-size: .9em; }
+.wd-note { font-size: .82em; opacity: .8; margin: 4px 0 14px; }
+.wd-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 8px 0 16px; }
+.wd-scroll table { min-width: 520px; }
+.wd-card { background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px 14px; margin: 8px 0 14px; }
+.wd-card b { color: #0f172a; }
+.wd-btn { min-height: 44px; padding: 8px 18px; border-radius: 22px; border: none; background: linear-gradient(135deg, #0284c7, #4834a8); color: #fff; font-weight: 700; cursor: pointer; margin: 6px 6px 6px 0; }
+.wd-btn-grey { background: #64748b; }
+.wd-lbl { display: block; font-weight: 700; margin: 12px 0 4px; }
+.wd-textarea { width: 100%; min-height: 84px; font: inherit; font-size: .93em; padding: 8px; border-radius: 8px; border: 1px solid #94a3b8; background: #fff; color: #0f172a; box-sizing: border-box; }
+.wd-select { width: 100%; min-height: 44px; border: 2px solid #cbd5e1; border-radius: 8px; padding: 6px; background: #fff; color: #1a1a1a; }
+.wd-chip { display: inline-block; padding: 6px 12px; margin: 4px 4px 0 0; border-radius: 16px; background: #e2e8f0; color: #334155; font-weight: 700; font-size: .9em; }
+.wd-chip-on { background: #bbf7d0; color: #14532d; }
+.wd-video { position: relative; width: 100%; max-width: 720px; aspect-ratio: 16 / 9; margin: 10px auto 6px; border-radius: 12px; overflow: hidden; background: #0f172a; }
+.wd-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.wd-frame { width: 100%; border: 1px solid #cbd5e1; border-radius: 12px; background: #fff; display: block; }
+.wd-figure { margin: 12px auto 16px; max-width: 760px; text-align: center; }
+.wd-figure img { max-width: 100%; height: auto; border-radius: 8px; border: 1px solid #cbd5e1; background: #fff; }
+.wd-figure figcaption { font-size: .85em; opacity: .85; margin-top: 6px; text-align: left; }
+.wd-readout { background: #f1f5f9; color: #0f172a; border-radius: 10px; padding: 10px 14px; margin: 8px 0; font-size: .95em; }
+h1 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 800 !important; font-size: 2.2em !important; margin-top: 40px !important; }
+h2 { font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; color: #0369a1 !important; }
+.quarto-dark h2, [data-bs-theme="dark"] h2 { color: #7dd3fc !important; }
+.quarto-dark .wd-engage-box h2, .quarto-dark .wd-explore-box h2, .quarto-dark .wd-explain-box h2, .quarto-dark .wd-elaborate-box h2, .quarto-dark .wd-evaluate-box h2 { color: white !important; }
+.cell-output-display figure h2 { font-family: 'Inter', sans-serif !important; font-size: 1.02rem !important; font-weight: 700 !important; color: inherit !important; margin: 0 0 2px !important; padding: 0 !important; border: none !important; line-height: 1.3; }
+.cell-output-display figure h3 { font-family: 'Inter', sans-serif !important; font-size: .85rem !important; font-weight: 400 !important; opacity: .8; margin: 0 0 6px !important; padding: 0 !important; border: none !important; line-height: 1.3; }
+svg [aria-label="tip"] text { fill: #1a1a1a !important; }
+svg [aria-label="tip"] rect { fill: rgba(255, 255, 255, 0.97) !important; stroke: #d4d4d4 !important; }
+.cell-output-display svg { max-width: 100%; height: auto; }
+.cell-output-display canvas { max-width: 100%; height: auto; }
+form[class*="-checkbox"], form[class*="-radio"] { --input-width: 600px; max-width: 100%; }
+form[class*="-range"] { max-width: 100%; }
+</style>
+```
+
+<a class="quiz-jump-btn" href="#wd-quiz">🧠 Quiz ↓</a>
+
+<div class="wd-big-question">💨 Where Do Strong Winds Come From, and Can We Protect Ourselves? 🌀</div>
+
+<span class="wd-pe-badge">HS-ESS2-8</span> <span class="wd-pe-badge">HS-ETS1-1</span> <span class="wd-pe-badge">HS-ETS1-2</span> <span class="wd-pe-badge">Patterns</span> <span class="wd-pe-badge">Influence of Engineering on Society</span>
+
+::: {.callout-note collapse="true"}
+## 📒 Using this chapter with your student packet
+
+This chapter follows your **Wind 5E** packet (Unit 5: *Extreme Weather Coming to a Place Near You?*) step by step. Missed a class or need a refresher? Jump to the matching section:
+
+| Packet section | In this chapter |
+|---|---|
+| Engage: Gusting Winds (gust map, storm tracks, See-Think-Wonder, Brainstorm) | [Engage](#wd-engage) |
+| Explore 1, Model 1: Wind Formation on a Small Scale (bottles) | [Model 1](#wd-model-1) |
+| Explore 1, Model 2: Wind Formation on a Molecular Scale (Tables 1–3) | [Model 2](#wd-model-2) |
+| Explore 1, Model 3: Wind Movement on a Global Scale (balloon, Table 4) | [Model 3](#wd-model-3) |
+| Making Sense of the Wind Formation Investigation + rubric | [Making Sense 1](#wd-making-sense-1) |
+| Explain 1, Part 1: What caused the movement of air in the bottles? | [Explain 1, Part 1](#wd-bottle-model) |
+| Explain 1, Part 2: How does this work at global scales? (Global Circulation Model, Q1–2) | [Explain 1, Part 2](#wd-global) |
+| Wind belts, Air Masses in Winter Storm Jonas, Think-Talk-Open Exchange + Buzzwords | [Wind belts and Jonas](#wd-wind-belts) |
+| Explain 1: Summary Task | [Summary Task 1](#wd-summary-1) |
+| Explore 2: Local Winds Investigation, maps 1–4 (pressure, temperature, dew point, pressure change) | [Weather maps](#wd-maps) |
+| Analyzing a Complete Surface Observation Map (station models, fronts) | [Surface observations](#wd-surface-obs) |
+| Map 6: Winter Storm Jonas on 1/21/2016 | [Finding Jonas](#wd-jonas-map) |
+| Making Sense of the Local Winds Investigation + rubric | [Making Sense 2](#wd-making-sense-2) |
+| Explain 2: Explaining Storm Winds (Q1–14) + Summary | [Explain 2](#wd-explain-2) |
+| Elaborate Part 1: Comparing Hurricanes and Winter Storms | [Elaborate, Part 1](#wd-compare) |
+| Elaborate Part 2: Analyzing Solutions to Hurricane Winds (Read-Generate-Sort-Solve) | [Elaborate, Part 2](#wd-solutions) |
+| Evaluate: Wind Farms (notes table) | [Evaluate](#wd-evaluate) |
+| PTO: Revisiting the Performance Task: Wind (Q1–7) | [Performance Task helper](#wd-pt) |
+| Evaluate: Wind Rubric | [Rubric checklist](#wd-rubric) |
+:::
+
+```{ojs}
+//| echo: false
+wdD3 = require("d3@7.9.0")
+wdPlot = require("@observablehq/plot@0.6.16")
+wdTopo = require("topojson-client@3.1.0")
+```
+
+```{ojs}
+//| echo: false
+wdLand = {
+  try {
+    const t = await wdD3.json("../world-110m.json");
+    return wdTopo.feature(t, t.objects.land);
+  } catch (e) {
+    try {
+      const t = await wdD3.json("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-110m.json");
+      return wdTopo.feature(t, t.objects.land);
+    } catch (e2) { return null; }
+  }
+}
+```
+
+```{ojs}
+//| echo: false
+wdUS = {
+  try {
+    const us = await wdD3.json("https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json");
+    return {
+      states: wdTopo.feature(us, us.objects.states),
+      nation: wdTopo.feature(us, us.objects.nation),
+      borders: wdTopo.mesh(us, us.objects.states, (a, b) => a !== b)
+    };
+  } catch (e) { return null; }
+}
+```
+
+```{ojs}
+//| echo: false
+wdOrder = (q, n) => {
+  let h = 0;
+  for (const ch of q) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return wdD3.shuffler(wdD3.randomLcg((h % 10000) / 10000))(wdD3.range(n));
+}
+```
+
+```{ojs}
+//| echo: false
+wdBuildCards = function(body, questions, onAnswer) {
+  questions.forEach((qq, qi) => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff;color:#1e1b4b;border-radius:12px;padding:14px 18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.1);border:1px solid #e2e8f0;";
+    const qp = document.createElement("p");
+    qp.style.cssText = "font-weight:700;margin:0 0 10px;color:#1e1b4b;";
+    qp.innerHTML = `${qi + 1}. ${qq.q}`;
+    card.appendChild(qp);
+    const fb = document.createElement("div");
+    fb.style.cssText = "border-radius:8px;font-size:.92em;";
+    const order = wdOrder(qq.q, qq.options.length);
+    const shownCorrect = order.indexOf(qq.correct);
+    const btns = [];
+    order.map(i => qq.options[i]).forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = opt;
+      btn.style.cssText = "display:block;width:100%;min-height:44px;text-align:left;padding:10px 14px;margin:6px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;color:#1e1b4b;cursor:pointer;font-size:.95em;";
+      btn.onclick = () => {
+        if (card.dataset.answered) return;
+        card.dataset.answered = "true";
+        btns.forEach(b => { b.style.cursor = "default"; });
+        const right = btns[shownCorrect];
+        right.style.borderColor = "#48bb78"; right.style.background = "#f0fff4"; right.style.color = "#22543d"; right.style.fontWeight = "700";
+        const ok = oi === shownCorrect;
+        if (ok) {
+          fb.innerHTML = "✅ Correct! " + qq.explanation; fb.style.color = "#276749"; fb.style.background = "#f0fff4";
+        } else {
+          btn.style.borderColor = "#fc8181"; btn.style.background = "#fff5f5"; btn.style.color = "#9b2c2c";
+          fb.innerHTML = "❌ Not quite. " + qq.explanation; fb.style.color = "#9b2c2c"; fb.style.background = "#fff5f5";
+        }
+        fb.style.padding = "10px 14px"; fb.style.marginTop = "8px";
+        if (onAnswer) onAnswer(ok);
+      };
+      btns.push(btn);
+      card.appendChild(btn);
+    });
+    card.appendChild(fb);
+    body.appendChild(card);
+  });
+}
+```
+
+```{ojs}
+//| echo: false
+wdCheck = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="margin:14px 0 24px 0;text-align:center;">
+    <button type="button" style="display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#0284c7 0%,#4834a8 100%);color:#fff;border:none;padding:10px 22px;min-height:44px;border-radius:50px;font-size:.95em;font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(2,132,199,.4);">
+      <span>📝</span> ${title} <span class="wd-chevron" style="transition:transform .3s;">▼</span>
+    </button>
+    <div class="wd-quiz-body" style="max-height:0;opacity:0;overflow:hidden;transition:max-height .5s ease,opacity .4s ease;margin-top:0;text-align:left;"></div>
+  </div>`;
+  const toggle = outer.querySelector("button");
+  const chevron = toggle.querySelector(".wd-chevron");
+  const body = outer.querySelector(".wd-quiz-body");
+  let open = false;
+  toggle.onclick = () => {
+    open = !open;
+    body.style.maxHeight = open ? "6000px" : "0";
+    body.style.opacity = open ? "1" : "0";
+    body.style.marginTop = open ? "14px" : "0";
+    chevron.style.transform = open ? "rotate(180deg)" : "rotate(0)";
+  };
+  wdBuildCards(body, questions);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+wdVideo = (id, title, extra = "") => html`<div class="wd-video"><iframe src="https://www.youtube-nocookie.com/embed/${id}${extra}" title="${title}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`
+```
+
+# Engage: Gusting Winds {#wd-engage}
+
+::: {.wd-engage-box}
+## ❄️💨 Winter Storm Jonas, January 22–24, 2016
+
+**Investigative phenomenon:** *Winter Storm Jonas produced strong winds that caused serious disruptions to society, damage to property, and harm to human life. But warnings about the coming storm helped people prepare for its arrival.*
+
+In the Unit Opening you broke the big problem of **storm damage** into smaller pieces: **wind**, **water**, and **flooding**. This 5E tackles **wind**. We'll study one real storm closely, then use it to explain storms in general.
+:::
+
+Jonas dropped **27.5 inches** of snow on Central Park (the most there since records began in 1869) and **30.5 inches** at JFK Airport. It also brought **strong, gusty winds** that blew snow into drifts and knocked down trees. Here are the top wind gusts the National Weather Service measured around NYC:
+
+```{ojs}
+//| echo: false
+wdGusts = [
+  {site: "Eatons Neck (Long Island)", mph: 59, area: "Long Island"},
+  {site: "Islip (Long Island)", mph: 58, area: "Long Island"},
+  {site: "JFK Airport (Queens)", mph: 48, area: "New York City"},
+  {site: "LaGuardia Airport (Queens)", mph: 48, area: "New York City"}
+]
+```
+
+```{ojs}
+//| echo: false
+wdPlot.plot({
+  title: "Winter Storm Jonas: peak wind gusts near NYC (mph)",
+  subtitle: "Source: NOAA National Weather Service New York (Upton, NY) January 2016 blizzard summary. Dashed line: the 35 mph gust level in the NWS blizzard definition.",
+  width: Math.min(width, 720), height: 220, marginLeft: Math.min(200, width * 0.42), marginRight: 44,
+  x: {label: "Peak gust (mph)", grid: true, domain: [0, 65]},
+  y: {label: null},
+  color: {domain: ["New York City", "Long Island"], range: ["#0284c7", "#7c3aed"], legend: true},
+  marks: [
+    wdPlot.barX(wdGusts, {y: "site", x: "mph", fill: "area", sort: null}),
+    wdPlot.text(wdGusts, {y: "site", x: "mph", text: d => d.mph + " mph", dx: 26, fontWeight: "bold"}),
+    wdPlot.ruleX([35], {stroke: "#dc2626", strokeDasharray: "5,4", strokeWidth: 2}),
+    wdPlot.ruleX([0])
+  ]
+})
+```
+
+<p class="wd-note">A **gust** is a short burst of wind. The National Weather Service calls a storm a **blizzard** when there are sustained winds or frequent gusts of **35 mph or more** with falling or blowing snow that cuts visibility below ¼ mile for at least 3 hours.</p>
+
+**Watch in class:** *Winter Storm Jonas: a Historic Storm*. Your teacher may also show the forecast clip *Snow-M-G! Monster storm to hit DC in bullseye*. As you watch, notice **what the wind did** and **how people were warned ahead of time**.
+
+```{ojs}
+//| echo: false
+wdVideo("0nlWfuoeAgw", "Winter Storm Jonas: a Historic Storm")
+```
+
+::: {.callout-tip collapse="true"}
+## 📺 Forecast clip: Snow-M-G! Monster storm to hit DC in bullseye
+
+```{ojs}
+//| echo: false
+wdVideo("ggceuUZxoCg", "Snow-M-G! Monster storm to hit DC in bullseye")
+```
+:::
+
+Your packet also shows a map of **winter storm tracks from 2015–2016**. Storm tracks show a clear **pattern**: winter storms over the U.S. move from **west to east**, and many curve **northeast** up the East Coast toward NYC.
+
+::: {.wd-fix}
+⚠️ **Packet note:** the "Winter Storm Tracks 2015–2016" map in your packet is captioned *"Generated with AI using data from NOAA."* That means it is a **sketch, not an official NOAA data product**. Use it to see the general west-to-east pattern, but don't read exact paths from it. You'll check the pattern against real NOAA weather maps in Explore 2.
+:::
+
+::: {.wd-student-task}
+### ✏️ In your packet: Gusting Winds
+
+1. **See-Think-Wonder:** *What patterns do you observe in the maps and video? What do you think is causing that pattern?* What do you wonder?
+2. **Brainstorm:** *What problem are we trying to solve?* and *What would you look for in a solution that claimed to be able to fix this problem?*
+3. Write the solution idea you feel **most confident** about on a sticky note and trade ideas with classmates (**Rumors**).
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+- **See:** The strongest gusts were at the **coast** and on **Long Island** (58–59 mph), stronger than in the city itself (48 mph). Winter storms move across the U.S. **west to east**, and many curve **northeast**. The video shows blowing snow, downed trees, and closed roads.
+- **Think:** Any reasoned idea is fine for now: something **steers** storms east; open water lets wind **speed up**; **warm and cold air meeting** makes the storm.
+- **Wonder:** *What makes wind in the first place? Why do storms keep moving the same way? How did forecasters know where Jonas would go?*
+- **The problem:** strong storm winds **damage homes, trees, and power lines**, shut down travel, and **hurt people**.
+- **What to look for in a solution:** protects homes from wind; stops wind from forming; keeps wind from hitting cities; **better forecasting** so people can prepare; reduces damage. Strong ideas also say **how we'd know it worked** (something we could measure) and whether it's **worth the cost**.
+:::
+
+```{ojs}
+//| echo: false
+wdCheck("wd-check-engage", "Check: The problem we're solving", [
+  {q: "Which problem does the Wind 5E focus on?",
+   options: ["Heavy snow piling up", "Storm winds damaging property and harming people", "Storms are impossible to predict", "Coastal flooding"],
+   correct: 1,
+   explanation: "Snow is the Water 5E and coastal flooding is the Flooding 5E. This 5E is about wind. And Jonas shows storms CAN be predicted: forecasters warned people days ahead."},
+  {q: "Most winter storm tracks across the U.S. move…",
+   options: ["east to west", "west to east, often curving northeast", "north to south", "randomly"],
+   correct: 1,
+   explanation: "Storm tracks repeat a pattern. By the end of Explain 1 you'll be able to explain why."},
+  {q: "To decide whether a wind solution would work, what do we need to understand first?",
+   options: ["What causes wind to form and move", "How much snow fell", "The names of past storms", "Nothing: just pick the cheapest idea"],
+   correct: 0,
+   explanation: "If we know what causes wind, we can judge whether a solution could stop it from forming or reduce what it does. That's why Explore 1 investigates how wind forms."}
+])
+```
+
+# Explore 1: Wind Formation Investigation {#wd-explore-1}
+
+::: {.wd-explore-box}
+## 🔬 How Does Wind Form?
+
+How did the meteorologist know where Jonas would go? Forecasters use **past patterns** and **models**, and both have to do with how the **wind** blows. So let's find out what makes wind. You'll use **three models at three different scales** (a bottle model, a molecule simulation, and a spinning balloon) to find cause-and-effect links between **temperature, density, pressure, and rising or sinking air (buoyancy)**.
+:::
+
+## Model 1: Wind Formation on a Small Scale {#wd-model-1}
+
+In class you connect **two 1-liter bottles** with a tube. One bottle has **hot water**, the other **cold water** (filled to about an inch below the tube). Smoke from an incense stick held in the **cold** bottle for about 15 seconds shows how the air moves. *The incense does not heat the air. The smoke just makes the air's motion visible.*
+
+**Virtual stand-in:** choose where to hold the incense, then press **Run**.
+
+```{ojs}
+//| echo: false
+viewof wdBottleStart = Inputs.radio(["Cold-water bottle", "Hot-water bottle"], {label: "Hold the smoking incense in the:", value: "Cold-water bottle"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const W = 380, H = 300;
+  const wrap = html`<div class="wd-card" style="text-align:center;"></div>`;
+  const canvas = DOM.canvas(W, H);
+  canvas.style.width = "100%"; canvas.style.maxWidth = W + "px"; canvas.style.height = "auto";
+  canvas.setAttribute("role", "img");
+  canvas.setAttribute("aria-label", "Animation of two connected bottles: cold water on the left, hot water on the right, with smoke particles showing air movement");
+  const runBtn = html`<button type="button" class="wd-btn">▶ Run (15 s of smoke)</button>`;
+  const note = html`<div style="font-size:.9em;margin-top:6px;min-height:1.4em;"></div>`;
+  wrap.append(canvas, html`<div></div>`, runBtn, note);
+  const ctx = canvas.getContext("2d");
+  const L = {x0: 40, x1: 160}, R = {x0: 220, x1: 340}, top = 60, water = 230, tubeY0 = 200, tubeY1 = 220;
+  let parts = [], t = 0, running = false, raf;
+  const inCold = wdBottleStart === "Cold-water bottle";
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = "#f8fafc"; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = "#93c5fd"; ctx.fillRect(L.x0, water, L.x1 - L.x0, 50);
+    ctx.fillStyle = "#fca5a5"; ctx.fillRect(R.x0, water, R.x1 - R.x0, 50);
+    ctx.strokeStyle = "#334155"; ctx.lineWidth = 2;
+    for (const B of [L, R]) {
+      ctx.beginPath();
+      ctx.moveTo(B.x0, 280); ctx.lineTo(B.x0, top + 30); ctx.lineTo((B.x0 + B.x1) / 2 - 12, top); ctx.lineTo((B.x0 + B.x1) / 2 - 12, top - 22);
+      ctx.moveTo((B.x0 + B.x1) / 2 + 12, top - 22); ctx.lineTo((B.x0 + B.x1) / 2 + 12, top); ctx.lineTo(B.x1, top + 30); ctx.lineTo(B.x1, 280); ctx.lineTo(B.x0, 280);
+      ctx.stroke();
+    }
+    ctx.fillStyle = "#e2e8f0"; ctx.fillRect(L.x1, tubeY0, R.x0 - L.x1, tubeY1 - tubeY0);
+    ctx.strokeRect(L.x1, tubeY0, R.x0 - L.x1, tubeY1 - tubeY0);
+    ctx.fillStyle = "#1e293b"; ctx.font = "bold 12px sans-serif"; ctx.textAlign = "center";
+    ctx.fillText("Cold water", (L.x0 + L.x1) / 2, 262); ctx.fillText("(very cool land)", (L.x0 + L.x1) / 2, 276);
+    ctx.fillText("Hot water", (R.x0 + R.x1) / 2, 262); ctx.fillText("(very warm land)", (R.x0 + R.x1) / 2, 276);
+    for (const p of parts) {
+      ctx.fillStyle = `rgba(71,85,105,${Math.max(0.15, 0.7 - p.age / 1400)})`;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 3.2, 0, 2 * Math.PI); ctx.fill();
+    }
+    if (running && t < 900) {
+      const ix = inCold ? (L.x0 + L.x1) / 2 : (R.x0 + R.x1) / 2;
+      ctx.strokeStyle = "#92400e"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(ix, 20); ctx.lineTo(ix, 205); ctx.stroke();
+    }
+  }
+  function step() {
+    t++;
+    if (t < 900 && t % 3 === 0) {
+      const ix = inCold ? (L.x0 + L.x1) / 2 : (R.x0 + R.x1) / 2;
+      parts.push({x: ix + (Math.random() - .5) * 6, y: 205, age: 0});
+    }
+    for (const p of parts) {
+      p.age++;
+      const jx = (Math.random() - .5) * 1.2, jy = (Math.random() - .5) * 1.2;
+      if (p.x < L.x1) {
+        if (p.y < water - 14) { p.y += 0.55 + jy; p.x += jx; }
+        else { p.y += jy * 0.5; p.x += 0.6 + jx; if (p.y > water - 4) p.y = water - 4; }
+        if (p.x >= L.x1 - 2 && (p.y < tubeY0 + 2 || p.y > tubeY1 - 2)) { p.y = tubeY0 + 3 + Math.random() * (tubeY1 - tubeY0 - 6); }
+      } else if (p.x < R.x0) {
+        p.x += 1.0; p.y = Math.min(tubeY1 - 3, Math.max(tubeY0 + 3, p.y + jy * 0.4));
+      } else {
+        if (p.y > top + 34) { p.y -= 0.75 + Math.random() * 0.3; p.x += jx * 1.6; }
+        else { p.x += jx * 2; p.y += jy; }
+      }
+      p.x = Math.min(R.x1 - 4, Math.max(L.x0 + 4, p.x));
+      if (p.x > L.x1 - 1 && p.x < R.x0 + 1 && (p.y < tubeY0 || p.y > tubeY1)) p.x = p.x < (L.x1 + R.x0) / 2 ? L.x1 - 3 : R.x0 + 3;
+      p.y = Math.max(top + 8, Math.min(water - 3, p.y));
+    }
+    draw();
+    if (t > 1500) {
+      running = false;
+      note.textContent = inCold ? "Smoke sank in the cold bottle, flowed through the tube along the 'surface,' and rose in the hot bottle." : "Smoke rose straight up in the hot bottle and stayed near the top. Almost none moved through the tube.";
+      return;
+    }
+    raf = requestAnimationFrame(step);
+  }
+  runBtn.onclick = () => { cancelAnimationFrame(raf); parts = []; t = 0; running = true; note.textContent = "Watching..."; step(); };
+  draw();
+  invalidation.then(() => cancelAnimationFrame(raf));
+  return wrap;
+}
+```
+
+<div class="wd-model-note">🧪 <b>Model, not data:</b> this animation shows what students observe in the bottle lab (sped up). The motion follows the expected classroom observations; it is not a fluid-dynamics calculation.</div>
+
+**Connect the model to real life.** Match each part of the bottle model with what it stands for. (Your packet labels the parts 1–5 on its diagram; match the numbers to these parts on your copy.)
+
+```{ojs}
+//| echo: false
+{
+  const choices = ["(choose)", "Warm air", "Air moving across the surface of Earth", "Very warm land", "Cool air", "Very cool land"];
+  const parts = [
+    ["The cold water", "Very cool land"],
+    ["The hot water", "Very warm land"],
+    ["The air in the cold-water bottle", "Cool air"],
+    ["The air in the hot-water bottle", "Warm air"],
+    ["The tube between the bottles", "Air moving across the surface of Earth"]
+  ];
+  const box = html`<div class="wd-card"></div>`;
+  const sels = parts.map(([what]) => {
+    const row = html`<label style="display:block;margin:8px 0;font-weight:600;">${what}<br><select class="wd-select">${choices.map(c => html`<option>${c}</option>`)}</select></label>`;
+    box.append(row);
+    return row.querySelector("select");
+  });
+  const fb = html`<div style="margin-top:8px;font-size:.92em;"></div>`;
+  const btn = html`<button type="button" class="wd-btn">Check my matches</button>`;
+  btn.onclick = () => {
+    let right = 0;
+    sels.forEach((s, i) => { const ok = s.value === parts[i][1]; s.style.borderColor = ok ? "#16a34a" : "#dc2626"; if (ok) right++; });
+    fb.innerHTML = right === 5 ? "✅ All 5 correct! The water heats or cools the air above it, the way land does. The tube is the only path along the 'surface,' so air moving through it is the wind." : `${right} of 5 correct. Hint: each word is used once. The water acts like land; the tube is the path along Earth's surface.`;
+  };
+  box.append(btn, fb);
+  return box;
+}
+```
+
+::: {.wd-student-task}
+### ✏️ In your packet: Model 1 observations
+
+- **Sketch and describe** the air movement in the bottles.
+- Use the word box (**warm air · air moving across the surface of Earth · very warm land · cool air · very cool land**) to label parts **1–5** of the model.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+**Observations:** the smoke **sinks** and pools over the **cold** water, **flows through the tube** into the hot-water bottle, and **rises** there (it may curl back across the top). Your sketch should show a **down arrow** over cold, a **sideways arrow from cold to hot** through the tube, and an **up arrow** over hot.
+
+**Labels:** cold water = **very cool land** · air above it = **cool air** · hot water = **very warm land** · air above it = **warm air** · tube = **air moving across the surface of Earth**.
+:::
+
+## Model 2: Wind Formation on a Molecular Scale {#wd-model-2}
+
+Heat energy from Earth's surface is transferred to the air above it, which raises the air's temperature. What does that do to the **air particles**? Use the New Visions **Gas Properties Simulation** (the same one your packet uses). It has three tabs: **Single Compartment**, **Diffusion Chamber**, and **Convection Cell**. Use the slider to change temperature and the **Draggable Pressure Probe** to measure pressure in different places.
+
+```{=html}
+<iframe class="wd-frame" src="https://simulations.newvisions.org/gasproperties.html" title="New Visions Gas Properties Simulation" loading="lazy" style="height: 640px;"></iframe>
+<p class="wd-note">Too small on your phone? <a href="https://simulations.newvisions.org/gasproperties.html" target="_blank" rel="noopener">Open the Gas Properties Simulation in a new tab</a>.</p>
+```
+
+**Quick warm-up (virtual stand-in):** this column of gas molecules sits on "Earth's surface" and is pulled down by gravity. Cool it and heat it, and watch how many molecules crowd near the surface.
+
+```{ojs}
+//| echo: false
+viewof wdT2 = Inputs.range([80, 200], {step: 10, value: 140, label: "Temperature (K)"})
+```
+
+```{ojs}
+//| echo: false
+wdCol = {
+  const W = 300, H = 280, N = 150, g = 0.15;
+  const sigmaAt = T => 5.9 * Math.sqrt(T / 200);
+  const wrap = html`<div class="wd-card" style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;"></div>`;
+  const canvas = DOM.canvas(W, H);
+  canvas.style.width = "100%"; canvas.style.maxWidth = W + "px"; canvas.style.height = "auto";
+  canvas.setAttribute("role", "img");
+  canvas.setAttribute("aria-label", "A column of gas molecules above Earth's surface; colder molecules crowd near the bottom, warmer ones spread higher");
+  const stats = html`<div style="flex:1 1 180px;line-height:1.8;font-size:.95em;"></div>`;
+  wrap.append(canvas, stats);
+  const ctx = canvas.getContext("2d");
+  const s0 = sigmaAt(140);
+  const nrm = wdD3.randomNormal(0, s0);
+  const P = wdD3.range(N).map(() => ({x: Math.random() * W, y: H - Math.random() * H * 0.4, vx: nrm(), vy: nrm()}));
+  let T = 140, raf, frame = 0;
+  const state = {setT(newT) { const f = Math.sqrt(newT / T); for (const p of P) { p.vx *= f; p.vy *= f; } T = newT; }};
+  function tick() {
+    frame++;
+    for (const p of P) {
+      p.vy += g; p.x += p.vx; p.y += p.vy;
+      if (p.x < 3) { p.x = 3; p.vx = Math.abs(p.vx); }
+      if (p.x > W - 3) { p.x = W - 3; p.vx = -Math.abs(p.vx); }
+      if (p.y > H - 3) { p.y = H - 3; p.vy = -Math.abs(p.vy); }
+      if (p.y < 3) { p.y = 3; p.vy = Math.abs(p.vy); }
+    }
+    ctx.fillStyle = "#eff6ff"; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = "rgba(34,197,94,.18)"; ctx.fillRect(0, H * 0.8, W, H * 0.2);
+    ctx.fillStyle = "#166534"; ctx.font = "11px sans-serif"; ctx.fillText("Air near Earth's surface (bottom fifth)", 6, H * 0.8 + 13);
+    ctx.fillStyle = "#15803d"; ctx.fillRect(0, H - 3, W, 3);
+    ctx.fillStyle = wdD3.interpolateRgb("#2563eb", "#dc2626")((T - 80) / 120);
+    for (const p of P) { ctx.beginPath(); ctx.arc(p.x, p.y, 3.5, 0, 2 * Math.PI); ctx.fill(); }
+    if (frame % 10 === 0) {
+      const near = P.filter(p => p.y > H * 0.8).length;
+      const avgH = wdD3.mean(P, p => H - p.y);
+      stats.innerHTML = `<div><b>Temperature:</b> ${T} K</div>
+        <div><b>Molecules near the surface:</b> ${near} of ${N}</div>
+        <div><b>Average height:</b> ${Math.round(100 * avgH / H)}% of the column</div>
+        <div><b>Average speed:</b> ${(Math.sqrt(T / 200) * 100).toFixed(0)}% of the speed at 200 K</div>`;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+  tick();
+  invalidation.then(() => cancelAnimationFrame(raf));
+  wrap.value = state;
+  return wrap;
+}
+```
+
+```{ojs}
+//| echo: false
+wdColSet = wdCol.value.setT(wdT2)
+```
+
+<div class="wd-model-note">🧪 <b>Model:</b> only gravity and bounces off the walls act on these molecules. It shows the idea (warmer = faster and more spread out), not real air.</div>
+
+::: {.wd-student-task}
+### ✏️ In your packet: Tables 1–3
+
+- **Table 1 (Single Compartment):** at five temperatures, describe the particles' **motion**, **volume** taken up, **density**, and **pressure** on the bottom of the box.
+- **Table 2 (Diffusion Chamber):** set one side hotter than the other. Describe each side (temperature, motion, volume, density and pressure at top and bottom). Then **pause and remove the divider** and describe how the particles move.
+- **Table 3 (Convection Cell):** describe the temperature, motion, volume, density, and pressure in **Zones 1–4**.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking: Table 1 (try it first!)
+
+| | Very low → very high temperature |
+|---|---|
+| **Motion** | barely moving / slow → very fast, bouncing hard off the walls |
+| **Volume** | cold particles stay low and close together → hot particles spread through more of the box |
+| **Density** | high (crowded) → low (spread out) |
+| **Pressure on the bottom** | in this **closed box**, pressure on the walls **rises** as temperature rises (faster, harder hits) |
+
+**Watch out:** Table 1 is a *closed* box, so hotter = higher pressure there. In the bottles and in the real atmosphere, warm air **rises away and spreads out**, so the surface under it ends up with **lower** pressure. Tables 2 and 3 show why.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking: Tables 2 and 3 (try it first!)
+
+**Table 2 (Diffusion Chamber).** Your packet says "left" and "right"; which side is hot depends on how you set it up, so here it is by hot and cold:
+
+::: {.wd-scroll}
+| | Hotter side | Cooler side |
+|---|---|---|
+| Motion | fast | slow |
+| Volume | spread through more of the space | bunched together, lower down |
+| Density (top and bottom) | low, more even from top to bottom | high, especially near the bottom |
+| Pressure (top and bottom) | the probe reads lower near the bottom than on the cold side | highest at the bottom |
+| After removing the divider | warm particles are pushed **up and over** the top into the cold side | cold, dense particles flow **along the bottom** into the warm side (toward lower pressure) |
+:::
+
+The result: **warm ends up on top of cold.**
+
+**Table 3 (Convection Cell).** Match the zones on your screen by position:
+
+::: {.wd-scroll}
+| Zone | Temperature | Motion | Volume / density | Pressure |
+|---|---|---|---|---|
+| Over the heat source | warm | fast, **rising** | spread out · low density | **low** at the surface |
+| Across the top | warm → cooling | moving sideways toward the cool side | spread out, starting to crowd | higher aloft over the warm side, pushing air across |
+| Over the cool side | cool | slow, **sinking** | crowded · high density | **high** at the surface |
+| Along the bottom | cool → warming | moving sideways toward the warm side | crowded | flows from **high to low** pressure (this is the "wind") |
+:::
+:::
+
+```{ojs}
+//| echo: false
+wdCheck("wd-check-model2", "Check: Particles, density, and pressure", [
+  {q: "When the simulation's particles are heated, they…",
+   options: ["get bigger", "move faster and spread farther apart", "move slower and pack together", "get heavier"],
+   correct: 1,
+   explanation: "Particles don't grow or gain mass. They move faster, so the SPACE between them grows and the gas becomes less dense."},
+  {q: "In the Diffusion Chamber, when the divider is removed, the cold particles…",
+   options: ["slide under the warm particles along the bottom", "rise over the warm particles", "stay on their own side", "heat up instantly and mix evenly"],
+   correct: 0,
+   explanation: "Cold, dense particles flow along the bottom toward lower pressure, and the warm particles end up pushed on top."},
+  {q: "In the Convection Cell, where is the pressure at the surface highest?",
+   options: ["Under the rising warm air", "Under the sinking cool air", "Everywhere the same", "At the very top of the box"],
+   correct: 1,
+   explanation: "Cool, crowded air sinks and presses on the surface: high pressure. Air flows along the bottom from there toward the low pressure under the rising warm air."}
+])
+```
+
+## Model 3: Wind Movement on a Global Scale {#wd-model-3}
+
+In class, partners blow up a **balloon**, draw the **equator**, and label the **North Pole** (top) and **South Pole** (knot). Person 1 spins the balloon left to right, like Earth. Person 2 draws lines **from each pole to the equator** and **from the equator to each pole** with different colored markers.
+
+::: {.wd-fix}
+⚠️ **Packet note:** step 6 says "Look down from the top… **Look up from the top** of the balloon." The second view should be looking up from the **bottom** (the knot, the South Pole). That's what Table 4 asks for.
+:::
+
+**Virtual stand-in:** you are looking straight down at one pole. The pen moves in a **straight line** from the pole toward the equator while the balloon spins under it.
+
+```{ojs}
+//| echo: false
+viewof wdBalView = Inputs.radio(["North Pole view", "South Pole view"], {label: "Look from:", value: "North Pole view"})
+```
+
+```{ojs}
+//| echo: false
+viewof wdBalGo = Inputs.button("✏️ Draw the line")
+```
+
+```{ojs}
+//| echo: false
+{
+  wdBalGo;
+  const W = Math.min(width, 420), H = W, cx = W / 2, cy = H / 2, R = W * 0.42;
+  const north = wdBalView.startsWith("North");
+  const ccw = north;
+  const svg = wdD3.create("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("width", W).attr("height", H)
+    .attr("role", "img").attr("aria-label", "Balloon seen from above one pole, with a pen line drawn from the pole to the equator while it spins");
+  svg.append("rect").attr("width", W).attr("height", H).attr("rx", 12).attr("fill", "#0b1324");
+  const disk = svg.append("g");
+  disk.append("circle").attr("cx", cx).attr("cy", cy).attr("r", R).attr("fill", "#f472b6").attr("stroke", "#9d174d").attr("stroke-width", 2);
+  disk.append("circle").attr("cx", cx).attr("cy", cy).attr("r", R * 0.97).attr("fill", "none").attr("stroke", "#1e293b").attr("stroke-width", 3);
+  for (let k = 0; k < 8; k++) {
+    const a = k * Math.PI / 4;
+    disk.append("line").attr("x1", cx).attr("y1", cy).attr("x2", cx + R * Math.cos(a)).attr("y2", cy + R * Math.sin(a)).attr("stroke", "rgba(255,255,255,0.35)");
+  }
+  disk.append("circle").attr("cx", cx + R * 0.6).attr("cy", cy - R * 0.3).attr("r", 9).attr("fill", "#fde047");
+  const trace = disk.append("path").attr("fill", "none").attr("stroke", "#1d4ed8").attr("stroke-width", 4).attr("stroke-linecap", "round");
+  svg.append("line").attr("x1", cx).attr("y1", cy).attr("x2", cx).attr("y2", cy + R).attr("stroke", "#e2e8f0").attr("stroke-dasharray", "5,4").attr("stroke-width", 1.5);
+  const pen = svg.append("circle").attr("r", 7).attr("fill", "#22c55e").attr("stroke", "#fff").attr("stroke-width", 2).attr("cx", cx).attr("cy", cy);
+  svg.append("text").attr("x", cx).attr("y", cy - 6).attr("text-anchor", "middle").attr("fill", "#fff").attr("font-size", 11).attr("font-weight", 700).text(north ? "N. Pole" : "S. Pole");
+  svg.append("text").attr("x", 10).attr("y", 18).attr("fill", "#e2e8f0").attr("font-size", 12).text(`Spinning ${ccw ? "counterclockwise ↺" : "clockwise ↻"}`);
+  svg.append("text").attr("x", 10).attr("y", H - 10).attr("fill", "#cbd5e1").attr("font-size", 11).text("Dashed line = the pen's straight path · edge = equator");
+  const T = 3500, maxDeg = 100, pts = [], t0 = performance.now();
+  let raf;
+  const step = (now) => {
+    const t = Math.min(1, (now - t0) / T);
+    const rot = (ccw ? -1 : 1) * maxDeg * t;
+    const r = R * 0.95 * t;
+    const a = -rot * Math.PI / 180;
+    pts.push([cx - r * Math.sin(a), cy + r * Math.cos(a)]);
+    disk.attr("transform", `rotate(${rot},${cx},${cy})`);
+    trace.attr("d", wdD3.line()(pts));
+    pen.attr("cy", cy + r);
+    if (t < 1) raf = requestAnimationFrame(step);
+  };
+  raf = requestAnimationFrame(step);
+  invalidation.then(() => cancelAnimationFrame(raf));
+  const bend = ccw ? "right" : "left";
+  const note = html`<div class="wd-readout" style="max-width:420px;margin:6px auto;">From the ${north ? "North" : "South"} Pole, the balloon spins <b>${ccw ? "counterclockwise" : "clockwise"}</b>. The pen moves straight, but the line on the balloon <b>bends to the ${bend}</b> of the direction the pen is moving.</div>`;
+  return html`<div style="max-width:420px;margin:auto;">${svg.node()}${note}</div>`;
+}
+```
+
+<p class="wd-note">Tap "Draw the line" again after changing the view. The same bending happens for lines drawn from the equator toward a pole.</p>
+
+::: {.wd-student-task}
+### ✏️ In your packet: Model 3 (Table 4 + drawing)
+
+Draw your balloon. Then fill in **Table 4** for both hemispheres: How does the balloon appear to spin when you look toward the equator from this pole? Which way did the **pole → equator** line bend? Which way did the **equator → pole** line bend?
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking: Table 4 (try it first!)
+
+::: {.wd-scroll}
+| | Northern Hemisphere | Southern Hemisphere |
+|---|---|---|
+| Spin, looking toward the equator from this pole | **counterclockwise** (from above the North Pole) | **clockwise** (from below the South Pole) |
+| Pole → equator line bends | to the **right** of its direction of travel (curves toward the west) | to the **left** of its direction of travel (curves toward the west) |
+| Equator → pole line bends | to the **right** (curves toward the east) | to the **left** (curves toward the east) |
+:::
+
+These answers assume the balloon spins like Earth. If your partner spun it the other way, your bends flip. The key idea: **the two hemispheres bend in opposite directions.**
+:::
+
+## Making Sense of the Wind Formation Investigation {#wd-making-sense-1}
+
+::: {.wd-student-task}
+### ✏️ In your packet: See-Think-Wonder + Analysis Questions 1–4
+
+**See-Think-Wonder rows:** What happened to the air over "warm land" and "cool land"? Which direction was air flowing horizontally between the bottles? Which direction(s) was "air" flowing in the diffusion simulation, and why? How did the "wind" bend as the balloon spun, and how might that affect winds on Earth?
+
+1. How was the movement of air similar or different across the three models? What seemed to drive the air to move in each model?
+2. Based on what we saw in **Unit 3** with magma in Earth's mantle, how does matter change when it heats up? How does that affect its density?
+3. Based on **Units 3 and 4** (fluids of different densities), how do materials move and re-layer when they heat up?
+4. How do materials move based on differences in density and pressure?
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+**See-Think-Wonder**
+
+- **Bottles:** air over warm land **rose**; air over cool land **sank** (warm air is less dense; cool air is more dense).
+- **Between the bottles:** from the **cool** bottle to the **warm** bottle, from **higher** to **lower** pressure at the surface.
+- **Diffusion:** cold particles moved **along the bottom** into the warm side; warm particles were pushed **up and over** into the cold side. Why: the cold side was denser with higher pressure at the bottom, so cold air pushed under the warm air and lifted it.
+- **Balloon:** lines bent **right in the north** and **left in the south**. Earth's winds probably don't blow straight north–south; they curve east or west.
+
+**Analysis**
+
+1. Bottles and simulation show the **same pattern**: warm air rises, cool air sinks, and air flows along the surface from cool to warm. The driver: **temperature differences → density differences → pressure differences**. The balloon adds something different: **rotation bends** moving air (it doesn't start it).
+2. Particles **move faster and spread apart**, so the material **expands** and its **density decreases**.
+3. Heated, less dense material **rises and layers on top**; cooler, denser material **sinks underneath**. That makes **convection currents**: in the mantle (Unit 3), the ocean (Unit 4), and now the air.
+4. Denser material sinks and makes **higher pressure** below it. Fluids flow from **higher to lower pressure**, pushing less dense material up.
+:::
+
+```{ojs}
+//| echo: false
+wdCheck("wd-check-sense1", "Check: What drives the air?", [
+  {q: "What drove the air to move in the bottle and particle models?",
+   options: ["The incense smoke", "Differences in temperature, which caused differences in density and pressure", "Earth's rotation", "Gravity alone, with no temperature difference"],
+   correct: 1,
+   explanation: "The smoke only made motion visible. Gravity matters only because the densities differ. Rotation (the balloon) bends wind but doesn't start it."},
+  {q: "In the bottle model, the smoke in the tube moved…",
+   options: ["from the hot bottle to the cold bottle", "from the cold bottle to the hot bottle", "nowhere; it stayed in the cold bottle", "straight up out of both bottles"],
+   correct: 1,
+   explanation: "Air flowed along the 'surface' from the cool, high-pressure side to the warm, low-pressure side."}
+])
+```
+
+### Wind Formation Investigation Rubric {#wd-rubric-1}
+
+::: {.wd-student-task}
+### ✏️ In your packet: Student and Partner Rubric
+
+Score yourself (*No – I need help · Almost · Yes*): I know how this investigation connects to our unit · I contributed to the See-Think-Wonder and/or analysis questions · I used my time well · I plan to come in for extra help. Then rate your partners on **Contributions**, **Working with Others**, and **Time Management**.
+:::
+
+# Explain 1: Explaining the Global Movement of Storms {#wd-explain-1}
+
+::: {.wd-explain-box}
+## 🌍 How Did Winter Storm Jonas Form and Travel?
+
+First, explain exactly what happened in the two bottles. Then use the same ideas to explain **global wind patterns**, how they brought Jonas's air masses together, and why the storm moved the way it did.
+:::
+
+## Part 1: What caused the movement of air in the bottles? {#wd-bottle-model}
+
+Step through the explanation. Your drawing in the packet should show all four steps.
+
+```{ojs}
+//| echo: false
+viewof wdBotStep = Inputs.radio(["1. Molecules", "2. Rising and sinking", "3. Pressure", "4. Sideways flow (wind)"], {value: "1. Molecules", label: "Step:"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const s = +wdBotStep[0];
+  const rnd = wdD3.randomLcg(0.42);
+  const dotsIn = (x0, n, spread) => wdD3.range(n).map(() => ({x: x0 + 10 + rnd() * 100, y: 230 - (spread ? rnd() * 150 : rnd() * 80)}));
+  const cold = dotsIn(40, 34, false), warm = dotsIn(220, 14, true);
+  const arrow = (x1, y1, x2, y2, c) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="4" marker-end="url(#wdah-${c.slice(1)})"/>`;
+  const txt = [
+    "Cold water cools the air above it: molecules lose energy, slow down, and move closer together (MORE dense). Hot water warms its air: molecules speed up and spread apart (LESS dense).",
+    "Denser, cooler air sinks. Less dense, warmer air rises (it is buoyant), just like the smoke in Model 1.",
+    "Sinking cool air crowds molecules at the surface: HIGHER pressure. Rising warm air leaves fewer molecules at the surface: LOWER pressure.",
+    "Air flows along the surface from HIGH pressure to LOW pressure, through the tube, from the cool-land bottle to the warm-land bottle. That horizontal movement is WIND."
+  ][s - 1];
+  return html`<div class="wd-card">
+  <svg viewBox="0 0 380 290" width="100%" style="max-width:420px;display:block;margin:auto;" role="img" aria-label="Two bottles: cool land with crowded molecules on the left, warm land with spread-out molecules on the right">
+    <defs>${["2563eb", "dc2626", "16a34a"].map(c => `<marker id="wdah-${c}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#${c}"/></marker>`).join("")}</defs>
+    <rect x="0" y="0" width="380" height="290" fill="#ffffff"/>
+    <rect x="40" y="60" width="120" height="180" fill="#eff6ff" stroke="#334155" stroke-width="2"/>
+    <rect x="220" y="60" width="120" height="180" fill="#fef2f2" stroke="#334155" stroke-width="2"/>
+    <rect x="40" y="240" width="120" height="40" fill="#93c5fd" stroke="#334155"/><text x="100" y="265" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">Very cool land</text>
+    <rect x="220" y="240" width="120" height="40" fill="#fca5a5" stroke="#334155"/><text x="280" y="265" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">Very warm land</text>
+    <rect x="160" y="212" width="60" height="20" fill="#e2e8f0" stroke="#334155"/>
+    ${cold.map(d => `<circle cx="${d.x.toFixed(1)}" cy="${d.y.toFixed(1)}" r="3.4" fill="#2563eb"/>`).join("")}
+    ${warm.map(d => `<circle cx="${d.x.toFixed(1)}" cy="${d.y.toFixed(1)}" r="3.4" fill="#dc2626"/>`).join("")}
+    ${s >= 2 ? arrow(100, 80, 100, 170, "#2563eb") + arrow(280, 200, 280, 100, "#dc2626") : ""}
+    ${s >= 3 ? `<text x="100" y="40" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">Higher pressure</text><text x="280" y="40" text-anchor="middle" font-size="13" font-weight="bold" fill="#dc2626">Lower pressure</text>` : ""}
+    ${s >= 4 ? arrow(150, 222, 232, 222, "#16a34a") + `<text x="190" y="205" text-anchor="middle" font-size="12" font-weight="bold" fill="#166534">wind</text>` : ""}
+  </svg>
+  <p style="margin:8px 0 0;">${txt}</p></div>`;
+}
+```
+
+::: {.wd-student-task}
+### ✏️ In your packet: Part 1 (bottle model drawing)
+
+1. Draw **air molecules** in each bottle, showing differences in density.
+2. Draw and label **arrows** showing rising or sinking air.
+3. Label each bottle **"higher pressure"** or **"lower pressure."**
+4. Draw and label an arrow showing the **horizontal movement** of air.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+1. **Cold bottle:** many dots, close together. **Hot bottle:** fewer dots, spread apart.
+2. **Down arrow** in the cold bottle ("denser, sinks"); **up arrow** in the hot bottle ("less dense, rises").
+3. Cold bottle: **higher pressure**. Hot bottle: **lower pressure**.
+4. An arrow **through the tube from the cold (high) bottle to the hot (low) bottle**, labeled "wind: high → low pressure."
+:::
+
+## Part 2: How does this work at global scales? {#wd-global}
+
+The **equator** gets more direct sunlight than the poles, so Earth is **heated unevenly**. Open the New Visions **Global Circulation Model** (the one in your packet) and follow its steps.
+
+```{=html}
+<iframe class="wd-frame" src="https://simulations.newvisions.org/globalcirculation.html" title="New Visions Global Circulation Model" loading="lazy" style="height: 640px;"></iframe>
+<p class="wd-note">Too small on your phone? <a href="https://simulations.newvisions.org/globalcirculation.html" target="_blank" rel="noopener">Open the Global Circulation Model in a new tab</a>.</p>
+```
+
+**Step through it here too.** Yellow loops on the right are side views of each **convection cell** (left edge = near the surface, right edge = high up). White arrows on the globe are **surface winds**.
+
+```{ojs}
+//| echo: false
+wdGlobe = function({stage = 3, labels = true} = {}) {
+  const W = Math.min(width, 560), H = Math.round(W * 0.86);
+  const R = Math.min(H * 0.43, (W - 34 - 62) / 2), cx = 34 + R, cy = H / 2;
+  const yAt = lat => cy - R * lat / 90;
+  const half = lat => R * Math.sqrt(Math.max(0, 1 - (lat / 90) ** 2));
+  const svg = wdD3.create("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("width", W).attr("height", H)
+    .attr("role", "img").attr("aria-label", "Model of global circulation: pressure belts, surface winds and convection cells");
+  const defs = svg.append("defs");
+  [["wdArW", "#ffffff"], ["wdArC", "#fbbf24"]].forEach(([id, col]) => {
+    defs.append("marker").attr("id", id).attr("viewBox", "0 0 10 10").attr("refX", 6).attr("refY", 5)
+      .attr("markerWidth", 5).attr("markerHeight", 5).attr("orient", "auto")
+      .append("path").attr("d", "M0,0 L10,5 L0,10 Z").attr("fill", col);
+  });
+  svg.append("rect").attr("width", W).attr("height", H).attr("rx", 12).attr("fill", "#0b1324");
+  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", R).attr("fill", "#1d4ed8");
+  const latLines = stage === 1 ? [0] : stage === 2 ? [0, 30, -30] : [0, 30, -30, 60, -60];
+  latLines.forEach(l => svg.append("line").attr("x1", cx - half(l)).attr("x2", cx + half(l)).attr("y1", yAt(l)).attr("y2", yAt(l))
+    .attr("stroke", "rgba(255,255,255,0.75)").attr("stroke-dasharray", l === 0 ? null : "5,4"));
+  [90, 60, 30, 0, -30, -60, -90].forEach(l => svg.append("text").attr("x", cx - R - 6).attr("y", yAt(l) + 4).attr("text-anchor", "end")
+    .attr("fill", "#cbd5e1").attr("font-size", 10).text(l === 0 ? "0°" : `${Math.abs(l)}°${l > 0 ? "N" : "S"}`));
+  const P = stage === 1 ? [[0, "L"], [90, "H"], [-90, "H"]] : stage === 2 ? [[0, "L"], [30, "H"], [-30, "H"]] : [[0, "L"], [30, "H"], [-30, "H"], [60, "L"], [-60, "L"], [90, "H"], [-90, "H"]];
+  P.forEach(([l, t]) => svg.append("text").attr("x", Math.abs(l) > 80 ? cx : cx - half(l) * 0.55).attr("y", Math.abs(l) > 80 ? (l > 0 ? yAt(90) - 3 : yAt(-90) + 17) : yAt(l) + 6).attr("text-anchor", "middle")
+    .attr("font-size", 17).attr("font-weight", 900).attr("fill", t === "H" ? "#fca5a5" : "#93c5fd").attr("stroke", "#0b1324").attr("stroke-width", 2.5).attr("paint-order", "stroke").text(t));
+  const belts = stage === 1
+    ? [{a: 0, b: 90, d: [0, 1], name: "Surface air flows to the equator"}, {a: -90, b: 0, d: [0, -1], name: ""}]
+    : [{a: 0, b: 30, d: [-1, 1], name: "NE trade winds"}, {a: 30, b: 60, d: [1, -1], name: "Westerlies"}, {a: -30, b: 0, d: [-1, -1], name: "SE trade winds"}, {a: -60, b: -30, d: [1, 1], name: "Westerlies"},
+       ...(stage === 3 ? [{a: 60, b: 90, d: [-1, 1], name: "Polar easterlies"}, {a: -90, b: -60, d: [-1, -1], name: "Polar easterlies"}] : [])];
+  belts.forEach(bt => {
+    const rows = stage === 1 ? [15, 45, 70].map(f => bt.a + (bt.b - bt.a) * f / 90) : [Math.abs(bt.a + bt.b) > 140 ? Math.sign(bt.a + bt.b) * 76 : (bt.a + bt.b) / 2];
+    rows.forEach(m => {
+      const hw = half(m) * 0.8, len = Math.min(26, (yAt(bt.a) - yAt(bt.b)) * 0.38);
+      const n = Math.hypot(bt.d[0], bt.d[1]);
+      const xs = stage === 1 ? [-0.5, 0, 0.5] : Math.abs(m) > 65 ? [-0.55, 0.45] : [-0.45, 0.05, 0.55];
+      xs.forEach(f => {
+        const x0 = cx + f * hw, y0 = yAt(m);
+        svg.append("line").attr("x1", x0 - bt.d[0] / n * len / 2).attr("y1", y0 - bt.d[1] / n * len / 2)
+          .attr("x2", x0 + bt.d[0] / n * len / 2).attr("y2", y0 + bt.d[1] / n * len / 2)
+          .attr("stroke", "#fff").attr("stroke-width", 2.4).attr("marker-end", "url(#wdArW)");
+      });
+    });
+    const labLat = Math.abs(bt.a + bt.b) > 140 ? Math.sign(bt.a + bt.b) * 72 : (bt.a + bt.b) / 2;
+    if (labels && bt.name) svg.append("text").attr("x", cx).attr("y", stage === 1 ? yAt(60) - 10 : yAt(labLat) + (labLat > 0 ? -11 : 19))
+      .attr("text-anchor", "middle").attr("font-size", 10.5).attr("font-weight", 700).attr("fill", "#fde68a")
+      .attr("stroke", "#0b1324").attr("stroke-width", 2.5).attr("paint-order", "stroke").text(bt.name);
+  });
+  const x0 = cx + R + 10, cw = Math.max(36, W - x0 - 14);
+  const loops = stage === 1 ? [{a: 0, b: 88, name: "one big cell", inner: "eq"}, {a: -88, b: 0, name: "one big cell", inner: "eq"}]
+    : [{a: 0, b: 30, name: "Hadley", inner: "eq"}, {a: -30, b: 0, name: "Hadley", inner: "eq"}, {a: 30, b: 60, name: "Ferrel", inner: "pole"}, {a: -60, b: -30, name: "Ferrel", inner: "pole"},
+       ...(stage === 3 ? [{a: 60, b: 88, name: "Polar", inner: "eq"}, {a: -88, b: -60, name: "Polar", inner: "eq"}] : [])];
+  loops.forEach(Lp => {
+    const yTop = yAt(Math.max(Lp.a, Lp.b)) + 3, yBot = yAt(Math.min(Lp.a, Lp.b)) - 3;
+    svg.append("rect").attr("x", x0).attr("y", yTop).attr("width", cw).attr("height", yBot - yTop).attr("rx", Math.min(14, (yBot - yTop) / 2))
+      .attr("fill", "rgba(251,191,36,0.12)").attr("stroke", "#fbbf24").attr("stroke-width", 1.5);
+    const north = Lp.a >= 0;
+    const eqY = north ? yBot : yTop, poleY = north ? yTop : yBot;
+    const toEq = Lp.inner === "eq";
+    const ySurfFrom = toEq ? poleY : eqY, ySurfTo = toEq ? eqY : poleY;
+    const shrink = (a, b) => [a + (b - a) * 0.22, a + (b - a) * 0.78];
+    const [s1, s2] = shrink(ySurfFrom, ySurfTo), [u1, u2] = shrink(ySurfTo, ySurfFrom);
+    svg.append("line").attr("x1", x0 + 7).attr("x2", x0 + 7).attr("y1", s1).attr("y2", s2).attr("stroke", "#fbbf24").attr("stroke-width", 2).attr("marker-end", "url(#wdArC)");
+    svg.append("line").attr("x1", x0 + cw - 7).attr("x2", x0 + cw - 7).attr("y1", u1).attr("y2", u2).attr("stroke", "#fbbf24").attr("stroke-width", 2).attr("marker-end", "url(#wdArC)");
+    if (cw > 50 && Math.abs(yBot - yTop) > 34) svg.append("text").attr("x", x0 + cw / 2).attr("y", (yTop + yBot) / 2 + 4).attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "#fde68a").text(Lp.name);
+  });
+  svg.append("text").attr("x", W - 6).attr("y", 12).attr("text-anchor", "end").attr("font-size", 9.5).attr("fill", "#cbd5e1").text("cells: left = surface, right = aloft");
+  return svg.node();
+}
+```
+
+```{ojs}
+//| echo: false
+viewof wdStage = Inputs.radio(["1. If Earth didn't spin", "2. Tropical and midlatitude cells", "3. All three cells"], {label: "Stage:", value: "1. If Earth didn't spin"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const s = +wdStage[0];
+  const txt = {
+    1: "If Earth did <b>not</b> spin: air <b>rises at the equator</b> (strong heating, low pressure), flows toward the poles high up, <b>sinks at the poles</b> (cold, high pressure), and flows straight back to the equator along the surface. One giant convection loop, like the bottles.",
+    2: "Earth spins, so the single loop breaks up. Air rising at the equator <b>sinks near 30° N and 30° S</b> (high pressure). Surface air flows from 30° back toward the equator (<b>trade winds</b>) and toward the poles (<b>westerlies</b>), and it <b>curves</b> as it goes.",
+    3: "Near the poles, cold air <b>sinks</b> (high pressure) and flows toward 60°, where it meets the westerlies and <b>rises</b> (low pressure). Result: <b>three cells per hemisphere</b> (Hadley, Ferrel, Polar) and belts of high and low pressure."
+  }[s];
+  const d = html`<div style="max-width:560px;margin:auto;"></div>`;
+  d.appendChild(wdGlobe({stage: s}));
+  const p = html`<div class="wd-readout"></div>`;
+  p.innerHTML = txt;
+  d.appendChild(p);
+  return d;
+}
+```
+
+<div class="wd-model-note">🧪 <b>Model:</b> latitudes are spaced evenly so the polar belts are easy to see, and the belts are idealized. Real winds shift with the seasons and bend around continents and mountains.</div>
+
+**Why does the wind curve?** That's the **Coriolis effect**, the same bending you saw on the balloon. As Earth spins, the ground turns under air that is moving in a straight line, so the air's path **appears to bend**: to the **right in the Northern Hemisphere** and to the **left in the Southern Hemisphere**. Watch in class:
+
+```{ojs}
+//| echo: false
+html`<div>${wdVideo("PDEcAxfSYaI", "The Coriolis effect and winds")}${wdVideo("78Yymgk6qrM", "Coriolis Carousel")}</div>`
+```
+
+::: {.wd-student-task}
+### ✏️ In your packet: Part 2, Questions 1–2
+
+1. How is the movement between **30° and 0°** and between **the North Pole and 60°** similar to what you observed in the bottles?
+2. Explain **why global winds follow these patterns**. Include: how temperature affects air masses at the **molecular level**; how that affects the **motion** of air and its **pressure**; why air **converges** and **diverges**; and the words **heat, density, and pressure**.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+1. Both are **convection loops like the bottles**. Warm air **rises** over the "warm land" (the equator; about 60°), cooler air **sinks** over the "cool land" (about 30°; the pole), and surface air flows from the **sinking, high-pressure** side to the **rising, low-pressure** side, like air through the tube.
+2. **Molecular level:** the equator gets more direct sunlight, so air there gains **heat** energy; its molecules move faster and spread apart, lowering its **density**. **Motion and pressure:** the less dense air **rises**, leaving **low pressure** at the surface. Air that cools high up gets denser and **sinks** near 30° and the poles, making **high pressure**. **Converge/diverge:** surface air **diverges** (spreads out) from the highs and **converges** (comes together) into the lows, where it is forced up. The 0–30° (**Hadley**) and pole–60° (**Polar**) loops are convection cells; the 30–60° (**Ferrel**) cell turns between them like a gear, which is why surface air there flows toward the pole.
+:::
+
+```{ojs}
+//| echo: false
+wdCheck("wd-check-global", "Check: Global winds", [
+  {q: "Near 30° N, air at the surface is mostly…",
+   options: ["sinking, with high pressure and dry weather", "rising, with low pressure and storms", "not moving at all", "rising because it's warm"],
+   correct: 0,
+   explanation: "Air that rose at the equator cools high up and sinks near 30°, making a belt of high pressure. Many of the world's deserts are near 30°."},
+  {q: "Air flowing toward the equator in the Northern Hemisphere bends to the right. What wind does that make?",
+   options: ["The westerlies", "The northeast trade winds", "The polar easterlies", "No wind"],
+   correct: 1,
+   explanation: "Air heading south bends right (toward the west), so it blows FROM the northeast: the NE trade winds."},
+  {q: "Is the Coriolis effect the cause of wind?",
+   options: ["Yes, Earth's spin makes all wind", "No: pressure differences from uneven heating cause wind; the Coriolis effect bends it", "Yes, but only near the poles", "No: the Sun pushes the air"],
+   correct: 1,
+   explanation: "Wind starts with pressure differences. Rotation only changes the direction of air that is already moving."}
+])
+```
+
+## Wind belts and Winter Storm Jonas {#wd-wind-belts}
+
+Put the convection cells and the Coriolis effect together and you get Earth's **planetary wind belts** (your packet's *Model of Generalized Planetary Wind Belts in the Troposphere*): the **trade winds** (0–30°), the **prevailing westerlies** (30–60°), and the **polar easterlies** (60–90°). **NYC sits in the westerlies.**
+
+Now zoom in on the U.S. during Jonas. Your packet's *Air Masses in Winter Storm Jonas* figure shows where the air masses came from:
+
+```{ojs}
+//| echo: false
+{
+  const W = Math.min(width, 680), Hh = Math.round(W * 0.66);
+  const belts = [];
+  for (let lon = -125; lon <= -60; lon += 13) belts.push({x1: lon, y1: 42.5, x2: lon + 6, y2: 45.5});
+  const masses = [
+    {x: -100, y: 55, t: "Cold, dry air (cP)\nhigh pressure", c: "#1e3a8a"},
+    {x: -90, y: 24.3, t: "Warm, moist air (mT)\nGulf of Mexico", c: "#9a3412"},
+    {x: -66, y: 29.5, t: "Warm, moist air (mT)\nAtlantic", c: "#9a3412"}
+  ];
+  const flows = [
+    {x1: -98, y1: 52, x2: -95, y2: 41, c: "#1d4ed8"},
+    {x1: -90, y1: 27, x2: -86, y2: 33.5, c: "#ea580c"},
+    {x1: -68, y1: 31.5, x2: -72, y2: 35.5, c: "#ea580c"}
+  ];
+  const lows = [{x: -100.5, y: 30, t: "L  Jan 21"}, {x: -74, y: 38.5, t: "L  Jan 23"}];
+  return wdPlot.plot({
+    title: "Where Jonas's air masses came from (model)",
+    subtitle: "Arrows: air-mass movement and westerlies (schematic). L: Jonas's low on Jan 21 (06 UTC) and Jan 23 (12 UTC), approximate positions read from NOAA WPC surface analyses",
+    width: W, height: Hh,
+    projection: {type: "equirectangular", domain: {type: "MultiPoint", coordinates: [[-128, 20], [-58, 60]]}},
+    style: {background: "#cfe8f7", color: "#0f172a"},
+    marks: [
+      wdPlot.graticule({stroke: "#94a3b8", strokeOpacity: 0.3}),
+      wdLand ? wdPlot.geo(wdLand, {fill: "#efe6cf", stroke: "#8d7b5a", strokeWidth: 0.5}) : null,
+      wdUS ? wdPlot.geo(wdUS.borders, {stroke: "#a8a29e", strokeWidth: 0.4}) : null,
+      wdPlot.link(belts, {x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: "#475569", strokeWidth: 1.6, markerEnd: "arrow"}),
+      wdPlot.text([{x: -122, y: 47.5, t: "Westerlies"}], {x: "x", y: "y", text: "t", fontSize: 11, fontWeight: 700, fill: "#334155", stroke: "white", strokeWidth: 3}),
+      wdPlot.link(flows, {x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: "c", strokeWidth: 3.5, markerEnd: "arrow"}),
+      wdPlot.text(masses, {x: "x", y: "y", text: "t", fill: "c", fontSize: 10.5, fontWeight: 700, stroke: "white", strokeWidth: 3, lineHeight: 1.1}),
+      wdPlot.link([{x1: -99.5, y1: 30.6, x2: -75, y2: 38.2}], {x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: "#b91c1c", strokeWidth: 2, strokeDasharray: "6,4", markerEnd: "arrow"}),
+      wdPlot.text(lows, {x: "x", y: "y", text: "t", fill: "#b91c1c", fontSize: 13, fontWeight: 900, stroke: "white", strokeWidth: 3, textAnchor: "start", dx: -4}),
+      wdPlot.dot([{x: -74, y: 40.7}], {x: "x", y: "y", r: 4, fill: "#0f172a"}),
+      wdPlot.text([{x: -74, y: 40.7}], {x: "x", y: "y", text: () => "NYC", dx: 18, dy: -6, fontWeight: 800, fontSize: 10, fill: "#0f172a", stroke: "white", strokeWidth: 3})
+    ].filter(Boolean)
+  });
+}
+```
+
+<div class="wd-model-note">🧪 <b>Model:</b> the arrows are a simplified picture of air-mass movement, not measured winds. The dashed line just connects the two low positions; Jonas actually crossed the Gulf Coast states and reached the Atlantic off the Carolinas before crawling north up the coast. See the real NOAA maps in <a href="#wd-jonas-map">Explore 2</a> and <a href="#wd-jonas-winds">Explain 2</a>.</div>
+
+### Think-Talk-Open Exchange + Buzzwords {#wd-ttoe}
+
+::: {.wd-student-task}
+### ✏️ In your packet: Think-Talk-Open Exchange + Buzzwords
+
+**Think:** using a drawing or model and words, communicate:
+
+- how the pattern of **global winds** arises, using **heat, density, pressure, and the Coriolis effect**;
+- how global winds caused the **high and low pressure air masses** in Winter Storm Jonas to **meet**;
+- why Jonas moved **east and then north** across the United States.
+
+**Talk:** as each person presents, tally the **buzzwords** you hear (heat · density · pressure · Coriolis). **Reflection:** how would you change your answer?
+:::
+
+Draft your "Think" words here. The tally counts the buzzwords you used. (Nothing is saved or sent.)
+
+```{ojs}
+//| echo: false
+{
+  const wrap = html`<div class="wd-card">
+    <label class="wd-lbl" for="wd-buzz-text">My explanation draft</label>
+    <textarea id="wd-buzz-text" class="wd-textarea" rows="6" placeholder="Uneven heating makes…"></textarea>
+    <div class="wd-buzz-out" aria-live="polite"></div>
+  </div>`;
+  const ta = wrap.querySelector("textarea"), out = wrap.querySelector(".wd-buzz-out");
+  const words = [["Heat", /\bheat/gi], ["Density", /\bdens/gi], ["Pressure", /\bpressure/gi], ["Coriolis", /coriolis/gi]];
+  const upd = () => {
+    let used = 0;
+    out.innerHTML = words.map(([w, re]) => { const n = (ta.value.match(re) || []).length; if (n) used++; return `<span class="wd-chip ${n ? "wd-chip-on" : ""}">${w}: ${n}</span>`; }).join("") +
+      `<div style="font-size:.88em;margin-top:6px;">${used === 4 ? "🌟 All four buzzwords! Check that they're linked in one cause-and-effect chain." : "A strong answer links all four buzzwords in one cause-and-effect chain."}</div>`;
+  };
+  ta.oninput = upd; upd();
+  return wrap;
+}
+```
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+- **Global winds:** **uneven heating** → warm, less **dense** air rises (**low pressure**) at 0° and about 60°; cool, dense air sinks (**high pressure**) at about 30° and the poles → surface air flows **high → low** → the **Coriolis effect** bends it right in the Northern Hemisphere (left in the Southern), giving the **NE trade winds** (0–30°), the **westerlies** (30–60°), and the **polar easterlies** (60–90°).
+- **Jonas's air masses:** winds from the north pushed **cold, dense, high-pressure** air south from Canada and the Arctic. Flow on the warm side carried **warm, moist, lower-pressure** air north from the **Gulf of Mexico** and the **Atlantic**. They met over the southern and eastern U.S., and the low-pressure storm formed along the boundary between them.
+- **East, then north:** the **westerlies** carry storms **west to east** across the U.S. Once Jonas reached the coast, the flow steered it **north and northeast** along the Atlantic coast toward the Mid-Atlantic and NYC.
+:::
+
+::: {.wd-key-idea}
+### 💡 Class consensus: the key points
+
+- **High pressure** at Earth's surface is where cold air contracts, is **more dense**, and **sinks**.
+- **Low pressure** at Earth's surface is where warm air expands, is **less dense**, and **rises**; air converges there and is forced up.
+- Air moves **horizontally** because of pressure differences: from **high to low**, where there is more room for molecules to flow.
+- This makes **three cells** in each hemisphere. The Hadley and Polar cells are convection cells; the Ferrel cell is driven between them.
+- The cells plus the **Coriolis effect** make **predictable global wind patterns**.
+- So storms form in **similar places** and follow **similar paths**, which is part of how forecast models predict them.
+:::
+
+## Explain 1: Summary Task {#wd-summary-1}
+
+**Model for Question 1:** two land areas heat the air above them differently. Change the temperature difference and watch the pressure difference and the wind.
+
+```{ojs}
+//| echo: false
+viewof wdDeltaT = Inputs.range([0, 30], {step: 1, value: 15, label: "Temperature difference between the land areas (°C)"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const k = wdDeltaT / 30;
+  const wArrow = 1 + 9 * k;
+  const nCold = Math.round(20 + 14 * k), nWarm = Math.round(20 - 10 * k);
+  const rnd = wdD3.randomLcg(0.9);
+  const box = (x0, n) => wdD3.range(n).map(() => `<circle cx="${(x0 + 4 + rnd() * 52).toFixed(1)}" cy="${(232 + rnd() * 42).toFixed(1)}" r="2.5" fill="#1e293b"/>`).join("");
+  const label = wdDeltaT === 0 ? "No temperature difference → no pressure difference → no wind." :
+    wdDeltaT < 10 ? "Small temperature difference → small pressure difference → light wind." :
+    wdDeltaT < 20 ? "Bigger temperature difference → bigger pressure difference → stronger wind." :
+    "Large temperature difference → large pressure difference → strong wind.";
+  return html`<div class="wd-card">
+  <svg viewBox="0 0 400 300" width="100%" style="max-width:520px;display:block;margin:auto;" role="img" aria-label="Cross-section: cool sinking air and high pressure over cool land on the left, warm rising air and low pressure over warm land on the right, with wind along the surface from high to low">
+    <defs><marker id="wdw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+    <marker id="wdwb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <marker id="wdwr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker></defs>
+    <rect x="0" y="0" width="400" height="300" fill="#ffffff"/>
+    <path d="M10,200 Q200,175 390,200" fill="none" stroke="#16a34a" stroke-width="6"/>
+    <text x="200" y="207" text-anchor="middle" font-size="11" fill="#166534">Earth's surface</text>
+    <line x1="80" y1="80" x2="80" y2="170" stroke="#2563eb" stroke-width="${2 + 4 * k}" marker-end="url(#wdwb)"/>
+    <text x="80" y="72" text-anchor="middle" font-size="11" fill="#1d4ed8" font-weight="bold">Cool sinking air</text>
+    <line x1="320" y1="170" x2="320" y2="80" stroke="#dc2626" stroke-width="${2 + 4 * k}" marker-end="url(#wdwr)"/>
+    <text x="320" y="72" text-anchor="middle" font-size="11" fill="#b91c1c" font-weight="bold">Warm rising air</text>
+    <text x="104" y="160" text-anchor="middle" font-size="${16 + 8 * k}" font-weight="bold" fill="#1d4ed8" stroke="#fff" stroke-width="3" paint-order="stroke">H</text>
+    <text x="296" y="160" text-anchor="middle" font-size="${16 + 8 * k}" font-weight="bold" fill="#dc2626" stroke="#fff" stroke-width="3" paint-order="stroke">L</text>
+    ${wdDeltaT > 0 ? `<line x1="110" y1="182" x2="290" y2="182" stroke="#475569" stroke-width="${wArrow}" marker-end="url(#wdw)"/>
+    <line x1="290" y1="95" x2="110" y2="95" stroke="#94a3b8" stroke-width="${Math.max(1, wArrow / 2)}" stroke-dasharray="6,4" marker-end="url(#wdw)"/>
+    <text x="200" y="172" text-anchor="middle" font-size="12" font-weight="bold" fill="#334155">WIND</text>` : ""}
+    <rect x="50" y="228" width="60" height="50" fill="#eff6ff" stroke="#334155"/><text x="80" y="292" text-anchor="middle" font-size="10" fill="#1e293b">Land is cooler here</text>
+    <rect x="290" y="228" width="60" height="50" fill="#fef2f2" stroke="#334155"/><text x="320" y="292" text-anchor="middle" font-size="10" fill="#1e293b">Land is warmer here</text>
+    ${box(50, nCold)}${box(290, nWarm)}
+  </svg>
+  <p style="margin:6px 0 0;font-weight:600;">${label}</p></div>`;
+}
+```
+
+<div class="wd-model-note">🧪 <b>Model:</b> the boxes show air molecules near the surface (more crowded = denser = higher pressure). The dashed arrow is the return flow high up. Arrow thickness shows "more" or "less," not a calculated wind speed.</div>
+
+::: {.wd-student-task}
+### ✏️ In your packet: Summary Task
+
+First reflect on the class consensus discussion (what went well, what to improve, who helped you learn and what you learned, one idea you contributed). Then:
+
+1. Using **both a drawing and a few sentences**, communicate how **differences in heat energy between two masses of air** can cause wind.
+2. How did the relationships between a material's **density and heat energy** help you explain how air moves at the **bottle**, **molecular**, and **global** scales?
+3. Explain how the **regular patterns of global air circulation** allow models to be built that **predict where storms will occur and how they will travel**.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your Summary Task (try it first!)
+
+1. **Drawing:** a warm air mass (spread-out particles, up arrow, **L**) beside a cold air mass (packed particles, down arrow, **H**), with a surface arrow **H → L**. **Words:** the warm air's particles move faster and spread out, so it is **less dense** and **rises**, lowering surface pressure. The cold air is **denser** and **sinks**, raising surface pressure. Air flows from **high to low** pressure: that's wind.
+2. The **same rule** worked at all three scales: more heat energy → lower density → rises (low pressure); less heat energy → higher density → sinks (high pressure); air flows from high to low. It explained the smoke in the bottles, the particles in the simulation, and the cells in the global model.
+3. **Uneven heating** and **Earth's rotation** never stop, so highs, lows, and wind belts sit in **roughly the same places**. Storms form where air masses meet (for example, along the boundary between polar and tropical air over the U.S.) and are **steered by the wind belts** (the westerlies push U.S. storms west to east). Because the pattern **repeats**, forecast models can combine it with today's weather data to predict storm paths.
+:::
+
+```{ojs}
+//| echo: false
+wdCheck("wd-check-summary1", "Check: Predicting storms", [
+  {q: "Why do storms over the U.S. usually move from west to east?",
+   options: ["The trade winds push them", "The prevailing westerlies carry them", "Earth spins from east to west", "Cold air always moves east"],
+   correct: 1,
+   explanation: "The U.S. lies mostly between 30° and 50° N, in the westerlies. (The trade winds are south of about 30° and blow east to west. Earth actually spins west to east.)"},
+  {q: "Why can forecasters predict where winter storms will go?",
+   options: ["Storms move randomly, so they guess", "Global winds are regular, so storms form in similar places and follow similar paths", "Storms always go to big cities", "Every storm follows exactly the same path"],
+   correct: 1,
+   explanation: "Paths are similar, not identical. Models use the repeating pattern plus current data to work out the details."}
+])
+```
+
+# Explore 2: Local Winds Investigation {#wd-explore-2}
+
+::: {.wd-explore-box}
+## 🗺️ How Do Patterns in Temperature and Pressure Explain Storm Winds?
+
+We know why Jonas's air masses met and why the storm traveled east. We **don't** yet know why the wind **inside** a storm is so strong. Meteorologists find out by drawing **isolines** (lines that connect equal values) on maps of weather-station data. You'll analyze four maps of the same day, then a complete **surface observation map**, then a real NOAA map of **Jonas forming**.
+:::
+
+Watch in class: *Mid-Latitude Cyclone Clip*. Need help drawing isolines? Use the two *How to Draw Isolines* videos.
+
+```{ojs}
+//| echo: false
+wdVideo("n4rJX4IIRaU", "Mid-Latitude Cyclone Clip")
+```
+
+::: {.callout-tip collapse="true"}
+## 📺 Help videos: How to Draw Isolines #1 and #2, and Mid-Latitude Cyclones Explained
+
+```{ojs}
+//| echo: false
+html`<div>${wdVideo("iYon-S6wCBw", "How to Draw Isolines #1")}${wdVideo("gSYje6UbPZU", "How to Draw Isolines #2")}${wdVideo("RAqZpjIaoKM", "Mid-Latitude Cyclones Explained")}</div>`
+```
+:::
+
+## Maps 1–4: Pressure, Temperature, Dew Point, Pressure Change {#wd-maps}
+
+**The rules for isolines:** they are **smooth**, they **never cross**, and you often have to **interpolate** (estimate between stations). For example, if one town is 30 °F and the next is 60 °F, the 40 °F line passes about **⅓ of the way** from the 30 °F town and the 50 °F line about **⅔ of the way**.
+
+| Map | Isoline name | Interval | Color in your packet |
+|---|---|---|---|
+| 1. Air pressure | **isobars** | every 4 mb (…1008, 1012, 1016, 1020, 1024…) | black |
+| 2. Temperature | **isotherms** | every 10 °F | blue |
+| 3. Dew point | **isodrosotherms** | every 10 °F | green |
+| 4. Pressure change (past 3 hours) | **isallobars** | every 2 mb (−2, 0, +2…) | blue (+), black (0), red (−) |
+
+These are station values from the NOAA JetStream weather-map lessons that your packet's maps come from. **Draw your isolines in the packet first**, then turn on the computer's isolines to check.
+
+```{ojs}
+//| echo: false
+wdPres = [[-120.5,47.3,1016],[-123.3,44.5,1016],[-123.0,39.8,1016],[-117.5,39.8,1020],[-119.5,35.5,1020],[-111.8,32.2,1020],[-111.9,40.8,1024],[-113.5,47.0,1020],[-109.5,48.6,1020],[-107.5,43.3,1024],[-106.5,39.8,1024],[-111.5,37.6,1024],[-106.2,34.5,1020],[-100.5,46.6,1020],[-101.5,41.0,1020],[-96.5,44.2,1016],[-95.5,48.6,1016],[-98.5,38.8,1016],[-97.5,35.6,1016],[-99.5,31.5,1016],[-98.0,27.6,1016],[-89.5,44.5,1012],[-85.5,46.3,1012],[-91.0,41.2,1012],[-92.3,37.0,1012],[-92.5,33.3,1012],[-92.5,30.8,1012],[-88.8,32.4,1012],[-83.5,32.5,1012],[-81.0,34.2,1012],[-78.8,35.8,1012],[-77.0,40.6,1012],[-76.0,43.0,1012],[-89.3,39.5,1008],[-85.0,42.0,1008],[-84.0,37.8,1008],[-86.7,35.8,1008],[-70.0,46.0,1016],[-71.0,41.8,1016],[-75.8,38.7,1016],[-89.8,29.4,1016],[-82.2,29.8,1016]].map(([lon, lat, v]) => ({lon, lat, v}))
+wdTemp = [[-123.2,48.2,40],[-110.0,48.8,30],[-95.3,48.4,20],[-124.0,45.3,50],[-114.2,46.8,30],[-101.5,45.8,20],[-89.3,44.3,30],[-85.0,46.2,30],[-108.5,42.8,20],[-96.8,44.0,20],[-85.0,43.0,40],[-123.8,39.3,50],[-118.0,39.6,40],[-113.0,41.2,30],[-104.8,40.0,20],[-100.0,40.6,20],[-97.2,38.6,25],[-91.0,41.7,30],[-88.8,39.8,40],[-84.5,37.6,60],[-111.5,37.0,30],[-117.8,34.5,40],[-112.0,32.0,40],[-106.0,33.6,30],[-99.5,35.6,30],[-92.0,36.8,40],[-87.6,36.0,70],[-100.0,31.3,40],[-94.0,31.7,60],[-88.5,33.0,80],[-90.5,29.7,80],[-98.0,27.2,80],[-83.3,32.4,80],[-78.6,35.6,80],[-81.5,28.3,90],[-81.0,38.6,60],[-76.3,42.8,40],[-69.3,46.0,40],[-71.8,41.6,50],[-77.4,40.5,50],[-75.8,38.6,60]].map(([lon, lat, v]) => ({lon, lat, v}))
+wdChg = [[-123.5,48.3,-5],[-110.0,48.8,-1],[-124.0,45.8,-3],[-113.5,46.5,-1],[-96.0,48.5,0],[-100.5,45.5,0],[-108.5,43.7,0],[-97.0,43.5,1],[-89.5,43.5,2],[-86.0,46.0,0],[-84.5,41.5,0],[-77.5,42.5,-1],[-69.5,46.0,0],[-71.5,41.3,-1],[-124.5,40.0,0],[-119.0,39.5,-1],[-114.0,41.0,0],[-108.0,40.6,0],[-101.0,40.6,2],[-97.5,39.6,3],[-92.0,41.0,5],[-89.5,39.7,5],[-80.5,39.5,-2],[-84.5,37.6,-3],[-76.0,38.6,-2],[-91.5,37.0,6],[-111.5,37.2,0],[-119.0,35.5,-1],[-99.0,36.2,3],[-106.0,34.3,2],[-87.0,35.5,-5],[-79.0,35.8,-4],[-82.5,33.8,-4],[-100.5,32.3,5],[-94.5,32.3,2],[-88.5,32.8,-4],[-114.0,32.5,0],[-98.5,28.5,-3],[-90.3,29.8,-3],[-82.5,30.5,-1]].map(([lon, lat, v]) => ({lon, lat, v}))
+```
+
+```{ojs}
+//| echo: false
+wdGrid = (pts) => {
+  const lon0 = -125, lat0 = 24, step = 0.5, nx = 119, ny = 53;
+  const vals = new Float64Array(nx * ny);
+  for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) {
+    const lon = lon0 + i * step, lat = lat0 + j * step;
+    let num = 0, den = 0, exact = null;
+    for (const p of pts) {
+      const dx = (p.lon - lon) * Math.cos(lat * Math.PI / 180), dy = p.lat - lat;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < 1e-6) { exact = p.v; break; }
+      const w = 1 / (d2 * d2);
+      num += w * p.v; den += w;
+    }
+    vals[i + j * nx] = exact ?? num / den;
+  }
+  const at = (lon, lat) => {
+    const i = Math.max(0, Math.min(nx - 1, Math.round((lon - lon0) / step))), j = Math.max(0, Math.min(ny - 1, Math.round((lat - lat0) / step)));
+    return vals[i + j * nx];
+  };
+  const lines = (thresholds) => wdD3.contours().size([nx, ny]).thresholds(thresholds)(vals).map(c => {
+    const segs = [];
+    for (const poly of c.coordinates) for (const ring of poly) {
+      let cur = [];
+      for (const [x, y] of ring) {
+        const edge = x <= 0.01 || y <= 0.01 || x >= nx - 0.01 || y >= ny - 0.01;
+        if (edge) { if (cur.length > 1) segs.push(cur); cur = []; }
+        else cur.push([lon0 + (x - 0.5) * step, lat0 + (y - 0.5) * step]);
+      }
+      if (cur.length > 1) segs.push(cur);
+    }
+    return {value: c.value, segs};
+  }).filter(c => c.segs.length);
+  return {at, lines};
+}
+```
+
+```{ojs}
+//| echo: false
+wdGridP = wdGrid(wdPres)
+wdGridT = wdGrid(wdTemp)
+wdGridC = wdGrid(wdChg)
+```
+
+```{ojs}
+//| echo: false
+viewof wdMapPick = Inputs.select(["1. Air Pressure Map (isobars)", "2. Temperature Map (isotherms)", "4. Air Pressure Change Map (isallobars)"], {label: "Map:"})
+```
+
+```{ojs}
+//| echo: false
+viewof wdMapShow = Inputs.checkbox(["Isolines", "Shading", "H and L", "Wind arrows"], {label: "Show:", value: []})
+```
+
+```{ojs}
+//| echo: false
+{
+  const k = +wdMapPick[0];
+  const pts = k === 1 ? wdPres : k === 2 ? wdTemp : wdChg;
+  const G = k === 1 ? wdGridP : k === 2 ? wdGridT : wdGridC;
+  const thr = k === 1 ? wdD3.range(1008, 1025, 4) : k === 2 ? wdD3.range(20, 91, 10) : wdD3.range(-6, 7, 2);
+  const show = new Set(wdMapShow);
+  const memo = new Map();
+  const inside = (lon, lat) => {
+    if (!wdUS) return true;
+    const key = lon.toFixed(2) + "," + lat.toFixed(2);
+    if (!memo.has(key)) memo.set(key, wdD3.geoContains(wdUS.nation, [lon, lat]));
+    return memo.get(key);
+  };
+  const thrAdj = thr.map((v, i) => i === 0 ? v + 0.4 : i === thr.length - 1 ? v - 0.4 : v);
+  const lines = (show.has("Isolines") ? G.lines(thrAdj) : []).map(c => {
+    const segs = [];
+    for (const seg of c.segs) {
+      let cur = [];
+      for (const p of seg) { if (inside(p[0], p[1])) cur.push(p); else { if (cur.length > 1) segs.push(cur); cur = []; } }
+      if (cur.length > 1) segs.push(cur);
+    }
+    return {value: thr[thrAdj.indexOf(c.value)], segs, geo: {type: "MultiLineString", coordinates: segs}};
+  }).filter(c => c.segs.length);
+  const lab = v => k === 1 ? String(v).slice(-2) : k === 4 ? (v > 0 ? "+" + v : String(v)) : String(v);
+  const labels = lines.map(c => {
+    const seg = c.segs.reduce((a, b) => b.length > a.length ? b : a);
+    const pt = seg[Math.floor(seg.length / 2)];
+    return {lon: pt[0], lat: pt[1], t: lab(c.value)};
+  });
+  const shade = [];
+  if (show.has("Shading") && k !== 1) {
+    for (let lon = -124.5; lon <= -67; lon += 1) for (let lat = 25; lat <= 49; lat += 1) {
+      if (!inside(lon, lat)) continue;
+      const v = G.at(lon, lat);
+      const c = k === 2 ? (v <= 25 ? "#3b82f6" : v >= 70 ? "#ef4444" : null) : (v <= -4 ? "#ef4444" : v >= 4 ? "#3b82f6" : null);
+      if (c) shade.push({lon, lat, c});
+    }
+  }
+  const vecs = [];
+  if (show.has("Wind arrows") && k === 1) {
+    for (let lon = -122; lon <= -70; lon += 3.5) for (let lat = 27; lat <= 48; lat += 3) {
+      if (!inside(lon, lat)) continue;
+      const c = Math.cos(lat * Math.PI / 180);
+      const gx = (G.at(lon + 0.5, lat) - G.at(lon - 0.5, lat)) / c, gy = (G.at(lon, lat + 0.5) - G.at(lon, lat - 0.5));
+      const mag = Math.hypot(gx, gy); if (mag < 0.3) continue;
+      const u = -gy - 0.45 * gx, v = gx - 0.45 * gy;
+      vecs.push({lon, lat, rot: Math.atan2(u, v) * 180 / Math.PI, len: Math.min(22, 8 + 3 * mag)});
+    }
+  }
+  const HL = k === 1 && show.has("H and L") ? [{lon: -109.3, lat: 40.4, t: "H", c: "#1d4ed8"}, {lon: -86.2, lat: 38.8, t: "L", c: "#dc2626"}] : [];
+  const w = Math.min(width, 720);
+  const lineColor = k === 1 ? "#111827" : k === 2 ? "#1d4ed8" : "#7c3aed";
+  return wdPlot.plot({
+    title: ["1. Air Pressure Map (mb)", "2. Temperature Map (°F)", "", "4. Air Pressure Change Map (mb in the past 3 hours)"][k - 1],
+    subtitle: show.has("Isolines") ? (k === 1 ? "Isobars every 4 mb, labeled with the last two digits" : k === 2 ? "Isotherms every 10 °F" : "Isallobars every 2 mb") : "Station values. Turn on isolines to check your drawing.",
+    width: w, height: Math.round(w * 0.62),
+    style: {background: "#ffffff", color: "#0f172a"},
+    projection: wdUS ? {type: "albers-usa", domain: wdUS.nation} : {type: "equirectangular", domain: {type: "MultiPoint", coordinates: [[-125, 24], [-66, 50]]}},
+    marks: [
+      wdUS ? wdPlot.geo(wdUS.states, {fill: "#f8fafc", stroke: "#cbd5e1", strokeWidth: 0.7}) : wdPlot.graticule({strokeOpacity: 0.25}),
+      wdPlot.dot(shade, {x: "lon", y: "lat", fill: "c", r: w / 70, symbol: "square", fillOpacity: 0.28}),
+      ...lines.map(c => wdPlot.geo(c.geo, {stroke: lineColor, strokeWidth: 1.6})),
+      wdPlot.text(labels, {x: "lon", y: "lat", text: "t", fontSize: 11, fontWeight: "bold", fill: lineColor, stroke: "white", strokeWidth: 4}),
+      wdPlot.vector(vecs, {x: "lon", y: "lat", rotate: "rot", length: "len", stroke: "#0f766e", strokeWidth: 1.6, anchor: "middle"}),
+      wdPlot.text(pts, {x: "lon", y: "lat", text: d => k === 4 && d.v > 0 ? "+" + d.v : String(d.v), fontSize: 10, fill: "#111827", stroke: "white", strokeWidth: 2.5}),
+      wdPlot.text(HL, {x: "lon", y: "lat", text: "t", fontSize: 34, fontWeight: "bold", fill: "c", stroke: "white", strokeWidth: 3})
+    ]
+  });
+}
+```
+
+<p class="wd-note">Station positions are placed by state and are approximate. If your packet's copy differs, trust your copy and NOAA's answer maps (linked below). The computer estimates values between stations (inverse-distance interpolation), so its lines may look a little different from a hand drawing. "H and L" and "Wind arrows" work on map 1; "Shading" works on maps 2 and 4 (temperature: blue ≤ 25 °F, red ≥ 70 °F; pressure change: red ≤ −4 mb, blue ≥ +4 mb). The wind arrows are a <b>model</b> computed from the isobars.</p>
+
+**Check your work with NOAA:** [Analyze an Air Pressure Map](https://www.noaa.gov/jetstream/analyze-appair-pressure-map) · [Surface Temperature Map](https://www.noaa.gov/jetstream/surface-temperature-map) · [Dew Point Temperature Map](https://www.noaa.gov/jetstream/dew-point-temperature-map) · [Pressure Change Map](https://www.noaa.gov/jetstream/pressure-map)
+
+**Map 3, dew point.** The **dew point** is the temperature the air would have to cool to before it is completely **saturated** (holding all the water vapor it can). The **closer** the temperature and dew point, the **more moisture** in the air and the better the chance of rain. Moist air is less dense than dry air, so it lifts more easily, which helps thunderstorms form. Dew points of **70 °F or more** have the potential energy for severe weather.
+
+::: {.wd-student-task}
+### ✏️ In your packet: Maps 1–4
+
+- **Map 1 (pressure):** start at Salt Lake City's **1024**, draw isobars every 4 mb, label them (24, 20, 16, 12, 08). Mark a blue **H** and a red **L**. Draw a model of **why highs are dry and lows bring precipitation**. Shade **green** where you expect rain or snow and **yellow** for clear skies. Draw wind arrows around the H and the L.
+- **Map 2 (temperature):** start at Seattle's **40 °F**, draw isotherms every 10 °F, interpolating. Shade the **coldest** region blue and the **warmest** red.
+- **Map 3 (dew point):** draw isodrosotherms every 10 °F and shade **≥ 70 °F** green.
+- **Map 4 (pressure change):** draw isallobars every 2 mb (+ blue, 0 black, − red). Shade **≤ −4 mb red** and **≥ +4 mb blue**.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+- **Map 1:** the **1024** loop is an elongated oval centered over **eastern Utah**: that's the **H**. The **L** is inside the lowest closed isobar (**1008**) in the eastern U.S., around the **Ohio Valley** (Illinois, Indiana, Kentucky, Tennessee). **Why highs are dry:** at the H, cool, dense air **sinks** and warms, so clouds evaporate. **Why lows are wet:** at the L, air **converges and rises**, cools, and its water vapor **condenses** into clouds and precipitation. Shade **green** around and just east of the L, **yellow** under and around the H. Wind: **clockwise and outward** around the H; **counterclockwise and inward** around the L.
+- **Map 2:** **blue** over the northern Plains and Rockies (20s °F); **red** along the Gulf Coast, Florida, and south Texas (80–90 °F). The isotherms **crowd together** between them, where cold and warm air masses meet.
+- **Map 3:** low dew points in the dry interior and north; the **≥ 70 °F** area is only near the **Gulf Coast**, the most humid air.
+- **Map 4:** the **+2** line makes an oval around **Kansas and Missouri**. **Blue (≥ +4):** behind the low and cold front, where **cold, dense air** is moving in and pressure is **rising**. **Red (≤ −4):** **ahead of (east of)** the low, where pressure is **falling** as it approaches.
+:::
+
+```{ojs}
+//| echo: false
+wdCheck("wd-check-maps", "Check: Reading the four maps", [
+  {q: "Around a low-pressure center in the Northern Hemisphere, surface wind blows…",
+   options: ["clockwise and outward", "counterclockwise and inward", "straight inward", "counterclockwise and outward"],
+   correct: 1,
+   explanation: "Air flows toward low pressure, and the Coriolis effect turns it right, so it spirals counterclockwise into the low. Clockwise and outward is a high."},
+  {q: "Isotherms are packed tightly across one region. That most likely shows…",
+   options: ["a boundary between a warm and a cold air mass", "the center of a high", "a mistake: isotherms must be evenly spaced", "calm, uniform weather"],
+   correct: 0,
+   explanation: "Spacing shows how fast temperature changes over distance. A sharp change means two different air masses are meeting: a front."},
+  {q: "When a cold front passes a station, its pressure usually…",
+   options: ["falls, because cold air is lighter", "rises, because colder, denser air moves in", "stays the same", "drops to zero"],
+   correct: 1,
+   explanation: "Cold air is denser, so it presses harder on the surface. That's why the big pressure rises on map 4 are behind the cold front."}
+])
+```
+
+## Analyzing a Complete Surface Observation Map {#wd-surface-obs}
+
+Weather stations at airports measure temperature, dew point, cloud cover, visibility, precipitation, wind speed and direction, and more **every hour**. To fit it all on a map, each station's data is coded into a **station model**. Build one below. The symbols follow the *Key to Weather Map Symbols* (in your packet and the NYS Earth Science Reference Tables).
+
+```{ojs}
+//| echo: false
+wdStationSVG = (o) => {
+  const cx = 150, cy = 105, r = 13;
+  const dirDeg = {N: 0, NE: 45, E: 90, SE: 135, S: 180, SW: 225, W: 270, NW: 315}[o.dir];
+  const rad = dirDeg * Math.PI / 180;
+  const ex = (d) => [cx + Math.sin(rad) * d, cy - Math.cos(rad) * d];
+  const [x1, y1] = ex(r), [x2, y2] = ex(r + 62);
+  let kt = Math.round(o.kt / 5) * 5, barbs = "", pos = 0;
+  const barbAt = (d, len) => { const [bx, by] = ex(r + 62 - d); const a = rad + Math.PI / 2.6; return `<line x1="${bx}" y1="${by}" x2="${bx + Math.sin(a) * len}" y2="${by - Math.cos(a) * len}" stroke="#111" stroke-width="2"/>`; };
+  if (o.kt > 0) {
+    while (kt >= 50) { const [ax, ay] = ex(r + 62 - pos), [bx, by] = ex(r + 62 - pos - 10); const a = rad + Math.PI / 2.6; barbs += `<polygon points="${ax},${ay} ${bx},${by} ${ax + Math.sin(a) * 18},${ay - Math.cos(a) * 18}" fill="#111"/>`; pos += 12; kt -= 50; }
+    while (kt >= 10) { barbs += barbAt(pos, 18); pos += 8; kt -= 10; }
+    if (kt >= 5) { barbs += barbAt(pos === 0 ? 8 : pos, 9); }
+  }
+  const cover = o.cover;
+  const pie = cover === 0 ? "" : cover === 100 ? `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#111"/>` :
+    (() => { const ang = 2 * Math.PI * cover / 100; const xe = cx + r * Math.sin(ang), ye = cy - r * Math.cos(ang); return `<path d="M${cx},${cy} L${cx},${cy - r} A${r},${r} 0 ${cover > 50 ? 1 : 0},1 ${xe},${ye} Z" fill="#111"/>`; })();
+  const code = String(Math.round(o.mb * 10) % 1000).padStart(3, "0");
+  const wx = {"Snow": "✱✱", "Rain": "••", "Drizzle": ",,", "Fog": "≡", "Thunderstorm": "⚡", "None": ""}[o.wx];
+  const vis = o.vis === 0.25 ? "¼" : o.vis === 0.5 ? "½" : String(o.vis);
+  return html`<svg viewBox="0 0 300 200" width="100%" style="max-width:380px;display:block;margin:auto;background:#fff;border-radius:10px;" role="img" aria-label="Station model showing temperature ${o.T} °F, dew point ${o.Td} °F, pressure ${o.mb} mb, wind from the ${o.dir} at ${o.kt} knots, ${o.cover}% sky cover">
+    <rect x="0" y="0" width="300" height="200" fill="#ffffff" rx="10"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff" stroke="#111" stroke-width="2"/>${pie}
+    ${o.kt > 0 ? `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#111" stroke-width="2"/>${barbs}` : `<circle cx="${cx}" cy="${cy}" r="${r + 5}" fill="none" stroke="#111" stroke-width="1.5"/>`}
+    <text x="${cx - 24}" y="${cy - 14}" text-anchor="end" font-size="17" font-weight="bold" fill="#111">${o.T}</text>
+    <text x="${cx - 24}" y="${cy + 32}" text-anchor="end" font-size="17" font-weight="bold" fill="#111">${o.Td}</text>
+    <text x="${cx - 22}" y="${cy + 7}" text-anchor="end" font-size="17" fill="#111">${wx}</text>
+    <text x="${cx - (wx ? 52 : 26)}" y="${cy + 7}" text-anchor="end" font-size="17" fill="#111">${vis}</text>
+    <text x="${cx + 24}" y="${cy - 14}" text-anchor="start" font-size="17" font-weight="bold" fill="#111">${code}</text>
+  </svg>`;
+}
+```
+
+```{ojs}
+//| echo: false
+viewof wdSM = Inputs.form({
+  T: Inputs.range([-20, 100], {step: 1, value: 57, label: "Temperature (°F)"}),
+  Td: Inputs.range([-30, 80], {step: 1, value: 56, label: "Dew point (°F)"}),
+  mb: Inputs.range([960, 1050], {step: 0.1, value: 1010.7, label: "Sea-level pressure (mb)"}),
+  dir: Inputs.select(["N", "NE", "E", "SE", "S", "SW", "W", "NW"], {value: "SW", label: "Wind FROM"}),
+  kt: Inputs.range([0, 70], {step: 5, value: 15, label: "Wind speed (knots)"}),
+  cover: Inputs.select([0, 25, 50, 75, 100], {value: 100, label: "Sky cover (%)"}),
+  wx: Inputs.select(["None", "Rain", "Drizzle", "Snow", "Fog", "Thunderstorm"], {value: "Drizzle", label: "Present weather"}),
+  vis: Inputs.select([0.25, 0.5, 1, 3, 5, 10], {value: 3, label: "Visibility (miles)"})
+})
+```
+
+```{ojs}
+//| echo: false
+html`<div class="wd-card">${wdStationSVG(wdSM)}
+<p style="font-size:.9em;margin:8px 0 0;"><b>Pressure code:</b> drop the first 9 or 10 and the decimal point: ${wdSM.mb.toFixed(1)} mb → <b>${String(Math.round(wdSM.mb * 10) % 1000).padStart(3, "0")}</b>. To decode, put a 9 in front if the code is 500 or more, or a 10 if it's less, then put back the decimal (196 → 1019.6 mb; 872 → 987.2 mb). <b>Wind:</b> the staff points to the direction the wind blows <b>from</b>. Half barb = 5 knots, full barb = 10 knots, triangle (pennant) = 50 knots. 1 knot ≈ 1.15 mph.</p></div>`
+```
+
+**Fronts.** The boundary between two air masses is a **front**. Fast-moving **cold fronts** bring rapid weather changes; **warm fronts** also bring big changes, but usually more slowly. On a map, fronts are drawn where there are **large changes in temperature**, **shifts in wind direction and speed**, and **large changes in pressure**. Check your fronts with NOAA's [Drawing Conclusions](https://www.noaa.gov/jetstream/wxmaps-max/learning-lesson-drawing-conclusions) page.
+
+::: {.wd-student-task}
+### ✏️ In your packet: Surface Observation Map, Questions 1–12
+
+Copy your **H** and **L**; circle and decode a **sea-level pressure**; compare the **wind staffs** with your wind arrows; relate **wind speed** and **sky cover** to highs and lows; find **heavy fog, haze or smoke, steady rain, freezing heavy drizzle, thunderstorms, tornadoes**, and a **dew point**; draw the **cold front (blue)** and **warm front (red)**; compare **pressure change** on each side of the cold front; describe **clouds and precipitation** near the fronts.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+1. Same places as on map 1.
+2. The 3-digit code at the **upper right** of the station. Decode it (e.g., 196 → 1019.6 mb). It should match the nearby isobar on map 1.
+3. The staffs line up with your arrows: **clockwise and outward around the H**, **counterclockwise and inward around the L**. The staff points to where the wind is coming **from**.
+4. **More barbs (faster wind) near the L**, where isobars are closest together; light or calm wind near the center of the H.
+5. **Open circles** (clear to few clouds) near the H; **filled circles** (overcast) near the L and its fronts.
+6. Look for the present-weather symbols: fog (horizontal lines), haze (∞), smoke (wavy column), usually in moist, light-wind areas.
+7. Steady rain, freezing drizzle, thunderstorms, and tornadoes **cluster near the low and along its fronts** (thunderstorms and tornadoes in the warm, humid air near the cold front; freezing drizzle on the cold side).
+8. **Lows:** clouds, precipitation, storms, stronger wind. **Highs:** clear, dry, light wind.
+9. The dew point is the number at the **lower left** of the station model.
+10. Both fronts start at the **L**. The **cold front** runs south/southwest from the L where temperatures **drop sharply**, the wind **shifts** (e.g., from southerly to northwesterly), and pressure **rises** behind it. The **warm front** runs east/southeast from the L, with warmer air on its south side.
+11. Behind (west of) the cold front, pressure is **rising (+)**; ahead of it, **falling (−)** or steady.
+12. Mostly **overcast with precipitation** along and just ahead of the fronts, especially near the L; skies **clear quickly behind** the cold front.
+:::
+
+```{ojs}
+//| echo: false
+wdCheck("wd-check-station", "Check: Station models and wind speed", [
+  {q: "A station model shows pressure code '024'. What is the pressure?",
+   options: ["1024 mb", "1002.4 mb", "902.4 mb", "24 mb"],
+   correct: 1,
+   explanation: "024 is less than 500, so put 10 in front and put back the decimal: 1002.4 mb."},
+  {q: "A staff has two full barbs and one half barb. How fast is the wind?",
+   options: ["3 knots", "25 knots (about 29 mph)", "50 knots", "250 knots"],
+   correct: 1,
+   explanation: "Full barb = 10 knots, half barb = 5 knots: 10 + 10 + 5 = 25 knots. 25 × 1.15 ≈ 29 mph."},
+  {q: "On the surface map, wind speeds are highest…",
+   options: ["at the center of the high", "near the low, where pressure changes quickly over a short distance", "wherever it's coldest", "evenly everywhere"],
+   correct: 1,
+   explanation: "Closely spaced isobars mean a big pressure difference over a short distance. That's where air rushes fastest."}
+])
+```
+
+## Map 6: Winter Storm Jonas on January 21, 2016 {#wd-jonas-map}
+
+Now find a **real storm forming**. Your packet's map is a surface analysis for **January 21, 2016 at 05 UTC** (midnight in NYC), about a day before Jonas reached the East Coast. Below is NOAA's official surface analysis from **06 UTC** that same night, one hour later.
+
+<figure class="wd-figure">
+<img src="https://www.wpc.ncep.noaa.gov/archives/sfc/2016/usfntsfc2016012106.gif" alt="NOAA Weather Prediction Center surface analysis for 06 UTC on January 21, 2016. Brown isobars cover the U.S. A low of 1009 mb sits over southwest Texas near the Mexico border, with a red warm front running east along the Gulf Coast and a blue cold front trailing to the west. Highs of 1034 mb over the Great Basin and 1028 mb over the Midwest surround it." loading="lazy">
+<figcaption>Source: NOAA Weather Prediction Center (WPC) surface analysis, 06 UTC Thursday, January 21, 2016 (<a href="https://www.wpc.ncep.noaa.gov/archives/web_pages/sfc/sfc_archive_maps.php" target="_blank" rel="noopener">WPC surface map archive</a>). This version shows isobars and fronts but not station models; your packet's map adds the station data.</figcaption>
+</figure>
+
+::: {.wd-student-task}
+### ✏️ In your packet: Map 6 (Jonas, 1/21/2016)
+
+2. Identify and mark **at least one region where there is evidence that a low-pressure storm is forming**. Describe the characteristics that helped you find it.
+3. Check with your teacher. Were you able to identify a brewing storm? Why or why not?
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+The developing storm is over **Texas** (the southern U.S.). Evidence:
+
+- a **closed low-pressure center** with the **lowest pressure** on the map (1009 mb on NOAA's map);
+- station winds turning **counterclockwise** around it;
+- **very different temperatures across a short distance**: warm, humid air to the south and east, colder air to the north and west, with a **warm front** and **cold front** meeting at the low.
+
+Common trouble: looking for snow symbols instead of the **pressure, wind, and temperature pattern**, or picking the **H** as the storm. Over the next two days this low moved east across the Gulf Coast states, reached the Atlantic, and crawled north up the coast as Jonas.
+:::
+
+::: {.wd-fix}
+⚠️ **Packet note:** the teacher guide calls this the "Jan 21, **15** UTC" map, but your handout and the Weather Maps resource both say **05 UTC**. Use the map you have.
+:::
+
+## Making Sense of the Local Winds Investigation {#wd-making-sense-2}
+
+::: {.wd-student-task}
+### ✏️ In your packet: Analysis Questions
+
+1. What **features** did you observe in the weather maps that you also observed in the **global winds** investigation?
+2. How do those shared features help you **predict** what is causing **strong wind** to form in local storm systems?
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+1. Both have areas of **high and low pressure**, **warm and cold air side by side**, air moving **from high to low**, and winds **bent by the Coriolis effect** (clockwise out of H, counterclockwise into L, like the bending wind belts).
+2. Global winds form when air moves from **cool, high-pressure** areas to **warm, low-pressure** areas, so storm winds probably form the same way: air rushing **from the high to the low**. Where the pressure difference is **biggest over the shortest distance** (tight isobars), the wind should be **strongest**.
+:::
+
+### Local Winds Investigation Rubric {#wd-rubric-2}
+
+::: {.wd-student-task}
+### ✏️ In your packet: Student and Partner Rubric
+
+Same format as the Wind Formation rubric: score yourself on connecting to the unit, contributing, using time well, and planning for extra help. Then rate your partners on Contributions, Working with Others, and Time Management.
+:::
+
+# Explain 2: Explaining Storm Winds {#wd-explain-2}
+
+::: {.wd-explain-box}
+## 🌀 How Do Storm Wind Cyclones Form?
+
+We can forecast where storms go. We know high and low pressure have something to do with the wind. But **why do some storms have winds strong enough to do huge damage?** Midlatitude cyclones like Jonas form where **warm, low-pressure** air meets **colder, higher-pressure** air. The Coriolis effect that bends global winds also bends the winds **inside** a storm.
+:::
+
+## Winds around lows and highs {#wd-spirals}
+
+Follow the packet's steps with this model. Pick a **low** or a **high**, then step through.
+
+```{ojs}
+//| echo: false
+viewof wdSpType = Inputs.radio(["Low (L)", "High (H)"], {label: "Pressure center:", value: "Low (L)"})
+```
+
+```{ojs}
+//| echo: false
+viewof wdSpStep = Inputs.radio(["Step 1: straight arrows", "Step 2: bend each arrow", "Step 3: the overall shape"], {label: "Show:", value: "Step 1: straight arrows"})
+```
+
+```{ojs}
+//| echo: false
+viewof wdSpHemi = Inputs.radio(["Northern Hemisphere", "Southern Hemisphere"], {label: "Hemisphere:", value: "Northern Hemisphere"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const W = Math.min(width, 380), H = W, cx = W / 2, cy = H / 2, R1 = W * 0.42, R2 = W * 0.2;
+  const low = wdSpType.startsWith("Low"), nh = wdSpHemi.startsWith("Northern"), step = +wdSpStep[5];
+  const turn = (nh ? 1 : -1) * 65 * Math.PI / 180;
+  const svg = wdD3.create("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("width", W).attr("height", H)
+    .attr("role", "img").attr("aria-label", `Winds ${low ? "flowing into a low" : "flowing out of a high"} and bending to form a spiral`);
+  const defs = svg.append("defs");
+  [["wdSa", "#1d4ed8"], ["wdSb", "#dc2626"], ["wdSc", "#7c3aed"]].forEach(([id, c]) => defs.append("marker").attr("id", id).attr("viewBox", "0 0 10 10").attr("refX", 6).attr("refY", 5).attr("markerWidth", 5).attr("markerHeight", 5).attr("orient", "auto").append("path").attr("d", "M0,0 L10,5 L0,10 Z").attr("fill", c));
+  svg.append("rect").attr("width", W).attr("height", H).attr("rx", 12).attr("fill", "#f1f5f9");
+  svg.append("text").attr("x", cx).attr("y", cy + 14).attr("text-anchor", "middle").attr("font-size", 42).attr("font-weight", 900).attr("fill", low ? "#b91c1c" : "#1d4ed8").text(low ? "L" : "H");
+  if (step < 3) {
+    for (let k = 0; k < 8; k++) {
+      const th = k * Math.PI / 4;
+      const ra = low ? R1 : R2, rb = low ? R2 : R1;
+      const x1 = cx + ra * Math.cos(th), y1 = cy + ra * Math.sin(th), x2 = cx + rb * Math.cos(th), y2 = cy + rb * Math.sin(th);
+      svg.append("line").attr("x1", x1).attr("y1", y1).attr("x2", x2).attr("y2", y2).attr("stroke", "#1d4ed8").attr("stroke-width", 3).attr("marker-end", "url(#wdSa)");
+      if (step === 2) {
+        const dx = (low ? -1 : 1) * Math.cos(th), dy = (low ? -1 : 1) * Math.sin(th);
+        const ex = dx * Math.cos(turn) - dy * Math.sin(turn), ey = dx * Math.sin(turn) + dy * Math.cos(turn);
+        const Ln = W * 0.1;
+        svg.append("line").attr("x1", x2).attr("y1", y2).attr("x2", x2 + ex * Ln).attr("y2", y2 + ey * Ln).attr("stroke", "#dc2626").attr("stroke-width", 3).attr("marker-end", "url(#wdSb)");
+      }
+    }
+  } else {
+    for (let k = 0; k < 4; k++) {
+      const pts = wdD3.range(0, 1.001, 0.02).map(f => {
+        const r = low ? R1 * (1 - 0.78 * f) : R2 * 0.9 + (R1 - R2 * 0.9) * f;
+        const th = k * Math.PI / 2 + (low ? (nh ? -1 : 1) : (nh ? 1 : -1)) * f * 2.4;
+        return [cx + r * Math.cos(th), cy + r * Math.sin(th)];
+      });
+      svg.append("path").attr("d", wdD3.line().curve(wdD3.curveBasis)(pts)).attr("fill", "none").attr("stroke", "#7c3aed").attr("stroke-width", 3).attr("marker-end", "url(#wdSc)");
+    }
+  }
+  const spin = low ? (nh ? "counterclockwise" : "clockwise") : (nh ? "clockwise" : "counterclockwise");
+  const msg = step === 1 ? `Wind moves <b>${low ? "toward" : "away from"}</b> ${low ? "low" : "high"} pressure (air always flows from high to low).`
+    : step === 2 ? `Each arrow bends to the <b>${nh ? "right" : "left"}</b> (${nh ? "Northern" : "Southern"} Hemisphere).`
+    : `The bent arrows make a <b>${spin}</b> spiral ${low ? "<b>into</b> the low (a cyclone)" : "<b>out of</b> the high (an anticyclone)"}.`;
+  const d = html`<div style="max-width:380px;margin:auto;"></div>`;
+  d.appendChild(svg.node());
+  const p = html`<div class="wd-readout"></div>`; p.innerHTML = msg; d.appendChild(p);
+  return d;
+}
+```
+
+<div class="wd-model-note">🧪 <b>Model:</b> the bend angle is exaggerated so it's easy to see. Near the ground, friction keeps real winds angled partly toward the low.</div>
+
+## High and low together {#wd-h-and-l}
+
+In class you watch *High and Low Pressure Zone Winds*. When an **H** and an **L** sit next to each other, air flows **out of the high and into the low**. Between them, both circulations push the air the **same way**, so that's where the flow is strongest.
+
+```{ojs}
+//| echo: false
+{
+  const W = Math.min(width, 560), H = Math.round(W * 0.55);
+  const hx = W * 0.25, lx = W * 0.75, cy = H / 2, R = Math.min(W * 0.17, H * 0.38);
+  const svg = wdD3.create("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("width", W).attr("height", H)
+    .attr("role", "img").attr("aria-label", "High pressure on the left with clockwise outward winds, low pressure on the right with counterclockwise inward winds, and arrows flowing from the high to the low between them");
+  const defs = svg.append("defs");
+  [["wdHa", "#1d4ed8"], ["wdLa", "#b91c1c"], ["wdGa", "#334155"]].forEach(([id, c]) => defs.append("marker").attr("id", id).attr("viewBox", "0 0 10 10").attr("refX", 6).attr("refY", 5).attr("markerWidth", 5).attr("markerHeight", 5).attr("orient", "auto").append("path").attr("d", "M0,0 L10,5 L0,10 Z").attr("fill", c));
+  svg.append("rect").attr("width", W).attr("height", H).attr("rx", 12).attr("fill", "#f8fafc");
+  const spiral = (cx, out, cw, col, mk) => {
+    for (let k = 0; k < 4; k++) {
+      const pts = wdD3.range(0, 1.001, 0.04).map(f => {
+        const r = out ? R * (0.3 + 0.7 * f) : R * (1 - 0.7 * f);
+        const th = k * Math.PI / 2 + (cw ? 1 : -1) * f * 2.0;
+        return [cx + r * Math.cos(th), cy + r * Math.sin(th)];
+      });
+      svg.append("path").attr("d", wdD3.line().curve(wdD3.curveBasis)(pts)).attr("fill", "none").attr("stroke", col).attr("stroke-width", 2.5).attr("marker-end", `url(#${mk})`);
+    }
+  };
+  spiral(hx, true, true, "#1d4ed8", "wdHa");
+  spiral(lx, false, false, "#b91c1c", "wdLa");
+  [-0.25, 0.25].forEach(f => svg.append("line").attr("x1", hx + R * 0.9).attr("x2", lx - R * 0.9).attr("y1", cy + f * R * 1.6).attr("y2", cy + f * R * 1.6 - (f > 0 ? 6 : -6)).attr("stroke", "#334155").attr("stroke-width", 3).attr("marker-end", "url(#wdGa)"));
+  svg.append("text").attr("x", hx).attr("y", cy + 12).attr("text-anchor", "middle").attr("font-size", 34).attr("font-weight", 900).attr("fill", "#1d4ed8").text("H");
+  svg.append("text").attr("x", lx).attr("y", cy + 12).attr("text-anchor", "middle").attr("font-size", 34).attr("font-weight", 900).attr("fill", "#b91c1c").text("L");
+  svg.append("text").attr("x", W / 2).attr("y", H - 10).attr("text-anchor", "middle").attr("font-size", 12).attr("fill", "#334155").text("Northern Hemisphere: clockwise out of H, counterclockwise into L");
+  return svg.node();
+}
+```
+
+## Why are some storm winds so strong? {#wd-gradient}
+
+The **bigger the pressure difference** between an H and an L, and the **shorter the distance** between them, the **stronger the wind**. On a weather map, that shows up as **isobars packed close together**. Try it:
+
+```{ojs}
+//| echo: false
+viewof wdDp = Inputs.range([4, 40], {step: 4, value: 12, label: "Pressure difference between H and L (mb)"})
+```
+
+```{ojs}
+//| echo: false
+viewof wdDist = Inputs.range([200, 1600], {step: 100, value: 1000, label: "Distance between H and L (km)"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const W = 560, H = 210, x0 = 50, scale = (W - 100) / 1600;
+  const hX = x0, lX = x0 + wdDist * scale;
+  const pH = 1000 + wdDp / 2, pL = 1000 - wdDp / 2;
+  const iso = [];
+  for (let p = Math.ceil((pL + 0.01) / 4) * 4; p < pH; p += 4) iso.push(p);
+  const xAt = p => hX + (pH - p) / (pH - pL) * (lX - hX);
+  const grad = wdDp / wdDist * 100;
+  const thick = Math.min(16, 1.5 + grad * 2.2);
+  const word = grad < 1 ? "light" : grad < 2.5 ? "moderate" : grad < 4 ? "strong" : "very strong";
+  return html`<div class="wd-card">
+  <svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px;display:block;margin:auto;" role="img" aria-label="H and L separated by ${wdDist} km with ${iso.length} isobars between them and a wind arrow whose thickness shows wind strength">
+    <defs><marker id="wdGrA" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="3" markerHeight="3" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/></marker></defs>
+    <rect width="${W}" height="${H}" fill="#ffffff" rx="10"/>
+    ${iso.map(p => `<path d="M${xAt(p)},20 Q${xAt(p) + 12},${H / 2} ${xAt(p)},${H - 36}" fill="none" stroke="#475569" stroke-width="1.5"/><text x="${xAt(p)}" y="16" text-anchor="middle" font-size="10" fill="#334155">${String(p).slice(-2)}</text>`).join("")}
+    <text x="${hX}" y="${H / 2 + 12}" text-anchor="middle" font-size="34" font-weight="900" fill="#1d4ed8">H</text>
+    <text x="${lX}" y="${H / 2 + 12}" text-anchor="middle" font-size="34" font-weight="900" fill="#b91c1c">L</text>
+    <line x1="${hX + 26}" y1="${H / 2 + 34}" x2="${Math.max(hX + 40, lX - 26)}" y2="${H / 2 + 34}" stroke="#0f766e" stroke-width="${thick}" marker-end="url(#wdGrA)"/>
+    <text x="${W / 2}" y="${H - 10}" text-anchor="middle" font-size="12" fill="#0f172a">H = ${pH} mb · L = ${pL} mb · isobars every 4 mb</text>
+  </svg>
+  <p style="margin:6px 0 0;"><b>Pressure change:</b> ${grad.toFixed(1)} mb per 100 km → <b>${word}</b> wind (in this model).</p></div>`;
+}
+```
+
+<div class="wd-model-note">🧪 <b>Model, not a forecast:</b> the arrow's thickness grows with the pressure difference divided by the distance. It shows the cause-and-effect idea; it does not calculate real wind speeds.</div>
+
+**Now look at Jonas.** As Jonas moved up the East Coast, its low **picked up energy and its pressure dropped quickly**, while **very cold Arctic air** sat to the north. Here is NOAA's map on the morning of **January 23, 2016**, as the storm was hitting NYC. Notice how **tightly packed** the isobars are around the low off the Mid-Atlantic coast.
+
+<figure class="wd-figure" id="wd-jonas-winds">
+<img src="https://www.wpc.ncep.noaa.gov/archives/sfc/2016/usfntsfc2016012312.gif" alt="NOAA Weather Prediction Center surface analysis for 12 UTC on January 23, 2016. A deep low of 987 mb sits just off the New Jersey and Delaware coast with many tightly packed, nearly circular isobars around it. A cold front trails south into the Atlantic. Highs of 1028 mb over Oklahoma and Texas and 1027 mb over Quebec sit on either side." loading="lazy">
+<figcaption>Source: NOAA Weather Prediction Center (WPC) surface analysis, 12 UTC (7 a.m. in NYC) Saturday, January 23, 2016 (<a href="https://www.wpc.ncep.noaa.gov/archives/web_pages/sfc/sfc_archive_maps.php" target="_blank" rel="noopener">WPC surface map archive</a>). Compare the spacing of the isobars near the 987 mb low with the spacing over the middle of the country.</figcaption>
+</figure>
+
+In class you watch the Weather Channel's live Jonas coverage from the night of January 22 (the clip below starts at 1:17:07 and stops at 1:18:49).
+
+```{ojs}
+//| echo: false
+wdVideo("diNsYgPRn84", "Winter Storm Jonas: 1/22 9pm-1am on the Weather Channel (1:17:07 to 1:18:49)", "?start=4627&end=4729")
+```
+
+**Why gusts do so much damage:** the push of the wind on a tree or a power pole grows with the **square** of the wind speed. Double the speed and the push is about **four times** bigger.
+
+```{ojs}
+//| echo: false
+viewof wdGustV = Inputs.range([10, 70], {step: 1, value: 48, label: "Wind speed (mph)"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const ratio = (wdGustV / 24) ** 2;
+  const bw = Math.min(100, ratio / ((70 / 24) ** 2) * 100);
+  return html`<div class="wd-card">
+    <div style="font-weight:700;margin-bottom:6px;">Push of a ${wdGustV} mph wind compared with a 24 mph breeze</div>
+    <div style="background:#e2e8f0;border-radius:8px;height:22px;overflow:hidden;"><div style="height:22px;width:${bw}%;background:linear-gradient(90deg,#0284c7,#dc2626);"></div></div>
+    <p style="margin:6px 0 0;">About <b>${ratio.toFixed(1)}×</b> the push. ${wdGustV === 48 ? "(48 mph was Jonas's peak gust at LaGuardia and JFK: twice 24 mph, so about 4× the push.)" : ""}</p>
+  </div>`;
+}
+```
+
+<div class="wd-model-note">🧪 <b>Model:</b> force ∝ speed². This is a physics rule of thumb for comparing winds, not a measurement of any real tree or pole.</div>
+
+::: {.wd-fix}
+⚠️ **Packet corrections:** Question 12 says "label the high and **pressure** zones": it means **high and low** pressure zones. Question 14 says Jonas "gusted up to **55 mph** in New York City." The National Weather Service measured **48 mph** at LaGuardia and JFK; the **58–59 mph** gusts were on **Long Island** (Islip and Eatons Neck). Use **48 mph** for NYC in your answer.
+:::
+
+::: {.wd-student-task}
+### ✏️ In your packet: Explaining Storm Winds, Questions 1–14
+
+- **Q1:** In the Northern Hemisphere, wind appears to bend toward the ___. In the Southern Hemisphere, toward the ___.
+- **Q3–6:** Does wind move **toward or away from** low pressure zones? Draw at least 5 arrows around the **L**, then bend each one. What **overall shape** do the arrows make?
+- **Q8–11:** Toward or away from **high** pressure zones? Draw and bend arrows around the **H**. What overall shape?
+- **Q12:** Label the **H** and **L** and add arrows showing how wind moves around and **between** them.
+- **Q13:** Using a drawing and words, explain why the **collision of a cold front and a warm front** creates a **swirling storm with strong winds** that **moves across Earth**.
+- **Q14:** Explain why Jonas's conditions (a low that deepened quickly next to extremely cold Arctic air) caused **extremely strong winds** in NYC.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+- **Q1:** Northern Hemisphere: **right**. Southern Hemisphere: **left**.
+- **Q3–6:** **Toward** (air converges into the low). Straight arrows point at the L from all sides, each turned to the right at its tip. Overall shape: a **counterclockwise spiral** into the center (a **cyclone**).
+- **Q8–11:** **Away** (air diverges out of the high). Arrows point outward, each turned right. Overall shape: a **clockwise spiral** outward (an **anticyclone**).
+- **Q12:** Clockwise outflow around H, counterclockwise inflow around L, and between them air flowing **out of the H into the L**, where the flow is strongest.
+- **Q13:** **Model:** an L where a blue cold front and a red warm front meet; cold, dense air (H side) pushing under warm air; warm air rising at the L; counterclockwise arrows into the L; a big arrow showing the whole system moving east. **Words:** warm air is less dense and rises, making **low pressure**; the cold air mass is dense and sinking, making **high pressure**. Air rushes from the high toward the low, and the **Coriolis effect** bends it right, so it **spirals counterclockwise** into the low. The bigger the temperature and pressure difference across the fronts, the **faster the wind**. The **westerlies** carry the whole swirl east.
+- **Q14:** Jonas's low **deepened** (its pressure dropped quickly) as it moved up the coast, while a **very cold, dense Arctic air mass** (high pressure) sat to the north. That made a **very large pressure difference over a short distance** (tightly packed isobars), so air rushed from high to low **very fast**, spiraling into the low and producing gusts of **48 mph** at NYC's airports (58–59 mph on Long Island).
+:::
+
+::: {.wd-key-idea}
+### 💡 Class consensus: the key points
+
+- Wind spirals **out of** high pressure zones.
+- Wind spirals **into** low pressure zones.
+- Where **warm, low-pressure** and **cool, high-pressure** zones meet, the pressure difference between them drives wind between them.
+- The **greater the pressure difference**, the **stronger the wind**.
+:::
+
+**Want to see a whole midlatitude cyclone grow?** This model steps through the life cycle of a storm like Jonas, from a stationary front to a mature storm with cold and warm fronts.
+
+```{=html}
+<iframe class="wd-frame" src="cyclone-simulator/index.html" title="Mid-Latitude Cyclone Simulator (model)" loading="lazy" style="height: 760px;"></iframe>
+<p class="wd-note">🧪 This simulator is a <b>model</b>: its shapes and pressures are made up to show the stages, not taken from a real storm. <a href="cyclone-simulator/index.html" target="_blank" rel="noopener">Open it in a new tab</a>.</p>
+```
+
+## Explain 2: Summary {#wd-summary-2}
+
+::: {.wd-student-task}
+### ✏️ In your packet: Summary
+
+1. How do **local storm winds** show patterns you've seen before, but at a **different scale**?
+2. How did the evidence from the **weather maps, videos, and storm tracks** help you identify those patterns?
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your Summary (try it first!)
+
+1. **Same cause at every scale:** uneven heating → density and pressure differences → air flows from high to low, bent by the Coriolis effect. You saw it in the **bottles** (small), in **storm cyclones** (hundreds of miles), and in the **global cells** (the whole planet).
+2. **Maps** showed H and L with winds spiraling as predicted and the strongest winds where isobars were tight; isotherms and pressure-change lines showed the **fronts**. **Videos** showed the swirl. **Storm tracks** showed storms repeatedly moving **west to east**, like the westerlies.
+:::
+
+```{ojs}
+//| echo: false
+wdCheck("wd-check-explain2", "Check: Storm winds", [
+  {q: "Which pair of patterns is correct for the Northern Hemisphere?",
+   options: ["Low: counterclockwise, inward · High: clockwise, outward", "Low: clockwise, inward · High: counterclockwise, outward", "Low: counterclockwise, outward · High: clockwise, inward", "Both spin the same way"],
+   correct: 0,
+   explanation: "Air flows into lows and out of highs, and turning right makes them spin in opposite directions. Option B is the Southern Hemisphere."},
+  {q: "Two storms have lows with the same pressure. Storm X has a strong high close by; Storm Y's nearest high is weak and far away. Which has stronger winds?",
+   options: ["Storm X: bigger pressure difference over a shorter distance", "Storm Y: more room for wind to build", "The same, because their lows are equal", "Neither has wind"],
+   correct: 0,
+   explanation: "Wind depends on the pressure DIFFERENCE and the DISTANCE, not on the low alone. Tight isobars = strong wind."}
+])
+```
+
+# Elaborate: Mitigating Hurricane Winds {#wd-elaborate}
+
+::: {.wd-elaborate-box}
+## 🌪️ How Can We Start Thinking About Solutions?
+
+Our goal is solutions that protect people and property from storm damage. First, meet another kind of storm with brutal winds: **hurricanes**. Then analyze one **real solution** that power companies in Georgia are using after **Hurricane Helene**.
+:::
+
+## Part 1: Comparing Hurricanes and Winter Storms {#wd-compare}
+
+Hurricanes are another type of storm with strong, damaging winds. Midlatitude cyclones like Jonas form where **warm and cold fronts converge**. **Hurricanes** form over **warm ocean water**: the warm water heats and moistens the air above it, the air rises, and that makes a **low-pressure** center that pulls in the surrounding winds.
+
+::: {.wd-fix}
+⚠️ **Packet corrections:** the packet says this rising column "is the **eye** of the hurricane." The **eye** is actually the **calm, mostly clear center**, where air **sinks**. The rising warm, moist air and the **strongest winds** are in the **eyewall**, the ring of storms around the eye. The packet also says hurricanes that reach the eastern U.S. "tend to originate from the **west coast of Africa**." That's true for **Cape Verde** hurricanes, but many form in the **Caribbean** or the **Gulf of Mexico**. **Hurricane Helene (2024)** formed over the **northwestern Caribbean Sea** (NOAA National Hurricane Center).
+:::
+
+Hurricanes **travel along the global wind belts**. Compare two real storms: **Florence (2018)**, a Cape Verde hurricane that started near Africa, and **Helene (2024)**, which started in the Caribbean.
+
+```{ojs}
+//| echo: false
+// NOAA NHC HURDAT2 best tracks (hurdat2-1851-2024), positions every 12 hours: [lon, lat, wind (knots), status, "MMDDHH" UTC].
+// Status: LO/DB = low or disturbance, TD = tropical depression, TS = tropical storm, HU = hurricane, EX = extratropical.
+wdTracks = [
+  {name: "Florence (2018)", trk: [[-17.9,12.8,25,"LO","083012"],[-20.2,13.1,30,"LO","083100"],[-22.6,13.6,30,"LO","083112"],[-24.9,14.0,30,"TD","090100"],[-27.2,14.8,35,"TS","090112"],[-29.6,15.9,45,"TS","090200"],[-32.4,16.8,50,"TS","090212"],[-35.2,17.6,50,"TS","090300"],[-38.0,18.2,55,"TS","090312"],[-40.2,18.7,65,"HU","090400"],[-42.0,19.5,70,"HU","090412"],[-43.4,20.4,85,"HU","090500"],[-45.2,21.7,105,"HU","090512"],[-46.9,23.1,115,"HU","090600"],[-48.2,24.4,90,"HU","090612"],[-49.6,25.0,60,"TS","090700"],[-51.1,24.9,55,"TS","090712"],[-52.9,24.7,55,"TS","090800"],[-54.1,24.6,55,"TS","090812"],[-55.0,24.5,60,"TS","090900"],[-56.1,24.4,65,"HU","090912"],[-57.3,24.5,80,"HU","091000"],[-59.5,24.9,105,"HU","091012"],[-61.8,25.6,115,"HU","091100"],[-64.7,26.5,125,"HU","091112"],[-68.1,27.9,120,"HU","091200"],[-70.7,29.4,115,"HU","091212"],[-73.2,31.5,105,"HU","091300"],[-75.1,33.1,95,"HU","091312"],[-76.5,34.0,90,"HU","091400"],[-77.9,34.1,80,"HU","091412"],[-78.8,33.9,60,"TS","091500"],[-79.5,33.6,55,"TS","091512"],[-80.2,33.6,45,"TS","091600"],[-81.5,33.6,35,"TS","091612"],[-82.2,35.0,25,"TD","091700"],[-82.2,37.8,25,"EX","091712"],[-80.5,39.5,25,"EX","091800"],[-73.3,42.2,25,"EX","091812"]]},
+  {name: "Helene (2024)", trk: [[-81.7,17.2,30,"DB","092312"],[-82.2,18.2,35,"DB","092400"],[-83.7,19.2,40,"TS","092412"],[-85.2,19.7,50,"TS","092500"],[-86.2,21.1,65,"HU","092512"],[-86.7,22.8,70,"HU","092600"],[-85.8,24.7,85,"HU","092612"],[-84.3,28.7,120,"HU","092700"],[-83.2,34.4,45,"TS","092712"],[-86.6,38.1,40,"LO","092800"],[-87.6,36.6,25,"LO","092812"]]}
+]
+wdTrkPts = wdTracks.flatMap(s => s.trk.map(([lon, lat, kt, st, t]) => ({storm: s.name, lon, lat, kt, mph: Math.round(kt * 1.15078), st,
+  cls: st === "HU" ? "Hurricane" : (st === "TS" ? "Tropical storm" : (st === "TD" ? "Tropical depression" : "Low / disturbance / post-tropical")),
+  when: `${+t.slice(0, 2)}/${+t.slice(2, 4)} ${t.slice(4)} UTC`})))
+```
+
+```{ojs}
+//| echo: false
+viewof wdTrkPick = Inputs.radio(["Both", "Florence (2018)", "Helene (2024)"], {label: "Show:", value: "Both"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const W = Math.min(width, 720);
+  const pts = wdTrkPts.filter(d => wdTrkPick === "Both" || d.storm === wdTrkPick);
+  const trades = [], wests = [];
+  for (let lon = -95; lon <= -15; lon += 16) { trades.push({x1: lon + 5, y1: 17, x2: lon, y2: 14.5}); wests.push({x1: lon, y1: 39, x2: lon + 6, y2: 42}); }
+  return wdPlot.plot({
+    title: "Two real hurricane tracks and the wind belts",
+    subtitle: "Dots every 12 hours, colored by strength. Source: NOAA National Hurricane Center best-track data (HURDAT2). Wind-belt arrows are a schematic model.",
+    width: W, height: Math.round(W * (width < 500 ? 0.7 : 0.55)),
+    projection: {type: "equirectangular", domain: {type: "MultiPoint", coordinates: [[-100, 9], [-14, 46]]}},
+    style: {background: "#cfe8f7", color: "#0f172a"},
+    color: {domain: ["Hurricane", "Tropical storm", "Tropical depression", "Low / disturbance / post-tropical"], range: ["#dc2626", "#f59e0b", "#16a34a", "#64748b"], legend: true},
+    marks: [
+      wdPlot.graticule({stroke: "#94a3b8", strokeOpacity: 0.3}),
+      wdLand ? wdPlot.geo(wdLand, {fill: "#efe6cf", stroke: "#8d7b5a", strokeWidth: 0.5}) : null,
+      wdUS ? wdPlot.geo(wdUS.borders, {stroke: "#a8a29e", strokeWidth: 0.4}) : null,
+      wdPlot.link(trades, {x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: "#0f766e", strokeWidth: 1.8, strokeOpacity: 0.8, markerEnd: "arrow"}),
+      wdPlot.link(wests, {x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: "#1d4ed8", strokeWidth: 1.8, strokeOpacity: 0.8, markerEnd: "arrow"}),
+      wdPlot.text([{x: -30, y: 19.5, t: "NE trade winds"}, {x: -30, y: 44, t: "Westerlies"}], {x: "x", y: "y", text: "t", fontSize: 11, fontWeight: 700, fill: "#0f172a", stroke: "white", strokeWidth: 3}),
+      wdPlot.line(pts, {x: "lon", y: "lat", z: "storm", stroke: "#334155", strokeWidth: 1.6}),
+      wdPlot.dot(pts, {x: "lon", y: "lat", fill: "cls", r: 4, stroke: "white", strokeWidth: 0.6}),
+      wdPlot.text(wdTracks.filter(s => wdTrkPick === "Both" || s.name === wdTrkPick).map(s => ({x: s.trk[0][0], y: s.trk[0][1], t: s.name})), {x: "x", y: "y", text: "t", dy: 14, fontSize: 11, fontWeight: 800, fill: "#0f172a", stroke: "white", strokeWidth: 3}),
+      wdPlot.tip(pts, wdPlot.pointer({x: "lon", y: "lat", title: d => `${d.storm}\n${d.when}\n${d.cls}: ${d.kt} knots (${d.mph} mph)`}))
+    ].filter(Boolean)
+  });
+}
+```
+
+<p class="wd-note">**Florence** started as a disturbance off West Africa on Aug 30, 2018, was pushed **west** by the trade winds, curved **north** near 25–30° N, and made landfall in North Carolina on Sept 14. **Helene** formed in the northwestern Caribbean, moved **north** across the Gulf of Mexico, and made landfall in Florida's Big Bend late on Sept 26, 2024 (03 UTC Sept 27) with winds of **120 knots (about 140 mph)**, a Category 4. Tap or hover over a dot for details.</p>
+
+::: {.wd-student-task}
+### ✏️ In your packet: Part 1 comparison table
+
+For **winter storms** and **hurricanes**: Are they generated by **high pressure air masses, low pressure air masses, or both**? Explain. Where does the **energy for the wind** come from? What **paths** do they usually take as they travel to the East Coast?
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+::: {.wd-scroll}
+| | Winter storms | Hurricanes |
+|---|---|---|
+| High, low, or both? | **Both:** a warm, low-pressure air mass meets a cold, high-pressure air mass, and wind flows across the pressure difference. | **Low:** very warm ocean water heats and moistens the air, which rises and makes a low that pulls surrounding air in. |
+| Energy for the wind | The **temperature and pressure difference** between the two air masses. | **Warm ocean water** transferring heat and moisture to the air; condensation in the clouds releases even more heat. |
+| Usual path to the East Coast | Across the U.S. **west to east** (westerlies), often curving **northeast** up the coast. | **Westward** across the Atlantic in the **trade winds** toward the Caribbean, then curving **north and northeast** up the East Coast in the **westerlies**. Some, like Helene, start in the Caribbean or Gulf. |
+:::
+:::
+
+```{ojs}
+//| echo: false
+wdCheck("wd-check-hurricane", "Check: Hurricanes vs. winter storms", [
+  {q: "What is the main energy source for a hurricane's winds?",
+   options: ["A cold air mass from Canada", "Warm ocean water heating and moistening the air above it", "Earth's rotation", "The jet stream"],
+   correct: 1,
+   explanation: "Warm water supplies heat and water vapor; condensation releases more heat. Rotation makes the storm spin, and upper winds steer it, but neither powers it."},
+  {q: "Where is the calm, mostly clear part of a hurricane?",
+   options: ["The eyewall", "The eye, at the center", "The outer rain bands", "There is no calm part"],
+   correct: 1,
+   explanation: "The eye is calm with sinking air. The eyewall around it has the rising air and the strongest winds."}
+])
+```
+
+## Part 2: Analyzing Solutions to Hurricane Winds {#wd-solutions}
+
+Strong winds knock down power poles and push trees into wires, leaving people **without electricity**. In class you first watch *New stats show how truly bad Hurricane Helene was in the CSRA* to see the wind damage.
+
+```{ojs}
+//| echo: false
+wdVideo("86r6RbIIt9c", "New stats show how truly bad Hurricane Helene was in the CSRA")
+```
+
+### Criteria and tradeoffs {#wd-criteria}
+
+Imagine someone says: *"Just move to a desert to escape winter storms and hurricanes!"* Would that **work**? Would it be **worth it**? To judge any solution, engineers use two ideas:
+
+- **Criteria:** what a solution must do to be **successful**. Good criteria are **measurable**, so you can tell whether a design meets them. Examples: *"the solution must cut storm costs for families by 50%"*; *"the solution can't cost more than the storm damage."* When a solution meets some criteria but not others, you have to **prioritize** (decide which matter most).
+- **Tradeoffs:** the **costs** or downsides you **accept** because the benefits are worth it. Moving to a desert trades away your home, job, and community, and deserts have their own extreme weather (like heat waves). The moving costs might be bigger than the storm damage you avoided.
+
+**A solution is good only if it meets the criteria AND its benefits outweigh its costs.**
+
+**Read:** watch *Hurricane Helene's Devastation and Recovery: Improving Rural Power*. Take notes on **how Georgia is working to make the electrical grid more resilient to storms**.
+
+```{ojs}
+//| echo: false
+wdVideo("_Rj45pkUoqk", "Hurricane Helene's Devastation and Recovery: Improving Rural Power")
+```
+
+From your packet: **burying power lines** can greatly reduce the risk of power outages during storms, and it looks nicer without overhead wires. But burying lines costs **5–10 times more** than putting them overhead (the packet's estimate; real costs vary a lot with the soil, the area, and the utility). Digging the trenches **disrupts the environment**, and if buried lines are damaged, **repairs are expensive and disruptive**. Burying also depends on the ground: areas with a **high water table**, like some coastal areas, risk **flooding** that could damage the wires. Energy companies and cities have to **balance these costs and benefits**.
+
+**Rank your criteria.** Pick the three criteria that matter most to you for a solution to storm-wind power outages:
+
+```{ojs}
+//| echo: false
+{
+  const opts = ["(choose)", "Reduces power outages in strong winds", "Costs less over time than repeated storm repairs", "Works in the local ground and flood conditions", "Power can be restored quickly after damage", "Causes little environmental disruption", "Keeps electric bills affordable", "Protects people from downed live wires"];
+  const box = html`<div class="wd-card"></div>`;
+  const sels = ["1st priority", "2nd priority", "3rd priority"].map(lab => {
+    const l = html`<label style="display:block;margin:8px 0;font-weight:600;">${lab}<br><select class="wd-select">${opts.map(o => html`<option>${o}</option>`)}</select></label>`;
+    box.append(l);
+    return l.querySelector("select");
+  });
+  const out = html`<div class="wd-readout" aria-live="polite"></div>`;
+  const upd = () => {
+    const picks = sels.map(s => s.value).filter(v => v !== "(choose)");
+    const dup = new Set(picks).size < picks.length;
+    out.innerHTML = picks.length === 0 ? "Pick your top three." :
+      `<b>My criteria, in order:</b><ol style="margin:4px 0 0 18px;padding:0;">${picks.map(p => `<li>${p}</li>`).join("")}</ol>` +
+      (dup ? "<div style='color:#9a3412;margin-top:4px;'>You picked the same criterion twice.</div>" : "") +
+      (picks.length === 3 && !dup ? "<div style='margin-top:4px;'>Now ask: does burying power lines meet your #1 criterion? What tradeoff would you have to accept?</div>" : "");
+  };
+  sels.forEach(s => s.onchange = upd); upd();
+  box.append(out);
+  return box;
+}
+```
+
+::: {.wd-student-task}
+### ✏️ In your packet: Read-Generate-Sort-Solve
+
+- **Read:** notes from the video: how is Georgia making the grid more resilient?
+- **Generate:** (1) What would make this solution **successful**? How would you know it was working? (2) What would make it **not worth doing**?
+- **Sort:** star the most useful ideas. **Solve:** write your own response.
+- **Summarize:** list the **criteria** a solution needs, in **priority order**, and list the **tradeoffs** it might require.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+- **Read:** your notes should match what the video shows (for example, moving lines underground, stronger poles, clearing trees near lines, rebuilding to a higher standard).
+- **Successful if:** fewer outages and fewer customers losing power in the next storm; power restored faster; lower repair costs over time; fewer injuries from downed lines. These are things you could **measure**.
+- **Not worth it if:** the cost is far greater than the damage it prevents (the packet's 5–10× estimate); buried lines **flood** in high-water-table or coastal areas; repairs are long, disruptive, and expensive; trenching harms the environment; customers' bills rise more than they can afford.
+- **Solve:** a strong answer says **where** burying makes sense (for example, inland, tree-heavy areas that are hit often: yes; flood-prone coast: maybe not) and backs it up with criteria and tradeoffs.
+- **Criteria (sample order):** 1) reduces outages in strong wind; 2) costs less over time than repeated storm repairs; 3) works in the local ground and flood conditions; 4) fast to repair; 5) limited environmental disruption. Any **reasoned** order is fine.
+- **Tradeoffs:** higher up-front cost; trenching disruption; harder, costlier repairs; flood risk in some places; it protects against wind and trees, **not** against flooding.
+:::
+
+```{ojs}
+//| echo: false
+wdCheck("wd-check-criteria", "Check: Criteria and tradeoffs", [
+  {q: "Which is a TRADEOFF of burying power lines?",
+   options: ["Fewer outages during storms", "Much higher cost and harder repairs, accepted because outages drop", "'Must cost less than the damage it prevents'", "Hurricanes stop forming"],
+   correct: 1,
+   explanation: "Fewer outages is a benefit. 'Must cost less…' is a criterion. Burying lines doesn't change the storm at all."},
+  {q: "Which is the best-written criterion?",
+   options: ["It should be good", "It must cut storm power outages in half within five years", "People should like it", "It should be modern"],
+   correct: 1,
+   explanation: "A strong criterion is measurable, so you can tell whether a design meets it."}
+])
+```
+
+# Evaluate: Wind Farms {#wd-evaluate}
+
+::: {.wd-evaluate-box}
+## 🌬️⚡ Are Wind Farms an Effective Solution for Reducing Storm Wind Damage?
+
+Some people claim that huge **wind farms** (fields of wind turbines) could help protect us from storm winds. Use criteria, costs, benefits, and tradeoffs to **evaluate that claim**.
+:::
+
+**Class brainstorm:** what **criteria** should a solution that protects people and property from storm wind meet? Then take notes on the **benefits** and **costs** of wind farms from each of the three texts.
+
+::: {.wd-key-idea}
+### 🔎 Read the claim carefully
+
+**No real, operating wind farm has ever been observed to weaken a storm.** The idea that giant offshore wind farms could take energy out of hurricane winds comes from **computer model studies** of extremely large arrays (for example, Jacobson, Archer & Kempton, *Nature Climate Change*, 2014), **not from measurements** of real storms. So this is a **what-if from a model**. Also: the U.S. Department of Energy explains that turbines **lock and feather their blades** (go into "**survival mode**") when winds go above **55 mph**. The main proven benefit of wind farms is **clean electricity** that helps fight climate change.
+:::
+
+**Text 1:** U.S. Department of Energy, [Wind Turbines in Extreme Weather: Solutions for Hurricane Resiliency](https://www.energy.gov/cmei/systems/articles/wind-turbines-extreme-weather-solutions-hurricane-resiliency) (2018).
+
+**Text 2:** *Scientists Fear the World's Largest Wind Turbine Will Change the Weather*
+
+```{ojs}
+//| echo: false
+wdVideo("x89rE-QnKW4", "Scientists Fear the World's Largest Wind Turbine Will Change the Weather")
+```
+
+**Text 3:** *How Giant Wind Farms Can Save the Planet*
+
+```{ojs}
+//| echo: false
+wdVideo("kmxpM2LZqzM", "How Giant Wind Farms Can Save the Planet")
+```
+
+As you watch, label each claim: is it **measured** (from real observations) or **predicted** (from a model)?
+
+::: {.wd-student-task}
+### ✏️ In your packet: Wind Farms notes table
+
+For **Text 1, Text 2, and Text 3**, record the **benefits** of wind farms and the **costs** of wind farms.
+:::
+
+::: {.callout-note collapse="true"}
+## 🔑 Check your thinking (try it first!)
+
+::: {.wd-scroll}
+| Text | Benefits | Costs |
+|---|---|---|
+| **1. DOE article** | Turbines **lock and feather** their blades above **55 mph** (survival mode) to protect themselves. Engineers (NREL with the University of Miami) are **modeling hurricane loads** to design stronger turbines. Ideas include **flexible downwind rotors** and **twisted-jacket foundations** (one on an oil and gas platform survived a direct hit from Hurricane Katrina). | Offshore storms are stronger and add **wave** loads. Models of extreme loads **still need refinement**. There is **little real data** on turbines in hurricanes, and hurricanes are hard to predict. Turbines **don't make power** in survival mode. |
+| **2. Video: largest turbine** | Clean energy from very large turbines. | Concerns that very large turbines or farms could **change local wind, temperature, or moisture downstream** (wake effects). Sort which claims are **measured** and which are **predicted**. |
+| **3. Video: giant wind farms** | Large-scale **clean power** that cuts the emissions behind climate change; the **model-study** idea that huge offshore arrays could take energy out of hurricane winds. | Huge **scale and expense**, space, wildlife and fishing impacts, maintenance. The storm-weakening benefit is **from models, not observations**. |
+:::
+
+Write down what each video actually says. Your notes should come from the videos, not from this summary.
+:::
+
+```{ojs}
+//| echo: false
+wdCheck("wd-check-windfarms", "Check: Evaluating the wind farm claim", [
+  {q: "According to the DOE article, what do turbines do when winds go above about 55 mph?",
+   options: ["Spin faster to slow the storm", "Lock and feather their blades in a protective 'survival mode'", "Fall over", "Make the most electricity"],
+   correct: 1,
+   explanation: "They stop generating to protect themselves, so a turbine is not acting as a wind shield during the worst of a storm."},
+  {q: "Which statement is best supported by evidence?",
+   options: ["Existing wind farms have measurably weakened hurricanes", "Models suggest very large offshore arrays could weaken storms, but this hasn't been observed in real storms", "Wind farms have no possible downsides", "Wind turbines cause hurricanes"],
+   correct: 1,
+   explanation: "No observations show a real wind farm weakening a storm. The idea comes from model studies, which is a what-if, not a measurement."}
+])
+```
+
+## 🔗 Connect to the Performance Task {#wd-pt}
+
+In your **Performance Task Organizer**, **Revisiting the Performance Task: Wind** focuses on **identifying tradeoffs**. Engineers consider **criteria** (what the design needs to do to succeed) and **prioritize** them when a solution can't meet every one. Meeting some criteria can cause **negative or unintended consequences**, so engineers weigh those **tradeoffs** to decide whether the **benefits are worth the costs**.
+
+Plan your answers here. Your typing is saved **in this browser only**, so copy it into your PTO.
+
+```{ojs}
+//| echo: false
+{
+  const key = "wdPT-wind";
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || "{}"); } catch (e) { saved = {}; }
+  const fields = [
+    ["q1", "1. Explain how the strong winds of Winter Storm Jonas formed and how the storm was carried across the country."],
+    ["q2", "2. Why is this a problem that we need to address?"],
+    ["q3", "3. List your top three most important criteria a solution for this problem would have to meet."],
+    ["q4", "4. Describe the solution presented in the texts."],
+    ["q5", "5. How is your solution addressing the science of this problem? How does the mechanism of how winds form and how Winter Storm Jonas traveled affect how this solution should be implemented?"],
+    ["q6", "6. What are the benefits of this solution? Does it meet your stated criteria?"],
+    ["q7", "7. What are the costs of the solution? Are these costs reasonable tradeoffs for the value of the solution?"]
+  ];
+  const wrap = html`<div class="wd-card">${fields.map(([k, lab]) => html`<label class="wd-lbl" for="wd-pt-${k}">${lab}</label><textarea id="wd-pt-${k}" class="wd-textarea" data-k="${k}"></textarea>`)}
+    <button type="button" class="wd-btn wd-copy">📋 Copy my answers</button><button type="button" class="wd-btn wd-btn-grey wd-clear">Clear</button>
+    <span class="wd-status" style="font-size:.85em;" aria-live="polite"></span></div>`;
+  const tas = wrap.querySelectorAll("textarea"), status = wrap.querySelector(".wd-status");
+  tas.forEach(t => {
+    t.value = saved[t.dataset.k] || "";
+    t.oninput = () => {
+      const o = {}; tas.forEach(x => o[x.dataset.k] = x.value);
+      try { localStorage.setItem(key, JSON.stringify(o)); status.textContent = "Saved in this browser."; } catch (e) { status.textContent = "Couldn't save here; copy your work."; }
+    };
+  });
+  wrap.querySelector(".wd-copy").onclick = async () => {
+    const text = "Revisiting the Performance Task: Wind\n\n" + fields.map(([k, lab]) => `${lab}\n${wrap.querySelector(`[data-k=${k}]`).value}`).join("\n\n");
+    try { await navigator.clipboard.writeText(text); status.textContent = "Copied!"; } catch (e) { status.textContent = "Copy failed; select the text and copy it."; }
+  };
+  wrap.querySelector(".wd-clear").onclick = () => { tas.forEach(t => t.value = ""); try { localStorage.removeItem(key); } catch (e) {} status.textContent = "Cleared."; };
+  return wrap;
+}
+```
+
+::: {.callout-note collapse="true"}
+## 🔑 Sample strong answers (write yours first!)
+
+1. **Uneven heating** made a cold, dense, **high-pressure** air mass (from Canada and the Arctic) and a warm, moist, **low-pressure** air mass (from the Gulf and Atlantic). Global winds brought them together; where they met, a low formed and **deepened**. Air rushed **from high to low**, bent by the **Coriolis effect** into a counterclockwise spiral, and the **big pressure difference over a short distance** made strong winds. The **westerlies** carried the storm east, then it turned north up the coast.
+2. Storm winds **down trees and power lines**, damage buildings, shut down transportation, and **endanger lives**. Storms like this **repeat** along predictable paths, so the damage keeps happening and costs billions of dollars (Unit Opening).
+3. Any **measurable, prioritized** set, for example: reduces damage or outages by a stated amount; costs less than the damage it prevents; works in the places storms actually hit; few harmful side effects.
+4. Building **wind farms** (especially offshore) designed to **survive hurricane winds**; some suggest that very large arrays could **weaken storms** while producing clean energy.
+5. It targets **wind energy itself** (taking energy out of moving air) and, in the long run, **climate change**. Placement should follow **storm paths and wind belts**: offshore along the Atlantic and Gulf coasts, where hurricanes and nor'easters travel. But turbines **shut down above about 55 mph**, so they don't block storm winds directly.
+6. Clean power and fewer emissions; a **possible** storm-weakening effect at huge scale that comes only from **models** and has never been observed. It meets "few side effects" better than "reduces wind damage," which has **no real-world evidence** yet.
+7. High cost; risk of storm and wave damage; possible local weather or wake effects; wildlife and fishing impacts; little protection during the storm itself. A strong answer **decides**: for example, worth it for **clean energy**, but not (yet) as a **storm-wind shield**.
+:::
+
+## ✅ Evaluate: Wind Rubric {#wd-rubric}
+
+::: {.wd-evaluate-box}
+## Wind Rubric checklist (Proficient = all components)
+
+Check off each component before you turn in your work.
+:::
+
+```{ojs}
+//| echo: false
+viewof wdRubric = Inputs.checkbox([
+  "Problem: how the uneven heating of Earth results in global wind patterns",
+  "Problem: the relationship between air temperature, density, and pressure",
+  "Problem: how these patterns result in predictable formation of storms and their trajectories",
+  "Problem: how these mechanisms work on smaller scales to cause strong storm winds",
+  "Problem: the damage caused by storm winds",
+  "Design cycle: I identify the problem",
+  "Design cycle: I identify and prioritize criteria for solutions",
+  "Design cycle: I analyze the solution's costs and benefits to decide if the tradeoffs are worth it"
+], {label: "My work includes:"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const nProb = wdRubric.filter(d => d.startsWith("Problem")).length;
+  const nDes = wdRubric.filter(d => d.startsWith("Design")).length;
+  const ok = nProb === 5 && nDes === 3;
+  return html`<div style="padding:12px 16px;border-radius:10px;margin:6px 0 14px;background:${ok ? "#dcfce7" : "#fef3c7"};color:${ok ? "#14532d" : "#78350f"};">
+    <b>Explanation of the problem: ${nProb} / 5 · The design cycle: ${nDes} / 3.</b> ${ok ? "🌟 Proficient on both rows." : "Developing = some components. Add the missing ones to reach Proficient."}
+    <div style="font-size:.9em;margin-top:4px;">Then write a <b>Glow</b> (something you did well) and a <b>Grow</b> (something to improve), and get teacher or peer feedback.</div>
+  </div>`;
+}
+```
+
+**Next:** the class votes **Yes, No, or Maybe** on wind farms (with reasons), then revisits the Driving Question Board. What's still unanswered? **How does precipitation form, and how can we reduce water damage from storms?** That's the [Water 5E](unit5-water.qmd).
+
+# Chapter Summary {#wd-chapter-summary}
+
+::: {.wd-scroll}
+| Key Concept | Details |
+|---|---|
+| **Uneven heating** | Sunlight heats Earth's surface unevenly (most at the equator). That starts every pressure difference. |
+| **Temperature → density** | Warmer air: particles move faster and spread out, so it is **less dense** and **rises**. Cooler air: slower, crowded, **more dense**, **sinks**. |
+| **Pressure** | **High** at the surface where cool, dense air sinks; **low** where warm air rises. H and L on a map mean **pressure**, not temperature. |
+| **Wind** | Air moving horizontally from **high to low pressure**. |
+| **Same pattern, three scales** | Bottles (small), molecules (tiny), and global **convection cells**: Hadley (0–30°), Ferrel (30–60°), Polar (60–90°). Also seen in magma (Unit 3) and oceans (Unit 4). |
+| **Coriolis effect** | Earth's spin makes moving air **appear to bend**: **right** in the Northern Hemisphere, **left** in the Southern. It bends wind; it doesn't cause it. |
+| **Wind belts** | NE **trade winds** (0–30°), **westerlies** (30–60°, including NYC), **polar easterlies** (60–90°). Westerlies carry U.S. storms **west to east**. |
+| **Jonas** | Cold, dry air from Canada met warm, moist air from the Gulf and Atlantic. The low formed over Texas (Jan 21), moved east, then up the coast. 27.5 in of snow in Central Park; peak gusts 48 mph at LGA and JFK, 58–59 mph on Long Island (NWS). |
+| **Weather maps** | Isobars (4 mb), isotherms (10 °F), isodrosotherms (10 °F), isallobars (2 mb). Station model: staff points to where wind comes **from**; half barb 5 kt, full barb 10 kt, pennant 50 kt. |
+| **Storm winds** | Wind spirals **counterclockwise into lows** and **clockwise out of highs** (NH). A **big pressure difference over a short distance** (tight isobars) = **strong wind**. |
+| **Hurricanes vs. winter storms** | Winter storms: energy from the contrast between air masses. Hurricanes: energy from **warm ocean water**; calm **eye**, strongest winds in the **eyewall**. Both are lows steered by the wind belts. |
+| **Engineering** | **Criteria** (measurable, prioritized) say whether a solution works; **tradeoffs** are costs accepted for benefits. Burying power lines cuts outages but costs much more and has flood and repair risks. |
+| **Wind farms** | Turbines go into survival mode above 55 mph (DOE). **No observed wind farm has weakened a storm**; that idea comes only from model studies. Their proven benefit is clean energy. |
+:::
+
+---
+
+# Myth or Fact? {#wd-myths}
+
+```{=html}
+<div id="wdmf-box" style="background:linear-gradient(135deg,#0b1d3a 0%,#123a5c 50%,#0f4c5c 100%); color:white; padding:24px; border-radius:16px; margin:30px 0; font-family:'Inter',sans-serif; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.5em; margin:0 0 8px 0; color:#7dd3fc !important; border:none;">💨 Wind: Myths vs. Facts</h2>
+  <p style="color:#cbd5e1; margin:0 0 18px 0; font-size:0.95em;">Decide whether each statement is a MYTH or a FACT!</p>
+  <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.06); padding:12px 16px; border-radius:12px; margin-bottom:18px; gap:10px; flex-wrap:wrap;">
+    <div id="wdmf-progress" style="color:#cbd5e1; font-size:0.9em;">Card 1 of 8</div>
+    <div style="color:#cbd5e1; font-size:0.9em;">Score: <span id="wdmf-score" style="color:#7dd3fc; font-weight:700;">0</span> / <span id="wdmf-total">0</span></div>
+  </div>
+  <div id="wdmf-card" aria-live="polite" style="background:rgba(255,255,255,0.08); border-radius:14px; padding:22px; min-height:100px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:1.06em; font-weight:600; line-height:1.6; border:1.5px solid rgba(255,255,255,0.12);"></div>
+  <div style="display:flex; gap:12px; margin-top:16px;">
+    <button type="button" id="wdmf-myth" onclick="wdmfAnswer('Myth')" style="flex:1; min-height:44px; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#e17055,#d63031); color:white; font-size:1em; font-weight:700; cursor:pointer;">❌ MYTH</button>
+    <button type="button" id="wdmf-fact" onclick="wdmfAnswer('Fact')" style="flex:1; min-height:44px; padding:14px; border:none; border-radius:10px; background:linear-gradient(135deg,#00b894,#00a383); color:white; font-size:1em; font-weight:700; cursor:pointer;">✅ FACT</button>
+  </div>
+  <div id="wdmf-feedback" aria-live="polite" style="margin-top:16px; padding:16px; border-radius:10px; display:none; font-size:0.95em; line-height:1.6;"></div>
+  <button type="button" id="wdmf-next" onclick="wdmfNext()" style="display:none; margin-top:12px; width:100%; min-height:44px; padding:12px; border:2px solid rgba(255,255,255,0.25); border-radius:10px; background:transparent; color:white; font-size:0.95em; font-weight:600; cursor:pointer;">Next Card →</button>
+  <div id="wdmf-done" style="display:none; text-align:center; padding:20px;">
+    <div style="font-size:2.5em; margin-bottom:10px;">🎉</div>
+    <div style="font-size:1.3em; font-weight:700;">All cards complete!</div>
+    <div style="color:#cbd5e1; margin:8px 0;">Final score: <span id="wdmf-final" style="color:#7dd3fc; font-weight:700;"></span> / <span id="wdmf-count"></span></div>
+    <button type="button" onclick="wdmfRestart()" style="margin-top:12px; min-height:44px; padding:10px 24px; border:2px solid #7dd3fc; border-radius:20px; background:transparent; color:#7dd3fc; font-size:0.9em; cursor:pointer; font-weight:600;">Play Again</button>
+  </div>
+</div>
+<script>
+(function() {
+  var cards = [
+    {text: "Wind is caused by Earth spinning.", type: "Myth",
+     explanation: "Wind starts with pressure differences caused by uneven heating. Earth's spin only BENDS moving air (the Coriolis effect)."},
+    {text: "Air moves from areas of high pressure to areas of low pressure.", type: "Fact",
+     explanation: "Air flows toward where fewer molecules push back. That horizontal flow is wind, from the bottles all the way up to global wind belts."},
+    {text: "Warm air rises because its molecules are lighter than cold air's molecules.", type: "Myth",
+     explanation: "They're the same molecules with the same mass. Warm molecules move faster and spread out, so there are fewer in each bit of space. Less dense air is pushed up as denser air sinks under it."},
+    {text: "The 'H' on a weather map stands for 'hot.'", type: "Myth",
+     explanation: "H and L stand for HIGH and LOW pressure. Highs are often cool and dry; lows are where air rises and storms form."},
+    {text: "On a station model, the wind staff points toward the direction the wind is coming FROM.", type: "Fact",
+     explanation: "A staff pointing northeast means a northeast wind, blowing from the northeast toward the southwest."},
+    {text: "When isobars are packed close together, the wind is strong.", type: "Fact",
+     explanation: "Tight isobars mean a big pressure difference over a short distance, so air rushes faster from high to low. That's what NOAA's Jan 23, 2016 map showed around Jonas."},
+    {text: "Scientists have observed real wind farms weakening hurricanes.", type: "Myth",
+     explanation: "No operating wind farm has been observed to weaken a storm. The idea comes from computer model studies of extremely large offshore arrays."},
+    {text: "Wind turbines keep spinning and making the most electricity during hurricane-force winds.", type: "Myth",
+     explanation: "According to the U.S. Department of Energy, turbines lock and feather their blades above 55 mph and go into 'survival mode,' so they stop producing power."}
+  ];
+  var idx = 0, score = 0, answered = 0, cardAnswered = false;
+  function el(id) { return document.getElementById(id); }
+  function updateCard() {
+    if (idx >= cards.length) {
+      ['wdmf-card','wdmf-myth','wdmf-fact','wdmf-feedback','wdmf-next'].forEach(function(i){ el(i).style.display = 'none'; });
+      el('wdmf-done').style.display = 'block';
+      el('wdmf-final').textContent = score;
+      el('wdmf-count').textContent = cards.length;
+      return;
+    }
+    el('wdmf-card').textContent = cards[idx].text;
+    el('wdmf-progress').textContent = 'Card ' + (idx + 1) + ' of ' + cards.length;
+    el('wdmf-feedback').style.display = 'none';
+    el('wdmf-next').style.display = 'none';
+    el('wdmf-myth').disabled = false; el('wdmf-fact').disabled = false;
+    el('wdmf-myth').style.opacity = '1'; el('wdmf-fact').style.opacity = '1';
+    cardAnswered = false;
+  }
+  window.wdmfAnswer = function(choice) {
+    if (cardAnswered) return;
+    cardAnswered = true; answered++;
+    var card = cards[idx], correct = (choice === card.type);
+    if (correct) score++;
+    el('wdmf-score').textContent = score; el('wdmf-total').textContent = answered;
+    var fb = el('wdmf-feedback');
+    fb.style.display = 'block';
+    fb.style.background = correct ? 'rgba(0,184,148,0.2)' : 'rgba(214,48,49,0.2)';
+    fb.style.border = '1px solid ' + (correct ? '#00b894' : '#e17055');
+    fb.innerHTML = '<strong>' + (correct ? '✅ Correct! ' : '❌ That\'s a ' + card.type + '! ') + '</strong>' + card.explanation;
+    el('wdmf-myth').disabled = true; el('wdmf-fact').disabled = true;
+    el('wdmf-myth').style.opacity = (choice === 'Myth') ? '1' : '0.5';
+    el('wdmf-fact').style.opacity = (choice === 'Fact') ? '1' : '0.5';
+    el('wdmf-next').style.display = 'block';
+  };
+  window.wdmfNext = function() { idx++; updateCard(); };
+  window.wdmfRestart = function() {
+    idx = 0; score = 0; answered = 0;
+    el('wdmf-card').style.display = 'flex';
+    el('wdmf-myth').style.display = 'block'; el('wdmf-fact').style.display = 'block';
+    el('wdmf-done').style.display = 'none';
+    el('wdmf-score').textContent = '0'; el('wdmf-total').textContent = '0';
+    updateCard();
+  };
+  updateCard();
+})();
+</script>
+```
+
+---
+
+# End-of-Chapter Quiz {#wd-quiz}
+
+```{ojs}
+//| echo: false
+wdEndQuiz = function(id, title, questions) {
+  const outer = html`<div id="${id}" style="font-family:'Inter',sans-serif; max-width:720px; margin:18px auto;"></div>`;
+  const header = html`<div style="background:linear-gradient(135deg,#0b5c8a 0%,#0a3d62 100%);color:#fff;border-radius:14px 14px 0 0;padding:18px 22px;">
+    <div style="font-size:1.1em;font-weight:700;">📝 ${title}</div>
+    <div style="font-size:0.85em;opacity:0.9;margin-top:4px;">Select an answer for each question. <span class="wd-score" aria-live="polite"></span></div>
+  </div>`;
+  const body = html`<div style="border:1.5px solid #bae6fd;border-top:none;border-radius:0 0 14px 14px;background:#f0f9ff;padding:14px;"></div>`;
+  let nRight = 0, nDone = 0;
+  const scoreEl = header.querySelector(".wd-score");
+  wdBuildCards(body, questions, ok => { nDone++; if (ok) nRight++; scoreEl.textContent = `Score: ${nRight} / ${nDone}`; });
+  outer.appendChild(header);
+  outer.appendChild(body);
+  return outer;
+}
+```
+
+```{ojs}
+//| echo: false
+wdEndQuiz("wd-end-quiz", "Wind: End-of-Chapter Quiz", [
+  {q: "In the bottle model, smoke sank over the cold water and rose over the hot water. Why did the air over the cold water sink?",
+   options: ["Cold air molecules are heavier than warm air molecules", "Cooled air's molecules slow down and crowd together, so the air is denser and sinks", "The smoke was heating the air", "The tube pulled the air down"],
+   correct: 1,
+   explanation: "Same molecules, different spacing. Cooler air is denser, so it sinks and raises the pressure at the surface below it."},
+  {q: "Which chain correctly explains how wind forms?",
+   options: ["Earth spins → air moves → pressure changes → heating", "Uneven heating → density differences → pressure differences → air flows from high to low pressure", "Clouds form → rain falls → wind blows", "Low pressure → air sinks → high pressure → wind blows from low to high"],
+   correct: 1,
+   explanation: "Heating sets up density and pressure differences; air then flows from high to low. The Coriolis effect only bends it."},
+  {q: "On the global circulation model, where is surface air pressure HIGH?",
+   options: ["Near the equator and 60°", "Near 30° and the poles, where cool air sinks", "Only over oceans", "Everywhere equally"],
+   correct: 1,
+   explanation: "Air sinks near 30° and at the poles (high pressure) and rises near the equator and 60° (low pressure)."},
+  {q: "NYC is in which wind belt, and what does it do to storms?",
+   options: ["The trade winds; they push storms east to west", "The prevailing westerlies; they carry storms west to east", "The polar easterlies; they push storms south", "No wind belt reaches NYC"],
+   correct: 1,
+   explanation: "That's why Jonas formed over Texas and then moved east before turning north up the coast."},
+  {q: "On a balloon spinning like Earth, a line drawn from the North Pole toward the equator bends to the right. What happens in the Southern Hemisphere?",
+   options: ["It also bends right", "It bends left", "It stays straight", "It bends toward the North Pole"],
+   correct: 1,
+   explanation: "The Coriolis effect bends moving air right in the Northern Hemisphere and left in the Southern Hemisphere."},
+  {q: "A station model has the code 872 for pressure. What is the pressure, and what kind of system is likely nearby?",
+   options: ["1087.2 mb; a strong high", "987.2 mb; a strong low", "872 mb; a weak high", "8.72 mb; nothing"],
+   correct: 1,
+   explanation: "872 is 500 or more, so put a 9 in front: 987.2 mb. That's very low pressure, like the 987 mb center of Jonas on Jan 23, 2016."},
+  {q: "Which weather-map clue best shows where the wind is strongest?",
+   options: ["Where isobars are farthest apart", "Where isobars are packed close together", "At the exact center of a high", "Where the temperature is highest"],
+   correct: 1,
+   explanation: "Tight isobars = large pressure difference over a short distance = fast-moving air."},
+  {q: "Jonas's NYC gusts were strong because…",
+   options: ["the storm was over warm ocean water like a hurricane", "its low deepened quickly next to very cold Arctic high pressure, making a large pressure difference over a short distance", "Earth was spinning faster that day", "there was no high pressure anywhere nearby"],
+   correct: 1,
+   explanation: "The National Weather Service measured gusts of 48 mph at LaGuardia and JFK and 58–59 mph on Long Island."},
+  {q: "Which is a CRITERION (not a tradeoff) for a solution to storm power outages?",
+   options: ["Burying lines costs 5–10 times more", "Trenching disrupts the environment", "The solution must cut outages in half within five years", "Buried lines can flood"],
+   correct: 2,
+   explanation: "A criterion says what the solution must do to succeed, ideally in a measurable way. The others are costs or tradeoffs."},
+  {q: "What does the evidence say about wind farms and storm winds?",
+   options: ["Real wind farms have been measured weakening hurricanes", "Turbines go into survival mode above about 55 mph, and storm-weakening has only been shown in model studies", "Wind farms make hurricanes stronger", "Turbines produce the most power in hurricanes"],
+   correct: 1,
+   explanation: "No observed wind farm has weakened a storm. The DOE explains that turbines lock and feather above 55 mph. Wind farms' proven benefit is clean energy."}
+])
+```
+
+<p class="wd-note">Sources: NOAA National Weather Service New York (Upton, NY), January 2016 blizzard summary (snowfall and peak gusts); NOAA Weather Prediction Center surface analyses for 06 UTC Jan 21 and 12 UTC Jan 23, 2016; NOAA JetStream weather-map lessons (station data and answer maps); NOAA National Hurricane Center HURDAT2 best tracks (Florence, AL062018; Helene, AL092024); U.S. Department of Energy, <i>Wind Turbines in Extreme Weather: Solutions for Hurricane Resiliency</i> (2018); Jacobson, Archer &amp; Kempton, <i>Nature Climate Change</i> (2014); New Visions for Public Schools, Earth &amp; Space Science Unit 5 Wind 5E materials (CC BY-NC-SA 4.0).</p>
