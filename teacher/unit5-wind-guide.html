@@ -1,0 +1,1755 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="teacher-gate.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}.strata-11{grid-template-columns:repeat(11,1fr)}
+</style>
+<title>Wind 5E Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky day bar on top, one day visible at a time, single reading column (~760px). Days are "rock layers" colored by 5E phase. */
+:root{
+  --bg:#F2F5F4; --surface:#FFFFFF; --ink:#15212A; --muted:#55646B; --line:#D5DDDB; --tint:#E7EDEB;
+  --iron:#AE4229; --ocean:#1C6784; --ochre:#A8731A; --moss:#4C7634; --dusk:#5A4A8C;
+  --ok:#2E7D4F; --warn:#9A5B00;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--ocean)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* phase colors */
+[data-phase="engage"]{--ph:var(--ochre)} [data-phase="explore"]{--ph:var(--iron)} [data-phase="explain"]{--ph:var(--ocean)}
+[data-phase="elaborate"]{--ph:var(--moss)} [data-phase="evaluate"]{--ph:var(--dusk)} [data-phase="overview"]{--ph:var(--ink)}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:thin}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--ph)}
+.chip[aria-current="page"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--ocean);outline-offset:2px}
+
+/* hero */
+.hero{padding-block:28px 8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.hero h1{font-size:clamp(32px,7vw,52px);font-weight:800;letter-spacing:-.02em;margin:8px 0 10px}
+.dq{font-size:clamp(18px,3.4vw,22px);color:var(--ink);max-width:40ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0 0;color:var(--muted);font-size:15px}
+.meta b{color:var(--ink)}
+
+/* strata bar */
+.strata{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin:22px 0 6px;border-radius:10px;overflow:hidden}
+.strata a{display:flex;flex-direction:column;justify-content:flex-end;min-height:76px;padding:8px 7px;background:var(--ph);color:#fff;text-decoration:none;font-size:12px;line-height:1.2;position:relative}
+.strata a::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(0,0,0,.10) 9px 11px);pointer-events:none}
+.strata b{font-family:var(--f-display);font-size:20px;display:block}
+.strata span{opacity:.92}
+.strata-cap{font-size:13px;color:var(--muted)}
+@media (max-width:520px){.strata span{display:none}.strata a{min-height:56px}}
+
+/* views */
+.view{padding-block:8px 48px;scroll-margin-top:calc(64px + env(safe-area-inset-top,0px))}
+.view[hidden]{display:none!important}
+.dayhead{padding-block:26px 6px;border-bottom:4px solid var(--ph);margin-bottom:8px}
+.dayhead .eyebrow{color:var(--ph)}
+.dayhead h2{font-size:clamp(28px,5.6vw,40px);font-weight:800;margin:6px 0 8px;letter-spacing:-.01em}
+.dayhead .q{font-style:italic;color:var(--muted);margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
+.tag{font-size:13px;padding:3px 9px;border-radius:6px;background:var(--tint);color:var(--ink)}
+
+section.block{padding-block:18px 4px}
+section.block>h3{font-size:22px;font-weight:800;margin-bottom:12px;display:flex;align-items:baseline;gap:10px}
+section.block>h3 small{font-family:var(--f-body);font-weight:600;font-size:14px;color:var(--muted)}
+p{margin:0 0 10px} ul,ol{margin:0 0 10px;padding-left:22px} li{margin-bottom:5px}
+
+/* goals */
+.goals{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--ph);border-radius:8px;padding:14px 16px}
+.goals h3{font-size:17px;margin-bottom:8px}
+.goals ul{margin:0}
+
+/* schedule */
+.sched{list-style:none;padding:0;margin:0;border-left:2px solid var(--line)}
+.sched li{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:10px 0 12px 22px;margin:0;position:relative}
+.sched li::before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:3px solid var(--ph)}
+.t{font-family:var(--f-mono);font-size:14px;color:var(--ph);font-weight:500;padding-top:2px;font-variant-numeric:tabular-nums}
+.t small{display:block;color:var(--muted);font-size:12px}
+.sched h4{font-size:17px;font-weight:600;margin-bottom:3px}
+.sched p,.sched ul{font-size:16px;color:var(--ink);margin-bottom:4px}
+.sched .say{border-left:3px solid var(--tint);padding-left:10px;color:var(--muted);font-style:italic}
+@media (max-width:480px){.sched li{grid-template-columns:1fr;gap:2px}}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.card .lbl{font-size:12px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;color:var(--ph);margin-bottom:6px}
+.card p:last-child{margin-bottom:0}
+.ans{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:15px;color:var(--muted)}
+.ans b{color:var(--ok)}
+
+/* conferring */
+.confer{list-style:none;padding:0;display:grid;gap:8px}
+.confer li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0}
+.confer li span{display:block;font-size:14px;color:var(--muted);margin-top:3px}
+
+/* CFU */
+.cfu{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.cfu h4{font-size:16px;margin-bottom:6px;font-family:var(--f-body);font-weight:700}
+.opts{list-style:none;padding:0;margin:6px 0}
+.opts li{padding:5px 10px;border-radius:6px;margin-bottom:4px;background:var(--tint)}
+.opts li.right{outline:2px solid var(--ok)}
+.opts li em{display:block;font-size:14px;color:var(--muted);font-style:normal}
+.when{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* answer key */
+.key{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.key>summary{cursor:pointer;padding:13px 16px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.key>summary::-webkit-details-marker{display:none}
+.key>summary::after{content:"+";font-family:var(--f-mono);font-size:20px;color:var(--ph)}
+.key[open]>summary::after{content:"−"}
+.key>summary small{display:block;font-weight:400;color:var(--muted);font-size:14px}
+.keybody{padding:2px 16px 14px;border-top:1px solid var(--line)}
+.qa{padding:10px 0;border-bottom:1px solid var(--tint)}
+.qa:last-child{border-bottom:0}
+.qa .qq{font-weight:700;margin-bottom:4px}
+.qa .aa{margin:0}
+.note{font-size:15px;background:var(--tint);border-radius:8px;padding:10px 12px;margin:8px 0}
+.note b{color:var(--warn)}
+.scroll{overflow-x:auto;margin:8px 0 12px;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--surface)}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--tint);font-weight:700}
+td.num,th.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* homework */
+.hw{background:var(--surface);border:2px solid var(--ph);border-radius:12px;padding:16px}
+.hw h4{font-size:20px;font-weight:800;margin-bottom:6px}
+.hw .why{font-size:15px;color:var(--muted)}
+.checks{list-style:none;padding:0;margin:8px 0 0}
+.checks li{padding-left:24px;position:relative}
+.checks li::before{content:"✓";position:absolute;left:2px;color:var(--ok);font-weight:700}
+
+/* overview bits */
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:6px}
+.glance .card b{font-family:var(--f-display);font-size:18px;display:block;margin-bottom:2px}
+.prep{list-style:none;padding:0}
+.prep li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--tint);margin:0}
+.prep input{width:20px;height:20px;margin-top:3px;accent-color:var(--ocean);flex:0 0 auto}
+.prep label{flex:1;min-width:0}
+.prep .when{display:block}
+.mis{display:grid;gap:8px}
+.mis div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.mis s{color:var(--iron);text-decoration-thickness:2px}
+
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:30px;flex-wrap:wrap}
+.pager a{flex:1 1 200px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.pager a small{display:block;color:var(--muted);font-size:13px}
+.pager a.next{text-align:right}
+footer{color:var(--muted);font-size:13px;padding-block:20px 40px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+.strata-11{grid-template-columns:repeat(11,1fr)}
+@media (max-width:420px){.strata-11 a{padding:8px 3px}.strata-11 b{font-size:15px}}
+</style>
+</head>
+<body>
+<nav class="bar" aria-label="Days">
+  <div class="wrap" id="chips">
+    <a class="chip" data-phase="overview" href="#overview"><i></i>Before you teach</a>
+    <a class="chip" data-phase="engage" href="#day-1"><i></i>Day 1</a>
+    <a class="chip" data-phase="explore" href="#day-2"><i></i>Day 2</a>
+    <a class="chip" data-phase="explore" href="#day-3"><i></i>Day 3</a>
+    <a class="chip" data-phase="explore" href="#day-4"><i></i>Day 4</a>
+    <a class="chip" data-phase="explain" href="#day-5"><i></i>Day 5</a>
+    <a class="chip" data-phase="explain" href="#day-6"><i></i>Day 6</a>
+    <a class="chip" data-phase="explore" href="#day-7"><i></i>Day 7</a>
+    <a class="chip" data-phase="explore" href="#day-8"><i></i>Day 8</a>
+    <a class="chip" data-phase="explain" href="#day-9"><i></i>Day 9</a>
+    <a class="chip" data-phase="elaborate" href="#day-10"><i></i>Day 10</a>
+    <a class="chip" data-phase="evaluate" href="#day-11"><i></i>Day 11</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ===================== OVERVIEW ===================== -->
+<div class="view" id="overview" data-phase="overview">
+  <header class="hero">
+    <div class="eyebrow">Teacher guide · Earth &amp; Space Science · Unit 5 · Extreme Weather Coming to a Place Near You? · L1 Wind 5E (SY 26-27)</div>
+    <h1>Wind</h1>
+    <p class="dq">How do meteorologists predict where storms will land? How do strong winds form? How can we protect ourselves from storm damage?</p>
+    <div class="meta">
+      <span><b>PEs</b> HS-ESS2-8 · HS-ETS1-1 · HS-ETS1-2</span>
+      <span><b>Length</b> 11 days × 50 min (teacher materials list 7–11)</span>
+      <span><b>Packet</b> SY 26-27 L1 Student Materials (Wind 5E) · Weather Maps classroom resource · PTO: Revisiting the Performance Task: Wind</span>
+      <span><b>Routines</b> Rumors · Domino Discover · Think-Talk-Open Exchange + Buzzwords · Class Consensus Discussion · Idea Carousel · Consensus-Building Share · Read-Generate-Sort-Solve · Driving Question Board</span>
+    </div>
+    <div class="strata strata-11" aria-label="Eleven days, colored by 5E phase">
+      <a href="#day-1" data-phase="engage"><b>1</b><span>Engage</span></a>
+      <a href="#day-2" data-phase="explore"><b>2</b><span>Explore 1</span></a>
+      <a href="#day-3" data-phase="explore"><b>3</b><span>Explore 1</span></a>
+      <a href="#day-4" data-phase="explore"><b>4</b><span>Explore 1 → Explain 1</span></a>
+      <a href="#day-5" data-phase="explain"><b>5</b><span>Explain 1</span></a>
+      <a href="#day-6" data-phase="explain"><b>6</b><span>Explain 1</span></a>
+      <a href="#day-7" data-phase="explore"><b>7</b><span>Explore 2</span></a>
+      <a href="#day-8" data-phase="explore"><b>8</b><span>Explore 2</span></a>
+      <a href="#day-9" data-phase="explain"><b>9</b><span>Explain 2</span></a>
+      <a href="#day-10" data-phase="elaborate"><b>10</b><span>Elaborate</span></a>
+      <a href="#day-11" data-phase="evaluate"><b>11</b><span>Evaluate</span></a>
+    </div>
+    <p class="strata-cap">Tap a day to open it. Each day has a minute-by-minute plan, Do Nows, conferring questions, checks for understanding, the answer key, exit slips and drawn homework. There is no student chapter for this SY 26-27 lesson yet.</p>
+  </header>
+
+  <section class="block">
+    <h3>Read this first</h3>
+    <div class="note"><b>New lesson, no page numbers.</b> This guide follows the SY 26-27 Wind 5E Google Docs (teacher and student materials). The Google Doc has no page numbers, so every answer key is labeled by <b>handout → part/model/table → question</b>. The Doc's numbered lists export as automatic numbering, so where a handout's numbers could be ambiguous, the key also quotes the first words of the prompt. The Wind 5E replaces the SY 25-26 <a href="unit5-blizzards-guide.html">Blizzards</a> and <a href="unit5-storm-paths-guide.html">Paths of Severe Storms</a> 5Es: the bottle model, Coriolis balloon, global circulation, Jonas weather maps and Jonas air masses all moved here, and the unit is now an engineering unit (Opening → <b>Wind</b> → Water → Flooding → Closing).</div>
+  </section>
+
+  <section class="block">
+    <h3>The phenomenon in one paragraph</h3>
+    <p><b>Winter Storm Jonas</b> (Jan 22–24, 2016) buried New York City (27.5 in at Central Park) and brought damaging wind gusts, yet forecasts warned people days ahead. Students ask how strong winds form and how meteorologists knew where the storm would go. Three models at three scales give the same answer: <b>uneven heating</b>. In connected bottles of hot and cold water, smoke sinks over the "cool land," flows through the tube and rises over the "warm land." A gas simulation shows why: cool particles are slow, crowded and <b>dense</b> (more pressure at the surface); warm particles are fast, spread out and <b>less dense</b>; air flows from <b>high to low pressure</b>, and convection cells form. A spinning balloon shows the <b>Coriolis effect</b> (paths bend right in the NH, left in the SH). The Global Circulation Model scales this up to the Hadley, Ferrel and polar cells and wind belts that bring cold and warm air masses together and steer storms like Jonas <b>east, then north</b>. On NOAA weather maps students draw isobars, isotherms, dew-point lines and pressure-change lines, find the H, the L and the fronts, then find a low forming on a real Jonas map. They explain why winds <b>spiral into lows and out of highs</b> and why a big pressure difference over a short distance makes <b>strong wind</b>. Finally they switch to engineering: <b>criteria and tradeoffs</b> for burying power lines after <b>Hurricane Helene</b>, then whether <b>wind farms</b> make sense, which feeds the Performance Task.</p>
+  </section>
+
+  <section class="block">
+    <h3>The 5E storyline</h3>
+    <div class="glance">
+      <div class="card" data-phase="engage"><div class="lbl">Engage · Day 1</div><b>What were the winds like during Jonas?</b>Jonas video, gust map, storm tracks map, See-Think-Wonder, brainstorm, Rumors.</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore 1 · Days 2–4</div><b>How does wind form?</b>Model 1 bottles, Model 2 Gas Properties Simulation (Tables 1–3), Model 3 balloon (Table 4), Making Sense, rubric.</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain 1 · Days 4–6</div><b>How did Jonas form and travel?</b>Bottle model drawing, Global Circulation Model, wind belts, Coriolis videos, Think-Talk-Open Exchange + Buzzwords, Class Consensus, Summary Task.</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore 2 · Days 7–8</div><b>How do temperature and pressure patterns explain storm winds?</b>Four isoline maps, the Surface Observation map, fronts, the Jan 21 Jonas map, Making Sense, rubric.</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain 2 · Day 9</div><b>How do storm wind cyclones form?</b>Arrows around L and H, Weather Channel clip, Idea Carousel, Consensus-Building Share, summary.</div>
+      <div class="card" data-phase="elaborate"><div class="lbl">Elaborate · Day 10</div><b>How can we start thinking about solutions?</b>Winter storms vs. hurricanes, Helene, burying power lines, criteria and tradeoffs, Read-Generate-Sort-Solve.</div>
+      <div class="card" data-phase="evaluate"><div class="lbl">Evaluate · Day 11</div><b>Are wind farms an effective solution?</b>Three texts, Revisiting the Performance Task: Wind, Wind Rubric, Domino Discover, DQB.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="goals" data-phase="explain">
+      <h3>By the end of the 5E, every student should be able to…</h3>
+      <ul>
+        <li>Explain wind as air moving from <b>high to low pressure</b>, caused by <b>uneven heating</b>: warm air is less dense and rises (low pressure at the surface); cool air is denser and sinks (high pressure).</li>
+        <li>Connect the same pattern across three scales: bottles, molecules, and the global Hadley, Ferrel and polar cells (and back to convection in the mantle and oceans from Units 3–4).</li>
+        <li>Use the <b>Coriolis effect</b> (right in the NH, left in the SH) with the convection cells to explain the trade winds, westerlies and polar easterlies, and why storms like Jonas move <b>west to east</b> and then <b>north</b> up the coast.</li>
+        <li>Draw and read isobars, isotherms, isodrosotherms and isallobars; read station models; locate highs, lows and fronts; find a developing low on a real map (HS-ESS2-8).</li>
+        <li>Explain why winds spiral <b>counterclockwise into lows</b> and <b>clockwise out of highs</b> (NH), and why a large pressure difference over a short distance means strong wind.</li>
+        <li>Specify and prioritize <b>criteria</b>, and name <b>tradeoffs</b>, costs and benefits, for a real solution to wind damage (HS-ETS1-1, HS-ETS1-2).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Prep checklist <small>check off as you go · saved on this device</small></h3>
+    <ul class="prep" id="prep">
+      <li><input type="checkbox" id="p1"><label for="p1"><span class="when">1 week out</span>Copy the SY 26-27 <b>Wind 5E</b> student handouts (Gusting Winds through Wind Rubric), the <b>Weather Maps</b> classroom resource (one set per pair, in color if possible), and the PTO page <b>Revisiting the Performance Task: Wind</b>.</label></li>
+      <li><input type="checkbox" id="p2"><label for="p2"><span class="when">1 week out</span>Test on student devices: New Visions <b>Gas Properties Simulation</b> and <b>Global Circulation Model</b> (simulations.newvisions.org), the four NOAA JetStream check-your-work pages, and the DOE article for Day 11. Check that YouTube links play at school.</label></li>
+      <li><input type="checkbox" id="p3"><label for="p3"><span class="when">Before Day 2</span><b>Bottle kits</b>, one per table: two 1-L bottles with side holes that fit the tubing, tubing, incense, matches/lighter (you keep these), hot and cold water. Watch the teacher <b>Wind Model Video</b> (Drive link in the teacher materials) and run the model once yourself. Check your school's rules on incense and open flame and on smoke detectors; have a backup plan of showing the video.</label></li>
+      <li><input type="checkbox" id="p4"><label for="p4"><span class="when">Before Day 3</span>One round balloon per pair and <b>3 colors</b> of permanent marker. Preview the <b>Coriolis Effect Balloon</b> video; if you show it, <b>mute it</b> so students don't hear the explanation.</label></li>
+      <li><input type="checkbox" id="p5"><label for="p5"><span class="when">Before Day 5</span>Chart paper and markers for group models. Queue <b>The coriolis effect and winds</b> and <b>Coriolis Carousel</b>. Print a Buzzwords tally strip (heat · density · pressure · Coriolis).</label></li>
+      <li><input type="checkbox" id="p6"><label for="p6"><span class="when">Before Day 6</span>Post the Class Consensus Discussion steps. Pick 2–3 group charts that show the Key Points (not random). Have a document camera or phone ready.</label></li>
+      <li><input type="checkbox" id="p7"><label for="p7"><span class="when">Before Day 7</span>Colored pencils (black, blue, red, green, yellow) for every pair. Queue <b>How to Draw Isolines #1 and #2</b> and the <b>Mid-Latitude Cyclone Clip</b>. Make sure students have the <b>Key to Weather Map Symbols</b> (in the packet; the teacher materials point NY teachers to the ESS Reference Tables).</label></li>
+      <li><input type="checkbox" id="p8"><label for="p8"><span class="when">Before Day 9</span>Queue <b>High and Low Pressure Zone Winds</b> (Drive) and the Weather Channel Jonas broadcast at <b>1:17:07–1:18:49</b>. Chart paper and sticky notes for Idea Carousel; plan wall or hallway space.</label></li>
+      <li><input type="checkbox" id="p9"><label for="p9"><span class="when">Before Day 10</span>Queue both Helene videos. Make a <b>criteria / tradeoffs</b> anchor poster you can keep up for the Water and Flooding 5Es.</label></li>
+      <li><input type="checkbox" id="p10"><label for="p10"><span class="when">Before Day 11</span>Print or link the DOE article (Text 1) and queue both wind-farm videos. Chart paper for the Yes / No / Maybe tally. Bring out the Driving Question Board.</label></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Content crib: the numbers students will use</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>Idea</th><th>Value</th><th>Source / where it comes up</th></tr></thead>
+      <tbody>
+        <tr><td>Jonas snowfall, Central Park</td><td class="num">27.5 in (Jan 22–24, 2016)</td><td>NWS New York (OKX) storm summary; largest there since records began in 1869</td></tr>
+        <tr><td>Jonas snowfall, JFK</td><td class="num">30.5 in</td><td>NWS OKX storm summary</td></tr>
+        <tr><td>Jonas peak gusts, NYC</td><td class="num">48 mph (LaGuardia and JFK)</td><td>NWS OKX; Long Island reached 58 mph (Islip) and 59 mph (Eatons Neck). The packet's "55 mph in NYC" is a correction below.</td></tr>
+        <tr><td>Jonas surface map (Explore 2, map 6)</td><td class="num">Jan 21, 2016, 05 UTC (= midnight EST)</td><td>Weather Maps resource caption; the teacher guide says "15 UTC" (correction below)</td></tr>
+        <tr><td>Isoline intervals</td><td class="num">isobars 4 mb (from 1000) · isotherms 10 °F · dew point 10 °F · isallobars 2 mb</td><td>Explore 2 directions (NOAA JetStream lessons)</td></tr>
+        <tr><td>Severe-weather moisture</td><td class="num">dew point ≥ 70 °F</td><td>Explore 2 dew point directions (NOAA JetStream)</td></tr>
+        <tr><td>Station model wind</td><td class="num">half barb 5 kt · full barb 10 kt · pennant 50 kt; 1 kt ≈ 1.15 mph</td><td>NWS/ESRT station model conventions; the staff points to where wind comes <b>from</b></td></tr>
+        <tr><td>Station model pressure code</td><td class="num">1019.6 mb → "196"; 987.2 mb → "872"</td><td>NWS/ESRT convention: last three digits, decimal dropped</td></tr>
+        <tr><td>Global circulation bands (approximate)</td><td class="num">rising/low ~0° and ~60°; sinking/high ~30° and poles</td><td>Global Circulation Model; NOAA JetStream "Global Circulations"</td></tr>
+        <tr><td>Coriolis direction</td><td class="num">right in NH · left in SH</td><td>Balloon model, Explain 1 and 2</td></tr>
+        <tr><td>Hurricane Helene (2024)</td><td class="num">formed over the NW Caribbean; Cat 4 landfall, Florida Big Bend, Sept 26</td><td>NHC Tropical Cyclone Report AL092024</td></tr>
+        <tr><td>Wind turbine survival mode</td><td class="num">blades lock and feather above 55 mph</td><td>DOE, <i>Wind Turbines in Extreme Weather</i> (2018), Evaluate Text 1</td></tr>
+        <tr><td>Burying power lines</td><td class="num">"5–10×" overhead cost</td><td>Packet's figure (Elaborate Part 2). Not independently checked here; real costs vary a lot by utility, soil and density. Present it as the packet's estimate.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>Why a 48 mph gust is dangerous:</b> wind force grows with the <i>square</i> of speed, so doubling speed means about four times the push on a tree or pole. Use this only qualitatively; the packet doesn't ask for math.</div>
+  </section>
+
+  <section class="block">
+    <h3>Corrections to the packet and teacher guide</h3>
+    <div class="mis">
+      <div><b>Explain 2: Explaining Storm Winds, Q14:</b> Jonas "gusted <s>up to 55 mph in New York City</s>." NWS New York lists <b>48 mph</b> at LaGuardia and JFK; 58–59 mph gusts were on Long Island. Fix the number before students write.</div>
+      <div><b>Engage: Gusting Winds:</b> the "Winter Storm Tracks 2015-2016" map is captioned "<b>Generated with AI</b> using data from NOAA." It is not a data product. Tell students so, or swap in NOAA/WPC storm summaries or surface analyses.</div>
+      <div><b>Teacher guide, Explore 2 step 6:</b> names the "Winter Storm Jonas: Jan 21, <s>15 UTC</s>" map. The student handout and the Weather Maps resource both say <b>05 UTC</b>. Use the map students actually have.</div>
+      <div><b>Teacher guide, Explore 1:</b> the balloon conferring prompts are labeled "<s>Model 2</s>"; they belong to <b>Model 3</b>.</div>
+      <div><b>Explore 1, Model 3 step 6:</b> "Look down from the top… <s>Look up from the top</s> of the balloon." The second view should be looking up from the <b>bottom</b> (the knot / South Pole), which is what Table 4 asks for.</div>
+      <div><b>Explain 2, Q12:</b> "label the high and <s>pressure</s> zones" should read <b>high and low pressure zones</b>.</div>
+      <div><b>Elaborate Part 1 text:</b> "This column is <s>the eye</s> of the hurricane." The eye is the <b>calm, mostly clear center with sinking air</b>. The rising warm, moist air and strongest winds are in the <b>eyewall</b> around it. Keep the low-pressure idea; fix the word.</div>
+      <div><b>Elaborate Part 1 text:</b> hurricanes "tend to originate from the west coast of Africa." That fits <b>Cape Verde</b> storms only. Many form in the Caribbean or Gulf, including <b>Helene</b>, which NHC traces to a gyre over Central America and the NW Caribbean.</div>
+      <div><b>Evaluate framing:</b> "Are wind farms an effective solution for <b>reducing storm wind damage</b>?" No observed wind farm has reduced a storm's winds. Text 1 says turbines go into <b>survival mode above 55 mph</b>, and the hurricane-taming idea comes from <b>model studies</b> of huge offshore arrays (e.g., Jacobson, Archer &amp; Kempton, <i>Nature Climate Change</i>, 2014), not from measurements. Teach it as evaluating a claim. Students should also see that wind farms' main benefit is clean power (a climate solution), not storm protection.</div>
+      <div><b>Unit Plan:</b> calls the course a "<s>Biology</s>" course; its Assessment section lists the bundle as HS-ESS1-7, HS-ESS2-8 and "<s>HS-ESS3-5</s>," but the unit's PEs are <b>HS-ETS1-1, HS-ETS1-2, HS-ESS2-8, HS-ESS1-7</b>. Its Videos table puts the "1:17:07–1:18:49" time stamp on <i>High and Low Pressure Zone Winds</i> under the Flooding 5E; that time stamp belongs to the <b>Weather Channel Jonas broadcast</b> in Wind Explain 2.</div>
+      <div><b>Titles:</b> Text 1 is "Wind <s>Turbined</s>" → <b>Turbines</b> in Extreme Weather; the Helene video is "<s>Devestation</s>" → Devastation. Cosmetic.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Misconceptions to listen for</h3>
+    <div class="mis">
+      <div><s>"Wind is caused by Earth spinning."</s> Spin <b>bends</b> moving air (Coriolis). Wind starts with <b>pressure differences</b> from uneven heating.</div>
+      <div><s>"Heat rises."</s> Heat doesn't rise. <b>Warmer, less dense air</b> is pushed up as denser, cooler air sinks and slides under it.</div>
+      <div><s>"Warm air is lighter because its molecules are lighter."</s> Same molecules. They move faster and spread out, so there are <b>fewer per unit volume</b>.</div>
+      <div><s>"Wind blows from low to high pressure."</s> Air moves from <b>high to low</b>, toward where fewer molecules push back.</div>
+      <div><s>"Winds blow straight into a low."</s> The Coriolis bend turns inflow into a <b>counterclockwise spiral</b> (NH).</div>
+      <div><s>"The Coriolis effect is a force pushing the wind."</s> It's an <b>apparent</b> bend: the ground turns under air moving in a straight line. It matters for storm-sized systems, not sinks.</div>
+      <div><s>"The H on a map means hot, the L means low temperature."</s> H and L are <b>pressure</b>. Highs are often cool and dry; lows are where warm air rises.</div>
+      <div><s>"The wind barb points where the wind is going."</s> It points to where the wind comes <b>from</b>.</div>
+      <div><s>"All three cells are convection cells like the bottles."</s> Hadley and polar cells are direct convection loops. The <b>Ferrel</b> cell is driven by its neighbors (the teacher guide hints at this).</div>
+      <div><s>"A solution is good if it works."</s> It also has to be <b>worth it</b>: criteria met, tradeoffs acceptable.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Key vocabulary</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Uneven heating</div>Sunlight and surfaces heat Earth by different amounts in different places, which starts every pressure difference.</div>
+      <div class="card"><div class="lbl">Density</div>How tightly packed the particles are. Warmer air is less dense; cooler air is more dense.</div>
+      <div class="card"><div class="lbl">Air pressure</div>The push of air particles on a surface. High where dense air sinks; low where less dense air rises.</div>
+      <div class="card"><div class="lbl">Wind</div>Air moving horizontally from high to low pressure.</div>
+      <div class="card"><div class="lbl">Convection cell</div>A loop: warm fluid rises, spreads, cools, sinks and flows back (Hadley, Ferrel, polar cells).</div>
+      <div class="card"><div class="lbl">Coriolis effect</div>The apparent bending of moving air because Earth rotates: right in the NH, left in the SH.</div>
+      <div class="card"><div class="lbl">Air mass · front</div>A large body of air with similar temperature and moisture · the boundary where two air masses meet.</div>
+      <div class="card"><div class="lbl">Isobar · isotherm</div>Lines joining equal pressure · equal temperature. Close isobars = strong wind.</div>
+      <div class="card"><div class="lbl">Isodrosotherm · isallobar</div>Lines joining equal dew point · equal 3-hour pressure change.</div>
+      <div class="card"><div class="lbl">Station model</div>A coded symbol showing a station's temperature, dew point, pressure, wind, sky cover and weather.</div>
+      <div class="card"><div class="lbl">Midlatitude cyclone</div>A low with warm and cold fronts and counterclockwise winds (NH); Jonas was one.</div>
+      <div class="card"><div class="lbl">Criteria · tradeoff</div>What a solution must do to succeed · a cost you accept because the benefits are worth it.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Pacing and logistics notes</h3>
+    <ul>
+      <li><b>Why 11 days?</b> The teacher materials say 7–11 days. At 50 minutes, the three Explore 1 models, the full set of five weather maps plus the Jonas map, and two consensus routines each need real time, so this guide uses the top of the range.</li>
+      <li><b>Seven-day version (bottom of the range).</b> Day 1 Engage. Day 2 Model 1 + Model 2 (split Tables 1–3 across table members, then share). Day 3 Model 3 balloon + Making Sense (analysis Qs as homework) + Explain 1 Part 1. Day 4 Explain 1 Part 2 + Think-Talk-Open Exchange + short Class Consensus; Summary Task as homework. Day 5 Explore 2: jigsaw maps 1–4 (each pair draws one, checks with NOAA, teaches the table), then the Surface Observation map Q1–4, fronts and the Jonas map. Day 6 Explain 2 (skip the carousel; do a Consensus-Building Share from pair work). Day 7 Elaborate Part 1 as homework the night before, then Part 2 and Evaluate together; Revisiting the Performance Task: Wind as homework.</li>
+      <li><b>Lab safety.</b> Only you light the incense. Use warm (not boiling) tap water if your rules require it. If smoke can't be used, show the Wind Model Video and have students record from it.</li>
+      <li><b>Weather maps are hard.</b> Model the first two isobars; give struggling pairs the isoline videos and smaller chunks; let confident pairs self-check with the NOAA pages.</li>
+      <li><b>Do Now / Exit Slip.</b> The SY 26-27 handouts have no Do Now or Exit Slip boxes. Use a half-sheet or notebook page.</li>
+      <li><b>Period length.</b> For 45-minute periods, cut the Do Now to 3 minutes and send the step marked <i>flex</i> home.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>How the homework stays AI-proof</h3>
+    <p>Each night's homework is a short <b>hand-drawn model</b>. Four rules make it hard to outsource:</p>
+    <ul>
+      <li><b>Paper and pencil (or colored pencils) only.</b> No printed or digital images.</li>
+      <li><b>Every task uses something only your class has:</b> their smoke observations, their balloon, their group chart, the isobars they drew, their Rumors sticky note.</li>
+      <li><b>Every drawing carries one "I chose…" note</b> explaining a decision the student made.</li>
+      <li><b>30-second check next day.</b> During the Do Now, ask 3–4 students to explain one part of their drawing aloud.</li>
+    </ul>
+  </section>
+
+  <div class="pager"><span></span><a class="next" href="#day-1"><small>Start</small>Day 1 · Engage →</a></div>
+</div>
+
+<!-- ===================== DAY 1 ===================== -->
+<div class="view" id="day-1" data-phase="engage" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 1 · Engage</div>
+    <h2>Gusting Winds</h2>
+    <p class="q">What were the winds like during Winter Storm Jonas?</p>
+    <div class="tags"><span class="tag">Handout: Gusting Winds</span><span class="tag">Independent</span><span class="tag">Rumors</span><span class="tag">Video: Winter Storm Jonas: a Historic Storm</span><span class="tag">Sticky notes</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Jonas brought heavy snow <b>and</b> strong, damaging wind to the East Coast, including NYC.</li>
+      <li>The class is breaking "storm damage" into subproblems; this 5E tackles <b>wind</b>.</li>
+      <li>Strong gusts clustered in certain places, and winter storms follow repeated paths, so something predictable is going on.</li>
+      <li>To judge a solution, we first need to know <b>what causes wind</b>.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">5–9</div><div><h4>Driving Question Board</h4><p>Point to opening questions like <i>What causes severe storms?</i> and <i>How do strong winds form?</i></p><p class="say">"We're solving storm damage one piece at a time: wind, water, flooding. We start with wind, using one real storm, then we'll generalize."</p></div></li>
+      <li><div class="t">9–16</div><div><h4>Jonas video</h4><p>Play <b>Winter Storm Jonas: a Historic Storm</b>. Ask: <i>What did the wind do? Who was affected?</i> Share the crib numbers: 27.5 in of snow at Central Park, 48 mph gusts at LaGuardia and JFK. Say: we'll investigate both snow and wind, starting with wind.</p></div></li>
+      <li><div class="t">16–28</div><div><h4>See-Think-Wonder (independent)</h4><p>Hand out <b>Gusting Winds</b>. Students study the gust map and storm tracks map and fill in See-Think-Wonder. Tell them the tracks map was made with AI from NOAA data (correction), so read it as a sketch.</p></div></li>
+      <li><div class="t">28–34</div><div><h4>Brainstorm</h4><p>Students answer <i>What problem are we trying to solve?</i> and <i>What would you look for in a solution?</i> Each writes their most confident solution idea on a sticky note.</p></div></li>
+      <li><div class="t">34–44</div><div><h4>Rumors</h4><p>Students circulate, trade ideas, and listen for similarities and differences. Collect sticky notes on a "What a good wind solution needs" poster.</p></div></li>
+      <li><div class="t">44–47</div><div><h4>Transition</h4><p class="say">"To decide if any of these would work, we have to know what causes wind, so we can stop it from forming or reduce what it does."</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Exit slip</h4><p>Pick an option below.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Experience</div><p>Describe a time wind surprised you (an umbrella, a tree, a subway grate). What did the wind do?</p><div class="ans">Collect stories; tie them to Jonas in the video.</div></div>
+      <div class="card"><div class="lbl">Option B · Unit recall</div><p>In the unit opening we broke "storm damage" into smaller problems. Name two of them.</p><div class="ans">Wind, rain/snow (water), flooding, power outages, travel shutdown.</div></div>
+      <div class="card"><div class="lbl">Option C · Prediction</div><p>Where does wind come from? Make your best guess in one sentence.</p><div class="ans">Save answers; revisit on Day 6.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Where on the gust map were the highest gusts? What do those places have in common?<span>Read it off your copy; NWS data put the top NYC-area gusts on Long Island and the coast (58–59 mph).</span></li>
+      <li>On the tracks map, which direction do most storms move?<span>West to east, many curving northeast. Remind them it's an AI sketch.</span></li>
+      <li>What do you think pushes a storm along a path?</li>
+      <li>If wind is the problem, what kinds of damage are we trying to prevent?</li>
+      <li>How would you know your solution worked?<span>Plants "criteria" for Day 10.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the video · hinge question</div>
+      <h4>Which statement best describes the problem this 5E focuses on?</h4>
+      <ul class="opts">
+        <li>A. Snow is heavy<em>Real, but that's the Water 5E.</em></li>
+        <li class="right">B. Storm winds damage property and harm people<em>Correct.</em></li>
+        <li>C. Storms are impossible to predict<em>The video shows forecasters warned people ahead.</em></li>
+        <li>D. Flooding at the coast<em>That's the Flooding 5E.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After See-Think-Wonder · hinge question</div>
+      <h4>Most winter storm tracks across the U.S. move…</h4>
+      <ul class="opts">
+        <li>A. east to west<em>Reversed (that's the tropical trade winds).</em></li>
+        <li class="right">B. west to east, often curving northeast<em>Correct.</em></li>
+        <li>C. north to south<em>Cold air comes from the north, but storms travel east.</em></li>
+        <li>D. randomly<em>The map shows a repeated pattern.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Gusting Winds: See-Think-Wonder<small>Engage handout · sample responses</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">See (What patterns do you observe in the maps and video?)</div><p class="aa">The highest gusts cluster in some places more than others (NWS data put the NYC-area peaks on Long Island and the coast; read the exact spots off the handout map). Winter storms move across the U.S. from west to east and many curve northeast up the East Coast. The video shows blowing snow, downed trees and closed roads.</p></div>
+      <div class="qa"><div class="qq">Think (What do you think is causing that pattern?)</div><p class="aa">Accept reasoned ideas: something steers storms east (winds high up, Earth's spin); open water lets wind speed up; warm and cold air meeting. No need to be right yet.</p></div>
+      <div class="qa"><div class="qq">Wonder</div><p class="aa">Examples: Why are winds stronger at the coast? Why do storms move the same way? How do forecasters know where storms go? What makes wind in the first place?</p></div>
+    </div></details>
+    <details class="key"><summary><span>Gusting Winds: Brainstorm<small>Engage handout · look and listen for</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">What problem are we trying to solve?</div><p class="aa">Strong storm winds damage homes, trees and power lines, shut down travel and hurt people.</p></div>
+      <div class="qa"><div class="qq">What would you look for in a solution that claimed to fix this problem?</div><p class="aa">From the teacher materials: protects homes from wind; stops wind from forming; stops wind from hitting cities; better forecasting so people can prepare; reduces the amount of damage. Push for "how would we know it works" (a measurable result) and "is it worth the cost."</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Write one question about wind that you most want answered by the end of this 5E.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Name one solution from Rumors and one reason it might not be worth doing.</p><div class="ans">Any cost, side effect or doubt about whether it would work.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Wind Damage on My Block</h4>
+      <p>Draw your street or school block during a Jonas-strength storm. Use arrows for the wind and show at least <b>three</b> things the wind could damage or disrupt.</p>
+      <ul class="checks">
+        <li>Arrows showing wind direction and where it gets stronger (thicker arrows)</li>
+        <li>Three labeled damage points</li>
+        <li>"I chose…" note: which <b>sticky-note idea from Rumors</b> would protect one of your damage points, and why</li>
+      </ul>
+      <p class="why">Uses the student's own block and the class Rumors notes.</p>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#overview"><small>Back</small>← Before you teach</a><a class="next" href="#day-2"><small>Next</small>Day 2 · Bottles and Particles →</a></div>
+</div>
+
+<!-- ===================== DAY 2 ===================== -->
+<div class="view" id="day-2" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 2 · Explore 1</div>
+    <h2>Bottles and Particles</h2>
+    <p class="q">How does wind form?</p>
+    <div class="tags"><span class="tag">Handout: Wind Formation Investigation, Model 1 + Model 2 Table 1</span><span class="tag">Table groups → pairs</span><span class="tag">Bottles · tubing · incense · hot/cold water</span><span class="tag">Gas Properties Simulation</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>In the bottle model, air sinks over the cold side, flows through the tube toward the warm side, and rises over the warm side.</li>
+      <li>Heating particles makes them move faster and spread apart (less dense); cooling makes them slower and closer (more dense).</li>
+      <li>What each part of the bottle model stands for in real life.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">5–10</div><div><h4>Launch</h4><p>Ask: <i>How did the meteorologist know where the storm would go?</i> Table groups discuss; take 2–3 answers. Listen for "storms usually go that way," "they knew the wind direction," "models."</p><p class="say">"Forecasters use past patterns and models, and it has to do with how the wind blows. So let's figure out how wind forms."</p></div></li>
+      <li><div class="t">10–28</div><div><h4>Model 1: bottles (table groups)</h4><p>Groups connect the bottles, fill one hot and one cold to about an inch below the tube. You light incense, let it burn ~5 s, blow it out. Students hold it in the <b>cold</b> bottle ~15 s, pull it out, watch. They sketch and describe, then match parts 1–5. Confer (below).</p></div></li>
+      <li><div class="t">28–32</div><div><h4>Quick share</h4><p>One or two groups describe the smoke's path. Board: <i>cold side: sinks · tube: cold → hot · hot side: rises</i>.</p></div></li>
+      <li><div class="t">32–46</div><div><h4>Model 2: Single Compartment (pairs)</h4><p>Pairs open the <b>Gas Properties Simulation</b>, Single Compartment tab, and fill <b>Table 1</b> at five temperatures. Show how to use the slider and the pressure probe.</p></div></li>
+      <li><div class="t">46–50</div><div><h4>Exit slip</h4><p>Pick an option below. <i>Flex:</i> unfinished Table 1 columns finish at the start of Day 3.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Unit 3 recall</div><p>In Unit 3, what made magma in the mantle rise and sink?</p><div class="ans">Hot magma is less dense and rises; cooler magma is denser and sinks (convection).</div></div>
+      <div class="card"><div class="lbl">Option B · Everyday</div><p>Why does a hot-air balloon go up?</p><div class="ans">Heated air inside is less dense than the cooler air around it.</div></div>
+      <div class="card"><div class="lbl">Option C · Predict</div><p>Smoke goes into a bottle over cold water connected by a tube to a bottle over hot water. Predict where the smoke goes.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What is happening to the air in the bottle heated by "warm land"?</li>
+      <li>What is happening to the air in the bottle cooled by "cool land"?</li>
+      <li>Which way does air flow through the tube, across the "Earth's surface"?</li>
+      <li>Is the incense heating the air? What is its job?<span>No, it just makes air motion visible.</span></li>
+      <li>(Sim) What happens to the particles' speed and spacing as you heat the box? What about the pressure on the bottom?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the bottle share · hinge question</div>
+      <h4>In the bottle model, the smoke in the tube moved…</h4>
+      <ul class="opts">
+        <li>A. from the hot bottle to the cold bottle<em>Reversed; the hot side's air is rising away from the surface.</em></li>
+        <li class="right">B. from the cold bottle to the hot bottle<em>Correct.</em></li>
+        <li>C. nowhere; it stayed in the cold bottle<em>It sank, then flowed through the tube.</em></li>
+        <li>D. straight up out of both bottles<em>Ignores the tube flow.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During Table 1 · hinge question</div>
+      <h4>When the simulation's particles are heated, they…</h4>
+      <ul class="opts">
+        <li>A. get bigger<em>Particles don't grow; the space between them grows.</em></li>
+        <li class="right">B. move faster and spread farther apart<em>Correct.</em></li>
+        <li>C. move slower and pack together<em>That's cooling.</em></li>
+        <li>D. get heavier<em>Mass doesn't change.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Model 1: observations and labels 1–5<small>Wind Formation Investigation · Model 1</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Observations: sketch and describe air movement</div><p class="aa">Smoke sinks and pools over the cold water, flows through the tube into the hot-water bottle, and rises there (it may then curl back across the top). Sketch should show a down arrow over cold, a sideways arrow cold → hot through the tube, and an up arrow over hot.</p></div>
+      <div class="qa"><div class="qq">Labels 1–5 (word bank: warm air · air moving across the surface of Earth · very warm land · cool air · very cool land)</div><p class="aa">Each word is used once. Cold water = <b>very cool land</b>; air over it = <b>cool air</b>; hot water = <b>very warm land</b>; air over it = <b>warm air</b>; the tube = <b>air moving across the surface of Earth</b>. The numbered diagram is an image the Google Doc export doesn't show, so match numbers to these parts on your copy. (The SY 25-26 version numbered them 1 = very cool land, 2 = very warm land, 3 = cool air, 4 = warm air, 5 = air moving across the surface; check before using that order.)</p></div>
+    </div></details>
+    <details class="key"><summary><span>Model 2: Table 1, Single Compartment<small>Wind Formation Investigation · Model 2</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Row</th><th>Very low → very high temperature</th></tr></thead><tbody>
+        <tr><td>Motion</td><td>Barely moving / slow → very fast, bouncing hard off the walls</td></tr>
+        <tr><td>Volume taken up</td><td>Cold particles stay low and close together; hot particles spread through more of the box. (In a closed box the gas always fills the container; accept "take up more space" for the hot end.)</td></tr>
+        <tr><td>Density</td><td>High (crowded) → low (spread out)</td></tr>
+        <tr><td>Pressure on the bottom</td><td>In the closed box, pressure on the walls rises as temperature rises (faster, harder hits). Students will connect "pressure at the <b>surface</b>" to density in the open systems on Day 3.</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Watch for:</b> Table 1 is a closed box, so hotter = higher pressure there. In the bottles and the atmosphere, warm air rises away and spreads out, so the <b>surface</b> under it has lower pressure. Day 3's Diffusion Chamber and Convection Cell make this click.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Draw the bottles with three arrows showing the smoke's path. Label hot and cold.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Finish: "When air is cooled, its particles ___ and it becomes ___ dense."</p><div class="ans">slow down and move closer together; more</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Zoom In on the Bottles</h4>
+      <p>Redraw your group's bottle sketch. Add a magnifying-glass bubble over each bottle showing 8–10 air particles: crowded and slow (short motion lines) over cold, spread out and fast (long motion lines) over hot.</p>
+      <ul class="checks">
+        <li>Smoke path arrows copied from <b>your group's</b> observation</li>
+        <li>Two particle bubbles with different spacing</li>
+        <li>"I chose…" note: one thing your group's smoke did that surprised you</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-1"><small>Back</small>← Day 1 · Gusting Winds</a><a class="next" href="#day-3"><small>Next</small>Day 3 · Diffusion, Convection, Balloon →</a></div>
+</div>
+
+<!-- ===================== DAY 3 ===================== -->
+<div class="view" id="day-3" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 3 · Explore 1</div>
+    <h2>Diffusion, Convection and the Spinning Balloon</h2>
+    <p class="q">How does wind form, and why does it bend?</p>
+    <div class="tags"><span class="tag">Handout: Wind Formation Investigation, Model 2 Tables 2–3 + Model 3 Table 4</span><span class="tag">Pairs → table groups</span><span class="tag">Domino Discover</span><span class="tag">Gas Properties Simulation</span><span class="tag">Balloon · 3 markers</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>When warm and cold air meet, the cold, dense air slides <b>under</b> and the warm air ends up <b>on top</b>.</li>
+      <li>Dense, cool air presses harder on the surface (higher pressure); warm air that has risen leaves lower pressure at the surface. Air moves toward lower pressure.</li>
+      <li>A convection cell is a loop: rise over warm, spread, sink over cool, flow back along the bottom.</li>
+      <li>On a spinning ball, a straight line drawn north–south curves: one way in the north, the opposite way in the south.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–18</div><div><h4>Diffusion Chamber (pairs)</h4><p>Set one side hotter. Fill Table 2 for both sides, then pause, remove the divider, and describe the motion. Show the <b>Draggable Pressure Probe</b> at the top and bottom of each side.</p></div></li>
+      <li><div class="t">18–26</div><div><h4>Convection Cell (pairs)</h4><p>Watch the cell form and fill Table 3 for Zones 1–4.</p></div></li>
+      <li><div class="t">26–31</div><div><h4>Domino Discover</h4><p>Each group shares one Model 2 observation, building on the last. Listen for the look-fors in the key.</p></div></li>
+      <li><div class="t">31–46</div><div><h4>Model 3: balloon (pairs)</h4><p>Person 1 spins the balloon left to right at eye level, holding the knot. Person 2 records spin direction from above and from below, then draws pole → equator lines (color 2) and equator → pole lines (color 3). Fill Table 4 and draw the balloon. Mute the Coriolis Effect Balloon video if you show it.</p></div></li>
+      <li><div class="t">46–50</div><div><h4>Exit slip</h4><p>Pick an option below. Don't name "Coriolis" yet; let them describe it.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Retrieval</div><p>From yesterday: which bottle had sinking air? Which had rising air?</p><div class="ans">Cold bottle sinking; hot bottle rising.</div></div>
+      <div class="card"><div class="lbl">Option B · Density</div><p>Oil floats on water. Use the word "density" to explain why.</p><div class="ans">Oil is less dense, so the denser water goes under it.</div></div>
+      <div class="card"><div class="lbl">Option C · Predict</div><p>A cold, crowded group of particles meets a warm, spread-out group. Which ends up on the bottom?</p><div class="ans">The cold, denser group.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>How did two sets of molecules at different temperatures interact when mixed? Why?</li>
+      <li>Where is the pressure probe reading highest? What's crowded there?</li>
+      <li>How do particles move in the convection cell? Why does that loop keep going?</li>
+      <li>(Model 3) What is happening to your lines as the balloon spins?</li>
+      <li>(Model 3) How is it different in the north and south halves? Why do you think that is?<span>Don't explain yet; the Explain videos do that.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the Diffusion Chamber · hinge question</div>
+      <h4>When the divider is removed, the cold particles…</h4>
+      <ul class="opts">
+        <li class="right">A. slide under the warm particles along the bottom<em>Correct.</em></li>
+        <li>B. rise over the warm particles<em>Reversed.</em></li>
+        <li>C. stay on their own side<em>Without the divider, they spread.</em></li>
+        <li>D. heat up instantly and mix evenly<em>Mixing takes time; layering happens first.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After the balloon · hinge question</div>
+      <h4>A line drawn from the North Pole toward the equator on the spinning balloon…</h4>
+      <ul class="opts">
+        <li>A. stays perfectly straight<em>The surface turns under the marker.</em></li>
+        <li class="right">B. curves, and a line in the Southern Hemisphere curves the opposite way<em>Correct.</em></li>
+        <li>C. curves the same way in both hemispheres<em>Compare from the direction of travel: right in the north, left in the south.</em></li>
+        <li>D. curves only near the equator<em>The bend is strongest toward the poles.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Model 2: Table 2, Diffusion Chamber<small>Wind Formation Investigation · Model 2</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Row</th><th>Hotter side</th><th>Cooler side</th></tr></thead><tbody>
+        <tr><td>Temperature</td><td>The higher setting students chose</td><td>The lower setting</td></tr>
+        <tr><td>Motion</td><td>Fast</td><td>Slow</td></tr>
+        <tr><td>Volume</td><td>Spread through more of the space</td><td>Bunched together, lower down</td></tr>
+        <tr><td>Density, top and bottom</td><td>Low, more even top to bottom</td><td>High, especially near the bottom</td></tr>
+        <tr><td>Pressure, top and bottom</td><td>Probe reads lower near the bottom than the cold side</td><td>Highest at the bottom</td></tr>
+        <tr><td>After the divider is removed</td><td colspan="2">Cold, dense particles flow along the bottom into the warm side (toward lower pressure); warm particles are pushed up and over the top into the cold side. Warm ends up on top of cold.</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Left vs. right:</b> the handout's columns are "left side" and "right side"; which one is hot depends on how students set it up. Key it by hot vs. cold.</div>
+    </div></details>
+    <details class="key"><summary><span>Model 2: Table 3, Convection Cell<small>Wind Formation Investigation · Model 2</small></span></summary><div class="keybody">
+      <p>The zone numbers come from the simulation/handout image (not visible in the Doc export). Match by position:</p>
+      <div class="scroll"><table><thead><tr><th>Zone</th><th>Temp</th><th>Motion</th><th>Volume / density</th><th>Pressure</th></tr></thead><tbody>
+        <tr><td>Over the heat source</td><td>Warm</td><td>Fast, rising</td><td>Spread out · low density</td><td>Low at the surface</td></tr>
+        <tr><td>Across the top</td><td>Warm → cooling</td><td>Moving sideways toward the cool side</td><td>Spread out, starting to crowd</td><td>Higher aloft over the warm side, pushing air across</td></tr>
+        <tr><td>Over the cool side</td><td>Cool</td><td>Slow, sinking</td><td>Crowded · high density</td><td>High at the surface</td></tr>
+        <tr><td>Along the bottom</td><td>Cool → warming</td><td>Moving sideways toward the warm side</td><td>Crowded</td><td>Flows from high to low pressure (this is the "wind")</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Look and listen for (teacher materials):</b> cooled molecules come closer together, are more dense and exert more pressure · warmed molecules spread apart and rise, leaving less pressure at the surface · warm air stacks on top of cold air · cool air flows to the warm area, warm air rises, moves over the cold air, cools and sinks.</div>
+    </div></details>
+    <details class="key"><summary><span>Model 3: Table 4 and balloon drawing<small>Wind Formation Investigation · Model 3</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Row</th><th>Northern Hemisphere</th><th>Southern Hemisphere</th></tr></thead><tbody>
+        <tr><td>Spin, looking toward the equator from this pole</td><td>Counterclockwise (seen from above the North Pole)</td><td>Clockwise (seen from below the South Pole)</td></tr>
+        <tr><td>Bend of the pole → equator line</td><td>To the <b>right</b> of its direction of travel (curves toward the west)</td><td>To the <b>left</b> of its direction of travel (curves toward the west)</td></tr>
+        <tr><td>Bend of the equator → pole line</td><td>To the <b>right</b> (curves toward the east)</td><td>To the <b>left</b> (curves toward the east)</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Check the setup:</b> these answers assume the balloon spins like Earth (front surface moving left to right at eye level = counterclockwise from above the North Pole). If a pair spun it the other way, their bends flip; the point to keep is that the hemispheres are <b>opposite</b>. Drawing: equator, NP/SP labels, two curved lines in each hemisphere.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Where is air pressure higher at the surface: under cold, dense air or under warm, rising air? Which way would the air move?</p><div class="ans">Under cold air; from cold/high toward warm/low.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Sketch your balloon with the two lines you drew. Which way did each bend?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Three Models, One Story</h4>
+      <p>Fold a page in thirds. Draw a mini version of each model: bottles, the convection cell, and your balloon. Under the first two, draw one long arrow labeled with the pattern they share. Under the balloon, write what it adds.</p>
+      <ul class="checks">
+        <li>Hot/cold and high/low pressure labeled in the first two</li>
+        <li>Your balloon's actual line colors and bends</li>
+        <li>"I chose…" note: which model convinced you most, and why</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-2"><small>Back</small>← Day 2 · Bottles and Particles</a><a class="next" href="#day-4"><small>Next</small>Day 4 · Making Sense + Bottle Model →</a></div>
+</div>
+
+<!-- ===================== DAY 4 ===================== -->
+<div class="view" id="day-4" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 4 · Explore 1 → Explain 1</div>
+    <h2>Making Sense of Wind Formation</h2>
+    <p class="q">What drove the air to move in every model?</p>
+    <div class="tags"><span class="tag">Handouts: Making Sense of the Wind Formation Investigation · Wind Formation Investigation Rubric · Explaining the Global Movement of Storms, Part 1</span><span class="tag">Table groups → pairs</span><span class="tag">Domino Discover</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>The same cause shows up at every scale: heating lowers density and surface pressure; cooling raises them; air flows from high to low.</li>
+      <li>This is the same convection they saw in magma (Unit 3) and ocean water (Unit 4).</li>
+      <li>How to draw a particle-level model of the bottles with rising/sinking arrows, high/low labels and a horizontal wind arrow.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–20</div><div><h4>Making Sense (individual → groups)</h4><p>Students complete the See-Think-Wonder rows, then Analysis Q1–4, and discuss in table groups.</p></div></li>
+      <li><div class="t">20–28</div><div><h4>Domino Discover</h4><p>Surface trends and questions. If a look-for is missing (key below), send groups back to the sim or bottle video before moving on.</p></div></li>
+      <li><div class="t">28–32</div><div><h4>Rubric</h4><p>Students self- and partner-score with the <b>Wind Formation Investigation Rubric</b>.</p></div></li>
+      <li><div class="t">32–35</div><div><h4>Explain launch</h4><p class="say">"You asked how storms form and how forecasters predict them. First, explain exactly what happened in the two bottles. Then we'll go global."</p></div></li>
+      <li><div class="t">35–47</div><div><h4>Explain 1 Part 1 (pairs)</h4><p>Hand out <b>Explaining the Global Movement of Storms</b>. Pairs draw particles, rising/sinking arrows, high/low labels and the wind arrow on the bottle model. Confer.</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Exit slip</h4><p>Pick an option below.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Retrieval</div><p>Name the three models from this week and the scale of each.</p><div class="ans">Bottles (small/room), gas particles (molecular), balloon (global).</div></div>
+      <div class="card"><div class="lbl">Option B · Ocean link</div><p>In Unit 4, why does cold, salty water sink in the North Atlantic?</p><div class="ans">It's denser than the water around it.</div></div>
+      <div class="card"><div class="lbl">Option C · Fix it</div><p>A student says "wind blows from low pressure to high pressure." Fix it.</p><div class="ans">High → low.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What caused air to rise in Model 1? How do you know?</li>
+      <li>What caused air to sink? How do you know?</li>
+      <li>What made air move from one bottle to the other?</li>
+      <li>How do the simulation particles help you explain what's inside the bottles?</li>
+      <li>Your arrow in the tube goes from low to high. What did the Diffusion Chamber show?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Domino Discover · hinge question</div>
+      <h4>What drove the air to move in all three Explore models?</h4>
+      <ul class="opts">
+        <li>A. The incense smoke<em>The smoke only showed the motion.</em></li>
+        <li class="right">B. Differences in temperature, which caused differences in density and pressure<em>Correct (the balloon adds the bend, not the cause).</em></li>
+        <li>C. Earth's rotation<em>Bends wind; doesn't start it.</em></li>
+        <li>D. Gravity alone<em>Gravity matters, but only because densities differ.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">During Part 1 · hinge question</div>
+      <h4>Which label belongs on the cold-water bottle?</h4>
+      <ul class="opts">
+        <li class="right">A. Higher pressure, air sinking<em>Correct.</em></li>
+        <li>B. Lower pressure, air rising<em>That's the hot bottle.</em></li>
+        <li>C. Higher pressure, air rising<em>Mixes the two.</em></li>
+        <li>D. Lower pressure, air sinking<em>Mixes the two.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Making Sense: See-Think-Wonder rows<small>Making Sense of the Wind Formation Investigation</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">What happened to the air in the bottle over "warm land" and "cool land"?</div><p class="aa">See: warm side rose; cool side sank. Think: warm air is less dense, cool air more dense.</p></div>
+      <div class="qa"><div class="qq">Which direction was air flowing horizontally between the bottles?</div><p class="aa">From the cool bottle to the warm bottle. Think: from higher pressure to lower pressure at the surface.</p></div>
+      <div class="qa"><div class="qq">Which direction(s) was "air" flowing in the diffusion simulation? / Why?</div><p class="aa">Cold particles along the bottom into the warm side; warm particles up and over into the cold side. Why: the cold side was denser with higher pressure at the bottom, so cold air pushed under the warm air and lifted it.</p></div>
+      <div class="qa"><div class="qq">How did the "wind" bend as the balloon spun? / How might that affect winds on Earth?</div><p class="aa">Lines bent right in the north and left in the south (opposite in each hemisphere). Earth's winds probably don't blow straight north–south; they curve east or west.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Making Sense: Analysis Q1–4<small>Making Sense of the Wind Formation Investigation</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How was air movement similar or different across the three models? What drove it?</div><p class="aa">Bottles and sims: same pattern, warm air rises, cool air sinks, air flows along the surface from cool to warm. Driver: temperature differences → density differences → pressure differences. The balloon adds a different effect: rotation bends moving air.</p></div>
+      <div class="qa"><div class="qq">2. Unit 3 magma: how does matter change when it heats up? Density?</div><p class="aa">Particles move faster and spread apart, so it expands and its density decreases.</p></div>
+      <div class="qa"><div class="qq">3. Units 3 and 4: how do materials move and re-layer when they heat up?</div><p class="aa">Heated, less dense material rises and layers on top; cooler, denser material sinks underneath, making convection currents (mantle, ocean circulation, now air).</p></div>
+      <div class="qa"><div class="qq">4. How do materials move based on differences in density and pressure?</div><p class="aa">Denser material sinks and creates higher pressure below it; fluids flow from higher to lower pressure, pushing less dense material up.</p></div>
+      <div class="note"><b>Look and listen for:</b> warm air rises compared to cold air · cold air moves to where warm air was · warm air exerts less pressure on the surface · warm stacks on top of cold · if wind moves on Earth, it may bend as Earth spins.</div>
+    </div></details>
+    <details class="key"><summary><span>Explain 1, Part 1: bottle model<small>Explaining the Global Movement of Storms · Part 1 steps 1–4</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Air molecules in each bottle</div><p class="aa">Cold bottle: many dots, close together. Hot bottle: fewer dots, spread apart.</p></div>
+      <div class="qa"><div class="qq">2. Rising/sinking arrows</div><p class="aa">Down arrow in the cold bottle ("denser, sinks"); up arrow in the hot bottle ("less dense, rises").</p></div>
+      <div class="qa"><div class="qq">3. Pressure labels</div><p class="aa">Cold bottle: <b>higher pressure</b>. Hot bottle: <b>lower pressure</b>.</p></div>
+      <div class="qa"><div class="qq">4. Horizontal arrow</div><p class="aa">Through the tube from the cold (high) bottle to the hot (low) bottle, labeled "wind: high → low pressure."</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Write a 4-link chain: heat → ___ → ___ → wind.</p><div class="ans">heat → particles spread (less dense) → lower surface pressure → air flows in from high pressure = wind.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Rubric reflection: one thing you'll do differently in the next investigation.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Convection Three Ways</h4>
+      <p>Draw three small loops side by side: magma in the mantle, ocean water, and air over land. Use the same arrow colors in each: red = warming and rising, blue = cooling and sinking, black = flowing along the bottom.</p>
+      <ul class="checks">
+        <li>Each loop labeled with its heat source</li>
+        <li>"Less dense" and "more dense" on each</li>
+        <li>"I chose…" note: one way the air loop is <b>different</b> from the magma loop (speed, size, what heats it)</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-3"><small>Back</small>← Day 3 · Diffusion, Convection, Balloon</a><a class="next" href="#day-5"><small>Next</small>Day 5 · Global Winds →</a></div>
+</div>
+
+<!-- ===================== DAY 5 ===================== -->
+<div class="view" id="day-5" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 5 · Explain 1</div>
+    <h2>Global Winds and Jonas's Path</h2>
+    <p class="q">How did Winter Storm Jonas form and travel?</p>
+    <div class="tags"><span class="tag">Handout: Explaining the Global Movement of Storms, Part 2 + Think-Talk-Open Exchange</span><span class="tag">Pairs → triads</span><span class="tag">Think-Talk-Open Exchange + Buzzwords</span><span class="tag">Global Circulation Model · 2 Coriolis videos</span><span class="tag">Chart paper</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Uneven heating sets up rising air (low pressure) near the equator and ~60°, sinking air (high pressure) near ~30° and the poles, in three cells per hemisphere.</li>
+      <li>Surface air flows from the highs to the lows; the Coriolis effect bends it into the trade winds, westerlies and polar easterlies.</li>
+      <li>Polar air brought cold, high-pressure air south and the westerlies brought warm, moist air north; they met over the U.S. for Jonas.</li>
+      <li>The westerlies carried Jonas east; it then turned north up the coast.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–18</div><div><h4>Global Circulation Model (pairs)</h4><p>Pairs step through the simulation, then individually answer Part 2 Q1–2. Name it: convection in magma, oceans, and now air.</p></div></li>
+      <li><div class="t">18–26</div><div><h4>Coriolis videos</h4><p>Connect to the balloon. Play <b>The coriolis effect and winds</b> and <b>Coriolis Carousel</b>. Then show the <i>Generalized Planetary Wind Belts</i> and <i>Air Masses in Winter Storm Jonas</i> models in the handout.</p></div></li>
+      <li><div class="t">26–36</div><div><h4>Think</h4><p>Students individually draw and write the three-part Think response.</p></div></li>
+      <li><div class="t">36–44</div><div><h4>Talk + Buzzwords</h4><p>In triads, each presents; listeners tally <b>heat, density, pressure, Coriolis</b>. Then each writes the Reflection. Introduce the Buzzwords variation briefly (first time).</p></div></li>
+      <li><div class="t">44–50</div><div><h4>Group chart (start)</h4><p>Groups begin a chart-paper model: how global winds form, how they bring air masses together, and how they steered Jonas. <i>Flex:</i> finish at the start of Day 6.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Scale up</div><p>The equator gets more direct sunlight than the poles. Using the bottles, predict where air rises and where it sinks on Earth.</p><div class="ans">Rises at the equator (warm), sinks at the poles (cold).</div></div>
+      <div class="card"><div class="lbl">Option B · Balloon</div><p>Which way did your balloon line bend in the Northern Hemisphere?</p><div class="ans">To the right of its direction of travel.</div></div>
+      <div class="card"><div class="lbl">Option C · Map</div><p>Which direction did Jonas travel across the U.S.?</p><div class="ans">West to east, then north up the East Coast.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Where in the simulation does air rise? Where does it sink? What does that mean for surface pressure there?</li>
+      <li>Between 0° and 30°, which way does surface air flow? Why that way?</li>
+      <li>How is the 0–30° loop like your bottles?</li>
+      <li>Air flowing toward the equator gets bent which way in the NH? What wind does that make?<span>Right → from the northeast: the NE trade winds.</span></li>
+      <li>Which wind belt is NYC in? What does that do to storms here?<span>Westerlies; they push storms west to east.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the simulation · hinge question</div>
+      <h4>Near 30° N, air at the surface is mostly…</h4>
+      <ul class="opts">
+        <li class="right">A. sinking, with high pressure and dry weather<em>Correct.</em></li>
+        <li>B. rising, with low pressure and storms<em>That's ~0° and ~60°.</em></li>
+        <li>C. not moving at all<em>Air sinks there and spreads out.</em></li>
+        <li>D. rising because it's warm<em>The rising happened at the equator; it sinks after cooling aloft.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After the Coriolis videos · hinge question</div>
+      <h4>Why do storms over the U.S. usually move from west to east?</h4>
+      <ul class="opts">
+        <li>A. The trade winds push them<em>The trades are south of ~30° and blow east to west.</em></li>
+        <li class="right">B. The prevailing westerlies carry them<em>Correct.</em></li>
+        <li>C. Earth spins from east to west<em>Earth spins west to east; storms aren't dragged by the ground.</em></li>
+        <li>D. Cold air always moves east<em>Cold air comes from the north; the westerlies move storms east.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 2 Q1–2<small>Explaining the Global Movement of Storms · Part 2</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How is the movement between 30° and 0° and between the North Pole and 60° similar to the bottles?</div><p class="aa">Both are convection loops like the bottles. Warm air rises over the "warm land" (the equator; ~60°), cooler air sinks over the "cool land" (~30°; the pole), and surface air flows from the sinking, high-pressure side to the rising, low-pressure side, like air through the tube.</p></div>
+      <div class="qa"><div class="qq">2. Why do global winds follow these patterns? (molecular level · motion and pressure · converge/diverge · heat, density, pressure)</div><p class="aa"><b>Molecular:</b> the equator gets more direct sunlight, so air there gains heat energy; its molecules move faster and spread apart, lowering its density. <b>Motion and pressure:</b> the less dense air rises, leaving <b>low pressure</b> at the surface; air that cools aloft gets denser and sinks near 30° and the poles, making <b>high pressure</b>. <b>Converge/diverge:</b> surface air <b>diverges</b> (spreads out) from the highs and <b>converges</b> (comes together) into the lows, where it's forced up. The equator–30° (Hadley) and pole–60° (polar) loops are convection cells; the 30°–60° (Ferrel) cell turns between them, which is why surface air there flows poleward.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Think-Talk-Open Exchange: Think, Talk, Reflection<small>Explaining the Global Movement of Storms</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Think bullet 1: how the pattern of global winds arises (heat, density, pressure, Coriolis)</div><p class="aa">Uneven heating → warm, less dense air rises (low) at 0° and ~60°; cool, dense air sinks (high) at ~30° and the poles → surface air flows high → low → the Coriolis effect bends it right in the NH (left in the SH), giving the NE trades (0–30°), the westerlies (30–60°) and the polar easterlies (60–90°).</p></div>
+      <div class="qa"><div class="qq">Think bullet 2: how global winds brought Jonas's air masses together</div><p class="aa">The polar easterlies and outflow from the polar high pushed cold, dense, high-pressure air south from Canada/the Arctic; flow on the warm side carried warm, moist, lower-pressure air north from the Gulf of Mexico and Atlantic. They met over the southern and eastern U.S., and the low-pressure storm formed along the boundary between them.</p></div>
+      <div class="qa"><div class="qq">Think bullet 3: why Jonas moved east, then north</div><p class="aa">The westerlies (bent right by Coriolis from poleward flow) carry storms west to east across the U.S. Once Jonas reached the coast, the westerly flow steered it northeast along the Atlantic seaboard toward the Mid-Atlantic and NYC.</p></div>
+      <div class="qa"><div class="qq">Talk: Buzzwords tally · Reflection</div><p class="aa">A strong answer uses all four buzzwords in one cause-and-effect chain. Reflection: any specific revision (e.g., "I added that Coriolis bends the wind, not causes it").</p></div>
+      <div class="note"><b>Check the map:</b> the <i>Air Masses in Winter Storm Jonas</i> figure is an image not visible in the Doc export. Have students read the arrows on their copy; the key above describes the expected pattern, not that figure's exact labels.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Name the wind belt over NYC and the direction it pushes storms.</p><div class="ans">Prevailing westerlies; west → east.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Which buzzword was hardest to fit into your explanation? Why?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Earth's Wind Belts, By Hand</h4>
+      <p>Draw a circle for Earth. Mark 0°, 30°, 60° and the poles in both hemispheres. Add H and L at the right latitudes, the three cells (loops) on one side, and curved surface arrows for the three wind belts.</p>
+      <ul class="checks">
+        <li>H at ~30° and poles, L at ~0° and ~60°</li>
+        <li>Surface arrows bent right in the NH and left in the SH</li>
+        <li>NYC marked with Jonas's path arrow</li>
+        <li>"I chose…" note: which buzzword your triad used least, and where it belongs on your drawing</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-4"><small>Back</small>← Day 4 · Making Sense</a><a class="next" href="#day-6"><small>Next</small>Day 6 · Class Consensus →</a></div>
+</div>
+
+<!-- ===================== DAY 6 ===================== -->
+<div class="view" id="day-6" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 6 · Explain 1</div>
+    <h2>Class Consensus: How Global Winds Move Storms</h2>
+    <p class="q">How did Winter Storm Jonas form and travel?</p>
+    <div class="tags"><span class="tag">Handout: Explain 1 Summary Task</span><span class="tag">Groups → whole class</span><span class="tag">Class Consensus Discussion</span><span class="tag">Group chart papers · document camera</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>The class's agreed model of global winds: high pressure where cold air sinks, low where warm air rises, wind from high to low, three cells, Coriolis bending.</li>
+      <li>Regular global circulation patterns make storm locations and paths <b>predictable</b>, which is how forecast models work.</li>
+      <li>What's still unexplained: why winds <b>inside</b> a storm are so strong.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–12</div><div><h4>Finish group charts</h4><p>Groups finish chart models (formation of global winds, meeting of air masses, Jonas's path). You choose 2–3 to share (not random).</p></div></li>
+      <li><div class="t">12–14</div><div><h4>Orient to the routine</h4><p class="say">"We have a lot of ideas in the room. We need to agree on how global winds form and move, so we can build on it."</p></div></li>
+      <li><div class="t">14–34</div><div><h4>Class Consensus Discussion</h4><p>Project each chart. Group shares → one person restates → clarifying questions. Repeat. Then table groups confer on: <i>What patterns repeated at different scales? How do they help explain wind? Where would solutions be most useful?</i> Pause for the Key Points.</p></div></li>
+      <li><div class="t">34–38</div><div><h4>Return to open questions</h4><p>From the Engage: <i>How does strong wind form inside storms? How can we reduce wind damage?</i> Park both on the DQB.</p></div></li>
+      <li><div class="t">38–50</div><div><h4>Summary Task (individual)</h4><p>Students complete the Summary Task. <i>Flex:</i> finish as homework. Use it to decide who needs a re-teach on Day 7.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Fill in</div><p>Air sinks at ___° and rises at ___° and ___°.</p><div class="ans">~30° (and poles); ~0° and ~60°.</div></div>
+      <div class="card"><div class="lbl">Option B · Revisit</div><p>Look at your Day 1 guess about where wind comes from. What would you change?</p></div>
+      <div class="card"><div class="lbl">Option C · Coriolis</div><p>Which way do winds bend in the Southern Hemisphere?</p><div class="ans">To the left.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Can someone restate what that group said about why air sinks at 30°?</li>
+      <li>Where on this chart is the high pressure? How do you know it's high?</li>
+      <li>What pattern did you see at both the bottle scale and the global scale?</li>
+      <li>If storms follow the same paths, where would a solution help the most?</li>
+      <li>What does this chart not explain yet?<span>Why storm winds are so strong.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">During consensus · hinge question</div>
+      <h4>Why does air move horizontally across Earth's surface?</h4>
+      <ul class="opts">
+        <li>A. Because Earth rotates<em>Rotation bends it; doesn't start it.</em></li>
+        <li class="right">B. Because of pressure differences: it flows from high to low<em>Correct.</em></li>
+        <li>C. Because warm air is pulled toward the poles by gravity<em>Not a mechanism.</em></li>
+        <li>D. Because the Sun pushes it<em>Sunlight heats; it doesn't push air.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After consensus · hinge question</div>
+      <h4>Why can forecasters predict where winter storms will go?</h4>
+      <ul class="opts">
+        <li>A. Storms move randomly, so they guess<em>The tracks show a pattern.</em></li>
+        <li class="right">B. Global winds are regular, so storms form in similar places and follow similar paths<em>Correct.</em></li>
+        <li>C. Storms always go to big cities<em>No physical reason.</em></li>
+        <li>D. Every storm follows the exact same path<em>Paths are similar, not identical; models handle the details.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Class Consensus: Key Points<small>teacher materials, Explain 1</small></span></summary><div class="keybody">
+      <ul>
+        <li>High pressure at the surface is where cold air contracts, is denser and sinks.</li>
+        <li>Low pressure at the surface is where warm air expands, is less dense and rises; air converges there and is forced up.</li>
+        <li>Air moves horizontally because of pressure differences, from high to low, where there is more room for molecules to flow.</li>
+        <li>This makes three cells per hemisphere; Hadley and polar cells are classic convection cells; the Ferrel cell is driven between them.</li>
+        <li>The cells plus the Coriolis effect make predictable global wind patterns.</li>
+        <li>So storms form in similar places and follow similar paths, which is partly how models predict them.</li>
+      </ul>
+    </div></details>
+    <details class="key"><summary><span>Summary Task<small>Explain 1 Summary Task · reflection items, then three content questions</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Reflection items (went well · improve · person who helped · what you learned · idea you contributed)</div><p class="aa">No key; look for specific, honest answers. Read these for who is quiet in discussions.</p></div>
+      <div class="qa"><div class="qq">Content 1. "Using both a drawing and a few sentences, communicate how differences in heat energy between two masses of air can cause wind."</div><p class="aa">Drawing: warm mass (spread particles, up arrow, L) beside cold mass (packed particles, down arrow, H), surface arrow H → L. Words: the warm air's particles move faster and spread out, so it is less dense and rises, lowering surface pressure; the cold air is denser and sinks, raising surface pressure; air flows from high to low, which is wind.</p></div>
+      <div class="qa"><div class="qq">Content 2. "How did the relationships between a material's density and heat energy help you communicate how air moves at the bottle, molecular and global scales?"</div><p class="aa">The same rule worked at all three: more heat energy → lower density → rises (low pressure); less → higher density → sinks (high pressure); flow from high to low. It explained the smoke in the bottles, the particles in the sim, and the cells in the global model.</p></div>
+      <div class="qa"><div class="qq">Content 3. "Explain how the regular patterns of global air circulation allow models to be constructed that predict where storms will occur and how they will travel."</div><p class="aa">Uneven heating and Earth's rotation are always there, so highs, lows and wind belts sit in roughly the same places. Storms form where air masses meet (e.g., along the polar front) and are steered by the belts (westerlies → west to east in the U.S.). Because the pattern repeats, models can use it plus current data to forecast storm tracks.</p></div>
+      <div class="note"><b>Numbering:</b> the Doc's Summary Task uses automatic list numbers for both the reflection items and the content questions; this key quotes each content prompt so you can match it on your copy.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>One idea the class agreed on today, and one question you still have.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Is the Coriolis effect the cause of wind? Yes or no, and why.</p><div class="ans">No: pressure differences cause wind; Coriolis bends it.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Jonas's Journey Comic</h4>
+      <p>Draw a 4-panel comic: (1) cold air leaving Canada, (2) warm, moist air leaving the Gulf, (3) the two meeting and a low forming, (4) the westerlies carrying the storm east and up the coast to NYC.</p>
+      <ul class="checks">
+        <li>H, L and wind arrows in every panel</li>
+        <li>At least two buzzwords in speech bubbles</li>
+        <li>"I chose…" note: one idea from <b>another group's chart</b> in today's consensus that you used</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-5"><small>Back</small>← Day 5 · Global Winds</a><a class="next" href="#day-7"><small>Next</small>Day 7 · Drawing Weather Maps →</a></div>
+</div>
+
+<!-- ===================== DAY 7 ===================== -->
+<div class="view" id="day-7" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 7 · Explore 2</div>
+    <h2>Drawing Weather Maps</h2>
+    <p class="q">How do patterns in temperature and pressure explain how winds behave within storm systems?</p>
+    <div class="tags"><span class="tag">Handout: Local Winds Investigation, maps 1–4 (pressure, temperature, dew point, pressure change)</span><span class="tag">Weather Maps resource</span><span class="tag">Pairs</span><span class="tag">Colored pencils</span><span class="tag">Isoline videos · Mid-Latitude Cyclone Clip</span><span class="tag">NOAA JetStream check pages</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>How to draw smooth, non-crossing isolines at a set interval, interpolating between stations.</li>
+      <li>A high (H) is surrounded by lower pressure; a low (L) by higher pressure. Highs bring dry, clear weather; lows bring clouds and precipitation.</li>
+      <li>In the NH, wind blows clockwise out of highs and counterclockwise into lows.</li>
+      <li>Packed temperature lines and big pressure changes mark where air masses meet (fronts).</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–8</div><div><h4>Launch</h4><p class="say">"We know why Jonas's air masses met and why it traveled east. We don't know why the wind <i>inside</i> the storm was so strong. Let's read the weather the way meteorologists do."</p><p>Play the <b>Mid-Latitude Cyclone Clip</b>.</p></div></li>
+      <li><div class="t">8–14</div><div><h4>Model isobars</h4><p>Hand out the Local Winds Investigation and Weather Maps. Draw the 1024 mb loop from Salt Lake City with the class, then the start of the 1020 line.</p></div></li>
+      <li><div class="t">14–26</div><div><h4>Map 1: air pressure (pairs)</h4><p>Finish isobars, label, add H and L, draw the high/low model, shade green and yellow, add wind arrows, check with NOAA. Pull a small group for extra modeling; offer the isoline videos.</p></div></li>
+      <li><div class="t">26–30</div><div><h4>Share map 1</h4><p>Two pairs show their H, L and arrows. Probe: <i>Why is it rainy near the L?</i></p></div></li>
+      <li><div class="t">30–47</div><div><h4>Maps 2–4 (pairs)</h4><p>Isotherms (10 °F, blue), dew point (10 °F, green), pressure change (2 mb, blue/black/red). Confident pairs self-check with NOAA; others work in chunks with your checkpoints. <i>Flex:</i> map 4 can finish on Day 8.</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Exit slip</h4><p>Pick an option below.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Topo link</div><p>On a topographic map, what does it mean when contour lines are close together?</p><div class="ans">Steep slope. Close isobars = steep pressure change = strong wind.</div></div>
+      <div class="card"><div class="lbl">Option B · Retrieval</div><p>Which way does air flow: from H to L or L to H?</p><div class="ans">H to L.</div></div>
+      <div class="card"><div class="lbl">Option C · Interpolate</div><p>One town is 30 °F and the next is 60 °F. Where would the 40 °F line go?</p><div class="ans">About ⅓ of the way from the 30 °F town.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Your line crossed another line. Can a place have two pressures at once?</li>
+      <li>This station is 1018. Which side of your 1016 line should it be on?</li>
+      <li>How do you know that's the center of the low and not the high?</li>
+      <li>Where are your isotherms closest together? What might be happening there?<span>Warm and cold air meeting: a front.</span></li>
+      <li>Where is pressure falling fastest? Which way is the low moving?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After map 1 · hinge question</div>
+      <h4>Around a low-pressure center in the Northern Hemisphere, surface wind blows…</h4>
+      <ul class="opts">
+        <li>A. clockwise and outward<em>That's a high.</em></li>
+        <li class="right">B. counterclockwise and inward<em>Correct.</em></li>
+        <li>C. straight inward<em>Ignores the Coriolis bend.</em></li>
+        <li>D. counterclockwise and outward<em>Air converges into a low.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After map 2 · hinge question</div>
+      <h4>Isotherms are packed tightly across one region. That most likely shows…</h4>
+      <ul class="opts">
+        <li class="right">A. a boundary between a warm and a cold air mass<em>Correct.</em></li>
+        <li>B. the center of a high<em>Highs show pressure, not temperature contrast.</em></li>
+        <li>C. a mistake: isotherms must be evenly spaced<em>Spacing shows how fast temperature changes.</em></li>
+        <li>D. calm, uniform weather<em>Uniform temperature = widely spaced lines.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <div class="note"><b>Use NOAA's final maps as the official key.</b> The station maps and NOAA's completed analyses are images, so this key gives what to look for and the locations the packet's own text states. Exact shading boundaries: check the NOAA JetStream pages linked in each section.</div>
+    <details class="key"><summary><span>Map 1: Air pressure, procedure and analysis 1–8<small>Local Winds Investigation · Representing and Analyzing Air Pressure</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Isobars and labels</div><p class="aa">Lines every 4 mb (1024, 1020, 1016, 1012, 1008…), labeled with the last two digits (24, 20, 16, 12, 08). The 1024 loop is an elongated oval centered over <b>eastern Utah</b> (stated in the handout and NOAA's lesson).</p></div>
+      <div class="qa"><div class="qq">1. Blue H · 2. Red L</div><p class="aa">H inside the 1024 loop (Great Basin/Utah). L inside the lowest closed isobar in the eastern U.S. (the SY 25-26 chapter's reproduction of this NOAA map put it near Kentucky/the Ohio Valley; confirm on your copy and the NOAA final map).</p></div>
+      <div class="qa"><div class="qq">Model: why highs are dry and lows bring precipitation</div><p class="aa">At the H, cool dense air sinks and warms, so clouds evaporate: clear and dry. At the L, air converges and rises, cools, and its water vapor condenses into clouds and precipitation. Drawing: down arrows and sun over H; up arrows, cloud and rain/snow over L.</p></div>
+      <div class="qa"><div class="qq">3. Green: rain or snow · 4. Yellow: clear skies</div><p class="aa">Green: the states around and just east of the L. Yellow: the states under and around the H (Great Basin/Rockies). Check NOAA's final map.</p></div>
+      <div class="qa"><div class="qq">5. Arrows around H · 6. Arrows around L</div><p class="aa">H: clockwise, angled outward. L: counterclockwise, angled inward.</p></div>
+      <div class="qa"><div class="qq">7. Check your work</div><p class="aa">NOAA JetStream "Analyze an Air Pressure Map."</p></div>
+    </div></details>
+    <details class="key"><summary><span>Map 2: Temperature<small>Local Winds Investigation · Representing and Analyzing Temperature</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Isotherms</div><p class="aa">Every 10 °F, interpolated. The 40 °F line runs from Seattle, halfway between the Oregon coast (50) and Idaho (30), to Reno, and on toward Texas, crossing ⅓ of the way from 30 to 60 there (the 50 °F line at ⅔). Labeled.</p></div>
+      <div class="qa"><div class="qq">Shade blue: lowest temperatures · red: warmest air</div><p class="aa">Blue: the coldest region in the north (northern Plains/Rockies on the SY 25-26 reproduction). Red: the warmest in the south (Gulf Coast/Florida/southern Texas). Check exact areas with NOAA's "Surface Temperature Map" final image.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Map 3: Dew point<small>Local Winds Investigation · Representing and Analyzing Dew Point</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Isodrosotherms</div><p class="aa">Lines every 10 °F, interpolated, labeled. Low dew points in the dry interior and north; high dew points near the Gulf of Mexico.</p></div>
+      <div class="qa"><div class="qq">1. Shade green where dew point ≥ 70 °F</div><p class="aa">Only the most humid stations, near the Gulf Coast. Confirm with NOAA's "Dew Point Temperature Map" final image.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Map 4: Pressure change (isallobars)<small>Local Winds Investigation · Representing and Analyzing Air Pressure Change</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Lines</div><p class="aa">Blue +2 line: a near-oval centered around <b>Kansas and Missouri</b> (stated in the handout), with +4 etc. inside. Black 0 line. Red −2, −4… lines where pressure fell.</p></div>
+      <div class="qa"><div class="qq">1. Red: −4 mb or less · 2. Blue: +4 mb or more</div><p class="aa">Red ahead of (east of) the low, where pressure is falling as it approaches. Blue behind the cold front, where cold, dense air is moving in. Confirm with NOAA's "Pressure Map" final image.</p></div>
+      <div class="qa"><div class="qq">3. Check your work</div><p class="aa">NOAA JetStream pressure-change page.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Draw a tiny H and L with wind arrows around each.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Why does it often rain or snow near an L?</p><div class="ans">Air converges and rises, cools, and its vapor condenses.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Inside an H and an L</h4>
+      <p>Draw a side view (cross-section) of a high and a low next to each other. Show air sinking in the H, rising in the L, surface wind from H to L, and the weather above each.</p>
+      <ul class="checks">
+        <li>Up/down arrows, surface arrow, clouds and sun</li>
+        <li>The pressure values from <b>your</b> map 1 written at each center</li>
+        <li>"I chose…" note: the isobar you found hardest to draw and how you fixed it</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-6"><small>Back</small>← Day 6 · Class Consensus</a><a class="next" href="#day-8"><small>Next</small>Day 8 · Station Models, Fronts, Jonas →</a></div>
+</div>
+
+<!-- ===================== DAY 8 ===================== -->
+<div class="view" id="day-8" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 8 · Explore 2</div>
+    <h2>Station Models, Fronts and Finding Jonas</h2>
+    <p class="q">How do patterns in temperature and pressure explain how winds behave within storm systems?</p>
+    <div class="tags"><span class="tag">Handouts: Local Winds Investigation, map 5 + map 6 (Jonas, Jan 21, 05 UTC) · Making Sense of the Local Winds Investigation · rubric</span><span class="tag">Pairs → table groups</span><span class="tag">Domino Discover</span><span class="tag">Key to Weather Map Symbols</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>How to read a station model: temperature, dew point, sea-level pressure, pressure change, wind direction and speed, sky cover, present weather.</li>
+      <li>Winds are strongest where pressure changes fast over a short distance (near the low); clouds and precipitation gather at the low and its fronts.</li>
+      <li>How to place a cold front and warm front from temperature, wind shifts and pressure change.</li>
+      <li>A developing storm shows a closed low, winds turning counterclockwise around it, and a big temperature contrast nearby.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–9</div><div><h4>Share maps 2–4</h4><p>Quick share of the cold/warm, moist, and pressure-change shading. Probe where lines are tight.</p></div></li>
+      <li><div class="t">9–12</div><div><h4>Station model mini-lesson</h4><p>Decode one station together with the Key to Weather Map Symbols (pressure code, wind barbs in knots, wind "from").</p></div></li>
+      <li><div class="t">12–30</div><div><h4>Map 5: Surface Observations (pairs)</h4><p>Q1–9, then draw the fronts (Q10) and answer Q11–12. Check with NOAA "Drawing Conclusions."</p></div></li>
+      <li><div class="t">30–37</div><div><h4>Map 6: Jonas, Jan 21 (pairs)</h4><p>Find where a low is forming and describe the evidence; check with you. Look-for: a closed low with counterclockwise winds and a big temperature contrast (teacher guide: over <b>Texas</b>).</p></div></li>
+      <li><div class="t">37–43</div><div><h4>Making Sense (groups → individual)</h4><p>Discuss both prompts, then write.</p></div></li>
+      <li><div class="t">43–47</div><div><h4>Domino Discover</h4><p>Listen for the look-fors in the key. Then rubric self/peer score (or as homework).</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Exit slip</h4><p>Pick an option below.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Decode</div><p>A station model shows "024" for pressure. What is the pressure in mb?</p><div class="ans">1002.4 mb.</div></div>
+      <div class="card"><div class="lbl">Option B · Barbs</div><p>A staff has two full barbs and one half barb. How fast is the wind?</p><div class="ans">25 knots (about 29 mph).</div></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>Which color did you shade where pressure fell the most? Where was it compared with the L?</p><div class="ans">Red; ahead of (east of) the low.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Which way does this staff point? Is that where the wind is going or coming from?</li>
+      <li>Where are the stations with the most barbs? How close are your isobars there?</li>
+      <li>Where does temperature drop sharply across a short distance? Does the wind direction change there too?</li>
+      <li>On which side of your cold front is pressure rising? Why?<span>Behind it: cold, dense air arriving.</span></li>
+      <li>(Jonas map) What three things together tell you a storm is forming?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Q4 · hinge question</div>
+      <h4>On map 5, wind speeds are highest…</h4>
+      <ul class="opts">
+        <li>A. at the center of the high<em>Highs are usually calm in the middle.</em></li>
+        <li class="right">B. near the low, where pressure changes quickly over a short distance<em>Correct.</em></li>
+        <li>C. wherever it's coldest<em>Temperature alone doesn't set wind speed.</em></li>
+        <li>D. evenly everywhere<em>Barbs vary a lot across the map.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After the fronts · hinge question</div>
+      <h4>When a cold front passes a station, its pressure usually…</h4>
+      <ul class="opts">
+        <li>A. falls, because cold air is lighter<em>Cold air is denser.</em></li>
+        <li class="right">B. rises, because colder, denser air moves in<em>Correct (the handout states this).</em></li>
+        <li>C. stays the same<em>The isallobar map shows big changes near fronts.</em></li>
+        <li>D. drops to zero<em>Pressure never goes to zero at the surface.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Map 5: Surface Observations Q1–12<small>Local Winds Investigation · Analyzing a Complete Surface Observation Map</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Red L and blue H</div><p class="aa">Same places as on map 1.</p></div>
+      <div class="qa"><div class="qq">2. Circle one sea-level pressure; write the map 1 value</div><p class="aa">The 3-digit code at the upper right of the station. Decode: add "10" in front if it starts low (e.g., 196 → 1019.6 mb) or "9" if it starts high (e.g., 872 → 987.2 mb). Should match the nearby isobar on map 1.</p></div>
+      <div class="qa"><div class="qq">3. Staffs vs. your arrows: what do you notice?</div><p class="aa">The staffs line up with the circulation: clockwise and outward around the H, counterclockwise and inward around the L. The staff points to the direction the wind is blowing <b>from</b>.</p></div>
+      <div class="qa"><div class="qq">4. Wind speed vs. highs and lows</div><p class="aa">More barbs (faster wind) near the low, where isobars are closest; light or calm wind near the center of the high. Evidence: count barbs (half = 5 kt, full = 10 kt, pennant = 50 kt) at stations near each center.</p></div>
+      <div class="qa"><div class="qq">5. Sky cover: high vs. low</div><p class="aa">Open or lightly filled circles (clear to few clouds) near the H; mostly or completely filled circles (overcast) near the L and its fronts.</p></div>
+      <div class="qa"><div class="qq">6. Heavy fog · haze or smoke</div><p class="aa">Find the present-weather symbols from the key (fog: horizontal lines; haze: ∞; smoke: wavy column). Usually in moist, light-wind areas; check the station symbols on your copy.</p></div>
+      <div class="qa"><div class="qq">7. Steady rain · freezing heavy drizzle · thunderstorms · tornadoes</div><p class="aa">Find each with the key's present-weather symbols. They cluster near the low and along its fronts (thunderstorms and tornado in the warm, humid air near the cold front; freezing drizzle on the cold side).</p></div>
+      <div class="qa"><div class="qq">8. Weather in lows vs. highs</div><p class="aa">Lows: clouds, precipitation, storms, stronger wind. Highs: clear, dry, light wind. Evidence: filled sky-cover circles and precipitation symbols near the L; open circles and few symbols near the H.</p></div>
+      <div class="qa"><div class="qq">9. Dew point at one station</div><p class="aa">The number at the lower left of the station model.</p></div>
+      <div class="qa"><div class="qq">10. Draw the cold front (blue) and warm front (red)</div><p class="aa">Both start at the L. The cold front runs south/southwest from the L where temperatures drop sharply, the wind shifts (e.g., from southerly to northwesterly) and pressure rises behind it. The warm front runs east/southeast from the L where it is warmer on the south side. Check with NOAA "Drawing Conclusions."</p></div>
+      <div class="qa"><div class="qq">11. Pressure change on each side of the cold front</div><p class="aa">The tendency number at the right of the station. Behind (west of) the cold front: rising (+). Ahead of it: falling (−) or steady.</p></div>
+      <div class="qa"><div class="qq">12. Cloud cover and precipitation near the fronts</div><p class="aa">Mostly overcast with precipitation along and just ahead of the fronts, especially near the L; skies clear quickly behind the cold front.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Map 6: Winter Storm Jonas, Jan 21, 05 UTC<small>Local Winds Investigation · Surface Observation Map of Winter Storm Jonas · Q1–3</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Look at the map</div><p class="aa">—</p></div>
+      <div class="qa"><div class="qq">2. Mark a region where a low is forming; describe its characteristics</div><p class="aa">The teacher materials say the developing cyclone, with a warm and cold front, is over <b>Texas</b> (southern U.S.). Evidence: a closed low-pressure center (lowest pressures on the map there); station winds turning counterclockwise around it; very different temperatures across a short distance (warm, humid air to the south and east, colder air to the north and west).</p></div>
+      <div class="qa"><div class="qq">3. Were you able to identify a brewing storm? Why or why not?</div><p class="aa">Accept honest answers. Common trouble: looking for snow symbols instead of the pressure/wind/temperature pattern, or reading the H as the storm.</p></div>
+      <div class="note"><b>Time label:</b> the student handout and Weather Maps resource say <b>05 UTC</b> (midnight EST, Jan 21); the teacher guide says 15 UTC. Go with the map you printed.</div>
+    </div></details>
+    <details class="key"><summary><span>Making Sense of the Local Winds Investigation<small>Analysis Q1–2</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Features in the weather maps you also saw in the global winds investigation</div><p class="aa">Areas of high and low pressure; warm and cold air side by side; air moving from high to low; winds bent by Coriolis (clockwise out of H, counterclockwise into L, like the belts bending).</p></div>
+      <div class="qa"><div class="qq">2. How those features help predict what causes strong wind in local storms</div><p class="aa">Global winds form when air moves from cool, high-pressure areas to warm, low-pressure areas, so storm winds probably also form as air rushes from the high to the low. Where the pressure difference is biggest over the shortest distance (tight isobars), the wind should be strongest.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Name three things on a map that tell you a storm is forming.</p><div class="ans">Closed L, counterclockwise winds, big temperature contrast (and falling pressure).</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Draw one station model with: 30 °F, dew point 28 °F, wind from the northeast at 20 knots, overcast.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>My Block's Station Model</h4>
+      <p>Look outside tonight (or use the NWS forecast for NYC). Draw a station model for your block. Then draw a second station model for what your block might have looked like during Jonas.</p>
+      <ul class="checks">
+        <li>Temperature, dew point, sky cover, wind barb in knots, present weather</li>
+        <li>Both models labeled with the date and time</li>
+        <li>"I chose…" note: how you estimated the wind speed or direction</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-7"><small>Back</small>← Day 7 · Drawing Weather Maps</a><a class="next" href="#day-9"><small>Next</small>Day 9 · Explaining Storm Winds →</a></div>
+</div>
+
+<!-- ===================== DAY 9 ===================== -->
+<div class="view" id="day-9" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 9 · Explain 2</div>
+    <h2>Explaining Storm Winds</h2>
+    <p class="q">How do storm wind cyclones form?</p>
+    <div class="tags"><span class="tag">Handout: Explaining Storm Winds, Q1–14 + Summary Q1–2</span><span class="tag">Pairs → table groups</span><span class="tag">Idea Carousel · Consensus-Building Share</span><span class="tag">Videos: High and Low Pressure Zone Winds · Weather Channel 1:17:07–1:18:49</span><span class="tag">Chart paper · sticky notes</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Wind spirals <b>into</b> lows (counterclockwise, NH) and <b>out of</b> highs (clockwise, NH) because of the Coriolis bend.</li>
+      <li>Where a warm, low-pressure zone meets a cool, high-pressure zone, the pressure difference drives wind between them.</li>
+      <li>The bigger the pressure difference (over a shorter distance), the stronger the wind; Jonas deepened fast next to Arctic air.</li>
+      <li>Storm winds repeat the global pattern at a smaller scale.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–7</div><div><h4>Launch</h4><p class="say">"We can forecast where storms go. What we haven't explained is why some storms have winds strong enough to do huge damage."</p></div></li>
+      <li><div class="t">7–19</div><div><h4>Steps 1–11 (pairs)</h4><p>Arrows toward the L, bend right, overall shape; arrows away from the H, bend right, overall shape.</p></div></li>
+      <li><div class="t">19–23</div><div><h4>Video + step 12</h4><p>Show <b>High and Low Pressure Zone Winds</b>. Students label H and L and add wind arrows between them, then begin step 13.</p></div></li>
+      <li><div class="t">23–26</div><div><h4>Jonas broadcast</h4><p>Weather Channel Jonas broadcast, <b>1:17:07–1:18:49</b>. Correct the packet: NYC gusts were 48 mph (LaGuardia, JFK), 58–59 mph on Long Island.</p></div></li>
+      <li><div class="t">26–30</div><div><h4>Step 14 (individual)</h4><p>Students draft their own explanation first.</p></div></li>
+      <li><div class="t">30–42</div><div><h4>Group chart + Idea Carousel</h4><p>Groups combine into one chart. Post around the room. Groups rotate, leaving sticky-note annotations; return, read, and revise.</p></div></li>
+      <li><div class="t">42–47</div><div><h4>Consensus-Building Share</h4><p>Take it slowly; build on each other. Pause for the Key Points.</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Summary (individual)</h4><p>Start Summary Q1–2; finish for homework.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Map recall</div><p>On map 5, where were the strongest winds? What did the isobars look like there?</p><div class="ans">Near the L; isobars close together.</div></div>
+      <div class="card"><div class="lbl">Option B · Coriolis</div><p>Air moving north in the NH bends which way?</p><div class="ans">Right (toward the east).</div></div>
+      <div class="card"><div class="lbl">Option C · Analogy</div><p>A crowded room and an empty room are connected by a door. What happens when you open it? How is that like wind?</p><div class="ans">People spread from crowded to empty, like air from high to low pressure.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Is air moving toward or away from the L? What evidence from the bottles supports that?</li>
+      <li>Once your arrow bends right, where does it end up going around the L?</li>
+      <li>Why would the H's arrows spiral the opposite way?</li>
+      <li>What would make the wind between an H and an L stronger?<span>A bigger pressure difference, or the same difference over a shorter distance.</span></li>
+      <li>Jonas's pressure dropped fast as it moved up the coast. What did that do to the pressure difference with the Arctic high?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After step 11 · hinge question</div>
+      <h4>Which pair of patterns is correct for the Northern Hemisphere?</h4>
+      <ul class="opts">
+        <li class="right">A. Low: counterclockwise, inward · High: clockwise, outward<em>Correct.</em></li>
+        <li>B. Low: clockwise, inward · High: counterclockwise, outward<em>That's the Southern Hemisphere.</em></li>
+        <li>C. Low: counterclockwise, outward · High: clockwise, inward<em>Inflow/outflow reversed.</em></li>
+        <li>D. Both spin the same way<em>Inflow and outflow bend in opposite senses.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After the carousel · hinge question</div>
+      <h4>Two storms have lows of the same pressure. Storm X has a strong high close by; Storm Y's nearest high is weak and far away. Which has stronger winds?</h4>
+      <ul class="opts">
+        <li class="right">A. Storm X: bigger pressure difference over a shorter distance<em>Correct.</em></li>
+        <li>B. Storm Y: more room for wind to build<em>Distance spreads out the push.</em></li>
+        <li>C. The same: their lows are equal<em>Wind depends on the difference, not the low alone.</em></li>
+        <li>D. Neither has wind<em>Any pressure difference makes wind.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Explaining Storm Winds Q1–12<small>Explain 2 handout</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. Wind appears to bend toward the… (NH) · (SH)</div><p class="aa">NH: <b>right</b>. SH: <b>left</b>.</p></div>
+      <div class="qa"><div class="qq">2. L representing a low-pressure area</div><p class="aa">—</p></div>
+      <div class="qa"><div class="qq">3. Toward or away from low pressure?</div><p class="aa"><b>Toward</b> (air converges into the low).</p></div>
+      <div class="qa"><div class="qq">4–5. Arrows toward the L, then bends to the right</div><p class="aa">At least 5 straight arrows pointing at the L from all sides; at each tip, a short arrow turned to the right.</p></div>
+      <div class="qa"><div class="qq">6. Overall shape</div><p class="aa">A <b>counterclockwise spiral</b> into the center (a cyclone).</p></div>
+      <div class="qa"><div class="qq">7. H representing a high-pressure area</div><p class="aa">—</p></div>
+      <div class="qa"><div class="qq">8. Toward or away from high pressure?</div><p class="aa"><b>Away</b> (air diverges out of the high).</p></div>
+      <div class="qa"><div class="qq">9–10. Arrows away from the H, then bends to the right</div><p class="aa">At least 5 arrows pointing outward; each tip turned to the right.</p></div>
+      <div class="qa"><div class="qq">11. Overall shape</div><p class="aa">A <b>clockwise spiral</b> outward (an anticyclone).</p></div>
+      <div class="qa"><div class="qq">12. Label H and L (packet says "high and pressure zones": read as high and low) and add arrows</div><p class="aa">Clockwise outflow around H, counterclockwise inflow around L, and between them air flowing out of the H into the L. Between the two centers the circulations line up, so the flow there is strongest.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Explaining Storm Winds Q13–14<small>Explain 2 handout · model + explanation</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">13. Why does the collision of a cold front and warm front make a swirling storm with strong winds that moves across Earth?</div><p class="aa"><b>Model:</b> L at the junction of a blue cold front and red warm front; cold, dense air (H side) pushing under warm air; warm air rising at the L; counterclockwise arrows into the L; a big arrow showing the whole system moving east. <b>Words:</b> warm air is less dense and rises, making low pressure; the cold air mass is dense and sinking, making high pressure. Air rushes from the high toward the low; Coriolis bends it right, so it spirals counterclockwise into the low. The bigger the temperature and pressure difference across the fronts, the faster the wind. The prevailing westerlies carry the whole swirl east.</p></div>
+      <div class="qa"><div class="qq">14. Why did Jonas's conditions cause extremely strong winds in NYC?</div><p class="aa">Jonas's low deepened (its pressure dropped quickly) as it moved up the coast, while a very cold, dense Arctic air mass (high pressure) sat to the north. That made a very large pressure difference over a short distance (tightly packed isobars), so air rushed from high to low very fast, spiraling into the low and producing damaging gusts in NYC.</p></div>
+      <div class="note"><b>Correction:</b> the packet says Jonas gusted "up to 55 mph in New York City." NWS New York lists <b>48 mph</b> at LaGuardia and JFK; 58–59 mph gusts were on Long Island. Have students write the corrected figure.</div>
+    </div></details>
+    <details class="key"><summary><span>Explain 2 Summary Q1–2 and Key Points<small>Explain 2 handout · Summary</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How do local storm winds show patterns you've seen before at a different scale?</div><p class="aa">Same cause at every scale: uneven heating → density and pressure differences → air flows high to low, bent by Coriolis. Bottles (small), storm cyclones (hundreds of miles), global cells (planet).</p></div>
+      <div class="qa"><div class="qq">2. How did weather maps, videos and storm tracks help you identify those patterns?</div><p class="aa">Maps showed H and L with winds spiraling as predicted and the strongest winds where isobars were tight; isotherms and pressure-change lines showed the fronts; videos showed the swirl; storm tracks showed storms repeatedly moving west to east, like the westerlies.</p></div>
+      <div class="note"><b>Key Points (teacher materials):</b> wind spirals out of highs · wind spirals into lows · where warm low-pressure and cool high-pressure zones meet, the pressure difference drives wind between them · the greater the difference, the stronger the wind.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Finish: "Jonas's winds were strong because…"</p><div class="ans">…a deepening low sat next to a cold Arctic high: large pressure difference over a short distance.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Draw an L with five arrows showing how wind moves around it in the NH.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Weak Storm, Strong Storm</h4>
+      <p>Draw two mini weather maps side by side, each with an H and an L. Make one a weak storm and one a Jonas-strength storm. Use isobar spacing and arrow thickness to show the difference.</p>
+      <ul class="checks">
+        <li>Isobar values written; tighter spacing on the strong map</li>
+        <li>Correct spirals around both H and L</li>
+        <li>"I chose…" note: one <b>sticky note your group's chart got in the Idea Carousel</b> and how you used it</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-8"><small>Back</small>← Day 8 · Station Models, Fronts, Jonas</a><a class="next" href="#day-10"><small>Next</small>Day 10 · Mitigating Hurricane Winds →</a></div>
+</div>
+
+<!-- ===================== DAY 10 ===================== -->
+<div class="view" id="day-10" data-phase="elaborate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 10 · Elaborate</div>
+    <h2>Mitigating Hurricane Winds</h2>
+    <p class="q">How can we begin thinking about solutions for wind damage from storms?</p>
+    <div class="tags"><span class="tag">Handout: Mitigating Hurricane Winds, Parts 1–2</span><span class="tag">Pairs → table groups</span><span class="tag">Domino Discover · Read-Generate-Sort-Solve</span><span class="tag">2 Hurricane Helene videos</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Winter storms form where cold and warm air masses meet; hurricanes form over warm ocean water that powers a low; both have damaging winds.</li>
+      <li>Winter storms cross the U.S. west to east; many Atlantic hurricanes move west in the trades, then curve north and northeast up the coast.</li>
+      <li><b>Criteria</b> say how we'd know a solution works; <b>tradeoffs</b> are the costs we accept because the benefits are worth it.</li>
+      <li>Burying power lines reduces storm outages but costs much more and has its own risks (flood-prone ground, hard repairs).</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–6</div><div><h4>Launch</h4><p class="say">"Our goal is solutions to wind, water and flooding damage. First, another storm type with brutal winds: hurricanes. Then one real solution from Georgia."</p></div></li>
+      <li><div class="t">6–17</div><div><h4>Part 1 (pairs)</h4><p>Read the text and figures; complete the comparison table. Correct the two text errors as they read (the eye; "west coast of Africa").</p></div></li>
+      <li><div class="t">17–21</div><div><h4>Domino Discover</h4><p>Surface hurricane vs. winter storm ideas (look-fors in the key).</p></div></li>
+      <li><div class="t">21–25</div><div><h4>Helene damage</h4><p>Play <b>New stats show how truly bad Hurricane Helene was in the CSRA</b>. Ask students to notice wind damage.</p></div></li>
+      <li><div class="t">25–31</div><div><h4>Criteria and tradeoffs</h4><p>Propose: <i>"Move to a desert to escape storms."</i> Would it work? Is it worth it? Introduce <b>criteria</b> (e.g., "reduce storm costs for families by 50%"; "cost less than the damage") and <b>tradeoffs</b> (other hazards in deserts; huge moving costs). Post the anchor poster.</p></div></li>
+      <li><div class="t">31–37</div><div><h4>Read: Georgia video</h4><p>Play <b>Hurricane Helene's Devastation and Recovery: Improving Rural Power</b>; students take notes. Then read the burying-power-lines paragraph.</p></div></li>
+      <li><div class="t">37–48</div><div><h4>Read-Generate-Sort-Solve</h4><p>Generate on the shared sheet (what makes it successful / not worth it), Sort (star the best), Solve (individual write-up), then Summarize criteria in priority order and tradeoffs.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Exit slip</h4><p>Pick an option below.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Recall</div><p>What powered Jonas's winds?</p><div class="ans">The pressure difference between a deepening low and a cold Arctic high.</div></div>
+      <div class="card"><div class="lbl">Option B · Hurricanes</div><p>Where do you think hurricanes get their energy?</p><div class="ans">Warm ocean water (evaporation and the heat released when vapor condenses).</div></div>
+      <div class="card"><div class="lbl">Option C · Experience</div><p>Has your home or school ever lost power in a storm? What stopped working?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Is a hurricane a high or a low? What does that mean for how wind moves around it?</li>
+      <li>Where does a winter storm's wind energy come from? A hurricane's?</li>
+      <li>How would you know if burying lines was working? What would you measure?<span>Outage count, hours without power, repair costs.</span></li>
+      <li>When would burying lines <i>not</i> be worth it?<span>Flood-prone/high water table areas, cost too high for few customers.</span></li>
+      <li>Which criterion matters most to you? Who might rank them differently?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Part 1 · hinge question</div>
+      <h4>What is the main energy source for a hurricane's winds?</h4>
+      <ul class="opts">
+        <li>A. A cold air mass from Canada<em>That's the winter storm ingredient.</em></li>
+        <li class="right">B. Warm ocean water heating and moistening the air above it<em>Correct.</em></li>
+        <li>C. Earth's rotation<em>Rotation makes it spin, not its energy.</em></li>
+        <li>D. The jet stream<em>Steers storms; doesn't power hurricanes.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After criteria and tradeoffs · hinge question</div>
+      <h4>Which is a <b>tradeoff</b> of burying power lines?</h4>
+      <ul class="opts">
+        <li>A. Fewer outages during storms<em>That's a benefit.</em></li>
+        <li class="right">B. Much higher cost and harder repairs, accepted because outages drop<em>Correct.</em></li>
+        <li>C. "Must cost less than the damage it prevents"<em>That's a criterion.</em></li>
+        <li>D. Hurricanes stop forming<em>The solution doesn't change the storm.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 1: Comparing hurricanes and winter storms<small>Mitigating Hurricane Winds · Part 1 table</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Question</th><th>Winter storms</th><th>Hurricanes</th></tr></thead><tbody>
+        <tr><td>Generated by high, low, or both? Explain.</td><td><b>Both:</b> a warm, low-pressure air mass meets a cold, high-pressure air mass; wind flows across the pressure difference.</td><td><b>Low:</b> very warm ocean water heats and moistens the air, which rises and makes a low that pulls surrounding air in.</td></tr>
+        <tr><td>Where does the energy for the wind come from?</td><td>The temperature and pressure difference between the two air masses.</td><td>Warm ocean water transferring heat (and moisture) to the air; condensation releases more heat.</td></tr>
+        <tr><td>Usual path to the East Coast?</td><td>Across the U.S. from west to east (westerlies), often curving northeast up the coast.</td><td>Westward across the Atlantic in the trade winds toward the Caribbean, then curving north and northeast up the East Coast in the westerlies.</td></tr>
+      </tbody></table></div>
+      <div class="note"><b>Text fixes:</b> the eye is the calm center; the rising air and strongest winds are in the eyewall around it. Not all hurricanes start off Africa; Helene formed over the NW Caribbean (NHC).</div>
+    </div></details>
+    <details class="key"><summary><span>Part 2: Read, Generate, Sort, Solve, Summarize<small>Mitigating Hurricane Winds · Part 2</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Read: notes on how Georgia is making the grid more resilient</div><p class="aa">Listen for what the video shows (preview it): e.g., moving lines underground, stronger poles, clearing trees near lines, rebuilding to a higher standard. Accept notes that match the video.</p></div>
+      <div class="qa"><div class="qq">Generate 1. What would make this solution successful? How would you know it was working?</div><p class="aa">Fewer outages and fewer customers losing power in the next storm; power restored faster; lower repair costs over time; fewer injuries from downed lines.</p></div>
+      <div class="qa"><div class="qq">Generate 2. What would make it not worth doing?</div><p class="aa">Cost far greater than the damage it prevents (packet: 5–10× overhead cost); flooding of buried lines in high-water-table or coastal areas; long, disruptive, expensive repairs; environmental damage from trenching; rates rising for customers who can't afford it.</p></div>
+      <div class="qa"><div class="qq">Solve (individual)</div><p class="aa">A strong response states whether burying lines makes sense <i>where</i> (e.g., inland, tree-heavy, frequently hit areas: yes; flood-prone coast: maybe not), backed by criteria and tradeoffs.</p></div>
+      <div class="qa"><div class="qq">Summarize: criteria in priority order</div><p class="aa">Sample: 1) reduces outages in strong wind; 2) costs less over time than repeated storm repairs; 3) works in the local ground and flood conditions; 4) fast to repair; 5) limited environmental disruption. Any reasoned order is fine.</p></div>
+      <div class="qa"><div class="qq">Summarize: tradeoffs</div><p class="aa">Higher up-front cost; trenching disruption; harder, costlier repairs; flood risk in some areas; benefits mostly against wind/trees, not flooding.</p></div>
+      <div class="note"><b>The 5–10× figure is the packet's.</b> It wasn't independently checked for this guide; real costs vary widely by utility, soil and housing density. Treat it as the packet's estimate.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Define criteria and tradeoff in your own words, with one example of each from burying power lines.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Name one way a hurricane and Jonas are alike and one way they're different.</p><div class="ans">Alike: both lows with strong spiraling winds. Different: energy source (warm ocean vs. air-mass contrast) or path.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Overhead vs. Underground</h4>
+      <p>Draw the same street twice in a hurricane: once with overhead lines, once with buried lines. Show what the wind does to each. Under each, list one benefit and one cost.</p>
+      <ul class="checks">
+        <li>Wind arrows and at least one damaged or protected point on each</li>
+        <li>One flood-risk detail on the underground version</li>
+        <li>"I chose…" note: the <b>starred idea from your group's Sort</b> that you used</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-9"><small>Back</small>← Day 9 · Explaining Storm Winds</a><a class="next" href="#day-11"><small>Next</small>Day 11 · Wind Farms →</a></div>
+</div>
+
+<!-- ===================== DAY 11 ===================== -->
+<div class="view" id="day-11" data-phase="evaluate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 11 · Evaluate</div>
+    <h2>Wind Farms and the Performance Task</h2>
+    <p class="q">Are wind farms an effective solution for reducing storm wind damage?</p>
+    <div class="tags"><span class="tag">Handouts: Wind Farms · Wind Rubric · PTO: Revisiting the Performance Task: Wind</span><span class="tag">Pairs → independent</span><span class="tag">Domino Discover · Driving Question Board</span><span class="tag">DOE article · 2 videos</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>How to set criteria for a wind-damage solution and use them to weigh benefits, costs and tradeoffs from several sources.</li>
+      <li>Turbines protect themselves in storms (survival mode above 55 mph per DOE), so they don't stop storm winds; any storm-weakening effect comes from model studies of very large arrays.</li>
+      <li>Where solutions go should follow the science: where global winds carry storms.</li>
+      <li>What's still open: precipitation and flooding (next 5Es).</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–9</div><div><h4>Class brainstorm: criteria</h4><p>Generate a class list of criteria for solutions that protect people and property from storm wind.</p></div></li>
+      <li><div class="t">9–19</div><div><h4>Text 1 (pairs)</h4><p>Read the DOE article; note benefits and costs.</p></div></li>
+      <li><div class="t">19–27</div><div><h4>Texts 2–3</h4><p>Play both videos; students note benefits and costs of each.</p></div></li>
+      <li><div class="t">27–40</div><div><h4>Revisiting the Performance Task: Wind (independent)</h4><p>Students answer Q1–7 from what they learned in this 5E. Confer.</p></div></li>
+      <li><div class="t">40–43</div><div><h4>Wind Rubric</h4><p>Self or peer score.</p></div></li>
+      <li><div class="t">43–47</div><div><h4>Document class thinking</h4><p>Groups decide Yes / No / Maybe on wind farms with reasons. Domino Discover; tally on chart paper. No need for consensus.</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Driving Question Board</h4><p>Which questions are answered? Which are still open? Make sure one open category is how precipitation forms and how to reduce water damage (next: Water 5E).</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Criteria</div><p>Write one criterion a storm-wind solution must meet. Make it something you could measure.</p></div>
+      <div class="card"><div class="lbl">Option B · Predict</div><p>Could a field of wind turbines make a storm weaker? Guess yes or no and why.</p></div>
+      <div class="card"><div class="lbl">Option C · Recall</div><p>Name one tradeoff from burying power lines.</p><div class="ans">Cost, flood risk, hard repairs, trench disruption.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>How does this solution relate to how wind forms or how storms move?</li>
+      <li>How would you know if wind farms were reducing storm damage? What would you measure?</li>
+      <li>What benefits would wind farms need to provide to be worth it?</li>
+      <li>When would the costs be too great?</li>
+      <li>Is the "save the planet" claim based on measurements or a model? Does that matter?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Text 1 · hinge question</div>
+      <h4>According to the DOE article, what do turbines do when winds go above about 55 mph?</h4>
+      <ul class="opts">
+        <li>A. Spin faster to slow the storm<em>Not in the article.</em></li>
+        <li class="right">B. Lock and feather their blades in a protective "survival mode"<em>Correct.</em></li>
+        <li>C. Fall over<em>They're designed to survive.</em></li>
+        <li>D. Make the most electricity<em>They stop generating to protect themselves.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After the videos · hinge question</div>
+      <h4>Which statement is best supported by evidence?</h4>
+      <ul class="opts">
+        <li>A. Existing wind farms have measurably weakened hurricanes<em>No observations show this.</em></li>
+        <li class="right">B. Models suggest very large offshore arrays could weaken storms, but this hasn't been tested in real storms<em>Correct.</em></li>
+        <li>C. Wind farms have no possible downsides<em>Texts 1–2 describe costs and risks.</em></li>
+        <li>D. Turbines cause hurricanes<em>No evidence.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Wind Farms: notes table<small>Evaluate handout · benefits and costs</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>Text</th><th>Benefits</th><th>Costs</th></tr></thead><tbody>
+        <tr><td>1. DOE, <i>Wind Turbines in Extreme Weather: Solutions for Hurricane Resiliency</i></td><td>Turbines lock and feather blades above 55 mph (survival mode); engineers (NREL with the University of Miami) are modeling hurricane loads to design stronger turbines; ideas like flexible downwind rotors and twisted-jacket foundations (one survived Katrina on an oil/gas platform).</td><td>Offshore storms are stronger and add wave loads; models of extreme loads still need refinement; little real data on turbines in hurricanes; hurricanes are hard to predict. Turbines don't produce power in survival mode.</td></tr>
+        <tr><td>2. Video: <i>Scientists Fear the World's Largest Wind Turbine Will Change the Weather</i></td><td colspan="2">Preview first; take notes from what the video says. Expect concerns about very large turbines/farms changing local wind, temperature or moisture downstream (wake effects), alongside clean-energy benefits. Students should label which claims are measured vs. predicted.</td></tr>
+        <tr><td>3. Video: <i>How Giant Wind Farms Can Save the Planet</i></td><td colspan="2">Preview first. Expect the benefit of large-scale clean power (cutting the emissions behind climate change) and the model-study idea that huge offshore arrays could take energy out of hurricane winds (e.g., Jacobson, Archer &amp; Kempton 2014). Costs: scale, expense, space, wildlife, maintenance.</td></tr>
+      </tbody></table></div>
+    </div></details>
+    <details class="key"><summary><span>Revisiting the Performance Task: Wind, Q1–7<small>PTO · sample strong responses</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">1. How did Jonas's strong winds form, and how was the storm carried across the country?</div><p class="aa">Uneven heating made a cold, dense, high-pressure air mass (from Canada/the Arctic) and a warm, moist, low-pressure air mass (from the Gulf/Atlantic). Global winds brought them together; where they met, a low formed and deepened. Air rushed from high to low, bent by Coriolis into a counterclockwise spiral, and the big pressure difference over a short distance made strong winds. The westerlies carried the storm east, then it turned north up the coast.</p></div>
+      <div class="qa"><div class="qq">2. Why is this a problem we need to address?</div><p class="aa">Storm winds down trees and power lines, damage buildings, shut transportation and endanger lives; storms like this repeat along predictable paths, so the damage keeps happening and costs billions (Unit Opening).</p></div>
+      <div class="qa"><div class="qq">3. Top three criteria</div><p class="aa">Any measurable, prioritized set, e.g.: reduces damage or outages by a stated amount; costs less than the damage it prevents; works in the places storms actually hit; few harmful side effects.</p></div>
+      <div class="qa"><div class="qq">4. Describe the solution in the texts</div><p class="aa">Building wind farms (especially offshore) designed to survive hurricane winds; some suggest very large arrays could weaken storms while producing clean energy.</p></div>
+      <div class="qa"><div class="qq">5. How does it address the science? How should the mechanism of wind and Jonas's path affect where it goes?</div><p class="aa">It targets wind energy itself (taking energy out of the flow) and, long term, climate change. Placement should follow storm paths and wind belts: offshore along the Atlantic and Gulf coasts where hurricanes and nor'easters track, and where steady westerly/sea-breeze winds make power. But turbines shut down above ~55 mph, so they don't block storm winds directly.</p></div>
+      <div class="qa"><div class="qq">6. Benefits; does it meet your criteria?</div><p class="aa">Clean power, fewer emissions, possible (modeled, not proven) storm weakening at huge scale. It likely meets "few side effects" better than "reduces wind damage," which has little real-world evidence.</p></div>
+      <div class="qa"><div class="qq">7. Costs; reasonable tradeoffs?</div><p class="aa">High cost; storm and wave damage risk; possible local weather/wake effects; wildlife and fishing impacts; doesn't protect much during the storm. A good answer decides: worth it for energy, not (yet) as a storm-wind shield.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Wind Rubric: what proficient looks like<small>Evaluate · Wind Rubric</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Explanation of the problem (all five for Proficient)</div><p class="aa">Uneven heating → global wind patterns · temperature, density, pressure relationship · predictable storm formation and paths · same mechanism at smaller scale makes strong storm winds · the damage storm winds cause.</p></div>
+      <div class="qa"><div class="qq">The Design Cycle (all three for Proficient)</div><p class="aa">Identifies the problem · identifies and prioritizes criteria · analyzes costs and benefits to judge whether the tradeoffs are worth it.</p></div>
+      <div class="qa"><div class="qq">Glow / Grow</div><p class="aa">Specific: e.g., "Glow: used the westerlies to choose a location. Grow: name a measurable criterion."</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Yes, No or Maybe: should NYC invest in wind farms to protect against storm winds? One reason, one tradeoff.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Write one question about precipitation or flooding for the DQB.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Where Would You Build It?</h4>
+      <p>Sketch the U.S. East Coast and nearby ocean. Draw the westerlies and a typical hurricane path and Jonas's path. Mark where you would put one wind-damage solution (wind farm, buried lines, or your own idea) and why.</p>
+      <ul class="checks">
+        <li>Both storm paths with arrows</li>
+        <li>Your solution's location with one criterion it meets and one tradeoff</li>
+        <li>"I chose…" note: how your <b>group's Yes/No/Maybe vote</b> changed (or didn't change) your choice</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-10"><small>Back</small>← Day 10 · Mitigating Hurricane Winds</a><a class="next" href="#overview"><small>Done</small>Back to overview →</a></div>
+</div>
+
+<footer><a href="index.html">← Back to Teacher Hub</a><br>Built from the New Visions Earth &amp; Space Science Unit 5 <i>Extreme Weather Coming to a Place Near You?</i> materials, SY 26-27: L1 Teacher Materials and L1 Student Materials (Wind 5E), the Explore 2 Weather Maps classroom resource, the Unit Plan, and the Performance Task Organizer (Revisiting the Performance Task: Wind). The Google Docs have no page numbers; keys are labeled by handout, part and question. Data: NWS New York (OKX) January 2016 blizzard summary; NOAA JetStream weather-map lessons; NHC Tropical Cyclone Report, Hurricane Helene (AL092024); U.S. Department of Energy, <i>Wind Turbines in Extreme Weather</i> (2018); Jacobson, Archer &amp; Kempton, <i>Nature Climate Change</i> (2014). No student chapter yet for this lesson. Schedules assume 50-minute periods.</footer>
+</main>
+
+<script>
+(function(){
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('#chips .chip'));
+  var ids = views.map(function(v){return v.id});
+  function show(){
+    var id = (location.hash || '').slice(1);
+    if (ids.indexOf(id) === -1) id = 'overview';
+    views.forEach(function(v){ v.hidden = v.id !== id; });
+    chips.forEach(function(c){
+      if (c.getAttribute('href') === '#' + id) { c.setAttribute('aria-current','page'); var r=c.parentNode; r.scrollLeft = c.offsetLeft - (r.clientWidth - c.offsetWidth)/2; }
+      else c.removeAttribute('aria-current');
+    });
+    window.scrollTo({top:0,left:0,behavior:'instant'});
+  }
+  window.addEventListener('hashchange', show);
+  show();
+
+  // prep checklist memory (per device)
+  var boxes = document.querySelectorAll('#prep input[type=checkbox]');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem('u5-wind-prep') || '{}'); } catch(e) {}
+  Array.prototype.forEach.call(boxes, function(b){
+    if (saved[b.id]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[b.id] = b.checked;
+      try { localStorage.setItem('u5-wind-prep', JSON.stringify(saved)); } catch(e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="teacher-gate.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}.strata-7{grid-template-columns:repeat(7,1fr)}
+</style>
+<title>Water 5E Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky day bar on top, one day visible at a time, single reading column (~760px). Days are "rock layers" colored by 5E phase. */
+:root{
+  --bg:#F2F5F4; --surface:#FFFFFF; --ink:#15212A; --muted:#55646B; --line:#D5DDDB; --tint:#E7EDEB;
+  --iron:#AE4229; --ocean:#1C6784; --ochre:#A8731A; --moss:#4C7634; --dusk:#5A4A8C;
+  --ok:#2E7D4F; --warn:#9A5B00;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--ocean)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* phase colors */
+[data-phase="engage"]{--ph:var(--ochre)} [data-phase="explore"]{--ph:var(--iron)} [data-phase="explain"]{--ph:var(--ocean)}
+[data-phase="elaborate"]{--ph:var(--moss)} [data-phase="evaluate"]{--ph:var(--dusk)} [data-phase="overview"]{--ph:var(--ink)}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:thin}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--ph)}
+.chip[aria-current="page"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--ocean);outline-offset:2px}
+
+/* hero */
+.hero{padding-block:28px 8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.hero h1{font-size:clamp(32px,7vw,52px);font-weight:800;letter-spacing:-.02em;margin:8px 0 10px}
+.dq{font-size:clamp(18px,3.4vw,22px);color:var(--ink);max-width:40ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0 0;color:var(--muted);font-size:15px}
+.meta b{color:var(--ink)}
+
+/* strata bar */
+.strata{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin:22px 0 6px;border-radius:10px;overflow:hidden}
+.strata a{display:flex;flex-direction:column;justify-content:flex-end;min-height:76px;padding:8px 7px;background:var(--ph);color:#fff;text-decoration:none;font-size:12px;line-height:1.2;position:relative}
+.strata a::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(0,0,0,.10) 9px 11px);pointer-events:none}
+.strata b{font-family:var(--f-display);font-size:20px;display:block}
+.strata span{opacity:.92}
+.strata-cap{font-size:13px;color:var(--muted)}
+@media (max-width:520px){.strata span{display:none}.strata a{min-height:56px}}
+
+/* views */
+.view{padding-block:8px 48px;scroll-margin-top:calc(64px + env(safe-area-inset-top,0px))}
+.view[hidden]{display:none!important}
+.dayhead{padding-block:26px 6px;border-bottom:4px solid var(--ph);margin-bottom:8px}
+.dayhead .eyebrow{color:var(--ph)}
+.dayhead h2{font-size:clamp(28px,5.6vw,40px);font-weight:800;margin:6px 0 8px;letter-spacing:-.01em}
+.dayhead .q{font-style:italic;color:var(--muted);margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
+.tag{font-size:13px;padding:3px 9px;border-radius:6px;background:var(--tint);color:var(--ink)}
+
+section.block{padding-block:18px 4px}
+section.block>h3{font-size:22px;font-weight:800;margin-bottom:12px;display:flex;align-items:baseline;gap:10px}
+section.block>h3 small{font-family:var(--f-body);font-weight:600;font-size:14px;color:var(--muted)}
+p{margin:0 0 10px} ul,ol{margin:0 0 10px;padding-left:22px} li{margin-bottom:5px}
+
+/* goals */
+.goals{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--ph);border-radius:8px;padding:14px 16px}
+.goals h3{font-size:17px;margin-bottom:8px}
+.goals ul{margin:0}
+
+/* schedule */
+.sched{list-style:none;padding:0;margin:0;border-left:2px solid var(--line)}
+.sched li{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:10px 0 12px 22px;margin:0;position:relative}
+.sched li::before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:3px solid var(--ph)}
+.t{font-family:var(--f-mono);font-size:14px;color:var(--ph);font-weight:500;padding-top:2px;font-variant-numeric:tabular-nums}
+.t small{display:block;color:var(--muted);font-size:12px}
+.sched h4{font-size:17px;font-weight:600;margin-bottom:3px}
+.sched p,.sched ul{font-size:16px;color:var(--ink);margin-bottom:4px}
+.sched .say{border-left:3px solid var(--tint);padding-left:10px;color:var(--muted);font-style:italic}
+@media (max-width:480px){.sched li{grid-template-columns:1fr;gap:2px}}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.card .lbl{font-size:12px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;color:var(--ph);margin-bottom:6px}
+.card p:last-child{margin-bottom:0}
+.ans{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:15px;color:var(--muted)}
+.ans b{color:var(--ok)}
+
+/* conferring */
+.confer{list-style:none;padding:0;display:grid;gap:8px}
+.confer li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0}
+.confer li span{display:block;font-size:14px;color:var(--muted);margin-top:3px}
+
+/* CFU */
+.cfu{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.cfu h4{font-size:16px;margin-bottom:6px;font-family:var(--f-body);font-weight:700}
+.opts{list-style:none;padding:0;margin:6px 0}
+.opts li{padding:5px 10px;border-radius:6px;margin-bottom:4px;background:var(--tint)}
+.opts li.right{outline:2px solid var(--ok)}
+.opts li em{display:block;font-size:14px;color:var(--muted);font-style:normal}
+.when{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* answer key */
+.key{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.key>summary{cursor:pointer;padding:13px 16px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.key>summary::-webkit-details-marker{display:none}
+.key>summary::after{content:"+";font-family:var(--f-mono);font-size:20px;color:var(--ph)}
+.key[open]>summary::after{content:"−"}
+.key>summary small{display:block;font-weight:400;color:var(--muted);font-size:14px}
+.keybody{padding:2px 16px 14px;border-top:1px solid var(--line)}
+.qa{padding:10px 0;border-bottom:1px solid var(--tint)}
+.qa:last-child{border-bottom:0}
+.qa .qq{font-weight:700;margin-bottom:4px}
+.qa .aa{margin:0}
+.note{font-size:15px;background:var(--tint);border-radius:8px;padding:10px 12px;margin:8px 0}
+.note b{color:var(--warn)}
+.scroll{overflow-x:auto;margin:8px 0 12px;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--surface)}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--tint);font-weight:700}
+td.num,th.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* homework */
+.hw{background:var(--surface);border:2px solid var(--ph);border-radius:12px;padding:16px}
+.hw h4{font-size:20px;font-weight:800;margin-bottom:6px}
+.hw .why{font-size:15px;color:var(--muted)}
+.checks{list-style:none;padding:0;margin:8px 0 0}
+.checks li{padding-left:24px;position:relative}
+.checks li::before{content:"✓";position:absolute;left:2px;color:var(--ok);font-weight:700}
+
+/* overview bits */
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:6px}
+.glance .card b{font-family:var(--f-display);font-size:18px;display:block;margin-bottom:2px}
+.prep{list-style:none;padding:0}
+.prep li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--tint);margin:0}
+.prep input{width:20px;height:20px;margin-top:3px;accent-color:var(--ocean);flex:0 0 auto}
+.prep label{flex:1;min-width:0}
+.prep .when{display:block}
+.mis{display:grid;gap:8px}
+.mis div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.mis s{color:var(--iron);text-decoration-thickness:2px}
+
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:30px;flex-wrap:wrap}
+.pager a{flex:1 1 200px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.pager a small{display:block;color:var(--muted);font-size:13px}
+.pager a.next{text-align:right}
+footer{color:var(--muted);font-size:13px;padding-block:20px 40px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+.strata-7{grid-template-columns:repeat(7,1fr)}
+</style>
+</head>
+<body>
+<nav class="bar" aria-label="Days">
+  <div class="wrap" id="chips">
+    <a class="chip" data-phase="overview" href="#overview"><i></i>Before you teach</a>
+    <a class="chip" data-phase="engage" href="#day-1"><i></i>Day 1</a>
+    <a class="chip" data-phase="explore" href="#day-2"><i></i>Day 2</a>
+    <a class="chip" data-phase="explain" href="#day-3"><i></i>Day 3</a>
+    <a class="chip" data-phase="explain" href="#day-4"><i></i>Day 4</a>
+    <a class="chip" data-phase="explain" href="#day-5"><i></i>Day 5</a>
+    <a class="chip" data-phase="elaborate" href="#day-6"><i></i>Day 6</a>
+    <a class="chip" data-phase="evaluate" href="#day-7"><i></i>Day 7</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ===================== OVERVIEW ===================== -->
+<div class="view" id="overview" data-phase="overview">
+  <header class="hero">
+    <div class="eyebrow">Teacher guide · Earth &amp; Space Science · Unit 5 · Extreme Weather Coming to a Place Near You? · L2 Water 5E · SY 26-27</div>
+    <h1>Water 5E</h1>
+    <p class="dq">How does precipitation form? How can we design solutions that protect communities from water damage?</p>
+    <div class="meta">
+      <span><b>PEs</b> HS-ESS2-8 (NYS) · HS-ETS1-1 · HS-ETS1-2</span>
+      <span><b>Length</b> 7 days × 50 min (teacher materials: 5–7)</span>
+      <span><b>Packet</b> L2 Student Materials (Google Doc) + PTO <i>Revisiting the Performance Task: Water</i></span>
+      <span><b>Routines</b> Rumors · Domino Discover · Idea Carousel · Class Consensus Discussion · Think-Talk-Open Exchange</span>
+    </div>
+    <div class="strata strata-7" aria-label="Seven days, colored by 5E phase">
+      <a href="#day-1" data-phase="engage"><b>1</b><span>Engage → Explore</span></a>
+      <a href="#day-2" data-phase="explore"><b>2</b><span>Explore</span></a>
+      <a href="#day-3" data-phase="explain"><b>3</b><span>Explain</span></a>
+      <a href="#day-4" data-phase="explain"><b>4</b><span>Explain</span></a>
+      <a href="#day-5" data-phase="explain"><b>5</b><span>Explain</span></a>
+      <a href="#day-6" data-phase="elaborate"><b>6</b><span>Elaborate</span></a>
+      <a href="#day-7" data-phase="evaluate"><b>7</b><span>Evaluate</span></a>
+    </div>
+    <p class="strata-cap">Tap a day to open it. Each day has a minute-by-minute plan, Do Nows, conferring questions, checks for understanding, the answer key, exit slips and drawn homework. There is no student chapter for this SY 26-27 lesson yet.</p>
+  </header>
+
+  <section class="block">
+    <h3>The phenomenon in one paragraph</h3>
+    <p>In the Wind 5E students explained storm <b>wind</b>. Now they take on the second sub-problem of storm damage: <b>water</b>. Hurricane Helene (Sept 2024) flooded western North Carolina and set off landslides; Winter Storm Jonas (Jan 2016) buried the Mid-Atlantic and New York City in snow. Students ask what they'd need to know to design solutions, then figure out how precipitation forms. A <b>fronts simulator</b> shows that cold, dry air stays low while warm, moist air rises at the boundary, and precipitation forms there. <b>Cup models</b> show that warmer water puts more vapor into the air, and cooling that vapor turns it back to liquid faster. They scale up: air masses get their temperature and moisture from where they form (land/ocean, high/low latitude), the same rise-cool-condense pattern explains wet and dry latitudes, and it explains <b>Jonas</b> (Gulf/Atlantic moisture meeting Canadian cold air) and <b>Helene</b> (tropical moisture forced up the Blue Ridge Escarpment after earlier rain from a low-pressure system). Warmer oceans mean more evaporation, so more water for storms to drop. Finally they evaluate <b>solar geoengineering</b> as a way to cool the oceans, focusing on a new engineering idea: <b>constraints and limitations</b>.</p>
+  </section>
+
+  <section class="block">
+    <h3>The 5E storyline</h3>
+    <div class="glance">
+      <div class="card" data-phase="engage"><div class="lbl">Engage · Day 1</div><b>How does storm precipitation cause damage?</b>Precipitation Damage images, Helene landslide video, Rumors.</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore · Days 1–2</div><b>How does precipitation form?</b>Weather Fronts Simulator (Model 1), cup experiments (Model 2), See-Think-Wonder, rubric.</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain · Days 3–5</div><b>How do air masses meet to cause precipitation?</b>Air-mass matching, storyboard, wet/dry latitudes, Jonas + Helene posters, Idea Carousel, Class Consensus, Summary Task.</div>
+      <div class="card" data-phase="elaborate"><div class="lbl">Elaborate · Day 6</div><b>How will climate change affect precipitation?</b>Jonas Ingredients (ocean heat), hurricane needs, ocean heat content graph, Think-Talk-Open Exchange.</div>
+      <div class="card" data-phase="evaluate"><div class="lbl">Evaluate · Day 7</div><b>What solutions might help?</b>Geoengineering text, PTO <i>Revisiting the Performance Task: Water</i>, rubric, Domino Discover tally, DQB.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="goals" data-phase="explain">
+      <h3>By the end of the 5E, every student should be able to…</h3>
+      <ul>
+        <li>Explain at the molecular level why <b>warmer water evaporates more</b> and why <b>cooling vapor makes it condense</b> (cup evidence).</li>
+        <li>Describe what happens at a <b>front</b>: denser cold, dry air stays low; less dense warm, moist air rises, cools, condenses into clouds and precipitation.</li>
+        <li>Name the four air masses (<b>cT, mP, cP, mT</b>) and predict their properties from where they form: ocean = moist, land = dry; low latitude = warm, high latitude = cold.</li>
+        <li>Use the same pattern at three scales (cups, local storms, global wet/dry latitudes) to explain precipitation (CCC Patterns).</li>
+        <li>Explain why Jonas dropped so much snow and why Helene dropped so much rain on the southern Appalachians.</li>
+        <li>Predict that warmer oceans → more evaporation → more water vapor → heavier precipitation in coastal storms (rain and snow).</li>
+        <li>Identify the <b>criteria, constraints and limitations</b> of a proposed solution and weigh its costs, benefits and unintended consequences (HS-ETS1-1).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Prep checklist <small>check off as you go · saved on this device</small></h3>
+    <ul class="prep" id="prep">
+      <li><input type="checkbox" id="p1"><label for="p1"><span class="when">1 week out</span>Copy the <b>L2 Student Materials (Water 5E)</b>: Precipitation Damage → Evaluating Solutions for Water Damage. The Evaluate prompt <b>Revisiting the Performance Task: Water</b> is in the unit <b>Performance Task Organizer</b>, not the L2 packet; make sure students have their PTO.</label></li>
+      <li><input type="checkbox" id="p2"><label for="p2"><span class="when">1 week out</span>Test on student devices: <b>Weather Fronts Simulator</b> (learn.weatherstem.com), <b>How Hurricane Helene Spawned Record Landslides in NC</b>, <b>Winter Storm Jonas Ingredients</b>, and <b>Why Hurricane Helene's Flash Floods were So Deadly in Asheville</b>. That last video is linked in the student packet but missing from the teacher materials' resource list and the Unit Plan video table. Differentiation backup: <b>How do Hurricanes Form?</b></label></li>
+      <li><input type="checkbox" id="p3"><label for="p3"><span class="when">Before Day 2</span><b>Cup lab</b>, per group: 3 wide clear plastic cups, 3 taller clear cups (smaller rims), hot / warm / cold tap water, ice, paper towels, a magnifier. Hot <b>tap</b> water only. Pre-fill pitchers of each temperature so the lab starts fast.</label></li>
+      <li><input type="checkbox" id="p4"><label for="p4"><span class="when">Before Day 1</span>Post-its for Rumors. Project the two Engage photos large.</label></li>
+      <li><input type="checkbox" id="p5"><label for="p5"><span class="when">Before Day 4</span>Chart paper and markers per table group. Decide which tables do <b>Jonas</b> and which do <b>Helene</b> (half and half). Clear wall or hallway space for the Idea Carousel.</label></li>
+      <li><input type="checkbox" id="p6"><label for="p6"><span class="when">Before Day 5</span>Post the <b>Class Consensus Discussion steps</b>. Pick 2–3 posters to share (not random) and have a document camera or phone ready.</label></li>
+      <li><input type="checkbox" id="p7"><label for="p7"><span class="when">Before Day 7</span>Print <b>A Potential Solution to Reduce Precipitation</b> so students can annotate in <b>three colors</b> (mechanism · costs/benefits · limitations). Colored pencils or highlighters. Chart paper for the Yes/No/Maybe tally.</label></li>
+      <li><input type="checkbox" id="p8"><label for="p8"><span class="when">Before Day 7</span>Have the <b>Driving Question Board</b> up. Bring the Wind 5E power-lines example back for the constraints talk.</label></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Content crib: the numbers students will use</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>Idea</th><th>Value</th><th>Source / where it comes up</th></tr></thead>
+      <tbody>
+        <tr><td>Jonas snowfall, NYC</td><td class="num">Central Park 27.5 in · JFK 30.5 in (Jan 22–24, 2016)</td><td>NWS New York (OKX) storm summary; Central Park's largest storm since records began in 1869</td></tr>
+        <tr><td>Jonas, Central Park, Jan 23</td><td class="num">2.31 in liquid · 27.3 in snow</td><td>NOAA Central Park daily record. Good for "how much water is in that snow"</td></tr>
+        <tr><td>NYC average winter snowfall</td><td class="num">29.8 in</td><td>NOAA 1991–2020 Central Park normals. Jonas nearly matched a whole winter</td></tr>
+        <tr><td>Helene landfall</td><td class="num">Cat 4 · Big Bend, FL · Sept 26, 2024</td><td>NHC Tropical Cyclone Report</td></tr>
+        <tr><td>Helene peak rainfall</td><td class="num">30.78 in · Busick, NC</td><td>NHC Tropical Cyclone Report (Yancey County, NE of Asheville; the Asheville area itself got less)</td></tr>
+        <tr><td>Snow vs. rain</td><td class="num">≤ 32 °F (0 °C)</td><td>Precipitation reaches the ground as snow when the air it falls through is at or below freezing</td></tr>
+        <tr><td>Vapor warm air can hold</td><td class="num">~12 hPa at 10 °C · ~42 hPa at 30 °C</td><td>Saturation vapor pressure (standard physical values); about +7% per °C (IPCC AR6 WG1). Explains the hot/warm/cold cups</td></tr>
+        <tr><td>Wet / dry latitudes</td><td class="num">Wet ~0° and ~60° · dry ~30° and poles</td><td>Global circulation (rising vs. sinking air), from the Wind 5E Global Circulation Model</td></tr>
+        <tr><td>Ocean heat content graph</td><td class="num">read from graph</td><td>Packet Elaborate graph, "compared to average (1993–2019)." The values aren't in the Doc text; read the trend from the image</td></tr>
+        <tr><td>Pinatubo, 1991</td><td class="num">~20 million tons SO₂ · ~0.5 °C cooling</td><td>Packet text, citing Columbia Climate School (2024). Other agencies give ~15–20 Mt; treat as approximate</td></tr>
+        <tr><td>Geoengineering scale</td><td class="num">~50 million metric tons SO₂/yr by 2100</td><td>Packet text, citing NOAA Research (2021) simulations</td></tr>
+        <tr><td>Side effects</td><td class="num">Parts of tropics 5–7% less rain/yr</td><td>Packet text, citing Columbia (2024) and NOAA (2021) models</td></tr>
+        <tr><td>Ocean cooling vs. hurricanes</td><td class="num">~15% weaker, ideal conditions</td><td>Packet text, citing Hlywiak &amp; Nolan 2022, whose title calls targeted cooling "futile"</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>About these numbers:</b> the Engage line "30 inches of water on Asheville" is rounded from Helene's single highest gauge (30.78 in at Busick). Use the NHC figure if students ask "where exactly?"</div>
+  </section>
+
+  <section class="block">
+    <h3>How the answer keys are labeled</h3>
+    <p>The SY 26-27 Student Materials are a Google Doc with <b>no page numbers</b>, so every key here is labeled by <b>handout → part → question</b>. The Doc's numbered lists export as "1." for every item; this guide numbers prompts in the order they appear within each handout section (for example, Making Sense Q1–3, Explaining Precipitation Formation Part 1 Q1–3). Check against your printed copy. The air-mass map, global-circulation diagram, hurricane diagram and ocean heat graph are images that don't appear in the Doc text, so keys that depend on them say what to read rather than inventing values.</p>
+  </section>
+
+  <section class="block">
+    <h3>Corrections to the packet and teacher materials</h3>
+    <div class="mis">
+      <div><b>Teacher Materials, Explain step 1:</b> "Provide students with the handout, <s>Explaining Lunar Patterns</s>." It should be <b>Explaining Precipitation Formation</b> (copy-paste from another lesson).</div>
+      <div><b>Teacher Materials, Class Consensus step:</b> "Ask the first group to share their explanation of <s>how wind is formed</s>." In this 5E it is <b>why so much precipitation formed</b> (Jonas or Helene).</div>
+      <div><b>Teacher Materials, Assessment Matrix:</b> lists <s>Revisiting the Performance Task: Flooding</s> for every Evaluate cell. The Water 5E task is <b>Revisiting the Performance Task: Water</b> (PTO). Flooding is the next 5E.</div>
+      <div><b>Teacher Materials, Explain conferring prompt:</b> "would be <s>moist or warm</s>" should read <b>moist or dry</b> (the first prompt already covers warm or cold).</div>
+      <div><b>Student Materials, Engage:</b> "Hurricane Helene dropped 30 inches of water <s>on Asheville</s>." NHC's highest total was <b>30.78 in at Busick, NC</b>, northeast of Asheville; Asheville itself got less. Say "on the mountains around Asheville."</div>
+      <div><b>Student Materials, Engage:</b> "Winter storm Jonas dropped 30 inches of snow <s>in New England</s>." The photo is <b>Washington, DC</b>, and the 2-to-3-foot totals were in the Mid-Atlantic and NYC area (NWS: JFK 30.5 in, Central Park 27.5 in). Say "in the Mid-Atlantic and New York."</div>
+      <div><b>Student Materials, Summary Task content Q1:</b> "explain <s>the overall patterns</s>…result in" is missing a word. Read it as "explain <b>how</b> the overall patterns of heating on Earth's surface result in predictable patterns of seasonal weather and precipitation."</div>
+      <div><b>Unit Plan, Water 5E Student Ideas:</b> lists "engineering solutions like <s>rain gardens</s>," but the SY 26-27 packet's only solution text is <b>solar geoengineering</b>. Rain gardens aren't in the L2 materials. Raise them in the Day 7 discussion if you like, labeled as an extra.</div>
+      <div><b>Unit Plan, Water 5E Student Ideas:</b> "Cooling the oceans is <s>the biggest thing</s> that would reduce precipitation." The packet's own text (Day 7) gives major limits: it only masks warming, the hardware doesn't exist, ~15% hurricane weakening at best, and serious side effects. Treat it as a claim to evaluate, not a fact to teach.</div>
+      <div><b>Teacher Materials, Explore summary:</b> calls the routine "<s>Domino Share</s>"; the routine list and Unit Plan call it <b>Domino Discover</b>. Same routine.</div>
+      <div><b>Geoengineering text, framing:</b> the "~15% weaker hurricane" sentence cites a study titled <i>Targeted artificial ocean cooling to weaken tropical cyclones would be futile</i>. Make sure students read 15% as a small, best-case effect, not a success.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Misconceptions to listen for</h3>
+    <div class="mis">
+      <div><s>"Clouds are water vapor."</s> Vapor is invisible gas. Clouds (and the fog in the cups) are tiny <b>liquid drops or ice crystals</b> that already condensed.</div>
+      <div><s>"Cold air holds the moisture, so cold air makes the snow."</s> Cold air holds <b>very little</b> vapor. The moisture comes from the <b>warm, moist</b> air mass; the cold air forces it up and cools it.</div>
+      <div><s>"Warm air rises because heat rises."</s> Warm air rises because it is <b>less dense</b>; denser cold air sinks under it and pushes it up.</div>
+      <div><s>"The drops on the top cup leaked through the plastic."</s> The water evaporated from the bottom cup and condensed on the cooler top.</div>
+      <div><s>"Snow storms mean global warming isn't real."</s> Warmer oceans put <b>more</b> water vapor into storms. If the air is still below freezing, that extra water falls as heavier snow.</div>
+      <div><s>"Hurricanes lose their rain when they hit land."</s> They weaken, but they still carry huge amounts of moisture. Mountains can squeeze it out far inland (Helene).</div>
+      <div><s>"More rain = only a flooding problem."</s> Rain also causes landslides, power outages and road washouts; snow causes roof collapse and travel shutdowns.</div>
+      <div><s>"Constraints and criteria are the same thing."</s> Criteria = what the solution must <b>do</b>. Constraints = limits it must <b>work within</b> (money, time, materials, physics, laws).</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Key vocabulary</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Precipitation</div>Water falling from clouds: rain, snow, sleet, hail.</div>
+      <div class="card"><div class="lbl">Evaporation</div>Liquid water turning into invisible water vapor (gas). Faster when the water is warmer.</div>
+      <div class="card"><div class="lbl">Condensation</div>Water vapor turning back into liquid drops when it cools. How clouds form.</div>
+      <div class="card"><div class="lbl">Air mass</div>A huge body of air with about the same temperature and moisture throughout; it takes on the traits of where it formed.</div>
+      <div class="card"><div class="lbl">cT · mP · cP · mT</div>Continental = dry (land); maritime = moist (ocean); tropical = warm; polar = cold.</div>
+      <div class="card"><div class="lbl">Front</div>The boundary where two air masses meet: cold, warm, occluded, stationary.</div>
+      <div class="card"><div class="lbl">Orographic lift</div>Air forced up a mountain slope; it cools and drops its moisture (Helene and the Blue Ridge Escarpment).</div>
+      <div class="card"><div class="lbl">Ocean heat content</div>The total heat energy stored in the ocean; rising over recent decades.</div>
+      <div class="card"><div class="lbl">Geoengineering</div>Changing Earth's climate system on purpose, at large scale (e.g., reflecting sunlight).</div>
+      <div class="card"><div class="lbl">Constraint / limitation</div>A limit a design must work within / something the design can't do.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Connection to the Performance Task</h3>
+    <p>The unit task asks students to break "storm damage" into sub-problems and design a solution with at least five design elements. The Wind 5E taught <b>criteria and tradeoffs</b>; this 5E adds <b>constraints and limitations</b>; the Flooding 5E adds <b>design elements</b>. Day 7's PTO page, <i>Revisiting the Performance Task: Water</i>, is the evidence for SEP 1 (Asking Questions and Defining Problems), ETS1.A and the CCC <i>Influence of Science, Engineering, and Technology on Society and the Natural World</i>. Remind students: a strong final design names the <b>mechanism</b> it acts on (here: warm, moist air rising and condensing), not just the damage.</p>
+  </section>
+
+  <section class="block">
+    <h3>Pacing and logistics notes</h3>
+    <ul>
+      <li><b>Why 7 days?</b> The teacher materials say 5–7. At 50 minutes the cup lab, the Idea Carousel and the Class Consensus Discussion each need real time, and Day 7 includes a full PTO page.</li>
+      <li><b>Five-day version</b> (the low end of the teacher materials' range): Day 1 Engage + Model 1; Day 2 Model 2 + Making Sense (rubric as homework); Day 3 Explain Part 1 (wet/dry latitude questions as homework) + Part 2 individual responses; Day 4 short Idea Carousel (one rotation) + Class Consensus, Summary Task as homework; Day 5 Elaborate Q1–2 + Think-Talk (20 min) and Evaluate (geoengineering text + PTO), with the Domino Discover tally and DQB at the start of the Flooding 5E.</li>
+      <li><b>Six-day version:</b> merge Days 4 and 5 by assigning the Part 2 individual responses as Day 3 homework.</li>
+      <li><b>Do Now / Exit Slip boxes.</b> The L2 Google Doc has none. Use a half-sheet or notebook page.</li>
+      <li><b>Period length.</b> For 45-minute periods, cut the Do Now to 3 minutes and move the item marked <i>flex</i> to homework.</li>
+      <li><b>Device-light option.</b> The fronts simulator and all three videos can run from one projector while groups record.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>How the homework stays AI-proof</h3>
+    <p>Each night's homework is a <b>hand-drawn model</b>: a diagram, storyboard, cross-section or comic. Four rules make it hard to outsource:</p>
+    <ul>
+      <li><b>Paper and pencil (or colored pencils) only.</b> No printed or digitally made images.</li>
+      <li><b>Every task references something only your class has:</b> their cup observations, their Rumors post-its, their group's poster, the class tally.</li>
+      <li><b>Every drawing has one personal "I chose…" annotation</b> explaining a decision the student made.</li>
+      <li><b>30-second check the next day.</b> During the Do Now, pick 3–4 students to explain one part of their drawing out loud.</li>
+    </ul>
+  </section>
+
+  <div class="pager"><span></span><a class="next" href="#day-1"><small>Start</small>Day 1 · Engage →</a></div>
+</div>
+
+<!-- ===================== DAY 1 ===================== -->
+<div class="view" id="day-1" data-phase="engage" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 1 · Engage → Explore</div>
+    <h2>Precipitation Damage and Fronts</h2>
+    <p class="q">How does storm precipitation cause damage? How does precipitation form?</p>
+    <div class="tags"><span class="tag">Handout: Precipitation Damage</span><span class="tag">Handout: Precipitation Formation Investigation, Model 1</span><span class="tag">Independent → pairs</span><span class="tag">Rumors</span><span class="tag">Video: How Hurricane Helene Spawned Record Landslides in NC</span><span class="tag">Weather Fronts Simulator</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Storm <b>water</b> (rain and snow) is its own damage sub-problem: floods, landslides, power outages, collapsed roofs.</li>
+      <li>To design solutions we first need to know <b>how precipitation forms</b> and why some storms make so much more.</li>
+      <li>At every front, <b>cool, dry air stays near the surface</b>; warm, moist air rises (clearly at three of four fronts) and precipitation forms where it rises.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">5–8</div><div><h4>Reconnect to the unit</h4><p class="say">"Our goal is to design solutions that cut storm damage, which has been growing for 40 years. We've figured out wind. But every storm video we've watched also had water in it, and we haven't touched that yet."</p></div></li>
+      <li><div class="t">8–15</div><div><h4>Precipitation Damage</h4><p>Project the two photos (Helene flooding; Jonas snow in DC). Read the captions aloud, with the corrections: Helene's 30 in fell on the mountains <i>around</i> Asheville; Jonas's 30 in fell in the Mid-Atlantic and NYC, not New England. Students write their answer to the handout prompt independently.</p></div></li>
+      <li><div class="t">15–20</div><div><h4>Helene landslide video</h4><p>Play <b>How Hurricane Helene Spawned Record Landslides in NC</b>. Ask students to add one idea to their list afterward.</p></div></li>
+      <li><div class="t">20–30</div><div><h4>Rumors</h4><p>Each student writes their best "information we need" idea on a post-it. Mingle: share, swap post-its, move on (3–4 rounds). Return and share the last idea heard. Chart them and close with: <span class="say">"Next we'll figure out what causes extreme precipitation, so we know which solutions could actually work."</span></p></div></li>
+      <li><div class="t">30–34</div><div><h4>Explore launch: muggy day</h4><p>Elbow partners: <i>Think of a really muggy, humid day. How did you know it was humid? What did you feel?</i> (sticky skin, heavy air, sweat won't dry, foggy glasses).</p></div></li>
+      <li><div class="t">34–46</div><div><h4>Model 1: Weather Fronts Simulator</h4><p>Project the cold front first. Ask what each color/arrow stands for (warm moist air, cool dry air, clouds, precipitation). Pairs play all four fronts and fill the table. Confer.</p></div></li>
+      <li><div class="t">46–50</div><div><h4>Exit slip</h4><p>Option below. <i>Flex:</i> finish the Model 1 table for homework if needed.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Wind 5E recall</div><p>Last 5E, why did Winter Storm Jonas have such strong winds? One sentence.</p><div class="ans">Big pressure difference between air masses of different temperature; air rushes from high to low pressure.</div></div>
+      <div class="card"><div class="lbl">Option B · Experience</div><p>Describe a time rain or snow caused a problem for you or your neighborhood. What got damaged or shut down?</p><div class="ans">Collect stories (flooded basements, subway, street flooding, school closures). Use them in Rumors.</div></div>
+      <div class="card"><div class="lbl">Option C · Prediction</div><p>Where does the water in a rainstorm come from before it falls?</p><div class="ans">Expect "the ocean / clouds / evaporation." Save for Day 2.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>In the photos, which damage comes from the water itself, and which from something the water caused?<span>Floodwater vs. landslides, power outages, roof collapse.</span></li>
+      <li>What would you need to measure to know if a storm will drop a lot of water?</li>
+      <li>What pattern do you see in the warm, moist air in every front?<span>It rises.</span></li>
+      <li>What does the cool, dry air do every time? Why might it stay near the ground?<span>It's denser.</span></li>
+      <li>Where does the precipitation show up compared with where the warm air rises?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Rumors · quick check</div>
+      <h4>Which question would help us most in designing solutions to storm water damage?</h4>
+      <ul class="opts">
+        <li>A. What color are storm clouds?<em>Observable, but doesn't lead to a mechanism or solution.</em></li>
+        <li class="right">B. Why do some storms produce much more precipitation than others?<em>Correct. Targets the mechanism.</em></li>
+        <li>C. How fast was Jonas's wind?<em>That was the Wind 5E sub-problem.</em></li>
+        <li>D. How many people live in Asheville?<em>Useful for impact, not for why the rain formed.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After the fronts · hinge question</div>
+      <h4>What pattern did all four fronts share?</h4>
+      <ul class="opts">
+        <li>A. Warm air sinks under cold air<em>Reversed; warm air is less dense.</em></li>
+        <li class="right">B. Cool, dry air stays low; warm, moist air rises where they meet, and precipitation forms there<em>Correct.</em></li>
+        <li>C. Precipitation forms only behind the front<em>Warm fronts make precipitation ahead of the front.</em></li>
+        <li>D. The two air masses mix evenly<em>They stay mostly separate; the boundary is the front.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Engage: Precipitation Damage<small>single prompt · sample responses</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">What information do we need in order to begin considering solutions that protect people and property from water damage?</div><p class="aa">Any reasonable list. Look and listen for (teacher materials): <b>why precipitation forms</b> · <b>what makes some storms have more precipitation than others</b> · <b>why flooding/landslides happen when it rains a lot</b> · <b>what types of damage result</b>. Also good: where and when these storms happen, how much water the ground can absorb, whether storms are getting wetter, what solutions already exist and what they cost.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Precipitation Formation Investigation · Model 1: Air Masses and Their Interactions<small>Q1 fronts table</small></span></summary><div class="keybody">
+      <div class="scroll"><table>
+        <thead><tr><th>Front type</th><th>Warm air mass</th><th>Cool air mass</th><th>Resulting weather</th></tr></thead>
+        <tbody>
+          <tr><td>Cold</td><td>Pushed up steeply and quickly</td><td>Moves in fast, wedges underneath, stays near the surface</td><td>Tall clouds, heavy showers/thunderstorms along the front, then cooler and clearing</td></tr>
+          <tr><td>Warm</td><td>Slides gently up and over the cool air</td><td>Retreats, stays near the ground</td><td>Wide layered clouds; steadier, lighter precipitation ahead of the front</td></tr>
+          <tr><td>Occluded</td><td>Lifted completely off the ground</td><td>Cold air catches up and lifts the warm air</td><td>Clouds and widespread precipitation</td></tr>
+          <tr><td>Stationary</td><td>Rises slowly, if at all, along the boundary</td><td>Neither mass pushes the other out; stays low</td><td>Clouds and precipitation that can last for days</td></tr>
+        </tbody>
+      </table></div>
+      <div class="note"><b>Look and listen for (teacher materials):</b> warm, moist air rises at three of the four fronts · cool, dry air stays near the surface at all fronts · precipitation occurs where the two air masses meet and the warm, moist air rises · "warm moist air rises because it is less dense."</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>In the simulator, where did the precipitation form, and what was the warm air doing there?</p><div class="ans">At the boundary where warm, moist air was rising over the cold air.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Name two kinds of storm-water damage that are not flooding.</p><div class="ans">Landslides, power outages, roof collapse from snow, road washouts, travel shutdowns.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Damage Web</h4>
+      <p>Draw a web with <b>"Storm water"</b> in the middle. Branch out to at least five kinds of damage (rain and snow), and add a small sketch for each. Then draw one arrow back to the center labeled with the <b>one question</b> you most want answered to stop that damage.</p>
+      <ul class="checks">
+        <li>At least five damage types, both rain and snow</li>
+        <li>A small sketch for each</li>
+        <li>One question arrow back to the center</li>
+        <li>"I chose…" note: which <b>Rumors post-it you ended up holding</b>, and whether you agree with it</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#overview"><small>Back</small>← Before you teach</a><a class="next" href="#day-2"><small>Next</small>Day 2 · Cup lab and Making Sense →</a></div>
+</div>
+
+<!-- ===================== DAY 2 ===================== -->
+<div class="view" id="day-2" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 2 · Explore</div>
+    <h2>Cup Lab and Making Sense</h2>
+    <p class="q">How does water behave in the air, and how does temperature change that?</p>
+    <div class="tags"><span class="tag">Handout: Precipitation Formation Investigation, Model 2</span><span class="tag">Handout: Making Sense of the Precipitation Formation Investigation</span><span class="tag">Handout: Precipitation Formation Investigation Rubric</span><span class="tag">Table groups</span><span class="tag">Domino Discover</span><span class="tag">Cups · hot/warm/cold water · ice · magnifier</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Warm water <b>evaporates</b> into invisible vapor; it <b>condenses</b> back into drops on a cooler surface.</li>
+      <li>Hotter water → more evaporation → more vapor in the air.</li>
+      <li>Cooling vapor (ice on top) makes it condense faster. Warm air holds more water than cold air.</li>
+      <li>This is the same thing happening at a front: warm, moist air rises into cold air and condenses.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Pick an option below. Cold-call 3 students on last night's Damage Web.</p></div></li>
+      <li><div class="t">5–8</div><div><h4>Safety + setup</h4><p>Hot tap water only. Pour, don't carry full cups across the room. Distribute kits.</p></div></li>
+      <li><div class="t">8–16</div><div><h4>Experiment 1: water vapor</h4><p><i>How is water vapor different from the rest of the air?</i> Hot cup, top cup, watch 1–2 min, magnifier, feel. Record.</p></div></li>
+      <li><div class="t">16–24</div><div><h4>Experiment 2: water temperature</h4><p>Hot, warm, cold side by side. Start this <b>while</b> recording Experiment 1. Confer.</p></div></li>
+      <li><div class="t">24–32</div><div><h4>Experiment 3: air temperature</h4><p>Two hot cups, ice on one top cup, wait 2–3 min, dry the spot, compare. Diagram both.</p></div></li>
+      <li><div class="t">32–42</div><div><h4>See-Think-Wonder + Q1–3</h4><p>Individually on <i>Making Sense</i>. Push the molecular "Think" rows.</p></div></li>
+      <li><div class="t">42–47</div><div><h4>Domino Discover</h4><p>Each group shares one See or Think, building on the last. Chart: <i>warmer water → more evaporation</i> · <i>cooler surface → more condensation</i> · <i>warm moist air rises at fronts</i>. If a look-for is missing, send groups back to their cups or the simulator before moving on.</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Rubric</h4><p>Self and partner rubric. <i>Flex:</i> finish at home.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Fronts recall</div><p>Sketch a cold front: which air goes up, which stays down, where's the rain?</p><div class="ans">Cold, dry air wedges under; warm, moist air pushed up; rain along the front.</div></div>
+      <div class="card"><div class="lbl">Option B · Everyday</div><p>Why does a cold soda can get wet on the outside on a hot day?</p><div class="ans">Water vapor in the warm air touches the cold can, cools and condenses. It's not leaking.</div></div>
+      <div class="card"><div class="lbl">Option C · Molecules</div><p>Draw water molecules in ice, liquid water and water vapor.</p><div class="ans">Locked in place · close and sliding · far apart and fast.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Why do you think the warm, moist air is rising?</li>
+      <li>What happens when it reaches the top of the container? Why?</li>
+      <li>How did the temperature of the water change what you saw?</li>
+      <li>How is the top of the cup like what you saw in the front simulator?<span>Top cup = cold air high up; bottom cup = ocean or warm air mass.</span></li>
+      <li>Think about the air where you live. Does all air have the same amount of moisture?<span>Muggy summer vs. dry winter air.</span></li>
+      <li>Is the "steam" you see vapor? <span>No: vapor is invisible; what you see already condensed.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Experiment 2 · hinge question</div>
+      <h4>Which cup had the most drops on its top cup, and why?</h4>
+      <ul class="opts">
+        <li>A. Cold water, because cold makes water<em>Confuses condensation source with temperature of water below.</em></li>
+        <li class="right">B. Hot water, because faster molecules escape as vapor, so more vapor reached the top<em>Correct.</em></li>
+        <li>C. All the same; the cups are the same size<em>Contradicts their observations.</em></li>
+        <li>D. Warm water, because it's in the middle<em>No evidence.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Experiment 3 · quick check</div>
+      <h4>The top cup with ice on it collected more water. This shows…</h4>
+      <ul class="opts">
+        <li>A. ice melts through plastic<em>The ice was outside; the water was inside.</em></li>
+        <li>B. cold air holds more water vapor<em>Reversed.</em></li>
+        <li class="right">C. cooling water vapor makes it condense faster<em>Correct.</em></li>
+        <li>D. the hot water got hotter<em>Not observed.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Precipitation Formation Investigation · Model 2: How Water Behaves in the Air/Atmosphere<small>three observation tables</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">How is water vapor different from the rest of the air? · surface of the warm water · inside of the top cup · other observations</div><p class="aa">Surface: haze/"steam" rising just above the water. Top cup: fogs up; tiny drops on the sides and top (magnifier); feels wet and warm. Other: drops get bigger and some run down; the air in between looks clear. Vapor itself is invisible; it shows up only when it condenses.</p></div>
+      <div class="qa"><div class="qq">How does water temperature affect the amount of vapor? · each water temperature · each top cup · other</div><p class="aa">Hot: most haze; top cup heavily fogged with many drops. Warm: some fog, fewer drops. Cold: little or nothing. Other: hot cup fogged fastest.</p></div>
+      <div class="qa"><div class="qq">How does air temperature affect the state of water? · which top cup has more water · diagrams</div><p class="aa">The top cup <b>with ice</b> has more water, concentrated under the ice. Diagrams: without ice, a light even mist; with ice, a thick patch of drops under the ice spot.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Making Sense of the Precipitation Formation Investigation<small>See-Think-Wonder rows + Q1–3</small></span></summary><div class="keybody">
+      <div class="scroll"><table><thead><tr><th>See prompt</th><th>Sample See</th><th>Sample Think</th></tr></thead><tbody>
+        <tr><td>Characteristics of the air masses</td><td>One warm and moist, one cool and dry.</td><td>(Where do they come from?) Warm, moist air probably forms over warm oceans; cool, dry air over cold land farther from the equator.</td></tr>
+        <tr><td>Movement of air masses</td><td>Cool air stays low and pushes under; warm air rises along the boundary.</td><td>Cool air is denser, so it sinks and lifts the warm air.</td></tr>
+        <tr><td>What happened to the warm water</td><td>Haze rose off it; some of it left the cup as vapor.</td><td>Heating makes molecules move faster; the fastest escape as gas (evaporation).</td></tr>
+        <tr><td>What you observed in the top cup</td><td>Fog and drops formed on the inside.</td><td>Vapor hit the cooler plastic, molecules slowed and stuck together as liquid (condensation).</td></tr>
+        <tr><td>Cold, warm, hot differences</td><td>Hot &gt; warm &gt; cold for fog and drops.</td><td>More heat energy → more molecules escape → more vapor available to condense.</td></tr>
+      </tbody></table></div>
+      <p>Wonder column: any genuine question (e.g., "How does this explain the snow from Jonas?" "How do storms make rain and wind at the same time?"). These lead into the Explain.</p>
+      <div class="qa"><div class="qq">Q1. What does this tell you about the relationship between water in the air and the temperature of the water beneath?</div><p class="aa">The warmer the water below, the more water vapor enters the air above it. Evidence: the hot-water cup produced the most fog and drops, the cold cup the least.</p></div>
+      <div class="qa"><div class="qq">Q2. Does cooling water vapor increase the rate at which it becomes a liquid?</div><p class="aa">Yes. With the same hot water below, the top cup with ice collected more drops in the same 2–3 minutes than the one without ice.</p></div>
+      <div class="qa"><div class="qq">Q3. Does air hold water more effectively at high or low temperatures?</div><p class="aa"><b>High.</b> Warm air carried vapor up from the hot water; where the air was cooled (under the ice) the vapor came out as liquid. (The amount of vapor air can hold rises steeply with temperature: ~12 hPa at 10 °C vs. ~42 hPa at 30 °C.)</p></div>
+      <div class="note"><b>Look and listen for (teacher materials):</b> when the warm air reaches the cooler top, water droplets form · moisture condenses when cooled · warmer water → more evaporation, "maybe warmer waters cause more rain" · when air is cooler, vapor turns to liquid.</div>
+    </div></details>
+    <details class="key"><summary><span>Precipitation Formation Investigation Rubric<small>self and partner rubric · no key</small></span></summary><div class="keybody"><p>Self-scored and peer-scored. Follow up with anyone who circles "No – I need help" or "Yes" on coming in for extra help.</p></div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Put in order: condensation, warm water, rising air, evaporation, cooling, cloud.</p><div class="ans">warm water → evaporation → rising air → cooling → condensation → cloud.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Which part of the cup model is like the ocean, and which is like the sky? What would a warmer ocean do?</p><div class="ans">Bottom cup = ocean; cold top/ice = cold air aloft. Warmer ocean → more evaporation → more water for precipitation.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Cup to Cloud</h4>
+      <p>Draw your group's <b>ice-topped cup</b> on the left and a <b>front in the sky</b> on the right. In both, draw water molecules: fast and spread out as vapor, close together as drops. Connect matching parts with dashed lines (bottom cup ↔ ?, ice ↔ ?).</p>
+      <ul class="checks">
+        <li>Molecules drawn as vapor and as liquid in both pictures</li>
+        <li>Labels: evaporation, condensation, rising air, cooling</li>
+        <li>At least two dashed-line matches</li>
+        <li>"I chose…" note: <b>what you saw through the magnifier</b> in your own group's cup and where you put it in the drawing</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-1"><small>Back</small>← Day 1 · Precipitation Damage and Fronts</a><a class="next" href="#day-3"><small>Next</small>Day 3 · Air masses, local and global →</a></div>
+</div>
+
+<!-- ===================== DAY 3 ===================== -->
+<div class="view" id="day-3" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 3 · Explain</div>
+    <h2>Air Masses, Local and Global</h2>
+    <p class="q">How do different air masses meet to cause precipitation?</p>
+    <div class="tags"><span class="tag">Handout: Explaining Precipitation Formation, Part 1</span><span class="tag">Pairs</span><span class="tag">Air-mass map · global circulation diagram</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>An air mass takes on the temperature and moisture of where it forms: <b>maritime</b> (ocean) = moist, <b>continental</b> (land) = dry, <b>tropical</b> = warm, <b>polar</b> = cold.</li>
+      <li>When a cold, dry air mass meets a warm, moist one, the warm air is forced up, cools, condenses into clouds and precipitation.</li>
+      <li>The same pattern works globally: rising air at ~0° and ~60° makes wet belts; sinking air at ~30° and the poles makes dry belts.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Pick an option below. Two students explain their Cup to Cloud drawing.</p></div></li>
+      <li><div class="t">5–8</div><div><h4>Launch</h4><p class="say">"Our goal is to explain why so much precipitation fell in Helene and Jonas, so we can judge solutions. Today: where do air masses get their traits, and does the cup pattern hold for the whole planet?"</p></div></li>
+      <li><div class="t">8–12</div><div><h4>Defining air masses</h4><p>Read the definition and the four types together. Quick decode: <i>continental</i> = land, <i>maritime</i> = sea.</p></div></li>
+      <li><div class="t">12–24</div><div><h4>Discovering Patterns in Air Mass Formation</h4><p>Pairs match each type to a letter on the map, give evidence, and name another place it would form. Confer.</p></div></li>
+      <li><div class="t">24–36</div><div><h4>Patterns on Local Scales: storyboard</h4><p>Pairs draft, then each student draws their own annotated storyboard. Push molecular language.</p></div></li>
+      <li><div class="t">36–46</div><div><h4>Patterns on Global Scales: Q2–3</h4><p>Wet vs. dry latitudes. Remind them of the Global Circulation Model from the Wind 5E (rising and sinking air).</p></div></li>
+      <li><div class="t">46–50</div><div><h4>Exit slip</h4><p><i>Flex:</i> Q3 can go to homework.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Retrieval</div><p>Warm air holds ___ water vapor than cold air. Cite one cup.</p><div class="ans"><b>More.</b> Hot cup had the most condensation; ice-topped cup squeezed vapor out.</div></div>
+      <div class="card"><div class="lbl">Option B · Predict</div><p>Would air sitting over the Gulf of Mexico in summer be moist or dry? Warm or cold?</p><div class="ans">Moist (ocean) and warm (low latitude): maritime tropical.</div></div>
+      <div class="card"><div class="lbl">Option C · Wind 5E link</div><p>At which latitudes did air rise in the Global Circulation Model?</p><div class="ans">Near the equator and ~60°; sinks at ~30° and the poles.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>How do you know the air at this letter would be warm or cold?<span>Latitude.</span></li>
+      <li>How do you know it would be moist or dry?<span>Over ocean or over land.</span></li>
+      <li>Based on that evidence, what other regions might have the same kind of air mass?</li>
+      <li>From the investigation, what happens when cold, dry air meets warm, moist air?</li>
+      <li>How does your cup model help you draw what happens in the storyboard?</li>
+      <li>How does this local mechanism relate to the global pattern of wet and dry places?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After matching · hinge question</div>
+      <h4>An air mass forms over northern Canada in January. It is most likely…</h4>
+      <ul class="opts">
+        <li>A. maritime tropical<em>Neither ocean nor tropics.</em></li>
+        <li>B. continental tropical<em>Land, but not warm.</em></li>
+        <li class="right">C. continental polar (dry and cold)<em>Correct: land + high latitude.</em></li>
+        <li>D. maritime polar<em>Polar, but over land, so dry.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Q2–3 · quick check</div>
+      <h4>Why is the Sahara (~25–30° N) so dry?</h4>
+      <ul class="opts">
+        <li>A. It is too far from the Sun<em>It gets intense sunlight.</em></li>
+        <li class="right">B. Air sinks there, warms and doesn't condense<em>Correct.</em></li>
+        <li>C. Warm air can't hold water<em>Reversed.</em></li>
+        <li>D. There are no fronts on Earth at 30°<em>Fronts can occur; the main cause is sinking air.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Explaining Precipitation Formation · Part 1: Discovering Patterns in Air Mass Formation<small>matching table · letters depend on the map image</small></span></summary><div class="keybody">
+      <div class="note"><b>Map letters:</b> the air-mass map is an image that doesn't appear in the Google Doc text, so the correct letter for each row must be read from your copy of the map. Below are the source regions and reasoning to check against it.</div>
+      <div class="scroll"><table><thead><tr><th>Air mass</th><th>Evidence (what the location should look like)</th><th>Pattern: where else</th></tr></thead><tbody>
+        <tr><td>Continental tropical (dry, warm)</td><td>Over land at low latitude: deserts of northern Mexico and the U.S. Southwest</td><td>Sahara, Arabian Peninsula, interior Australia</td></tr>
+        <tr><td>Maritime polar (moist, cold)</td><td>Over ocean at high latitude: North Pacific or North Atlantic</td><td>Southern Ocean; seas off Japan and Norway</td></tr>
+        <tr><td>Continental polar (dry, cold)</td><td>Over land at high latitude: central/northern Canada</td><td>Siberia, northern Europe in winter</td></tr>
+        <tr><td>Maritime tropical (moist, warm)</td><td>Over ocean at low latitude: Gulf of Mexico, Caribbean, subtropical Atlantic or Pacific</td><td>Indian Ocean, western Pacific, Bay of Bengal</td></tr>
+      </tbody></table></div>
+    </div></details>
+    <details class="key"><summary><span>Part 1 · Patterns on Local Scales · Q1 Storyboard of Storm Formation<small>cold dry meets warm moist</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Q1. Cause-and-effect storyboard: how clouds form and why precipitation happens when a cold dry air mass meets a warm moist air mass</div><p class="aa">(1) A warm, moist air mass (lots of fast, spread-out vapor molecules) meets a cold, dry air mass at a front. (2) The cold air is <b>denser</b>, so it stays low and wedges under; the less dense warm air is forced <b>up</b>. (3) As it rises it cools; vapor molecules lose energy and slow down. (4) Slowed molecules stick together as tiny drops or ice crystals: a <b>cloud</b> (condensation). (5) Drops/crystals grow until they're too heavy and fall as <b>precipitation</b>; as snow if the air is at or below 32 °F. Annotations should link each box to the cups (bottom cup = warm moist source, ice = cold air).</p></div>
+    </div></details>
+    <details class="key"><summary><span>Part 1 · Patterns on Global Scales · Q2–Q3<small>wet and dry latitudes</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Q2. Why do the 'Wet' latitudes tend to experience a great deal of precipitation?</div><p class="aa">At ~0° (equator) and ~60° air <b>converges and rises</b> (low pressure). At the equator strong heating makes warm, moist ocean air rise; near 60° warm air from the south meets cold polar air and is forced up (the polar front, where mid-latitude storms like Jonas form). Rising air cools and its vapor condenses, the same thing as in the cups and the fronts simulator.</p></div>
+      <div class="qa"><div class="qq">Q3. Why do the 'Dry' latitudes tend to experience very little precipitation?</div><p class="aa">At ~30° and at the poles air <b>sinks</b> (high pressure). Sinking air warms, so its vapor doesn't condense and clouds don't form. Near the poles the air is so cold it holds very little vapor to begin with. Deserts line up near 30°.</p></div>
+      <div class="note"><b>Integrating three dimensions (CCC Patterns):</b> warm, moist air meeting cold, dry air → condensation → precipitation, at every scale: cups, local fronts, global belts.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Which two air masses would you expect to meet over the eastern U.S. in winter to make a big snowstorm? Where does each come from?</p><div class="ans">Maritime tropical from the Gulf/Atlantic and continental polar from Canada.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Finish: "The cup, the front and the equator all make rain because…"</p><div class="ans">…warm, moist air rises or is lifted, cools and its vapor condenses.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Air Mass Passport</h4>
+      <p>Draw a rough map of North America with the ocean around it. Draw the four air masses as characters (with faces, clothes or props that show warm/cold and wet/dry) in the places they're "born." Draw arrows showing where two of them would collide over the U.S. and put a cloud at that spot.</p>
+      <ul class="checks">
+        <li>All four air masses placed and labeled (cT, mP, cP, mT)</li>
+        <li>Each character shows temperature and moisture</li>
+        <li>One collision with a cloud and precipitation</li>
+        <li>"I chose…" note: which <b>letter on today's map</b> your pair argued about the most, and how you decided</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-2"><small>Back</small>← Day 2 · Cup Lab and Making Sense</a><a class="next" href="#day-4"><small>Next</small>Day 4 · Jonas and Helene posters →</a></div>
+</div>
+
+<!-- ===================== DAY 4 ===================== -->
+<div class="view" id="day-4" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 4 · Explain</div>
+    <h2>Explaining Jonas and Helene</h2>
+    <p class="q">Why did so much precipitation fall during Winter Storm Jonas and on the mountains around Asheville during Hurricane Helene?</p>
+    <div class="tags"><span class="tag">Handout: Explaining Precipitation Formation, Part 2</span><span class="tag">Pairs → table groups</span><span class="tag">Idea Carousel</span><span class="tag">Video: Winter Storm Jonas Ingredients</span><span class="tag">Video: Why Hurricane Helene's Flash Floods were So Deadly in Asheville</span><span class="tag">Chart paper · markers</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li><b>Jonas:</b> warm, moist air from the Gulf of Mexico and the Atlantic rode up over cold, dry Canadian air near the East Coast; lots of lifting + lots of moisture + below-freezing air = huge snow.</li>
+      <li><b>Hurricanes</b> don't need two air masses: they are one low-pressure spiral of warm, moist air rising over warm ocean water.</li>
+      <li><b>Helene:</b> its moist air was forced up the steep Blue Ridge Escarpment and met a low-pressure system that had already been raining on the area, so the ground was soaked before the heaviest rain arrived.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–12</div><div><h4>Winter Storm Jonas Ingredients</h4><p>Play the video. Pairs discuss: <i>Which air mass is which? Where did each come from?</i></p></div></li>
+      <li><div class="t">12–18</div><div><h4>Jonas response (independent)</h4><p>Words + a model/drawing.</p></div></li>
+      <li><div class="t">18–20</div><div><h4>Read the hurricane paragraph</h4><p>Together: hurricanes = one spiral of rising warm, moist air; they usually weaken over land. Ask: <i>So why did Asheville flood?</i></p></div></li>
+      <li><div class="t">20–27</div><div><h4>Helene video + response</h4><p>Play <b>Why Hurricane Helene's Flash Floods were So Deadly in Asheville</b>. Pairs discuss, then respond independently.</p></div></li>
+      <li><div class="t">27–40</div><div><h4>Group posters</h4><p>Half the tables: <b>why so much precipitation formed in Jonas</b>. Other half: <b>why so much fell on Asheville in Helene</b>. Drawings/models + words. Post around the room.</p></div></li>
+      <li><div class="t">40–48</div><div><h4>Idea Carousel</h4><p>Groups rotate (2 min per stop) and annotate with sticky notes: one agreement, one question, one thing to add. Return to own poster and read the notes.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Revise plan</h4><p>Each group names one change they'll make. Revisions finish at the start of Day 5.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Retrieval</div><p>List the 4 steps from warm, moist air to falling snow.</p><div class="ans">Lifted → cools → condenses into clouds → falls (as snow if ≤ 32 °F).</div></div>
+      <div class="card"><div class="lbl">Option B · NYC</div><p>Jonas dropped 27.5 in of snow on Central Park (NWS). NYC averages 29.8 in a whole winter. What does that tell you?</p><div class="ans">One storm brought almost a whole winter's snow.</div></div>
+      <div class="card"><div class="lbl">Option C · Mountains</div><p>What happens to warm, moist air that blows into the side of a mountain?</p><div class="ans">It's forced up, cools and condenses: rain on the windward side.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Point to where the moisture for Jonas came from. Where did the cold come from?</li>
+      <li>Why did it fall as snow in DC and NYC instead of rain?<span>The air near the ground was below freezing.</span></li>
+      <li>What in the video made Jonas have <i>so much</i> moisture?<span>Warm ocean water off the coast; listen for "ocean heat" (Day 6 builds on it).</span></li>
+      <li>A hurricane usually weakens over land. What two things kept squeezing water out of Helene over the mountains?<span>Steep escarpment lifting the air + a low-pressure system already there.</span></li>
+      <li>Why does rain that falls on ground that's already soaked cause more landslides?</li>
+      <li>On your poster, where is the "cup" in this storm?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the Jonas response · hinge question</div>
+      <h4>Which combination best explains Jonas's huge snowfall?</h4>
+      <ul class="opts">
+        <li>A. Cold Canadian air alone<em>Cold air is dry; no moisture source.</em></li>
+        <li>B. Warm Gulf air alone<em>Moisture, but nothing to lift it or keep it frozen.</em></li>
+        <li class="right">C. Warm, moist ocean air lifted over cold, dry air that kept temperatures below freezing<em>Correct.</em></li>
+        <li>D. A hurricane that turned into snow<em>Jonas was a mid-latitude (winter) storm, not a hurricane.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After the Helene response · quick check</div>
+      <h4>How is hurricane precipitation different from a winter storm's?</h4>
+      <ul class="opts">
+        <li class="right">A. It comes from one spiral of rising warm, moist air, not from two air masses meeting<em>Correct.</em></li>
+        <li>B. Hurricanes only rain over the ocean<em>Helene flooded inland.</em></li>
+        <li>C. Hurricanes need cold air to make rain<em>They form over warm water.</em></li>
+        <li>D. There's no difference<em>The packet text contrasts them.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Explaining Precipitation Formation · Part 2 · Jonas prompt<small>1st prompt · words + model</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Where did the warm moist and cold dry air masses that created Jonas come from, and why did their interactions produce massive snowfall?</div><p class="aa">The <b>warm, moist</b> air (maritime tropical) came from the <b>Gulf of Mexico</b> and the warm <b>Atlantic</b> off the Southeast coast; the storm's low formed in the Gulf and moved up the coast, pulling that moisture north. The <b>cold, dry</b> air (continental polar) came from <b>Canada</b> and was sitting over the Mid-Atlantic and Northeast. The denser cold air stayed at the surface, so the warm, moist air was forced up over it for a long time, cooled and condensed into heavy clouds. Because the air below was at or below <b>32 °F</b>, the precipitation fell as snow, and the large supply of ocean moisture made it a lot of snow (27.5 in at Central Park, 30.5 in at JFK, NWS). Model: cross-section with the cold wedge, warm air sliding up, cloud and snow.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Explaining Precipitation Formation · Part 2 · Helene prompt<small>2nd prompt · words + model</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">How did air rising around the Blue Ridge Escarpment and the low pressure system in the region combine with Hurricane Helene to produce massive amounts of rain?</div><p class="aa">Before Helene arrived, a <b>low-pressure system</b> over the region was already lifting moist air and producing heavy rain, so soils and rivers were full. Then Helene's huge supply of warm, moist tropical air was pushed northward into western North Carolina. When that air hit the steep <b>Blue Ridge Escarpment</b>, it was forced <b>up</b> the slope (orographic lift), cooled and condensed, wringing out rain over the same mountains again and again. Low pressure + mountains lifting + a very moist air mass = extreme rain (peak 30.78 in at Busick, NC, NHC). Soaked, steep ground → flash floods and landslides. Model: a slope with arrows of moist air climbing it, a cloud and rain on the windward side, and labels for "already wet ground."</p></div>
+      <div class="note"><b>Key point:</b> no cold, dry air mass is needed here. Lifting is done by the low-pressure system and by the mountains. The common thread is still <b>warm, moist air rising and cooling</b>.</div>
+    </div></details>
+    <details class="key"><summary><span>Group posters · Idea Carousel<small>what a strong poster includes</small></span></summary><div class="keybody">
+      <ul>
+        <li>The moisture source labeled (Gulf/Atlantic or tropical ocean air).</li>
+        <li>What lifted the air (cold air wedge for Jonas; low pressure + escarpment for Helene).</li>
+        <li>Cooling → condensation drawn at the molecule level in at least one spot.</li>
+        <li>Why the amount was extreme (lots of moisture, long-lasting lift, already wet ground).</li>
+        <li>For Jonas: why snow, not rain (≤ 32 °F).</li>
+      </ul>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Name one thing Jonas and Helene had in common and one difference in how their precipitation formed.</p><div class="ans">Same: warm, moist air rose and cooled. Different: Jonas needed a cold air mass to lift it; Helene's air was lifted by low pressure and mountains.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>What note did another group leave on your poster that changed your thinking?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Two Storms, One Pattern</h4>
+      <p>Draw two side-by-side cross-sections: <b>Jonas over NYC</b> and <b>Helene over the Blue Ridge</b>. In each, show the moisture source, what lifts the air, the cloud, and what falls. Circle the part that is the same in both.</p>
+      <ul class="checks">
+        <li>Moisture source and lifting labeled in both</li>
+        <li>Snow vs. rain explained by temperature</li>
+        <li>One circled shared step</li>
+        <li>"I chose…" note: <b>which annotation from the Idea Carousel</b> you added to your drawing</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-3"><small>Back</small>← Day 3 · Air Masses, Local and Global</a><a class="next" href="#day-5"><small>Next</small>Day 5 · Class Consensus and Summary Task →</a></div>
+</div>
+
+<!-- ===================== DAY 5 ===================== -->
+<div class="view" id="day-5" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 5 · Explain</div>
+    <h2>Class Consensus and Summary Task</h2>
+    <p class="q">What do we agree about how precipitation forms under different conditions?</p>
+    <div class="tags"><span class="tag">Handout: Summary Task</span><span class="tag">Table groups → whole class</span><span class="tag">Class Consensus Discussion</span><span class="tag">Document camera</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Precipitation can occur when warm, moist air meets cold, dry air.</li>
+      <li>Warm, moist air masses usually form over tropical oceans; cold, dry ones over continents far from the equator; global winds move them.</li>
+      <li>The pattern holds at small, local and global scales.</li>
+      <li>In hurricanes, warm, moist, high-energy air can make extreme precipitation without meeting a cold, dry air mass.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–12</div><div><h4>Finish poster revisions</h4><p>Groups use their Carousel notes; new chart paper if needed.</p></div></li>
+      <li><div class="t">12–15</div><div><h4>Frame the discussion</h4><p class="say">"We have a lot of ideas circulating. We need to agree on how precipitation forms under different conditions so we have a shared understanding to build on."</p></div></li>
+      <li><div class="t">15–35</div><div><h4>Class Consensus Discussion</h4><p>Project 2–3 chosen posters (at least one Jonas, one Helene). For each: group shares → one student restates → clarifying questions. Then table groups confer on the pattern questions (below), then whole class. Pause for the Key Points.</p></div></li>
+      <li><div class="t">35–38</div><div><h4>Return to Engage questions</h4><p>What's still open? <i>How can we reduce damage from storm rain and snow? How does climate change affect precipitation?</i></p></div></li>
+      <li><div class="t">38–50</div><div><h4>Summary Task</h4><p>Individual. Reflection Q1–4 then content Q1–2. <i>Flex:</i> content questions can be homework.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Scale</div><p>Name the same rain-making pattern at three sizes: tiny, local, global.</p><div class="ans">Cup with ice · a front or mountain · rising air at the equator / 60°.</div></div>
+      <div class="card"><div class="lbl">Option B · Claim</div><p>Write one sentence your group would want the whole class to agree on today.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions <small>before table groups confer</small></h3>
+    <ul class="confer">
+      <li>What patterns did you observe again and again in different scales of models?</li>
+      <li>How are these patterns useful in understanding how precipitation forms?</li>
+      <li>How are these patterns useful for designing solutions to reduce damaging precipitation?</li>
+      <li>Is there any part of the mechanism a solution could actually change?<span>Plants Day 7: we can't move air masses, but ocean temperature affects moisture.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After consensus · hinge question</div>
+      <h4>Which change would most likely make a coastal winter storm drop more snow (if it stays below freezing)?</h4>
+      <ul class="opts">
+        <li>A. Colder, drier ocean air<em>Less moisture.</em></li>
+        <li class="right">B. Warmer ocean water off the coast<em>Correct: more evaporation, more moisture.</em></li>
+        <li>C. A weaker cold air mass that melts<em>Would turn snow to rain.</em></li>
+        <li>D. Less lifting<em>Less condensation.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">Exit check</div>
+      <h4>Warm, moist air masses usually form…</h4>
+      <ul class="opts">
+        <li>A. over Canada<em>That's cold, dry (cP).</em></li>
+        <li class="right">B. over tropical oceans<em>Correct.</em></li>
+        <li>C. over deserts<em>Warm but dry (cT).</em></li>
+        <li>D. at the poles<em>Cold.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Summary Task · reflection Q1–4<small>discussion reflection · no key</small></span></summary><div class="keybody"><p>One thing that went well · one thing to improve · one person who helped me learn (and what) · one idea I contributed. Read these for who is and isn't being heard, and use them to plan groupings.</p></div></details>
+    <details class="key"><summary><span>Summary Task · content Q1–2<small>"Explain what you know…" · words + model</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Content Q1. Explain how the overall patterns of heating on Earth's surface result in predictable patterns of seasonal weather and precipitation.</div><p class="aa">The equator is heated most and the poles least. Uneven heating makes air rise where it's warm (equator, low pressure, wet) and sink where it's cooler (~30°, high pressure, dry), and sets up global winds that carry air masses. Warm, moist air masses form over tropical oceans; cold, dry ones over high-latitude land. Where they meet (mid-latitudes, especially in winter when the north is cold) we get fronts, storms and precipitation; in winter it is cold enough to fall as snow. As seasons shift, the strongest heating and the storm belts shift too, so the same places get rainy or snowy seasons each year. (Packet wording is missing "how"; see overview.)</p></div>
+      <div class="qa"><div class="qq">Content Q2. Describe how precipitation formation at the local and global scales follows similar patterns.</div><p class="aa">At every scale, warm, moist air <b>rises</b> (or is lifted), <b>cools</b>, and its vapor <b>condenses</b> into clouds and precipitation. Small scale: hot water → vapor → drops on the cold top cup. Local: at a front, cold, dry air lifts warm, moist air (Jonas); mountains lift moist air (Helene). Global: rising air at ~0° and ~60° gives wet belts; sinking air at ~30° and the poles gives dry belts.</p></div>
+      <div class="note"><b>Take Time for These Key Points (teacher materials):</b> precipitation can occur when warm, moist air meets cold, dry air · warm, moist air masses usually form around tropical oceans · cold, dry air often forms over continents farther from the equator · global winds move air masses · the pattern holds at small, local and global scales · hurricanes can make extreme precipitation without meeting cold, dry air.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>What is one idea the class agreed on today that you didn't believe on Day 1?</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>If you wanted to reduce storm precipitation, which part of the mechanism would you try to change? Why?</p><div class="ans">Most will say "the moisture" or "the warm water." That sets up Days 6–7.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Pole-to-Equator Rain Map</h4>
+      <p>Draw a tall globe slice from the North Pole to the equator. Mark 0°, 30°, 60°, 90°. Draw rising and sinking air arrows, clouds where it's wet, sun/sand where it's dry, and put NYC and Asheville on it.</p>
+      <ul class="checks">
+        <li>Rising air and clouds at ~0° and ~60°</li>
+        <li>Sinking air and dry symbols at ~30° and 90°</li>
+        <li>NYC and Asheville placed near ~40° and ~35°</li>
+        <li>"I chose…" note: <b>one Key Point from today's consensus chart</b> that your drawing shows</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-4"><small>Back</small>← Day 4 · Explaining Jonas and Helene</a><a class="next" href="#day-6"><small>Next</small>Day 6 · Precipitation in a Changing Climate →</a></div>
+</div>
+
+<!-- ===================== DAY 6 ===================== -->
+<div class="view" id="day-6" data-phase="elaborate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 6 · Elaborate</div>
+    <h2>Precipitation in a Changing Climate</h2>
+    <p class="q">How will climate change affect precipitation?</p>
+    <div class="tags"><span class="tag">Handout: Precipitation in a Changing Climate</span><span class="tag">Independent → triads</span><span class="tag">Think-Talk-Open Exchange</span><span class="tag">Video: Winter Storm Jonas Ingredients (again)</span><span class="tag">Backup: How do Hurricanes Form?</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Ocean heat feeds both winter storms and hurricanes by supplying moisture (evaporation).</li>
+      <li>Ocean heat content has been rising (read from the packet graph).</li>
+      <li>Warmer oceans → more evaporation → more water vapor → heavier rain and, when it's below freezing, heavier snow; warmer oceans also give hurricanes more energy.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">5–9</div><div><h4>Launch</h4><p class="say">"At the start of the unit we saw billion-dollar storms increasing since 1980. Let's use what we know about precipitation to explain why, and predict the future."</p></div></li>
+      <li><div class="t">9–17</div><div><h4>Jonas Ingredients, second viewing</h4><p>This time focus only on <b>ocean heat</b>. Students take notes on the prompt.</p></div></li>
+      <li><div class="t">17–25</div><div><h4>Hurricane text + Q1</h4><p>Read the two paragraphs and the "What does a hurricane need?" diagram. Q1 independently. If students are shaky on hurricane formation, show <b>How do Hurricanes Form?</b></p></div></li>
+      <li><div class="t">25–32</div><div><h4>Ocean heat graph + Q2</h4><p>Model reading the axes: the zero line is the 1993–2019 average; above = more heat than average.</p></div></li>
+      <li><div class="t">32–46</div><div><h4>Think-Talk-Open Exchange</h4><p>Think (3 min, write): <i>How will that change affect precipitation of coastal storms, both snow and rain?</i> Talk in triads (5 min). Open exchange whole class (6 min). Reflection.</p></div></li>
+      <li><div class="t">46–50</div><div><h4>Exit slip</h4></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Cups</div><p>Which cup is like a warmer ocean? What happened in that cup?</p><div class="ans">The hot cup: most evaporation and condensation.</div></div>
+      <div class="card"><div class="lbl">Option B · Unit 4 link</div><p>From Unit 4: where does most of the extra heat trapped by greenhouse gases go?</p><div class="ans">Into the ocean.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>In the video, what did the warm ocean add to Jonas?</li>
+      <li>If ocean heat keeps rising, what happens to the "bottom cup" for future storms?</li>
+      <li>Can a warmer world still have giant snowstorms? What has to be true?<span>Air still at or below freezing; more moisture → more snow.</span></li>
+      <li>Besides more rain, what else does extra ocean heat do to a hurricane?<span>More energy → stronger winds.</span></li>
+      <li>Is the graph a straight line? What does the overall trend say even with ups and downs?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Q1 · hinge question</div>
+      <h4>Why would a hurricane over warmer water likely produce more rain?</h4>
+      <ul class="opts">
+        <li>A. Warm water makes the hurricane move faster<em>Speed isn't the mechanism here.</em></li>
+        <li class="right">B. More water evaporates, so the air holds more vapor to condense<em>Correct.</em></li>
+        <li>C. Warm water cools the air above it<em>Reversed.</em></li>
+        <li>D. Hurricanes don't depend on ocean temperature<em>They gain energy over warm water.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Think-Talk · quick check</div>
+      <h4>A student says, "Global warming means no more big snowstorms." Best response?</h4>
+      <ul class="opts">
+        <li>A. Right; warmer air can't make snow<em>Snow only needs below-freezing air where it falls.</em></li>
+        <li class="right">B. Not necessarily; warmer oceans add moisture, so storms that stay below freezing can drop more snow<em>Correct.</em></li>
+        <li>C. Snowstorms are unrelated to oceans<em>Jonas's moisture came from the ocean.</em></li>
+        <li>D. Warming only affects summer<em>No evidence.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Precipitation in a Changing Climate · video notes<small>"How does ocean heat play a role in snow formation and intensity?"</small></span></summary><div class="keybody">
+      <p>Warm ocean water off the East Coast evaporates into the air feeding the storm, giving it more water vapor (more fuel). The low pressure system draws that moist air in and up over the cold air, where it condenses. More ocean heat → more moisture → heavier snow where the air is below freezing. Accept any accurate detail from the video.</p>
+    </div></details>
+    <details class="key"><summary><span>Precipitation in a Changing Climate · Q1–Q2<small>hurricane precipitation · ocean heat graph</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Q1. Based on that information, how do you think hurricane precipitation is affected by ocean heat?</div><p class="aa">Warmer ocean water → more evaporation → the rising column of air holds more water vapor → more condensation → more rain. Warmer water also gives the storm more energy, so it can lift and drop that water faster. Hotter ocean, wetter hurricane.</p></div>
+      <div class="qa"><div class="qq">Q2. Analyze the graph: how is ocean heat content changing over time?</div><p class="aa">It is <b>increasing</b>: early years are below the 1993–2019 average, recent years well above it, with small ups and downs along a clear upward trend. Students should cite the first and last years and approximate values <b>read from the graph</b> (the values aren't in the Doc text, so check them against your copy).</p></div>
+    </div></details>
+    <details class="key"><summary><span>Think-Talk-Open Exchange · Think + Reflection<small>sample response · look-fors</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Think: How will that change affect precipitation of coastal storms, both snow and rain?</div><p class="aa">Coastal storms get their moisture from warm, moist ocean air masses. A warmer ocean evaporates more water, so those air masses carry more vapor. When it's lifted and condensed, more falls: heavier rain in hurricanes and other storms, and heavier snow in winter storms like Jonas when the air is still below freezing. Warmer oceans also give hurricanes more energy, making winds worse too.</p></div>
+      <div class="note"><b>Look and listen for (teacher materials):</b> warm, moist air masses form over the ocean for winter storms and hurricanes · warmer ocean → more energy for hurricane winds · warmer ocean → more evaporation → more water to fall · rising ocean temperatures → more precipitation in storms.</div>
+      <p>Reflection: no key; look for ideas borrowed from triad partners.</p>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Fill the chain: warmer ocean → ___ → ___ → heavier precipitation.</p><div class="ans">more evaporation → more water vapor in storm air.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Based on today, which part of the problem would a solution have to change to reduce storm precipitation?</p><div class="ans">The ocean heat / moisture supply (sets up Day 7).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Then and Future</h4>
+      <p>Draw the same coastal storm twice: one over a <b>cooler ocean</b> and one over a <b>warmer ocean</b>. Use the number of wavy evaporation arrows, size of the cloud and amount of rain/snow to show the difference. Add a small thermometer for the ocean in each.</p>
+      <ul class="checks">
+        <li>Evaporation arrows differ</li>
+        <li>Cloud and precipitation differ</li>
+        <li>One label explaining why, using "evaporation" and "condensation"</li>
+        <li>"I chose…" note: <b>one new idea you heard from your triad</b> and where it shows up</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-5"><small>Back</small>← Day 5 · Class Consensus and Summary Task</a><a class="next" href="#day-7"><small>Next</small>Day 7 · Evaluating a solution →</a></div>
+</div>
+
+<!-- ===================== DAY 7 ===================== -->
+<div class="view" id="day-7" data-phase="evaluate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 7 · Evaluate</div>
+    <h2>Evaluating Geoengineering</h2>
+    <p class="q">What solutions might exist to help with increasing precipitation?</p>
+    <div class="tags"><span class="tag">Handout: A Potential Solution to Reduce Precipitation</span><span class="tag">PTO: Revisiting the Performance Task: Water</span><span class="tag">Handout: Evaluating Solutions for Water Damage</span><span class="tag">Table groups → independent</span><span class="tag">Text annotation · Domino Discover · DQB</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li><b>Constraints</b> are limits a design must work within (money, materials, time, physics, rules); <b>limitations</b> are what it can't do.</li>
+      <li>Solar geoengineering targets the <b>mechanism</b> (ocean heat → evaporation → precipitation) but has serious limits, unknown hardware, side effects and governance problems.</li>
+      <li>Good solutions are judged on criteria, constraints, costs, benefits and unintended consequences.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–3</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">3–8</div><div><h4>Recap + constraints talk</h4><p class="say">"We know how air masses form, how meeting air masses make rain and snow, and that warmer oceans mean more precipitation. Before judging a solution, one more engineering idea: constraints and limitations."</p><p>Use the Wind 5E power-lines example: budget may cover only some neighborhoods (constraint); buried lines can still fail if the area floods (limitation).</p></div></li>
+      <li><div class="t">8–22</div><div><h4>Read and annotate</h4><p>Three colors: <b>mechanism</b> · <b>costs/benefits</b> · <b>limitations</b>. Groups or individually.</p></div></li>
+      <li><div class="t">22–38</div><div><h4>PTO: Revisiting the Performance Task: Water</h4><p>Independent, Q1–7. Confer.</p></div></li>
+      <li><div class="t">38–42</div><div><h4>Rubric</h4><p><i>Evaluating Solutions for Water Damage</i>: self or peer. Collect for teacher feedback.</p></div></li>
+      <li><div class="t">42–48</div><div><h4>Domino Discover: Yes / No / Maybe</h4><p>Each table decides whether large-scale geoengineering makes sense to implement, with reasons. Tally on chart paper. No need for consensus; listen for evidence, specific costs and benefits.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>DQB</h4><p>Which questions are answered? Which are not? Make sure one open category is <b>flooding</b>: that's the next 5E. <i>Flex:</i> do DQB at the start of the Flooding 5E.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Criteria recall</div><p>From the Wind 5E: what's a criterion? Give one for a solution to storm water damage.</p><div class="ans">Something the design must do to succeed (e.g., reduce flood damage by X%, cost less than the damage).</div></div>
+      <div class="card"><div class="lbl">Option B · Predict</div><p>If we could cool the ocean, what would happen to storm precipitation? What might go wrong?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>How does this solution relate to the mechanism of rain formation?</li>
+      <li>What are the limitations of this solution? What <i>can't</i> it do?</li>
+      <li>What are the constraints around making it work?</li>
+      <li>How would you weigh its costs and benefits?</li>
+      <li>Who decides whether it happens? Why does that matter?<span>No international rules; who controls it matters.</span></li>
+      <li>Read the title of source [3]. Does "15% weaker" sound like a win?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After annotating · hinge question</div>
+      <h4>Which is a <b>constraint</b> on solar geoengineering, from the text?</h4>
+      <ul class="opts">
+        <li>A. It would lower sea surface temperatures<em>That's the goal/benefit.</em></li>
+        <li class="right">B. The special aircraft and spray nozzles needed don't exist yet<em>Correct: a materials/technology limit.</em></li>
+        <li>C. Pinatubo cooled the planet<em>Evidence it could work.</em></li>
+        <li>D. It could weaken a super El Niño<em>A potential benefit.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After PTO · quick check</div>
+      <h4>Why doesn't solar geoengineering fix ocean acidification?</h4>
+      <ul class="opts">
+        <li>A. It adds CO₂<em>It adds SO₂ or salt, not CO₂.</em></li>
+        <li class="right">B. It only masks warming; it doesn't remove CO₂ from the air<em>Correct.</em></li>
+        <li>C. It only works at night<em>Not in the text.</em></li>
+        <li>D. Acidification is caused by rain<em>It's caused by CO₂ dissolving in seawater.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>A Potential Solution to Reduce Precipitation · annotations<small>three colors · what to look for</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Mechanism</div><p class="aa">Reflecting sunlight (SAI: sulfur dioxide in the stratosphere; MCB: sea-salt spray brightening low ocean clouds) → less heat reaches the surface and ocean → cooler sea surface → less evaporation → less moisture for storms.</p></div>
+      <div class="qa"><div class="qq">Costs and benefits</div><p class="aa">Benefits: could lower global and sea surface temperatures while emissions are cut; could hold temperatures steady to 2100 in NOAA simulations; could weaken extreme El Niños; Royal Society (2025) says coordinated long-term use would very likely lower temperatures. Costs: ozone thinning over Antarctica; changed rainfall (parts of the tropics 5–7% less rain); shifted droughts; altered European winters; possible mega La Niña; partial deployment could strengthen Atlantic hurricanes, dry the Amazon, cause drought in parts of Africa.</p></div>
+      <div class="qa"><div class="qq">Limitations</div><p class="aa">Only masks warming (no CO₂ removed; ocean acidification continues); enormous scale (~50 million metric tons SO₂/yr by 2100); hardware doesn't exist; timing matters (late MCB did little); ocean cooling would weaken a hurricane only ~15% in ideal conditions; termination shock if stopped; no international rules.</p></div>
+    </div></details>
+    <details class="key"><summary><span>PTO · Revisiting the Performance Task: Water · Q1–7<small>sample proficient responses</small></span></summary><div class="keybody">
+      <div class="qa"><div class="qq">Q1. Explain how the strong precipitation found in Winter Storm Jonas formed.</div><p class="aa">Warm, moist (maritime tropical) air from the Gulf of Mexico and the warm Atlantic was drawn north by the storm's low and forced up over cold, dense, dry (continental polar) air from Canada. Rising air cooled, vapor condensed into thick clouds, and because the air was below 32 °F it fell as heavy snow. Warm ocean water supplied extra moisture.</p></div>
+      <div class="qa"><div class="qq">Q2. Why is this a problem that we need to address?</div><p class="aa">Extreme precipitation causes floods, landslides, power outages, roof collapse and shutdowns; it costs billions and endangers lives. The number of billion-dollar storm disasters has risen since 1980 (unit opening), and warming oceans mean storms will carry more water.</p></div>
+      <div class="qa"><div class="qq">Q3. Describe the solution presented in the text.</div><p class="aa">Solar geoengineering: reflect some sunlight back to space before it heats the surface and oceans, by spraying sulfur dioxide into the stratosphere (SAI) or spraying sea salt into low ocean clouds to brighten them (MCB).</p></div>
+      <div class="qa"><div class="qq">Q4. How is your solution addressing the science of this problem?</div><p class="aa">It targets the moisture source: cooler oceans → less evaporation → warm, moist air masses carry less vapor → less condensation and precipitation when they're lifted. (Hurricanes would also get less energy.)</p></div>
+      <div class="qa"><div class="qq">Q5. What criteria for success would demonstrate that this solution was working?</div><p class="aa">Measurable examples: sea surface temperatures in storm-source regions drop below their recent average; ocean heat content stops rising; heavy-precipitation events and billion-dollar storm costs decrease over time; no major new droughts, ozone loss or rainfall shifts elsewhere.</p></div>
+      <div class="qa"><div class="qq">Q6. Constraints and limitations associated with this solution</div><p class="aa">Constraints: aircraft/nozzles don't exist; enormous yearly amounts of SO₂; must run for decades without stopping (termination shock); timing must be right; requires global coordination with no current rules; cost and funding. Limitations: doesn't remove CO₂ or fix acidification; only modest effect on hurricanes (~15% under ideal conditions); can't control where side effects land.</p></div>
+      <div class="qa"><div class="qq">Q7. Potential costs and benefits</div><div class="scroll"><table><thead><tr><th>Benefits</th><th>Costs</th></tr></thead><tbody><tr><td>Lower global and sea surface temperatures · possibly weaker extreme El Niño · buys time while emissions are cut · could reduce storm moisture</td><td>Ozone thinning · less tropical rain, shifted droughts · possible stronger hurricanes or Amazon drying if partial · termination shock · acidification continues · who controls it</td></tr></tbody></table></div></div>
+    </div></details>
+    <details class="key"><summary><span>Evaluating Solutions for Water Damage · rubric<small>Proficient = all components</small></span></summary><div class="keybody">
+      <p><b>Explanation of the problem:</b> role of air masses in causing precipitation · relationship between air temperature and precipitation · how these patterns make precipitation predictable at global and local scales · damage caused by storm rains. <b>Design cycle:</b> identifies the problem and its mechanism · describes a solution aimed at that mechanism · analyzes limitations and constraints. Proficient = all; Developing = some. Most common gap: naming damage without the <b>mechanism</b>, or listing costs without any <b>constraints</b>.</p>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Yes, No or Maybe on geoengineering? Give your strongest piece of evidence.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Name one constraint and one limitation of geoengineering, and say which is which.</p><div class="ans">Constraint: hardware doesn't exist / scale / no rules. Limitation: doesn't remove CO₂ / only ~15% hurricane weakening.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Solution Flowchart</h4>
+      <p>Draw a flowchart from <b>sunlight</b> to <b>storm precipitation</b> (sunlight → ocean heat → evaporation → moist air mass → lifted → condenses → precipitation). Show where geoengineering would cut in with a pair of scissors. Then draw two side-branches: one benefit and one unintended consequence.</p>
+      <ul class="checks">
+        <li>All mechanism steps in order</li>
+        <li>Scissors placed at the right step</li>
+        <li>One benefit branch and one unintended-consequence branch</li>
+        <li>"I chose…" note: <b>how your table voted</b> in the Yes/No/Maybe tally and whether your drawing agrees</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-6"><small>Back</small>← Day 6 · Precipitation in a Changing Climate</a><a class="next" href="#overview"><small>Done</small>Back to overview →</a></div>
+</div>
+
+<footer><a href="index.html">← Back to Teacher Hub</a><br>Built from the New Visions Earth &amp; Space Science Unit 5 (<i>Extreme Weather Coming to a Place Near You?</i>) materials, SY 26-27: L2 Teacher Materials, Water 5E; L2 Student Materials, Water 5E; Performance Task Organizer (<i>Revisiting the Performance Task: Water</i>); Unit Plan. The Google Docs have no page numbers; keys are labeled by handout, part and question. Data: NWS New York (OKX) Jonas storm summary and NOAA Central Park records/1991–2020 normals; NHC Tropical Cyclone Report, Hurricane Helene; IPCC AR6 WG1 (water vapor vs. temperature); geoengineering figures as cited in the packet (Columbia Climate School 2024, NOAA Research 2021, Hlywiak &amp; Nolan 2022, Royal Society 2025). Simulation: WeatherSTEM Weather Fronts Simulator. Schedules assume 50-minute periods.</footer>
+</main>
+<script>
+(function(){
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('#chips .chip'));
+  var ids = views.map(function(v){return v.id});
+  function show(){
+    var id = (location.hash || '').slice(1);
+    if (ids.indexOf(id) === -1) id = 'overview';
+    views.forEach(function(v){ v.hidden = v.id !== id; });
+    chips.forEach(function(c){
+      if (c.getAttribute('href') === '#' + id) { c.setAttribute('aria-current','page'); var r=c.parentNode; r.scrollLeft = c.offsetLeft - (r.clientWidth - c.offsetWidth)/2; }
+      else c.removeAttribute('aria-current');
+    });
+    window.scrollTo({top:0,left:0,behavior:'instant'});
+  }
+  window.addEventListener('hashchange', show);
+  show();
+
+  // prep checklist memory (per device)
+  var boxes = document.querySelectorAll('#prep input[type=checkbox]');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem('u5-water-prep') || '{}'); } catch(e) {}
+  Array.prototype.forEach.call(boxes, function(b){
+    if (saved[b.id]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[b.id] = b.checked;
+      try { localStorage.setItem('u5-water-prep', JSON.stringify(saved)); } catch(e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>
