@@ -1,0 +1,1373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="teacher-gate.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}.strata-8{grid-template-columns:repeat(8,1fr)}
+</style>
+<title>Land Use &amp; Biodiversity Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky day bar on top, one day visible at a time, single reading column (~760px). Days are "rock layers" colored by 5E phase. */
+:root{
+  --bg:#F2F5F4; --surface:#FFFFFF; --ink:#15212A; --muted:#55646B; --line:#D5DDDB; --tint:#E7EDEB;
+  --iron:#AE4229; --ocean:#1C6784; --ochre:#A8731A; --moss:#4C7634; --dusk:#5A4A8C;
+  --ok:#2E7D4F; --warn:#9A5B00;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1518; --surface:#162026; --ink:#E5ECEA; --muted:#9BAAAF; --line:#2A3A41; --tint:#1C2A30;
+  --iron:#E27A5F; --ocean:#5DB2D2; --ochre:#E0AD52; --moss:#8FBE6E; --dusk:#A897E0; --ok:#6FCB94; --warn:#E6A54A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--ocean)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* phase colors */
+[data-phase="engage"]{--ph:var(--ochre)} [data-phase="explore"]{--ph:var(--iron)} [data-phase="explain"]{--ph:var(--ocean)}
+[data-phase="elaborate"]{--ph:var(--moss)} [data-phase="evaluate"]{--ph:var(--dusk)} [data-phase="overview"]{--ph:var(--ink)}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:thin}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--ph)}
+.chip[aria-current="page"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--ocean);outline-offset:2px}
+
+/* hero */
+.hero{padding-block:28px 8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.hero h1{font-size:clamp(32px,7vw,52px);font-weight:800;letter-spacing:-.02em;margin:8px 0 10px}
+.dq{font-size:clamp(18px,3.4vw,22px);color:var(--ink);max-width:40ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0 0;color:var(--muted);font-size:15px}
+.meta b{color:var(--ink)}
+
+/* strata bar */
+.strata{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin:22px 0 6px;border-radius:10px;overflow:hidden}
+.strata a{display:flex;flex-direction:column;justify-content:flex-end;min-height:76px;padding:8px 7px;background:var(--ph);color:#fff;text-decoration:none;font-size:12px;line-height:1.2;position:relative}
+.strata a::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(0,0,0,.10) 9px 11px);pointer-events:none}
+.strata b{font-family:var(--f-display);font-size:20px;display:block}
+.strata span{opacity:.92}
+.strata-cap{font-size:13px;color:var(--muted)}
+@media (max-width:520px){.strata span{display:none}.strata a{min-height:56px}}
+
+/* views */
+.view{padding-block:8px 48px;scroll-margin-top:calc(64px + env(safe-area-inset-top,0px))}
+.view[hidden]{display:none!important}
+.dayhead{padding-block:26px 6px;border-bottom:4px solid var(--ph);margin-bottom:8px}
+.dayhead .eyebrow{color:var(--ph)}
+.dayhead h2{font-size:clamp(28px,5.6vw,40px);font-weight:800;margin:6px 0 8px;letter-spacing:-.01em}
+.dayhead .q{font-style:italic;color:var(--muted);margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
+.tag{font-size:13px;padding:3px 9px;border-radius:6px;background:var(--tint);color:var(--ink)}
+
+section.block{padding-block:18px 4px}
+section.block>h3{font-size:22px;font-weight:800;margin-bottom:12px;display:flex;align-items:baseline;gap:10px}
+section.block>h3 small{font-family:var(--f-body);font-weight:600;font-size:14px;color:var(--muted)}
+p{margin:0 0 10px} ul,ol{margin:0 0 10px;padding-left:22px} li{margin-bottom:5px}
+
+/* goals */
+.goals{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--ph);border-radius:8px;padding:14px 16px}
+.goals h3{font-size:17px;margin-bottom:8px}
+.goals ul{margin:0}
+
+/* schedule */
+.sched{list-style:none;padding:0;margin:0;border-left:2px solid var(--line)}
+.sched li{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:10px 0 12px 22px;margin:0;position:relative}
+.sched li::before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:3px solid var(--ph)}
+.t{font-family:var(--f-mono);font-size:14px;color:var(--ph);font-weight:500;padding-top:2px;font-variant-numeric:tabular-nums}
+.t small{display:block;color:var(--muted);font-size:12px}
+.sched h4{font-size:17px;font-weight:600;margin-bottom:3px}
+.sched p,.sched ul{font-size:16px;color:var(--ink);margin-bottom:4px}
+.sched .say{border-left:3px solid var(--tint);padding-left:10px;color:var(--muted);font-style:italic}
+@media (max-width:480px){.sched li{grid-template-columns:1fr;gap:2px}}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.card .lbl{font-size:12px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;color:var(--ph);margin-bottom:6px}
+.card p:last-child{margin-bottom:0}
+.ans{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:15px;color:var(--muted)}
+.ans b{color:var(--ok)}
+
+/* conferring */
+.confer{list-style:none;padding:0;display:grid;gap:8px}
+.confer li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0}
+.confer li span{display:block;font-size:14px;color:var(--muted);margin-top:3px}
+
+/* CFU */
+.cfu{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.cfu h4{font-size:16px;margin-bottom:6px;font-family:var(--f-body);font-weight:700}
+.opts{list-style:none;padding:0;margin:6px 0}
+.opts li{padding:5px 10px;border-radius:6px;margin-bottom:4px;background:var(--tint)}
+.opts li.right{outline:2px solid var(--ok)}
+.opts li em{display:block;font-size:14px;color:var(--muted);font-style:normal}
+.when{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* answer key */
+.key{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.key>summary{cursor:pointer;padding:13px 16px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.key>summary::-webkit-details-marker{display:none}
+.key>summary::after{content:"+";font-family:var(--f-mono);font-size:20px;color:var(--ph)}
+.key[open]>summary::after{content:"−"}
+.key>summary small{display:block;font-weight:400;color:var(--muted);font-size:14px}
+.keybody{padding:2px 16px 14px;border-top:1px solid var(--line)}
+.qa{padding:10px 0;border-bottom:1px solid var(--tint)}
+.qa:last-child{border-bottom:0}
+.qa .qq{font-weight:700;margin-bottom:4px}
+.qa .aa{margin:0}
+.note{font-size:15px;background:var(--tint);border-radius:8px;padding:10px 12px;margin:8px 0}
+.note b{color:var(--warn)}
+.scroll{overflow-x:auto;margin:8px 0 12px;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--surface)}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--tint);font-weight:700}
+td.num,th.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* homework */
+.hw{background:var(--surface);border:2px solid var(--ph);border-radius:12px;padding:16px}
+.hw h4{font-size:20px;font-weight:800;margin-bottom:6px}
+.hw .why{font-size:15px;color:var(--muted)}
+.checks{list-style:none;padding:0;margin:8px 0 0}
+.checks li{padding-left:24px;position:relative}
+.checks li::before{content:"✓";position:absolute;left:2px;color:var(--ok);font-weight:700}
+
+/* overview bits */
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:6px}
+.glance .card b{font-family:var(--f-display);font-size:18px;display:block;margin-bottom:2px}
+.prep{list-style:none;padding:0}
+.prep li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--tint);margin:0}
+.prep input{width:20px;height:20px;margin-top:3px;accent-color:var(--ocean);flex:0 0 auto}
+.prep label{flex:1;min-width:0}
+.prep .when{display:block}
+.mis{display:grid;gap:8px}
+.mis div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.mis s{color:var(--iron);text-decoration-thickness:2px}
+
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:30px;flex-wrap:wrap}
+.pager a{flex:1 1 200px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.pager a small{display:block;color:var(--muted);font-size:13px}
+.pager a.next{text-align:right}
+footer{color:var(--muted);font-size:13px;padding-block:20px 40px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+.strata-8{grid-template-columns:repeat(8,1fr)}
+</style>
+</head>
+<body>
+<nav class="bar" aria-label="Days">
+  <div class="wrap" id="chips">
+    <a class="chip" data-phase="overview" href="#overview"><i></i>Before you teach</a>
+    <a class="chip" data-phase="engage" href="#day-1"><i></i>Day 1</a>
+    <a class="chip" data-phase="explore" href="#day-2"><i></i>Day 2</a>
+    <a class="chip" data-phase="explore" href="#day-3"><i></i>Day 3</a>
+    <a class="chip" data-phase="explore" href="#day-4"><i></i>Day 4</a>
+    <a class="chip" data-phase="explain" href="#day-5"><i></i>Day 5</a>
+    <a class="chip" data-phase="explain" href="#day-6"><i></i>Day 6</a>
+    <a class="chip" data-phase="elaborate" href="#day-7"><i></i>Day 7</a>
+    <a class="chip" data-phase="evaluate" href="#day-8"><i></i>Day 8</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ===================== OVERVIEW ===================== -->
+<div class="view" id="overview" data-phase="overview">
+  <header class="hero">
+    <div class="eyebrow">Teacher guide · Earth &amp; Space Science · Unit 6 · Solutions for a Sustainable Future · L2 Land Use and Biodiversity 5E</div>
+    <h1>Land Use and Biodiversity</h1>
+    <p class="dq">How do the ways humans change land affect the health of people and biodiversity? How can we stabilize systems that have been destabilized by these changes?</p>
+    <div class="meta">
+      <span><b>PEs</b> HS-ESS3-3 · HS-ETS1-4</span>
+      <span><b>Length</b> 8 days × 50 min (SY 26-27 teacher materials list 5–7; unit plan 6–8)</span>
+      <span><b>Packet</b> SY 26-27 Student Materials pp. 69–98 · PT prompt PTO pp. 14–16</span>
+      <span><b>Routines</b> Domino Discover · Think-Talk-Open Exchange · Class Consensus Discussion</span>
+    </div>
+    <div class="strata strata-8" aria-label="Eight days, colored by 5E phase">
+      <a href="#day-1" data-phase="engage"><b>1</b><span>Engage</span></a>
+      <a href="#day-2" data-phase="explore"><b>2</b><span>Explore</span></a>
+      <a href="#day-3" data-phase="explore"><b>3</b><span>Explore</span></a>
+      <a href="#day-4" data-phase="explore"><b>4</b><span>Explore → Explain</span></a>
+      <a href="#day-5" data-phase="explain"><b>5</b><span>Explain</span></a>
+      <a href="#day-6" data-phase="explain"><b>6</b><span>Explain</span></a>
+      <a href="#day-7" data-phase="elaborate"><b>7</b><span>Elaborate</span></a>
+      <a href="#day-8" data-phase="evaluate"><b>8</b><span>Evaluate</span></a>
+    </div>
+    <p class="strata-cap">Tap a day to open it. Each day has a minute-by-minute plan, Do Nows, conferring questions, checks for understanding, the answer key, exit slips and drawn homework. Student-facing version: <a href="../unit6-sustainable-future/unit6-land_use_and_biodiversity.html">Unit 6: Land Use and Biodiversity</a> chapter.</p>
+  </header>
+
+  <section class="block">
+    <h3>The phenomenon in one paragraph</h3>
+    <p>Every summer hot weather kills hundreds of New Yorkers, and the risk is <b>not spread evenly</b>: the city's Heat Vulnerability Index (HVI) puts some neighborhoods at 5 (highest risk) and others at 1. Students find out why. Using the Welikia Project they see Manhattan change from forest and wetland in 1609 to pavement and buildings. Maps of zoning, tree canopy and building energy use explain why some neighborhoods run hotter than others (the <b>urban heat island</b>). They build a <b>computational model</b> of heat and then of <b>sustainability</b> (adding tree species as a biodiversity indicator), trace <b>feedback loops</b> (heat → air conditioning → more heat; trees → cooler → less energy), test a real solution (Medellín's green corridors), scale the same story up to <b>Amazon deforestation</b> and its tipping point, and finally add <b>green roofs</b> to their model for the Performance Task.</p>
+  </section>
+
+  <section class="block">
+    <h3>The 5E storyline</h3>
+    <div class="glance">
+      <div class="card" data-phase="engage"><div class="lbl">Engage · Day 1</div><b>How is heat impacting the health of New Yorkers?</b>Heat-wave video, global heat-island map, NYC heat vulnerability map, Domino Discover.</div>
+      <div class="card" data-phase="explore"><div class="lbl">Explore · Days 2–4</div><b>How has 400 years of land-use change made NYC hotter?</b>Welikia, Maps 1–4, Table 1; Urban Heat Island Computational Model Builder; Making Sense.</div>
+      <div class="card" data-phase="explain"><div class="lbl">Explain · Days 4–6</div><b>How does land use contribute to heat deaths?</b>Feedback-loop scenarios, Class Consensus on Scenario 4, Medellín green corridors, model with more green space.</div>
+      <div class="card" data-phase="elaborate"><div class="lbl">Elaborate · Day 7</div><b>Where else is land use hurting people and ecosystems?</b>Amazon deforestation: rate of change, feedback loops, years to the tipping point.</div>
+      <div class="card" data-phase="evaluate"><div class="lbl">Evaluate · Day 8</div><b>Would green roofs help?</b>PTO "Return to the Performance Task": add green roofs to the model, evaluate for 4 neighborhoods.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="goals" data-phase="explain">
+      <h3>By the end of the 5E, every student should be able to…</h3>
+      <ul>
+        <li>Explain the <b>urban heat island</b>: replacing forest, wetland and soil with dark pavement and buildings means more sunlight is absorbed (low <b>albedo</b>), less water evaporates from plants (<b>evapotranspiration</b>), and buildings add <b>waste heat</b>.</li>
+        <li>Use maps to relate <b>zoning, tree cover and energy use</b> to how much hotter a neighborhood is than its natural baseline.</li>
+        <li>Build and adjust a <b>computational model</b> (weights for each variable), test it against observed heat, and name its limits.</li>
+        <li>Explain why <b>heat vulnerability</b> is more than temperature: access to air conditioning, income, age and health also matter.</li>
+        <li>Draw <b>feedback loops</b> and say whether a change <b>stabilizes or destabilizes</b> the city as a habitat.</li>
+        <li>Calculate a <b>rate of change</b> for Amazon forest loss and use it to estimate when a tipping point could be reached.</li>
+        <li>Evaluate a solution (green corridors, green roofs) by criteria, constraints, costs, tradeoffs and equity, using model output as evidence.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Prep checklist <small>check off as you go · saved on this device</small></h3>
+    <ul class="prep" id="prep">
+      <li><input type="checkbox" id="p1"><label for="p1"><span class="when">1 week out</span>Copy the Land Use and Biodiversity 5E (SY 26-27 Unit 6 Student Materials <b>pp. 69–98</b>). Make sure students still have their <b>Performance Task Organizer</b>; the Day 8 task is on <b>PTO pp. 14–16</b>.</label></li>
+      <li><input type="checkbox" id="p2"><label for="p2"><span class="when">1 week out</span>Copy or post the materials that are not in the packet: <b>New York City Land Use Maps</b> (Maps 1–5), <b>Heat Index Variable Descriptors</b>, <b>Tree Count Spreadsheet</b>, the <b>Land Use and Heat in NYC Investigation Rubric</b>, and the green-roofs text for Day 8.</label></li>
+      <li><input type="checkbox" id="p3"><label for="p3"><span class="when">1 week out</span>Test on student devices: <a href="https://www.youtube.com/watch?v=Oguz1tgoX6Y">New Yorkers stay cool on day 6 of heat wave</a>, <a href="https://www.princeton.edu/news/2019/09/04/solutions-urban-heat-differ-between-tropical-and-drier-climes">Global Urban Heat Islands</a>, <a href="https://www.cnbc.com/2021/12/10/urban-heat-mapping-project-in-nyc-finds-poor-neighborhoods-hotter.html">Poor neighborhoods are hotter than rich ones</a>, <a href="https://www.welikia.org/map-explorer#9.22/40.7372/-74.0178">The Welikia Project</a>, <a href="https://boundaries.beta.nyc/?map=nta">NYC Neighborhoods</a>, <a href="https://simulations.newvisions.org/urbanheatisland.html">Urban Heat Island Effect Computational Model Builder</a>, <a href="https://www.weforum.org/videos/medellin-green-corridors/">Medellín's Green Corridors</a>, <a href="https://earthobservatory.nasa.gov/world-of-change/Deforestation">NASA Amazon Deforestation</a>, <a href="https://rainforests.mongabay.com/amazon/deforestation_calculations.html">Amazon Deforestation Data</a>.</label></li>
+      <li><input type="checkbox" id="p4"><label for="p4"><span class="when">Before Day 3</span>Decide how students will <b>save</b> their Model Builder work (it exports a file). Same computer each day: save locally. Shared carts: email the file or use a shared folder. Backup: students write every slider value in Table 3 so they can re-enter it on Days 6 and 8.</label></li>
+      <li><input type="checkbox" id="p5"><label for="p5"><span class="when">Before Day 3</span>Calculators for every pair (Days 3, 6, 7, 8).</label></li>
+      <li><input type="checkbox" id="p6"><label for="p6"><span class="when">Before Day 5</span>Chart paper and markers per group: Scenario 4 for the Class Consensus Discussion (Day 5) and the green-corridor version (Day 6). Post the Class Consensus Discussion norms.</label></li>
+      <li><input type="checkbox" id="p7"><label for="p7"><span class="when">Before Day 1</span>Print or project the NYC <b>Heat Vulnerability Index</b> map large; it stays posted all week so students can compare their model to it on Day 4.</label></li>
+      <li><input type="checkbox" id="p8"><label for="p8"><span class="when">Before Day 7</span>Open the Mongabay/INPE table and check it still shows the pre-1970 baseline (4,100,000 km²) and the 2019 row. If it has changed, update the Day 7 key.</label></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Content crib: the numbers students will use</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>Idea</th><th>Value</th><th>Source / where it comes up</th></tr></thead>
+      <tbody>
+        <tr><td>Heat-related deaths in NYC per year (current estimate)</td><td class="num">~500</td><td>NYC DOHMH, 2026 Heat Mortality Report. The packet's "350" is from older editions (see corrections).</td></tr>
+        <tr><td>Heat-stress deaths (heat directly kills)</td><td class="num">avg ~7/yr (2016–2025)</td><td>NYC DOHMH 2026; 21 provisional heat-stress deaths in 2025</td></tr>
+        <tr><td>Heat-exacerbated deaths (heat worsens heart, lung, kidney disease)</td><td class="num">avg ~490/yr (2014–2023)</td><td>NYC DOHMH 2026; ~3% of all May–Sept deaths</td></tr>
+        <tr><td>Biggest risk factor for heat-stress death</td><td>No home air conditioning</td><td>NYC DOHMH 2026; Black New Yorkers' heat-stress death rate ~3× white New Yorkers'</td></tr>
+        <tr><td>Heat Vulnerability Index</td><td class="num">1 (lowest) – 5 (highest)</td><td>NYC DOHMH; combines environmental factors (surface temperature, green space) with social factors (e.g., AC access, income)</td></tr>
+        <tr><td>Model Builder heat output</td><td class="num">0–14 °F above natural baseline</td><td>New Visions Urban Heat Island Model Builder (capped at 14)</td></tr>
+        <tr><td>Model Builder sustainability score</td><td class="num">0–100</td><td>Starts at 50; + tree % × 0.5; + tree types × your weight; zone bonus/penalty; − 4 per energy level</td></tr>
+        <tr><td>AC waste heat</td><td class="num">can add &gt; 1 °C (1.8 °F)</td><td>Salamanca et al. 2014 (JGR), packet Scenario 1. Modeled for <b>Phoenix at night</b>.</td></tr>
+        <tr><td>Brazilian Amazon forest, pre-1970</td><td class="num">4,100,000 km²</td><td>Mongabay table (INPE PRODES data)</td></tr>
+        <tr><td>Total loss since 1970 · by 2019</td><td class="num">718,927 km² (≈17.5%)</td><td>Mongabay/INPE; 2019 forest ≈ 3,381,073 km² (computed)</td></tr>
+        <tr><td>Annual clearing: 1988 · 2000 · 2010 · 2019</td><td class="num">21,050 · 18,226 · 7,000 · 9,762 km²</td><td>Mongabay/INPE</td></tr>
+        <tr><td>Amazon tipping point</td><td class="num">20–25% deforested</td><td>Lovejoy &amp; Nobre 2018, <i>Science Advances</i>. Packet rounds to "~25%".</td></tr>
+        <tr><td>NYC green roofs</td><td class="num">~60 acres ≈ 0.15% of rooftops</td><td>The Nature Conservancy (green-roofs text)</td></tr>
+        <tr><td>Rotterdam green roofs</td><td class="num">~100 acres; plan for 230</td><td>Climate Central; World Economic Forum (green-roofs text)</td></tr>
+        <tr><td>Green roofs at city scale</td><td class="num">up to ~5 °F cooler; ~0.7% less energy</td><td>US EPA figures, as quoted by the World Economic Forum in the green-roofs text</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>Tree species counts and canopy percentages:</b> use the values on the Tree Count Spreadsheet and Map 3 your students have. This guide gives the expected <i>pattern</i> rather than numbers, because the values depend on which map edition you print.</div>
+  </section>
+
+  <section class="block">
+    <h3>What changed in SY 26-27</h3>
+    <p>This guide follows the <b>SY 26-27</b> student and teacher materials. Compared with the SY 25-26 lesson packet:</p>
+    <ul>
+      <li><b>Engage</b> is now a short <b>Heat in NYC</b> handout: video notes, an image prompt and one question (<i>What information would you need to evaluate solutions to heat vulnerability?</i>). The SY 25-26 See-Think-Wonder moved into Explore's Making Sense.</li>
+      <li><b>Explore is rebuilt</b> as the <b>Land Use and Heat in New York City Investigation</b>. Part 1 collects data for <b>five</b> neighborhoods (Central Park added as a near-natural comparison) into Table 1. Part 2 replaces the hand-written equation and Google Sheet (SY 25-26 "Modeling Sustainability" Parts 1–3) with the <b>Urban Heat Island Effect Computational Model Builder</b>. Tree species come from the <b>Tree Count Spreadsheet</b> instead of the NYC Tree Map.</li>
+      <li><b>Making Sense</b> now ends with "Analyze and Evaluate your model" (compare to the HVI, limitations, where to change the equation). In SY 25-26 these were Part 5 of Explain.</li>
+      <li>A new <b>Investigation Rubric</b> for self- and peer-assessment closes Explore.</li>
+      <li><b>Explain</b> is the handout <b>Explaining Land Use, Heat, and Human Health</b>: feedback-loop scenarios, Class Consensus on Scenario 4, Medellín, re-running the model with more green space, and a new chart-paper task: redraw Scenario 4 with green corridors.</li>
+      <li><b>Evaluate moved into the Performance Task Organizer</b> (PTO pp. 14–16) with the Step 1–3 structure used in the Fossil Fuels 5E. It adds comparing green roofs to green corridors and naming feedback mechanisms.</li>
+      <li>Teacher materials now list <b>5–7 days</b> (unit plan still says 6–8). The Global Urban Heat Islands link now points to Princeton (2019).</li>
+      <li><b>Not visible to this guide:</b> the Drive connector could only read SY 26-27 student pp. 69–79 and teacher pp. 67–79. Keys for Explain (Days 5–6) and Elaborate (Day 7) are labeled by <b>handout and question</b>, built from the SY 25-26 lesson packet and the SY 26-27 teacher-guide steps. Check the question numbers against your copy.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Corrections to the packet and teacher guide</h3>
+    <div class="mis">
+      <div><b>"350 New Yorkers die every year" (unit plan phenomenon, teacher guide, Engage text):</b> this was the estimate in older NYC Health reports. The <b>2026 Heat Mortality Report</b> estimates about <b>500</b> premature deaths per year (≈7 heat-stress + ≈490 heat-exacerbated). Keep the packet's number on the page, but tell students the newer figure and why estimates change (more years of data, hotter summers).</div>
+      <div><b>Explore Q7 (p. 74):</b> "Based on your answers to <s>question 3</s>" should be <b>question 5</b> (the increase/decrease predictions). Q3 is circling neighborhoods on the maps.</div>
+      <div><b>Explore Q1 (p. 73):</b> "Prospect-Lefferts Garden-<s>wingar</s>" is <b>Prospect Lefferts Gardens–Wingate</b> (the official neighborhood name uses "Gardens").</div>
+      <div><b>Explore Q8 (p. 74):</b> the sentence is garbled ("Using Add neighborhoods and their data"). Read it as: <b>"Go to Step 2: Add Map Data. Add each neighborhood and its data from Table 1."</b> Tables are numbered 1, 3, 5 (no 2 or 4); tell students so they don't hunt for missing tables. The energy units print as "kWh/m /year" with a stray 2: it is <b>kWh/m²/year</b>.</div>
+      <div><b>Teacher guide, Explore steps 8 and 13:</b> says students "go up to step 11," then "return to step 12 … continuing with step 9." Use: students stop after <b>Q11</b> (write the equation), you hold the biodiversity discussion, then they do <b>Q12–16</b>. The guide also names a "Sustainability Indicators" handout; the student packet uses the <b>Tree Count Spreadsheet</b>.</div>
+      <div><b>Teacher guide, Explain:</b> refers to handout "Part 4" (feedback loops), then "Part 2" (Medellín), then "Part 3" (re-run the model), out of order. Teach in the order of the steps, and check the part labels on your handout.</div>
+      <div><b>PTO Evaluate, Step 2 Q1 (p. 14):</b> "Rewrite the <s>biodiversity</s> equation" means the <b>sustainability formula</b> from Explore Q15. The Model Builder doesn't have a separate biodiversity equation.</div>
+      <div><b>Amazon text, "positive feedback loops that increase the stability of the ecosystem":</b> in systems language a positive (reinforcing) loop <b>amplifies</b> change. The same loops that keep a healthy forest wet also speed up drying once trees are cut. Say "reinforcing loops that currently keep the forest in a stable, wet state" and point out they can run in reverse.</div>
+      <div><b>Amazon tipping point, "approximately 25%":</b> Lovejoy &amp; Nobre (2018) give <b>20–25%</b>. With ~17.5% already gone by 2019, the low end is close. Have students calculate both.</div>
+      <div><b>Scenario 1, "&gt; 1 °C from air conditioners":</b> the cited study modeled <b>nighttime</b> temperatures in <b>Phoenix</b>. It is a real effect but not a measured NYC number.</div>
+      <div><b>SY 25-26 Amazon Step 1 typo:</b> "would remain <s>is</s> 25% were gone" → <b>if</b>. The 2019 row in the Mongabay table leaves forest cover blank: students compute 4,100,000 − 718,927.</div>
+      <div><b>Student chapter:</b> the "Manhattan Land Cover Change" and "Amazon % Remaining" charts use rounded values with no cited source. Use this guide's Mongabay/INPE numbers when students compare.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Misconceptions to listen for</h3>
+    <div class="mis">
+      <div><s>"The urban heat island is the same thing as global warming."</s> It is <b>local</b> extra heat from land use, and it exists even without climate change. Climate change makes heat waves stronger on top of it.</div>
+      <div><s>"Trees cool things only by making shade."</s> They also cool the air through <b>evapotranspiration</b>, the same way sweat cools skin.</div>
+      <div><s>"The whole city is equally hot."</s> Map 1 shows big differences between neighborhoods a few miles apart.</div>
+      <div><s>"Heat vulnerability = how hot it gets."</s> The HVI also counts social factors like AC access and income. A very hot neighborhood can still rate lower if fewer residents are at risk.</div>
+      <div><s>"Most heat deaths are heat stroke."</s> Almost all are <b>heat-exacerbated</b>: heat worsens heart, lung and kidney disease.</div>
+      <div><s>"Positive feedback means good."</s> Positive (reinforcing) means the change <b>grows</b>, good or bad. Heat → AC → more heat is positive feedback.</div>
+      <div><s>"A model that matches the map is true."</s> A good fit means the weights work for these neighborhoods; it doesn't prove cause or include every factor.</div>
+      <div><s>"Deforestation only matters because of CO₂."</s> It also heats the land locally (like a heat island), reduces rainfall and increases smoke pollution.</div>
+      <div><s>"We can just put Manhattan back to 1609."</s> The change is irreversible on human time scales. We can <b>stabilize</b> the system, not restore it.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Key vocabulary</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Urban heat island</div>A city area that is hotter than the natural landscape would be, because of pavement, buildings and waste heat.</div>
+      <div class="card"><div class="lbl">Land use · zoning</div>How land is used (manufacturing, commercial, residential, parks); zoning is the city's rule for it.</div>
+      <div class="card"><div class="lbl">Tree canopy cover</div>The percent of ground covered by tree leaves seen from above.</div>
+      <div class="card"><div class="lbl">Albedo</div>How much sunlight a surface reflects. Dark asphalt has low albedo, so it absorbs heat (Unit 3 spiral).</div>
+      <div class="card"><div class="lbl">Evapotranspiration</div>Water evaporating from soil and leaves, which cools the air.</div>
+      <div class="card"><div class="lbl">Heat Vulnerability Index (HVI)</div>NYC's 1–5 rating of how likely people in a neighborhood are to be harmed by heat.</div>
+      <div class="card"><div class="lbl">Biodiversity</div>The variety of living things in a place. Here, measured with the number of tree species.</div>
+      <div class="card"><div class="lbl">Sustainability</div>Meeting today's needs without taking away future generations' ability to meet theirs.</div>
+      <div class="card"><div class="lbl">Computational model</div>An equation or program that combines variables to predict an outcome; you test it against data.</div>
+      <div class="card"><div class="lbl">Feedback loop</div>A change that causes changes that come back to affect the first. Reinforcing loops grow; balancing loops stabilize.</div>
+      <div class="card"><div class="lbl">Tipping point</div>A threshold past which a system shifts to a new state and does not easily come back.</div>
+      <div class="card"><div class="lbl">Green corridor · green roof</div>Connected strips of trees and plants along streets and waterways · plants grown on a rooftop.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Pacing and logistics notes</h3>
+    <ul>
+      <li><b>Why 8 days?</b> The SY 26-27 teacher materials list 5–7. At 50 minutes, the Model Builder (Day 3) and the first Class Consensus on feedback loops (Day 5) each need a full period, and the Amazon calculation needs time for the math.</li>
+      <li><b>Six-day version.</b> (1) Engage. (2) Do Part 1 as a class: project Maps 1–4, fill Table 1 together, then start Part 2. (3) Finish the Model Builder; Making Sense as homework. (4) Feedback loops and Class Consensus. (5) Medellín + re-run the model in 25 min, then the Amazon rate and tipping-point calculation (cost-benefit page as homework). (6) Green roofs PT.</li>
+      <li><b>Do Now / Exit Slip boxes.</b> The SY 26-27 printed packet has none. The condensed Google Doc version has boxes for Classes 1–6. Use a half-sheet or notebook.</li>
+      <li><b>Period length.</b> For 45-minute periods, cut the Do Now to 3 minutes and move the item marked <i>flex</i> to homework.</li>
+      <li><b>Device-light option.</b> The Model Builder runs fine from one projector: the class agrees on weights by vote, you enter the data, and pairs record outputs. Welikia also works projected.</li>
+      <li><b>Sensitive topic.</b> Heat deaths, income and race come up. Keep it about <b>systems and access</b> (who has AC, trees and cooling centers), not blame, and remember some students live in high-HVI neighborhoods.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>How the homework stays AI-proof</h3>
+    <p>Each night's homework is a <b>hand-drawn model</b>: a map, diagram, flowchart or comic. Four rules make it hard to outsource:</p>
+    <ul>
+      <li><b>Paper and pencil (or colored pencils) only.</b> No printed or digitally made images.</li>
+      <li><b>Every task uses something only your class has:</b> their own slider weights, their model's scores, their group's Scenario 4 chart, the block they live on.</li>
+      <li><b>Every drawing has one personal "I chose…" annotation</b> explaining a decision the student made.</li>
+      <li><b>30-second check the next day.</b> During the Do Now, ask 3–4 students to explain one part of their drawing out loud.</li>
+    </ul>
+  </section>
+
+  <div class="pager"><span></span><a class="next" href="#day-1"><small>Start</small>Day 1 · Engage →</a></div>
+</div>
+
+<!-- ===================== DAY 1 ===================== -->
+<div class="view" id="day-1" data-phase="engage" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 1 · Engage</div>
+    <h2>Heat in NYC</h2>
+    <p class="q">How is the heat impacting the health of New Yorkers?</p>
+    <div class="tags"><span class="tag">Packet pp. 70–72: Heat in NYC</span><span class="tag">Table groups</span><span class="tag">Domino Discover</span><span class="tag">Heat-wave video · Global Urban Heat Islands</span><span class="tag"><a href="../unit6-sustainable-future/unit6-land_use_and_biodiversity.html">Chapter: Engage</a></span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Hot weather kills hundreds of New Yorkers each summer, mostly by making existing illnesses worse.</li>
+      <li>Heat risk is <b>uneven</b> across the city: some neighborhoods rate 5 on the Heat Vulnerability Index, others 1.</li>
+      <li>Cities around the world are hotter than the land around them (urban heat islands).</li>
+      <li>Evaluating solutions needs data on <b>where it's hot, why</b> (land, buildings, trees) and <b>who is at risk</b> (AC, age, health, income).</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">5–10</div><div><h4>Connect to the DQB</h4><p>Pull up the Driving Question Board questions: <i>Why do some areas that are side-by-side have such different health outcomes? Are "greener" places healthier? Does burning fossil fuels contribute to heat deaths?</i> Pose the 5E question: <b>How do the ways humans change land affect the health of people and biodiversity?</b></p><p class="say">"Last 5E we looked at how air pollution affects health. This time we look at a place that has been changed a lot from its natural state: New York City."</p></div></li>
+      <li><div class="t">10–15</div><div><h4>Turn and talk: our bodies in heat</h4><p>How does your body feel when it's too hot? What do you do to cool down? Share a few. Listen for sweating, headaches, tiredness, AC, fans, pools, hydrants, staying inside.</p></div></li>
+      <li><div class="t">15–23</div><div><h4>Video: New Yorkers stay cool on day 6 of heat wave</h4><p>Students record key points on p. 70. Ask: <i>Who might have a harder time staying cool?</i></p></div></li>
+      <li><div class="t">23–28</div><div><h4>Global Urban Heat Islands</h4><p>Show the global map and article. The teacher guide says to <b>stop the video around 2:23</b>; past that it gives away the investigation. Point out that this happens all over the world, not just in NYC.</p></div></li>
+      <li><div class="t">28–38</div><div><h4>Heat vulnerability map (groups)</h4><p>Groups examine the map on p. 70 and connect it to the Unit Launch texts (heat's effects on the body, Top 10 environmental causes of death). Ask: <i>Why do you think this is happening?</i> Define <b>vulnerability</b>: the likelihood of a bad health outcome during a heat wave. Keep it vague on purpose; the factors come out over the unit.</p></div></li>
+      <li><div class="t">38–46</div><div><h4>Q1 + Domino Discover</h4><p>Students answer Q1 (p. 71) alone for 3 minutes, then run Domino Discover: each group shares one piece of information they'd need; the next group builds on it. Chart it as <b>"What we need to know to reduce heat deaths."</b></p></div></li>
+      <li><div class="t">46–50</div><div><h4>Exit slip</h4><p class="say">"Next class we go back 400 years to see what this land looked like before the city."</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Fossil Fuels recall</div><p>Name one way burning fossil fuels harms human health and one way it harms other organisms.</p><div class="ans">Air pollution (particulates, NOₓ) → asthma, heart disease; CO₂ → ocean acidification → shellfish, reefs.</div></div>
+      <div class="card"><div class="lbl">Option B · Personal</div><p>Think of the hottest place you've been in NYC in summer. What was around you (trees, pavement, buildings, water)?</p><div class="ans">Expect pavement, subway platforms, no shade. Save answers for Day 2.</div></div>
+      <div class="card"><div class="lbl">Option C · Albedo spiral</div><p>On a sunny day, which gets hotter, a black parking lot or a grass field? Why?</p><div class="ans">The parking lot: dark surfaces absorb more sunlight (low albedo), and no water evaporates to cool it.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Where on the map is the risk highest? Lowest? Are they far apart?</li>
+      <li>What might be different about the land in the high-risk areas compared with the low-risk areas?<span>Plants trees and pavement for Day 2.</span></li>
+      <li>Two people live on the same block during a heat wave. Why might one be in more danger?<span>AC, age, health, top-floor apartment, outdoor job.</span></li>
+      <li>Is vulnerability only about temperature? What else could go into it?</li>
+      <li>How could heat affect organisms other than humans?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the map · hinge question</div>
+      <h4>The NYC Heat Vulnerability Index shows…</h4>
+      <ul class="opts">
+        <li>A. the temperature in each neighborhood on the hottest day<em>Vulnerability is more than temperature.</em></li>
+        <li class="right">B. how likely people in each neighborhood are to be harmed by heat<em>Correct.</em></li>
+        <li>C. which neighborhoods have the most air conditioners<em>AC is one factor, not the whole index.</em></li>
+        <li>D. where heat waves start<em>Heat waves cover the whole region.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Global Urban Heat Islands</div>
+      <h4>An urban heat island is…</h4>
+      <ul class="opts">
+        <li>A. global warming happening faster in cities<em>Confuses local and global; heat islands exist even without climate change.</em></li>
+        <li>B. an island city surrounded by warm ocean water<em>Literal reading of "island."</em></li>
+        <li class="right">C. a city area that is hotter than the land around it because of how the land is used<em>Correct.</em></li>
+        <li>D. a neighborhood where the Sun shines longer<em>Daylight is the same across a city.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Heat in NYC<small>packet pp. 70–71 · sample responses</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">Video key points (p. 70)</p><p class="aa">Day after day of extreme heat; people cool off in pools, at sprinklers and hydrants, in cooling centers and with AC; warnings to check on older neighbors and people with health problems; heat is a health risk, not just discomfort.</p></div>
+      <div class="qa"><p class="qq">Image jot (p. 70)</p><p class="aa">Risk is not even: high-risk neighborhoods cluster together (look for parts of the Bronx, northern Manhattan and central Brooklyn on your copy), while lower-risk areas are more suburban. Wonder: why are neighborhoods next to each other so different?</p></div>
+      <div class="qa"><p class="qq">Q1. What information would you need to evaluate solutions to the problem of heat vulnerability? (p. 71)</p><p class="aa">How much hotter each neighborhood gets; what covers the land (trees, parks, pavement, building types, zoning); how much energy buildings use; who has air conditioning; ages, health and income of residents; how many people die or get sick during heat waves in each place; how much solutions cost and how well they worked elsewhere.</p></div>
+      <div class="note"><b>Look and listen for (teacher guide):</b> Why are some places more vulnerable in the same city? · Are some areas heating more than others, and why? · What goes into the HVI? · Can we reduce heating locally? · Are people with underlying conditions more vulnerable? · What other parts of the system are affected by heat?</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Give one reason two neighborhoods in the same city could have different heat risk.</p><div class="ans">Different tree cover or pavement, AC access, income, age of residents.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Most NYC heat deaths happen to people with heart or lung disease. Why would heat be more dangerous for them?</p><div class="ans">The body works harder to cool itself (faster heartbeat, more breathing), which strains already weak organs.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>My Block in a Heat Wave</h4>
+      <p>Draw a bird's-eye map of the block where you live (or one you know well). Label every surface: roofs, sidewalk, street, trees, grass, water. Color what you think would be the <b>hottest</b> spots red and the <b>coolest</b> blue.</p>
+      <ul class="checks">
+        <li>At least 5 labeled surfaces</li>
+        <li>A key for hot and cool</li>
+        <li>One sentence: who on your block might be most at risk in a heat wave and why</li>
+        <li>"I chose…" note: why you colored the hottest spot red</li>
+      </ul>
+      <p class="why">No addresses needed; a generic block is fine.</p>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#overview"><small>Back</small>← Before you teach</a><a class="next" href="#day-2"><small>Next</small>Day 2 · Collecting Data →</a></div>
+</div>
+
+<!-- ===================== DAY 2 ===================== -->
+<div class="view" id="day-2" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 2 · Explore</div>
+    <h2>Land Use and Heat in NYC: Collecting Data</h2>
+    <p class="q">How has the change in land use in New York City over the past 400 years contributed to the heat island effect?</p>
+    <div class="tags"><span class="tag">Packet p. 73: Part 1, Q1–4 + Table 1</span><span class="tag">Table groups</span><span class="tag">Welikia · NYC Land Use Maps 1–5 · Heat Index Variable Descriptors</span><span class="tag"><a href="../unit6-sustainable-future/unit6-land_use_and_biodiversity.html">Chapter: Explore</a></span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>In 1609 Manhattan was forests, wetlands, streams and shoreline marsh. Today almost all of it is buildings and pavement; even Central Park is a rebuilt landscape.</li>
+      <li>NYC is hotter than its natural baseline, and the extra heat varies by neighborhood (Map 1).</li>
+      <li>Zoning (Map 2), tree cover (Map 3) and energy use (Map 4) also vary, and they line up with heat.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">5–12</div><div><h4>Launch video</h4><p>Remind students the HVI map showed heat risk is unevenly distributed. Show <b>Poor neighborhoods are hotter than rich ones – especially during heat waves</b> (CNBC, 2021). Students brainstorm what might be contributing to heat deaths; chart it.</p></div></li>
+      <li><div class="t">12–15</div><div><h4>Five focus neighborhoods</h4><p>Hand out Map 5 or project <b>NYC Neighborhoods</b>. Point out Central Park, Mott Haven–Port Morris (Bronx), Midtown–Midtown South (Manhattan), Glen Oaks–Floral Park–New Hyde Park (Queens) and Prospect Lefferts Gardens–Wingate (Brooklyn). Fix the "wingar" typo now.</p></div></li>
+      <li><div class="t">15–27</div><div><h4>Welikia as a class (Q1–2)</h4><p>Project Welikia. Drag the slider for Midtown and Central Park, then search one or two neighborhoods students pick. Students record observations for Q1 and the overall trend for Q2.</p><p class="say">"This map shows what the land looked like before European colonization. 'Excess heat' on our maps means: compared to if it were still like this."</p></div></li>
+      <li><div class="t">27–45</div><div><h4>Maps 1–4 → Table 1 (groups)</h4><p>Students circle each neighborhood on Maps 1–4 (Q3), then fill Table 1 (Q4): tree cover %, majority and minority zoning, energy use range, heat increase. Pause the class after each map so everyone reads the key the same way. Confer (questions below).</p></div></li>
+      <li><div class="t">45–50</div><div><h4>Quick share + exit slip</h4><p>Which neighborhood is hottest? Coolest? What else is different about them?</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Homework share</div><p>Look at your heat-wave block map. Name the hottest surface and the coolest surface you drew.</p><div class="ans">Typical: roof or street hottest; under trees, grass or near water coolest.</div></div>
+      <div class="card"><div class="lbl">Option B · Prediction</div><p>What do you think the land under your school looked like 400 years ago?</p><div class="ans">Forest, wetland, stream or meadow depending on location. Check in Welikia if your school is in its map area.</div></div>
+      <div class="card"><div class="lbl">Option C · Albedo</div><p>Albedo is the fraction of sunlight a surface reflects. Rank from highest to lowest albedo: fresh snow, asphalt, grass.</p><div class="ans">Snow &gt; grass &gt; asphalt.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>How has the land in Manhattan changed over 400 years? What happened to the organisms that lived on it?</li>
+      <li>Which areas are hotter? Less hot? How big is the difference between the hottest and coolest parts?</li>
+      <li>What do you think manufacturing zones look like? Commercial? Residential? What surfaces do they have?</li>
+      <li>Which zones are most likely to have the most trees? The fewest? What makes you think that?</li>
+      <li>Have you ever stood under a tree on a hot day? What did it feel like?</li>
+      <li>What could energy use have to do with heat?<span>Buildings and AC give off waste heat.</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Welikia</div>
+      <h4>Which change since 1609 most directly made Manhattan hotter?</h4>
+      <ul class="opts">
+        <li>A. Manhattan moved closer to the equator<em>Land doesn't move on this time scale.</em></li>
+        <li class="right">B. Forests and wetlands were replaced by pavement and buildings<em>Correct.</em></li>
+        <li>C. More rivers were added around the island<em>Streams were actually buried and the shoreline filled in.</em></li>
+        <li>D. The Sun got stronger<em>Solar output hasn't changed meaningfully; we ruled that out in Unit 4.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Maps 1–3</div>
+      <h4>On the maps, neighborhoods with more tree cover tend to have…</h4>
+      <ul class="opts">
+        <li class="right">A. less extra heat<em>Correct: shade and evapotranspiration.</em></li>
+        <li>B. more extra heat<em>Reversed.</em></li>
+        <li>C. the same heat; trees only affect wildlife<em>Ignores cooling.</em></li>
+        <li>D. more manufacturing zones<em>Manufacturing zones usually have the fewest trees.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 1: Collecting Data, Q1–4<small>packet p. 73 · read exact values from your Maps 1–4</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">Q1. Welikia observations</p><p class="aa">1609: forested hills, wetlands, streams, ponds, salt marsh along the shore. Now: street grid, buildings and pavement almost everywhere. Central Park is green but was reshaped; Midtown has no natural land cover left.</p></div>
+      <div class="qa"><p class="qq">Q2. Overall, how has NYC land changed since 1609?</p><p class="aa">Natural forest and wetland (with many species) were replaced by buildings, pavement and a few parks. Streams were buried and shorelines filled. The land went from absorbing and evaporating water to sealed, dark surfaces.</p></div>
+      <div class="qa"><p class="qq">Q3. Circle the neighborhoods on Maps 1–4</p><p class="aa">Check that circles land on the right areas (use Map 5 or NYC Neighborhoods).</p></div>
+      <div class="qa"><p class="qq">Q4. Table 1: Land Use Conditions by Neighborhood (expected pattern)</p>
+        <div class="scroll"><table><thead><tr><th>Neighborhood</th><th>Tree cover</th><th>Zoning (majority / minority)</th><th>Energy use</th><th>Heat increase</th></tr></thead><tbody>
+          <tr><td>Central Park</td><td>High</td><td>Park / none</td><td>Lowest</td><td>Lowest</td></tr>
+          <tr><td>Mott Haven–Port Morris</td><td>Low</td><td>Manufacturing / residential</td><td>Medium–high</td><td>High</td></tr>
+          <tr><td>Midtown–Midtown South</td><td>Very low</td><td>Commercial / (varies)</td><td>Highest</td><td>High</td></tr>
+          <tr><td>Glen Oaks–Floral Park–New Hyde Park</td><td>Higher</td><td>Residential / (varies)</td><td>Low</td><td>Low</td></tr>
+          <tr><td>Prospect Lefferts Gardens–Wingate</td><td>Low–moderate</td><td>Residential / (varies)</td><td>Medium</td><td>Medium–high</td></tr>
+        </tbody></table></div>
+        <p class="aa">Accept the values students read from your maps as long as the pattern holds: least trees + manufacturing/commercial + high energy = most heat.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Pick the hottest of the five neighborhoods. List two land-use facts from Table 1 that could explain it.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Do you think the change since 1609 is reversible? Give one reason.</p><div class="ans">Not fully: millions of people and buildings, buried streams, lost species. Parts can be greened.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Then and Now</h4>
+      <p>Fold a page in half. Left side: draw one of the five neighborhoods as you think it looked in <b>1609</b> (use your Welikia notes). Right side: the same place <b>today</b> (use Table 1). Draw a thermometer on each side showing which is hotter.</p>
+      <ul class="checks">
+        <li>At least 3 labeled features on each side (e.g., wetland, forest, warehouse, highway)</li>
+        <li>Arrows showing sunlight absorbed vs. reflected on at least one surface per side</li>
+        <li>One sentence on what happened to the organisms</li>
+        <li>"I chose…" note: why you picked <b>this</b> neighborhood</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-1"><small>Back</small>← Day 1 · Heat in NYC</a><a class="next" href="#day-3"><small>Next</small>Day 3 · Computational Models →</a></div>
+</div>
+
+<!-- ===================== DAY 3 ===================== -->
+<div class="view" id="day-3" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 3 · Explore</div>
+    <h2>Creating Computational Models</h2>
+    <p class="q">Can we write rules that predict how much hotter each neighborhood is?</p>
+    <div class="tags"><span class="tag">Packet pp. 73–76: Part 2, Q5–16 + Tables 3 and 5</span><span class="tag">Pairs</span><span class="tag">Urban Heat Island Effect Computational Model Builder</span><span class="tag">Heat Index Variable Descriptors · Tree Count Spreadsheet</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Tree cover and park zones <b>lower</b> heat; manufacturing, commercial and (less) residential zones <b>raise</b> it; more energy use raises it.</li>
+      <li>A computational model gives each factor a <b>weight</b>; you test it against real data (Map 1) and adjust.</li>
+      <li>The Model Builder's heat formula: <b>Heat increase = tree contribution + zone contribution + energy contribution</b>.</li>
+      <li>Adding the number of tree species turns the heat model into a <b>sustainability</b> model.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–10</div><div><h4>Why a computational model?</h4><p>Ask: <i>From the maps, can you say exactly how much each factor matters?</i> (No.) Remind them of past multi-variable models: Unit 1 exoplanet calculations, the carbon dioxide modeling in Fossil Fuels. Turn and talk: <i>How would changing each variable affect heat?</i></p></div></li>
+      <li><div class="t">10–18</div><div><h4>Q5 with Heat Index Variable Descriptors</h4><p>Pairs circle increase/decrease and a lot/a little for each factor and explain. Spiral review: <b>albedo</b> (Unit 3). Share out quickly.</p></div></li>
+      <li><div class="t">18–35</div><div><h4>Model Builder Steps 1–2 (Q6–11)</h4><p>Pairs open the Model Builder, set sliders to match Q5 (Q7), add the five neighborhoods from Table 1 (Q8; enter the Map 1 heat value in the measured field so the error tile works), and tune until the average error is small (Q9–10). Then they open <b>Computational Formula</b> and copy it (Q11). Stop here.</p></div></li>
+      <li><div class="t">35–40</div><div><h4>Biodiversity pause</h4><p>Ask what it took to get a good fit and whether the model is missing anything. Then: <i>Which neighborhoods probably have the most biodiversity?</i> Introduce the <b>number of tree species</b> as one proxy for biodiversity in cities.</p></div></li>
+      <li><div class="t">40–48</div><div><h4>Step 3: Biodiversity (Q12–16)</h4><p>Turn on biodiversity indicators, set the tree diversity weight (Q12), enter species counts from the Tree Count Spreadsheet (Q13–14), copy the new formula (Q15) and fill Table 5 (Q16). <i>Flex</i>: finish Q15–16 at the start of Day 4.</p></div></li>
+      <li><div class="t">48–50</div><div><h4>Save!</h4><p>Everyone saves the model file or writes all weights in Table 3. They need it on Days 6 and 8.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Model warm-up</div><p>Your energy at the end of the day goes up with sleep and food and down with exercise. Write a simple equation for it.</p><div class="ans">E = S × F ÷ P (or S + F − P). Things that increase get multiplied or added; things that decrease divide or subtract.</div></div>
+      <div class="card"><div class="lbl">Option B · Table 1</div><p>From Table 1, which factor seems to matter most for heat: trees, zoning or energy? Why?</p><div class="ans">Any defended answer; today's model tests it.</div></div>
+      <div class="card"><div class="lbl">Option C · Trees</div><p>Name two ways a tree cools the air around it.</p><div class="ans">Shade; evapotranspiration (water evaporating from leaves).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>How did you choose where to put each slider?</li>
+      <li>Your model says Midtown is +3 °F but Map 1 says much more. Which slider would you change first? Why?</li>
+      <li>Is your model matching the real heat numbers? How do you know?<span>Point to the "Average Error vs. Heat Island Map" tile.</span></li>
+      <li>Should the tree slider be positive or negative? What would a positive value mean?</li>
+      <li>How does having more tree species affect biodiversity? Why might it matter for birds, insects, soil?</li>
+      <li>What is the relationship between sustainability, biodiversity and the heat island effect?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Q5</div>
+      <h4>Which slider setting fits the evidence best?</h4>
+      <ul class="opts">
+        <li>A. Tree cover: positive (adds heat)<em>Sign error: trees cool.</em></li>
+        <li class="right">B. Manufacturing: large positive; Parks: negative<em>Correct.</em></li>
+        <li>C. All zones the same value<em>Ignores differences in roofs, pavement and waste heat.</em></li>
+        <li>D. Energy use: zero for every level<em>Ignores waste heat from buildings.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After tuning</div>
+      <h4>Your model's heat score for a neighborhood is 4 °F, but Map 1 shows 9 °F. The best next step is to…</h4>
+      <ul class="opts">
+        <li>A. change Map 1 to match the model<em>Data doesn't change to fit a model.</em></li>
+        <li class="right">B. adjust the weights of the factors that neighborhood has a lot of, then re-check all neighborhoods<em>Correct: one change affects every prediction.</em></li>
+        <li>C. delete the neighborhood<em>Throws away evidence.</em></li>
+        <li>D. nothing; models are never right<em>Models can be improved.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Part 2: Creating Computational Models, Q5–16<small>packet pp. 73–76</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">Q5. How each factor affects temperature</p>
+        <div class="scroll"><table><thead><tr><th>Factor</th><th>Effect</th><th>Because</th></tr></thead><tbody>
+          <tr><td>Tree cover</td><td>Decrease · a lot</td><td>Shade keeps surfaces from absorbing sunlight; evapotranspiration cools the air.</td></tr>
+          <tr><td>Manufacturing zones</td><td>Increase · a lot</td><td>Large dark roofs, pavement and lots, few trees, machinery and waste heat.</td></tr>
+          <tr><td>Commercial zones</td><td>Increase · a lot (accept a little)</td><td>Dense buildings and pavement, heavy energy use; tall buildings trap heat and block wind.</td></tr>
+          <tr><td>Residential zones</td><td>Increase · a little</td><td>Buildings and streets, but more yards and street trees.</td></tr>
+          <tr><td>Park zones</td><td>Decrease · a lot</td><td>Vegetation, soil and water; higher albedo and evapotranspiration.</td></tr>
+          <tr><td>Energy use</td><td>Increase (more use = more heat)</td><td>Buildings, AC and machines release waste heat.</td></tr>
+        </tbody></table></div></div>
+      <div class="qa"><p class="qq">Q7. Position the sliders</p><p class="aa">Signs should match Q5: tree negative, parks negative, residential &lt; commercial &lt; manufacturing (all positive), energy weights increasing from the lowest to the highest range.</p></div>
+      <div class="qa"><p class="qq">Q9. Does your model match Map 1?</p><p class="aa">First tries usually don't. Good answers name which neighborhood is off, in which direction, and which weight to change (e.g., "Midtown is too low, so the 1,750–5,000 energy range needs a bigger weight").</p></div>
+      <div class="qa"><p class="qq">Q10. Table 3 (one example of a fitted set, not the only answer)</p><p class="aa">Tree cover −1.0 per 10% · Residential +2 · Commercial +4 · Manufacturing +6 · Parks −2 · Energy 0, +1, +2, +3, +4 for the five ranges. Grade on signs, order and fit to Map 1, not exact values.</p></div>
+      <div class="qa"><p class="qq">Q11. The equation (Computational Formula panel)</p><p class="aa"><b>Heat increase = (tree-cover midpoint ÷ 10 × tree weight) + zone weight (average of the two if a neighborhood has two zones) + energy-range weight</b>, capped between 0 and 14 °F. Students write it with their own weights.</p></div>
+      <div class="qa"><p class="qq">Q12. Tree diversity weight</p><p class="aa">Should be positive (more species = more habitat = more sustainable). Any reasoned value.</p></div>
+      <div class="qa"><p class="qq">Q15. How the formula changed</p><p class="aa">A Sustainability Score appears: <b>start at 50 + (tree types × diversity weight) + (tree % × 0.5) ± zone bonus/penalty (Parks +10, Residential −5, Commercial −10, Manufacturing −15) − 4 × energy level (1–5)</b>, kept between 0 and 100. The heat formula itself doesn't change.</p></div>
+      <div class="qa"><p class="qq">Q16. Table 5 pattern</p><p class="aa">Central Park: lowest heat, highest sustainability. Glen Oaks: low heat, high sustainability. Prospect Lefferts Gardens–Wingate: middle. Mott Haven–Port Morris and Midtown: highest heat, lowest sustainability. Heat and sustainability move in opposite directions.</p></div>
+      <div class="note"><b>Look and listen for (teacher guide):</b> tree cover decreases heat (shade and evapotranspiration) · parks heat less than residential and commercial, which heat less than manufacturing (more dark surfaces) · more energy use = more heat · park zones and areas with more trees probably have more biodiversity.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Write your heat equation in words. Which weight did you change most to get a good fit, and why?</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Two neighborhoods have the same zoning and energy use, but one has 40% tree cover and the other 10%. What does your model predict?</p><div class="ans">The 40% one is cooler by 3 × your tree weight (e.g., 3 °F if the weight is −1 per 10%).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Heat Recipe Card</h4>
+      <p>Draw a "recipe card" for making a neighborhood hot. Each ingredient is one factor from your model, drawn as a picture with <b>your</b> weight from Table 3 written next to it (e.g., "+6 manufacturing"). Then draw a second card for a <b>cool</b> neighborhood.</p>
+      <ul class="checks">
+        <li>All four factors on each card, with your actual weights</li>
+        <li>Your heat equation written at the bottom of the hot card</li>
+        <li>One sentence on why trees have a negative sign</li>
+        <li>"I chose…" note: the one weight you changed most while tuning, and what it fixed</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-2"><small>Back</small>← Day 2 · Collecting Data</a><a class="next" href="#day-4"><small>Next</small>Day 4 · Making Sense →</a></div>
+</div>
+
+<!-- ===================== DAY 4 ===================== -->
+<div class="view" id="day-4" data-phase="explore" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 4 · Explore → Explain launch</div>
+    <h2>Making Sense of Land Use and Heat</h2>
+    <p class="q">What did our model show, and what is it missing?</p>
+    <div class="tags"><span class="tag">Packet pp. 77–79: Making Sense</span><span class="tag">Individual → groups</span><span class="tag">Domino Discover</span><span class="tag">Investigation Rubric (SY 26-27)</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Land is the natural resource; urbanization replaced forest and wetland with heat-absorbing surfaces.</li>
+      <li>The change is <b>irreversible</b> on human time scales, but the system can be <b>stabilized</b>.</li>
+      <li>Heat in the model and vulnerability on the HVI don't match everywhere, because vulnerability includes social factors.</li>
+      <li>The variables are linked: changing one changes others (the setup for feedback loops).</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option, or finish Q15–16 from Day 3 (<i>flex</i>).</p></div></li>
+      <li><div class="t">4–20</div><div><h4>Making Sense, individually</h4><p>See-Think-Wonder, relationship questions and Summary Q1–5 (pp. 77–78).</p></div></li>
+      <li><div class="t">20–30</div><div><h4>Analyze and Evaluate your model (groups)</h4><p>Q1–3 (pp. 78–79). Put the HVI map next to Table 5. Ask: <i>Where does your model disagree with the HVI? Why?</i></p></div></li>
+      <li><div class="t">30–40</div><div><h4>Domino Discover</h4><p>Surface trends, inferences and questions. Make sure the Look and Listen For ideas in the key come out; if not, send groups back to the maps and model with a conferring question.</p></div></li>
+      <li><div class="t">40–45</div><div><h4>Investigation Rubric</h4><p>Students self- and peer-assess on the <b>Land Use and Heat in New York City Investigation Rubric</b>.</p></div></li>
+      <li><div class="t">45–50</div><div><h4>Explain launch + exit slip</h4><p class="say">"Our goal is reducing heat deaths. Here's a complication: the variables depend on each other. Neighborhoods with more manufacturing also have fewer trees and use more energy. Next class we'll map how they push on each other."</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Data read</div><p>From Table 5, which neighborhood had the lowest sustainability score? Give one reason from the data.</p></div>
+      <div class="card"><div class="lbl">Option B · Vocabulary</div><p>In your own words, what makes a habitat "sustainable"?</p><div class="ans">It can keep meeting the needs of the people and organisms there, now and in the future.</div></div>
+      <div class="card"><div class="lbl">Option C · Reversibility</div><p>Could Midtown ever look like it did in 1609? Why or why not?</p><div class="ans">Not realistically: buildings, people, buried streams, lost species and soils.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Which neighborhood does your model think is hottest? Is it also highest on the HVI?</li>
+      <li>If a very hot neighborhood is not the highest on the HVI, what could explain that?<span>Fewer residents, more AC, higher incomes, people leave at night.</span></li>
+      <li>What does your model leave out that would affect who gets sick?</li>
+      <li>Which variables seem to go together? Why do you think they are linked?</li>
+      <li>If you could change only one number in the equation for a neighborhood, which would help most?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Summary Q1</div>
+      <h4>In this investigation, the natural resource being changed is…</h4>
+      <ul class="opts">
+        <li>A. electricity<em>Energy use is a variable, not the resource being converted.</em></li>
+        <li class="right">B. land (and the forests and wetlands on it)<em>Correct.</em></li>
+        <li>C. air conditioning<em>A technology, not a natural resource.</em></li>
+        <li>D. sunlight<em>Sunlight is the same; how the land absorbs it changed.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Analyze Q2</div>
+      <h4>Which is a real limitation of the heat model for predicting health outcomes?</h4>
+      <ul class="opts">
+        <li>A. It includes tree cover<em>That's a strength.</em></li>
+        <li class="right">B. It leaves out who has air conditioning, age, health and income<em>Correct: these drive vulnerability.</em></li>
+        <li>C. It uses numbers<em>Numbers are the point of a computational model.</em></li>
+        <li>D. It was built by students<em>Who built it doesn't make it wrong; it's tested against data.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>See-Think-Wonder and relationships<small>packet p. 77 · sample responses</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">See / Think / Wonder</p><p class="aa"><b>See:</b> neighborhoods with fewer trees, more manufacturing or commercial land and more energy use are hotter; Central Park and Glen Oaks are coolest. <b>Think:</b> how we use land controls how much heat it absorbs and releases. <b>Wonder:</b> Why do poorer areas have fewer trees? Would planting trees be enough? What about building height or wind?</p></div>
+      <div class="qa"><p class="qq">What relationships do you observe between land use variables? Why?</p><p class="aa">Manufacturing and commercial zones have the least tree cover and the most energy use; residential and park zones have more trees. Industry and offices pave land for buildings, loading and parking, and run machines and cooling all day. Trees need open soil, which dense zones don't leave.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Summarize the Problem, Q1–5<small>packet pp. 77–78</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">1. What was the natural resource we observed?</p><p class="aa">Land (its forests, wetlands, soil and the organisms they supported).</p></div>
+      <div class="qa"><p class="qq">2. How have human population and urbanization altered that resource?</p><p class="aa">Cleared forests, filled wetlands and buried streams; covered land with dark pavement and buildings; cut tree cover and species; added energy use and waste heat. The land now absorbs more sunlight and evaporates less water, so it's hotter.</p></div>
+      <div class="qa"><p class="qq">3. Are these impacts reversible?</p><p class="aa">Not fully, not on human time scales: millions of people depend on the buildings and infrastructure, natural soils and streams are gone, and many native species are lost locally. Parts can be improved (trees, parks, green roofs), which stabilizes the system without restoring it.</p></div>
+      <div class="qa"><p class="qq">4. How has this alteration impacted human health?</p><p class="aa">Hotter neighborhoods mean more heat illness and more deaths, mostly from heat worsening heart and lung disease. NYC Health now estimates about 500 premature deaths a year (packet: 350). The burden is heaviest where there is less green space and less AC access.</p></div>
+      <div class="qa"><p class="qq">5. Is NYC a sustainable habitat? What goes into sustainability?</p><p class="aa">Partly. Some neighborhoods (more trees, parks) are more sustainable than others. Sustainability depends on resources like clean air, water, energy and green space; biodiversity; human health; and whether future generations can still meet their needs.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Analyze and Evaluate your model, Q1–3<small>packet pp. 78–79</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">1. Compare relative heat to the Vulnerability Index</p><p class="aa">Expect Mott Haven–Port Morris to be high on both (a match) and Glen Oaks low on both. Look for a mismatch like Midtown: very hot in the model, but check its HVI category on your map; where it is lower, that is because the HVI also counts who lives there (residents, AC access, income). Heat alone doesn't predict vulnerability.</p></div>
+      <div class="qa"><p class="qq">2. Limitations of the model</p><p class="aa">Leaves out AC access, income, age, pre-existing illness, population density, building height and wind, roof color, nearby water, humidity and weather. Uses rough ranges (bucket midpoints), weights we chose by fitting just five neighborhoods, and map resolution. A good fit is not proof of cause.</p></div>
+      <div class="qa"><p class="qq">3. Where to change the equation to reduce heat stress</p><p class="aa">Raise tree cover (bigger cooling term), turn land into parks or green space, cut building energy use (efficiency, cooler roofs), and use light-colored or green roofs. Outside the equation: give people AC and cooling centers.</p></div>
+      <div class="note"><b>Look and listen for (teacher guide, Domino Discover):</b> NYC changed from natural tree-covered land to a dense city · big differences in extra heat from heat islands · land is a natural resource · the change likely can't be fully reversed · the heat island harms human health · other factors (traffic, building height, wind) may matter · adjusting tree cover may reduce heat · NYC could be a more sustainable habitat.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Name one variable that depends on another ("when ___ goes up, ___ goes up/down"). Explain why.</p><div class="ans">Heat ↑ → AC/energy use ↑; trees ↓ in manufacturing zones; paving ↑ → biodiversity ↓.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Why could two neighborhoods with the same heat score have different heat death rates?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>What My Model Can't See</h4>
+      <p>Draw two people in the same hot neighborhood during a heat wave, side by side. Surround each with drawings of the things that make them <b>more</b> or <b>less</b> at risk, including at least two that your model does <b>not</b> include.</p>
+      <ul class="checks">
+        <li>The neighborhood's heat score from your Table 5 written at the top</li>
+        <li>At least 4 risk factors drawn and labeled</li>
+        <li>Each factor marked "in my model" or "not in my model"</li>
+        <li>"I chose…" note: which missing factor you would add to the model first and why</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-3"><small>Back</small>← Day 3 · Computational Models</a><a class="next" href="#day-5"><small>Next</small>Day 5 · Feedback Loops →</a></div>
+</div>
+
+
+<!-- ===================== DAY 5 ===================== -->
+<div class="view" id="day-5" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 5 · Explain</div>
+    <h2>Analyzing Feedback Mechanisms</h2>
+    <p class="q">How does land use in New York City contribute to heat-related deaths?</p>
+    <div class="tags"><span class="tag">Handout: Explaining Land Use, Heat, and Human Health · feedback-loop scenarios</span><span class="tag">Summary Task</span><span class="tag">Table groups</span><span class="tag">Class Consensus Discussion</span><span class="tag"><a href="../unit6-sustainable-future/unit6-land_use_and_biodiversity.html">Chapter: Explain</a></span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>A <b>feedback loop</b> is when a change causes other changes that come back to affect the first one.</li>
+      <li>Heat → more AC → more waste heat → more heat is a <b>reinforcing</b> loop that <b>destabilizes</b> the city.</li>
+      <li>More trees → cooler → less energy use → cooler still, plus more biodiversity: loops that <b>stabilize</b> the city.</li>
+      <li>Paving (urbanization) pushes every part of the system toward hotter, less diverse and less sustainable.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–5</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">5–10</div><div><h4>Launch</h4><p>Our goal is solutions to heat deaths. Ask: <i>Which variables from our model might be related to each other?</i> Chart pairs students name (trees–heat, heat–energy, zone–trees).</p></div></li>
+      <li><div class="t">10–30</div><div><h4>Feedback scenarios (table groups)</h4><p>Model Scenario 1 (worked example: temperature ↔ energy use) under the document camera. Groups do the remaining scenarios, finishing with <b>Scenario 4 (urbanization/paving increases)</b>. For Scenario 4 they decide which variables interact, whether each link is one-way or two-way (a loop), draw arrows and caption them. Tell them: there is no single right diagram, and every group will present Scenario 4.</p></div></li>
+      <li><div class="t">30–45</div><div><h4>Class Consensus Discussion: Scenario 4</h4><p>Two or three groups present; the class agrees on a <b>Class Consensus Model</b> on chart paper. Push on: <i>Which loops make things worse and worse? Is any loop slowing things down?</i></p></div></li>
+      <li><div class="t">45–50</div><div><h4>Summary Task (start)</h4><p>Students start Q1–2 of the Summary Task; finish for homework if needed (<i>flex</i>).</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Feedback in daily life</div><p>You're cold, so you shiver; shivering warms you; then you stop shivering. Is this loop making the change bigger or smaller?</p><div class="ans">Smaller: a balancing (stabilizing) loop.</div></div>
+      <div class="card"><div class="lbl">Option B · Spiral (Unit 4)</div><p>Ice melts → darker ocean absorbs more heat → more ice melts. What kind of feedback is this?</p><div class="ans">Reinforcing (positive) feedback; it amplifies warming.</div></div>
+      <div class="card"><div class="lbl">Option C · Model check</div><p>In your model, what happens to heat if a neighborhood moves to a higher energy-use range?</p><div class="ans">Heat goes up by the difference in your energy weights.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Does this arrow go both ways? What's the evidence that B also changes A?</li>
+      <li>When it gets hotter, what do people do? What does that do to the air outside?</li>
+      <li>If trees go up, what happens to energy use? Then what happens to heat?</li>
+      <li>In Scenario 4, which variable changes first? Follow it around: does it come back stronger or weaker?</li>
+      <li>Is this loop stabilizing or destabilizing the city as a habitat?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Scenario 1</div>
+      <h4>Hotter weather → more air conditioning → more waste heat outside → hotter weather. This loop…</h4>
+      <ul class="opts">
+        <li>A. stabilizes the city because people stay cool inside<em>Indoors yes, but the system outside heats up.</em></li>
+        <li class="right">B. reinforces the heating and destabilizes the city<em>Correct.</em></li>
+        <li>C. has no effect because AC moves heat, it doesn't make it<em>AC moves heat outside and adds heat from its own power use.</em></li>
+        <li>D. only matters in winter<em>Wrong season.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Scenario 4</div>
+      <h4>When paving increases, which set of changes is expected?</h4>
+      <ul class="opts">
+        <li class="right">A. Tree cover ↓, biodiversity ↓, temperature ↑, energy use ↑<em>Correct.</em></li>
+        <li>B. Tree cover ↓, temperature ↓<em>Pavement absorbs heat and removes cooling.</em></li>
+        <li>C. Biodiversity ↑ because new habitats form<em>A few species adapt, but diversity drops overall.</em></li>
+        <li>D. Energy use ↓ because there are fewer trees to water<em>Cooling demand rises.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <div class="note"><b>Labeling:</b> this guide could not read the SY 26-27 Explain pages. Scenario numbers below follow the SY 25-26 handout (1 temperature, 2 tree cover, 3 biodiversity, 4 urbanization). The SY 26-27 teacher guide confirms Scenario 4 is urbanization; check the others against your copy.</div>
+    <details class="key"><summary><span>Feedback scenarios<small>Explaining Land Use, Heat, and Human Health · sample diagrams in words</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">Scenario 1. Temperature increases (worked example)</p><p class="aa">Temperature ↑ → AC/energy use ↑ (people cool indoors) → waste heat ↑ → temperature ↑. Two-way arrow: a reinforcing loop that destabilizes.</p></div>
+      <div class="qa"><p class="qq">Scenario 2. Tree cover increases</p><p class="aa">Tree cover ↑ → temperature ↓ (shade, transpiration) → energy use ↓ → less waste heat → temperature ↓ further. Tree cover ↑ → biodiversity ↑ (homes and food for birds, insects, soil life). Tree cover ↑ → CO₂ ↓ (global). Stabilizing for the city.</p></div>
+      <div class="qa"><p class="qq">Scenario 3. Biodiversity increases</p><p class="aa">Biodiversity ↑ → healthier soil, more pollination and seed spread → tree cover ↑ → temperature ↓ → energy use ↓. Two-way arrow between trees and biodiversity (they support each other).</p></div>
+      <div class="qa"><p class="qq">Scenario 4. Urbanization/paving increases</p><p class="aa">Paving ↑ → tree cover ↓ → biodiversity ↓ (and biodiversity ↓ → fewer trees: loop). Paving ↑ → temperature ↑ (dark surfaces absorb sunlight, no evapotranspiration). Temperature ↑ ↔ energy use ↑ (AC loop). Temperature ↑ → stress on remaining trees → tree cover ↓ → temperature ↑ (loop). Captions should give the reason for each arrow. Overall: several reinforcing loops; the city becomes hotter, less diverse and less sustainable.</p></div>
+      <div class="qa"><p class="qq">How do trees create or interrupt feedback loops? (SY 25-26 Part 5 Q1)</p><p class="aa">Trees interrupt the heat → AC → heat loop by cooling the area, so less energy is used. They start their own stabilizing loops: trees → biodiversity → healthier soil and pollination → more trees. Removing trees lets the heating loops run unchecked.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Summary Task, Q1–2<small>sample responses</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">1. Represent the relationships between responsible use of natural resources (like land) and the sustainability of human societies.</p><p class="aa">Model, diagram or paragraph showing: keep or add green land (trees, parks) → cooler, more biodiversity, less energy use → healthier people and ecosystems → sustainable. Paving and clearing land → hotter, fewer species, more energy → more heat deaths → less sustainable. Strong answers include at least one loop and a number from their model.</p></div>
+      <div class="qa"><p class="qq">2. How can technologies stabilize or destabilize systems, with unanticipated impacts?</p><p class="aa">Air conditioning saves lives indoors but dumps heat outside and burns more fuel (more heat, more CO₂, more air pollution), which nobody planned. Asphalt and buildings provide roads and housing but created heat islands. Green technologies (green roofs, cool roofs, street trees) can stabilize the system, but cost money and need upkeep.</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Draw one loop from Scenario 4 with arrows and say whether it stabilizes or destabilizes.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>Which single variable would you change to break the most loops in Scenario 4? Why?</p><div class="ans">Tree/green cover, because it touches temperature, energy use and biodiversity.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Loop Comic</h4>
+      <p>Draw a 4-panel comic that follows one reinforcing loop from your group's Scenario 4 all the way around, so that panel 4 leads back to panel 1. Then, in a fifth small panel, draw how one change could <b>break</b> the loop.</p>
+      <ul class="checks">
+        <li>Each panel names the variable and shows it going up or down</li>
+        <li>A reason for each arrow (e.g., "dark roof absorbs sunlight")</li>
+        <li>Panel 5 labeled "stabilizing"</li>
+        <li>"I chose…" note: which loop from <b>your group's chart</b> you drew and why it worries you most</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-4"><small>Back</small>← Day 4 · Making Sense</a><a class="next" href="#day-6"><small>Next</small>Day 6 · Intervening in Systems →</a></div>
+</div>
+
+<!-- ===================== DAY 6 ===================== -->
+<div class="view" id="day-6" data-phase="explain" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 6 · Explain</div>
+    <h2>Intervening in Systems: Green Corridors</h2>
+    <p class="q">Which parts of the system could we change to make the city more sustainable?</p>
+    <div class="tags"><span class="tag">Handout: Explaining Land Use, Heat, and Human Health · Medellín + model with more green space</span><span class="tag">Groups of 3</span><span class="tag">Think-Talk-Open Exchange</span><span class="tag">Medellín's Green Corridors · Model Builder</span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Medellín, Colombia, planted connected strips of trees and plants along streets and waterways (green corridors) to cool the city.</li>
+      <li>Increasing green space lowers heat <b>and</b> starts stabilizing loops: less energy use, more biodiversity, cleaner air, more exercise.</li>
+      <li>We can't return land to its original state, but we can <b>stabilize</b> the system.</li>
+      <li>Solutions have costs and constraints (space, money, upkeep, who benefits).</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–9</div><div><h4>Which parts could we act on?</h4><p>Ask what components of the system we could change to increase sustainability. Listen for: more green space, less energy use (especially in buildings), more biodiversity, higher albedo surfaces, changes in manufacturing and commercial zones.</p></div></li>
+      <li><div class="t">9–17</div><div><h4>Medellín's Green Corridors</h4><p>Read the short introduction (NEPA's definition of sustainability). Play the video; students fill the table: actions, impacts, how it could help NYC.</p></div></li>
+      <li><div class="t">17–27</div><div><h4>Think-Talk-Open Exchange (groups of 3)</h4><p><b>Think</b> alone on the prompt; <b>Talk</b> one at a time while others tally buzzwords (feedback, stabilize/destabilize, sustainability); <b>Open Exchange</b> on the four discussion questions.</p></div></li>
+      <li><div class="t">27–40</div><div><h4>Re-run the model with more green space</h4><p>Pairs reopen their saved Model Builder file (or re-enter Table 3 weights) and raise tree cover by one or two ranges for each neighborhood. Record new heat and sustainability scores and answer the application questions.</p></div></li>
+      <li><div class="t">40–50</div><div><h4>Green-corridor Scenario 4 (chart paper)</h4><p>Groups redraw Scenario 4 as if green corridors were built, adding new elements (air pollution, physical activity, stormwater). Struggling groups first annotate their Day 5 Scenario 4 in a second color. <i>Flex</i>: finish as homework.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Loop recall</div><p>Write the heat → AC loop from memory. Where could you break it?</p><div class="ans">Heat ↑ → AC ↑ → waste heat ↑ → heat ↑. Break it with shade/trees, efficient buildings or cool roofs.</div></div>
+      <div class="card"><div class="lbl">Option B · Sustainability</div><p>What does "productive harmony" between humans and nature mean to you?</p><div class="ans">From NEPA (1969): people and nature both thriving, now and in the future.</div></div>
+      <div class="card"><div class="lbl">Option C · Prediction</div><p>If Mott Haven's tree cover doubled, predict what happens to its heat score and sustainability score.</p><div class="ans">Heat down, sustainability up. Check on the model today.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>What did Medellín actually change? What happened as a result?</li>
+      <li>Where in NYC would a green corridor fit? Whose street would it be on?</li>
+      <li>When you raised tree cover, which neighborhood's score changed most? Why that one?</li>
+      <li>What else might change when green space increases that the model doesn't count?<span>Air pollution, exercise, flooding, property values.</span></li>
+      <li>What might stop NYC from doing this?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the model run</div>
+      <h4>Raising tree cover in the model changes the sustainability score because…</h4>
+      <ul class="opts">
+        <li class="right">A. tree % is added to the score, so more trees raise it<em>Correct (+0.5 per percent).</em></li>
+        <li>B. trees reduce the number of tree species<em>Reversed.</em></li>
+        <li>C. trees change the zoning<em>Zoning is separate in the model.</em></li>
+        <li>D. it doesn't; only energy use matters<em>Ignores the formula.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Think-Talk-Open Exchange</div>
+      <h4>Which statement about green corridors is best supported?</h4>
+      <ul class="opts">
+        <li>A. They return the city to its 1609 state<em>Irreversible; they stabilize, not restore.</em></li>
+        <li class="right">B. They cool the city and start loops that cut energy use and raise biodiversity<em>Correct.</em></li>
+        <li>C. They have no costs<em>Planting, space, water and maintenance cost money.</em></li>
+        <li>D. They only help wildlife, not people<em>They reduce heat and air pollution for people.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <div class="note"><b>Labeling:</b> SY 26-27 page numbers for this handout were not readable; keys are by activity and question as in the SY 25-26 "Intervening in Systems to Increase Sustainability" handout. Check numbering against your copy.</div>
+    <details class="key"><summary><span>Medellín note-catcher and Think prompt<small>sample responses</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">Actions · Impacts · How it could help NYC</p><p class="aa"><b>Actions:</b> planted trees and plants along roads and waterways, connecting green spaces into corridors; trained and hired local residents as gardeners. <b>Impacts:</b> cooler streets, more shade, more habitat and biodiversity, cleaner air, jobs. <b>NYC:</b> plant corridors along wide avenues and highways in hot, low-canopy neighborhoods (e.g., the South Bronx); connect parks; hire locally. Use the numbers the video gives; don't invent them.</p></div>
+      <div class="qa"><p class="qq">Think prompt: how increasing green space affects other components and feedback</p><p class="aa">More green space → cooler (shade, evapotranspiration) → less AC → less waste heat → cooler still (stabilizing loop). More green space → more biodiversity → healthier soil and pollination → healthier trees. Also less air pollution and more exercise → healthier people. Overall it stabilizes the city and increases sustainability.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Application, Q1–5<small>sample responses</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">1. Increase green cover in each neighborhood; how does it affect heat?</p><p class="aa">Heat goes down in every neighborhood by (tree weight × change in tree %/10). The drop is the same per 10% everywhere in this model, so the low-canopy, hottest neighborhoods have the most room to gain.</p></div>
+      <div class="qa"><p class="qq">2. Does it increase or decrease sustainability?</p><p class="aa">Increases: the score adds 0.5 per percent of tree cover, and if new trees are different species the diversity term also rises.</p></div>
+      <div class="qa"><p class="qq">3. Other components that might change beyond the model</p><p class="aa">Lower energy use (less AC), cleaner air, less flooding (soil soaks up rain), more biodiversity, more exercise and better mental health, possibly higher rents (green gentrification).</p></div>
+      <div class="qa"><p class="qq">4. Costs or negative impacts; what stops NYC?</p><p class="aa">Planting and maintenance costs, watering, limited space (sidewalks, underground pipes and subway lines), roots damaging sidewalks, leaf cleanup, allergies, private land ownership, years for trees to grow, political will.</p></div>
+      <div class="qa"><p class="qq">5. How could highly biodiverse green spaces reduce maintenance costs?</p><p class="aa">Diverse plantings support pollinators and healthy soil that keep plants alive with less replanting, fertilizer and pest control; a disease that kills one species won't wipe out the whole corridor. The stabilizing loops do some of the maintenance.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Green-corridor Scenario 4 chart<small>what a strong chart shows</small></span></summary><div class="keybody">
+      <p class="aa">Green corridors ↑ → tree cover ↑ → temperature ↓ → energy use ↓ → temperature ↓ (loop reversed); tree cover ↔ biodiversity ↑; tree cover ↑ → air pollution ↓ → respiratory health ↑; shade ↑ → physical activity ↑ → health ↑; soil ↑ → stormwater runoff ↓. Captions explain each arrow; labels say which loops are now stabilizing.</p>
+      <div class="note"><b>Look and listen for (teacher guide):</b> increasing green space cools the city, which increases sustainability · a cooler city needs less energy for AC, which cools it further · more green space increases biodiversity · it also decreases air pollution and increases exercise · this feedback stabilizes the city.</div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Give one criterion and one constraint for a green-corridor project in NYC.</p><div class="ans">Criterion: lowers heat in a high-HVI area. Constraint: limited sidewalk space / budget.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>By how much did your model's heat score drop for Mott Haven when you added tree cover? What does that number <i>not</i> tell you?</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Design a Green Corridor</h4>
+      <p>Draw a street-level cross-section (side view) of one real NYC street you know, <b>before</b> and <b>after</b> adding a green corridor. Show where trees, plants and people go, and add arrows for sunlight, shade and evapotranspiration.</p>
+      <ul class="checks">
+        <li>Before and after both labeled</li>
+        <li>The heat score change from <b>your</b> model run today written on the "after" side</li>
+        <li>One cost and one benefit labeled on the drawing</li>
+        <li>"I chose…" note: why this street needs it most</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-5"><small>Back</small>← Day 5 · Feedback Loops</a><a class="next" href="#day-7"><small>Next</small>Day 7 · Amazon Deforestation →</a></div>
+</div>
+
+<!-- ===================== DAY 7 ===================== -->
+<div class="view" id="day-7" data-phase="elaborate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 7 · Elaborate</div>
+    <h2>Deforestation of the Amazon</h2>
+    <p class="q">How are humans changing land in other areas in ways that are unsustainable, with negative impacts on human and ecosystem health?</p>
+    <div class="tags"><span class="tag">Elaborate handout: Deforestation of the Amazon</span><span class="tag">Pairs</span><span class="tag">NASA Earth Observatory · Mongabay/INPE data</span><span class="tag">Calculators</span><span class="tag"><a href="../unit6-sustainable-future/unit6-land_use_and_biodiversity.html">Chapter: Elaborate</a></span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>The Amazon stores carbon, cools the air by moving water, makes its own rain, filters pollution and holds huge biodiversity.</li>
+      <li>Clearing it (mostly for cattle pasture) heats the land locally, like an urban heat island, and burning adds smoke pollution.</li>
+      <li>About <b>17.5%</b> of the Brazilian Amazon's pre-1970 forest was gone by 2019 (Mongabay/INPE).</li>
+      <li>Scientists estimate a <b>tipping point at 20–25%</b> loss, after which reinforcing loops could turn much of it into drier savanna.</li>
+      <li>A rate of change lets you estimate <b>when</b> the threshold could be reached; solutions must weigh local benefits against costs.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–12</div><div><h4>Read: why the Amazon matters + loop diagram Q1</h4><p>Pairs read the intro and pick two interactions on the tree-feedback diagram. Correct the wording: these are <b>reinforcing</b> loops that keep the forest wet and stable now, and the same loops can run in reverse.</p></div></li>
+      <li><div class="t">12–18</div><div><h4>NASA time-lapse</h4><p>Project the Earth Observatory images (Rondônia, 2000–2012). Students describe the "fishbone" clearing pattern along roads.</p></div></li>
+      <li><div class="t">18–30</div><div><h4>Rate of change</h4><p>Pairs use the Mongabay table to compute the average yearly loss from pre-1970 to 2019, then the years to the tipping point. Model step 1 on the board. Calculators out.</p></div></li>
+      <li><div class="t">30–38</div><div><h4>Annotate the system + Analyze Q1–2</h4><p>Pairs annotate how each part changes with deforestation, then answer the health and destabilization questions.</p></div></li>
+      <li><div class="t">38–47</div><div><h4>Costs and benefits → solution</h4><p>Read the benefits/costs text, answer both, then sketch a solution (priorities, benefits, costs, tradeoffs). <i>Flex</i>: the solution paragraph can be homework.</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Exit slip</h4><p>Connect back: <i>How is the Amazon like Mott Haven?</i></p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Rate warm-up</div><p>A forest of 1,000 km² loses 20 km² per year. How long until 25% is gone?</p><div class="ans">250 km² ÷ 20 km²/yr = 12.5 years.</div></div>
+      <div class="card"><div class="lbl">Option B · Connect</div><p>Name two ways trees cooled NYC neighborhoods in our model and loops.</p><div class="ans">Shade and evapotranspiration (and less AC/energy).</div></div>
+      <div class="card"><div class="lbl">Option C · Prior knowledge</div><p>Why do you think people cut down rainforests?</p><div class="ans">Cattle pasture (main driver in Brazil), crops, logging, mining, roads.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Which loop on the diagram would break first if trees were cut?</li>
+      <li>How is a deforested patch of the Amazon like a paved neighborhood in NYC?</li>
+      <li>What number did you divide by to get the rate? Why that number of years?</li>
+      <li>If the rate slowed to the 2019 value, how would your answer change?</li>
+      <li>Who benefits from deforestation? Who pays the costs? Are they the same people?</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After the rate calculation</div>
+      <h4>Pre-1970 forest: 4,100,000 km². Lost by 2019: 718,927 km². About what percent was lost?</h4>
+      <ul class="opts">
+        <li>A. 1.75%<em>Decimal-place error.</em></li>
+        <li class="right">B. 17.5%<em>Correct: 718,927 ÷ 4,100,000.</em></li>
+        <li>C. 72%<em>Used the first digits of the loss as a percent.</em></li>
+        <li>D. 82.5%<em>That's the percent remaining.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Analyze Q2–3</div>
+      <h4>Why could losing ~20–25% of the Amazon make much of the rest collapse?</h4>
+      <ul class="opts">
+        <li>A. Trees need a minimum number of neighbors to grow<em>Not the mechanism.</em></li>
+        <li class="right">B. Fewer trees → less water recycled into rain → drier forest → more trees die and burn: a reinforcing loop<em>Correct.</em></li>
+        <li>C. The remaining forest will be cut immediately by law<em>Not a physical process.</em></li>
+        <li>D. CO₂ will drop too fast<em>Deforestation raises CO₂.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <div class="note"><b>Labeling:</b> SY 26-27 pages for this handout were not readable; questions follow the SY 25-26 handout (Deforestation of the Amazon, Q1–4, Analyze Q1–4, costs/benefits Q1–2, solution). Numbers below are from the Mongabay table of INPE data, checked against the live page.</div>
+    <details class="key"><summary><span>Tree feedback loops and observations, Q1–4<small>sample responses</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">Diagram Q1. Two interactions that keep the ecosystem sustaining itself</p><p class="aa">Trees → transpire water → clouds and rain → more trees. Trees → shelter and food → animals → spread seeds and pollinate → more trees. Trees → leaf litter → rich soil (stores carbon) → healthier trees.</p></div>
+      <div class="qa"><p class="qq">1. How does deforestation affect the sustainability of human societies?</p><p class="aa">Less carbon absorbed (more climate change), hotter and drier local climate, less rain for farms and cities, more smoke and respiratory disease, loss of foods and medicines, harm to Indigenous communities who depend on the forest.</p></div>
+      <div class="qa"><p class="qq">2. NASA time-lapse (2000–2012)</p><p class="aa">Forest is cut in a fishbone pattern along new roads; cleared areas spread and join over the years; large patches of solid forest become fragments.</p></div>
+      <div class="qa"><p class="qq">3. Rate of change, pre-1970 to 2019</p><p class="aa">Loss = 718,927 km² over ~49 years (1970–2019) → <b>≈ 14,700 km² per year</b> on average. 718,927 ÷ 4,100,000 ≈ <b>17.5%</b> lost; ≈ 3,381,073 km² left. Notice: yearly clearing peaked in the late 1980s–2000s (e.g., 21,050 km² in 1988) and was lower in 2010 (7,000) and 2019 (9,762), but it never stopped.</p></div>
+      <div class="qa"><p class="qq">4. Annotate the system diagram</p><p class="aa">Trees ↓ → rain ↓, temperature ↑, soil carbon ↓ and erosion ↑, animals and pollinators ↓, fire risk ↑, smoke pollution ↑, human health ↓.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Analyze, Q1–4 (tipping-point calculation)<small>sample responses and worked math</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">1. How does deforestation affect human health?</p><p class="aa">Direct: smoke from burning → respiratory disease; local heat up to several degrees warmer → heat stress. Indirect: less rain → crop losses and water shortages; habitat loss → loss of food, medicine and income; more climate change globally.</p></div>
+      <div class="qa"><p class="qq">2. How does it destabilize the system?</p><p class="aa">Every loop that kept the forest wet runs in reverse: fewer trees → less rain and hotter → more trees die and more fires → fewer trees. Biodiversity and soil decline, so recovery is slower.</p></div>
+      <div class="qa"><p class="qq">3. Why could ~25% loss collapse the ecosystem?</p><p class="aa">The forest makes much of its own rain. Past a threshold, too little water is recycled, the dry season lengthens, fires spread, and the rest can't sustain itself, so it shifts toward savanna. (Lovejoy &amp; Nobre 2018 say 20–25%.)</p></div>
+      <div class="qa"><p class="qq">4. How long to reach 25%?</p><p class="aa"><b>Step 1:</b> 75% of 4,100,000 = <b>3,075,000 km²</b> remaining at 25% loss. <b>Step 2:</b> 3,381,073 − 3,075,000 = <b>306,073 km²</b> more to lose. At the 1970–2019 average (~14,700 km²/yr): 306,073 ÷ 14,700 ≈ <b>21 years</b> (about 2040). At the 2019 rate (9,762 km²/yr): ≈ <b>31 years</b> (about 2050). <i>Extension:</i> at the 20% end, 820,000 km² lost → only ~101,000 km² more → about 7–10 years after 2019, i.e., now.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Costs, benefits and solution<small>sample responses</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">1. Benefits for people living there</p><p class="aa">Jobs and income from cattle ranching and beef exports, cheap land, crops, timber, mining, roads.</p></div>
+      <div class="qa"><p class="qq">2. Costs for people living there</p><p class="aa">Local warming (the text says up to about 8 °F), smoke pollution and respiratory illness, less rain, loss of forest resources; benefits go to some people while costs fall on others.</p></div>
+      <div class="qa"><p class="qq">Solution (priorities, benefits, costs, tradeoffs)</p><p class="aa">Strong answers name stakeholders (ranchers, Indigenous communities, global climate) and a specific solution: protect Indigenous-managed land, enforce limits and satellite monitoring, pay for standing forest, raise yields on already cleared land, restrict imports of beef from deforested land. They state a cost (lost income, enforcement) and a tradeoff (short-term jobs vs. long-term rain and health).</p></div>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Give one way a cleared patch of the Amazon is like a heat island in NYC and one way it is different.</p><div class="ans">Like: replacing trees raises local temperature. Different: scale; it also cuts the region's rainfall.</div></div>
+      <div class="card"><div class="lbl">Option B</div><p>Using your rate, about what year could the Amazon reach 25% loss? Show the division.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Tipping-Point Timeline</h4>
+      <p>Draw a timeline from 1970 to 2060. Plot the percent of Amazon forest lost at 1970 (0%), 1988, 2000, 2010 and 2019 (from today's table), then extend a dashed line at <b>your</b> calculated rate. Shade the 20–25% "danger zone."</p>
+      <ul class="checks">
+        <li>All five data points plotted and labeled</li>
+        <li>Your predicted crossing year marked</li>
+        <li>A small loop drawing at the tipping point showing why collapse speeds up</li>
+        <li>"I chose…" note: which rate you used (average or 2019) and why you think it's more realistic</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-6"><small>Back</small>← Day 6 · Green Corridors</a><a class="next" href="#day-8"><small>Next</small>Day 8 · Green Roofs PT →</a></div>
+</div>
+
+<!-- ===================== DAY 8 ===================== -->
+<div class="view" id="day-8" data-phase="evaluate" hidden>
+  <header class="dayhead">
+    <div class="eyebrow">Day 8 · Evaluate</div>
+    <h2>Return to the Performance Task: Green Roofs</h2>
+    <p class="q">How can green roofs contribute to sustainability, and how do these solutions combine to reduce heat deaths?</p>
+    <div class="tags"><span class="tag">PTO pp. 14–16: Return to the Performance Task: Land Use and Biodiversity 5E</span><span class="tag">Individual</span><span class="tag">Green-roofs text · Model Builder</span><span class="tag"><a href="../unit6-sustainable-future/unit6-land_use_and_biodiversity.html#evaluate">Chapter: Evaluate</a></span></div>
+  </header>
+
+  <div class="goals">
+    <h3>By the end of today students should know</h3>
+    <ul>
+      <li>Green roofs add vegetation where there's no ground space: shade, evapotranspiration and insulation lower roof and air temperatures and energy use.</li>
+      <li>How to add a new variable to a computational model (where it goes, what sign) and use it to compare neighborhoods.</li>
+      <li>How to evaluate a solution: does it solve the problem, which systems it affects, costs, safety, environmental impacts, feedbacks, equity.</li>
+      <li>NYC has about 60 acres of green roofs (~0.15% of rooftops), concentrated in higher-income areas.</li>
+    </ul>
+  </div>
+
+  <section class="block">
+    <h3>Minute by minute <small>50 min</small></h3>
+    <ol class="sched">
+      <li><div class="t">0–4</div><div><h4>Do Now</h4><p>Pick an option below.</p></div></li>
+      <li><div class="t">4–12</div><div><h4>Read the green-roofs text</h4><p>Dense cities can't easily add parks; Medellín used streets; Rotterdam uses roofs. Annotate numbers (Rotterdam acres, EPA cooling, NYC 60 acres ≈ 0.15%) and the equity point.</p></div></li>
+      <li><div class="t">12–20</div><div><h4>Step 1: Define the problem and describe the solution</h4><p>Systems affected, how humans altered them, how green roofs work and whether they stabilize the system.</p></div></li>
+      <li><div class="t">20–35</div><div><h4>Step 2: Use the model (Q1–4)</h4><p>Rewrite the sustainability formula (Q1), decide where green roofs enter (Q2), what inputs change (Q3), and how heat and sustainability change in the four neighborhoods (Q4). Students may test it in the Model Builder by raising tree/green cover to stand in for roofs. Confer.</p></div></li>
+      <li><div class="t">35–47</div><div><h4>Step 3: Evaluate + Reflect</h4><p>Efficacy, systems, each neighborhood, other factors, comparison with green corridors, costs/safety/environment, feedbacks; local vs. global.</p></div></li>
+      <li><div class="t">47–50</div><div><h4>Self-score + DQB</h4><p>Students self-score on the rubric (below) and add any new questions to the DQB (leads into Mining: <i>Are there other ways we use land that damage health?</i>).</p></div></li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h3>Do Now options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A · Formula recall</div><p>Write the Sustainability Score formula from your model as best you can. Which terms go up with greener land?</p><div class="ans">50 + tree types × weight + tree % × 0.5 ± zone − 4 × energy level. Tree types and tree % go up.</div></div>
+      <div class="card"><div class="lbl">Option B · Compare</div><p>Green corridor or green roof: which would cool the sidewalk where people walk more? Why?</p><div class="ans">Corridor: street-level shade. Roofs mainly cool the building and the air above.</div></div>
+      <div class="card"><div class="lbl">Option C · Equity</div><p>Most NYC green roofs are in higher-income areas. Why is that a problem for heat deaths?</p><div class="ans">Cooling goes where vulnerability is lower; high-HVI neighborhoods miss out.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Conferring questions</h3>
+    <ul class="confer">
+      <li>Should green roofs go in the part of the formula that adds or subtracts? Why?</li>
+      <li>Which neighborhood has the most roof space that could be green? Which has the most to gain?<span>Big flat manufacturing and commercial roofs; Mott Haven is high heat and high HVI.</span></li>
+      <li>How would green roofs change energy use? Would that change the energy input?</li>
+      <li>What could go wrong with putting soil and plants on an old building?</li>
+      <li>Would you choose green roofs, green corridors or both? Use your model numbers.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3>Checks for understanding</h3>
+    <div class="cfu">
+      <div class="when">After Step 2 Q2</div>
+      <h4>In the sustainability formula, a "green roof %" variable should…</h4>
+      <ul class="opts">
+        <li class="right">A. be added (raise the score), like tree cover<em>Correct.</em></li>
+        <li>B. be subtracted, like energy level<em>Green roofs improve sustainability.</em></li>
+        <li>C. replace the biodiversity term<em>Both can count; roofs add some plant species too.</em></li>
+        <li>D. be left out because roofs aren't land<em>They add vegetation to the land surface.</em></li>
+      </ul>
+    </div>
+    <div class="cfu">
+      <div class="when">After Step 3</div>
+      <h4>Which is a real tradeoff of green roofs?</h4>
+      <ul class="opts">
+        <li>A. They make buildings hotter in summer<em>Reversed.</em></li>
+        <li class="right">B. They cost more and need strong roofs and upkeep, but cool buildings and hold stormwater<em>Correct.</em></li>
+        <li>C. They remove all CO₂ from the city<em>Small carbon effect.</em></li>
+        <li>D. They take away street space<em>That's a corridor issue; roofs use unused space.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Answer key</h3>
+    <details class="key"><summary><span>Step 1: Defining the problem and describing the solution<small>PTO p. 14</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">Systems, human changes, how green roofs work</p><p class="aa"><b>Problem:</b> urban heat islands raise temperatures and heat deaths, especially in neighborhoods with little green space. <b>Systems:</b> atmosphere (air temperature), biosphere (trees, species, people), hydrosphere (rain runoff), geosphere (land surface). <b>Human changes:</b> replaced forest and wetland with dark roofs and pavement; added energy use and waste heat. <b>Green roofs:</b> plants and soil on roofs shade the surface, cool by evapotranspiration, insulate the building (less AC), hold rainwater and give habitat. They <b>stabilize</b> the system by breaking the heat → AC → heat loop.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Step 2: Use a model, Q1–4<small>PTO pp. 14–15</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">1. Rewrite the equation (from Explore Q15)</p><p class="aa">Sustainability = 50 + (tree types × diversity weight) + (tree % × 0.5) ± zone bonus/penalty − 4 × energy level. Heat = tree contribution + zone contribution + energy contribution.</p></div>
+      <div class="qa"><p class="qq">2. How could green roofs be incorporated?</p><p class="aa">Add a term that <b>raises</b> sustainability and <b>lowers</b> heat, e.g., Sustainability + (green roof % × weight) and Heat − (green roof % ÷ 10 × weight), or count green-roof area as extra green cover. Reason: roofs act like vegetation, cooling and adding habitat.</p></div>
+      <div class="qa"><p class="qq">3. How would inputs change?</p><p class="aa">Effective green/tree cover goes up; energy use may drop a range in buildings that get roofs; plant species count may rise. Zoning stays the same.</p></div>
+      <div class="qa"><p class="qq">4. Results for each neighborhood</p><p class="aa"><b>Mott Haven–Port Morris:</b> big flat industrial roofs, little canopy, high heat and HVI → large heat drop and sustainability gain; most health benefit. <b>Midtown–Midtown South:</b> lots of roof area but tall buildings mean roofs cool the street less; big energy savings, sizable sustainability gain. <b>Prospect Lefferts Gardens–Wingate:</b> mostly residential, moderate gain. <b>Glen Oaks–Floral Park–New Hyde Park:</b> already greener, small pitched-roof houses → smallest change. Exact numbers depend on each student's weights.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Step 3: Evaluating the solution + Reflect<small>PTO p. 15</small></span></summary><div class="keybody">
+      <div class="qa"><p class="qq">Efficacy, systems and each neighborhood</p><p class="aa">Green roofs lower roof and air temperature and building energy use (text: EPA estimates up to ~5 °F citywide at scale, ~0.7% energy savings). They help most where roofs are many and green space is scarce. At NYC's current ~0.15% coverage the effect is tiny; it only works at scale.</p></div>
+      <div class="qa"><p class="qq">Other factors · comparison with green corridors</p><p class="aa">Other: less stormwater runoff and sewer overflow, habitat for pollinators and birds, longer roof life, some air filtering. Corridors cool the street where people walk and connect habitats but need street space; roofs use unused space but help pedestrians less and are on private buildings. Best: both.</p></div>
+      <div class="qa"><p class="qq">Costs, safety, environment, feedbacks</p><p class="aa">Costs: installation, structural reinforcement, maintenance, watering. Safety: roof load, leaks, worker access. Environment: mostly positive; needs water in droughts. Feedbacks: cooler → less AC → less waste heat → cooler (stabilizing); more plants → more pollinators → healthier plants. Equity: current roofs favor higher-income areas; prioritize high-HVI neighborhoods.</p></div>
+      <div class="qa"><p class="qq">Reflect: local · global</p><p class="aa">Local: cooler neighborhoods, fewer heat deaths, less flooding, more biodiversity. Global: less energy use → less fossil fuel burned → less CO₂ and climate change; a model other cities can copy.</p></div>
+    </div></details>
+    <details class="key"><summary><span>Rubric (from the SY 25-26 lesson packet)<small>check the SY 26-27 PTO for changes</small></span></summary><div class="keybody">
+      <ul>
+        <li><b>Argument (Proficient):</b> describes the real-world problem with quantified data; explains how the solution changes the impacts with evidence and scientific ideas; identifies how it doesn't fully solve the problem; analyzes tradeoffs (economic, societal, ethical); argues for one or more solutions.</li>
+        <li><b>Stability and Change (Proficient):</b> includes quantified data showing to what extent the solution can reduce or reverse the negative changes caused by land use.</li>
+        <li><b>Developing:</b> includes only some of the above, or no quantified data.</li>
+      </ul>
+    </div></details>
+  </section>
+
+  <section class="block">
+    <h3>Exit slip options</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Option A</div><p>Rank green roofs, green corridors and air conditioning for reducing heat deaths in Mott Haven. Defend your #1 with one number.</p></div>
+      <div class="card"><div class="lbl">Option B</div><p>What question about land use and health do you want answered next? (Add to the DQB.)</p><div class="ans">Leads into Mining 5E: other land uses that damage health.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>Homework · drawn model</h3>
+    <div class="hw">
+      <h4>Rooftop Plan</h4>
+      <p>Draw a bird's-eye view of a block in one of the four neighborhoods, showing which roofs you would turn green. Then draw a small before/after bar graph of that neighborhood's heat and sustainability scores using <b>your</b> model's numbers.</p>
+      <ul class="checks">
+        <li>At least 3 roofs labeled green / not green, with a reason</li>
+        <li>Bar graph with your actual model values</li>
+        <li>One cost and one feedback loop labeled</li>
+        <li>"I chose…" note: which roofs you skipped and why (cost, roof shape, who lives there)</li>
+      </ul>
+      <p class="why">This leads into the Mining 5E question from the DQB: <i>Are there other ways we use land that cause damage to human and ecosystem health?</i></p>
+    </div>
+  </section>
+
+  <div class="pager"><a href="#day-7"><small>Back</small>← Day 7 · Amazon</a><a class="next" href="#overview"><small>Done</small>Back to overview ↺</a></div>
+</div>
+
+<footer><a href="index.html">← Back to Teacher Hub</a><br>Built from the New Visions Earth &amp; Space Science Unit 6 (Solutions for a Sustainable Future) materials: SY 26-27 Teacher Materials, Land Use and Biodiversity 5E (pp. 67–79 read); SY 26-27 Student Materials, Land Use and Biodiversity 5E (pp. 69–79 read) and Performance Task Organizer (pp. 14–16); SY 25-26 L2 Land Use and Biodiversity 5E student packet and Unit 6 plan (for Explain, Elaborate and the rubric). Data: NYC Department of Health and Mental Hygiene, 2026 Heat Mortality Report and Heat Vulnerability Index; Mongabay table of INPE PRODES Amazon deforestation data; Lovejoy &amp; Nobre 2018 (<i>Science Advances</i>); NASA Earth Observatory; Salamanca et al. 2014 (JGR); The Nature Conservancy, World Economic Forum and Climate Central (green roofs, as cited in the packet). Model: New Visions Urban Heat Island Effect Computational Model Builder. Student chapter: <a href="../unit6-sustainable-future/unit6-land_use_and_biodiversity.html">Unit 6: Land Use and Biodiversity</a>. Schedules assume 50-minute periods.</footer>
+
+</main>
+
+<script>
+(function(){
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('#chips .chip'));
+  var ids = views.map(function(v){return v.id});
+  function show(){
+    var id = (location.hash || '').slice(1);
+    if (ids.indexOf(id) === -1) id = 'overview';
+    views.forEach(function(v){ v.hidden = v.id !== id; });
+    chips.forEach(function(c){
+      if (c.getAttribute('href') === '#' + id) { c.setAttribute('aria-current','page'); var r=c.parentNode; r.scrollLeft = c.offsetLeft - (r.clientWidth - c.offsetWidth)/2; }
+      else c.removeAttribute('aria-current');
+    });
+    window.scrollTo({top:0,left:0,behavior:'instant'});
+  }
+  window.addEventListener('hashchange', show);
+  show();
+
+  // prep checklist memory (per device)
+  var boxes = document.querySelectorAll('#prep input[type=checkbox]');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem('u6-landuse-prep') || '{}'); } catch(e) {}
+  Array.prototype.forEach.call(boxes, function(b){
+    if (saved[b.id]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[b.id] = b.checked;
+      try { localStorage.setItem('u6-landuse-prep', JSON.stringify(saved)); } catch(e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>
