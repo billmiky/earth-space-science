@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E1E6E2"/>
+      <stop offset="56%" stop-color="#ECE5D4"/>
+      <stop offset="100%" stop-color="#D4C7AE"/>
+    </linearGradient>
+    <filter id="paper" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix type="saturate" values="0" in="n" result="g"/>
+      <feComponentTransfer in="g" result="a">
+        <feFuncA type="linear" slope="0.045"/>
+      </feComponentTransfer>
+      <feBlend mode="multiply" in2="SourceGraphic"/>
+    </filter>
+    
+  </defs>
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  
+    <g fill="none" stroke-linecap="round">
+      <path d="M-40,785 C340,660 640,860 980,755 C1240,675 1440,730 1640,695" stroke="#CF8A33" stroke-width="18" opacity="0.52"/>
+      <path d="M-40,825 C340,705 640,900 980,795 C1240,715 1440,770 1640,735" stroke="#1C657D" stroke-width="18" opacity="0.58"/>
+      <path d="M-40,865 C340,750 640,940 980,835 C1240,755 1440,810 1640,775" stroke="#223A4F" stroke-width="14" opacity="0.52"/>
+    </g>
+    <polygon points="0,245 190,275 265,455 340,745 0,790" fill="#7DA8B5"/>
+    <polygon points="0,335 215,355 245,415 0,400" fill="#DAE9EC" opacity="0.8"/>
+    <polygon points="0,465 268,480 292,545 0,530" fill="#4E7C8D" opacity="0.72"/>
+    <polygon points="0,600 308,615 328,675 0,660" fill="#C9A26B" opacity="0.65"/>
+    <polygon points="1600,370 1420,425 1280,585 1210,745 1600,775" fill="#477252"/>
+    <polygon points="1420,425 1280,585 1370,635 1495,495" fill="#709768" opacity="0.7"/>
+    <g transform="translate(1415 425)">
+      <polygon points="-14,0 14,0 9,-68 -9,-68" fill="#F3EFE4"/>
+      <rect x="-11" y="-82" width="22" height="14" fill="#CF8A33"/>
+      <polygon points="-14,-82 14,-82 0,-96" fill="#223A4F"/>
+    </g>
+    <rect x="0" y="730" width="1600" height="270" fill="#1D5166" opacity="0.52"/>
+    <path d="M0,905 Q450,865 860,915 T1600,890 L1600,1000 L0,1000 Z" fill="#183244"/>
+    
+  <!-- Subtle Art Deco poster inner framing lines -->
+  <g fill="none" stroke="#223A4F" stroke-opacity="0.16" stroke-width="2">
+    <rect x="26" y="26" width="1548" height="948" rx="4"/>
+    <rect x="36" y="36" width="1528" height="928" rx="2" stroke-opacity="0.09" stroke-width="1"/>
+  </g>
+  <!-- Subtle matte poster paper texture -->
+  <rect width="1600" height="1000" fill="#ffffff" opacity="0.001" filter="url(#paper)"/>
+</svg>

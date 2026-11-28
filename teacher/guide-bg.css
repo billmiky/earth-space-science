@@ -1,0 +1,165 @@
+/*
+ * Shared WPA National Park / Art Deco topic background layer for Teacher Guides.
+ * Pure CSS + lightweight local SVGs in teacher/guide-art/ (works offline).
+ * Designed to frame the reading column with topic-specific screenprint artwork
+ * while keeping body text, schedules, and answer keys calm and effortless to read.
+ */
+
+body[data-topic="new-worlds"]        { --wpa-art: url("guide-art/new-worlds.svg"); }
+body[data-topic="solar-stability"]   { --wpa-art: url("guide-art/solar-stability.svg"); }
+body[data-topic="coevolution"]       { --wpa-art: url("guide-art/coevolution.svg"); }
+body[data-topic="origin-universe"]   { --wpa-art: url("guide-art/origin-universe.svg"); }
+body[data-topic="asteroid-orbits"]   { --wpa-art: url("guide-art/asteroid-orbits.svg"); }
+body[data-topic="earth-interior"]    { --wpa-art: url("guide-art/earth-interior.svg"); }
+body[data-topic="plate-boundaries"]  { --wpa-art: url("guide-art/plate-boundaries.svg"); }
+body[data-topic="energy-matter"]     { --wpa-art: url("guide-art/energy-matter.svg"); }
+body[data-topic="seasons"]           { --wpa-art: url("guide-art/seasons.svg"); }
+body[data-topic="earth-sun-dynamics"]{ --wpa-art: url("guide-art/earth-sun-dynamics.svg"); }
+body[data-topic="climate-feedbacks"] { --wpa-art: url("guide-art/climate-feedbacks.svg"); }
+body[data-topic="past-future"]       { --wpa-art: url("guide-art/past-future.svg"); }
+body[data-topic="wind"]              { --wpa-art: url("guide-art/wind.svg"); }
+body[data-topic="water"]             { --wpa-art: url("guide-art/water.svg"); }
+body[data-topic="flooding"]          { --wpa-art: url("guide-art/flooding.svg"); }
+body[data-topic="fossil-fuels"]      { --wpa-art: url("guide-art/fossil-fuels.svg"); }
+body[data-topic="land-use"]          { --wpa-art: url("guide-art/land-use.svg"); }
+body[data-topic="mining"]            { --wpa-art: url("guide-art/mining.svg"); }
+
+/* Fixed full-bleed WPA / Art Deco poster canvas behind the page */
+body[data-topic] {
+  position: relative;
+  min-height: 100vh;
+}
+
+body[data-topic]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--wpa-art);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.78;
+  filter: saturate(0.88) contrast(0.97);
+}
+
+/* Night-poster twilight adaptation for dark mode */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body[data-topic]::after {
+    opacity: 0.68;
+    filter: brightness(0.56) saturate(0.86) contrast(1.06);
+  }
+}
+:root[data-theme="dark"] body[data-topic]::after {
+  opacity: 0.68;
+  filter: brightness(0.56) saturate(0.86) contrast(1.06);
+}
+
+/* Frosted sticky day bar */
+body[data-topic] nav.bar {
+  background: color-mix(in srgb, var(--surface, #FFFFFF) 93%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Calm, translucent editorial reading sheet for standalone 5E/3E guides */
+body[data-topic] main.wrap {
+  background: color-mix(in srgb, var(--bg, #F2F5F4) 91%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  min-height: calc(100vh - 56px);
+}
+
+@media (min-width: 880px) {
+  body[data-topic] main.wrap {
+    max-width: 860px;
+    margin-top: 20px;
+    margin-bottom: 36px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 16px;
+    border: 1px solid color-mix(in srgb, var(--line, #D5DDDB) 82%, transparent);
+    box-shadow: 0 12px 42px rgba(21, 33, 42, 0.12), 0 1px 3px rgba(21, 33, 42, 0.06);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body[data-topic] main.wrap {
+    background: color-mix(in srgb, var(--bg, #0E1518) 90%, transparent);
+    border-color: color-mix(in srgb, var(--line, #2A3A41) 88%, transparent);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+  }
+}
+:root[data-theme="dark"] body[data-topic] main.wrap {
+  background: color-mix(in srgb, var(--bg, #0E1518) 90%, transparent);
+  border-color: color-mix(in srgb, var(--line, #2A3A41) 88%, transparent);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+}
+
+/* Mobile / narrow screens: keep reading column ultra-clean + add a framed WPA scenic header banner above the title */
+@media (max-width: 879px) {
+  body[data-topic] main.wrap {
+    background: color-mix(in srgb, var(--bg, #F2F5F4) 94%, transparent);
+  }
+  body[data-topic] .hero::before {
+    content: "";
+    display: block;
+    height: 112px;
+    margin: -8px 0 16px;
+    border-radius: 10px;
+    border: 1px solid var(--line, #D5DDDB);
+    background-image: var(--wpa-art);
+    background-position: center 62%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+  }
+}
+
+/* Quarto-rendered overview/dashboard guides (unit1-guide.html, unit2-guide.html, etc.) */
+body[data-topic].quarto-light,
+body[data-topic].quarto-dark {
+  max-width: none !important;
+  background-color: transparent !important;
+}
+
+body[data-topic].quarto-light #quarto-content,
+body[data-topic].quarto-dark #quarto-content {
+  max-width: 940px;
+  margin: 20px auto 40px;
+  padding: 20px 30px 32px;
+  border-radius: 16px;
+  background: rgba(247, 248, 246, 0.92);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  border: 1px solid rgba(203, 213, 225, 0.85);
+  box-shadow: 0 12px 42px rgba(15, 23, 42, 0.12);
+}
+
+@media (max-width: 879px) {
+  body[data-topic].quarto-light #quarto-content,
+  body[data-topic].quarto-dark #quarto-content {
+    margin: 0;
+    padding: 14px 16px 28px;
+    border-radius: 0;
+    border-inline: 0;
+  }
+}
+
+/* Print: clean white page with zero background ink */
+@media print {
+  body[data-topic]::after,
+  body[data-topic] .hero::before {
+    display: none !important;
+  }
+  body[data-topic] main.wrap,
+  body[data-topic] #quarto-content {
+    background: #ffffff !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+}
