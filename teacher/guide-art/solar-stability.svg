@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1B2938"/>
+      <stop offset="56%" stop-color="#31475E"/>
+      <stop offset="100%" stop-color="#C99963"/>
+    </linearGradient>
+    <filter id="paper" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix type="saturate" values="0" in="n" result="g"/>
+      <feComponentTransfer in="g" result="a">
+        <feFuncA type="linear" slope="0.045"/>
+      </feComponentTransfer>
+      <feBlend mode="multiply" in2="SourceGraphic"/>
+    </filter>
+    
+  </defs>
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  
+    <g fill="#EDE5D2" opacity="0.08"><polygon points="1309.4,270.7 926.1,1031.7 835.3,979.2 1302.7,266.9"/><polygon points="1297.8,263.3 768.5,931.0 690.2,861.3 1292.0,258.1"/><polygon points="1287.9,253.6 634.6,800.5 571.9,716.4 1283.2,247.4"/><polygon points="1280.1,242.2 529.7,645.7 485.4,550.7 1276.8,235.2"/><polygon points="1274.8,229.4 458.3,472.8 434.2,370.8 1273.0,221.9"/><polygon points="1272.3,215.8 423.4,289.1 420.4,184.3 1272.0,208.1"/><polygon points="1272.5,202.0 426.3,102.1 444.6,-1.1 1273.8,194.4"/><polygon points="1275.5,188.5 467.0,-80.4 505.7,-177.8 1278.3,181.3"/><polygon points="1281.1,175.9 543.8,-250.9 601.4,-338.5 1285.4,169.5"/><polygon points="1289.3,164.7 653.4,-402.4 727.6,-476.6 1294.7,159.3"/><polygon points="1299.5,155.4 791.5,-528.6 879.1,-586.2 1305.9,151.1"/><polygon points="1311.3,148.3 952.2,-624.3 1049.6,-663.0 1318.5,145.5"/><polygon points="1324.4,143.8 1128.9,-685.4 1232.1,-703.7 1332.0,142.5"/></g>
+    <!-- Rising Earth with Deco Halo on Right -->
+    <g transform="translate(1340 210)">
+      <circle cx="0" cy="0" r="92" fill="none" stroke="#E5B966" stroke-width="2" opacity="0.35"/>
+      <circle cx="0" cy="0" r="68" fill="#2A6B88"/>
+      <path d="M-42,-36 Q-10,-48 16,-22 Q4,2 -18,10 Q-44,4 -42,-36 Z" fill="#5D8C54"/>
+      <path d="M18,6 Q46,2 56,28 Q26,56 0,44 Q12,24 18,6 Z" fill="#5D8C54"/>
+      <path d="M-12,-67 A68,68 0 0,0 -12,67 A52,68 0 0,1 -12,-67 Z" fill="#F2EAD8" opacity="0.22"/>
+    </g>
+    <!-- Meteor arcs on left -->
+    <g stroke="#F2D7A0" stroke-linecap="round" opacity="0.55">
+      <line x1="80" y1="120" x2="290" y2="235" stroke-width="3"/>
+      <line x1="175" y1="80" x2="335" y2="168" stroke-width="2"/>
+      <line x1="40" y1="215" x2="185" y2="292" stroke-width="1.8"/>
+    </g>
+    <!-- Distant lunar mountains -->
+    <polygon points="0,710 190,565 360,640 540,605 780,695 1030,615 1235,540 1445,625 1600,550 1600,1000 0,1000" fill="#3B4E61"/>
+    <!-- Left Crater Rim Wall (sunlit ochre + slate shadow) -->
+    <polygon points="0,585 125,470 285,545 450,765 0,835" fill="#283847"/>
+    <polygon points="125,470 285,545 215,650 85,595" fill="#C48F52" opacity="0.62"/>
+    <!-- Right Crater Wall -->
+    <polygon points="1130,785 1295,530 1475,455 1600,540 1600,880 1080,880" fill="#233240"/>
+    <polygon points="1295,530 1475,455 1410,600 1245,635" fill="#B87E45" opacity="0.52"/>
+    <!-- Iconic WPA elliptical craters across foreground basin -->
+    <g>
+      <path d="M0,780 Q420,730 800,790 T1600,765 L1600,1000 L0,1000 Z" fill="#1C2935"/>
+      <ellipse cx="220" cy="875" rx="165" ry="42" fill="#2B3D4E" stroke="#C9934B" stroke-width="3" stroke-opacity="0.45"/>
+      <ellipse cx="220" cy="884" rx="125" ry="26" fill="#17222D"/>
+      <ellipse cx="1370" cy="870" rx="180" ry="44" fill="#2B3D4E" stroke="#C9934B" stroke-width="3" stroke-opacity="0.45"/>
+      <ellipse cx="1370" cy="879" rx="132" ry="26" fill="#17222D"/>
+      <ellipse cx="810" cy="920" rx="120" ry="26" fill="#253645" opacity="0.7"/>
+    </g>
+    
+  <!-- Subtle Art Deco poster inner framing lines -->
+  <g fill="none" stroke="#EDE5D2" stroke-opacity="0.16" stroke-width="2">
+    <rect x="26" y="26" width="1548" height="948" rx="4"/>
+    <rect x="36" y="36" width="1528" height="928" rx="2" stroke-opacity="0.09" stroke-width="1"/>
+  </g>
+  <!-- Subtle matte poster paper texture -->
+  <rect width="1600" height="1000" fill="#ffffff" opacity="0.001" filter="url(#paper)"/>
+</svg>
